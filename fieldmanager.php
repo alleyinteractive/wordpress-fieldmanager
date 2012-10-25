@@ -45,7 +45,7 @@ function fieldmanager_get_baseurl() {
 	if ( $path_override ) {
 		return $path_override;
 	}
-	return plugins_dir_url( __FILE__ );
+	return plugin_dir_url( __FILE__ );
 }
 
 function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false ) {
