@@ -1,0 +1,89 @@
+.fm-group {
+	border: solid 1px #DDD;
+	-webkit-border-radius: 3px;
+	border-radius: 3px;
+	margin-bottom: 5px;
+	background-color: #EDEDED;
+}
+
+.fm-group-inner {
+	padding: 5px;
+}
+
+.fm-group h4, .fm-group div.fm-group-label-wrapper {
+	cursor: default;
+	font-size: 13px;
+	padding: 5px;
+	margin: 0 0 5px 0;
+	border-bottom: 1px solid #DDD;
+	background-color: #DFDFDF;
+	background-image: -ms-linear-gradient(bottom,#DDD,#EEE);
+	background-image: -moz-linear-gradient(bottom,#DDD,#EEE);
+	background-image: -o-linear-gradient(bottom,#DDD,#EEE);
+	background-image: -webkit-linear-gradient(bottom,#DDD,#EEE);
+	background-image: linear-gradient(bottom,#DDD,#EEE);
+}
+
+div.fm-group-label-wrapper {
+	overflow: auto;
+}
+
+.fm-group div.fm-group-label-wrapper h4 {
+	background-color: transparent;
+	background-image: none;
+	margin: 0;
+	padding: 3px 5px 0 5px;
+	border-bottom: none;
+	float: left;
+}
+
+.fm-item, .fm-add-another {
+	margin-bottom: 5px;
+}
+
+.fmjs-proto {
+	display: none;
+}
+
+.fmjs-removable {
+	overflow: auto;
+}
+
+.fmjs-removable-element {
+	float: left;
+}
+
+.fmjs-remove {
+	margin: 7px 0 0 3px;
+	display: block;
+	background: url('../images/xit.gif') 0 17% no-repeat;
+	height: 10px;
+	width: 10px;
+	float: left;
+	text-indent: -9999px;
+}
+
+.fmjs-remove:hover {
+	background-position: 100% 17%;
+}
+
+.fmjs-drag-icon {
+	background: transparent url(../images/draggable.png) no-repeat 0px 0px;
+	height: 15px;
+	width: 15px;
+	margin: 5px 3px 0 0;
+	text-indent: -9999px;
+	float: left;
+}
+
+.fmjs-drag-icon:hover {
+	background-position: 0px -20px;
+}
+
+.fm-group div.fm-group-label-wrapper.fmjs-drag-header {
+	cursor: move;
+}
+
+div.fm-group-label-wrapper .fmjs-remove {
+	float: right;
+}

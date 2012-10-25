@@ -1,0 +1,6 @@
+Credits, thanks, and acknowledgements:
+
+* [08/26/12] images/xit.gif "Remove Item" image is from WordPress Core.
+* [08/26/12] images/draggable.png "Draggable" image is from Drupal Core.
+* [08/26/12] jQuery and jQuery UI are used heavily for the interface.
+* [08/26/12] Aspects of the Drupal Fields System, formerly CCK provided inspiration.
