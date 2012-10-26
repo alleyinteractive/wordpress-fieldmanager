@@ -102,7 +102,13 @@ abstract class Fieldmanager_Field {
 	 */
 	public function single_element_markup( $value = Null, $is_proto = False ) {
 		$out = '';
-		$classes = array( 'fm-item', 'fm-' . $this->field_class, 'fm-' . $this->name );
+		$classes = array( 'fm-item', 'fm-' . $this->name );
+		
+		// Drop the fm-group class to hide inner box display if no label is set
+		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
+			$classes[] = 'fm-' . $this->field_class;
+		}
+		
 		if ( $this->get_seq() == 0 && $this->limit == 0 ) {
 			// Generate a prototype element for DOM magic on the frontend.
 			if ( $is_proto ) {

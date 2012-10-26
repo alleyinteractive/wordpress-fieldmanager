@@ -15,13 +15,15 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	}
 
 	public function form_element( $value = NULL ) {
-		$out = '<div class="fm-group-inner">';
+		$out = "";
+		// We do not need the wrapper class for extra padding if no label is set for the group
+		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '<div class="fm-group-inner">';
 		foreach ( $this->children as $element ) {
 			$element->parent = $this;
 			$child_value = empty( $value[ $element->name ] ) ? Null : $value[ $element->name ];
 			$out .= $element->element_markup( $child_value );
 		}
-		$out .= '</div>';
+		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '</div>';
 		return $out;
 	}
 
