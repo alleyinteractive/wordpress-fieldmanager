@@ -24,6 +24,9 @@ abstract class Fieldmanager_Field {
 	public $sanitize = 'sanitize_text_field';
 	public $validate = array();
 
+	public $data_type = NULL;
+	public $data_id = NULL;
+
 	protected $seq = 0;
 	protected $parent = Null;
 	protected $is_valid = False;
@@ -238,6 +241,8 @@ abstract class Fieldmanager_Field {
 
 	public function save_to_post_meta( $post_id, $data ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+		$this->data_id = $post_id;
+		$this->data_type = 'post';
 		$data = $this->presave_all( $data );
 		update_post_meta( $post_id, $this->name, json_encode( $data ) );
 	}

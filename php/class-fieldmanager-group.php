@@ -40,6 +40,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 	public function presave( $values ) {
 		foreach ( $this->children as $k => $element ) {
+			$element->data_id = $this->data_id;
+			$element->data_type = $this->data_type;
 			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ] );
 		}
