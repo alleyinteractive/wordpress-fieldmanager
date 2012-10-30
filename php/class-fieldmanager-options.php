@@ -38,3 +38,7 @@ class Fieldmanager_Radios extends Fieldmanager_Options {
 class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	
 }
+
+class Fieldmanager_Select extends Fieldmanager_Options {
+
+}
