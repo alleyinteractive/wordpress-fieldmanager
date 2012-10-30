@@ -87,3 +87,20 @@ div.fm-group-label-wrapper {
 div.fm-group-label-wrapper .fmjs-remove {
 	float: right;
 }
+
+.fm-dialog {
+	background: #fff;
+	border: solid 1px #555;
+}
+
+.fm-dialog h3 {
+	margin: 0;
+	background: #222;
+	color: #cfcfcf;
+	padding: 3px 10px;
+	font: 12px "Lucida Grande", Verdana, Arial, sans-serif;
+}
+
+.fm-dialog .inner {
+	margin: 10px;
+}

@@ -7,8 +7,6 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $label_element = 'h4';
 	public $collapsible = False;
 
-	public $sanitizer = 'fm_group_sanitize';
-
 	public function __construct( $options = array() ) {
 		$this->validators = array( array( $this, 'validate_children' ) );
 		parent::__construct($options);
@@ -40,8 +38,12 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		
 	}
 
-	public function sanitize( $value ) {
-		return $value;
+	public function presave( $values ) {
+		foreach ( $this->children as $k => $element ) {
+			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
+			$values[ $element->name ] = $element->presave_all( $values[ $element->name ] );
+		}
+		return $values;
 	}
 
 	/**

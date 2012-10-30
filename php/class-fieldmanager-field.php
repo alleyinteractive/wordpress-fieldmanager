@@ -21,8 +21,8 @@ abstract class Fieldmanager_Field {
 	public $label_element = 'div';
 	public $tree = array();
 
-	public $sanitizer = 'sanitize_text_field';
-	public $validators = array();
+	public $sanitize = 'sanitize_text_field';
+	public $validate = array();
 
 	protected $seq = 0;
 	protected $parent = Null;
@@ -211,24 +211,35 @@ abstract class Fieldmanager_Field {
 	 */
 	public function render_meta_box( $post, $form_struct ) {
 		$key = $form_struct['callback'][0]->name;
-		$values = get_post_meta( $post->ID, $key, True );
+		$values = get_post_meta( $post->ID, $key, TRUE );
 		if ( !is_array( $values ) ) { // default of get_post_meta is empty array.
-			$values = unserialize( $values );
+			$values = json_decode( $values, TRUE );
 		}
 		echo $this->element_markup( $values );
 	}
 
-	public function sanitize( $value ) {
-		// iterate over form elements, use the sanitizer set here.
-	}
-
-	public function validate( $value ) {
+	public function validate_all( $value ) {
 		// iterate over validators, check nonce field.
 	}
 
+	public function presave( $value ) {
+		return call_user_func( $this->sanitize, $value );
+	}
+
+	public function presave_all( $values ) {
+		if ( $this->limit = 1 ) {
+			return $this->presave( $values );
+		}
+		foreach ( $values as $i => $value ) {
+			$values[$i] = $this->presave( $value );
+		}
+		return $values;
+	}
+
 	public function save_to_post_meta( $post_id, $data ) {
-		$this->sanitize( $data );
-		update_post_meta( $post_id, $this->name, serialize( $data ) );
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+		$data = $this->presave_all( $data );
+		update_post_meta( $post_id, $this->name, json_encode( $data ) );
 	}
 
 	/**
