@@ -167,7 +167,7 @@ abstract class Fieldmanager_Field {
 	 * Get HTML form name (e.g. questions[answer]).
 	 * @return string form name
 	 */
-	public function get_form_name( ) {
+	public function get_form_name( $multiple = "" ) {
 		$tree = $this->get_form_tree();
 		$name = '';
 		for ( $i = 0; $i < count( $tree ); $i++ ) {
@@ -175,10 +175,10 @@ abstract class Fieldmanager_Field {
 				$name .= $tree[$i]->name;
 			}
 			else {
-				$name .= '[' . $tree[$i]->name . ']';
+				$name .= '[' . $tree[$i]->name . ']' . $multiple;
 			}
 			if ( $tree[$i]->limit != 1 ) {
-				$name .= '[' . $tree[$i]->get_seq() . ']';
+				$name .= '[' . $tree[$i]->get_seq() . ']' . $multiple;
 			}
 		}
 		return $name;
