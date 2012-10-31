@@ -104,3 +104,7 @@ div.fm-group-label-wrapper .fmjs-remove {
 .fm-dialog .inner {
 	margin: 10px;
 }
+
+.fm-tab-bar .wp-tab-active {
+	background: #EDEDED;
+}

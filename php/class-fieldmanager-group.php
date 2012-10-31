@@ -5,7 +5,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $children = array();
 	public $field_class = 'group';
 	public $label_element = 'h4';
-	public $collapsible = False;
+	public $collapsible = FALSE;
+	public $tabbed = FALSE;
+	protected $child_count = 0;
 
 	public function __construct( $options = array() ) {
 		$this->validators = array( array( $this, 'validate_children' ) );
@@ -14,15 +16,47 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 	public function form_element( $value = NULL ) {
 		$out = "";
+		$tab_group = "";
+		
 		// We do not need the wrapper class for extra padding if no label is set for the group
 		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '<div class="fm-group-inner">';
+		
+		// If the display output for this group is set to tabs, build the tab group for navigation
+		if ( $this->tabbed ) $tab_group = '<ul class="fm-tab-bar wp-tab-bar" id="' . $this->get_element_id() . '-tabs">';
+		
+		// Produce HTML for each of the children
 		foreach ( $this->children as $element ) {
+		
+			// If the display output for this group is set to tabs, add a tab for this child
+			if ( $this->tabbed ) { 
+				
+				// Set default classes to display the first tab content and hide others
+				$tab_class = ( $this->child_count == 0 ) ? "wp-tab-active" : "hide-if-no-js";
+			
+				// Generate output for the tab
+				$tab_group .= '<li class="' . $tab_class . '"><a href="#' . $element->get_element_id() . '-tab">' . $element->label . '</a></li>';
+				
+				// Ensure the child is aware it is tab content
+				$element->is_tab = TRUE;
+			}
+		
+			// Get markup for the child element
 			$element->parent = $this;
 			$child_value = empty( $value[ $element->name ] ) ? Null : $value[ $element->name ];
 			$out .= $element->element_markup( $child_value );
+			
+			$this->child_count++;
+			
 		}
+		
+		// We do not need the wrapper class for extra padding if no label is set for the group
 		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '</div>';
-		return $out;
+		
+		// If the display output for this group is set to tabs, build the tab group for navigation
+		if ( $this->tabbed ) $tab_group .= '</ul>';
+		
+		// Return the complete HTML
+		return $tab_group . $out;
 	}
 
 	/**

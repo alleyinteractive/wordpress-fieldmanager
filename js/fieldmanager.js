@@ -55,6 +55,13 @@ $( document ).ready( function () {
 	$( '.fm-collapsible .fm-group-label-wrapper' ).live( 'click', function() {
 		$( this ).parents( '.fm-group' ).first().find( '.fm-group-inner' ).toggle();
 	} );
+	$( '.fm-tab-bar a' ).live( 'click', function( e ) {
+		var t = $( this ).attr( 'href' );
+		$( this ).parent().addClass( 'wp-tab-active' ).siblings( 'li' ).removeClass( 'wp-tab-active' );
+		$( t ).siblings( 'div' ).hide();
+		$( t ).show();
+		return false;
+	} );
 	init_sortable();
 } );
 

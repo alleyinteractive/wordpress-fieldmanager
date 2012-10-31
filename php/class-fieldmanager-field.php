@@ -28,8 +28,9 @@ abstract class Fieldmanager_Field {
 	public $data_id = NULL;
 
 	protected $seq = 0;
-	protected $parent = Null;
-	protected $is_valid = False;
+	protected $parent = NULL;
+	protected $is_valid = FALSE;
+	protected $is_tab = FALSE;
 
 	/**
 	 * Generate HTML for the form element itself. Generally should be just one tag, no wrappers.
@@ -70,6 +71,12 @@ abstract class Fieldmanager_Field {
 		$classes = array_merge( $classes, $this->get_extra_element_classes() );
 
 		$out = '';
+		
+		// If this element is part of tabbed output, there needs to be a wrapper to contain the tab content
+		if ( $this->is_tab ) { 
+			$tab_display_style = ( $this->parent->child_count > 0 ) ? ' style="display: none"' : '';
+			$out .= '<div id="' . $this->get_element_id() . '-tab" class="wp-tabs-panel"' . $tab_display_style . '>';
+		}
 
 		// For lists of items where $one_label_per_item = False, the label should go outside the wrapper.
 		if ( !empty( $this->label ) && !$this->one_label_per_item ) {
@@ -91,6 +98,10 @@ abstract class Fieldmanager_Field {
 			$out .= $this->add_another();
 		}
 		$out .= '</div>';
+		
+		// Close the tab wrapper if one exists
+		if ( $this->is_tab ) $out .= '</div>';
+		
 		return $out;
 	}
 
@@ -123,7 +134,8 @@ abstract class Fieldmanager_Field {
 
 		$out .= sprintf( '<div class="%s">', implode( ' ', $classes ) );
 
-		if ( !empty( $this->label ) && $this->one_label_per_item ) {
+		// Hide the label if it is empty or if this is a tab since it would duplicate the title from the tab label
+		if ( !empty( $this->label ) && !$this->is_tab && $this->one_label_per_item ) {
 			$label = $this->get_element_label( );
 			if ( $this->limit == 0 && $this->one_label_per_item ) {
 				$out .= $this->wrap_with_multi_tools( $label, array( 'fmjs-removable-label' ) );
