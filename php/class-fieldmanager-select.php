@@ -3,22 +3,36 @@
 class Fieldmanager_Select extends Fieldmanager_Options {
 
 	public $field_class = 'select';
+	public $type_ahead = false;
 	
 	public function __construct( $options = array() ) {
 		$this->attributes = array(
 			'size' => '1'
 		);
+		
+		// Add the chosen library for type-ahead capabilities
+		fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
+		fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+				
 		parent::__construct($options);
 	}
 
 	public function form_element( $value = array() ) {
 		
+		$select_classes = array( 'fm-element' );
+		
 		// If this is a multiple select, need to handle differently
 		$do_multiple = "";
 		if ( array_key_exists( 'multiple', $this->attributes ) ) $do_multiple = "[]";
 		
+		// Handle type-ahead based fields
+		if ( $this->type_ahead ) { 
+			$select_classes[] = 'chzn-select' . $this->get_element_id();
+			add_action( 'admin_footer', array( $this, 'chosen_init' ) );
+		}
+		
 		return sprintf(
-			'<select class="fm-element" name="%s" id="%s" %s />%s</select>',
+			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s />%s</select>',
 			$this->get_form_name( $do_multiple ),
 			$this->get_element_id(),
 			$this->get_element_attributes(),
@@ -35,6 +49,10 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			htmlspecialchars( $data_row['name'] )
 		);						
 	
+	}
+	
+	public function chosen_init( ) {
+		echo '<script type="text/javascript"> $(".chzn-select' . $this->get_element_id() . '").chosen()</script>';
 	}
 
 	public function validate( $value ) {

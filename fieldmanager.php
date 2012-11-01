@@ -18,6 +18,7 @@ require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-checkbox.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textfield.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textarea.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-grid.php' );
+require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-options.php' );
 
 /**
  * Add CSS and JS to admin area, hooked into admin_enqueue_scripts.
