@@ -187,12 +187,15 @@ abstract class Fieldmanager_Field {
 				$name .= $tree[$i]->name;
 			}
 			else {
-				$name .= '[' . $tree[$i]->name . ']' . $multiple;
+				$name .= '[' . $tree[$i]->name . ']';
 			}
 			if ( $tree[$i]->limit != 1 ) {
-				$name .= '[' . $tree[$i]->get_seq() . ']' . $multiple;
+				$name .= '[' . $tree[$i]->get_seq() . ']';
 			}
+			if ( $i == count( $tree ) );
 		}
+		$name .= $multiple;
+		
 		return $name;
 	}
 

@@ -108,3 +108,7 @@ div.fm-group-label-wrapper .fmjs-remove {
 .fm-tab-bar .wp-tab-active {
 	background: #EDEDED;
 }
+
+.chzn-container-multi .chzn-choices .search-field input {
+	height: 21px !important;
+}
