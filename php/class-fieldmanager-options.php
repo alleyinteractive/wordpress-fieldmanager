@@ -3,6 +3,7 @@
 abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 	public $data = array();
+	public $grouped = false;
 	public $first_element = array();
 	public $taxonomy = null;
 	public $taxonomy_args = array();
@@ -21,19 +22,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 				return sanitize_text_field( $value );
 			}
 		};
-	
+		
 		// If the taxonomy parameter is set, populate the data from the given taxonomy if valid
-		if ( $this->taxonomy != null && taxonomy_exists( $this->taxonomy ) ) {
-		
-			$terms = get_terms ( $this->taxonomy, $this->taxonomy_args );
-			foreach ( $terms as $term ) {
-				$this->data[] = array( 
-					'name' => $term->name,
-					'value' => $term->term_id 
-				);
-			}
-		
-		}
+		if ( $this->taxonomy != null ) $this->get_taxonomy_data();
 	
 	}
 	
@@ -51,9 +42,31 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		$form_data_elements_html = "";
 
 		if ( !empty( $this->data ) ) {
+		
+			$current_group = "";
+
 			foreach( $this->data as $data_element ) {
+			
+				// If grouped display is desired, check where to add the start and end points
+				// Note we are assuming the data has come pre-sorted into groups
+				if( $this->grouped && ( $current_group != $data_element['group'] ) ) {
+					
+					// Append the end for the previous group unless this is the first group 
+					if ( $current_group != "" ) $form_data_elements_html .= $this->form_data_end_group();
+					
+					// Append the start of the group
+					$form_data_elements_html .= $this->form_data_start_group( $data_element['group'] );
+					
+					// Set the current group
+					$current_group = $data_element['group'];
+				}
+				
+				// Get the current element
 				$form_data_elements_html .= $this->form_data_element( $data_element, $value );
 			}
+			
+			// If this was grouped display, close the final group
+			if( $this->grouped ) $form_data_elements_html .= $this->form_data_end_group();
 		}
 		
 		return $form_data_elements_html;
@@ -75,7 +88,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		$value = call_user_func( $this->sanitize, $value );
 		
 		// If this is a taxonomy-based field, must also save the value(s) as an object term
-		if ( isset( $this->taxonomy ) && isset( $value ) && taxonomy_exists( $this->taxonomy ) ) {
+		if ( isset( $this->taxonomy ) && isset( $value ) ) {
 			
 			// If the value is not an array, make it one, cast the values to integers and ensure uniqueness		
 			if ( !is_array( $value ) ) $tax_values = array( $value ); 
@@ -83,15 +96,80 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 						
 			$tax_values = array_map('intval', $tax_values);
     		$tax_values = array_unique( $tax_values );
+    		
+    		// Also assign the taxonomy to an array if it is not one since there may be grouped fields
+    		$taxonomies = $this->taxonomy;
+    		if ( !is_array( $this-taxonomy ) ) $taxonomies = array( $this->taxonomy );
 		
-			// Store the terms for this post and taxonomy
-			wp_set_object_terms( $this->data_id, $tax_values, $this->taxonomy, false );
+			// Store the each term for this post. Handle grouped fields differently since multiple taxonomies are present.
+			if ( is_array( $this->taxonomy ) ) {
+				// Build the taxonomy insert data
+				$taxonomy_insert_data = $this->get_taxonomy_insert_data( $tax_values );
+				foreach ( $taxonomy_insert_data as $taxonomy => $terms ) {
+					wp_set_object_terms( $this->data_id, $terms, $taxonomy, false );
+				}
+			} else {
+				wp_set_object_terms( $this->data_id, $tax_values, $this->taxonomy, false );
+			}
 					
 		}
 		
 		// Return the sanitized value
 		return $value;
 		
+	}
+		
+	public function get_taxonomy_data() {
+	
+		// Query for all terms for the defined taxonomies
+		$terms = get_terms ( $this->taxonomy, $this->taxonomy_args );
+		
+		// If the taxonomy list was an array and group display is set, ensure all terms are grouped by taxonomy
+		// Use the order of the taxonomy array list for sorting the groups to make this controllable for developers
+		// Order of the terms within the groups is already controllable via $taxonomy_args
+		// Skip this entirely if there is only one taxonomy even if group display is set as it would be unnecessary
+		if ( is_array( $this->taxonomy ) && $this->grouped ) {
+			
+			// Group the data
+			$term_groups = array();
+			foreach ( $terms as $term ) {
+				$term_groups[$term->taxonomy][] = $term;
+			}
+						
+			// Sort the groups by the provided taxonomy order and replace the original $terms data
+			$terms = array();
+			foreach ( $this->taxonomy as $tax ) {
+				if ( array_key_exists( $tax, $term_groups ) && is_array( $term_groups[$tax] ) ) {
+					$terms = array_merge( $terms, $term_groups[$tax] );
+				}
+			}
+			
+		}
+		
+		// Put the taxonomy data into the proper data structure to be used for display
+		foreach ( $terms as $term ) {
+			// Store the label for the taxonomy as the group since it will be used for display
+			$taxonomy_data = get_taxonomy( $term->taxonomy );
+		
+			$this->data[] = array( 
+				'name' => $term->name,
+				'value' => $term->term_id,
+				'group' => $taxonomy_data->label,
+				'group_id' => $taxonomy_data->name
+			);
+		}
+	 
+	}
+	
+	protected function get_taxonomy_insert_data( $values ) {
+	
+		// If the option field data was grouped and is taxonomy-based, we need to find the taxonomy for each value in order to store it
+		$taxonomy_insert_data = array();
+		foreach ( $this->data as $element ) {
+			if ( in_array( $element['value'], $values ) ) $taxonomy_insert_data[$element['group_id']][] = $element['value'];
+		}
+		
+		return $taxonomy_insert_data;
 	}
 	
 	public function validate( $value ) {

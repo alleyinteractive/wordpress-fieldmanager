@@ -29,6 +29,14 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 		);						
 	
 	}
+	
+	public function form_data_start_group( $label ) {
+	
+	}
+	
+	public function form_data_end_group() {
+	
+	}
 
 	public function validate( $value ) {
 

@@ -29,6 +29,12 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		if ( $this->type_ahead ) { 
 			$select_classes[] = 'chzn-select' . $this->get_element_id();
 			add_action( 'admin_footer', array( $this, 'chosen_init' ) );
+			
+			if ( $this->grouped ) { 
+				$select_classes[] = "fm-options-grouped";
+			} else {
+				$select_classes[] = "fm-options";
+			}
 		}
 		
 		return sprintf(
@@ -49,6 +55,17 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			htmlspecialchars( $data_row['name'] )
 		);						
 	
+	}
+	
+	public function form_data_start_group( $label ) {
+		return sprintf(
+			'<optgroup label="%s">',
+			$label
+		);
+	}
+	
+	public function form_data_end_group() {
+		return '</optgroup>';
 	}
 	
 	public function chosen_init( ) {
