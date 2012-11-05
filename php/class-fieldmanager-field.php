@@ -14,6 +14,7 @@ abstract class Fieldmanager_Field {
 	public $add_more_label = '';
 	public $name = '';
 	public $label = '';
+	public $description = '';
 	public $attributes = array();
 	public $field_class = 'element';
 	public $one_label_per_item = True;
@@ -150,6 +151,10 @@ abstract class Fieldmanager_Field {
 			$out .= $this->wrap_with_multi_tools( $form_element );
 		} else {
 			$out .= $form_element;
+		}
+		
+		if ( isset( $this->description ) && !empty( $this->description ) ) {
+			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->description );
 		}
 
 		$out .= '</div>';
