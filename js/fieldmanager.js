@@ -36,6 +36,13 @@ var fm_renumber = function( $wrappers ) {
 	} );
 }
 
+var fm_select_tab = function( element ) {
+	var t = $( element ).attr( 'href' );
+	$( element ).parents('.fm-tab').addClass( 'wp-tab-active' ).siblings( 'li' ).removeClass( 'wp-tab-active' );
+	$( t ).siblings( 'div' ).hide();
+	$( t ).show();
+}
+
 $( document ).ready( function () {
 	$( '.fm-add-another' ).live( 'click', function( e ) {
 		e.preventDefault();
@@ -56,10 +63,11 @@ $( document ).ready( function () {
 		$( this ).parents( '.fm-group' ).first().find( '.fm-group-inner' ).toggle();
 	} );
 	$( '.fm-tab-bar a' ).live( 'click', function( e ) {
-		var t = $( this ).attr( 'href' );
-		$( this ).parents('.fm-tab').addClass( 'wp-tab-active' ).siblings( 'li' ).removeClass( 'wp-tab-active' );
-		$( t ).siblings( 'div' ).hide();
-		$( t ).show();
+		fm_select_tab( $(this) );
+		return false;
+	} );
+	$( '.fm-tab-bar li' ).live( 'click', function( e ) {
+		fm_select_tab( $(this).children('a') );
 		return false;
 	} );
 	$('.fm-has-submenu').hoverIntent({
