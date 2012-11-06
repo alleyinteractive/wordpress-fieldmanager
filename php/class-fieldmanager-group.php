@@ -37,7 +37,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			    $tab_classes[] = ( $this->child_count == 0 ) ? "wp-tab-active" : "hide-if-no-js";
 			
 				// Generate output for the tab. Depends on whether or not there is a tab limit in place.
-				if ( $this->tab_limit != 0 && $this->child_count < $this->tab_limit ) {
+				if ( $this->tab_limit == 0 || $this->child_count < $this->tab_limit ) {
 					$tab_group .=  sprintf( '<li class="%s"><a href="#%s-tab">%s</a></li>',
 						implode( " ", $tab_classes ),
 						$element->get_element_id(),
