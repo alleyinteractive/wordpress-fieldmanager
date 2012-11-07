@@ -43,6 +43,8 @@ var fm_select_tab = function( element ) {
 	$( t ).show();
 }
 
+var fm_typeahead_results;
+
 $( document ).ready( function () {
 	$( '.fm-add-another' ).live( 'click', function( e ) {
 		e.preventDefault();
@@ -111,6 +113,28 @@ $( document ).ready( function () {
 		timeout: 200,
 		sensitivity: 7,
 		interval: 90
+	});
+	$('.fm-post-element').typeahead({
+		source: function ( query, process ) {
+			// Query for posts matching the current text in the field
+			$.post( ajaxurl, { action: 'fm_search_posts', fm_post_search_term: query }, function ( result ) {
+				resultObj = JSON.parse(result);
+				console.log(resultObj);
+				if ( $.type(resultObj) == "object" ) {
+					$fm_typeahead_results = resultObj;
+					console.log($.type(resultObj.names));
+					return resultObj.names;
+				} else {
+					$fm_typeahead_results = "";
+					return [];
+				}
+			});
+		},
+		updater: function ( item ) {
+			// Get the post ID from the label
+			return $fm_typeahead_results['ids'][item];
+		},
+		items:5
 	});
 	init_sortable();
 } );
