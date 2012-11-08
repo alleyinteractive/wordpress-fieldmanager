@@ -1,6 +1,6 @@
 ( function( $ ) {
 
-$.fn.fm_grid_serialize = function( $target ) {
+$.fn.fm_grid_serialize = function() {
 	console.log('serialize...');
 	var rows = [], row_counter = 0, self = this, bottom_row_with_data = 0;
 	this.find( 'tbody tr:visible' ).each( function() {
@@ -21,7 +21,9 @@ $.fn.fm_grid_serialize = function( $target ) {
 		row_counter++;
 		if ( row.length ) rows.push( row );
 	} );
-	$( '#' + self.attr( 'id' ) + '-input' ).val( JSON.stringify( rows.slice( 0, bottom_row_with_data + 1 ) ) );
+	var json_data = JSON.stringify( rows.slice( 0, bottom_row_with_data + 1 ) );
+	console.log( json_data );
+	$( '#' + self.attr( 'id' ) + '-input' ).val( json_data );
 }
 
 $.fn.fm_grid = function( opts ) {
@@ -32,14 +34,14 @@ $.fn.fm_grid = function( opts ) {
 		if ( self.data( 'fm_grid_load_complete' ) ) self.fm_grid_serialize();
 	};
 	self.trigger( 'fm_grid_options', opts );
-	self.handsontable( opts );
+	var grid_instance = self.handsontable( opts );
 	var input_id = '#' + self.attr( 'id' ) + '-input';
 	var rows = $.parseJSON( $( input_id ).val() );
 	var row = 0;
 	this.find( 'tbody tr:visible' ).each( function() {
 		var base_name = self.data( 'fm-grid-name' );
 		var col = 0;
-		if ( typeof( rows[row] ) === 'undefined' ) return false;
+		if ( !rows || typeof( rows[row] ) === 'undefined' ) return false;
 		$( this ).find( 'td' ).each( function() {
 			$( this ).text( rows[row][col]['value'] );
 			self.trigger( 'fm_grid_unserialize_cell', [rows[row][col], this] );
@@ -48,6 +50,14 @@ $.fn.fm_grid = function( opts ) {
 		row++;
 	} );
 	self.data( 'fm_grid_load_complete', true );
+
+	// Event listener to serialize the form properly.
+	$( '#publish, #save-post' ).on( 'mousedown', function() {
+		if ( self.data( 'handsontable' ).editproxy ) {
+			self.data( 'handsontable' ).editproxy.destroy();
+			$( self ).fm_grid_serialize();
+		}
+	} );
 }
 
 })( jQuery );

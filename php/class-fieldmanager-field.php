@@ -8,34 +8,49 @@
  */
 abstract class Fieldmanager_Field {
 
+	/** @type int How many of these fields to display, 0 for no limit **/
 	public $limit = 1;
+	/** @type int How many of these fields to display initially, if $limit > 1 **/
 	public $starting_count = 1;
+	/** @type int How many extra elements to display if there is already form data and $limit > 1 **/
 	public $extra_elements = 1;
+	/** @type string **/
 	public $add_more_label = '';
+	/** @type string Form name to use */ 
 	public $name = '';
+	/** @type string Label to use for form element */ 
 	public $label = '';
+	/** @type array Extra attributes to apply to the form element */ 
 	public $attributes = array();
+	/** @type CSS class of the element */ 
 	public $field_class = 'element';
-	public $one_label_per_item = True;
-	public $sortable = False;
+	/** @type boolean Repeat the label for each element if $limit > 1 */ 
+	public $one_label_per_item = TRUE;
+	/** @type string Sortable use */ 
+	public $sortable = FALSE;
+	/** @type string HTML element to use for label */ 
 	public $label_element = 'div';
-	public $tree = array();
-
+	/** @type callback Function to use to sanitize input */
 	public $sanitize = 'sanitize_text_field';
+	/** @type callback[] Function to use to sanitize input */
 	public $validate = array();
-
+	/** @type string|null Data type this element is used in, e.g. post **/
 	public $data_type = NULL;
+	/** @type int|null ID for $this->data_type, eg $post->ID */
 	public $data_id = NULL;
+	/** @type boolean If true, save empty elements to the DB */
+	public $save_empty = FALSE;
 
+	/** @type int If $this->limit > 1, which element in sequence are we currently rendering? **/
 	protected $seq = 0;
+	/** @type Fieldmanager_Field|null Parent element, if applicable. Almost always Fieldmanager_Group.**/
 	protected $parent = NULL;
-	protected $is_valid = FALSE;
+	/** @type boolean Render this element in a tab? @todo Add extra wrapper info rather than this specific. */
 	protected $is_tab = FALSE;
 
 	/**
 	 * Generate HTML for the form element itself. Generally should be just one tag, no wrappers.
-	 * @param mixed $value the value of the element.
-	 * @param array $tree the array path to the element.
+	 * @param mixed string[]|string the value of the element.
 	 * @return string HTML for the element.
 	 */
 	public abstract function form_element( $value );
@@ -46,7 +61,18 @@ abstract class Fieldmanager_Field {
 	 */
 	public function __construct( $options = array() ) {
 		foreach ( $options as $k => $v ) {
-			$this->$k = $v;
+			try {
+				$reflection = new ReflectionProperty( $this, $k ); /* Would throw a ReflectionException */
+				if ( $reflection->isPublic() ) $this->$k = $v;
+				else throw new Exception;
+			} catch ( Exception $e ) {
+				$message = sprintf(
+					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.' ),
+					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
+				);
+				$title = __( 'Nonexistant or invalid option' );
+				wp_die( $message, $title );
+			}
 		}
 	}
 
@@ -247,9 +273,11 @@ abstract class Fieldmanager_Field {
 	public function presave_all( $values ) {
 		if ( $this->limit = 1 ) {
 			return $this->presave( $values );
+			return $val;
 		}
 		foreach ( $values as $i => $value ) {
 			$values[$i] = $this->presave( $value );
+			if ( empty( $values[$i] ) && !$this->save_empty ) unset( $values[$i] );
 		}
 		return $values;
 	}

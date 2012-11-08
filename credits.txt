@@ -17,3 +17,5 @@ Open Source components consulted or used:
              nested fieldgroups.
 * [10/15/12] Incoprorated Handsontable (http://handsontable.com/) by Marcin
              Warpechowski for Fieldmanager_Grid (used by KFF)
+* [11/03/12] Incorporated Chosen.js (http://harvesthq.github.com/chosen/) by
+             Patrick Filler and Matthew Lettini at Harvest

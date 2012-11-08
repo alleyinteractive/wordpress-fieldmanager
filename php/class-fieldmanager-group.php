@@ -9,11 +9,6 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $tabbed = FALSE;
 	protected $child_count = 0;
 
-	public function __construct( $options = array() ) {
-		$this->validators = array( array( $this, 'validate_children' ) );
-		parent::__construct($options);
-	}
-
 	public function form_element( $value = NULL ) {
 		$out = "";
 		$tab_group = "";
@@ -59,25 +54,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		return $tab_group . $out;
 	}
 
-	/**
-	 * Validate children of a group. This function is called by Fieldmanager_Field::validate(),
-	 * and is registered as a validator in Fieldmanager_Group::__construct().
-	 * By using the validator system as with any other field, we can allow special kinds of
-	 * group validations (e.g. make sure all the values add up to 100) without having to subclass
-	 * Fieldmanager_Group.
-	 * @param $value input value (an array)
-	 * @param Fieldmanager_Field $field it's actually $this.
-	 */
-	public function validate_children( &$value, &$field ) {
-		
-	}
-
 	public function presave( $values ) {
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
 			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ] );
+			if ( empty( $values[$element->name] ) && !$this->save_empty ) unset( $values[$element->name] );
 		}
 		return $values;
 	}
