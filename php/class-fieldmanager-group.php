@@ -7,17 +7,19 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $label_element = 'h4';
 	public $collapsible = FALSE;
 	public $tabbed = FALSE;
+	public $tab_limit = 0;
 	protected $child_count = 0;
 
 	public function form_element( $value = NULL ) {
 		$out = "";
 		$tab_group = "";
+		$tab_group_submenu = "";
 		
 		// We do not need the wrapper class for extra padding if no label is set for the group
 		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '<div class="fm-group-inner">';
 		
 		// If the display output for this group is set to tabs, build the tab group for navigation
-		if ( $this->tabbed ) $tab_group = '<ul class="fm-tab-bar wp-tab-bar" id="' . $this->get_element_id() . '-tabs">';
+		if ( $this->tabbed ) $tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar" id="%s-tabs">', $this->get_element_id() );
 		
 		// Produce HTML for each of the children
 		foreach ( $this->children as $element ) {
@@ -26,11 +28,49 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			if ( $this->tabbed ) { 
 				
 				// Set default classes to display the first tab content and hide others
-				$tab_class = ( $this->child_count == 0 ) ? "wp-tab-active" : "hide-if-no-js";
+				$tab_classes = array( 'fm-tab' );
+			    $tab_classes[] = ( $this->child_count == 0 ) ? "wp-tab-active" : "hide-if-no-js";
 			
-				// Generate output for the tab
-				$tab_group .= '<li class="' . $tab_class . '"><a href="#' . $element->get_element_id() . '-tab">' . $element->label . '</a></li>';
-				
+				// Generate output for the tab. Depends on whether or not there is a tab limit in place.
+				if ( $this->tab_limit == 0 || $this->child_count < $this->tab_limit ) {
+					$tab_group .=  sprintf( '<li class="%s"><a href="#%s-tab">%s</a></li>',
+						implode( " ", $tab_classes ),
+						$element->get_element_id(),
+						$element->label
+					 );
+				} else if ( $this->tab_limit != 0 && $this->child_count >= $this->tab_limit ) {
+					$submenu_item_classes = array( 'fm-submenu-item' );
+					$submenu_item_link_class = "";
+
+					// Create the More tab when first hitting the tab limit					
+					if ( $this->child_count == $this->tab_limit ) {
+						// Create the tab
+						$tab_group_submenu .=  sprintf( '<li class="fm-tab fm-has-submenu %s"><a href="#%s-tab">%s</a>',
+							$tab_class,
+							$element->get_element_id(),
+							__('More...')
+						 );
+						 
+						 // Start the submenu
+						 $tab_group_submenu .= sprintf( 
+						 	'<div class="fm-submenu" id="%s-submenu"><div class="fm-submenu-wrap fm-submenu-wrap"><ul>',
+						 	$this->get_element_id()
+						 );
+						 
+						 // Make sure the first submenu item is designated
+						 $submenu_item_classes[] = "fm-first-item";
+						 $submenu_item_link_class = 'class="fm-first-item"';
+					}
+					
+					// Add this element to the More menu
+					$tab_group_submenu .=  sprintf( '<li class="%s"><a href="#%s-tab" %s>%s</a></li>',
+						implode( " ", $submenu_item_classes ),
+						$element->get_element_id(),
+						$submenu_item_link_class,
+						$element->label
+					);
+				}
+								
 				// Ensure the child is aware it is tab content
 				$element->is_tab = TRUE;
 			}
@@ -48,7 +88,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '</div>';
 		
 		// If the display output for this group is set to tabs, build the tab group for navigation
-		if ( $this->tabbed ) $tab_group .= '</ul>';
+		if ( $this->tab_limit != 0 && $this->child_count >= $this->tab_limit ) $tab_group_submenu .= '</ul></div></div></li>';
+		if ( $this->tabbed ) $tab_group .= $tab_group_submenu . '</ul>';
+
 		
 		// Return the complete HTML
 		return $tab_group . $out;

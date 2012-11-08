@@ -20,6 +20,8 @@ abstract class Fieldmanager_Field {
 	public $name = '';
 	/** @type string Label to use for form element */ 
 	public $label = '';
+	/** @type string Description for the form element */
+	public $description = '';
 	/** @type array Extra attributes to apply to the form element */ 
 	public $attributes = array();
 	/** @type CSS class of the element */ 
@@ -176,6 +178,10 @@ abstract class Fieldmanager_Field {
 			$out .= $this->wrap_with_multi_tools( $form_element );
 		} else {
 			$out .= $form_element;
+		}
+		
+		if ( isset( $this->description ) && !empty( $this->description ) ) {
+			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->description );
 		}
 
 		$out .= '</div>';
