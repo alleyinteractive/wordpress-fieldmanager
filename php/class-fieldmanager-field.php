@@ -113,7 +113,7 @@ abstract class Fieldmanager_Field {
 		}
 
 		// Find the array position of the "counter" (e.g. in element[0], [0] is the counter, thus the position is 1)
-		$html_array_position = 0;
+		$html_array_position = 0; // default is no counter; i.e. if $this->limit = 0
 		if ( $this->limit != 1 ) {
 			$html_array_position = 1; // base situation is formname[0], so the counter is in position 1.
 			if ( $this->parent ) {
@@ -287,28 +287,47 @@ abstract class Fieldmanager_Field {
 		// iterate over validators, check nonce field.
 	}
 
-	public function presave( $value ) {
-		return call_user_func( $this->sanitize, $value );
-	}
-
-	public function presave_all( $values ) {
-		if ( $this->limit = 1 ) {
-			return $this->presave( $values );
-			return $val;
-		}
-		foreach ( $values as $i => $value ) {
-			$values[$i] = $this->presave( $value );
-			if ( empty( $values[$i] ) && !$this->save_empty ) unset( $values[$i] );
-		}
-		return $values;
-	}
-
 	public function save_to_post_meta( $post_id, $data ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 		$this->data_id = $post_id;
 		$this->data_type = 'post';
 		$data = $this->presave_all( $data );
 		update_post_meta( $post_id, $this->name, json_encode( $data ) );
+	}
+
+	/**
+	 * Presaves all elements in what could be a set of them, dispatches to $this->presave()
+	 * @input mixed[] $values
+	 * @return mixed[] sanitized values
+	 */
+	public function presave_all( $values ) {
+		if ( $this->limit == 1 ) {
+			return $this->presave( $values );
+		}
+		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
+		if ( !is_array( $values ) ) {
+			$this->_unauthorized_access();
+		}
+
+		foreach ( $values as $i => $value ) {
+			if ( !is_numeric( $i ) ) {
+				// Aw snap. If $this->limit != 1 and $values contains something other than a numeric key...
+				$this->_unauthorized_access();
+			}
+			$values[$i] = $this->presave( $value );
+			if ( empty( $values[$i] ) && !$this->save_empty ) unset( $values[$i] );
+		}
+		return $values;
+	}
+
+	public function presave( $value ) {
+		// It's possible that some elements (Grid is one) would be arrays at
+		// this point, but those elements must override this function. Let's
+		// make sure we're dealing with one value here.
+		if ( is_array( $value ) ) {
+			$this->_unauthorized_access();
+		}
+		return call_user_func( $this->sanitize, $value );
 	}
 
 	/**
@@ -383,6 +402,14 @@ abstract class Fieldmanager_Field {
 		else {
 			return $this->limit;
 		}
+	}
+
+	/**
+	 * Die violently. Cribbed from Zoninator.
+	 * @return void e.g. return _you_ into a void.
+	 */
+	protected function _unauthorized_access() {
+		wp_die( __( 'Sorry, you\'re not supposed to do that...', 'fieldmanager' ) );
 	}
 
 	private function get_seq() {
