@@ -58,15 +58,16 @@ abstract class Fieldmanager_Field {
 	public abstract function form_element( $value );
 
 	/**
-	 * Superclass constructor, just populates options.
+	 * Superclass constructor, just populates options and sanity-checks common elements.
+	 * It might also die, but only helpfully; to catch errors in development.
 	 * @param array $options with keys matching vars of the field in use.
 	 */
 	public function __construct( $options = array() ) {
 		foreach ( $options as $k => $v ) {
 			try {
-				$reflection = new ReflectionProperty( $this, $k ); /* Would throw a ReflectionException */
+				$reflection = new ReflectionProperty( $this, $k ); // Would throw a ReflectionException if item doesn't exist (developer error)
 				if ( $reflection->isPublic() ) $this->$k = $v;
-				else throw new Exception;
+				else throw new Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
 					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.' ),
@@ -111,8 +112,22 @@ abstract class Fieldmanager_Field {
 			$out .= $this->get_element_label( array( 'fm-label-for-list' ) );
 		}
 
-		$level = count( $this->get_form_tree() ) - 1;
-		$out .= sprintf( '<div class="%s" data-fm-level="%d">', implode( ' ', $classes ), $level );
+		// Find the array position of the "counter" (e.g. in element[0], [0] is the counter, thus the position is 1)
+		$html_array_position = 0;
+		if ( $this->limit != 1 ) {
+			$html_array_position = 1; // base situation is formname[0], so the counter is in position 1.
+			if ( $this->parent ) {
+				$parent = $this->parent;
+				while ( $parent ) {
+					$html_array_position++; // one more for having a parent (e.g. parent[this][0])
+					if ( $parent->limit != 1 ) { // and another for the parent having multiple (e.g. parent[0][this][0])
+						$html_array_position++;
+					}
+					$parent = $parent->parent; // parent's parent; root element has null parent which breaks while loop. 
+				}
+			}
+		}
+		$out .= sprintf( '<div class="%s" data-fm-array-position="%d">', implode( ' ', $classes ), $html_array_position );
 		for ( $i = 0; $i < $max; $i++ ) {
 			$this->seq = $i;
 			if ( $this->limit == 1 ) {
@@ -232,7 +247,7 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Recursively build form tree
+	 * Recursively build path to this element (e.g. array(grandparent, parent, this) )
 	 * @return array of parents
 	 */
 	public function get_form_tree() {

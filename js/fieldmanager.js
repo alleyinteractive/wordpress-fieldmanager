@@ -17,22 +17,23 @@ var init_sortable = function() {
 
 var fm_renumber = function( $wrappers ) {
 	$wrappers.each( function() {
-		var level = $( this ).attr( 'data-fm-level' );
-		var level_pos = ( level * 2 ) + 1;
+		var level_pos = $( this ).data( 'fm-array-position' );
 		var order = 0;
-		$( this ).find( '> .fm-item:visible' ).each( function() {
-			$( this ).find( '.fm-element:visible' ).each( function() {
-				var fname = $(this).attr( 'name' );
-				fname = fname.replace( /\]/g, '' );
-				parts = fname.split( '[' );
-				if ( parts[ level_pos ] != order ) {
-					parts[ level_pos ] = order;
-					var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
-					$( this ).attr( 'name', new_fname );
-				}
+		if ( level_pos > 0 ) {
+			$( this ).find( '> .fm-item:visible' ).each( function() {
+				$( this ).find( '.fm-element:visible' ).each( function() {
+					var fname = $(this).attr( 'name' );
+					fname = fname.replace( /\]/g, '' );
+					parts = fname.split( '[' );
+					if ( parts[ level_pos ] != order ) {
+						parts[ level_pos ] = order;
+						var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
+						$( this ).attr( 'name', new_fname );
+					}
+				} );
+				order++;
 			} );
-			order++;
-		} );
+		}
 	} );
 }
 
@@ -114,28 +115,30 @@ $( document ).ready( function () {
 		sensitivity: 7,
 		interval: 90
 	});
-	$('.fm-post-element').typeahead({
-		source: function ( query, process ) {
-			// Query for posts matching the current text in the field
-			$.post( ajaxurl, { action: 'fm_search_posts', fm_post_search_term: query }, function ( result ) {
-				resultObj = JSON.parse(result);
-				console.log(resultObj);
-				if ( $.type(resultObj) == "object" ) {
-					$fm_typeahead_results = resultObj;
-					console.log($.type(resultObj.names));
-					return resultObj.names;
-				} else {
-					$fm_typeahead_results = "";
-					return [];
-				}
-			});
-		},
-		updater: function ( item ) {
-			// Get the post ID from the label
-			return $fm_typeahead_results['ids'][item];
-		},
-		items:5
-	});
+	if ( $( '.fm-post-element' ).length > 0 ) {
+		$('.fm-post-element').typeahead({
+			source: function ( query, process ) {
+				// Query for posts matching the current text in the field
+				$.post( ajaxurl, { action: 'fm_search_posts', fm_post_search_term: query }, function ( result ) {
+					resultObj = JSON.parse(result);
+					console.log(resultObj);
+					if ( $.type(resultObj) == "object" ) {
+						$fm_typeahead_results = resultObj;
+						console.log($.type(resultObj.names));
+						return resultObj.names;
+					} else {
+						$fm_typeahead_results = "";
+						return [];
+					}
+				});
+			},
+			updater: function ( item ) {
+				// Get the post ID from the label
+				return $fm_typeahead_results['ids'][item];
+			},
+			items:5
+		});
+	}
 	init_sortable();
 } );
 
