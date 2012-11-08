@@ -305,7 +305,7 @@ abstract class Fieldmanager_Field {
 			return $this->presave( $values );
 		}
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
-		if ( !is_array( $values ) ) {
+		if ( $this->limit != 1 && !is_array( $values ) ) {
 			$this->_unauthorized_access();
 		}
 
@@ -384,7 +384,7 @@ abstract class Fieldmanager_Field {
 	}
 
 	public function get_remove_handle() {
-		return '<a href="#" class="fmjs-remove">Remove</a>';
+		return '<a href="#" class="fmjs-remove" title="Remove">Remove</a>';
 	}
 
 	public function get_collapse_handle() {

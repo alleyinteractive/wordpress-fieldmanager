@@ -13,6 +13,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	
 		parent::__construct($options);
 		
+		// Add the options CSS
+		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css' );
+		
 		// Sanitization
 		$this->sanitize = function( $value ) {
 		

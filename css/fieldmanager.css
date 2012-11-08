@@ -39,6 +39,7 @@ div.fm-group-label-wrapper {
 
 .fm-item, .fm-add-another {
 	margin-bottom: 5px;
+	overflow: hidden;
 }
 
 .fmjs-proto {
@@ -49,11 +50,11 @@ div.fm-group-label-wrapper {
 	overflow: auto;
 }
 
-.fmjs-removable-element {
+.fmjs-removable-element, .fmjs-clearable-element {
 	float: left;
 }
 
-.fmjs-remove {
+.fmjs-remove, .fmjs-clear {
 	margin: 7px 0 0 3px;
 	display: block;
 	background: url('../images/xit.gif') 0 17% no-repeat;
@@ -105,78 +106,7 @@ div.fm-group-label-wrapper .fmjs-remove {
 	margin: 10px;
 }
 
-.fm-tab-bar .wp-tab-active {
-	background: #EDEDED;
-}
-
 .fm-item-description {
 	font-style: italic;
 }
-
-.fm-wrapper div.fm-submenu {
-	background-color: transparent;
-	display: none;
-	position: absolute;
-	top: -9px;
-	left: 146px;
-	z-index: 999;
-	overflow: hidden;
-	list-style: none;
-	padding: 0px 5px 5px 0px;
-}
-
-.fm-wrapper .fm-submenu, .fm-wrapper .fm-submenu-wrap {
-	width: 145px;
-}
-
-.fm-wrapper .fm-submenu * {
-	-webkit-user-select: none;
-	-moz-user-select: none;
-	user-select: none;
-}
-
-.fm-wrapper .fm-submenu li {
-	cursor: pointer;
-	display: block;
-	padding: 2px 5px;
-	margin: 2px 0px;
-}
-
-.fm-wrapper li .fm-submenu-wrap {
-	border-width: 1px 1px 1px 0;
-	border-style: solid solid solid none;
-	position: relative;
-	-webkit-border-bottom-right-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
-	border-bottom-right-radius: 3px;
-	border-top-right-radius: 3px;
-}
-
-.fm-wrapper .fm-submenu-wrap {
-	-moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-	-webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-	box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-}
-
-.fm-wrapper .fm-submenu-wrap, .fm-wrapper .fm-submenu ul {
-	border-color: #dfdfdf;
-}
-
-.fm-wrapper .fm-submenu ul {
-	background-color: #fff;
-	padding: 4px 0;
-}
-
-.fm-wrapper div.fm-submenu.sub-open {
-	display: block;
-	padding: 0 8px 8px 0;
-}
-
-.fm-wrapper .fm-submenu li:hover, .fm-wrapper .fm-submenu li:focus {
-	background-color: #EAF2FA;
-	color: #333;
-}
-
-.chzn-container-multi .chzn-choices .search-field input {
-	height: 21px !important;
-}	
+	

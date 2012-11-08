@@ -5,6 +5,8 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 	public $post_types = array( 'post' );
 	public $search_orderby = 'post_date desc';
 	public $search_limit = 5;
+	public $editable = false;
+	public $show_post_type = false;
 
 	public function __construct( $options = array() ) {
 		$this->attributes = array(
@@ -14,23 +16,44 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		// Add the bootstrap library for type-ahead capabilities
 		fm_add_script( 'bootstrap', 'js/bootstrap/js/bootstrap.min.js' );
 		fm_add_style( 'bootstrap_css', 'js/bootstrap/css/bootstrap.min.css' );
+
+		// Add the post javascript and CSS
+		fm_add_script( 'fm_post_js', 'js/fieldmanager-post.js' );
+		fm_add_style( 'fm_post_css', 'css/fieldmanager-post.css' );
 		
 		// Add the action hook for typeahead handling via AJAX
 		add_action('wp_ajax_fm_search_posts', array( $this, 'search_posts' ) );
 		
 		parent::__construct($options);
 	}
+	
+	public function get_clear_handle() {
+		return '<a href="#" class="fmjs-clear" title="Clear">Clear</a>';
+	}
 
 	public function form_element( $value = '' ) {
+		if ( !is_array($value) ) {
+			// No value or invalid data was present. Use empty values.
+			$value = array(
+				"id" => "",
+				"title" => "",
+				"post_type" => ""
+			);
+		}
+			
 		return sprintf(
-			'<input type="hidden" name="%s[id]" id="%s-id" value="%s" /><input class="fm-post-element fm-element" type="text" name="%s[name]" id="%s-name" value="%s" data-provide="typeahead" %s />',
+			'%s<input class="fm-post-element fm-element" type="text" name="%s" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-show-post-type="%s" %s />%s%s',
+			( $this->limit == 1 ) ? '<div class="fmjs-clearable-element">' : '',
 			$this->get_form_name(),
 			$this->get_element_id(),
+			htmlspecialchars( $value['title'] ),
+			$this->editable,
 			htmlspecialchars( $value['id'] ),
-			$this->get_form_name(),
-			$this->get_element_id(),
-			htmlspecialchars( $value['name'] ),
-			$this->get_element_attributes()
+			htmlspecialchars( $value['post_type'] ),
+			$this->show_post_type,
+			$this->get_element_attributes(),
+			( $this->limit == 1 ) ? '</div>' : '',
+			( $this->limit == 1 ) ? $this->get_clear_handle() : ''
 		);
 	}
 		
@@ -67,7 +90,7 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		
 		$post_search_results = $wpdb->get_results( $wpdb->prepare( 
 			"
-			SELECT ID, post_title
+			SELECT ID, post_title, post_type
 			FROM $wpdb->posts
 			WHERE
 			post_type IN (" . implode( ',', $post_type_placeholders ) . ")
@@ -84,9 +107,18 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			$search_data = array();
 		
 			foreach ( $post_search_results as $result ) {
+				// Get the post type display label to show in the dropdown
+				$post_type = get_post_type_object( $result->post_type );
+			
 				// Return an array of display values and an array of corresponding post IDs
-				$search_data['names'][] = $result->post_title;
-				$search_data['ids'][$result->post_title] = $result->ID;
+				$post_display_title = sprintf( 
+					'%s (%s)',
+					$result->post_title,
+					$post_type->labels->singular_name
+				);
+				$search_data['names'][] = $post_display_title;
+				$search_data[$post_display_title]['id'] = $result->ID;
+				$search_data[$post_display_title]['post_type'] = $post_type->labels->singular_name;
 			}
 			
 			echo json_encode( $search_data );
@@ -96,6 +128,13 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		}
 		
 		die();
+	}
+	
+	public function presave( $value ) {
+			
+		// If the value is not empty, convert the JSON data into an associative array so it is handled properly on save
+		return json_decode( stripslashes( $value ), true );
+		
 	}
 	
 	public function validate( $value ) {
