@@ -3,18 +3,24 @@
 var fm_typeahead_results;
 
 var fm_show_post_type = function( $element, post_type ) {
-	if ( $element.data( 'showPostType' ) == 1 ) $element.parent().siblings(".fmjs-remove, .fmjs-clear").after('<div class="fmjs-post-type">' + post_type + '</div>');
+	if ( $element.data( 'showPostType' ) == 1 ) {
+		$element.parent().siblings('.fmjs-post-type').remove();
+		$element.parent().siblings(".fmjs-remove, .fmjs-clear").after('<div class="fmjs-post-type">' + post_type + '</div>');
+	}
 }
 
 var fm_show_post_date = function( $element, post_date ) {
-	if ( $element.data( 'showPostDate' ) == 1 ) $element.parent().siblings(".fmjs-remove, .fmjs-clear").after('<div class="fmjs-post-date">' + post_date + '</div>');
+	if ( $element.data( 'showPostDate' ) == 1 ) {
+		$element.parent().siblings('.fmjs-post-date').remove();
+		$element.parent().siblings(".fmjs-remove, .fmjs-clear").after('<div class="fmjs-post-date">' + post_date + '</div>');	
+	}
 }
 
 var fm_typeahead_action = function( $element ) {
 	$element.typeahead( {
 		source: function ( query, process ) {
-			// Check if the field already has a post set. If so, disable typeahead to allow for editing of field title.
-			if ( $element.data('id') == "" ) {
+			// If the post title is editable and a post is already set, disable typeahead to turn the text field into an edit field.
+			if ( $element.data('editable') != 1 || $element.data('id') == "" ) {
 				// Query for posts matching the current text in the field
 				//console.log(fm_post);
 				$.post( ajaxurl, { action: 'fm_search_posts', fm_post_search_term: query, fm_post_search_nonce: fm_post.nonce }, function ( result ) {
@@ -42,6 +48,9 @@ var fm_typeahead_action = function( $element ) {
 			fm_show_post_type($element, fm_typeahead_results[item]['post_type']);
 			fm_show_post_date($element, fm_typeahead_results[item]['post_date']);
 			
+			// Trigger that the update happened in case any other functions want to execute something here
+			$element.trigger( 'fm_post_update', [item, fm_typeahead_results[item]] );
+			
 			// Remove the post type and/or date from the title and return the title for the text field
 			return fm_typeahead_results[item]['post_title'];
 		},
@@ -52,19 +61,19 @@ var fm_typeahead_action = function( $element ) {
 $( document ).ready( function () {
 	$( '.fm-post-element' ).each( function( index ) {
 		// Enable typeahead for each post field
-    	fm_typeahead_action( $(this) );
+    	fm_typeahead_action( $( this ) );
     	
     	// Show the post type, date and/or clear handle (if exists) if the field is not empty and those fields are specified for display
-    	if ( $(this).data('postType') != '' ) { 
-    		fm_show_post_type( $(this), $(this).data('postType') );
+    	if ( $( this ).data('postType') != '' ) { 
+    		fm_show_post_type( $( this ), $( this ).data('postType') );
     	}
     	
-    	if ( $(this).data('postDate') != '' ) { 
-    		fm_show_post_date( $(this), $(this).data('postDate') );
+    	if ( $( this ).data('postDate') != '' ) { 
+    		fm_show_post_date( $( this ), $( this ).data('postDate') );
     	}
     	
-    	if ( $(this).data('id') != '' ) { 
-    		$(this).parent().siblings('.fmjs-clear').show();
+    	if ( $( this ).data('id') != '' ) { 
+    		$( this ).parent().siblings('.fmjs-clear').show();
     	}
     	
 	});
@@ -76,15 +85,19 @@ $( document ).ready( function () {
 		$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element').data( 'postType', '' );
 		$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element').data( 'postDate', '' );
 		$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element').val( '' );
-		$( this ).siblings('.fmjs-post-type').remove();
+		$( this ).siblings('.fmjs-post-type, .fmjs-post-date').remove();
 		$( this ).hide();
+		
+		// Trigger the clear action so other functions can hook into it if needed
+		$( this ).trigger( 'fm_post_clear', [$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element')] );
+		
 	} );
 	$( "#post" ).submit( function() {
 		$( '.fm-post-element' ).each( function( index ) {
 			// Create a JSON object from the data to be parsed and handled on save, if the field is not empty
-			if ( $(this).val() != "" ) {
-				var json_val = '{"id":"' + $(this).data('id') + '","title":"' + $(this).val() + '","post_type":"' + $(this).data('postType') + '","post_date":"' + $(this).data('postDate') + '"}';
-				$(this).val(json_val);
+			if ( $( this ).val() != "" ) {
+				var json_val = '{"id":"' + $( this ).data('id') + '","title":"' + $( this ).val() + '","post_type":"' + $( this ).data('postType') + '","post_date":"' + $( this ).data('postDate') + '"}';
+				$( this ).val(json_val);
 			}
 		});
 	});

@@ -132,6 +132,7 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 				$search_data[$post_display_title]['post_type'] = $post_type->labels->singular_name;
 				$search_data[$post_display_title]['post_date'] = $post_date_formatted;
 				$search_data[$post_display_title]['post_title'] = $result->post_title;
+				$search_data[$post_display_title]['permalink'] = get_permalink( $result->ID );
 			}
 			
 			echo json_encode( $search_data );
