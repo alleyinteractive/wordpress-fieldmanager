@@ -7,6 +7,7 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 	public $search_limit = 5;
 	public $editable = false;
 	public $show_post_type = false;
+	public $show_post_date = false;
 
 	public function __construct( $options = array() ) {
 		$this->attributes = array(
@@ -18,12 +19,12 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		fm_add_style( 'bootstrap_css', 'js/bootstrap/css/bootstrap.min.css' );
 
 		// Add the post javascript and CSS
-		fm_add_script( 'fm_post_js', 'js/fieldmanager-post.js' );
+		fm_add_script( 'fm_post_js', 'js/fieldmanager-post.js', array(), false, false, 'fm_post', array( 'nonce' => wp_create_nonce( 'fm_post_search_nonce' ) ) );
 		fm_add_style( 'fm_post_css', 'css/fieldmanager-post.css' );
 		
 		// Add the action hook for typeahead handling via AJAX
 		add_action('wp_ajax_fm_search_posts', array( $this, 'search_posts' ) );
-		
+
 		parent::__construct($options);
 	}
 	
@@ -37,12 +38,13 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			$value = array(
 				"id" => "",
 				"title" => "",
-				"post_type" => ""
+				"post_type" => "",
+				"post_date" => ""
 			);
 		}
 			
 		return sprintf(
-			'%s<input class="fm-post-element fm-element" type="text" name="%s" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-show-post-type="%s" %s />%s%s',
+			'%s<input class="fm-post-element fm-element" type="text" name="%s" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-post-date="%s" data-show-post-type="%s" data-show-post-date="%s" %s />%s%s',
 			( $this->limit == 1 ) ? '<div class="fmjs-clearable-element">' : '',
 			$this->get_form_name(),
 			$this->get_element_id(),
@@ -50,7 +52,9 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			$this->editable,
 			htmlspecialchars( $value['id'] ),
 			htmlspecialchars( $value['post_type'] ),
+			htmlspecialchars( $value['post_date'] ),
 			$this->show_post_type,
+			$this->show_post_date,
 			$this->get_element_attributes(),
 			( $this->limit == 1 ) ? '</div>' : '',
 			( $this->limit == 1 ) ? $this->get_clear_handle() : ''
@@ -58,6 +62,9 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 	}
 		
 	public function search_posts() {
+		// Check the nonce before we do anything
+		check_ajax_referer( 'fm_post_search_nonce', 'fm_post_search_nonce' );
+	
 		global $wpdb; 
 		
 		// Confirm all the data is in place for the query. If not, die.
@@ -90,7 +97,7 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		
 		$post_search_results = $wpdb->get_results( $wpdb->prepare( 
 			"
-			SELECT ID, post_title, post_type
+			SELECT ID, post_title, post_type, post_date
 			FROM $wpdb->posts
 			WHERE
 			post_type IN (" . implode( ',', $post_type_placeholders ) . ")
@@ -109,16 +116,22 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			foreach ( $post_search_results as $result ) {
 				// Get the post type display label to show in the dropdown
 				$post_type = get_post_type_object( $result->post_type );
+				
+				// Format the date
+				$post_date_formatted = date( 'Y/m/d', strtotime( $result->post_date ) );
 			
 				// Return an array of display values and an array of corresponding post IDs
 				$post_display_title = sprintf( 
-					'%s (%s)',
+					'%s%s%s',
 					$result->post_title,
-					$post_type->labels->singular_name
+					( $this->show_post_type ) ? " (" . $post_type->labels->singular_name . ")" : "",
+					( $this->show_post_date ) ? " " . $post_date_formatted : ""
 				);
 				$search_data['names'][] = $post_display_title;
 				$search_data[$post_display_title]['id'] = $result->ID;
 				$search_data[$post_display_title]['post_type'] = $post_type->labels->singular_name;
+				$search_data[$post_display_title]['post_date'] = $post_date_formatted;
+				$search_data[$post_display_title]['post_title'] = $result->post_title;
 			}
 			
 			echo json_encode( $search_data );

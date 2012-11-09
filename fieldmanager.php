@@ -51,9 +51,10 @@ function fieldmanager_get_baseurl() {
 	return plugin_dir_url( __FILE__ );
 }
 
-function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false ) {
-	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer ) { 
+function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array() ) {
+	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data ) { 
 		wp_enqueue_script( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver );
+		if ( !empty( $data_object ) && !empty( $data ) ) wp_localize_script( $handle, $data_object, $data );
 	};
 	if ( is_admin() ) {
 		add_action( 'admin_enqueue_scripts', $add_script );
