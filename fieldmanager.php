@@ -5,7 +5,7 @@
  */
 /*
 Plugin Name: Fieldmanager
-Plugin URI: http://github.com/netaustin/fieldmanager
+Plugin URI: https://github.com/netaustin/wordpress-fieldmanager
 Description: Add fields to content types programatically.
 Author: Austin Smith
 Version: 0.1
