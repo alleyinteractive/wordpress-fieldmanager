@@ -128,6 +128,10 @@ abstract class Fieldmanager_Field {
 			}
 		}
 		$out .= sprintf( '<div class="%s" data-fm-array-position="%d">', implode( ' ', $classes ), $html_array_position );
+		
+		// After starting the field, apply a filter to allow other plugins to append functionality
+		$out = apply_filters( 'fm_element_markup_start', $out, $this );
+		
 		for ( $i = 0; $i < $max; $i++ ) {
 			$this->seq = $i;
 			if ( $this->limit == 1 ) {
@@ -140,10 +144,16 @@ abstract class Fieldmanager_Field {
 		if ( $this->limit == 0 ) {
 			$out .= $this->add_another();
 		}
+		
+		// Before closing the field, apply a filter to allow other plugins to append functionality
+		$out = apply_filters( 'fm_element_markup_end', $out, $this );
+		
 		$out .= '</div>';
 		
 		// Close the tab wrapper if one exists
 		if ( $this->is_tab ) $out .= '</div>';
+		
+		
 		
 		return $out;
 	}
@@ -292,7 +302,7 @@ abstract class Fieldmanager_Field {
 		$this->data_id = $post_id;
 		$this->data_type = 'post';
 		$data = $this->presave_all( $data );
-		update_post_meta( $post_id, $this->name, json_encode( $data ) );
+		update_post_meta( $post_id, $this->name, mysql_real_escape_string( json_encode( $data ) ) );
 	}
 
 	/**
