@@ -27,7 +27,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		
 		// Handle type-ahead based fields
 		if ( $this->type_ahead ) { 
-			$select_classes[] = 'chzn-select' . $this->get_element_id();
+			$select_classes[] = 'chzn-select';
 			add_action( 'admin_footer', array( $this, 'chosen_init' ) );
 			
 			if ( $this->grouped ) { 
@@ -69,7 +69,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	}
 	
 	public function chosen_init( ) {
-		echo '<script type="text/javascript"> $(".chzn-select' . $this->get_element_id() . '").chosen()</script>';
+		echo '<script type="text/javascript"> $("#' . $this->get_element_id() . '").chosen({allow_single_deselect:true})</script>';
 	}
 
 	public function validate( $value ) {
