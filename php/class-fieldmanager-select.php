@@ -38,10 +38,11 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		}
 		
 		return sprintf(
-			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s />%s</select>',
+			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s data-value=\'%s\' />%s</select>',
 			$this->get_form_name( $do_multiple ),
 			$this->get_element_id(),
 			$this->get_element_attributes(),
+			json_encode( $value ), // For applications where options may be dynamically provided. This way we can still provide the previously stored value to a Javascript.
 			$this->form_data_elements( $value )
 		);
 	}

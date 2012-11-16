@@ -153,8 +153,6 @@ abstract class Fieldmanager_Field {
 		// Close the tab wrapper if one exists
 		if ( $this->is_tab ) $out .= '</div>';
 		
-		
-		
 		return $out;
 	}
 
