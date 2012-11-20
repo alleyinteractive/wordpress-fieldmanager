@@ -346,7 +346,7 @@ abstract class Fieldmanager_Field {
 	public function get_element_attributes() {
 		$attr_str = array();
 		foreach ( $this->attributes as $attr => $val ) {
-			$attr_str[] = sprintf( '%s="%s"', $attr, $val );
+			$attr_str[] = sprintf( '%s="%s"', $attr, str_replace( '"', '\"', $val ) );
 		}
 		return implode( ' ', $attr_str );
 	}
@@ -358,7 +358,7 @@ abstract class Fieldmanager_Field {
 	 */
 	public function get_element_label( $classes = array() ) {
 		$classes[] = 'fm-label';
-		$classes[] = 'fm-label-' . $this->name;
+		$classes[] = 'fm-labeladd-' . $this->name;
 		return sprintf(
 			'<%s class="%s"><label for="%s">%s</label></%s>',
 			$this->label_element,
