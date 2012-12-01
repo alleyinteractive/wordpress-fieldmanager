@@ -48,7 +48,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 						$tab_group_submenu .=  sprintf( '<li class="fm-tab fm-has-submenu %s"><a href="#%s-tab">%s</a>',
 							$tab_class,
 							$element->get_element_id(),
-							__('More...')
+							__( 'More...' )
 						 );
 						 
 						 // Start the submenu

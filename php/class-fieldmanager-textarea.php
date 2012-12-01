@@ -17,7 +17,7 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 			$this->get_form_name(),
 			$this->get_element_id(),
 			$this->get_element_attributes(),
-			htmlspecialchars( $value )
+			html_entity_decode( $value )
 		);
 	}
 

@@ -179,4 +179,13 @@ div.fm-group-label-wrapper .fmjs-remove {
 
 .chzn-container-multi .chzn-choices .search-field input {
 	height: 21px !important;
-}	
+}
+
+.fm-grid-wrapper {
+	background: #fff;
+	padding: 5px;
+	border: solid 2px #ccc;
+	margin: 5px 5px 5px 0;
+	overflow: scroll;
+	max-height: 500px;
+}

@@ -59,7 +59,7 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Superclass constructor, just populates options and sanity-checks common elements.
-	 * It might also die, but only helpfully; to catch errors in development.
+	 * It might also die, but only helpfully, to catch errors in development.
 	 * @param array $options with keys matching vars of the field in use.
 	 */
 	public function __construct( $options = array() ) {

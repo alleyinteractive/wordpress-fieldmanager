@@ -38,12 +38,21 @@ $.fn.fm_grid = function( opts ) {
 	var input_id = '#' + self.attr( 'id' ) + '-input';
 	var rows = $.parseJSON( $( input_id ).val() );
 	var row = 0;
+	var hot = self.data( 'handsontable' );
+	var data_to_set = [];
+	for ( var i = 0; i < rows.length; i++ ) {
+		for ( var j = 0; j < rows[i].length; j++ ) {
+			data_to_set.push( [i, j, rows[i][j]['value']] );
+		}
+	}
+	hot.setDataAtCell( data_to_set );
 	this.find( 'tbody tr:visible' ).each( function() {
 		var base_name = self.data( 'fm-grid-name' );
 		var col = 0;
 		if ( !rows || typeof( rows[row] ) === 'undefined' ) return false;
 		$( this ).find( 'td' ).each( function() {
-			$( this ).text( rows[row][col]['value'] );
+			// console.log([row, col, rows[row][col]]);
+			if ( rows[row][col] == undefined ) return;
 			self.trigger( 'fm_grid_unserialize_cell', [rows[row][col], this] );
 			col++;
 		} );
