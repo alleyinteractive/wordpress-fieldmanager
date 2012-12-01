@@ -5,7 +5,7 @@
  */
 /*
 Plugin Name: Fieldmanager
-Plugin URI: http://github.com/netaustin/fieldmanager
+Plugin URI: https://github.com/netaustin/wordpress-fieldmanager
 Description: Add fields to content types programatically.
 Author: Austin Smith
 Version: 0.1
@@ -18,6 +18,7 @@ require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-checkbox.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textfield.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textarea.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-grid.php' );
+require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-hidden.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-options.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-post.php' );
 
@@ -51,9 +52,11 @@ function fieldmanager_get_baseurl() {
 	return plugin_dir_url( __FILE__ );
 }
 
-function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false ) {
-	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer ) { 
-		wp_enqueue_script( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver );
+function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array(), $plugin_dir = "" ) {
+	if( $plugin_dir == "" ) $plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
+	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
+		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver );
+		if ( !empty( $data_object ) && !empty( $data ) ) wp_localize_script( $handle, $data_object, $data );
 	};
 	if ( is_admin() ) {
 		add_action( 'admin_enqueue_scripts', $add_script );

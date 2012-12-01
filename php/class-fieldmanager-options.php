@@ -13,6 +13,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	
 		parent::__construct($options);
 		
+		// Add the options CSS
+		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css' );
+		
 		// Sanitization
 		$this->sanitize = function( $value ) {
 		
@@ -166,7 +169,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		// If the option field data was grouped and is taxonomy-based, we need to find the taxonomy for each value in order to store it
 		$taxonomy_insert_data = array();
 		foreach ( $this->data as $element ) {
-			if ( in_array( $element['value'], $values ) ) $taxonomy_insert_data[$element['group_id']][] = $element['value'];
+			if ( in_array( $element['value'], $values ) ) $taxonomy_insert_data[$element['group_id']][] = intval( $element['value'] );
 		}
 		
 		return $taxonomy_insert_data;

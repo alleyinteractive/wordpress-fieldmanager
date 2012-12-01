@@ -10,6 +10,18 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $tab_limit = 0;
 	protected $child_count = 0;
 
+	public function __construct( $options = array() ) {
+
+		parent::__construct($options);
+		
+		// Add the tab javascript and CSS if it is needed
+		if ( $this->tabbed ) {
+			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js' );
+			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css' );
+		}
+		
+	}
+
 	public function form_element( $value = NULL ) {
 		$out = "";
 		$tab_group = "";
@@ -103,14 +115,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 */
 	public function presave( $values ) {
 		// @SECURITY@ First, make sure all the values we're given are legal.
-		foreach ( array_keys( $values ) as $key ) {
+		/*foreach ( array_keys( $values ) as $key ) {
 			if ( !isset( $this->children[$key] ) ) {
 				// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
 				// and thus one which we cannot sanitize and must not save. This might be an attack, so do what
 				// Zoninator does and just die already.
 				$this->_unauthorized_access();
 			}
-		}
+		}*/
 		// Then, dispatch them for sanitization to the children.
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;

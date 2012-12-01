@@ -49,11 +49,11 @@ div.fm-group-label-wrapper {
 	overflow: auto;
 }
 
-.fmjs-removable-element {
+.fmjs-removable-element, .fmjs-clearable-element {
 	float: left;
 }
 
-.fmjs-remove {
+.fmjs-remove, .fmjs-clear {
 	margin: 7px 0 0 3px;
 	display: block;
 	background: url('../images/xit.gif') 0 17% no-repeat;
@@ -105,13 +105,10 @@ div.fm-group-label-wrapper .fmjs-remove {
 	margin: 10px;
 }
 
-.fm-tab-bar .wp-tab-active {
-	background: #EDEDED;
-}
-
 .fm-item-description {
 	font-style: italic;
 }
+<<<<<<< HEAD
 
 .fm-wrapper div.fm-submenu {
 	background-color: transparent;

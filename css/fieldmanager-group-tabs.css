@@ -1,0 +1,70 @@
+.fm-tab-bar .wp-tab-active {
+	background: #EDEDED;
+}
+
+.fm-wrapper div.fm-submenu {
+	background-color: transparent;
+	display: none;
+	position: absolute;
+	top: -9px;
+	left: 146px;
+	z-index: 999;
+	overflow: hidden;
+	list-style: none;
+	padding: 0px 5px 5px 0px;
+}
+
+.fm-wrapper .fm-submenu, .fm-wrapper .fm-submenu-wrap {
+	width: 145px;
+}
+
+.fm-wrapper .fm-submenu * {
+	-webkit-user-select: none;
+	-moz-user-select: none;
+	user-select: none;
+}
+
+.fm-wrapper .fm-submenu li {
+	cursor: pointer;
+	display: block;
+	padding: 2px 5px;
+	margin: 2px 0px;
+}
+
+.fm-wrapper li .fm-submenu-wrap {
+	border-width: 1px 1px 1px 0;
+	border-style: solid solid solid none;
+	position: relative;
+	-webkit-border-bottom-right-radius: 3px;
+	-webkit-border-top-right-radius: 3px;
+	border-bottom-right-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.fm-wrapper .fm-submenu-wrap {
+	-moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+	-webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+	box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+}
+
+.fm-wrapper .fm-submenu-wrap, .fm-wrapper .fm-submenu ul {
+	border-color: #dfdfdf;
+}
+
+.fm-wrapper .fm-submenu ul {
+	background-color: #fff;
+	padding: 4px 0;
+}
+
+.fm-wrapper div.fm-submenu.sub-open {
+	display: block;
+	padding: 0 8px 8px 0;
+}
+
+.fm-wrapper .fm-submenu li:hover, .fm-wrapper .fm-submenu li:focus {
+	background-color: #EAF2FA;
+}
+
+.fm-wrapper .fm-submenu li:hover > a, .fm-wrapper .fm-submenu li:focus > a {
+	color: #333;
+}

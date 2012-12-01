@@ -27,7 +27,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		
 		// Handle type-ahead based fields
 		if ( $this->type_ahead ) { 
-			$select_classes[] = 'chzn-select' . $this->get_element_id();
+			$select_classes[] = 'chzn-select';
 			add_action( 'admin_footer', array( $this, 'chosen_init' ) );
 			
 			if ( $this->grouped ) { 
@@ -38,10 +38,12 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		}
 		
 		return sprintf(
-			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s />%s</select>',
+			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s data-value=\'%s\' %s />%s</select>',
 			$this->get_form_name( $do_multiple ),
 			$this->get_element_id(),
 			$this->get_element_attributes(),
+			json_encode( $value ), // For applications where options may be dynamically provided. This way we can still provide the previously stored value to a Javascript.
+			( $this->taxonomy != null ) ? "data-taxonomy='" . json_encode($this->taxonomy) . "'" : "",
 			$this->form_data_elements( $value )
 		);
 	}
@@ -69,7 +71,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	}
 	
 	public function chosen_init( ) {
-		echo '<script type="text/javascript"> $(".chzn-select' . $this->get_element_id() . '").chosen()</script>';
+		echo '<script type="text/javascript"> $("#' . $this->get_element_id() . '").chosen({allow_single_deselect:true})</script>';
 	}
 
 	public function validate( $value ) {

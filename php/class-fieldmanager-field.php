@@ -128,6 +128,10 @@ abstract class Fieldmanager_Field {
 			}
 		}
 		$out .= sprintf( '<div class="%s" data-fm-array-position="%d">', implode( ' ', $classes ), $html_array_position );
+		
+		// After starting the field, apply a filter to allow other plugins to append functionality
+		$out = apply_filters( 'fm_element_markup_start', $out, $this );
+		
 		for ( $i = 0; $i < $max; $i++ ) {
 			$this->seq = $i;
 			if ( $this->limit == 1 ) {
@@ -140,6 +144,10 @@ abstract class Fieldmanager_Field {
 		if ( $this->limit == 0 ) {
 			$out .= $this->add_another();
 		}
+		
+		// Before closing the field, apply a filter to allow other plugins to append functionality
+		$out = apply_filters( 'fm_element_markup_end', $out, $this );
+		
 		$out .= '</div>';
 		
 		// Close the tab wrapper if one exists
@@ -292,7 +300,7 @@ abstract class Fieldmanager_Field {
 		$this->data_id = $post_id;
 		$this->data_type = 'post';
 		$data = $this->presave_all( $data );
-		update_post_meta( $post_id, $this->name, json_encode( $data ) );
+		update_post_meta( $post_id, $this->name, mysql_real_escape_string( json_encode( $data ) ) );
 	}
 
 	/**
@@ -305,7 +313,7 @@ abstract class Fieldmanager_Field {
 			return $this->presave( $values );
 		}
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
-		if ( !is_array( $values ) ) {
+		if ( $this->limit != 1 && !is_array( $values ) ) {
 			$this->_unauthorized_access();
 		}
 
@@ -338,7 +346,7 @@ abstract class Fieldmanager_Field {
 	public function get_element_attributes() {
 		$attr_str = array();
 		foreach ( $this->attributes as $attr => $val ) {
-			$attr_str[] = sprintf( '%s="%s"', $attr, $val );
+			$attr_str[] = sprintf( '%s="%s"', $attr, str_replace( '"', '\"', $val ) );
 		}
 		return implode( ' ', $attr_str );
 	}
@@ -350,7 +358,7 @@ abstract class Fieldmanager_Field {
 	 */
 	public function get_element_label( $classes = array() ) {
 		$classes[] = 'fm-label';
-		$classes[] = 'fm-label-' . $this->name;
+		$classes[] = 'fm-labeladd-' . $this->name;
 		return sprintf(
 			'<%s class="%s"><label for="%s">%s</label></%s>',
 			$this->label_element,
@@ -384,7 +392,7 @@ abstract class Fieldmanager_Field {
 	}
 
 	public function get_remove_handle() {
-		return '<a href="#" class="fmjs-remove">Remove</a>';
+		return '<a href="#" class="fmjs-remove" title="Remove">Remove</a>';
 	}
 
 	public function get_collapse_handle() {

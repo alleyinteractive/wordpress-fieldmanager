@@ -1,0 +1,7 @@
+.fmjs-clear {
+	display: none;
+}
+.fmjs-post-type, .fmjs-post-date {
+	float: left;
+	margin: 4px 0 0 10px;
+}
