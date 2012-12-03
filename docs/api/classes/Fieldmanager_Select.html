@@ -3,7 +3,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
 <meta charset="utf-8">
-<title>phpDocumentor » \Fieldmanager_Checkbox</title>
+<title>phpDocumentor » \Fieldmanager_Select</title>
 <meta name="author" content="Mike van Riel">
 <meta name="description" content="">
 <link href="../css/template.css" rel="stylesheet" media="all">
@@ -31,7 +31,7 @@
 <a href="#reports" class="dropdown-toggle" data-toggle="dropdown">
                                     Reports <b class="caret"></b></a><ul class="dropdown-menu">
 <li><a href="../errors.html"><i class="icon-remove-sign"></i> Errors 
-                <span class="label label-info">95</span></a></li>
+                <span class="label label-info">21</span></a></li>
 <li><a href="../markers.html"><i class="icon-map-marker"></i> Markers 
                 <ul><li>todo 
                 <span class="label label-info">1</span>
@@ -58,10 +58,18 @@
 <li class="nav-header">
 <i class="icon-custom icon-method"></i> Methods
                     <ul>
-<li class="method public inherited"><a href="#method___construct" title="__construct :: Superclass constructor, just populates options and sanity-checks common elements."><span class="description">Superclass constructor, just populates options and sanity-checks common elements.</span><pre>__construct()</pre></a></li>
+<li class="method public "><a href="#method___construct" title="__construct :: Override constructor to add chosen.js maybe"><span class="description">Override constructor to add chosen.js maybe</span><pre>__construct()</pre></a></li>
 <li class="method public inherited"><a href="#method_add_another" title='add_another :: Generates HTML for the "Add Another" button.'><span class="description">Generates HTML for the "Add Another" button.</span><pre>add_another()</pre></a></li>
+<li class="method public inherited"><a href="#method_add_meta_boxes" title="add_meta_boxes :: admin_init callback to add meta boxes to content types
+Registers render_meta_box()"><span class="description">admin_init callback to add meta boxes to content types
+Registers render_meta_box()</span><pre>add_meta_boxes()</pre></a></li>
+<li class="method public "><a href="#method_chosen_init" title="chosen_init :: Init chosen.js"><span class="description">Init chosen.js</span><pre>chosen_init()</pre></a></li>
 <li class="method public inherited"><a href="#method_element_markup" title="element_markup :: Generates all markup needed for all form elements in this field."><span class="description">Generates all markup needed for all form elements in this field.</span><pre>element_markup()</pre></a></li>
-<li class="method public "><a href="#method_form_element" title="form_element :: Form element implementation for checkboxes"><span class="description">Form element implementation for checkboxes</span><pre>form_element()</pre></a></li>
+<li class="method public "><a href="#method_form_data_element" title="form_data_element :: Single data element (&lt;option&gt;)"><span class="description">Single data element (&lt;option&gt;)</span><pre>form_data_element()</pre></a></li>
+<li class="method public inherited"><a href="#method_form_data_elements" title="form_data_elements :: Generate form elements."><span class="description">Generate form elements.</span><pre>form_data_elements()</pre></a></li>
+<li class="method public "><a href="#method_form_data_end_group" title="form_data_end_group :: End an &lt;optgroup&gt;"><span class="description">End an &lt;optgroup&gt;</span><pre>form_data_end_group()</pre></a></li>
+<li class="method public "><a href="#method_form_data_start_group" title="form_data_start_group :: Start an &lt;optgroup&gt;"><span class="description">Start an &lt;optgroup&gt;</span><pre>form_data_start_group()</pre></a></li>
+<li class="method public "><a href="#method_form_element" title="form_element :: Form element"><span class="description">Form element</span><pre>form_element()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_collapse_handle" title="get_collapse_handle :: Return HTML for the collapse handle (multi-tools); a separate function to override"><span class="description">Return HTML for the collapse handle (multi-tools); a separate function to override</span><pre>get_collapse_handle()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_element_attributes" title="get_element_attributes :: Generates an HTML attribute string based on the value of $this-&gt;attributes."><span class="description">Generates an HTML attribute string based on the value of $this-&gt;attributes.</span><pre>get_element_attributes()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_element_id" title="get_element_id :: Get the ID for the form element itself, uses $this-&gt;seq (e.g."><span class="description">Get the ID for the form element itself, uses $this-&gt;seq (e.g.</span><pre>get_element_id()</pre></a></li>
@@ -71,22 +79,26 @@
 <li class="method public inherited"><a href="#method_get_form_tree" title="get_form_tree :: Recursively build path to this element (e.g."><span class="description">Recursively build path to this element (e.g.</span><pre>get_form_tree()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_remove_handle" title="get_remove_handle :: Return HTML for the remove handle (multi-tools); a separate function to override"><span class="description">Return HTML for the remove handle (multi-tools); a separate function to override</span><pre>get_remove_handle()</pre></a></li>
 <li class="method public inherited"><a href="#method_get_sort_handle" title="get_sort_handle :: Return HTML for the sort handle (multi-tools); a separate function to override"><span class="description">Return HTML for the sort handle (multi-tools); a separate function to override</span><pre>get_sort_handle()</pre></a></li>
-<li class="method public "><a href="#method_presave" title="presave :: Override presave function to swap in unchecked_value if needed"><span class="description">Override presave function to swap in unchecked_value if needed</span><pre>presave()</pre></a></li>
+<li class="method public inherited"><a href="#method_get_taxonomy_data" title="get_taxonomy_data :: Get taxonomy data per $this-&gt;taxonomy_args"><span class="description">Get taxonomy data per $this-&gt;taxonomy_args</span><pre>get_taxonomy_data()</pre></a></li>
+<li class="method public inherited"><a href="#method_option_selected" title="option_selected :: Helper for output functions to toggle a selected options"><span class="description">Helper for output functions to toggle a selected options</span><pre>option_selected()</pre></a></li>
+<li class="method public inherited"><a href="#method_presave" title="presave :: Override presave to handle taxonomy"><span class="description">Override presave to handle taxonomy</span><pre>presave()</pre></a></li>
 <li class="method public inherited"><a href="#method_presave_all" title="presave_all :: Presaves all elements in what could be a set of them, dispatches to $this-&gt;presave()"><span class="description">Presaves all elements in what could be a set of them, dispatches to $this-&gt;presave()</span><pre>presave_all()</pre></a></li>
 <li class="method public inherited"><a href="#method_render_meta_box" title="render_meta_box :: Helper to attach element_markup() to add_meta_box()."><span class="description">Helper to attach element_markup() to add_meta_box().</span><pre>render_meta_box()</pre></a></li>
-<li class="method public inherited"><a href="#method_save_to_post_meta" title="save_to_post_meta :: "><span class="description">save_to_post_meta()
-        </span><pre>save_to_post_meta()</pre></a></li>
+<li class="method public inherited"><a href="#method_save_fields_for_post" title="save_fields_for_post :: Takes $_POST data and saves it to, calling save_to_post_meta() once validation is passed
+When using Fieldmanager as an API, do not call this function directly, call save_to_post_meta()"><span class="description">Takes $_POST data and saves it to, calling save_to_post_meta() once validation is passed
+When using Fieldmanager as an API, do not call this function directly, call save_to_post_meta()</span><pre>save_fields_for_post()</pre></a></li>
+<li class="method public inherited"><a href="#method_save_to_post_meta" title="save_to_post_meta :: Helper to save an array of data to post meta"><span class="description">Helper to save an array of data to post meta</span><pre>save_to_post_meta()</pre></a></li>
 <li class="method public inherited"><a href="#method_single_element_markup" title="single_element_markup :: Generate wrappers and labels for one form element."><span class="description">Generate wrappers and labels for one form element.</span><pre>single_element_markup()</pre></a></li>
-<li class="method public inherited"><a href="#method_validate_all" title="validate_all :: "><span class="description">validate_all()
-        </span><pre>validate_all()</pre></a></li>
 <li class="method public inherited"><a href="#method_wrap_with_multi_tools" title='wrap_with_multi_tools :: Wrap a chunk of HTML with "remove" and "move" buttons if applicable.'><span class="description">Wrap a chunk of HTML with "remove" and "move" buttons if applicable.</span><pre>wrap_with_multi_tools()</pre></a></li>
 </ul>
 </li>
 <li class="nav-header protected">» Protected
                     <ul>
+<li class="method protected inherited"><a href="#method__failed_validation" title="_failed_validation :: Fail validation."><span class="description">Fail validation.</span><pre>_failed_validation()</pre></a></li>
 <li class="method protected inherited"><a href="#method__unauthorized_access" title="_unauthorized_access :: Die violently."><span class="description">Die violently.</span><pre>_unauthorized_access()</pre></a></li>
 <li class="method protected inherited"><a href="#method_get_multiple_count" title="get_multiple_count :: How many elements should we render?"><span class="description">How many elements should we render?</span><pre>get_multiple_count()</pre></a></li>
 <li class="method protected inherited"><a href="#method_get_seq" title="get_seq :: In a multiple element set, return the index of the current element we're rendering."><span class="description">In a multiple element set, return the index of the current element we're rendering.</span><pre>get_seq()</pre></a></li>
+<li class="method protected inherited"><a href="#method_get_taxonomy_insert_data" title="get_taxonomy_insert_data :: Add taxonomy ID to data values for insert"><span class="description">Add taxonomy ID to data values for insert</span><pre>get_taxonomy_insert_data()</pre></a></li>
 </ul>
 </li>
 <li class="nav-header">
@@ -94,23 +106,29 @@
                     <ul>
 <li class="property public inherited"><a href="#property_add_more_label" title="$add_more_label :: "><span class="description">Text for add more button</span><pre>$add_more_label</pre></a></li>
 <li class="property public inherited"><a href="#property_attributes" title="$attributes :: "><span class="description">Extra HTML attributes to apply to the form element</span><pre>$attributes</pre></a></li>
-<li class="property public "><a href="#property_checked_value" title="$checked_value :: "><span class="description">Value when checked</span><pre>$checked_value</pre></a></li>
+<li class="property public inherited"><a href="#property_content_types" title="$content_types :: "><span class="description">Array of content type assignments for these fields. Sample: $element-&gt;content_types = array( array( 'meta_box_name' =&gt; 'quiz_question', 'meta_box_title' =&gt; 'Quiz Question', 'content_type' =&gt; 'quiz' ) );</span><pre>$content_types</pre></a></li>
+<li class="property public inherited"><a href="#property_data" title="$data :: "><span class="description">Option data</span><pre>$data</pre></a></li>
 <li class="property public inherited"><a href="#property_data_id" title="$data_id :: "><span class="description">ID for $this-&gt;data_type, eg $post-&gt;ID, generally set internally</span><pre>$data_id</pre></a></li>
 <li class="property public inherited"><a href="#property_data_type" title="$data_type :: "><span class="description">Data type this element is used in, generally set internally</span><pre>$data_type</pre></a></li>
 <li class="property public inherited"><a href="#property_debug" title="$debug :: "><span class="description">If true, throw exceptions for illegal behavior</span><pre>$debug</pre></a></li>
 <li class="property public inherited"><a href="#property_description" title="$description :: "><span class="description">Description for the form element</span><pre>$description</pre></a></li>
 <li class="property public inherited"><a href="#property_extra_elements" title="$extra_elements :: "><span class="description">How many extra elements to display if there is already form data and $limit &gt; 1</span><pre>$extra_elements</pre></a></li>
-<li class="property public inherited"><a href="#property_field_class" title="$field_class :: "><span class="description">CSS class for form element</span><pre>$field_class</pre></a></li>
+<li class="property public "><a href="#property_field_class" title="$field_class :: "><span class="description">Override $field_class</span><pre>$field_class</pre></a></li>
+<li class="property public inherited"><a href="#property_first_element" title="$first_element :: "><span class="description">Always prepend this element to the $data</span><pre>$first_element</pre></a></li>
+<li class="property public inherited"><a href="#property_grouped" title="$grouped :: "><span class="description">Is the data grouped? E.g. should we use &lt;optgroup&gt;</span><pre>$grouped</pre></a></li>
 <li class="property public inherited"><a href="#property_label" title="$label :: "><span class="description">Label to use for form element</span><pre>$label</pre></a></li>
 <li class="property public inherited"><a href="#property_label_element" title="$label_element :: "><span class="description">HTML element to use for label</span><pre>$label_element</pre></a></li>
 <li class="property public inherited"><a href="#property_limit" title="$limit :: "><span class="description">How many of these fields to display, 0 for no limit</span><pre>$limit</pre></a></li>
+<li class="property public inherited"><a href="#property_multiple" title="$multiple :: "><span class="description">Allow multiple selections?</span><pre>$multiple</pre></a></li>
 <li class="property public inherited"><a href="#property_name" title="$name :: "><span class="description">The name of the form element, As in 'foo' in &lt;input name="foo" /&gt;</span><pre>$name</pre></a></li>
 <li class="property public inherited"><a href="#property_one_label_per_item" title="$one_label_per_item :: "><span class="description">Repeat the label for each element if $limit &gt; 1</span><pre>$one_label_per_item</pre></a></li>
 <li class="property public inherited"><a href="#property_sanitize" title="$sanitize :: "><span class="description">Function to use to sanitize input</span><pre>$sanitize</pre></a></li>
-<li class="property public inherited"><a href="#property_save_empty" title="$save_empty :: "><span class="description">If true, save empty elements to DB</span><pre>$save_empty</pre></a></li>
+<li class="property public inherited"><a href="#property_save_empty" title="$save_empty :: "><span class="description">If true, save empty elements to DB (if $this-&gt;limit != 1; single elements are always saved)</span><pre>$save_empty</pre></a></li>
 <li class="property public inherited"><a href="#property_sortable" title="$sortable :: "><span class="description">Allow draggable sorting if $limit &gt; 1</span><pre>$sortable</pre></a></li>
 <li class="property public inherited"><a href="#property_starting_count" title="$starting_count :: "><span class="description">How many of these fields to display initially, if $limit &gt; 1</span><pre>$starting_count</pre></a></li>
-<li class="property public "><a href="#property_unchecked_value" title="$unchecked_value :: "><span class="description">Value when unchecked</span><pre>$unchecked_value</pre></a></li>
+<li class="property public inherited"><a href="#property_taxonomy" title="$taxonomy :: "><span class="description">Helper for taxonomy-based option sets; taxonomy name</span><pre>$taxonomy</pre></a></li>
+<li class="property public inherited"><a href="#property_taxonomy_args" title="$taxonomy_args :: "><span class="description">Helper for taxonomy-based option sets; arguments to find terms</span><pre>$taxonomy_args</pre></a></li>
+<li class="property public "><a href="#property_type_ahead" title="$type_ahead :: "><span class="description">Should we support type-ahead? e.g. use chosen.js or not</span><pre>$type_ahead</pre></a></li>
 <li class="property public inherited"><a href="#property_validate" title="$validate :: "><span class="description">Functions to use to validate input</span><pre>$validate</pre></a></li>
 </ul>
 </li>
@@ -124,19 +142,33 @@
 </ul>
 </div>
 <div class="span8">
-<a id="\Fieldmanager_Checkbox"></a><ul class="breadcrumb">
+<a id="\Fieldmanager_Select"></a><ul class="breadcrumb">
 <li>
 <a href="../index.html"><i class="icon-custom icon-class"></i></a><span class="divider">\</span>
 </li>
 <li><a href="../namespaces/global.html">global</a></li>
 <li class="active">
-<span class="divider">\</span><a href="../classes/Fieldmanager_Checkbox.html">Fieldmanager_Checkbox</a>
+<span class="divider">\</span><a href="../classes/Fieldmanager_Select.html">Fieldmanager_Select</a>
 </li>
 </ul>
 <div class="element class">
-<p class="short_description">Checkbox field</p>
+<p class="short_description">Dropdown for options</p>
 <div class="details">
-<div class="long_description"></div>
+<div class="long_description"><p>Security features of this class for verifying access and saving data:
+1. In Fieldmanager_Field::save_fields_for_post(), verify that we are using an assigned post type
+   This is the starting point for $_POST requests to post edit pages.
+2. In Fieldmanager_Field::save_fields_for_post(), verify that the user can save the post type
+3. In Fieldmanager_Field::save_fields_for_post(), perform nonce validation
+4. In Fieldmanager_Field::save_to_post_meta(), call Fieldmanager_Field::presave_all()
+   This is the starting point for save routines that use Fieldmanager as an API
+5. In Fieldmanager_Field::presave_all(), verify that the number of elements is less than $limit,
+   if $limit is not 1 or infinite (0), and verify that all multi-element arrays are numeric only.
+6. In Fieldmanager_Field::presave_all(), call Fieldmanager_Field::presave()
+5. In Fieldmanager_Field::presave(), call all assigned validators; if one returns false, die.
+6a. For groups (including the root group) in Fieldmanager_Group::presave(), verify that all
+    keys in the submission match the form names of valid children.
+6b. For all other fields, in Fieldmanager_Field::presave(), sanitize the field to save to the DB.
+    The default sanitizer is sanitize_text_field().</p></div>
 <table class="table table-bordered"><tr>
 <th>package</th>
 <td><a href="../packages/Fieldmanager.html">Fieldmanager</a></td>
@@ -144,19 +176,27 @@
 <h3>
 <i class="icon-custom icon-method"></i> Methods</h3>
 <a id="method___construct"></a><div class="element clickable method public method___construct" data-toggle="collapse" data-target=".method___construct .collapse">
-<h2>Superclass constructor, just populates options and sanity-checks common elements.</h2>
+<h2>Override constructor to add chosen.js maybe</h2>
 <pre>__construct(array $options) </pre>
-<div class="labels"><span class="label">Inherited</span></div>
+<div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>It might also die, but only helpfully, to catch errors in development.</p></div>
-<table class="table table-bordered"><tr>
-<th>inherited_from</th>
-<td>\Fieldmanager_Field::__construct()</td>
-</tr></table>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$options</h4>
-<code>array</code><p>with keys matching vars of the field in use.</p></div>
+<code>array</code>
+</div>
+<h3>Exceptions</h3>
+<table class="table table-bordered">
+<tr>
+<th><code>\FM_Developer_Exception</code></th>
+<td>if an option is set but not defined in this class or the child class.</td>
+</tr>
+<tr>
+<th><code>\FM_Developer_Exception</code></th>
+<td>if an option is set but not public.</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="method_add_another"></a><div class="element clickable method public method_add_another" data-toggle="collapse" data-target=".method_add_another .collapse">
@@ -165,13 +205,49 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::add_another()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::add_another()</td>
+</tr>
+</table>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>string</code>button HTML.</div>
+</div></div>
+</div>
+<a id="method_add_meta_boxes"></a><div class="element clickable method public method_add_meta_boxes" data-toggle="collapse" data-target=".method_add_meta_boxes .collapse">
+<h2>admin_init callback to add meta boxes to content types
+Registers render_meta_box()</h2>
+<pre>add_meta_boxes() : void</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Field::add_meta_boxes()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::add_meta_boxes()</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="method_chosen_init"></a><div class="element clickable method public method_chosen_init" data-toggle="collapse" data-target=".method_chosen_init .collapse">
+<h2>Init chosen.js</h2>
+<pre>chosen_init() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>HTML</div>
 </div></div>
 </div>
 <a id="method_element_markup"></a><div class="element clickable method public method_element_markup" data-toggle="collapse" data-target=".method_element_markup .collapse">
@@ -180,10 +256,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>Could be called directly by a plugin or theme.</p></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::element_markup()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::element_markup()</td>
+</tr>
+</table>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$values</h4>
@@ -193,16 +275,83 @@
 <code>string</code>HTML for all form elements.</div>
 </div></div>
 </div>
+<a id="method_form_data_element"></a><div class="element clickable method public method_form_data_element" data-toggle="collapse" data-target=".method_form_data_element .collapse">
+<h2>Single data element (&lt;option&gt;)</h2>
+<pre>form_data_element(array $data_row, array $value) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>'<option>'</p></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$data_row</h4>
+<code>array</code>
+</div>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>array</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>HTML</div>
+</div></div>
+</div>
+<a id="method_form_data_elements"></a><div class="element clickable method public method_form_data_elements" data-toggle="collapse" data-target=".method_form_data_elements .collapse">
+<h2>Generate form elements.</h2>
+<pre>form_data_elements(mixed $value) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::form_data_elements()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$value</h4>
+<code>mixed</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>HTML</div>
+</div></div>
+</div>
+<a id="method_form_data_end_group"></a><div class="element clickable method public method_form_data_end_group" data-toggle="collapse" data-target=".method_form_data_end_group .collapse">
+<h2>End an &lt;optgroup&gt;</h2>
+<pre>form_data_end_group() : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>HTML</div>
+</div></div>
+</div>
+<a id="method_form_data_start_group"></a><div class="element clickable method public method_form_data_start_group" data-toggle="collapse" data-target=".method_form_data_start_group .collapse">
+<h2>Start an &lt;optgroup&gt;</h2>
+<pre>form_data_start_group(string $label) : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$label</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>HTML</div>
+</div></div>
+</div>
 <a id="method_form_element"></a><div class="element clickable method public method_form_element" data-toggle="collapse" data-target=".method_form_element .collapse">
-<h2>Form element implementation for checkboxes</h2>
-<pre>form_element(mixed $value) : string</pre>
+<h2>Form element</h2>
+<pre>form_element(array $value) : string</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$value</h4>
-<code>mixed</code>
+<code>array</code>
 </div>
 <h3>Returns</h3>
 <div class="subelement response">
@@ -215,10 +364,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_collapse_handle()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_collapse_handle()</td>
+</tr>
+</table>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
 </div></div>
@@ -232,11 +387,15 @@
 <table class="table table-bordered">
 <tr>
 <th>see</th>
-<td><a href="php.class-fieldmanager-field.html#%5CFieldmanager_Field::%24attributes">\Fieldmanager_Field::$attributes</a></td>
+<td><a href="class-fieldmanager-field.html#%5CFieldmanager_Field::%24attributes">\Fieldmanager_Field::$attributes</a></td>
 </tr>
 <tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_element_attributes()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_element_attributes()</td>
 </tr>
 </table>
 <h3>Returns</h3>
@@ -250,10 +409,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>which position is this element in).</p></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_element_id()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_element_id()</td>
+</tr>
+</table>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>string</code>ID for use in a form element.</div>
@@ -265,10 +430,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_element_label()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_element_label()</td>
+</tr>
+</table>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$classes</h4>
@@ -284,10 +455,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_extra_element_classes()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_extra_element_classes()</td>
+</tr>
+</table>
 <h3>Returns</h3>
 <div class="subelement response"><code>array</code></div>
 </div></div>
@@ -298,10 +475,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>questions[answer]).</p></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_form_name()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_form_name()</td>
+</tr>
+</table>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$multiple</h4></div>
 <h3>Returns</h3>
@@ -315,10 +498,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"><p>array(grandparent, parent, this) )</p></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_form_tree()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_form_tree()</td>
+</tr>
+</table>
 <h3>Returns</h3>
 <div class="subelement response">
 <code>array</code>of parents</div>
@@ -330,10 +519,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_remove_handle()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_remove_handle()</td>
+</tr>
+</table>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
 </div></div>
@@ -344,28 +539,76 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_sort_handle()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_sort_handle()</td>
+</tr>
+</table>
 <h3>Returns</h3>
 <div class="subelement response"><code>string</code></div>
 </div></div>
 </div>
-<a id="method_presave"></a><div class="element clickable method public method_presave" data-toggle="collapse" data-target=".method_presave .collapse">
-<h2>Override presave function to swap in unchecked_value if needed</h2>
-<pre>presave(mixed $value) : mixed</pre>
-<div class="labels"></div>
+<a id="method_get_taxonomy_data"></a><div class="element clickable method public method_get_taxonomy_data" data-toggle="collapse" data-target=".method_get_taxonomy_data .collapse">
+<h2>Get taxonomy data per $this-&gt;taxonomy_args</h2>
+<pre>get_taxonomy_data() : array[]</pre>
+<div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_taxonomy_data()</td>
+</tr></table>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array[]</code>data entries for options</div>
+</div></div>
+</div>
+<a id="method_option_selected"></a><div class="element clickable method public method_option_selected" data-toggle="collapse" data-target=".method_option_selected .collapse">
+<h2>Helper for output functions to toggle a selected options</h2>
+<pre>option_selected(string $current_option, array $options, string $attribute) : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::option_selected()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$current_option</h4>
+<code>string</code><p>this option</p></div>
+<div class="subelement argument">
+<h4>$options</h4>
+<code>array</code><p>all valid options</p></div>
+<div class="subelement argument">
+<h4>$attribute</h4>
+<code>string</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>string</code>$attribute on match, empty on failure.</div>
+</div></div>
+</div>
+<a id="method_presave"></a><div class="element clickable method public method_presave" data-toggle="collapse" data-target=".method_presave .collapse">
+<h2>Override presave to handle taxonomy</h2>
+<pre>presave(mixed $value) : void</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::presave()</td>
+</tr></table>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$value</h4>
 <code>mixed</code>
 </div>
-<h3>Returns</h3>
-<div class="subelement response">
-<code>mixed</code>proper value</div>
 </div></div>
 </div>
 <a id="method_presave_all"></a><div class="element clickable method public method_presave_all" data-toggle="collapse" data-target=".method_presave_all .collapse">
@@ -382,6 +625,10 @@
 <tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::presave_all()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::presave_all()</td>
 </tr>
 </table>
 <h3>Parameters</h3>
@@ -406,6 +653,10 @@
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::render_meta_box()</td>
 </tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::render_meta_box()</td>
+</tr>
 </table>
 <h3>Parameters</h3>
 <div class="subelement argument">
@@ -417,20 +668,55 @@
 <div class="subelement response"><code>\void.</code></div>
 </div></div>
 </div>
-<a id="method_save_to_post_meta"></a><div class="element clickable method public method_save_to_post_meta" data-toggle="collapse" data-target=".method_save_to_post_meta .collapse">
-<h2>save_to_post_meta()
-        </h2>
-<pre>save_to_post_meta($post_id, $data) </pre>
+<a id="method_save_fields_for_post"></a><div class="element clickable method public method_save_fields_for_post" data-toggle="collapse" data-target=".method_save_fields_for_post .collapse">
+<h2>Takes $_POST data and saves it to, calling save_to_post_meta() once validation is passed
+When using Fieldmanager as an API, do not call this function directly, call save_to_post_meta()</h2>
+<pre>save_fields_for_post(int $post_id) : void</pre>
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Field::save_fields_for_post()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::save_fields_for_post()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$post_id</h4>
+<code>int</code>
+</div>
+</div></div>
+</div>
+<a id="method_save_to_post_meta"></a><div class="element clickable method public method_save_to_post_meta" data-toggle="collapse" data-target=".method_save_to_post_meta .collapse">
+<h2>Helper to save an array of data to post meta</h2>
+<pre>save_to_post_meta(int $post_id, array $data) : void</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::save_to_post_meta()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::save_to_post_meta()</td>
+</tr>
+</table>
 <h3>Parameters</h3>
-<div class="subelement argument"><h4>$post_id</h4></div>
-<div class="subelement argument"><h4>$data</h4></div>
+<div class="subelement argument">
+<h4>$post_id</h4>
+<code>int</code>
+</div>
+<div class="subelement argument">
+<h4>$data</h4>
+<code>array</code>
+</div>
 </div></div>
 </div>
 <a id="method_single_element_markup"></a><div class="element clickable method public method_single_element_markup" data-toggle="collapse" data-target=".method_single_element_markup .collapse">
@@ -442,15 +728,19 @@
 <table class="table table-bordered">
 <tr>
 <th>see</th>
-<td><a href="php.class-fieldmanager-field.html#%5CFieldmanager_Field::element_markup()">\Fieldmanager_Field::element_markup()</a></td>
+<td><a href="class-fieldmanager-field.html#%5CFieldmanager_Field::element_markup()">\Fieldmanager_Field::element_markup()</a></td>
 </tr>
 <tr>
 <th>see</th>
-<td><a href="php.class-fieldmanager-field.html#%5CFieldmanager_Field::form_element()">\Fieldmanager_Field::form_element()</a></td>
+<td><a href="class-fieldmanager-field.html#%5CFieldmanager_Field::form_element()">\Fieldmanager_Field::form_element()</a></td>
 </tr>
 <tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::single_element_markup()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::single_element_markup()</td>
 </tr>
 </table>
 <h3>Parameters</h3>
@@ -465,31 +755,22 @@
 <code>string</code>HTML for a single form element.</div>
 </div></div>
 </div>
-<a id="method_validate_all"></a><div class="element clickable method public method_validate_all" data-toggle="collapse" data-target=".method_validate_all .collapse">
-<h2>validate_all()
-        </h2>
-<pre>validate_all($value) </pre>
-<div class="labels"><span class="label">Inherited</span></div>
-<div class="row collapse"><div class="detail-description">
-<div class="long_description"></div>
-<table class="table table-bordered"><tr>
-<th>inherited_from</th>
-<td>\Fieldmanager_Field::validate_all()</td>
-</tr></table>
-<h3>Parameters</h3>
-<div class="subelement argument"><h4>$value</h4></div>
-</div></div>
-</div>
 <a id="method_wrap_with_multi_tools"></a><div class="element clickable method public method_wrap_with_multi_tools" data-toggle="collapse" data-target=".method_wrap_with_multi_tools .collapse">
 <h2>Wrap a chunk of HTML with "remove" and "move" buttons if applicable.</h2>
 <pre>wrap_with_multi_tools(string $html, $classes) : string</pre>
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::wrap_with_multi_tools()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::wrap_with_multi_tools()</td>
+</tr>
+</table>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$html</h4>
@@ -500,16 +781,42 @@
 <code>string</code>wrapped HTML.</div>
 </div></div>
 </div>
+<a id="method__failed_validation"></a><div class="element clickable method protected method__failed_validation" data-toggle="collapse" data-target=".method__failed_validation .collapse">
+<h2>Fail validation.</h2>
+<pre>_failed_validation($debug_message) : void</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"><p>If self::$debug is true, throw an exception.</p></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Field::_failed_validation()</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::_failed_validation()</td>
+</tr>
+</table>
+<h3>Parameters</h3>
+<div class="subelement argument"><h4>$debug_message</h4></div>
+</div></div>
+</div>
 <a id="method__unauthorized_access"></a><div class="element clickable method protected method__unauthorized_access" data-toggle="collapse" data-target=".method__unauthorized_access .collapse">
 <h2>Die violently.</h2>
 <pre>_unauthorized_access(string $debug_message) : void</pre>
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
-<div class="long_description"><p>Cribbed from Zoninator.</p></div>
-<table class="table table-bordered"><tr>
+<div class="long_description"><p>If self::$debug is true, throw an exception.</p></div>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::_unauthorized_access()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::_unauthorized_access()</td>
+</tr>
+</table>
 <h3>Parameters</h3>
 <div class="subelement argument">
 <h4>$debug_message</h4>
@@ -523,10 +830,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_multiple_count()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_multiple_count()</td>
+</tr>
+</table>
 <h3>Parameters</h3>
 <div class="subelement argument"><h4>$values</h4></div>
 <h3>Returns</h3>
@@ -539,12 +852,38 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::get_seq()</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_seq()</td>
+</tr>
+</table>
 <h3>Returns</h3>
 <div class="subelement response"><code>int</code></div>
+</div></div>
+</div>
+<a id="method_get_taxonomy_insert_data"></a><div class="element clickable method protected method_get_taxonomy_insert_data" data-toggle="collapse" data-target=".method_get_taxonomy_insert_data .collapse">
+<h2>Add taxonomy ID to data values for insert</h2>
+<pre>get_taxonomy_insert_data(array $values) : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::get_taxonomy_insert_data()</td>
+</tr></table>
+<h3>Parameters</h3>
+<div class="subelement argument">
+<h4>$values</h4>
+<code>array</code>
+</div>
+<h3>Returns</h3>
+<div class="subelement response">
+<code>array</code>$values with taxonomy IDs for saving.</div>
 </div></div>
 </div>
 <h3>
@@ -555,10 +894,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$add_more_label</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$add_more_label</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_attributes"> </a><div class="element clickable property public property_attributes" data-toggle="collapse" data-target=".property_attributes .collapse">
@@ -567,17 +912,47 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$attributes</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$attributes</td>
+</tr>
+</table>
 </div></div>
 </div>
-<a id="property_checked_value"> </a><div class="element clickable property public property_checked_value" data-toggle="collapse" data-target=".property_checked_value .collapse">
-<h2>Value when checked</h2>
-<pre>$checked_value : mixed</pre>
-<div class="labels"></div>
-<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+<a id="property_content_types"> </a><div class="element clickable property public property_content_types" data-toggle="collapse" data-target=".property_content_types .collapse">
+<h2>Array of content type assignments for these fields. Sample: $element-&gt;content_types = array( array( 'meta_box_name' =&gt; 'quiz_question', 'meta_box_title' =&gt; 'Quiz Question', 'content_type' =&gt; 'quiz' ) );</h2>
+<pre>$content_types : array[]</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered">
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Field::$$content_types</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$content_types</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_data"> </a><div class="element clickable property public property_data" data-toggle="collapse" data-target=".property_data .collapse">
+<h2>Option data</h2>
+<pre>$data : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$data</td>
+</tr></table>
+</div></div>
 </div>
 <a id="property_data_id"> </a><div class="element clickable property public property_data_id" data-toggle="collapse" data-target=".property_data_id .collapse">
 <h2>ID for $this-&gt;data_type, eg $post-&gt;ID, generally set internally</h2>
@@ -585,10 +960,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$data_id</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$data_id</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_data_type"> </a><div class="element clickable property public property_data_type" data-toggle="collapse" data-target=".property_data_type .collapse">
@@ -597,10 +978,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$data_type</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$data_type</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_debug"> </a><div class="element clickable property public property_debug" data-toggle="collapse" data-target=".property_debug .collapse">
@@ -609,10 +996,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$debug</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$debug</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_description"> </a><div class="element clickable property public property_description" data-toggle="collapse" data-target=".property_description .collapse">
@@ -621,10 +1014,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$description</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$description</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_extra_elements"> </a><div class="element clickable property public property_extra_elements" data-toggle="collapse" data-target=".property_extra_elements .collapse">
@@ -633,21 +1032,45 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$extra_elements</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$extra_elements</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_field_class"> </a><div class="element clickable property public property_field_class" data-toggle="collapse" data-target=".property_field_class .collapse">
-<h2>CSS class for form element</h2>
+<h2>Override $field_class</h2>
 <pre>$field_class : string</pre>
+<div class="labels"></div>
+<div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
+</div>
+<a id="property_first_element"> </a><div class="element clickable property public property_first_element" data-toggle="collapse" data-target=".property_first_element .collapse">
+<h2>Always prepend this element to the $data</h2>
+<pre>$first_element : array</pre>
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
 <table class="table table-bordered"><tr>
 <th>inherited_from</th>
-<td>\Fieldmanager_Field::$$field_class</td>
+<td>\Fieldmanager_Options::$$first_element</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_grouped"> </a><div class="element clickable property public property_grouped" data-toggle="collapse" data-target=".property_grouped .collapse">
+<h2>Is the data grouped? E.g. should we use &lt;optgroup&gt;</h2>
+<pre>$grouped : boolean</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$grouped</td>
 </tr></table>
 </div></div>
 </div>
@@ -657,10 +1080,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$label</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$label</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_label_element"> </a><div class="element clickable property public property_label_element" data-toggle="collapse" data-target=".property_label_element .collapse">
@@ -669,10 +1098,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$label_element</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$label_element</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_limit"> </a><div class="element clickable property public property_limit" data-toggle="collapse" data-target=".property_limit .collapse">
@@ -681,9 +1116,27 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$limit</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$limit</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_multiple"> </a><div class="element clickable property public property_multiple" data-toggle="collapse" data-target=".property_multiple .collapse">
+<h2>Allow multiple selections?</h2>
+<pre>$multiple : boolean</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$multiple</td>
 </tr></table>
 </div></div>
 </div>
@@ -693,10 +1146,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$name</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$name</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_one_label_per_item"> </a><div class="element clickable property public property_one_label_per_item" data-toggle="collapse" data-target=".property_one_label_per_item .collapse">
@@ -705,10 +1164,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$one_label_per_item</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$one_label_per_item</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_sanitize"> </a><div class="element clickable property public property_sanitize" data-toggle="collapse" data-target=".property_sanitize .collapse">
@@ -717,22 +1182,34 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$sanitize</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$sanitize</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_save_empty"> </a><div class="element clickable property public property_save_empty" data-toggle="collapse" data-target=".property_save_empty .collapse">
-<h2>If true, save empty elements to DB</h2>
+<h2>If true, save empty elements to DB (if $this-&gt;limit != 1; single elements are always saved)</h2>
 <pre>$save_empty : boolean</pre>
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$save_empty</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$save_empty</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_sortable"> </a><div class="element clickable property public property_sortable" data-toggle="collapse" data-target=".property_sortable .collapse">
@@ -741,10 +1218,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$sortable</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$sortable</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_starting_count"> </a><div class="element clickable property public property_starting_count" data-toggle="collapse" data-target=".property_starting_count .collapse">
@@ -753,15 +1236,45 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$starting_count</td>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$starting_count</td>
+</tr>
+</table>
+</div></div>
+</div>
+<a id="property_taxonomy"> </a><div class="element clickable property public property_taxonomy" data-toggle="collapse" data-target=".property_taxonomy .collapse">
+<h2>Helper for taxonomy-based option sets; taxonomy name</h2>
+<pre>$taxonomy : string</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$taxonomy</td>
 </tr></table>
 </div></div>
 </div>
-<a id="property_unchecked_value"> </a><div class="element clickable property public property_unchecked_value" data-toggle="collapse" data-target=".property_unchecked_value .collapse">
-<h2>Value when unchecked</h2>
-<pre>$unchecked_value : mixed</pre>
+<a id="property_taxonomy_args"> </a><div class="element clickable property public property_taxonomy_args" data-toggle="collapse" data-target=".property_taxonomy_args .collapse">
+<h2>Helper for taxonomy-based option sets; arguments to find terms</h2>
+<pre>$taxonomy_args : array</pre>
+<div class="labels"><span class="label">Inherited</span></div>
+<div class="row collapse"><div class="detail-description">
+<div class="long_description"></div>
+<table class="table table-bordered"><tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$taxonomy_args</td>
+</tr></table>
+</div></div>
+</div>
+<a id="property_type_ahead"> </a><div class="element clickable property public property_type_ahead" data-toggle="collapse" data-target=".property_type_ahead .collapse">
+<h2>Should we support type-ahead? e.g. use chosen.js or not</h2>
+<pre>$type_ahead : boolean</pre>
 <div class="labels"></div>
 <div class="row collapse"><div class="detail-description"><div class="long_description"></div></div></div>
 </div>
@@ -771,10 +1284,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$validate</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$validate</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_is_tab"> </a><div class="element clickable property protected property_is_tab" data-toggle="collapse" data-target=".property_is_tab .collapse">
@@ -783,10 +1302,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$is_tab</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$is_tab</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_parent"> </a><div class="element clickable property protected property_parent" data-toggle="collapse" data-target=".property_parent .collapse">
@@ -795,10 +1320,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$parent</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$parent</td>
+</tr>
+</table>
 </div></div>
 </div>
 <a id="property_seq"> </a><div class="element clickable property protected property_seq" data-toggle="collapse" data-target=".property_seq .collapse">
@@ -807,10 +1338,16 @@
 <div class="labels"><span class="label">Inherited</span></div>
 <div class="row collapse"><div class="detail-description">
 <div class="long_description"></div>
-<table class="table table-bordered"><tr>
+<table class="table table-bordered">
+<tr>
 <th>inherited_from</th>
 <td>\Fieldmanager_Field::$$seq</td>
-</tr></table>
+</tr>
+<tr>
+<th>inherited_from</th>
+<td>\Fieldmanager_Options::$$seq</td>
+</tr>
+</table>
 </div></div>
 </div>
 </div>
@@ -820,7 +1357,7 @@
 <div class="row"><footer class="span12">
             Template is built using <a href="http://twitter.github.com/bootstrap/">Twitter Bootstrap 2</a> and icons provided by <a href="http://glyphicons.com/">Glyphicons</a>.<br>
             Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor 2.0.0a12</a> and<br>
-            generated on 2012-12-03T00:52:13-05:00.<br></footer></div>
+            generated on 2012-12-03T16:55:23-05:00.<br></footer></div>
 </div>
 </body>
 </html>
