@@ -1,14 +1,55 @@
 <?php
+/**
+ * @package Fieldmanager
+ */
 
+/**
+ * Base class for handling option fields, like checkboxes or radios
+ * @package Fieldmanager
+ */
 abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
+	/**
+	 * @var array
+	 * Option data
+	 */
 	public $data = array();
+
+	/**
+	 * @var boolean
+	 * Is the data grouped?
+	 * E.g. should we use <optgroup>
+	 */
 	public $grouped = false;
+
+	/**
+	 * @var array
+	 * Always prepend this element to the $data
+	 */
 	public $first_element = array();
+
+	/**
+	 * @var string
+	 * Helper for taxonomy-based option sets; taxonomy name
+	 */
 	public $taxonomy = null;
+
+	/**
+	 * @var array
+	 * Helper for taxonomy-based option sets; arguments to find terms
+	 */
 	public $taxonomy_args = array();
+
+	/**
+	 * @var boolean
+	 * Allow multiple selections?
+	 */
 	public $multiple = false;
 	
+	/**
+	 * Add CSS, configure taxonomy, construct parent
+	 * @param mixed $options
+	 */
 	public function __construct( $options = array() ) {
 	
 		parent::__construct($options);
@@ -31,6 +72,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	
 	}
 	
+	/**
+	 * Generate form elements.
+	 * @param mixed $value
+	 * @return string HTML
+	 */
 	public function form_data_elements( $value ) {
 	
 		// Add the first element to the data array. This is useful for database-based data sets that require a first element.
@@ -42,11 +88,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		}
 	
 		// Output the data for the form. Child classes will handle the output format appropriate for them.
-		$form_data_elements_html = "";
+		$form_data_elements_html = '';
 
 		if ( !empty( $this->data ) ) {
 		
-			$current_group = "";
+			$current_group = '';
 
 			foreach( $this->data as $data_element ) {
 			
@@ -55,7 +101,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 				if( $this->grouped && ( $current_group != $data_element['group'] ) ) {
 					
 					// Append the end for the previous group unless this is the first group 
-					if ( $current_group != "" ) $form_data_elements_html .= $this->form_data_end_group();
+					if ( $current_group != '' ) $form_data_elements_html .= $this->form_data_end_group();
 					
 					// Append the start of the group
 					$form_data_elements_html .= $this->form_data_start_group( $data_element['group'] );
@@ -76,15 +122,29 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	
 	}
 	
+	/**
+	 * A single element for a single bit of data, e.g. '<option>'
+	 * @param mixed $value
+	 */
 	public abstract function form_data_element( $value );
 
+	/**
+	 * Helper for output functions to toggle a selected options
+	 * @param string $current_option this option
+	 * @param array $options all valid options
+	 * @param string $attribute
+	 * @return string $attribute on match, empty on failure.
+	 */
 	public function option_selected( $current_option, $options, $attribute ) {
-
 		if ( ( $options != null && !empty( $options ) ) && in_array( $current_option, $options ) ) return $attribute;
-		else return "";
-		
+		else return '';
 	}
 	
+	/**
+	 * Override presave to handle taxonomy
+	 * @param mixed $value
+	 * @return void
+	 */
 	public function presave( $value ) {
 	
 		// Sanitize the value(s)
@@ -121,7 +181,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		return $value;
 		
 	}
-		
+	
+	/**
+	 * Get taxonomy data per $this->taxonomy_args
+	 * @return array[] data entries for options
+	 */
 	public function get_taxonomy_data() {
 	
 		// Query for all terms for the defined taxonomies
@@ -164,6 +228,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 
 	}
 	
+	/**
+	 * Add taxonomy ID to data values for insert
+	 * @param array $values
+	 * @return array $values with taxonomy IDs for saving.
+	 */
 	protected function get_taxonomy_insert_data( $values ) {
 	
 		// If the option field data was grouped and is taxonomy-based, we need to find the taxonomy for each value in order to store it
@@ -173,10 +242,6 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		}
 		
 		return $taxonomy_insert_data;
-	}
-	
-	public function validate( $value ) {
-
 	}
 
 }

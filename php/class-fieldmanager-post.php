@@ -1,14 +1,58 @@
 <?php
+/**
+ * @package Fieldmanager
+ */
+
+/**
+ * Post auto-complete field
+ * @package Fieldmanager
+ */
 class Fieldmanager_Post extends Fieldmanager_Field {
 
+	/**
+	 * @var string
+	 * Override field class
+	 */
 	public $field_class = 'post';
-	public $post_types = array( 'post' );
-	public $search_orderby = 'post_date desc';
-	public $search_limit = 5;
+
+	/**
+	 * @var callable
+	 * What function to call to match posts. Initialized to Null here because it will be 
+	 * written in __construct to an internal function that calls get_posts, so only
+	 * overwrite it if you do /not/ want to use get_posts.
+	 * 
+	 * The function signature should be query_callback( $match, $args );
+	 */
+	public $query_callback = Null;
+
+	/**
+	 * @var boolean
+	 * Allow editing of the target post?
+	 */
 	public $editable = false;
+
+	/**
+	 * @var boolean
+	 * Show post type in typeahead results?
+	 */
 	public $show_post_type = false;
+
+	/**
+	 * @var boolean
+	 * Show post date in typeahead results?
+	 */
 	public $show_post_date = false;
 
+	/**
+	 * @var boolean
+	 * Override save_empty for this element type
+	 */
+	public $save_empty = False;
+
+	/**
+	 * Add libraries for autocomplete
+	 * @param array $options
+	 */
 	public function __construct( $options = array() ) {
 		$this->attributes = array(
 			'size' => '50',
@@ -25,21 +69,33 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		// Add the action hook for typeahead handling via AJAX
 		add_action('wp_ajax_fm_search_posts', array( $this, 'search_posts' ) );
 
+		if ( empty( $this->query_callback ) ) {
+			$this->query_callback = array( $this, 'search_posts_using_get_posts' );
+		}
+
 		parent::__construct($options);
 	}
 	
+	/**
+	 * Button to clear results
+	 */
 	public function get_clear_handle() {
 		return '<a href="#" class="fmjs-clear" title="Clear">Clear</a>';
 	}
 
-	public function form_element( $value = '' ) {
-		if ( !is_array($value) ) {
+	/**
+	 * Render form element
+	 * @param mixed $value
+	 * @return string HTML
+	 */
+	public function form_element( $value = array() ) {
+		if ( empty( $value ) ) {
 			// No value or invalid data was present. Use empty values.
 			$value = array(
-				"id" => "",
-				"title" => "",
-				"post_type" => "",
-				"post_date" => ""
+				'id' => '',
+				'title' => '',
+				'post_type' => '',
+				'post_date' => ''
 			);
 		}
 			
@@ -60,60 +116,37 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			( $this->limit == 1 ) ? $this->get_clear_handle() : ''
 		);
 	}
-		
+
+	/**
+	 * Default callback which uses get_posts
+	 * @param string $fragment
+	 * @param array $args to get_posts
+	 */
+	public function search_posts_using_get_posts( $fragment ) {
+		return get_posts( array(
+			'numberposts' => 10,
+			'orderby' => 'post_date',
+			'order' => 'DESC',
+			'post_status' => 'publish',
+			'post_type' => 'post',
+			's' => $fragment,
+		) );
+	}
+	
+	/**
+	 * AJAX callback to find posts
+	 */
 	public function search_posts() {
 		// Check the nonce before we do anything
 		check_ajax_referer( 'fm_post_search_nonce', 'fm_post_search_nonce' );
-	
-		global $wpdb; 
-		
-		// Confirm all the data is in place for the query. If not, die.
-		if ( !is_array( $this->post_types ) 
-			|| empty( $this->post_types ) 
-			|| !array_key_exists( 'fm_post_search_term', $_POST ) 
-			|| empty( $_POST['fm_post_search_term'] )
-			|| !isset( $this->search_limit )
-			|| !is_numeric( $this->search_limit )
-			|| !isset( $this->search_orderby )
-			|| empty( $this->search_orderby ) ) {
-			
-			echo "-1";
-			die();
-		}
-		
-		// Containers for query data
-		$query_params = array();
-		$post_type_placeholders = array();
-		
-		// Prepare the list of post types
-		foreach ( $this->post_types as $post_type ) {
-			$post_type_placeholders[] = '%s';
-			$query_params[] = $post_type;
-		}
-		
-		$query_params[] = $_POST['fm_post_search_term'];
-		$query_params[] = $this->search_orderby;
-		$query_params[] = $this->search_limit;
-		
-		$post_search_results = $wpdb->get_results( $wpdb->prepare( 
-			"
-			SELECT ID, post_title, post_type, post_date
-			FROM $wpdb->posts
-			WHERE
-			post_type IN (" . implode( ',', $post_type_placeholders ) . ")
-			AND post_title like '%%%s%%'
-			ORDER BY %s
-			LIMIT %d
-			", 
-			$query_params
-		) );
+		$posts = call_user_func( $this->query_callback, sanitize_title( $_POST['fm_post_search_term'] ) );
 		
 		// See if any results were returned and return them as an array
-		if ( $post_search_results ) {
+		if ( !empty( $posts ) ) {
 		
 			$search_data = array();
 		
-			foreach ( $post_search_results as $result ) {
+			foreach ( $posts as $result ) {
 				// Get the post type display label to show in the dropdown
 				$post_type = get_post_type_object( $result->post_type );
 				
@@ -144,19 +177,31 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		die();
 	}
 	
+	/**
+	 * Make sure JSON is an associative array, and make sure posts are all clean.
+	 * @param array $value
+	 * @return array $value
+	 */
 	public function presave( $value ) {
-			
 		// If the value is not empty, convert the JSON data into an associative array so it is handled properly on save
-		return json_decode( stripslashes( $value ), true );
-		
-	}
-	
-	public function validate( $value ) {
-
-	}
-
-	public function sanitize( $value ) {
-
+		$value = json_decode( stripslashes( $value ), true );
+		$legal_keys = array( 'id', 'title', 'post_type', 'post_date' );
+		if ( is_array( $value ) ) {
+			foreach ( $value as $k => $v ) {
+				if ( !in_array( $k, $legal_keys ) )
+					$this->_unauthorized_access( 'Illegal key ' . $k . ' in submission for post field.' );
+			}
+			// Sanitization
+			$value['id'] = intval( $value['id'] );			
+			$value['title'] = sanitize_text_field( $value['title'] );
+			$value['post_type'] = sanitize_text_field( $value['post_type'] );
+			$value['post_date'] = sanitize_text_field( $value['post_date'] );
+			// One more validation: For now, you must be able to edit a post in order to reference it.
+			if( !current_user_can( 'edit_post', $value['id'] ) ) {
+				$this->_unauthorized_access( 'Tried to refer to post ' . $value['id'] . ' which user cannot edit.' );	
+			}
+		}
+		return $value;
 	}
 
 }

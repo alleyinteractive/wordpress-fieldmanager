@@ -1,8 +1,24 @@
 <?php
+/**
+ * @package Fieldmanager
+ */
+
+/**
+ * Textarea field
+ * @package Fieldmanager
+ */
 class Fieldmanager_TextArea extends Fieldmanager_Field {
 
+	/**
+	 * @var string
+	 * Override field_class
+	 */
 	public $field_class = 'text';
 
+	/**
+	 * Construct default attributes; 50x10 textarea
+	 * @param array $options
+	 */
 	public function __construct( $options = array() ) {
 		$this->attributes = array(
 			'cols' => '50',
@@ -11,6 +27,11 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 		parent::__construct($options);
 	}
 
+	/**
+	 * Form element
+	 * @param mixed $value
+	 * @return string HTML
+	 */
 	public function form_element( $value = '' ) {
 		return sprintf(
 			'<textarea class="fm-element" name="%s" id="%s" %s />%s</textarea>',
@@ -19,14 +40,6 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 			$this->get_element_attributes(),
 			html_entity_decode( $value )
 		);
-	}
-
-	public function validate( $value ) {
-
-	}
-
-	public function sanitize( $value ) {
-
 	}
 
 }

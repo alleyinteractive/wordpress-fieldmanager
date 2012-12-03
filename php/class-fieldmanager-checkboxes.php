@@ -1,13 +1,25 @@
 <?php
+/**
+ * @package Fieldmanager
+ */
 
+/**
+ * Checkboxes multi-select field
+ * @package Fieldmanager
+ */
 class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 
+	/**
+	 * @var string
+	 * Override field_class
+	 */
 	public $field_class = 'checkboxes';
 	
-	public function __construct( $options = array() ) {
-		parent::__construct($options);
-	}
-
+	/**
+	 * Render form element
+	 * @param mixed $value
+	 * @return string HTML
+	 */
 	public function form_element( $value = array() ) {
 		
 		return sprintf(
@@ -17,6 +29,13 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 		);
 	}
 	
+	/**
+	 * Individual checkbox element
+	 * @see Fieldmanager_Options::form_data_elements()
+	 * @param mixed $data_row
+	 * @param mixed $value
+	 * @return string HTML
+	 */
 	public function form_data_element( $data_row, $value = array() ) {
 	
 		return sprintf(
@@ -28,22 +47,6 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 			htmlspecialchars( $data_row['name'] )
 		);						
 	
-	}
-	
-	public function form_data_start_group( $label ) {
-	
-	}
-	
-	public function form_data_end_group() {
-	
-	}
-
-	public function validate( $value ) {
-
-	}
-
-	public function sanitize( $value ) {
-
 	}
 
 }

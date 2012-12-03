@@ -5,55 +5,171 @@
 
 /**
  * Base class containing core functionality for Fieldmanager
+ * 
+ * Security features of this class for verifying access and saving data:
+ * 1. In Fieldmanager_Field::save_fields_for_post(), verify that we are using an assigned post type
+ *    This is the starting point for $_POST requests to post edit pages.
+ * 2. In Fieldmanager_Field::save_fields_for_post(), verify that the user can save the post type
+ * 3. In Fieldmanager_Field::save_fields_for_post(), perform nonce validation
+ * 4. In Fieldmanager_Field::save_to_post_meta(), call Fieldmanager_Field::presave_all()
+ *    This is the starting point for save routines that use Fieldmanager as an API
+ * 5. In Fieldmanager_Field::presave_all(), verify that the number of elements is less than $limit,
+ *    if $limit is not 1 or infinite (0), and verify that all multi-element arrays are numeric only.
+ * 6. In Fieldmanager_Field::presave_all(), call Fieldmanager_Field::presave()
+ * 5. In Fieldmanager_Field::presave(), call all assigned validators; if one returns false, die.
+ * 6a. For groups (including the root group) in Fieldmanager_Group::presave(), verify that all 
+ *     keys in the submission match the form names of valid children.
+ * 6b. For all other fields, in Fieldmanager_Field::presave(), sanitize the field to save to the DB.
+ *     The default sanitizer is sanitize_text_field().
+ * 
+ * @package Fieldmanager
  */
 abstract class Fieldmanager_Field {
 
-	/** @type int How many of these fields to display, 0 for no limit **/
+	/**
+	 * @var debug
+	 * If true, throw exceptions for illegal behavior
+	 */
+	public static $debug = True;
+
+	/**
+	 * @var int
+	 * How many of these fields to display, 0 for no limit
+	 */
 	public $limit = 1;
-	/** @type int How many of these fields to display initially, if $limit > 1 **/
+
+	/**
+	 * @var int
+	 * How many of these fields to display initially, if $limit > 1
+	 */
 	public $starting_count = 1;
-	/** @type int How many extra elements to display if there is already form data and $limit > 1 **/
+
+	/**
+	 * @var int
+	 * How many extra elements to display if there is already form data and $limit > 1
+	 */
 	public $extra_elements = 1;
-	/** @type string **/
+
+	/**
+	 * @var string
+	 * Text for add more button
+	 */
 	public $add_more_label = '';
-	/** @type string Form name to use */ 
+
+	/**
+	 * @var string
+	 * The name of the form element, As in 'foo' in <input name="foo" />
+	 */ 
 	public $name = '';
-	/** @type string Label to use for form element */ 
+
+	/**
+	 * @var string
+	 * Label to use for form element
+	 */
 	public $label = '';
-	/** @type string Description for the form element */
+
+	/**
+	 * @var string
+	 * Description for the form element
+	 */
 	public $description = '';
-	/** @type array Extra attributes to apply to the form element */ 
+
+	/**
+	 * @var string[]
+	 * Extra HTML attributes to apply to the form element
+	 */
 	public $attributes = array();
-	/** @type CSS class of the element */ 
+
+	/**
+	 * @var string
+	 * CSS class for form element
+	 */
 	public $field_class = 'element';
-	/** @type boolean Repeat the label for each element if $limit > 1 */ 
+
+	/**
+	 * @var boolean
+	 * Repeat the label for each element if $limit > 1
+	 */
 	public $one_label_per_item = TRUE;
-	/** @type string Sortable use */ 
+
+	/**
+	 * @var boolean
+	 * Allow draggable sorting if $limit > 1
+	 */
 	public $sortable = FALSE;
-	/** @type string HTML element to use for label */ 
+
+	/**
+	 * @var string
+	 * HTML element to use for label
+	 */
 	public $label_element = 'div';
-	/** @type callback Function to use to sanitize input */
+
+	/**
+	 * @var callback
+	 * Function to use to sanitize input
+	 */
 	public $sanitize = 'sanitize_text_field';
-	/** @type callback[] Function to use to sanitize input */
+
+	/**
+	 * @var callback[]
+	 * Functions to use to validate input
+	 */
 	public $validate = array();
-	/** @type string|null Data type this element is used in, e.g. post **/
+
+	/**
+	 * @var string|null
+	 * Data type this element is used in, generally set internally
+	 */
 	public $data_type = NULL;
-	/** @type int|null ID for $this->data_type, eg $post->ID */
+
+	/**
+	 * @var int|null
+	 * ID for $this->data_type, eg $post->ID, generally set internally
+	 */
 	public $data_id = NULL;
-	/** @type boolean If true, save empty elements to the DB */
+
+	/**
+	 * @var boolean
+	 * If true, save empty elements to DB (if $this->limit != 1; single elements are always saved)
+	 */
 	public $save_empty = FALSE;
 
-	/** @type int If $this->limit > 1, which element in sequence are we currently rendering? **/
+	/**
+	 * @var array[]
+	 * Array of content type assignments for these fields. Sample:
+	 * $element->content_types = array(
+	 *     array(
+	 *        'meta_box_name' => 'quiz_question',
+	 *        'meta_box_title' => 'Quiz Question',
+	 *        'content_type' => 'quiz'
+	 *     )
+	 * );
+	 */
+	public $content_types = array();
+
+	/**
+	 * @var int
+	 * If $this->limit > 1, which element in sequence are we currently rendering?
+	 */
 	protected $seq = 0;
-	/** @type Fieldmanager_Field|null Parent element, if applicable. Almost always Fieldmanager_Group.**/
+
+	/**
+	 * @var Fieldmanager_Field
+	 * Parent element, if applicable. Would be a Fieldmanager_Group unless third-party plugins support this.
+	 */
 	protected $parent = NULL;
-	/** @type boolean Render this element in a tab? @todo Add extra wrapper info rather than this specific. */
+
+	/**
+	 * @todo Add extra wrapper info rather than this specific.
+	 * @var Fieldmanager_Field
+	 * Render this element in a tab?
+	 */
 	protected $is_tab = FALSE;
 
 	/**
-	 * Generate HTML for the form element itself. Generally should be just one tag, no wrappers.
 	 * @param mixed string[]|string the value of the element.
 	 * @return string HTML for the element.
+	 * Generate HTML for the form element itself. Generally should be just one tag, no wrappers.
 	 */
 	public abstract function form_element( $value );
 
@@ -61,21 +177,31 @@ abstract class Fieldmanager_Field {
 	 * Superclass constructor, just populates options and sanity-checks common elements.
 	 * It might also die, but only helpfully, to catch errors in development.
 	 * @param array $options with keys matching vars of the field in use.
+	 * @throws FM_Developer_Exception if an option is set but not defined in this class or the child class.
+	 * @throws FM_Developer_Exception if an option is set but not public.
 	 */
 	public function __construct( $options = array() ) {
 		foreach ( $options as $k => $v ) {
 			try {
 				$reflection = new ReflectionProperty( $this, $k ); // Would throw a ReflectionException if item doesn't exist (developer error)
 				if ( $reflection->isPublic() ) $this->$k = $v;
-				else throw new Exception; // If the property isn't public, don't set it (rare)
+				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
 					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.' ),
 					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
 				$title = __( 'Nonexistant or invalid option' );
-				wp_die( $message, $title );
+				if ( !self::$debug ) {
+					wp_die( $message, $title );
+				} else {
+					throw new FM_Developer_Exception( $message );
+				}
 			}
+		}
+		if ( !empty( $this->content_types ) ) {
+			add_action( 'admin_init', array( $this, 'add_meta_boxes' ) );
+			add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
 		}
 	}
 
@@ -87,7 +213,12 @@ abstract class Fieldmanager_Field {
 	 */
 	public function element_markup( $values = array() ) {
 		if ( $this->limit == 0 ) {
-			$max = max( $this->starting_count, count( $values ) + $this->extra_elements );
+			if ( count( $values ) + $this->extra_elements <= $this->starting_count ) {
+				$max = $this->starting_count;
+			}
+			else {
+				$max = count( $values ) + $this->extra_elements;
+			}
 		}
 		else {
 			$max = $this->limit;
@@ -276,6 +407,22 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * admin_init callback to add meta boxes to content types
+	 * Registers render_meta_box()
+	 * @return void
+	 */
+	public function add_meta_boxes() {
+		foreach ( $this->content_types as $type ) {
+			add_meta_box(
+				$type['meta_box_name'],
+				$type['meta_box_title'],
+				array( $this, 'render_meta_box' ),
+				$type['content_type']
+			);
+		}
+	}
+
+	/**
 	 * Helper to attach element_markup() to add_meta_box(). Prints markup for post editor.
 	 * @see http://codex.wordpress.org/Function_Reference/add_meta_box
 	 * @param $post the post object.
@@ -285,16 +432,52 @@ abstract class Fieldmanager_Field {
 	public function render_meta_box( $post, $form_struct ) {
 		$key = $form_struct['callback'][0]->name;
 		$values = get_post_meta( $post->ID, $key, TRUE );
+		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
 		if ( !is_array( $values ) ) { // default of get_post_meta is empty array.
 			$values = json_decode( $values, TRUE );
 		}
 		echo $this->element_markup( $values );
 	}
 
-	public function validate_all( $value ) {
-		// iterate over validators, check nonce field.
+	/**
+	 * Takes $_POST data and saves it to, calling save_to_post_meta() once validation is passed
+	 * When using Fieldmanager as an API, do not call this function directly, call save_to_post_meta()
+	 * @param int $post_id
+	 * @return void
+	 */
+	public function save_fields_for_post( $post_id ) {
+		// Make sure this field is attached to the post type being saved.
+		$use_this_post_type = False;
+		foreach ( $this->content_types as $type ) {
+			if ( $type['content_type'] == $_POST['post_type'] ) {
+				$use_this_post_type = True;
+				break;
+			}
+		}
+		if ( !$use_this_post_type ) return;
+
+		// Make sure the current user can save this post
+		if( $_POST['post_type'] == 'post' ) {
+			if( !current_user_can( 'edit_post', $post_id ) ) {
+				$this->_unauthorized_access( 'User cannot edit this post' );
+				return;
+			}
+		}
+
+		// Make sure that our nonce field arrived intact
+		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->name . '-nonce'], 'fieldmanager-save-' . $this->name ) ) {
+			$this->_unauthorized_access( 'Nonce validation failed' );
+		}
+
+		$this->save_to_post_meta( $post_id, $_POST[ $this->name ] );
 	}
 
+	/**
+	 * Helper to save an array of data to post meta
+	 * @param int $post_id
+	 * @param array $data
+	 * @return void
+	 */
 	public function save_to_post_meta( $post_id, $data ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 		$this->data_id = $post_id;
@@ -312,28 +495,50 @@ abstract class Fieldmanager_Field {
 		if ( $this->limit == 1 ) {
 			return $this->presave( $values );
 		}
+		
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
 		if ( $this->limit != 1 && !is_array( $values ) ) {
-			$this->_unauthorized_access();
+			$this->_unauthorized_access( '$values should be an array because $limit is ' . $this->limit );
+		}
+
+		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
+		if ( $this->limit > 1 && count( $values ) > $this->limit ) {
+			$this->_unauthorized_access(
+				sprintf( 'submitted %1$d values against a limit of %2$d', count( $values ), $this->limit )
+			);
 		}
 
 		foreach ( $values as $i => $value ) {
 			if ( !is_numeric( $i ) ) {
-				// Aw snap. If $this->limit != 1 and $values contains something other than a numeric key...
-				$this->_unauthorized_access();
+				// If $this->limit != 1 and $values contains something other than a numeric key...
+				$this->_unauthorized_access( '$values should be a number-indexed array, but found key ' . $i );
 			}
 			$values[$i] = $this->presave( $value );
-			if ( empty( $values[$i] ) && !$this->save_empty ) unset( $values[$i] );
+			if ( !$this->save_empty && empty( $values[$i] ) ) unset( $values[$i] );
 		}
 		return $values;
 	}
 
+	/**
+	 * Presave function, which handles sanitization and validation
+	 * @param mixed $value If a single field expects to manage an array, it must override presave()
+	 * @return sanitized values. 
+	 */
 	public function presave( $value ) {
 		// It's possible that some elements (Grid is one) would be arrays at
 		// this point, but those elements must override this function. Let's
 		// make sure we're dealing with one value here.
 		if ( is_array( $value ) ) {
-			$this->_unauthorized_access();
+			$this->_unauthorized_access( 'presave() in the base class should not get arrays, but did.' );
+		}
+		foreach ( $this->validate as $func ) {
+			if ( !call_user_func( $func, $value ) ) {
+				$this->_failed_validation( sprintf(
+					__( 'Input "%1$s" is not valid for field "%2$s" ' ),
+					(string) $value,
+					$this->label
+				) );
+			}
 		}
 		return call_user_func( $this->sanitize, $value );
 	}
@@ -387,22 +592,42 @@ abstract class Fieldmanager_Field {
 		return $out;
 	}
 
+	/**
+	 * Return HTML for the sort handle (multi-tools); a separate function to override
+	 * @return string
+	 */
 	public function get_sort_handle() {
 		return '<div class="fmjs-drag fmjs-drag-icon">Move</div>';
 	}
 
+	/**
+	 * Return HTML for the remove handle (multi-tools); a separate function to override
+	 * @return string
+	 */
 	public function get_remove_handle() {
 		return '<a href="#" class="fmjs-remove" title="Remove">Remove</a>';
 	}
 
+	/**
+	 * Return HTML for the collapse handle (multi-tools); a separate function to override
+	 * @return string
+	 */
 	public function get_collapse_handle() {
 		return '<div class="handlediv" title="Click to toggle"><br /></div>';
 	}
 
+	/**
+	 * Return extra element classes; overriden by some fields.
+	 * @return array
+	 */
 	public function get_extra_element_classes() {
 		return array();
 	}
 
+	/**
+	 * How many elements should we render?
+	 * @return string
+	 */
 	protected function get_multiple_count( $values ) {
 		if ( $this->limit == 0 ) {
 			return max( $this->starting_count, count( $values ) + $this->extra_elements );
@@ -413,14 +638,41 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Die violently. Cribbed from Zoninator.
+	 * Die violently. If self::$debug is true, throw an exception.
+	 * @param string $debug_message
 	 * @return void e.g. return _you_ into a void.
 	 */
-	protected function _unauthorized_access() {
-		wp_die( __( 'Sorry, you\'re not supposed to do that...', 'fieldmanager' ) );
+	protected function _unauthorized_access( $debug_message = '' ) {
+		if ( self::$debug ) {
+			throw new FM_Exception( $debug_message );
+		}
+		else {
+			wp_die( __( 'Sorry, you\'re not supposed to do that...', 'fieldmanager' ) );
+		}
 	}
 
-	private function get_seq() {
+	/**
+	 * Fail validation. If self::$debug is true, throw an exception.
+	 * @param string $error_message
+	 * @return void
+	 */
+	protected function _failed_validation( $debug_message = '' ) {
+		if ( self::$debug ) {
+			throw new FM_Validation_Exception( $debug_message );
+		}
+		else {
+			wp_die(
+				$debug_message . "\n\n" .
+				__( 'You may be able to use your browser\'s back button to resolve this error. ', 'fieldmanager' )
+			);
+		}
+	}
+
+	/**
+	 * In a multiple element set, return the index of the current element we're rendering.
+	 * @return int
+	 */
+	protected function get_seq() {
 		return $this->seq;
 	}
 }

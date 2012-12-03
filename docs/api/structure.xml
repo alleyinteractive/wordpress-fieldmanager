@@ -1,0 +1,1975 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project version="2.0.0a12" title="">
+  <file path="class-fieldmanager-checkbox.php" hash="5ff29ee88bab4d48883c1e1206acaac6" package="Fieldmanager">
+    <docblock line="2">
+      <description>Class file for checkbox field</description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="11" package="Fieldmanager">
+      <extends>\Fieldmanager_Field</extends>
+      <name>Fieldmanager_Checkbox</name>
+      <full_name>\Fieldmanager_Checkbox</full_name>
+      <docblock line="7">
+        <description>Checkbox field</description>
+        <long-description></long-description>
+        <tag line="7" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="17" namespace="global" package="Default">
+        <name>$checked_value</name>
+        <default>TRUE</default>
+        <docblock line="13">
+          <description></description>
+          <long-description></long-description>
+          <tag line="13" name="var" description="Value when checked" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="23" namespace="global" package="Default">
+        <name>$unchecked_value</name>
+        <default>FALSE</default>
+        <docblock line="19">
+          <description></description>
+          <long-description></long-description>
+          <tag line="19" name="var" description="Value when unchecked" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="29" namespace="global" package="Default">
+        <name>$save_empty</name>
+        <default>True</default>
+        <docblock line="25">
+          <description></description>
+          <long-description></long-description>
+          <tag line="25" name="var" description="Override save_empty default for this element type" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="36" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="31">
+          <description>Form element implementation for checkboxes</description>
+          <long-description></long-description>
+          <tag line="31" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="31" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="36">
+          <name>$value</name>
+          <default>NULL</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="51" package="Fieldmanager">
+        <name>presave</name>
+        <full_name>presave</full_name>
+        <docblock line="46">
+          <description>Override presave function to swap in unchecked_value if needed</description>
+          <long-description></long-description>
+          <tag line="46" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="46" name="return" description="proper value" type="mixed">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="51">
+          <name>$value</name>
+          <default>NULL</default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+  </file>
+  <file path="class-fieldmanager-checkboxes.php" hash="c145f4e8b282de4279d07cc689ef388b" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="10" package="Fieldmanager">
+      <extends>\Fieldmanager_Options</extends>
+      <name>Fieldmanager_Checkboxes</name>
+      <full_name>\Fieldmanager_Checkboxes</full_name>
+      <docblock line="6">
+        <description>Checkboxes multi-select field</description>
+        <long-description></long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="16" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'checkboxes'</default>
+        <docblock line="12">
+          <description></description>
+          <long-description></long-description>
+          <tag line="12" name="var" description="Override field_class" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="23" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="18">
+          <description>Render form element</description>
+          <long-description></long-description>
+          <tag line="18" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="18" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="23">
+          <name>$value</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="39" package="Fieldmanager">
+        <name>form_data_element</name>
+        <full_name>form_data_element</full_name>
+        <docblock line="32">
+          <description>Individual checkbox element</description>
+          <long-description></long-description>
+          <tag line="32" name="see" description="\Fieldmanager_Options::form_data_elements()" refers="\Fieldmanager_Options::form_data_elements()"/>
+          <tag line="32" name="param" description="" type="mixed" variable="$data_row">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="32" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="32" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="39">
+          <name>$data_row</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="39">
+          <name>$value</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-checkboxes.php</critical>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-field.php" hash="4cef1dabe3dbf7068fc1499ae8a2f996" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="true" namespace="global" line="27" package="Fieldmanager">
+      <extends/>
+      <name>Fieldmanager_Field</name>
+      <full_name>\Fieldmanager_Field</full_name>
+      <docblock line="6">
+        <description>Base class containing core functionality for Fieldmanager</description>
+        <long-description>&lt;p&gt;Security features of this class for verifying access and saving data:
+1. In Fieldmanager_Field::save_fields_for_post(), verify that we are using an assigned post type
+   This is the starting point for $_POST requests to post edit pages.
+2. In Fieldmanager_Field::save_fields_for_post(), verify that the user can save the post type
+3. In Fieldmanager_Field::save_fields_for_post(), perform nonce validation
+4. In Fieldmanager_Field::save_to_post_meta(), call Fieldmanager_Field::presave_all()
+   This is the starting point for save routines that use Fieldmanager as an API
+5. In Fieldmanager_Field::presave_all(), verify that the number of elements is less than $limit,
+   if $limit is not 1 or infinite (0), and verify that all multi-element arrays are numeric only.
+6. In Fieldmanager_Field::presave_all(), call Fieldmanager_Field::presave()
+5. In Fieldmanager_Field::presave(), call all assigned validators; if one returns false, die.
+6a. For groups (including the root group) in Fieldmanager_Group::presave(), verify that all
+    keys in the submission match the form names of valid children.
+6b. For all other fields, in Fieldmanager_Field::presave(), sanitize the field to save to the DB.
+    The default sanitizer is sanitize_text_field().&lt;/p&gt;</long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="true" visibility="public" line="33" namespace="global" package="Default">
+        <name>$debug</name>
+        <default>True</default>
+        <docblock line="29">
+          <description></description>
+          <long-description></long-description>
+          <tag line="29" name="var" description="If true, throw exceptions for illegal behavior" type="\debug">
+            <type by_reference="false">\debug</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="39" namespace="global" package="Default">
+        <name>$limit</name>
+        <default>1</default>
+        <docblock line="35">
+          <description></description>
+          <long-description></long-description>
+          <tag line="35" name="var" description="How many of these fields to display, 0 for no limit" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="45" namespace="global" package="Default">
+        <name>$starting_count</name>
+        <default>1</default>
+        <docblock line="41">
+          <description></description>
+          <long-description></long-description>
+          <tag line="41" name="var" description="How many of these fields to display initially, if $limit &gt; 1" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="51" namespace="global" package="Default">
+        <name>$extra_elements</name>
+        <default>1</default>
+        <docblock line="47">
+          <description></description>
+          <long-description></long-description>
+          <tag line="47" name="var" description="How many extra elements to display if there is already form data and $limit &gt; 1" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="57" namespace="global" package="Default">
+        <name>$add_more_label</name>
+        <default>''</default>
+        <docblock line="53">
+          <description></description>
+          <long-description></long-description>
+          <tag line="53" name="var" description="Text for add more button" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="63" namespace="global" package="Default">
+        <name>$name</name>
+        <default>''</default>
+        <docblock line="59">
+          <description></description>
+          <long-description></long-description>
+          <tag line="59" name="var" description="The name of the form element, As in 'foo' in &lt;input name=&quot;foo&quot; /&gt;" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="69" namespace="global" package="Default">
+        <name>$label</name>
+        <default>''</default>
+        <docblock line="65">
+          <description></description>
+          <long-description></long-description>
+          <tag line="65" name="var" description="Label to use for form element" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="75" namespace="global" package="Default">
+        <name>$description</name>
+        <default>''</default>
+        <docblock line="71">
+          <description></description>
+          <long-description></long-description>
+          <tag line="71" name="var" description="Description for the form element" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="81" namespace="global" package="Default">
+        <name>$attributes</name>
+        <default>array()</default>
+        <docblock line="77">
+          <description></description>
+          <long-description></long-description>
+          <tag line="77" name="var" description="Extra HTML attributes to apply to the form element" type="string[]">
+            <type by_reference="false">string[]</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="87" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'element'</default>
+        <docblock line="83">
+          <description></description>
+          <long-description></long-description>
+          <tag line="83" name="var" description="CSS class for form element" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="93" namespace="global" package="Default">
+        <name>$one_label_per_item</name>
+        <default>TRUE</default>
+        <docblock line="89">
+          <description></description>
+          <long-description></long-description>
+          <tag line="89" name="var" description="Repeat the label for each element if $limit &gt; 1" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="99" namespace="global" package="Default">
+        <name>$sortable</name>
+        <default>FALSE</default>
+        <docblock line="95">
+          <description></description>
+          <long-description></long-description>
+          <tag line="95" name="var" description="Allow draggable sorting if $limit &gt; 1" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="105" namespace="global" package="Default">
+        <name>$label_element</name>
+        <default>'div'</default>
+        <docblock line="101">
+          <description></description>
+          <long-description></long-description>
+          <tag line="101" name="var" description="HTML element to use for label" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="111" namespace="global" package="Default">
+        <name>$sanitize</name>
+        <default>'sanitize_text_field'</default>
+        <docblock line="107">
+          <description></description>
+          <long-description></long-description>
+          <tag line="107" name="var" description="Function to use to sanitize input" type="callback">
+            <type by_reference="false">callback</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="117" namespace="global" package="Default">
+        <name>$validate</name>
+        <default>array()</default>
+        <docblock line="113">
+          <description></description>
+          <long-description></long-description>
+          <tag line="113" name="var" description="Functions to use to validate input" type="callback[]">
+            <type by_reference="false">callback[]</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="123" namespace="global" package="Default">
+        <name>$data_type</name>
+        <default>NULL</default>
+        <docblock line="119">
+          <description></description>
+          <long-description></long-description>
+          <tag line="119" name="var" description="Data type this element is used in, generally set internally" type="string|null">
+            <type by_reference="false">string</type>
+            <type by_reference="false">null</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="129" namespace="global" package="Default">
+        <name>$data_id</name>
+        <default>NULL</default>
+        <docblock line="125">
+          <description></description>
+          <long-description></long-description>
+          <tag line="125" name="var" description="ID for $this-&gt;data_type, eg $post-&gt;ID, generally set internally" type="int|null">
+            <type by_reference="false">int</type>
+            <type by_reference="false">null</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="135" namespace="global" package="Default">
+        <name>$save_empty</name>
+        <default>FALSE</default>
+        <docblock line="131">
+          <description></description>
+          <long-description></long-description>
+          <tag line="131" name="var" description="If true, save empty elements to DB (if $this-&gt;limit != 1; single elements are always saved)" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="148" namespace="global" package="Default">
+        <name>$content_types</name>
+        <default>array()</default>
+        <docblock line="137">
+          <description></description>
+          <long-description></long-description>
+          <tag line="137" name="var" description="Array of content type assignments for these fields. Sample: $element-&gt;content_types = array( array( 'meta_box_name' =&gt; 'quiz_question', 'meta_box_title' =&gt; 'Quiz Question', 'content_type' =&gt; 'quiz' ) );" type="array[]">
+            <type by_reference="false">array[]</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="protected" line="154" namespace="global" package="Default">
+        <name>$seq</name>
+        <default>0</default>
+        <docblock line="150">
+          <description></description>
+          <long-description></long-description>
+          <tag line="150" name="var" description="If $this-&gt;limit &gt; 1, which element in sequence are we currently rendering?" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="protected" line="160" namespace="global" package="Default">
+        <name>$parent</name>
+        <default>NULL</default>
+        <docblock line="156">
+          <description></description>
+          <long-description></long-description>
+          <tag line="156" name="var" description="Parent element, if applicable. Would be a Fieldmanager_Group unless third-party plugins support this." type="\Fieldmanager_Field">
+            <type by_reference="false">\Fieldmanager_Field</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="protected" line="167" namespace="global" package="Default">
+        <name>$is_tab</name>
+        <default>FALSE</default>
+        <docblock line="162">
+          <description></description>
+          <long-description></long-description>
+          <tag line="162" name="todo" description="Add extra wrapper info rather than this specific."/>
+          <tag line="162" name="var" description="Render this element in a tab?" type="\Fieldmanager_Field">
+            <type by_reference="false">\Fieldmanager_Field</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="global" line="174" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="169">
+          <description></description>
+          <long-description></long-description>
+          <tag line="169" name="param" description="string[]|string the value of the element." type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="169" name="return" description="HTML for the element.&#10;Generate HTML for the form element itself. Generally should be just one tag, no wrappers." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="174">
+          <name>$value</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="183" package="Fieldmanager">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="176">
+          <description>Superclass constructor, just populates options and sanity-checks common elements.</description>
+          <long-description>&lt;p&gt;It might also die, but only helpfully, to catch errors in development.&lt;/p&gt;</long-description>
+          <tag line="176" name="param" description="with keys matching vars of the field in use." type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="176" name="throws" description="if an option is set but not defined in this class or the child class." type="\FM_Developer_Exception">
+            <type by_reference="false">\FM_Developer_Exception</type>
+          </tag>
+          <tag line="176" name="throws" description="if an option is set but not public." type="\FM_Developer_Exception">
+            <type by_reference="false">\FM_Developer_Exception</type>
+          </tag>
+        </docblock>
+        <argument line="183">
+          <name>$options</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="214" package="Fieldmanager">
+        <name>element_markup</name>
+        <full_name>element_markup</full_name>
+        <docblock line="208">
+          <description>Generates all markup needed for all form elements in this field.</description>
+          <long-description>&lt;p&gt;Could be called directly by a plugin or theme.&lt;/p&gt;</long-description>
+          <tag line="208" name="param" description="the current values of this element, in a tree structure if the element has children." type="array" variable="$values">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="208" name="return" description="HTML for all form elements." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="214">
+          <name>$values</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="299" package="Fieldmanager">
+        <name>single_element_markup</name>
+        <full_name>single_element_markup</full_name>
+        <docblock line="290">
+          <description>Generate wrappers and labels for one form element.</description>
+          <long-description>&lt;p&gt;Is called by element_markup(), calls form_element().&lt;/p&gt;</long-description>
+          <tag line="290" name="see" description="\Fieldmanager_Field::element_markup()" refers="\Fieldmanager_Field::element_markup()"/>
+          <tag line="290" name="see" description="\Fieldmanager_Field::form_element()" refers="\Fieldmanager_Field::form_element()"/>
+          <tag line="290" name="param" description="the current value of this element." type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="290" name="param" description="true to generate a prototype element for Javascript." type="boolean" variable="$is_proto">
+            <type by_reference="false">boolean</type>
+          </tag>
+          <tag line="290" name="return" description="HTML for a single form element." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="299">
+          <name>$value</name>
+          <default>Null</default>
+          <type/>
+        </argument>
+        <argument line="299">
+          <name>$is_proto</name>
+          <default>False</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="350" package="Fieldmanager">
+        <name>wrap_with_multi_tools</name>
+        <full_name>wrap_with_multi_tools</full_name>
+        <docblock line="345">
+          <description>Wrap a chunk of HTML with "remove" and "move" buttons if applicable.</description>
+          <long-description></long-description>
+          <tag line="345" name="param" description="HTML to wrap." type="string" variable="$html">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="345" name="return" description="wrapped HTML." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="350">
+          <name>$html</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="350">
+          <name>$classes</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="368" package="Fieldmanager">
+        <name>get_form_name</name>
+        <full_name>get_form_name</full_name>
+        <docblock line="364">
+          <description>Get HTML form name (e.g.</description>
+          <long-description>&lt;p&gt;questions[answer]).&lt;/p&gt;</long-description>
+          <tag line="364" name="return" description="form name" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="368">
+          <name>$multiple</name>
+          <default>""</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="392" package="Fieldmanager">
+        <name>get_form_tree</name>
+        <full_name>get_form_tree</full_name>
+        <docblock line="388">
+          <description>Recursively build path to this element (e.g.</description>
+          <long-description>&lt;p&gt;array(grandparent, parent, this) )&lt;/p&gt;</long-description>
+          <tag line="388" name="return" description="of parents" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="405" package="Fieldmanager">
+        <name>get_element_id</name>
+        <full_name>get_element_id</full_name>
+        <docblock line="401">
+          <description>Get the ID for the form element itself, uses $this-&gt;seq (e.g.</description>
+          <long-description>&lt;p&gt;which position is this element in).&lt;/p&gt;</long-description>
+          <tag line="401" name="return" description="ID for use in a form element." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="414" package="Fieldmanager">
+        <name>add_meta_boxes</name>
+        <full_name>add_meta_boxes</full_name>
+        <docblock line="409">
+          <description>admin_init callback to add meta boxes to content types
+Registers render_meta_box()</description>
+          <long-description></long-description>
+          <tag line="409" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="432" package="Fieldmanager">
+        <name>render_meta_box</name>
+        <full_name>render_meta_box</full_name>
+        <docblock line="425">
+          <description>Helper to attach element_markup() to add_meta_box().</description>
+          <long-description>&lt;p&gt;Prints markup for post editor.&lt;/p&gt;</long-description>
+          <tag line="425" name="see" description="\http://codex.wordpress.org/Function_Reference/add_meta_box" refers="\http://codex.wordpress.org/Function_Reference/add_meta_box"/>
+          <tag line="425" name="param" description="the post object." type="\" variable="$post"/>
+          <tag line="425" name="param" description="the structure of the form itself (not very useful)." type="\" variable="$form_struct"/>
+          <tag line="425" name="return" description="" type="\void.">
+            <type by_reference="false">\void.</type>
+          </tag>
+        </docblock>
+        <argument line="432">
+          <name>$post</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="432">
+          <name>$form_struct</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="448" package="Fieldmanager">
+        <name>save_fields_for_post</name>
+        <full_name>save_fields_for_post</full_name>
+        <docblock line="442">
+          <description>Takes $_POST data and saves it to, calling save_to_post_meta() once validation is passed
+When using Fieldmanager as an API, do not call this function directly, call save_to_post_meta()</description>
+          <long-description></long-description>
+          <tag line="442" name="param" description="" type="int" variable="$post_id">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="442" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="448">
+          <name>$post_id</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="481" package="Fieldmanager">
+        <name>save_to_post_meta</name>
+        <full_name>save_to_post_meta</full_name>
+        <docblock line="475">
+          <description>Helper to save an array of data to post meta</description>
+          <long-description></long-description>
+          <tag line="475" name="param" description="" type="int" variable="$post_id">
+            <type by_reference="false">int</type>
+          </tag>
+          <tag line="475" name="param" description="" type="array" variable="$data">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="475" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="481">
+          <name>$post_id</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="481">
+          <name>$data</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="494" package="Fieldmanager">
+        <name>presave_all</name>
+        <full_name>presave_all</full_name>
+        <docblock line="489">
+          <description>Presaves all elements in what could be a set of them, dispatches to $this-&gt;presave()</description>
+          <long-description></long-description>
+          <tag line="489" name="input" description="mixed[] $values"/>
+          <tag line="489" name="return" description="sanitized values" type="mixed[]">
+            <type by_reference="false">mixed[]</type>
+          </tag>
+        </docblock>
+        <argument line="494">
+          <name>$values</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="527" package="Fieldmanager">
+        <name>presave</name>
+        <full_name>presave</full_name>
+        <docblock line="522">
+          <description>Presave function, which handles sanitization and validation</description>
+          <long-description></long-description>
+          <tag line="522" name="param" description="If a single field expects to manage an array, it must override presave()" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="522" name="return" description="values." type="\sanitized">
+            <type by_reference="false">\sanitized</type>
+          </tag>
+        </docblock>
+        <argument line="527">
+          <name>$value</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="551" package="Fieldmanager">
+        <name>get_element_attributes</name>
+        <full_name>get_element_attributes</full_name>
+        <docblock line="546">
+          <description>Generates an HTML attribute string based on the value of $this-&gt;attributes.</description>
+          <long-description></long-description>
+          <tag line="546" name="see" description="\Fieldmanager_Field::$attributes" refers="\Fieldmanager_Field::$attributes"/>
+          <tag line="546" name="return" description="attributes ready to insert into an HTML tag." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="564" package="Fieldmanager">
+        <name>get_element_label</name>
+        <full_name>get_element_label</full_name>
+        <docblock line="559">
+          <description>Get an HTML label for this element.</description>
+          <long-description></long-description>
+          <tag line="559" name="param" description="extra CSS classes." type="array" variable="$classes">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="559" name="return" description="HTML label." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="564">
+          <name>$classes</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="581" package="Fieldmanager">
+        <name>add_another</name>
+        <full_name>add_another</full_name>
+        <docblock line="577">
+          <description>Generates HTML for the "Add Another" button.</description>
+          <long-description></long-description>
+          <tag line="577" name="return" description="button HTML." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="599" package="Fieldmanager">
+        <name>get_sort_handle</name>
+        <full_name>get_sort_handle</full_name>
+        <docblock line="595">
+          <description>Return HTML for the sort handle (multi-tools); a separate function to override</description>
+          <long-description></long-description>
+          <tag line="595" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="607" package="Fieldmanager">
+        <name>get_remove_handle</name>
+        <full_name>get_remove_handle</full_name>
+        <docblock line="603">
+          <description>Return HTML for the remove handle (multi-tools); a separate function to override</description>
+          <long-description></long-description>
+          <tag line="603" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="615" package="Fieldmanager">
+        <name>get_collapse_handle</name>
+        <full_name>get_collapse_handle</full_name>
+        <docblock line="611">
+          <description>Return HTML for the collapse handle (multi-tools); a separate function to override</description>
+          <long-description></long-description>
+          <tag line="611" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="623" package="Fieldmanager">
+        <name>get_extra_element_classes</name>
+        <full_name>get_extra_element_classes</full_name>
+        <docblock line="619">
+          <description>Return extra element classes; overriden by some fields.</description>
+          <long-description></long-description>
+          <tag line="619" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="631" package="Fieldmanager">
+        <name>get_multiple_count</name>
+        <full_name>get_multiple_count</full_name>
+        <docblock line="627">
+          <description>How many elements should we render?</description>
+          <long-description></long-description>
+          <tag line="627" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="631">
+          <name>$values</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="645" package="Fieldmanager">
+        <name>_unauthorized_access</name>
+        <full_name>_unauthorized_access</full_name>
+        <docblock line="640">
+          <description>Die violently.</description>
+          <long-description>&lt;p&gt;If self::$debug is true, throw an exception.&lt;/p&gt;</long-description>
+          <tag line="640" name="param" description="" type="string" variable="$debug_message">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="640" name="return" description="e.g. return _you_ into a void." type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="645">
+          <name>$debug_message</name>
+          <default>''</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="659" package="Fieldmanager">
+        <name>_failed_validation</name>
+        <full_name>_failed_validation</full_name>
+        <docblock line="654">
+          <description>Fail validation.</description>
+          <long-description>&lt;p&gt;If self::$debug is true, throw an exception.&lt;/p&gt;</long-description>
+          <tag line="654" name="param" description="" type="string" variable="$error_message">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="654" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="659">
+          <name>$debug_message</name>
+          <default>''</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="675" package="Fieldmanager">
+        <name>get_seq</name>
+        <full_name>get_seq</full_name>
+        <docblock line="671">
+          <description>In a multiple element set, return the index of the current element we're rendering.</description>
+          <long-description></long-description>
+          <tag line="671" name="return" description="" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-field.php</critical>
+      <error line="169" code="50012">No short description for method form_element()</error>
+      <error line="345" code="50015">Argument $classes is missing from the Docblock of wrap_with_multi_tools()</error>
+      <error line="364" code="50015">Argument $multiple is missing from the Docblock of get_form_name()</error>
+      <error line="489" code="50015">Argument $values is missing from the Docblock of presave_all()</error>
+      <error line="627" code="50015">Argument $values is missing from the Docblock of get_multiple_count()</error>
+      <error line="654" code="50014">Name of argument $debug_message does not match with the DocBlock's name $error_message in _failed_validation()</error>
+      <notice line="654" code="50013">Parameter $error_message could not be found in _failed_validation()</notice>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-grid.php" hash="0c26a7951af704f538f4e144c5af67ab" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="12" package="Fieldmanager">
+      <extends>\Fieldmanager_Field</extends>
+      <name>Fieldmanager_Grid</name>
+      <full_name>\Fieldmanager_Grid</full_name>
+      <docblock line="6">
+        <description>Fieldmanager plugin for Handsontable Grid view, packaged with main
+Fieldmanager implemenation to demonstrate advanced custom functionality, and
+a field which overrides presave.</description>
+        <long-description></long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="18" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'grid'</default>
+        <docblock line="14">
+          <description></description>
+          <long-description></long-description>
+          <tag line="14" name="var" description="Override field clas" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="24" package="Fieldmanager">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="20">
+          <description>Constructor which adds several scrips and CSS</description>
+          <long-description></long-description>
+          <tag line="20" name="param" description="" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="24">
+          <name>$options</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="53" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="48">
+          <description>Render HTML for Grid element</description>
+          <long-description></long-description>
+          <tag line="48" name="param" description="" type="array" variable="$value">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="48" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="53">
+          <name>$value</name>
+          <default>''</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="78" package="Fieldmanager">
+        <name>presave</name>
+        <full_name>presave</full_name>
+        <docblock line="73">
+          <description>Override presave, using the sanitize function per cell</description>
+          <long-description></long-description>
+          <tag line="73" name="param" description="" type="string" variable="$value">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="73" name="return" description="sanitized row/col matrix" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="78">
+          <name>$value</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-grid.php</critical>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-group.php" hash="4137886b374e4d5c1c5c894c68731e74" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="11" package="Fieldmanager">
+      <extends>\Fieldmanager_Field</extends>
+      <name>Fieldmanager_Group</name>
+      <full_name>\Fieldmanager_Group</full_name>
+      <docblock line="6">
+        <description>Fieldmanager Group; allows associating multiple fields together
+and required as the base element.</description>
+        <long-description></long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="17" namespace="global" package="Default">
+        <name>$children</name>
+        <default>array()</default>
+        <docblock line="13">
+          <description></description>
+          <long-description></long-description>
+          <tag line="13" name="var" description="Children elements of this group. Not much point in creating an empty group." type="\Fieldmanager_Field[]">
+            <type by_reference="false">\Fieldmanager_Field[]</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="23" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'group'</default>
+        <docblock line="19">
+          <description></description>
+          <long-description></long-description>
+          <tag line="19" name="var" description="Override field class" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="29" namespace="global" package="Default">
+        <name>$label_element</name>
+        <default>'h4'</default>
+        <docblock line="25">
+          <description></description>
+          <long-description></long-description>
+          <tag line="25" name="var" description="Override label element" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="35" namespace="global" package="Default">
+        <name>$collapsible</name>
+        <default>FALSE</default>
+        <docblock line="31">
+          <description></description>
+          <long-description></long-description>
+          <tag line="31" name="var" description="If true, this group can be collapsed by clicking its header." type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="41" namespace="global" package="Default">
+        <name>$tabbed</name>
+        <default>FALSE</default>
+        <docblock line="37">
+          <description></description>
+          <long-description></long-description>
+          <tag line="37" name="var" description="If true, render children in tabs." type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="47" namespace="global" package="Default">
+        <name>$tab_limit</name>
+        <default>0</default>
+        <docblock line="43">
+          <description></description>
+          <long-description></long-description>
+          <tag line="43" name="var" description="How many tabs, maximum?" type="int">
+            <type by_reference="false">int</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="protected" line="53" namespace="global" package="Default">
+        <name>$child_count</name>
+        <default>0</default>
+        <docblock line="49">
+          <description></description>
+          <long-description></long-description>
+          <tag line="49" name="var" description="Iterator value for how many children we have rendered." type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="58" package="Fieldmanager">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="55">
+          <description>Constructor; add CSS if we're looking at a tabbed view</description>
+          <long-description></long-description>
+        </docblock>
+        <argument line="58">
+          <name>$options</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="74" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="70">
+          <description>Render the element, iterating over children and calling their form_element() functions.</description>
+          <long-description></long-description>
+          <tag line="70" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="74">
+          <name>$value</name>
+          <default>NULL</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="165" package="Fieldmanager">
+        <name>presave</name>
+        <full_name>presave</full_name>
+        <docblock line="160">
+          <description>Presave override for groups which dispatches to child presave_all methods.</description>
+          <long-description></long-description>
+          <tag line="160" name="input" description="mixed[] values"/>
+          <tag line="160" name="return" description="values" type="mixed[]">
+            <type by_reference="false">mixed[]</type>
+          </tag>
+        </docblock>
+        <argument line="165">
+          <name>$values</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="197" package="Fieldmanager">
+        <name>get_element_label</name>
+        <full_name>get_element_label</full_name>
+        <docblock line="192">
+          <description>Get an HTML label for this element.</description>
+          <long-description></long-description>
+          <tag line="192" name="param" description="extra CSS classes." type="array" variable="$classes">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="192" name="return" description="HTML label." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="197">
+          <name>$classes</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="223" package="Fieldmanager">
+        <name>wrap_with_multi_tools</name>
+        <full_name>wrap_with_multi_tools</full_name>
+        <docblock line="218">
+          <description>Groups have their own drag and remove tools in the label.</description>
+          <long-description></long-description>
+          <tag line="218" name="param" description="" type="string" variable="$html">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="218" name="return" description="" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="223">
+          <name>$html</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="231" package="Fieldmanager">
+        <name>get_extra_element_classes</name>
+        <full_name>get_extra_element_classes</full_name>
+        <docblock line="227">
+          <description>Maybe add the collapsible class for groups</description>
+          <long-description></long-description>
+          <tag line="227" name="return" description="" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-group.php</critical>
+      <error line="55" code="50015">Argument $options is missing from the Docblock of __construct()</error>
+      <error line="160" code="50015">Argument $values is missing from the Docblock of presave()</error>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-hidden.php" hash="3119ebfc1b2341541f68e945b5e53edc" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="10" package="Fieldmanager">
+      <extends>\Fieldmanager_Field</extends>
+      <name>Fieldmanager_Hidden</name>
+      <full_name>\Fieldmanager_Hidden</full_name>
+      <docblock line="6">
+        <description>Hidden field</description>
+        <long-description></long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="16" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'hidden'</default>
+        <docblock line="12">
+          <description></description>
+          <long-description></long-description>
+          <tag line="12" name="var" description="Override field_class" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="23" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="18">
+          <description>Hidden form element</description>
+          <long-description></long-description>
+          <tag line="18" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="18" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="23">
+          <name>$value</name>
+          <default>''</default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-hidden.php</critical>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-options.php" hash="04347ac1d9c1545910d26f139cf558ab" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <include line="249" type="Require Once" package="Default">
+      <name/>
+    </include>
+    <include line="251" type="Require Once" package="Default">
+      <name/>
+    </include>
+    <include line="253" type="Require Once" package="Default">
+      <name/>
+    </include>
+    <class final="false" abstract="true" namespace="global" line="10" package="Fieldmanager">
+      <extends>\Fieldmanager_Field</extends>
+      <name>Fieldmanager_Options</name>
+      <full_name>\Fieldmanager_Options</full_name>
+      <docblock line="6">
+        <description>Base class for handling option fields, like checkboxes or radios</description>
+        <long-description></long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="16" namespace="global" package="Default">
+        <name>$data</name>
+        <default>array()</default>
+        <docblock line="12">
+          <description></description>
+          <long-description></long-description>
+          <tag line="12" name="var" description="Option data" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="23" namespace="global" package="Default">
+        <name>$grouped</name>
+        <default>false</default>
+        <docblock line="18">
+          <description></description>
+          <long-description></long-description>
+          <tag line="18" name="var" description="Is the data grouped? E.g. should we use &lt;optgroup&gt;" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="29" namespace="global" package="Default">
+        <name>$first_element</name>
+        <default>array()</default>
+        <docblock line="25">
+          <description></description>
+          <long-description></long-description>
+          <tag line="25" name="var" description="Always prepend this element to the $data" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="35" namespace="global" package="Default">
+        <name>$taxonomy</name>
+        <default>null</default>
+        <docblock line="31">
+          <description></description>
+          <long-description></long-description>
+          <tag line="31" name="var" description="Helper for taxonomy-based option sets; taxonomy name" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="41" namespace="global" package="Default">
+        <name>$taxonomy_args</name>
+        <default>array()</default>
+        <docblock line="37">
+          <description></description>
+          <long-description></long-description>
+          <tag line="37" name="var" description="Helper for taxonomy-based option sets; arguments to find terms" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="47" namespace="global" package="Default">
+        <name>$multiple</name>
+        <default>false</default>
+        <docblock line="43">
+          <description></description>
+          <long-description></long-description>
+          <tag line="43" name="var" description="Allow multiple selections?" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="53" package="Fieldmanager">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="49">
+          <description>Add CSS, configure taxonomy, construct parent</description>
+          <long-description></long-description>
+          <tag line="49" name="param" description="" type="mixed" variable="$options">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="53">
+          <name>$options</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="80" package="Fieldmanager">
+        <name>form_data_elements</name>
+        <full_name>form_data_elements</full_name>
+        <docblock line="75">
+          <description>Generate form elements.</description>
+          <long-description></long-description>
+          <tag line="75" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="75" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="80">
+          <name>$value</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="true" static="false" visibility="public" namespace="global" line="129" package="Fieldmanager">
+        <name>form_data_element</name>
+        <full_name>form_data_element</full_name>
+        <docblock line="125">
+          <description>A single element for a single bit of data, e.g.</description>
+          <long-description>&lt;p&gt;'&lt;option&gt;'&lt;/p&gt;</long-description>
+          <tag line="125" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+        </docblock>
+        <argument line="129">
+          <name>$value</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="138" package="Fieldmanager">
+        <name>option_selected</name>
+        <full_name>option_selected</full_name>
+        <docblock line="131">
+          <description>Helper for output functions to toggle a selected options</description>
+          <long-description></long-description>
+          <tag line="131" name="param" description="this option" type="string" variable="$current_option">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="131" name="param" description="all valid options" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="131" name="param" description="" type="string" variable="$attribute">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="131" name="return" description="$attribute on match, empty on failure." type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="138">
+          <name>$current_option</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="138">
+          <name>$options</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="138">
+          <name>$attribute</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="148" package="Fieldmanager">
+        <name>presave</name>
+        <full_name>presave</full_name>
+        <docblock line="143">
+          <description>Override presave to handle taxonomy</description>
+          <long-description></long-description>
+          <tag line="143" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="143" name="return" description="" type="void">
+            <type by_reference="false">void</type>
+          </tag>
+        </docblock>
+        <argument line="148">
+          <name>$value</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="189" package="Fieldmanager">
+        <name>get_taxonomy_data</name>
+        <full_name>get_taxonomy_data</full_name>
+        <docblock line="185">
+          <description>Get taxonomy data per $this-&gt;taxonomy_args</description>
+          <long-description></long-description>
+          <tag line="185" name="return" description="data entries for options" type="array[]">
+            <type by_reference="false">array[]</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="protected" namespace="global" line="236" package="Fieldmanager">
+        <name>get_taxonomy_insert_data</name>
+        <full_name>get_taxonomy_insert_data</full_name>
+        <docblock line="231">
+          <description>Add taxonomy ID to data values for insert</description>
+          <long-description></long-description>
+          <tag line="231" name="param" description="" type="array" variable="$values">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="231" name="return" description="$values with taxonomy IDs for saving." type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="236">
+          <name>$values</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-options.php</critical>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-post.php" hash="48b8c3d95dbe55dfdf235b544cfe1c6a" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="10" package="Fieldmanager">
+      <extends>\Fieldmanager_Field</extends>
+      <name>Fieldmanager_Post</name>
+      <full_name>\Fieldmanager_Post</full_name>
+      <docblock line="6">
+        <description>Post auto-complete field</description>
+        <long-description></long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="16" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'post'</default>
+        <docblock line="12">
+          <description></description>
+          <long-description></long-description>
+          <tag line="12" name="var" description="Override field class" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="26" namespace="global" package="Default">
+        <name>$query_callback</name>
+        <default>Null</default>
+        <docblock line="18">
+          <description></description>
+          <long-description></long-description>
+          <tag line="18" name="var" description="What function to call to match posts. Initialized to Null here because it will be written in __construct to an internal function that calls get_posts, so only overwrite it if you do /not/ want to use get_posts. The function signature should be query_callback( $match, $args );" type="callable">
+            <type by_reference="false">callable</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="32" namespace="global" package="Default">
+        <name>$editable</name>
+        <default>false</default>
+        <docblock line="28">
+          <description></description>
+          <long-description></long-description>
+          <tag line="28" name="var" description="Allow editing of the target post?" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="38" namespace="global" package="Default">
+        <name>$show_post_type</name>
+        <default>false</default>
+        <docblock line="34">
+          <description></description>
+          <long-description></long-description>
+          <tag line="34" name="var" description="Show post type in typeahead results?" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="44" namespace="global" package="Default">
+        <name>$show_post_date</name>
+        <default>false</default>
+        <docblock line="40">
+          <description></description>
+          <long-description></long-description>
+          <tag line="40" name="var" description="Show post date in typeahead results?" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="50" namespace="global" package="Default">
+        <name>$save_empty</name>
+        <default>False</default>
+        <docblock line="46">
+          <description></description>
+          <long-description></long-description>
+          <tag line="46" name="var" description="Override save_empty for this element type" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="56" package="Fieldmanager">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="52">
+          <description>Add libraries for autocomplete</description>
+          <long-description></long-description>
+          <tag line="52" name="param" description="" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="56">
+          <name>$options</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="82" package="Fieldmanager">
+        <name>get_clear_handle</name>
+        <full_name>get_clear_handle</full_name>
+        <docblock line="79">
+          <description>Button to clear results</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="91" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="86">
+          <description>Render form element</description>
+          <long-description></long-description>
+          <tag line="86" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="86" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="91">
+          <name>$value</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="125" package="Fieldmanager">
+        <name>search_posts_using_get_posts</name>
+        <full_name>search_posts_using_get_posts</full_name>
+        <docblock line="120">
+          <description>Default callback which uses get_posts</description>
+          <long-description></long-description>
+          <tag line="120" name="param" description="" type="string" variable="$fragment">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="120" name="param" description="to get_posts" type="array" variable="$args">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="125">
+          <name>$fragment</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="139" package="Fieldmanager">
+        <name>search_posts</name>
+        <full_name>search_posts</full_name>
+        <docblock line="136">
+          <description>AJAX callback to find posts</description>
+          <long-description></long-description>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="185" package="Fieldmanager">
+        <name>presave</name>
+        <full_name>presave</full_name>
+        <docblock line="180">
+          <description>Make sure JSON is an associative array, and make sure posts are all clean.</description>
+          <long-description></long-description>
+          <tag line="180" name="param" description="" type="array" variable="$value">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="180" name="return" description="$value" type="array">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="185">
+          <name>$value</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-post.php</critical>
+      <notice line="120" code="50013">Parameter $args could not be found in search_posts_using_get_posts()</notice>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-radios.php" hash="54278bd35ab0e25a8acd39be677aa25a" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="10" package="Fieldmanager">
+      <extends>\Fieldmanager_Options</extends>
+      <name>Fieldmanager_Radios</name>
+      <full_name>\Fieldmanager_Radios</full_name>
+      <docblock line="6">
+        <description>Radio button class for options</description>
+        <long-description></long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="16" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'radio'</default>
+        <docblock line="12">
+          <description></description>
+          <long-description></long-description>
+          <tag line="12" name="var" description="Override field class" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="23" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="18">
+          <description>Form element</description>
+          <long-description></long-description>
+          <tag line="18" name="param" description="" type="array" variable="$value">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="18" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="23">
+          <name>$value</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="38" package="Fieldmanager">
+        <name>form_data_element</name>
+        <full_name>form_data_element</full_name>
+        <docblock line="31">
+          <description>Individual radio element</description>
+          <long-description></long-description>
+          <tag line="31" name="see" description="\Fieldmanager_Options::form_data_elements()" refers="\Fieldmanager_Options::form_data_elements()"/>
+          <tag line="31" name="param" description="" type="mixed" variable="$data_row">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="31" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="31" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="38">
+          <name>$data_row</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="38">
+          <name>$value</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-radios.php</critical>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-select.php" hash="4c139577c5ea9a16aa2237fca8f4415d" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="10" package="Fieldmanager">
+      <extends>\Fieldmanager_Options</extends>
+      <name>Fieldmanager_Select</name>
+      <full_name>\Fieldmanager_Select</full_name>
+      <docblock line="6">
+        <description>Dropdown for options</description>
+        <long-description></long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="16" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'select'</default>
+        <docblock line="12">
+          <description></description>
+          <long-description></long-description>
+          <tag line="12" name="var" description="Override $field_class" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <property final="false" static="false" visibility="public" line="22" namespace="global" package="Default">
+        <name>$type_ahead</name>
+        <default>False</default>
+        <docblock line="18">
+          <description></description>
+          <long-description></long-description>
+          <tag line="18" name="var" description="Should we support type-ahead? e.g. use chosen.js or not" type="boolean">
+            <type by_reference="false">boolean</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="28" package="Fieldmanager">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="24">
+          <description>Override constructor to add chosen.js maybe</description>
+          <long-description></long-description>
+          <tag line="24" name="param" description="" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="28">
+          <name>$options</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="47" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="42">
+          <description>Form element</description>
+          <long-description></long-description>
+          <tag line="42" name="param" description="" type="array" variable="$value">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="42" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="47">
+          <name>$value</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="84" package="Fieldmanager">
+        <name>form_data_element</name>
+        <full_name>form_data_element</full_name>
+        <docblock line="78">
+          <description>Single data element (&lt;option&gt;)</description>
+          <long-description></long-description>
+          <tag line="78" name="param" description="" type="array" variable="$data_row">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="78" name="param" description="" type="array" variable="$value">
+            <type by_reference="false">array</type>
+          </tag>
+          <tag line="78" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="84">
+          <name>$data_row</name>
+          <default></default>
+          <type/>
+        </argument>
+        <argument line="84">
+          <name>$value</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="100" package="Fieldmanager">
+        <name>form_data_start_group</name>
+        <full_name>form_data_start_group</full_name>
+        <docblock line="95">
+          <description>Start an &lt;optgroup&gt;</description>
+          <long-description></long-description>
+          <tag line="95" name="param" description="" type="string" variable="$label">
+            <type by_reference="false">string</type>
+          </tag>
+          <tag line="95" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="100">
+          <name>$label</name>
+          <default></default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="111" package="Fieldmanager">
+        <name>form_data_end_group</name>
+        <full_name>form_data_end_group</full_name>
+        <docblock line="107">
+          <description>End an &lt;optgroup&gt;</description>
+          <long-description></long-description>
+          <tag line="107" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="119" package="Fieldmanager">
+        <name>chosen_init</name>
+        <full_name>chosen_init</full_name>
+        <docblock line="115">
+          <description>Init chosen.js</description>
+          <long-description></long-description>
+          <tag line="115" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-select.php</critical>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-textarea.php" hash="c8882007589b44f40bd9c1e4e17c2baf" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="10" package="Fieldmanager">
+      <extends>\Fieldmanager_Field</extends>
+      <name>Fieldmanager_TextArea</name>
+      <full_name>\Fieldmanager_TextArea</full_name>
+      <docblock line="6">
+        <description>Textarea field</description>
+        <long-description></long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="16" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'text'</default>
+        <docblock line="12">
+          <description></description>
+          <long-description></long-description>
+          <tag line="12" name="var" description="Override field_class" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="22" package="Fieldmanager">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="18">
+          <description>Construct default attributes; 50x10 textarea</description>
+          <long-description></long-description>
+          <tag line="18" name="param" description="" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="22">
+          <name>$options</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="35" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="30">
+          <description>Form element</description>
+          <long-description></long-description>
+          <tag line="30" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="30" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="35">
+          <name>$value</name>
+          <default>''</default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-textarea.php</critical>
+    </parse_markers>
+  </file>
+  <file path="class-fieldmanager-textfield.php" hash="7158ffa3023ff41ac60498e5e31363ce" package="Fieldmanager">
+    <docblock line="2">
+      <description></description>
+      <long-description></long-description>
+      <tag line="2" name="package" description="Fieldmanager"/>
+    </docblock>
+    <class final="false" abstract="false" namespace="global" line="10" package="Fieldmanager">
+      <extends>\Fieldmanager_Field</extends>
+      <name>Fieldmanager_TextField</name>
+      <full_name>\Fieldmanager_TextField</full_name>
+      <docblock line="6">
+        <description>Text field.</description>
+        <long-description>&lt;p&gt;A good simple implementation guide, too.&lt;/p&gt;</long-description>
+        <tag line="6" name="package" description="Fieldmanager"/>
+      </docblock>
+      <property final="false" static="false" visibility="public" line="16" namespace="global" package="Default">
+        <name>$field_class</name>
+        <default>'text'</default>
+        <docblock line="12">
+          <description></description>
+          <long-description></long-description>
+          <tag line="12" name="var" description="Override field_class" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+      </property>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="22" package="Fieldmanager">
+        <name>__construct</name>
+        <full_name>__construct</full_name>
+        <docblock line="18">
+          <description>Override constructor to set default size.</description>
+          <long-description></long-description>
+          <tag line="18" name="param" description="" type="array" variable="$options">
+            <type by_reference="false">array</type>
+          </tag>
+        </docblock>
+        <argument line="22">
+          <name>$options</name>
+          <default>array()</default>
+          <type/>
+        </argument>
+      </method>
+      <method final="false" abstract="false" static="false" visibility="public" namespace="global" line="34" package="Fieldmanager">
+        <name>form_element</name>
+        <full_name>form_element</full_name>
+        <docblock line="29">
+          <description>Render a text field.</description>
+          <long-description></long-description>
+          <tag line="29" name="param" description="" type="mixed" variable="$value">
+            <type by_reference="false">mixed</type>
+          </tag>
+          <tag line="29" name="return" description="HTML" type="string">
+            <type by_reference="false">string</type>
+          </tag>
+        </docblock>
+        <argument line="34">
+          <name>$value</name>
+          <default>''</default>
+          <type/>
+        </argument>
+      </method>
+    </class>
+    <parse_markers>
+      <critical line="2" code="50008">No short description for file class-fieldmanager-textfield.php</critical>
+    </parse_markers>
+  </file>
+  <package name="Default" full_name="Default"/>
+  <package name="Fieldmanager" full_name="Fieldmanager"/>
+  <namespace name="global" full_name="global"/>
+  <marker count="1">todo</marker>
+  <marker count="0">fixme</marker>
+  <deprecated count="0"/>
+</project>

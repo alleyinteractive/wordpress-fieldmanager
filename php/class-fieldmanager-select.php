@@ -1,31 +1,58 @@
 <?php
+/**
+ * @package Fieldmanager
+ */
 
+/**
+ * Dropdown for options
+ * @package Fieldmanager
+ */
 class Fieldmanager_Select extends Fieldmanager_Options {
 
+	/**
+	 * @var string
+	 * Override $field_class
+	 */
 	public $field_class = 'select';
-	public $type_ahead = false;
+
+	/**
+	 * @var boolean
+	 * Should we support type-ahead? e.g. use chosen.js or not
+	 */
+	public $type_ahead = False;
 	
+	/**
+	 * Override constructor to add chosen.js maybe
+	 * @param array $options
+	 */
 	public function __construct( $options = array() ) {
 		$this->attributes = array(
 			'size' => '1'
 		);
 		
 		// Add the chosen library for type-ahead capabilities
-		fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
-		fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+		if ( $this->type_ahead ) {
+			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
+			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+		}
 				
 		parent::__construct($options);
 	}
 
+	/**
+	 * Form element
+	 * @param array $value
+	 * @return string HTML
+	 */
 	public function form_element( $value = array() ) {
 		
 		$select_classes = array( 'fm-element' );
 		
 		// If this is a multiple select, need to handle differently
-		$do_multiple = "";
+		$do_multiple = '';
 		if ( array_key_exists( 'multiple', $this->attributes ) ) $do_multiple = "[]";
 		
-		// Handle type-ahead based fields
+		// Handle type-ahead based fields using the chosen library
 		if ( $this->type_ahead ) { 
 			$select_classes[] = 'chzn-select';
 			add_action( 'admin_footer', array( $this, 'chosen_init' ) );
@@ -48,6 +75,12 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		);
 	}
 	
+	/**
+	 * Single data element (<option>)
+	 * @param array $data_row
+	 * @param array $value
+	 * @return string HTML
+	 */
 	public function form_data_element( $data_row, $value = array() ) {
 		
 		return sprintf(
@@ -59,6 +92,11 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	
 	}
 	
+	/**
+	 * Start an <optgroup>
+	 * @param string $label
+	 * @return string HTML
+	 */
 	public function form_data_start_group( $label ) {
 		return sprintf(
 			'<optgroup label="%s">',
@@ -66,20 +104,19 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		);
 	}
 	
+	/**
+	 * End an <optgroup>
+	 * @return string HTML
+	 */
 	public function form_data_end_group() {
 		return '</optgroup>';
 	}
 	
+	/**
+	 * Init chosen.js
+	 * @return string HTML
+	 */
 	public function chosen_init( ) {
 		echo '<script type="text/javascript"> $("#' . $this->get_element_id() . '").chosen({allow_single_deselect:true})</script>';
 	}
-
-	public function validate( $value ) {
-
-	}
-
-	public function sanitize( $value ) {
-
-	}
-
 }

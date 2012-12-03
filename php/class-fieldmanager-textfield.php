@@ -1,8 +1,24 @@
 <?php
+/**
+ * @package Fieldmanager
+ */
+
+/**
+ * Text field. A good simple implementation guide, too.
+ * @package Fieldmanager
+ */
 class Fieldmanager_TextField extends Fieldmanager_Field {
 
+	/**
+	 * @var string
+	 * Override field_class
+	 */
 	public $field_class = 'text';
 
+	/**
+	 * Override constructor to set default size.
+	 * @param array $options
+	 */
 	public function __construct( $options = array() ) {
 		$this->attributes = array(
 			'size' => '50',
@@ -10,6 +26,11 @@ class Fieldmanager_TextField extends Fieldmanager_Field {
 		parent::__construct($options);
 	}
 
+	/**
+	 * Render a text field.
+	 * @param mixed $value
+	 * @return string HTML
+	 */
 	public function form_element( $value = '' ) {
 		return sprintf(
 			'<input class="fm-element" type="text" name="%s" id="%s" value="%s" %s />',
@@ -19,13 +40,4 @@ class Fieldmanager_TextField extends Fieldmanager_Field {
 			$this->get_element_attributes()
 		);
 	}
-
-	public function validate( $value ) {
-
-	}
-
-	public function sanitize( $value ) {
-
-	}
-
 }

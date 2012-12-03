@@ -1,15 +1,60 @@
 <?php
+/**
+ * @package Fieldmanager
+ */
 
+/**
+ * Fieldmanager Group; allows associating multiple fields together
+ * and required as the base element.
+ * @package Fieldmanager
+ */
 class Fieldmanager_Group extends Fieldmanager_Field {
 
+	/**
+	 * @var Fieldmanager_Field[]
+	 * Children elements of this group. Not much point in creating an empty group.
+	 */
 	public $children = array();
+
+	/**
+	 * @var string
+	 * Override field class
+	 */
 	public $field_class = 'group';
+
+	/**
+	 * @var string
+	 * Override label element
+	 */
 	public $label_element = 'h4';
+
+	/**
+	 * @var boolean
+	 * If true, this group can be collapsed by clicking its header.
+	 */
 	public $collapsible = FALSE;
+
+	/**
+	 * @var boolean
+	 * If true, render children in tabs.
+	 */
 	public $tabbed = FALSE;
+
+	/**
+	 * @var int
+	 * How many tabs, maximum?
+	 */
 	public $tab_limit = 0;
+
+	/**
+	 * @var boolean
+	 * Iterator value for how many children we have rendered.
+	 */
 	protected $child_count = 0;
 
+	/**
+	 * Constructor; add CSS if we're looking at a tabbed view
+	 */
 	public function __construct( $options = array() ) {
 
 		parent::__construct($options);
@@ -22,10 +67,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		
 	}
 
+	/**
+	 * Render the element, iterating over children and calling their form_element() functions.
+	 * @param mixed $value
+	 */
 	public function form_element( $value = NULL ) {
-		$out = "";
-		$tab_group = "";
-		$tab_group_submenu = "";
+		$out = '';
+		$tab_group = '';
+		$tab_group_submenu = '';
 		
 		// We do not need the wrapper class for extra padding if no label is set for the group
 		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '<div class="fm-group-inner">';
@@ -70,13 +119,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 						 );
 						 
 						 // Make sure the first submenu item is designated
-						 $submenu_item_classes[] = "fm-first-item";
+						 $submenu_item_classes[] = 'fm-first-item';
 						 $submenu_item_link_class = 'class="fm-first-item"';
 					}
 					
 					// Add this element to the More menu
 					$tab_group_submenu .=  sprintf( '<li class="%s"><a href="#%s-tab" %s>%s</a></li>',
-						implode( " ", $submenu_item_classes ),
+						implode( ' ', $submenu_item_classes ),
 						$element->get_element_id(),
 						$submenu_item_link_class,
 						$element->label
@@ -115,21 +164,27 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 */
 	public function presave( $values ) {
 		// @SECURITY@ First, make sure all the values we're given are legal.
-		/*foreach ( array_keys( $values ) as $key ) {
+		foreach ( array_keys( $values ) as $key ) {
 			if ( !isset( $this->children[$key] ) ) {
 				// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
 				// and thus one which we cannot sanitize and must not save. This might be an attack, so do what
 				// Zoninator does and just die already.
-				$this->_unauthorized_access();
+				$this->_unauthorized_access( sprintf( 'Found "%1$s" in data but not in children', $key ) );
 			}
-		}*/
+		}
 		// Then, dispatch them for sanitization to the children.
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
+			if ( empty( $values[$element->name] ) ) {
+				$values[ $element->name ] = NULL;
+			}
 			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ] );
-			if ( empty( $values[$element->name] ) && !$this->save_empty ) unset( $values[$element->name] );
+			if ( !$this->save_empty && $this->limit != 1 ) {
+				if ( is_array( $values[$element->name] ) && empty( $values[$element->name] ) ) unset( $values[$element->name] );
+				if ( is_string( $values[$element->name] ) && strlen( $values[$element->name] ) == 0 ) unset( $values[$element->name] );
+			}
 		}
 		return $values;
 	}
@@ -162,11 +217,17 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 	/**
 	 * Groups have their own drag and remove tools in the label.
+	 * @param string $html
+	 * @return string
 	 */
 	public function wrap_with_multi_tools( $html ) {
 		return $html;
 	}
 
+	/**
+	 * Maybe add the collapsible class for groups
+	 * @return array
+	 */
 	public function get_extra_element_classes() {
 		if ( $this->collapsible ) {
 			return array( 'fm-collapsible' );

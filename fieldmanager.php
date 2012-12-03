@@ -1,5 +1,6 @@
 <?php
 /**
+ * Fieldmanager Base Plugin File
  * @package Fieldmanager
  * @version 0.1
  */
@@ -52,6 +53,18 @@ function fieldmanager_get_baseurl() {
 	return plugin_dir_url( __FILE__ );
 }
 
+/**
+ * Wrapper to enqueue_scripts which uses a closure
+ * @param string $handle
+ * @param string $path
+ * @param string[] $deps
+ * @param boolean $ver
+ * @param boolean $in_footer
+ * @param string $data_object
+ * @param array $data
+ * @param string $plugin_dir
+ * @return void
+ */
 function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array(), $plugin_dir = "" ) {
 	if( $plugin_dir == "" ) $plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
 	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
@@ -65,6 +78,15 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
 	}
 }
 
+/**
+ * Wrapper to enqueue_style which uses a closure
+ * @param string $handle
+ * @param string $path
+ * @param string[] $deps
+ * @param boolean $ver
+ * @param string $media
+ * @return void
+ */
 function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all' ) {
 	$add_script = function() use ( $handle, $path, $deps, $ver, $media ) {
 		wp_register_style( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver, $media );
@@ -92,4 +114,34 @@ function _fieldmanager_registry( $var, $val = NULL ) {
 	$registry[$var] = $val;
 }
 
+/**
+ * Wrapper for get_post_meta which handles JSON quietly.
+ * @param int $post_id
+ * @param string $var
+ * @param boolean $single
+ */
+function fm_get_post_meta( $post_id, $var, $single = FALSE ) {
+	$data = get_post_meta( $post_id, $var, $single );
+	return json_decode( $data, TRUE );
+}
+
+/**
+ * Exception class for this plugin's fatal errors; mostly to differentiate in unit tests.
+ * @package Fieldmanager
+ */
 class FM_Exception extends Exception { }
+
+/**
+ * Exception class for this plugin's developer errors; mostly to differentiate in unit tests.
+ * These exceptions are meant to help developers write correct Fieldmanager implementations.
+ * @package Fieldmanager
+ */
+class FM_Developer_Exception extends Exception { }
+
+/**
+ * Exception class for this plugin's validation errors; mostly to differentiate in unit tests.
+ * Validation errors in WordPress are not really recoverable.
+ * @package Fieldmanager
+ */
+class FM_Validation_Exception extends Exception { }
+
