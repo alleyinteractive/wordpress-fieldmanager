@@ -164,14 +164,17 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 */
 	public function presave( $values ) {
 		// @SECURITY@ First, make sure all the values we're given are legal.
-		foreach ( array_keys( $values ) as $key ) {
-			if ( !isset( $this->children[$key] ) ) {
-				// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
-				// and thus one which we cannot sanitize and must not save. This might be an attack, so do what
-				// Zoninator does and just die already.
-				$this->_unauthorized_access( sprintf( 'Found "%1$s" in data but not in children', $key ) );
+		if( isset( $values ) && !empty( $values ) ) {
+			foreach ( array_keys( $values ) as $key ) {
+				if ( !isset( $this->children[$key] ) ) {
+					// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
+					// and thus one which we cannot sanitize and must not save. This might be an attack, so do what
+					// Zoninator does and just die already.
+					$this->_unauthorized_access( sprintf( 'Found "%1$s" in data but not in children', $key ) );
+				}
 			}
 		}
+		
 		// Then, dispatch them for sanitization to the children.
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;

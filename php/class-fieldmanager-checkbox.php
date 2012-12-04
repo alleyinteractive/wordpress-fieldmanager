@@ -36,7 +36,7 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	public function form_element( $value = NULL ) {
 		return sprintf(
 			'<input class="fm-element" type="checkbox" name="%1$s" value="%2$s" %3$s %4$s/>',
-			$this->name,
+			$this->get_form_name(),
 			htmlentities( (string) $this->checked_value ),
 			$this->get_element_attributes(),
 			( $value == $this->checked_value ) ? "checked" : ""
