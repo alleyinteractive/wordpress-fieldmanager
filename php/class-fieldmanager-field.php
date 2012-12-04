@@ -496,7 +496,7 @@ abstract class Fieldmanager_Field {
 		$this->data_id = $post_id;
 		$this->data_type = 'post';
 		$data = $this->presave_all( $data );
-		update_post_meta( $post_id, $this->name, mysql_real_escape_string( json_encode( $data ) ) );
+		update_post_meta( $post_id, $this->name, str_replace( "\\'", "'", json_encode( $data ) ) );
 	}
 
 	/**
