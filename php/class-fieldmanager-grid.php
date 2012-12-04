@@ -35,8 +35,6 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 
 		parent::__construct( $options );
 
-		$this->limit = 1; // not a good idea to add multiple grids.
-
 		fm_add_script( 'handsontable', 'js/grid/jquery.handsontable.js' );
 		fm_add_script( 'contextmenu', 'js/grid/lib/jQuery-contextMenu/jquery.contextMenu.js' );
 		fm_add_script( 'ui_position', 'js/grid/lib/jQuery-contextMenu/jquery.ui.position.js' );
@@ -51,20 +49,32 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 * @return string
 	 */
 	public function form_element( $value = '' ) {
+		$grid_activate_id = 'grid-activate-' . uniqid();
 		$out = sprintf(
-			'<div class="fm-grid" data-fm-grid-name="%1$s" id="%2$s"></div>
-			<input name="%1$s" id="%2$s-input" type="hidden" value="%3$s" />',
+			'<div class="grid-toggle-wrapper">
+				<div class="fm-grid" id="%2$s" data-fm-grid-name="%1$s"></div>
+				<input name="%1$s" type="hidden" value="%3$s" />
+				<p><a href="#" class="grid-activate" id="%6$s" data-with-grid-title="%5$s">%4$s</a></p>
+			</div>',
 			$this->get_form_name(),
-			$this->get_element_id(),
-			htmlspecialchars( json_encode( $value ) )
+			'hot-grid-id-' . uniqid(), // handsontable must have an ID, but we don't care what it is.
+			htmlspecialchars( json_encode( $value ) ),
+			__( 'Show Data Grid' ),
+			__( 'Hide Data Grid' ),
+			$grid_activate_id
 		);
 		$out .= sprintf("
 			<script type=\"text/javascript\">
 				jQuery( document ).ready( function() {
-					jQuery( '#%s' ).fm_grid( %s );
+					console.log('here i am');
+					jQuery( '#%s' ).one( 'click', function( e ) {
+						e.preventDefault();
+						var grid = jQuery( this ).parents( '.grid-toggle-wrapper' ).find( '.fm-grid' )[0];
+						jQuery( grid ).fm_grid( %s );
+					} );
 				} );
 			</script>",
-			$this->get_element_id(),
+			$grid_activate_id,
 			json_encode( $this->js_options )
 		);
 		return $out;

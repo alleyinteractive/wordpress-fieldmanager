@@ -47,6 +47,25 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $tab_limit = 0;
 
 	/**
+	 * @var string
+	 * If specified, $label_format combined with $label_token will override $label, but only if
+	 * $(label).find(label_token).val() is not null.
+	 */
+	public $label_format = Null;
+
+	/**
+	 * @var string
+	 * CSS selector to an element to get the token for the label format
+	 */
+	public $label_token = Null;
+
+	/**
+	 * @var callable|null
+	 * Function that tells whether the group is empty or not. Gets an array of form values.
+	 */
+	public $group_is_empty = Null;
+
+	/**
 	 * @var boolean
 	 * Iterator value for how many children we have rendered.
 	 */
@@ -170,6 +189,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 					// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
 					// and thus one which we cannot sanitize and must not save. This might be an attack, so do what
 					// Zoninator does and just die already.
+					print_r($values);
 					$this->_unauthorized_access( sprintf( 'Found "%1$s" in data but not in children', $key ) );
 				}
 			}
@@ -189,6 +209,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				if ( is_string( $values[$element->name] ) && strlen( $values[$element->name] ) == 0 ) unset( $values[$element->name] );
 			}
 		}
+
+		if ( is_callable( $this->group_is_empty ) ) {
+			if ( call_user_func( $this->group_is_empty, $values ) ) {
+				$values = array();
+			}
+		}
+
 		return $values;
 	}
 
@@ -207,13 +234,24 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$wrapper_classes[] = 'fmjs-drag';
 			$wrapper_classes[] = 'fmjs-drag-header';
 		}
+
+		$extra_attrs = '';
+		if ( $this->label_format && $this->label_token ) {
+			$extra_attrs = sprintf(
+				'data-label-format="%1$s" data-label-token="%2$s"',
+				htmlentities( $this->label_format ),
+				htmlentities( $this->label_token )
+			);
+			$classes[] = 'fm-label-with-macro';
+		}
+
 		return sprintf(
-			'<div class="%s"><%s class="%s">%s</%s>%s</div>',
+			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s</div>',
 			implode( ' ', $wrapper_classes ),
 			$this->label_element,
 			implode( ' ', $classes ),
+			$extra_attrs,
 			$this->label,
-			$this->label_element,
 			$this->limit == 0 ? $this->get_remove_handle() : ''
 		);
 	}

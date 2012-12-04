@@ -178,11 +178,40 @@ div.fm-group-label-wrapper .fmjs-remove {
 	height: 21px !important;
 }
 
-.fm-grid-wrapper {
-	background: #fff;
-	padding: 5px;
-	border: solid 2px #ccc;
+.grid-toggle-wrapper {
+	padding: 7px;
 	margin: 5px 5px 5px 0;
 	overflow: scroll;
 	max-height: 500px;
+}
+
+.grid-toggle-wrapper.with-grid {
+	padding: 5px;
+	background: #fff;
+	border: solid 2px #ccc;
+}
+
+.grid-activate {
+	display: block;
+	height: 20px;
+	padding: 5px;
+	background: #fff 4px 4px url(../images/grid.png) no-repeat;
+	width: 200px;
+	border: solid 1px #000;
+	padding-left: 30px;
+	margin: 5px 0;
+}
+
+.grid-activate:hover {
+	border: solid 1px #d54e21;
+}
+
+.with-grid .grid-activate:hover {
+	border: none;
+}
+
+.with-grid .grid-activate {
+	background: #fff;
+	padding-left: 0;
+	border: none;
 }

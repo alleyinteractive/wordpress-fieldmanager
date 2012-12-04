@@ -1,7 +1,7 @@
 ( function( $ ) {
 
 $.fn.fm_grid_serialize = function() {
-	console.log('serialize...');
+	console.log('serialize');
 	var rows = [], row_counter = 0, self = this, bottom_row_with_data = 0;
 	this.find( 'tbody tr:visible' ).each( function() {
 		var row = [];
@@ -22,8 +22,8 @@ $.fn.fm_grid_serialize = function() {
 		if ( row.length ) rows.push( row );
 	} );
 	var json_data = JSON.stringify( rows.slice( 0, bottom_row_with_data + 1 ) );
-	console.log( json_data );
-	$( '#' + self.attr( 'id' ) + '-input' ).val( json_data );
+	$( this.data( 'input-selector' ) ).val( json_data );
+	console.log($( this.data( 'input-selector' ) ).val( ));
 }
 
 $.fn.fm_grid = function( opts ) {
@@ -35,14 +35,16 @@ $.fn.fm_grid = function( opts ) {
 	};
 	self.trigger( 'fm_grid_options', opts );
 	var grid_instance = self.handsontable( opts );
-	var input_id = '#' + self.attr( 'id' ) + '-input';
-	var rows = $.parseJSON( $( input_id ).val() );
+	self.data( 'input-selector', 'input:hidden[name="' + self.data( 'fm-grid-name' ) + '"]' );
+	var rows = $.parseJSON( $( self.data( 'input-selector' ) ).val() );
 	var row = 0;
 	var hot = self.data( 'handsontable' );
 	var data_to_set = [];
-	for ( var i = 0; i < rows.length; i++ ) {
-		for ( var j = 0; j < rows[i].length; j++ ) {
-			data_to_set.push( [i, j, rows[i][j]['value']] );
+	if ( rows ) {
+		for ( var i = 0; i < rows.length; i++ ) {
+			for ( var j = 0; j < rows[i].length; j++ ) {
+				data_to_set.push( [i, j, rows[i][j]['value']] );
+			}
 		}
 	}
 	hot.setDataAtCell( data_to_set );
@@ -68,5 +70,21 @@ $.fn.fm_grid = function( opts ) {
 		}
 	} );
 }
+
+$( '.grid-activate' ).live( 'click', function( e ) {
+	e.preventDefault();
+	var $wrapper = $( $( this ).parents( '.grid-toggle-wrapper' )[0] );
+	if ( $wrapper.hasClass( 'with-grid' ) ) {
+		$wrapper.find( '.fm-grid' ).hide();
+		$wrapper.removeClass( 'with-grid' );
+		$( this ).html( $( this ).data( 'original-title' ) );
+	}
+	else {
+		$( this ).data( 'original-title',  $( this).html() );
+		$( this ).html( $( this ).data( 'with-grid-title' ) );
+		$wrapper.addClass( 'with-grid' );
+		$wrapper.find( '.fm-grid' ).show();
+	}
+} );
 
 })( jQuery );

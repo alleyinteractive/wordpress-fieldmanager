@@ -154,17 +154,23 @@ abstract class Fieldmanager_Field {
 	protected $seq = 0;
 
 	/**
+	 * @var boolean
+	 * If $is_proto is true, we're rendering the prototype element for a field that can have infinite instances.
+	 */
+	protected $is_proto = False;
+
+	/**
 	 * @var Fieldmanager_Field
 	 * Parent element, if applicable. Would be a Fieldmanager_Group unless third-party plugins support this.
 	 */
-	protected $parent = NULL;
+	protected $parent = Null;
 
 	/**
 	 * @todo Add extra wrapper info rather than this specific.
 	 * @var Fieldmanager_Field
 	 * Render this element in a tab?
 	 */
-	protected $is_tab = FALSE;
+	protected $is_tab = False;
 
 	/**
 	 * @param mixed string[]|string the value of the element.
@@ -299,6 +305,8 @@ abstract class Fieldmanager_Field {
 	public function single_element_markup( $value = Null, $is_proto = False ) {
 		$out = '';
 		$classes = array( 'fm-item', 'fm-' . $this->name );
+
+		// if ( $this->is_proto ) $out .= "\n----PROTO1 {$this->name}\n";
 		
 		// Drop the fm-group class to hide inner box display if no label is set
 		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
@@ -310,7 +318,9 @@ abstract class Fieldmanager_Field {
 			if ( $is_proto ) {
 				$classes[] = 'fmjs-proto';
 			} else {
+				$this->is_proto = True;
 				$out .= $this->single_element_markup( Null, True );
+				$this->is_proto = False;
 			}
 		}
 
@@ -326,6 +336,7 @@ abstract class Fieldmanager_Field {
 			}
 		}
 
+		// if ( $this->is_proto ) $out .= "\n----PROTO2 {$this->name}\n";
 		$form_element = $this->form_element( $value );
 
 		if ( $this->limit == 0 && !$this->one_label_per_item ) {
@@ -333,6 +344,7 @@ abstract class Fieldmanager_Field {
 		} else {
 			$out .= $form_element;
 		}
+		// if ( $this->is_proto ) $out .= "\n----PROTO3 {$this->name}\n";
 		
 		if ( isset( $this->description ) && !empty( $this->description ) ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->description );
@@ -403,7 +415,8 @@ abstract class Fieldmanager_Field {
 	 * @return string ID for use in a form element.
 	 */
 	public function get_element_id( ) {
-		return 'fm-edit-' . $this->name . '-' . $this->get_seq();
+		$slug = $this->is_proto ? 'proto' : $this->get_seq();
+		return 'fm-edit-' . $this->name . '-' . $slug;
 	}
 
 	/**
@@ -508,6 +521,9 @@ abstract class Fieldmanager_Field {
 			);
 		}
 
+		if ( isset( $values['proto'] ) ) {
+			unset( $values['proto'] );
+		}
 		foreach ( $values as $i => $value ) {
 			if ( !is_numeric( $i ) ) {
 				// If $this->limit != 1 and $values contains something other than a numeric key...
@@ -673,6 +689,6 @@ abstract class Fieldmanager_Field {
 	 * @return int
 	 */
 	protected function get_seq() {
-		return $this->seq;
+		return $this->is_proto ? 'proto' : $this->seq;
 	}
 }

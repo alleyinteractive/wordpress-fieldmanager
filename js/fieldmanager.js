@@ -15,6 +15,31 @@ var init_sortable = function() {
 	} );
 }
 
+var init_label_macros = function() {
+	// Label macro magic.
+	$( '.fm-label-with-macro' ).each( function( label ) {
+		$( this ).data( 'label-original', $( this ).html() );
+		var src = $( this ).parents( '.fm-group' ).first().find( $( this ).data( 'label-token' ) );
+		if ( src.length > 0 ) {
+			var $src = $( src[0] );
+			if ( typeof $src.val === 'function' ) {
+				var $label = $( this );
+				var title_macro = function() {
+					var token = $src.val();
+					if ( token.length > 0 ) {
+						$label.html( $label.data( 'label-format' ).replace( '%s', token ) );
+					}
+					else {
+						$label.html( $label.data( 'label-original' ) );
+					}
+				};
+				$src.on( 'change keyup', title_macro );
+				title_macro();
+			}
+		}
+	} );
+}
+
 var fm_renumber = function( $wrappers ) {
 	$wrappers.each( function() {
 		var level_pos = $( this ).data( 'fm-array-position' );
@@ -47,17 +72,24 @@ $( document ).ready( function () {
 		fm_renumber( $( this ).parents( '.fm-wrapper' ) );
 		// Trigger for subclasses to do any post-add event handling for the new element
 		$(this).parent().siblings().last().trigger( 'fm_added_element' );
+		init_label_macros();
 		init_sortable();
 	} );
+
+	// Handle remove events
 	$( '.fmjs-remove' ).live( 'click', function( e ) {
 		e.preventDefault();
 		$wrapper = $( this ).parents( '.fm-wrapper' ).first();
 		$( this ).parents( '.fm-item' ).first().remove();
 		fm_renumber( $wrapper );
 	} );
+
+	// Handle collapse events
 	$( '.fm-collapsible .fm-group-label-wrapper' ).live( 'click', function() {
 		$( this ).parents( '.fm-group' ).first().find( '.fm-group-inner' ).toggle();
 	} );
+
+	init_label_macros();
 	init_sortable();
 } );
 
