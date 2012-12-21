@@ -120,7 +120,7 @@ function _fieldmanager_registry( $var, $val = NULL ) {
  * @param string $var
  * @param boolean $single
  */
-function fm_get_post_meta( $post_id, $var, $single = FALSE ) {
+function fm_get_post_meta( $post_id, $var, $single = True ) {
 	$data = get_post_meta( $post_id, $var, $single );
 	return json_decode( $data, TRUE );
 }
