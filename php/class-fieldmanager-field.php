@@ -415,7 +415,7 @@ abstract class Fieldmanager_Field {
 	 * @return string ID for use in a form element.
 	 */
 	public function get_element_id( ) {
-		$slug = $this->is_proto ? 'proto' : $this->get_seq();
+		$slug = $this->has_proto() ? 'proto' : $this->get_seq();
 		return 'fm-edit-' . $this->name . '-' . $slug;
 	}
 
@@ -689,6 +689,12 @@ abstract class Fieldmanager_Field {
 	 * @return int
 	 */
 	protected function get_seq() {
-		return $this->is_proto ? 'proto' : $this->seq;
+		return $this->has_proto() ? 'proto' : $this->seq;
+	}
+
+	protected function has_proto() {
+		if ( $this->is_proto ) return True;
+		if ( $this->parent ) return $this->parent->has_proto();
+		return False;
 	}
 }

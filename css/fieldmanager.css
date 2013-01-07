@@ -178,6 +178,7 @@ div.fm-group-label-wrapper .fmjs-remove {
 	height: 21px !important;
 }
 
+/* Grid editor CSS */
 .grid-toggle-wrapper {
 	padding: 7px;
 	margin: 5px 5px 5px 0;
@@ -214,4 +215,14 @@ div.fm-group-label-wrapper .fmjs-remove {
 	background: #fff;
 	padding-left: 0;
 	border: none;
+}
+
+/* Rich text area */
+.fm-richtext .fm-element {
+	background: #fff;
+	height: 200px;
+	width: 600px;
+	border: solid 1px #444;
+	padding: 5px;
+	margin: 10px 0;
 }
