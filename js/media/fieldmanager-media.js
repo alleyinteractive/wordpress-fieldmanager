@@ -1,0 +1,23 @@
+( function( $ ) {
+
+$( document ).on( 'click', '.fm-media-button', function() {
+	tb_show( '', 'media-upload.php?TB_iframe=true' );
+	var old_send_to_editor = window.send_to_editor;
+	var input = this;
+	window.send_to_editor = function( html ) {
+		var src;
+		if ( $( 'img', html ).length > 0 ) {
+			$( input ).parent().find( '.media-wrapper' ).html( html );
+			src = $( input ).parent().find( '.media-wrapper img' ).attr( 'src' );
+		}
+		else {
+			$( input ).parent().find( '.media-wrapper' ).html( 'Uploaded file: ' + html );
+			src = $( input ).parent().find( '.media-wrapper a' ).attr( 'href' );
+		}
+		$( input ).parent().find( '.fm-media-src, .fm-media-id' ).val( '' );
+		window.send_to_editor = old_send_to_editor;
+		tb_remove();
+	}
+} );
+
+} )( jQuery );

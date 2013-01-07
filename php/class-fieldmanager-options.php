@@ -11,9 +11,15 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 	/**
 	 * @var array
-	 * Option data
+	 * Full option data, allows grouping
 	 */
 	public $data = array();
+
+	/**
+	 * @var array
+	 * Shortcut to data which allows a simple associative array
+	 */
+	public $options = array();
 
 	/**
 	 * @var boolean
@@ -52,6 +58,15 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function __construct( $options = array() ) {
 	
+		if ( !empty( $options['options'] ) ) {
+			foreach ( $options['options'] as $v ) {
+				$this->data[] = array(
+					'name' => $v,
+					'value' => $v,
+				);
+			}
+		}
+
 		parent::__construct($options);
 		
 		// Add the options CSS
