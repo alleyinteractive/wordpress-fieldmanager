@@ -128,7 +128,7 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			'orderby' => 'post_date',
 			'order' => 'DESC',
 			'post_status' => 'publish',
-			'post_type' => 'post',
+			'post_type' => 'any',
 			's' => $fragment,
 		) );
 	}
