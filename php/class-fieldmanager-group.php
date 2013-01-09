@@ -36,6 +36,12 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 	/**
 	 * @var boolean
+	 * If true, this group is collapsed by default.
+	 */
+	public $collapsed = FALSE;
+
+	/**
+	 * @var boolean
 	 * If true, render children in tabs.
 	 */
 	public $tabbed = FALSE;
@@ -77,8 +83,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public function __construct( $options = array() ) {
 
 		parent::__construct($options);
+
+		if ( $this->collapsed ) $this->collapsible = True;
 		
-		// Add the tab javascript and CSS if it is needed
+		foreach ( $this->children as $name => $element ) {
+			if ( !$element->name ) $element->name = $name;
+		}
+
+		// Add the tab JS and CSS if it is needed
 		if ( $this->tabbed ) {
 			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js' );
 			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css' );
@@ -105,7 +117,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $element ) {
 		
 			// If the display output for this group is set to tabs, add a tab for this child
-			if ( $this->tabbed ) { 
+			if ( $this->tabbed ) {
 				
 				// Set default classes to display the first tab content and hide others
 				$tab_classes = array( 'fm-tab' );
@@ -187,9 +199,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			foreach ( array_keys( $values ) as $key ) {
 				if ( !isset( $this->children[$key] ) ) {
 					// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
-					// and thus one which we cannot sanitize and must not save. This might be an attack, so do what
-					// Zoninator does and just die already.
-					print_r($values);
+					// and thus one which we cannot sanitize and must not save. This might be an attack.
 					$this->_unauthorized_access( sprintf( 'Found "%1$s" in data but not in children', $key ) );
 				}
 			}
@@ -270,9 +280,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @return array
 	 */
 	public function get_extra_element_classes() {
+		$classes = array();
 		if ( $this->collapsible ) {
-			return array( 'fm-collapsible' );
+			$classes[] = 'fm-collapsible';
 		}
-		return array();
+		if ( $this->collapsed ) {
+			$classes[] = 'fm-collapsed';
+		}
+		return $classes;
 	}
 }

@@ -1,5 +1,7 @@
 ( function( $ ) {
 
+var dynamic_seq = 0;
+
 var init_sortable = function() {
 	$( '.fmjs-sortable' ).each( function() {
 		if ( !$( this ).hasClass( 'ui-sortable' ) && $( this ).is( ':visible' ) ) {
@@ -54,6 +56,10 @@ var fm_renumber = function( $wrappers ) {
 						parts[ level_pos ] = order;
 						var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
 						$( this ).attr( 'name', new_fname );
+						if ( $( this ).attr( 'id' ).match( '-proto' ) ) {
+							$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
+							dynamic_seq++;
+						}
 					}
 				} );
 				order++;
@@ -87,6 +93,10 @@ $( document ).ready( function () {
 	// Handle collapse events
 	$( '.fm-collapsible .fm-group-label-wrapper' ).live( 'click', function() {
 		$( this ).parents( '.fm-group' ).first().find( '.fm-group-inner' ).toggle();
+	} );
+
+	$( '.fm-collapsed' ).each( function() {
+		$( this ).find( '.fm-group-inner' ).hide();
 	} );
 
 	init_label_macros();
