@@ -20,8 +20,8 @@ tinyMCE.init( {
 	height: "250",
 	width: "100%",
 } );
-tinyMCE.ScriptLoader.markDone( "http://kff.dev/wp-includes/js/tinymce/langs/en.js" );
-tinyMCE.ScriptLoader.markDone( "http://kff.dev/wp-includes/js/tinymce/themes/advanced/langs/en.js" );
+tinyMCE.ScriptLoader.markDone( "http://kff.alley.ws/wp-includes/js/tinymce/langs/en.js" );
+tinyMCE.ScriptLoader.markDone( "http://kff.alley.ws/wp-includes/js/tinymce/themes/advanced/langs/en.js" );
 
 $( document ).on( "click", '.fm-richtext', function() {
 	$this = $( this );
