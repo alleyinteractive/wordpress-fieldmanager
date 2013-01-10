@@ -177,7 +177,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
     		
     		// Also assign the taxonomy to an array if it is not one since there may be grouped fields
     		$taxonomies = $this->taxonomy;
-    		if ( !is_array( $this-taxonomy ) ) $taxonomies = array( $this->taxonomy );
+    		if ( !is_array( $this->taxonomy ) ) $taxonomies = array( $this->taxonomy );
 		
 			// Store the each term for this post. Handle grouped fields differently since multiple taxonomies are present.
 			if ( is_array( $this->taxonomy ) ) {
