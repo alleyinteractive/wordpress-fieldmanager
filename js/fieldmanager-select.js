@@ -47,6 +47,9 @@ $( document ).ready( function() {
 	// Track changes to the chosen text field linked to the select in order to update options via AJAX
 	// Used for taxonomy-based fields where preload is disabled
 	$( '.fm-ec_taxonomy_tabs .chzn-choices input' ).live( 'keyup', function( e ) {
+		// Do not execute this function for arrow key presses
+		if( e.keyCode >= 37 && e.keyCode <= 40 ) return;
+	
 		// Get the corresponding Fieldmanager select field to access data attributes needed for the AJAX call
 		$fm_select_field = $(this).parents('.chzn-container').siblings('select');
 		$fm_text_field = $(this);

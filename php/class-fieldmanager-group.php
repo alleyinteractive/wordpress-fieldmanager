@@ -115,7 +115,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		
 		// Produce HTML for each of the children
 		foreach ( $this->children as $element ) {
-		
+			
+			$element->parent = $this;
+			
 			// If the display output for this group is set to tabs, add a tab for this child
 			if ( $this->tabbed ) {
 				
@@ -168,7 +170,6 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			}
 		
 			// Get markup for the child element
-			$element->parent = $this;
 			$child_value = empty( $value[ $element->name ] ) ? Null : $value[ $element->name ];
 			$out .= $element->element_markup( $child_value );
 			

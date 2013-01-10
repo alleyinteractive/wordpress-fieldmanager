@@ -157,7 +157,9 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			'hide_empty' => false,
 			'name__like' => $search_term
 		);
-		return get_terms( $taxonomy, $args );
+		$terms = get_terms( $taxonomy, $args );
+		if( !$terms ) $terms = array();
+		return $terms;
 	}
 	
 	/**
@@ -191,13 +193,13 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		foreach( $taxonomies as $taxonomy ) {
 			// Perform the search
 			$terms = call_user_func( $this->query_callback, $taxonomy, $_POST['search_term'] );
+
+			// Add a filter hook to allow for modification of the term list before HTML processing
+			$terms = apply_filters( 'fm_search_terms', $terms, $_POST['search_term'], $taxonomies );
+
 			$optgroup_label = "";
 			
-			if( $terms ) {
-			
-				// Add a filter hook to allow for modification of the term list before HTML processing
-				$terms = apply_filters( 'fm_search_terms', $terms, $_POST['search_term'], $_POST['taxonomy'] );
-
+			if( !empty( $terms ) ) {
 				// If any terms were returned, add this to the output.
 				// Since we are going to add this dynamically to the available options, use the existing HTML output functions
 				
