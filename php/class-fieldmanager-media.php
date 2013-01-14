@@ -1,13 +1,5 @@
 <?php
-/**
- * @package Fieldmanager
- */
-
-/**
- * Textarea field
- * @package Fieldmanager
- */
-class Fieldmanager_Media extends Fieldmanager_Field {
+class Fieldmanager_MediaAttachment extends Fieldmanager_Field {
 
 	/**
 	 * @var string
@@ -16,49 +8,116 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public $field_class = 'media';
 
 	/**
-	 * @var string
-	 * Button Label
-	 */
-	public $button_label = 'Attach a file';
-
-	/**
-	 * @var string
-	 * Static variable so we only load media JS once
-	 */
-	public static $has_registered_media = False;
-
-	/**
-	 * Construct default attributes; 50x10 textarea
+	 * Override constructor to set default size.
 	 * @param array $options
 	 */
 	public function __construct( $options = array() ) {
-		if ( !self::$has_registered_media ) {
-			wp_enqueue_script( 'media-upload' );
-			wp_enqueue_script( 'thickbox' );
-			wp_enqueue_style( 'thickbox' );
-			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js' );
-			self::$has_registered_media = True;
-		}
-		parent::__construct( $options );
+		$this->attributes = array(
+			'width' => '200'
+		);
+		
+		//New 3.5 Media Uploader Enqueue
+		wp_enqueue_media();
+
+		//js and css for dealing with new uploader
+		fm_add_script( 'fm_media_js', 'js/fieldmanager-media.js', array(), false, false, 'fm_media', array( 'nonce' => wp_create_nonce( 'fm_media_nonce' ) ) );
+
+		//Action for adding attachment to post
+		add_action( 'fm-post-save-field', array($this, 'fm_media_save'), 10, 3 );
+
+		parent::__construct($options);
 	}
 
+
 	/**
-	 * Form element
-	 * @param mixed $value
-	 * @return string HTML
+	 * Output HTML for the media attachment meta-box.
+	 * @param string url for media item
+	 * @return string html
 	 */
-	public function form_element( $value = array() ) {
-		return sprintf(
-			'<input type="button" class="fm-media-button" id="%1$s" value="%3$s" />
-			<input type="hidden" name="%2$s[src]" value="%4$s" class="fm-media-src" />
-			<input type="hidden" name="%2$s[src]" value="%5$s" class="fm-media-id" />
-			<div class="media-wrapper"></div>',
-			$this->get_element_id(),
+	function form_element( $value = '' ) {
+		return sprintf('
+			<div class="fm-media-uploader">
+				URL: <input class="fm-element" type="text" name="%s" id="%s" value="%s" /><br>
+				<img id="%s_thumb" src="%s" %s /><br>
+				<a href="#" class="fm-media-add-link" id="%s_button" />Insert New '. $this->label .'</a><br>
+			</div>',
 			$this->get_form_name(),
-			$this->button_label,
-			isset( $value['src'] ) ? $value['src'] : '',
-			isset( $value['id'] ) ? $value['id'] : ''
+			$this->get_element_id(),
+			htmlspecialchars( $value['url'] ),
+			$this->get_element_id(),
+			htmlspecialchars( $value['url'] ),
+			$this->get_element_attributes(),			
+			$this->get_element_id()
 		);
 	}
 
+	/**
+	 * fm_media_save
+	 * Hook for saving media items as post attachments
+	 * @param int post id
+	 * @param object field manager group object
+ 	 * @param array media urls
+	 * @return array of attached ids 
+	 */
+	public function fm_media_save( $post_id, $fm_obj, $data ) {
+		
+		$attach_ids = array();
+
+		if ( ('group' == $fm_obj->field_class ) ) {
+			foreach ( $fm_obj->children as $fm_child ) {
+				if ( 'media' == $fm_child->field_class ) {
+					$current = array( 'post_parent' => $post_id, 'post_type' => 'attachment' );
+					$current_attachments = get_children( $current );
+						
+
+					foreach ( $data as $fm_name => $image_data ) {
+						if( !isset( $image_data['url'] ) && preg_match( '/^http/', $image_data ) ) {
+							$url = $image_data;
+							$image_data = array( 
+								'url' => $url,
+								'attachment_id' => ''
+							);
+						}
+
+						if ( isset( $image_data['url'] ) ){
+							foreach ( $current_attachments as $attachment_id => $attachment ) {
+								if ( $attachment->post_title == $fm_name ) {
+									wp_delete_attachment( $attachment_id );
+								}
+							}
+
+							//Since we need absolute paths for attachments, manipulate the url
+							$filename = get_theme_root().str_replace(get_site_url(),'',$image_data['url']);
+
+						    $wp_filetype = wp_check_filetype( basename( $filename ), null );
+					  		$wp_upload_dir = wp_upload_dir();
+					  		$attachment = array(
+					     		'guid' => $image_data['url'], 
+					     		'post_mime_type' => $wp_filetype['type'],
+					     		'post_title' => $fm_name,
+					     		'post_content' => '',
+					     		'post_status' => 'inherit'
+					  		);
+					  		$attach_id = wp_insert_attachment( $attachment, $filename, $post_id );
+
+					  		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+					  		$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+					  		wp_update_attachment_metadata( $attach_id, $attach_data );
+
+					  		$new_data = array( 
+					  			'url' => $image_data['url'],
+					  			'attachment_id' => $attach_id
+					  		);
+					  		$data[$fm_name] = $new_data;
+							
+					  		update_post_meta( $post_id, $fm_obj->name, str_replace( "\\'", "'", json_encode( $data ) ) );
+
+	  						$attach_ids[]= $attach_id;	
+  						}
+					}
+				}
+			}
+		}
+		return $attach_ids;
+	}	
 }

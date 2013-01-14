@@ -507,6 +507,9 @@ abstract class Fieldmanager_Field {
 		$this->data_type = 'post';
 		$data = $this->presave_all( $data );
 		update_post_meta( $post_id, $this->name, str_replace( "\\'", "'", json_encode( $data ) ) );
+
+		//Hook used to add post attachments
+		do_action( 'fm-post-save-field', $post_id, $this, $data);
 	}
 
 	/**
