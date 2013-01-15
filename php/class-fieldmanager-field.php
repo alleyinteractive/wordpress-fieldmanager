@@ -455,10 +455,8 @@ abstract class Fieldmanager_Field {
 	public function render_meta_box( $post, $form_struct ) {
 		$key = $form_struct['callback'][0]->name;
 		$values = get_post_meta( $post->ID, $key, TRUE );
+		// if ( $this->name == 'tabs' ) { print_r($values); exit; }
 		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
-		if ( !is_array( $values ) ) { // default of get_post_meta is empty array.
-			$values = json_decode( $values, TRUE );
-		}
 		echo $this->element_markup( $values );
 	}
 
@@ -506,7 +504,7 @@ abstract class Fieldmanager_Field {
 		$this->data_id = $post_id;
 		$this->data_type = 'post';
 		$data = $this->presave_all( $data );
-		update_post_meta( $post_id, $this->name, str_replace( "\\'", "'", json_encode( $data ) ) );
+		update_post_meta( $post_id, $this->name, $data );
 	}
 
 	/**

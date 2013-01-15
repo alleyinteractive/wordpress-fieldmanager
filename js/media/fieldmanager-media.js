@@ -14,7 +14,7 @@ $( document ).on( 'click', '.fm-media-button', function() {
 			$( input ).parent().find( '.media-wrapper' ).html( 'Uploaded file: ' + html );
 			src = $( input ).parent().find( '.media-wrapper a' ).attr( 'href' );
 		}
-		$( input ).parent().find( '.fm-media-src, .fm-media-id' ).val( '' );
+		$( input ).parent().find( '.fm-media-id' ).val( src );
 		window.send_to_editor = old_send_to_editor;
 		tb_remove();
 	}

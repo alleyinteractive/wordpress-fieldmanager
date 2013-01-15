@@ -43,6 +43,24 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	}
 
 	/**
+	 * Presave; convert a URL to an attachment ID.
+	 */
+	public function presave( $value ) {
+		global $wpdb;
+		if ( !empty( $value ) && !is_numeric( $value ) ) {
+			$attachment = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT ID FROM $wpdb->posts WHERE guid = %s AND post_type = 'attachment'",
+					$value
+				)
+			);
+			if ( !empty( $attachment->ID ) ) return $attachment->ID;
+			else return NULL;
+		}
+		return $value;
+	}
+
+	/**
 	 * Form element
 	 * @param mixed $value
 	 * @return string HTML
@@ -50,14 +68,13 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function form_element( $value = array() ) {
 		return sprintf(
 			'<input type="button" class="fm-media-button" id="%1$s" value="%3$s" />
-			<input type="hidden" name="%2$s[src]" value="%4$s" class="fm-media-src" />
-			<input type="hidden" name="%2$s[src]" value="%5$s" class="fm-media-id" />
-			<div class="media-wrapper"></div>',
+			<input type="hidden" name="%2$s" value="%4$s" class="fm-media-id" />
+			<div class="media-wrapper">%5$s</div>',
 			$this->get_element_id(),
 			$this->get_form_name(),
 			$this->button_label,
-			isset( $value['src'] ) ? $value['src'] : '',
-			isset( $value['id'] ) ? $value['id'] : ''
+			$value,
+			is_numeric( $value ) && $value > 0 ? wp_get_attachment_link( $value, 'full' ) : ''
 		);
 	}
 
