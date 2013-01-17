@@ -88,8 +88,7 @@ class Fieldmanager_MediaAttachment extends Fieldmanager_Field {
 
 							//Since we need absolute paths for attachments, manipulate the url
 							$filename = get_theme_root().str_replace(get_site_url(),'',$image_data['url']);
-
-						    $wp_filetype = wp_check_filetype( basename( $filename ), null );
+							$wp_filetype = wp_check_filetype( basename( $filename ), null );
 					  		$wp_upload_dir = wp_upload_dir();
 					  		$attachment = array(
 					     		'guid' => $image_data['url'], 
