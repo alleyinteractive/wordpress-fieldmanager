@@ -35,6 +35,11 @@ class Fieldmanager_MediaAttachment extends Fieldmanager_Field {
 	 * @return string html
 	 */
 	function form_element( $value = '' ) {
+		if ( isset($value['url']) ){
+			$url = $value['url'];
+		} else {
+			$url = $value;
+		}
 		return sprintf('
 			<div class="fm-media-uploader">
 				URL: <input class="fm-element" type="text" name="%s" id="%s" value="%s" /><br>
@@ -43,9 +48,9 @@ class Fieldmanager_MediaAttachment extends Fieldmanager_Field {
 			</div>',
 			$this->get_form_name(),
 			$this->get_element_id(),
-			htmlspecialchars( $value['url'] ),
+			htmlspecialchars( $url ),
 			$this->get_element_id(),
-			htmlspecialchars( $value['url'] ),
+			htmlspecialchars( $url ),
 			$this->get_element_attributes(),			
 			$this->get_element_id()
 		);
@@ -71,6 +76,7 @@ class Fieldmanager_MediaAttachment extends Fieldmanager_Field {
 						
 
 					foreach ( $data as $fm_name => $image_data ) {
+
 						if( !isset( $image_data['url'] ) && preg_match( '/^http/', $image_data ) ) {
 							$url = $image_data;
 							$image_data = array( 
@@ -78,16 +84,10 @@ class Fieldmanager_MediaAttachment extends Fieldmanager_Field {
 								'attachment_id' => ''
 							);
 						}
-
+	
 						if ( isset( $image_data['url'] ) ){
-							foreach ( $current_attachments as $attachment_id => $attachment ) {
-								if ( $attachment->post_title == $fm_name ) {
-									wp_delete_attachment( $attachment_id );
-								}
-							}
-
 							//Since we need absolute paths for attachments, manipulate the url
-							$filename = get_theme_root().str_replace(get_site_url(),'',$image_data['url']);
+							$filename = ABSPATH.str_replace(get_site_url().'/','',$image_data['url']);
 							$wp_filetype = wp_check_filetype( basename( $filename ), null );
 					  		$wp_upload_dir = wp_upload_dir();
 					  		$attachment = array(
@@ -97,10 +97,25 @@ class Fieldmanager_MediaAttachment extends Fieldmanager_Field {
 					     		'post_content' => '',
 					     		'post_status' => 'inherit'
 					  		);
-					  		$attach_id = wp_insert_attachment( $attachment, $filename, $post_id );
 
-					  		require_once( ABSPATH . 'wp-admin/includes/image.php' );
+					  		foreach ( $current_attachments as $attachment_id => $attachment ) {
+								if ( $attachment->post_title == $fm_name ) {
+									$attach_id = $attachment_id;
+								}
+							}
+
+							if ( isset( $attach_id ) ){
+								update_attached_file( $attach_id, $filename );
+								//Typically we don't touch the guid, but attachments use it to locate a file in the uploader and it is necessary.
+								global $wpdb;
+								$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET guid = %s WHERE ID = %d", $image_data['url'],$attach_id) );
+							} else {
+								$attach_id = wp_insert_attachment( $attachment, $filename, $post_id );
+							}
+
+							require_once( ABSPATH . 'wp-admin/includes/image.php' );
 					  		$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+					  			
 					  		wp_update_attachment_metadata( $attach_id, $attach_data );
 
 					  		$new_data = array( 
