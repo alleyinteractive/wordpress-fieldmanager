@@ -30,6 +30,15 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 			wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tiny_mce.js' ) );
 			wp_enqueue_script( 'wp-langs-en.js', includes_url( 'js/tinymce/langs/wp-langs-en.js' ) );
 			self::$has_registered_tinymce = True;
+			add_action( 'admin_head', function() {
+				printf(
+					'<script type="text/javascript">
+tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/langs/en.js" );
+tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
+</script>',
+					includes_url()
+				);
+			} );
 		}
 		$this->attributes = array(
 			'cols' => '50',
@@ -53,5 +62,5 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 			$value
 		);
 	}
-
+	
 }

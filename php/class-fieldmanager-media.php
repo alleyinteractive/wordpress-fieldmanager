@@ -1,5 +1,13 @@
 <?php
-class Fieldmanager_MediaAttachment extends Fieldmanager_Field {
+/**
+ * @package Fieldmanager
+ */
+
+/**
+ * Textarea field
+ * @package Fieldmanager
+ */
+class Fieldmanager_Media extends Fieldmanager_Field {
 
 	/**
 	 * @var string
@@ -8,130 +16,67 @@ class Fieldmanager_MediaAttachment extends Fieldmanager_Field {
 	public $field_class = 'media';
 
 	/**
-	 * Override constructor to set default size.
+	 * @var string
+	 * Button Label
+	 */
+	public $button_label = 'Attach a file';
+
+	/**
+	 * @var string
+	 * Static variable so we only load media JS once
+	 */
+	public static $has_registered_media = False;
+
+	/**
+	 * Construct default attributes; 50x10 textarea
 	 * @param array $options
 	 */
 	public function __construct( $options = array() ) {
-		$this->attributes = array(
-			'width' => '200'
-		);
-		
-		//New 3.5 Media Uploader Enqueue
-		wp_enqueue_media();
-
-		//js and css for dealing with new uploader
-		fm_add_script( 'fm_media_js', 'js/fieldmanager-media.js', array(), false, false, 'fm_media', array( 'nonce' => wp_create_nonce( 'fm_media_nonce' ) ) );
-
-		//Action for adding attachment to post
-		add_action( 'fm-post-save-field', array($this, 'fm_media_save'), 10, 3 );
-
-		parent::__construct($options);
+		if ( !self::$has_registered_media ) {
+			//Use WP 3.5 Media Uploader Enqueue
+			wp_enqueue_media();
+			fm_add_script( 'fm_media', 'js/fieldmanager-media.js' );
+			self::$has_registered_media = True;
+		}
+		parent::__construct( $options );
 	}
 
+	/**
+	 * Presave; convert a URL to an attachment ID.
+	 */
+	public function presave( $value ) {
+		global $wpdb;
+		if ( !empty( $value ) && !is_numeric( $value ) ) {
+			$attachment = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT ID FROM $wpdb->posts WHERE guid = %s AND post_type = 'attachment'",
+					$value
+				)
+			);
+			if ( !empty( $attachment->ID ) ) return $attachment->ID;
+			else return NULL;
+		}
+		return $value;
+	}
 
 	/**
-	 * Output HTML for the media attachment meta-box.
-	 * @param string url for media item
-	 * @return string html
+	 * Form element
+	 * @param mixed $value
+	 * @return string HTML
 	 */
-	function form_element( $value = '' ) {
-		if ( isset($value['url']) ){
-			$url = $value['url'];
-		} else {
-			$url = $value;
-		}
+	public function form_element( $value = array() ) {
 		return sprintf('
 			<div class="fm-media-uploader">
-				URL: <input class="fm-element" type="text" name="%s" id="%s" value="%s" /><br>
-				<img id="%s_thumb" src="%s" %s /><br>
-				<a href="#" class="fm-media-add-link" id="%s_button" />Insert New '. $this->label .'</a><br>
+				<input class="fm-media-button" type="button" id="%1$s_button" value="%3$s" />
+				<input type="hidden" name="%2$s" value="%4$s" id="%1$s" class="fm-media-id" />
+				<div class="media-wrapper">%5$s</div>
 			</div>',
+			$this->get_element_id(),
 			$this->get_form_name(),
-			$this->get_element_id(),
-			htmlspecialchars( $url ),
-			$this->get_element_id(),
-			htmlspecialchars( $url ),
-			$this->get_element_attributes(),			
-			$this->get_element_id()
+			$this->button_label,
+			$value,
+			is_numeric( $value ) && $value > 0 ? wp_get_attachment_link( $value, 'full' ) : ''
 		);
 	}
 
-	/**
-	 * fm_media_save
-	 * Hook for saving media items as post attachments
-	 * @param int post id
-	 * @param object field manager group object
- 	 * @param array media urls
-	 * @return array of attached ids 
-	 */
-	public function fm_media_save( $post_id, $fm_obj, $data ) {
-		
-		$attach_ids = array();
-
-		if ( ('group' == $fm_obj->field_class ) ) {
-			foreach ( $fm_obj->children as $fm_child ) {
-				if ( 'media' == $fm_child->field_class ) {
-					$current = array( 'post_parent' => $post_id, 'post_type' => 'attachment' );
-					$current_attachments = get_children( $current );
-						
-
-					foreach ( $data as $fm_name => $image_data ) {
-
-						if( !isset( $image_data['url'] ) && preg_match( '/^http/', $image_data ) ) {
-							$url = $image_data;
-							$image_data = array( 
-								'url' => $url,
-								'attachment_id' => ''
-							);
-						}
-	
-						if ( isset( $image_data['url'] ) ){
-							//Since we need absolute paths for attachments, manipulate the url
-							$filename = ABSPATH.str_replace(get_site_url().'/','',$image_data['url']);
-							$wp_filetype = wp_check_filetype( basename( $filename ), null );
-					  		$wp_upload_dir = wp_upload_dir();
-					  		$attachment = array(
-					     		'guid' => $image_data['url'], 
-					     		'post_mime_type' => $wp_filetype['type'],
-					     		'post_title' => $fm_name,
-					     		'post_content' => '',
-					     		'post_status' => 'inherit'
-					  		);
-
-					  		foreach ( $current_attachments as $attachment_id => $attachment ) {
-								if ( $attachment->post_title == $fm_name ) {
-									$attach_id = $attachment_id;
-								}
-							}
-
-							if ( isset( $attach_id ) ){
-								update_attached_file( $attach_id, $filename );
-								//Typically we don't touch the guid, but attachments use it to locate a file in the uploader and it is necessary.
-								global $wpdb;
-								$wpdb->query( $wpdb->prepare("UPDATE $wpdb->posts SET guid = %s WHERE ID = %d", $image_data['url'],$attach_id) );
-							} else {
-								$attach_id = wp_insert_attachment( $attachment, $filename, $post_id );
-							}
-
-							require_once( ABSPATH . 'wp-admin/includes/image.php' );
-					  		$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
-					  			
-					  		wp_update_attachment_metadata( $attach_id, $attach_data );
-
-					  		$new_data = array( 
-					  			'url' => $image_data['url'],
-					  			'attachment_id' => $attach_id
-					  		);
-					  		$data[$fm_name] = $new_data;
-							
-					  		update_post_meta( $post_id, $fm_obj->name, str_replace( "\\'", "'", json_encode( $data ) ) );
-
-	  						$attach_ids[]= $attach_id;	
-  						}
-					}
-				}
-			}
-		}
-		return $attach_ids;
-	}	
 }

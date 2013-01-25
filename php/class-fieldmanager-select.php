@@ -20,7 +20,13 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 * Should we support type-ahead? i.e. use chosen.js or not
 	 */
 	public $type_ahead = False;	
-		
+	
+	/**
+	 * @var boolean
+	 * Send an empty element first with a taxonomy select
+	 */
+	public $first_empty = False;
+
 	/**
 	 * @var string
 	 * Helper for taxonomy-based option sets; whether or not to preload all terms
@@ -91,6 +97,12 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			}
 		}
 		
+		$opts = '';
+		if ( $this->first_empty ) {
+			$opts .= '<option value="">&nbsp;</option>';
+		}
+		$opts .= $this->form_data_elements( $value );
+
 		return sprintf(
 			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s data-value=\'%s\' %s %s />%s</select>',
 			$this->get_form_name( $do_multiple ),
@@ -99,7 +111,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			( $value == null ) ? "" : json_encode( $value ), // For applications where options may be dynamically provided. This way we can still provide the previously stored value to a Javascript.
 			( $this->taxonomy != null ) ? "data-taxonomy='" . json_encode($this->taxonomy) . "'" : "",
 			( $this->taxonomy != null ) ? "data-taxonomy-preload='" . json_encode($this->taxonomy_preload) . "'" : "",
-			$this->form_data_elements( $value )
+			$opts
 		);
 	}
 	
