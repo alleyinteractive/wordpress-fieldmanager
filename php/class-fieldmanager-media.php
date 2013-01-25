@@ -35,7 +35,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		if ( !self::$has_registered_media ) {
 			//Use WP 3.5 Media Uploader Enqueue
 			wp_enqueue_media();
-			fm_add_script( 'fm_media', 'js/fieldmanager-media.js' );
+			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js' );
 			self::$has_registered_media = True;
 		}
 		parent::__construct( $options );
