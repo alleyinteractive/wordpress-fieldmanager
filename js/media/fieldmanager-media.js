@@ -9,8 +9,6 @@ jQuery(document).ready(function($){
     var id = button.attr('id').replace('_button', '');
     _custom_media = true;
     wp.media.editor.send.attachment = function(props, attachment){
-      console.log($("#"+id+'_thumb'));
-
       if ( _custom_media ) {
         $("#"+id).val(attachment.id);
         var img = $("#"+id+'_thumb').find('img');
