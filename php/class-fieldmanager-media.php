@@ -69,7 +69,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			<div class="fm-media-uploader">
 				<input class="fm-media-button" type="button" id="%1$s_button" value="%3$s" />
 				<input type="hidden" name="%2$s" value="%4$s" id="%1$s" class="fm-media-id" />
-				<div class="media-wrapper">%5$s</div>
+				<div class="media-wrapper" id="%1$s_thumb">%5$s</div>
 			</div>',
 			$this->get_element_id(),
 			$this->get_form_name(),

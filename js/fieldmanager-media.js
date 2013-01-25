@@ -8,21 +8,28 @@ jQuery(document).ready(function($){
     var button = $(this);
     var id = button.attr('id').replace('_button', '');
     _custom_media = true;
-    var input = this;
     wp.media.editor.send.attachment = function(props, attachment){
+      console.log($("#"+id+'_thumb'));
+
       if ( _custom_media ) {
-
-        var src;
-        if ( $( 'img', html ).length > 0 ) {
-          $( input ).parent().find( '.media-wrapper' ).html( html );
-          src = $( input ).parent().find( '.media-wrapper img' ).attr( 'src' );
+        $("#"+id).val(attachment.id);
+        var img = $("#"+id+'_thumb').find('img');
+        var len = img.length;
+        if ( len > 0 ) {
+          if ( fmIsValidImageUrl( attachment.url ) >= 0 ) {
+            img.attr('src',attachment.url);
+            img.attr('style','display:all');          
+          } else {
+            //Hide audio and video thumbs
+            img.attr('src','');
+            img.attr('style','display:none');
+          }
+        } else {
+          //No Image yet
+          if ( fmIsValidImageUrl( attachment.url ) >= 0 ) {
+            $("#"+id+'_thumb').prepend("<img src='"+attachment.url+"'>");
+          }
         }
-        else {
-          $( input ).parent().find( '.media-wrapper' ).html( 'Uploaded file: ' + html );
-          src = $( input ).parent().find( '.media-wrapper a' ).attr( 'href' );
-        }
-        $( input ).parent().find( '.fm-media-id' ).val( src );
-
       } else {
         return _orig_send_attachment.apply( this, [props, attachment] );
       };
