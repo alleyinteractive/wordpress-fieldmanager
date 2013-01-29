@@ -57,12 +57,13 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param mixed $options
 	 */
 	public function __construct( $options = array() ) {
-	
 		if ( !empty( $options['options'] ) ) {
-			foreach ( $options['options'] as $v ) {
+			$keys = array_keys( $options['options'] );
+			$use_name_as_value = ( array_keys( $keys ) === $keys );
+			foreach ( $options['options'] as $k => $v ) {
 				$this->data[] = array(
 					'name' => $v,
-					'value' => $v,
+					'value' => $use_name_as_value ? $v : $k,
 				);
 			}
 		}

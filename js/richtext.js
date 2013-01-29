@@ -13,7 +13,7 @@ tinyMCE.init( {
 	dialog_type:"modal",
 	content_css: "/wp-content/themes/vip/kff/inc/fieldmanager/css/fieldmanager-richtext-content.css",
 	theme_advanced_toolbar_location: "top",
-	theme_advanced_buttons1: "bold,italic,strikethrough,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,wp_fullscreen,|,formatselect,underline,justifyfull,forecolor,|,pastetext,pasteword,removeformat,|,charmap,|,outdent,indent,|,undo,redo,|,wp_page,",
+	theme_advanced_buttons1: "bold,italic,|,bullist,numlist,blockquote,|,justifyleft,justifycenter,justifyright,|,link,unlink,|,code,|,formatselect,underline,|,pastetext,pasteword,removeformat,|,charmap,|,undo,redo,|,wp_page,",
 	theme_advanced_buttons2: "",
 	plugins: "inlinepopups,spellchecker,tabfocus,paste,fullscreen,wordpress,wpeditimage,wpgallery,wplink,wpdialogs,-table,wpfullscreen",
 	style_formats:[{"title":"Custom Paragraph Style","selector":"p","classes":"kff-style1"}],

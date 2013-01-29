@@ -74,7 +74,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$this->get_form_name(),
 			$this->button_label,
 			$value,
-			is_numeric( $value ) && $value > 0 ? wp_get_attachment_link( $value, 'full' ) : ''
+			is_numeric( $value ) && $value > 0 ? wp_get_attachment_link( $value, 'thumbnail' ) : ''
 		);
 	}
 

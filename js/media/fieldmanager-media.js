@@ -8,6 +8,8 @@ $( document ).on( 'click', '.fm-media-button', function() {
 		var src;
 		if ( $( 'img', html ).length > 0 ) {
 			$( input ).parent().find( '.media-wrapper' ).html( html );
+			var newheight = 150 * ( $( input ).parent().find( '.media-wrapper img' ).height() / $( input ).parent().find( '.media-wrapper img' ).width() );
+			$( input ).parent().find( '.media-wrapper img' ).css({'width': 150, 'height': newheight});
 			src = $( input ).parent().find( '.media-wrapper img' ).attr( 'src' );
 		}
 		else {

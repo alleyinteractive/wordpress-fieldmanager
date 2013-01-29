@@ -92,7 +92,7 @@ $( document ).ready( function () {
 
 	// Handle collapse events
 	$( '.fm-collapsible .fm-group-label-wrapper' ).live( 'click', function() {
-		$( this ).parents( '.fm-group' ).first().find( '.fm-group-inner' ).toggle();
+		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).toggle();
 	} );
 
 	$( '.fm-collapsed' ).each( function() {

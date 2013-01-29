@@ -44,6 +44,9 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 			'cols' => '50',
 			'rows' => '10'
 		);
+		$this->sanitize = function( $value ) {
+			return wp_kses_post( $value );
+		};
 		fm_add_script( 'fm_richtext', 'js/richtext.js' );
 		parent::__construct( $options );
 	}
