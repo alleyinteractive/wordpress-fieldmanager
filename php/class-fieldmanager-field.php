@@ -5,7 +5,7 @@
 
 /**
  * Base class containing core functionality for Fieldmanager
- * 
+ *
  * Security features of this class for verifying access and saving data:
  * 1. In Fieldmanager_Field::save_fields_for_post(), verify that we are using an assigned post type
  *    This is the starting point for $_POST requests to post edit pages.
@@ -17,11 +17,11 @@
  *    if $limit is not 1 or infinite (0), and verify that all multi-element arrays are numeric only.
  * 6. In Fieldmanager_Field::presave_all(), call Fieldmanager_Field::presave()
  * 5. In Fieldmanager_Field::presave(), call all assigned validators; if one returns false, die.
- * 6a. For groups (including the root group) in Fieldmanager_Group::presave(), verify that all 
+ * 6a. For groups (including the root group) in Fieldmanager_Group::presave(), verify that all
  *     keys in the submission match the form names of valid children.
  * 6b. For all other fields, in Fieldmanager_Field::presave(), sanitize the field to save to the DB.
  *     The default sanitizer is sanitize_text_field().
- * 
+ *
  * @package Fieldmanager
  */
 abstract class Fieldmanager_Field {
@@ -59,7 +59,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * @var string
 	 * The name of the form element, As in 'foo' in <input name="foo" />
-	 */ 
+	 */
 	public $name = '';
 
 	/**
@@ -243,9 +243,9 @@ abstract class Fieldmanager_Field {
 		$classes = array_merge( $classes, $this->get_extra_element_classes() );
 
 		$out = '';
-		
+
 		// If this element is part of tabbed output, there needs to be a wrapper to contain the tab content
-		if ( $this->is_tab ) { 
+		if ( $this->is_tab ) {
 			$tab_display_style = ( $this->parent->child_count > 0 ) ? ' style="display: none"' : '';
 			$out .= '<div id="' . $this->get_element_id() . '-tab" class="wp-tabs-panel"' . $tab_display_style . '>';
 		}
@@ -266,15 +266,15 @@ abstract class Fieldmanager_Field {
 					if ( $parent->limit != 1 ) { // and another for the parent having multiple (e.g. parent[0][this][0])
 						$html_array_position++;
 					}
-					$parent = $parent->parent; // parent's parent; root element has null parent which breaks while loop. 
+					$parent = $parent->parent; // parent's parent; root element has null parent which breaks while loop.
 				}
 			}
 		}
 		$out .= sprintf( '<div class="%s" data-fm-array-position="%d">', implode( ' ', $classes ), $html_array_position );
-		
+
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
-		
+
 		for ( $i = 0; $i < $max; $i++ ) {
 			$this->seq = $i;
 			if ( $this->limit == 1 ) {
@@ -287,15 +287,15 @@ abstract class Fieldmanager_Field {
 		if ( $this->limit == 0 ) {
 			$out .= $this->add_another();
 		}
-		
+
 		// Before closing the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_end', $out, $this );
-		
+
 		$out .= '</div>';
-		
+
 		// Close the tab wrapper if one exists
 		if ( $this->is_tab ) $out .= '</div>';
-		
+
 		return $out;
 	}
 
@@ -313,12 +313,12 @@ abstract class Fieldmanager_Field {
 		$classes = array( 'fm-item', 'fm-' . $this->name );
 
 		self::$global_seq++;
-		
+
 		// Drop the fm-group class to hide inner box display if no label is set
 		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
 			$classes[] = 'fm-' . $this->field_class;
 		}
-		
+
 		if ( $this->get_seq() == 0 && $this->limit == 0 ) {
 			// Generate a prototype element for DOM magic on the frontend.
 			if ( $is_proto ) {
@@ -349,7 +349,7 @@ abstract class Fieldmanager_Field {
 		} else {
 			$out .= $form_element;
 		}
-		
+
 		if ( isset( $this->description ) && !empty( $this->description ) ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->description );
 		}
@@ -397,7 +397,7 @@ abstract class Fieldmanager_Field {
 			if ( $i == count( $tree ) );
 		}
 		$name .= $multiple;
-		
+
 		return $name;
 	}
 
@@ -516,7 +516,7 @@ abstract class Fieldmanager_Field {
 		if ( $this->limit == 1 ) {
 			return $this->presave( $values );
 		}
-		
+
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
 		if ( $this->limit != 1 && !is_array( $values ) ) {
 			$this->_unauthorized_access( '$values should be an array because $limit is ' . $this->limit );
@@ -546,7 +546,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Presave function, which handles sanitization and validation
 	 * @param mixed $value If a single field expects to manage an array, it must override presave()
-	 * @return sanitized values. 
+	 * @return sanitized values.
 	 */
 	public function presave( $value ) {
 		// It's possible that some elements (Grid is one) would be arrays at
