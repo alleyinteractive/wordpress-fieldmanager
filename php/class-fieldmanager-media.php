@@ -45,7 +45,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	/**
 	 * Presave; convert a URL to an attachment ID.
 	 */
-	public function presave( $value ) {
+	public function presave( $value, $current_value = array() ) {
 		global $wpdb;
 		if ( !empty( $value ) && !is_numeric( $value ) ) {
 			$attachment = $wpdb->get_row(

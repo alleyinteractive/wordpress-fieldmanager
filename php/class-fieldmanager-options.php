@@ -161,7 +161,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param mixed $value
 	 * @return void
 	 */
-	public function presave( $value ) {
+	public function presave( $value, $current_value = array() ) {
 	
 		// Sanitize the value(s)
 		$value = call_user_func( $this->sanitize, $value );

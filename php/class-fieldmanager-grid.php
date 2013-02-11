@@ -85,7 +85,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 * @param string $value
 	 * @return array sanitized row/col matrix
 	 */
-	public function presave( $value ) {
+	public function presave( $value, $current_value = array() ) {
 		$rows = json_decode( stripslashes( $value ), TRUE );
 		foreach ( $rows as $i => $cells ) {
 			foreach ( $cells as $k => $cell ) {

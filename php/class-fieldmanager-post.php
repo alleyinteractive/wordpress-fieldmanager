@@ -35,13 +35,19 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 	 * @var boolean
 	 * Show post type in typeahead results?
 	 */
-	public $show_post_type = false;
+	public $show_post_type = False;
 
 	/**
 	 * @var boolean
 	 * Show post date in typeahead results?
 	 */
-	public $show_post_date = false;
+	public $show_post_date = False;
+
+	/**
+	 * @var string
+	 * Key for reciprocal relationship; if defined will add an entry to postmeta on the mirrored post.
+	 */
+	public $reciprocal = Null;
 
 	/**
 	 * @var boolean
@@ -176,13 +182,27 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		
 		die();
 	}
+
+	/**
+	 * For post relationships, delete reciprocal post metadata prior to saving (presave will re-add)
+	 * @param array $values new post values
+	 * @param array $current_values existing post values
+	 */
+	public function presave_alter_values( $values, $current_values = array() ) {
+		// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.
+		if ( empty( $current_values) || empty( $this->data_id ) || $this->data_type !== 'post' || !$this->reciprocal ) return $values;
+		foreach ( $current_values as $reciprocal_id ) {
+			delete_post_meta( $reciprocal_id, $this->reciprocal, $this->data_id );
+		}
+		return $values;
+	}
 	
 	/**
 	 * Make sure JSON is an associative array, and make sure posts are all clean.
 	 * @param array $value
 	 * @return array $value
 	 */
-	public function presave( $value ) {
+	public function presave( $value, $current_value = array() ) {
 		// If the value is not empty, convert the JSON data into an associative array so it is handled properly on save
 		$value = json_decode( stripslashes( $value ), true );
 		$legal_keys = array( 'id', 'title', 'post_type', 'post_date' );
@@ -199,6 +219,9 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			// One more validation: For now, you must be able to edit a post in order to reference it.
 			if( !current_user_can( 'edit_post', $value['id'] ) ) {
 				$this->_unauthorized_access( 'Tried to refer to post ' . $value['id'] . ' which user cannot edit.' );	
+			}
+			if ( $this->reciprocal ) {
+				update_post_meta( $value['id'], $this->reciprocal, $this->data_id );
 			}
 		}
 		return $value;

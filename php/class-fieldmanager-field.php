@@ -503,7 +503,8 @@ abstract class Fieldmanager_Field {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 		$this->data_id = $post_id;
 		$this->data_type = 'post';
-		$data = $this->presave_all( $data );
+		$current = get_post_meta( $post_id, $this->name );
+		$data = $this->presave_all( $data, $current );
 		update_post_meta( $post_id, $this->name, $data );
 	}
 
@@ -512,7 +513,7 @@ abstract class Fieldmanager_Field {
 	 * @input mixed[] $values
 	 * @return mixed[] sanitized values
 	 */
-	public function presave_all( $values ) {
+	public function presave_all( $values, $current_values ) {
 		if ( $this->limit == 1 ) {
 			return $this->presave( $values );
 		}
@@ -532,14 +533,24 @@ abstract class Fieldmanager_Field {
 		if ( isset( $values['proto'] ) ) {
 			unset( $values['proto'] );
 		}
+		$values = $this->presave_alter_values( $values, $current_values );
 		foreach ( $values as $i => $value ) {
 			if ( !is_numeric( $i ) ) {
 				// If $this->limit != 1 and $values contains something other than a numeric key...
 				$this->_unauthorized_access( '$values should be a number-indexed array, but found key ' . $i );
 			}
-			$values[$i] = $this->presave( $value );
+			$values[$i] = $this->presave( $value, empty( $current_values[$i] ) ? array() : $current_values[$i] );
 			if ( !$this->save_empty && empty( $values[$i] ) ) unset( $values[$i] );
 		}
+		return $values;
+	}
+
+	/**
+	 * Hook to alter or respond to all the values of a particular element
+	 * @param array $values
+	 * @return array
+	 */
+	protected function presave_alter_values( $values, $current_values = array() ) {
 		return $values;
 	}
 
@@ -548,7 +559,7 @@ abstract class Fieldmanager_Field {
 	 * @param mixed $value If a single field expects to manage an array, it must override presave()
 	 * @return sanitized values. 
 	 */
-	public function presave( $value ) {
+	public function presave( $value, $current_value = array() ) {
 		// It's possible that some elements (Grid is one) would be arrays at
 		// this point, but those elements must override this function. Let's
 		// make sure we're dealing with one value here.

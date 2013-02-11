@@ -194,7 +194,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @input mixed[] values
 	 * @return mixed[] values
 	 */
-	public function presave( $values ) {
+	public function presave( $values, $current_values = array() ) {
 		// @SECURITY@ First, make sure all the values we're given are legal.
 		if( isset( $values ) && !empty( $values ) ) {
 			foreach ( array_keys( $values ) as $key ) {
@@ -214,7 +214,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				$values[ $element->name ] = NULL;
 			}
 			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
-			$values[ $element->name ] = $element->presave_all( $values[ $element->name ] );
+			$current_child_value = empty( $current_values[$element->name ]) ? array() : $current_values[$element->name];
+			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
 			if ( !$this->save_empty && $this->limit != 1 ) {
 				if ( is_array( $values[$element->name] ) && empty( $values[$element->name] ) ) unset( $values[$element->name] );
 				if ( is_string( $values[$element->name] ) && strlen( $values[$element->name] ) == 0 ) unset( $values[$element->name] );
