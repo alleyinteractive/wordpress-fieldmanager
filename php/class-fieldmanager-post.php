@@ -71,15 +71,15 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		// Add the post javascript and CSS
 		fm_add_script( 'fm_post_js', 'js/fieldmanager-post.js', array(), false, false, 'fm_post', array( 'nonce' => wp_create_nonce( 'fm_post_search_nonce' ) ) );
 		fm_add_style( 'fm_post_css', 'css/fieldmanager-post.css' );
-		
-		// Add the action hook for typeahead handling via AJAX
-		add_action('wp_ajax_fm_search_posts', array( $this, 'search_posts' ) );
 
 		if ( empty( $this->query_callback ) ) {
 			$this->query_callback = array( $this, 'search_posts_using_get_posts' );
 		}
 
 		parent::__construct($options);
+
+		// Add the action hook for typeahead handling via AJAX
+		add_action( 'wp_ajax_fm_search_posts_' . sanitize_title( $this->label ) , array( $this, 'search_posts' ) );
 	}
 	
 	/**
@@ -104,9 +104,9 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 				'post_date' => ''
 			);
 		}
-			
+
 		return sprintf(
-			'%s<input class="fm-post-element fm-element" type="text" name="%s" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-post-date="%s" data-show-post-type="%s" data-show-post-date="%s" %s />%s%s',
+			'%s<input class="fm-post-element fm-element" type="text" name="%s" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-post-date="%s" data-show-post-type="%s" data-show-post-date="%s" data-action="%s" %s />%s%s EDIT',
 			( $this->limit == 1 ) ? '<div class="fmjs-clearable-element">' : '',
 			$this->get_form_name(),
 			$this->get_element_id(),
@@ -117,6 +117,7 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			htmlspecialchars( $value['post_date'] ),
 			$this->show_post_type,
 			$this->show_post_date,
+			'fm_search_posts_' . sanitize_title( $this->label ),
 			$this->get_element_attributes(),
 			( $this->limit == 1 ) ? '</div>' : '',
 			( $this->limit == 1 ) ? $this->get_clear_handle() : ''
@@ -191,8 +192,8 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 	public function presave_alter_values( $values, $current_values = array() ) {
 		// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.
 		if ( empty( $current_values) || empty( $this->data_id ) || $this->data_type !== 'post' || !$this->reciprocal ) return $values;
-		foreach ( $current_values as $reciprocal_id ) {
-			delete_post_meta( $reciprocal_id, $this->reciprocal, $this->data_id );
+		foreach ( $current_values as $reciprocal_post ) {
+			delete_post_meta( $reciprocal_post['id'], $this->reciprocal, $this->data_id );
 		}
 		return $values;
 	}

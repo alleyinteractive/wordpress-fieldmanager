@@ -23,7 +23,7 @@ var fm_typeahead_action = function( $element ) {
 			if ( $element.data('editable') != 1 || $element.data('id') == "" ) {
 				// Query for posts matching the current text in the field
 				//console.log(fm_post);
-				$.post( ajaxurl, { action: 'fm_search_posts', fm_post_search_term: query, fm_post_search_nonce: fm_post.nonce }, function ( result ) {
+				$.post( ajaxurl, { action: $element.data('action'), fm_post_search_term: query, fm_post_search_nonce: fm_post.nonce }, function ( result ) {
 					resultObj = JSON.parse( result );
 					if ( $.type( resultObj ) == "object" ) {
 						fm_typeahead_results = resultObj;

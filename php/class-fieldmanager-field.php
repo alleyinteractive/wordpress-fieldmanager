@@ -455,7 +455,6 @@ abstract class Fieldmanager_Field {
 	public function render_meta_box( $post, $form_struct ) {
 		$key = $form_struct['callback'][0]->name;
 		$values = get_post_meta( $post->ID, $key, TRUE );
-		// if ( $this->name == 'tabs' ) { print_r($values); exit; }
 		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
 		echo $this->element_markup( $values );
 	}
@@ -503,7 +502,11 @@ abstract class Fieldmanager_Field {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 		$this->data_id = $post_id;
 		$this->data_type = 'post';
-		$current = get_post_meta( $post_id, $this->name );
+		$post = get_post( $post_id );
+		if ( $post->post_type = 'revision' && $post->post_parent != 0 ) {
+			$this->data_id = $post->post_parent;
+		}
+		$current = get_post_meta( $this->data_id, $this->name, True );
 		$data = $this->presave_all( $data, $current );
 		update_post_meta( $post_id, $this->name, $data );
 	}
