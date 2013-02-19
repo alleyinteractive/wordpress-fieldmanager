@@ -28,6 +28,14 @@ div.fm-group-label-wrapper {
 	overflow: auto;
 }
 
+.fm-label-inline {
+	margin: 0 5px 0 0;
+}
+
+.fm-label-inline.fm-label-after {
+	margin: 0 0 0 5px;
+}
+
 .fm-group div.fm-group-label-wrapper h4 {
 	background-color: transparent;
 	background-image: none;

@@ -29,17 +29,30 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	public $save_empty = True;
 
 	/**
+	 * @var boolean
+	 * Override inline_label
+	 */
+	public $inline_label = True;
+
+	/**
+	 * @var boolean
+	 * Override label_after_element
+	 */
+	public $label_after_element = True;
+
+	/**
 	 * Form element implementation for checkboxes
 	 * @param mixed $value
 	 * @return string HTML
 	 */
 	public function form_element( $value = NULL ) {
 		return sprintf(
-			'<input class="fm-element" type="checkbox" name="%1$s" value="%2$s" %3$s %4$s/>',
+			'<input class="fm-element" type="checkbox" name="%1$s" value="%2$s" %3$s %4$s id="%5$s" />',
 			$this->get_form_name(),
 			htmlentities( (string) $this->checked_value ),
 			$this->get_element_attributes(),
-			( $value == $this->checked_value ) ? "checked" : ""
+			( $value == $this->checked_value ) ? "checked" : "",
+			$this->get_element_id()
 		);
 	}
 

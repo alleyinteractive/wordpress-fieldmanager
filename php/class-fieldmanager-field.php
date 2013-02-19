@@ -69,6 +69,18 @@ abstract class Fieldmanager_Field {
 	public $label = '';
 
 	/**
+	 * @var boolean
+	 * If true, the label and the element will display on the same line. Some elements may not support this.
+	 */
+	public $inline_label = False;
+
+	/**
+	 * @var boolean
+	 * If true, the label will be displayed after the element.
+	 */
+	public $label_after_element = False;
+
+	/**
 	 * @var string
 	 * Description for the form element
 	 */
@@ -332,13 +344,16 @@ abstract class Fieldmanager_Field {
 
 		$out .= sprintf( '<div class="%s">', implode( ' ', $classes ) );
 
+		$label = $this->get_element_label( );
+		$render_label_after = False;
 		// Hide the label if it is empty or if this is a tab since it would duplicate the title from the tab label
 		if ( !empty( $this->label ) && !$this->is_tab && $this->one_label_per_item ) {
-			$label = $this->get_element_label( );
 			if ( $this->limit == 0 && $this->one_label_per_item ) {
 				$out .= $this->wrap_with_multi_tools( $label, array( 'fmjs-removable-label' ) );
-			} else {
+			} elseif ( !$this->label_after_element ) {
 				$out .= $label;
+			} else {
+				$render_label_after = True;
 			}
 		}
 
@@ -349,6 +364,8 @@ abstract class Fieldmanager_Field {
 		} else {
 			$out .= $form_element;
 		}
+
+		if ( $render_label_after ) $out .= $label;
 		
 		if ( isset( $this->description ) && !empty( $this->description ) ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->description );
@@ -601,7 +618,14 @@ abstract class Fieldmanager_Field {
 	 */
 	public function get_element_label( $classes = array() ) {
 		$classes[] = 'fm-label';
-		$classes[] = 'fm-labeladd-' . $this->name;
+		$classes[] = 'fm-label-' . $this->name;
+		if ( $this->inline_label ) {
+			$this->label_element = 'span';
+			$classes[] = 'fm-label-inline';
+		}
+		if ( $this->label_after_element ) {
+			$classes[] = 'fm-label-after';
+		}
 		return sprintf(
 			'<%s class="%s"><label for="%s">%s</label></%s>',
 			$this->label_element,
