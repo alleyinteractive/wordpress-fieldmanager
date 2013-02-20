@@ -70,7 +70,7 @@ $( document ).ready( function() {
 					// If there are optgroups present, use special processing
 					$resultObj.filter("optgroup").each( function( index, element ) {
 						// See if the optgroup already exists
-						var optgroup_selector = "optgroup[label=" + $(this).attr("label") + "]";
+						var optgroup_selector = "optgroup[label='" + $(this).attr("label") + "']";
 						if( $fm_select_field.find(optgroup_selector).length > 0 ) {
 							// The optgroup exists. Append these options to the existing optgroup.
 							fm_append_options( $fm_select_field.find(optgroup_selector), $(this).children("option") );
