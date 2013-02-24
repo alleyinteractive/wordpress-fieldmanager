@@ -185,10 +185,10 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 				// Build the taxonomy insert data
 				$taxonomy_insert_data = $this->get_taxonomy_insert_data( $tax_values );
 				foreach ( $taxonomy_insert_data as $taxonomy => $terms ) {
-					wp_set_object_terms( $this->data_id, $terms, $taxonomy, false );
+					wp_set_object_terms( $this->data_id, $terms, $taxonomy, true );
 				}
 			} else {
-				wp_set_object_terms( $this->data_id, $tax_values, $this->taxonomy, false );
+				wp_set_object_terms( $this->data_id, $tax_values, $this->taxonomy, true );
 			}
 					
 		}
