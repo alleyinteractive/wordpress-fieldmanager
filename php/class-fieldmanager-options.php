@@ -50,7 +50,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @var boolean
 	 * Pass $append = true to wp_set_object_terms?
 	 */
-	public $this->append_taxonomy = False;
+	public $append_taxonomy = False;
 
 
 	/**
