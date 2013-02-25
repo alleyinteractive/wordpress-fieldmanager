@@ -173,7 +173,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			if ( !is_array( $value ) ) $tax_values = array( $value ); 
 			else $tax_values = $value;
 						
-			$tax_values = array_map('intval', $tax_values);
+			$tax_values = array_map( 'intval', $tax_values );
     		$tax_values = array_unique( $tax_values );
     		
     		// Also assign the taxonomy to an array if it is not one since there may be grouped fields
