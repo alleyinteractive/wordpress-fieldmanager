@@ -48,6 +48,13 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 	/**
 	 * @var boolean
+	 * Pass $append = true to wp_set_object_terms?
+	 */
+	public $this->append_taxonomy = False;
+
+
+	/**
+	 * @var boolean
 	 * Allow multiple selections?
 	 */
 	public $multiple = false;
@@ -185,10 +192,10 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 				// Build the taxonomy insert data
 				$taxonomy_insert_data = $this->get_taxonomy_insert_data( $tax_values );
 				foreach ( $taxonomy_insert_data as $taxonomy => $terms ) {
-					wp_set_object_terms( $this->data_id, $terms, $taxonomy, true );
+					wp_set_object_terms( $this->data_id, $terms, $taxonomy, $this->append_taxonomy );
 				}
 			} else {
-				wp_set_object_terms( $this->data_id, $tax_values, $this->taxonomy, true );
+				wp_set_object_terms( $this->data_id, $tax_values, $this->taxonomy, $this->append_taxonomy );
 			}
 					
 		}
