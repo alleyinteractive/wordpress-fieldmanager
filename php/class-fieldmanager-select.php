@@ -132,7 +132,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			'<option value="%s" %s>%s</option>',
 			$data_row['value'],
 			$option_selected,
-			htmlspecialchars( $data_row['name'] )
+			$data_row['name']
 		);			
 	
 	}
