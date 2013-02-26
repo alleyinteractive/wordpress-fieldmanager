@@ -48,6 +48,12 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 	/**
 	 * @var boolean
+	 * Sort taxonomy hierarchically and indent child categories with dashes?
+	 */
+	public $taxonomy_hierarchical = false;
+
+	/**
+	 * @var boolean
 	 * Pass $append = true to wp_set_object_terms?
 	 */
 	public $append_taxonomy = False;
@@ -210,6 +216,15 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return array[] data entries for options
 	 */
 	public function get_taxonomy_data() {
+
+		// If taxonomy_hierarchical is set, assemble recursive term list, then bail out.
+		if ( $this->taxonomy_hierarchical ) {
+			$tax_args = $this->taxonomy_args;
+			$tax_args['parent'] = 0;
+			$parent_terms = get_terms( $this->taxonomy, $tax_args );
+			$this->build_hierarchical_term_data( $parent_terms, $this->taxonomy_args, 0 );
+			return;
+		}
 	
 		// Query for all terms for the defined taxonomies
 		$terms = get_terms ( $this->taxonomy, $this->taxonomy_args );
@@ -249,6 +264,41 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			);
 		}
 	 
+	}
+
+	/**
+	 * Helper to support recursive building of a hierarchical taxonomy list.
+	 * @param array $parent_terms
+	 * @param array $tax_args as used in top-level get_terms() call.
+	 * @param int $depth current recursive depth level.
+	 * @return array of terms or false if no children found.
+	 */
+	protected function build_hierarchical_term_data( $parent_terms, $tax_args, $depth ) {
+		
+		// Walk through each term passed, add it (at current depth) to the data stack.
+		foreach ( $parent_terms as $term ) {
+			$taxonomy_data = get_taxonomy( $term->taxonomy );
+			$prefix = '';
+			
+			// Prefix term based on depth. For $depth = 0, prefix will remain empty.
+			for ( $i = 0; $i < $depth; $i++ ) {
+				$prefix .= '--';
+			}
+			
+			$this->data[] = array(
+				'name' => $prefix . ' ' . $term->name,
+				'value' => $term->term_id,
+				'group' => $taxonomy_data->label,
+				'group_id' => $taxonomy_data->name,
+			);
+			
+			// Find child terms of this. If any, recur on this function.
+			$tax_args['parent'] = $term->term_id;
+			$child_terms = get_terms( $this->taxonomy, $tax_args );
+			if ( !empty( $child_terms ) ) {
+				$this->build_hierarchical_term_data( $child_terms, $this->taxonomy_args, $depth + 1 );
+			}
+		}
 	}
 	
 	/**
