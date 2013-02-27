@@ -56,13 +56,19 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @var string
 	 * Helper for taxonomy-based option sets; whether or not to preload all terms
 	 */
-	public $taxonomy_preload = true;
+	public $taxonomy_preload = True;
 
 	/**
 	 * @var boolean
 	 * Allow multiple selections?
 	 */
-	public $multiple = false;
+	public $multiple = False;
+
+	/**
+	 * @var boolean
+	 * Ensure that get_taxonomy_data() only runs once.
+	 */
+	private $has_built_data = False;
 	
 	/**
 	 * Add CSS, configure taxonomy, construct parent
@@ -104,10 +110,13 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	public function form_data_elements( $value ) {
 	
 		// If the taxonomy parameter is set, populate the data from the given taxonomy if valid
-		if ( $this->taxonomy != null && $this->taxonomy_preload ) $this->get_taxonomy_data();
-	
-		// Add the first element to the data array. This is useful for database-based data sets that require a first element.
-		if ( !empty( $this->first_element ) ) array_unshift( $this->data, $this->first_element );
+		if ( !$this->has_built_data ) {
+			if ( $this->taxonomy != null && $this->taxonomy_preload ) $this->get_taxonomy_data();
+		
+			// Add the first element to the data array. This is useful for database-based data sets that require a first element.
+			if ( !empty( $this->first_element ) ) array_unshift( $this->data, $this->first_element );
+			$this->has_built_data = True;
+		}
 		
 		// If the value is not in an array, put it in one since sometimes there will be multiple selects
 		if ( !is_array( $value ) && isset( $value ) ) {
@@ -252,7 +261,6 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 				'group_id' => $taxonomy_data->name
 			);
 		}
-	 
 	}
 	
 	/**

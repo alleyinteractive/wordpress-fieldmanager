@@ -46,23 +46,23 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			'size' => '1'
 		);
 		
-		// Add the chosen library for type-ahead capabilities
-		if ( $this->type_ahead ) {
-			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
-			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
-		}
-		
 		// Add the Fieldmanager Select javascript library
 		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), false, false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
 
 		// Add the action hook for typeahead handling via AJAX
 		add_action('wp_ajax_fm_search_terms', array( $this, 'search_terms' ) );
-		
+
+		parent::__construct( $options );
+
+		// Add the chosen library for type-ahead capabilities
+		if ( $this->type_ahead ) {
+			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
+			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+		}
+
 		if ( empty( $this->query_callback ) ) {
 			$this->query_callback = array( $this, 'search_terms_using_get_terms' );
 		}
-				
-		parent::__construct($options);
 	}
 
 	/**
@@ -243,7 +243,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 */
 	public function chosen_init( ) {
 		echo sprintf(
-			'<script type="text/javascript"> $("#%s").chosen({allow_single_deselect:true});</script>',
+			'<script type="text/javascript"> jQuery("#%s").chosen({allow_single_deselect:true});</script>',
 			$this->get_element_id()
 		);
 	}

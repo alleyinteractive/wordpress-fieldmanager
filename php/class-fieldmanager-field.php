@@ -457,7 +457,8 @@ abstract class Fieldmanager_Field {
 				$type['meta_box_name'],
 				$type['meta_box_title'],
 				array( $this, 'render_meta_box' ),
-				$type['content_type']
+				$type['content_type'],
+				isset( $type['context'] ) ? $type['context'] : 'normal'
 			);
 		}
 	}
