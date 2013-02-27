@@ -26,14 +26,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 * Send an empty element first with a taxonomy select
 	 */
 	public $first_empty = False;
-
-	/**
-	 * @var string
-	 * Helper for taxonomy-based option sets; whether or not to preload all terms
-	 * Currently only available for Fieldmanager Select due to implementations with chosen.js
-	 */
-	public $taxonomy_preload = true;	
-		
+	
 	/**
 	 * @var callable
 	 * What function to call to match terms. Initialized to Null here because it will be 
