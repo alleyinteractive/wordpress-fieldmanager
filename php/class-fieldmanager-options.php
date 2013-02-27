@@ -117,7 +117,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	
 		// If the taxonomy parameter is set, populate the data from the given taxonomy if valid
 		if ( !$this->has_built_data ) {
-			if ( $this->taxonomy != null && $this->taxonomy_preload ) $this->get_taxonomy_data();
+			if ( $this->taxonomy != null ) $this->get_taxonomy_data( $value );
 		
 			// Add the first element to the data array. This is useful for database-based data sets that require a first element.
 			if ( !empty( $this->first_element ) ) array_unshift( $this->data, $this->first_element );
@@ -234,9 +234,10 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	
 	/**
 	 * Get taxonomy data per $this->taxonomy_args
+	 * @param $value The value(s) currently set for this field
 	 * @return array[] data entries for options
 	 */
-	public function get_taxonomy_data() {
+	public function get_taxonomy_data( $value ) {
 
 		// If taxonomy_hierarchical is set, assemble recursive term list, then bail out.
 		if ( $this->taxonomy_hierarchical ) {
@@ -248,6 +249,22 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		}
 	
 		// Query for all terms for the defined taxonomies
+		// If preload is set to false ONLY load the terms selected previously
+		if( $this->taxonomy_preload == false ) {
+			if( empty( $value ) )
+				// Nothing has been selected yet so just return
+				return;
+			
+			if( !is_array( $value ) ) 
+				// Make sure we have an array
+				$value = array( $value );
+				
+			// Make sure all the values are integers
+			$value = array_map( 'intval', $value );
+			
+			// Finally, make sure we are only including these terms
+			$this->taxonomy_args['include'] = $value;
+		}
 		$terms = get_terms ( $this->taxonomy, $this->taxonomy_args );
 		
 		// If the taxonomy list was an array and group display is set, ensure all terms are grouped by taxonomy
