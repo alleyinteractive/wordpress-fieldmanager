@@ -24,6 +24,10 @@
 	background-image: linear-gradient(bottom,#DDD,#EEE);
 }
 
+.fm-hidden {
+	display: none;
+}
+
 div.fm-group-label-wrapper {
 	overflow: auto;
 }
@@ -116,7 +120,6 @@ div.fm-group-label-wrapper .fmjs-remove {
 .fm-item-description {
 	font-style: italic;
 }
-<<<<<<< HEAD
 
 .fm-wrapper div.fm-submenu {
 	background-color: transparent;

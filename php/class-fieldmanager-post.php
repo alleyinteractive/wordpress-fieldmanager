@@ -27,9 +27,14 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 
 	/**
 	 * @var boolean
-	 * Allow editing of the target post?
+	 * Allow editing of the target post title?
 	 */
-	public $editable = false;
+	public $editable = False;
+
+	/**
+	 * @var boolean
+	 */
+	public $show_edit_link = False;
 
 	/**
 	 * @var boolean
@@ -105,8 +110,8 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			);
 		}
 
-		return sprintf(
-			'%s<input class="fm-post-element fm-element" type="text" name="%s" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-post-date="%s" data-show-post-type="%s" data-show-post-date="%s" data-action="%s" %s />%s%s EDIT',
+		$element = sprintf(
+			'%s<input class="fm-post-element fm-element" type="text" name="%s" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-post-date="%s" data-show-post-type="%s" data-show-post-date="%s" data-action="%s" %s />%s%s',
 			( $this->limit == 1 ) ? '<div class="fmjs-clearable-element">' : '',
 			$this->get_form_name(),
 			$this->get_element_id(),
@@ -122,6 +127,21 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			( $this->limit == 1 ) ? '</div>' : '',
 			( $this->limit == 1 ) ? $this->get_clear_handle() : ''
 		);
+		if ( $this->show_view_link ) {
+			$element .= sprintf(
+				' <a target="_new" class="fm-post-view-link %s" href="%s">View</a>',
+				empty( $value['id'] ) ? 'fm-hidden' : '',
+				empty( $value['id'] ) ? '#' : get_permalink( $value['id'] )
+			);
+		}
+		if ( $this->show_edit_link ) {
+			$element .= sprintf(
+				' <a target="_new" class="fm-post-edit-link %s" href="%s">Edit</a>',
+				empty( $value['id'] ) ? 'fm-hidden' : '',
+				empty( $value['id'] ) ? '#' : get_edit_post_link( $value['id'] )
+			);
+		}
+		return $element;
 	}
 
 	/**
