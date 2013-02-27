@@ -181,47 +181,55 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		if ( ( $options != null && !empty( $options ) ) && in_array( $current_option, $options ) ) return $attribute;
 		else return '';
 	}
-	
+
 	/**
-	 * Override presave to handle taxonomy
-	 * @param mixed $value
+	 * Presave hook to set taxonomy data, maybe
+	 * @param int[] $values
+	 * @param int[] $current_values
+	 * @return int[] $values
+	 */
+	public function presave_alter_values( $values, $current_values ) {
+		// If this is a taxonomy-based field, must also save the value(s) as an object term
+		if ( isset( $this->taxonomy ) && !empty( $values ) ) {
+			// Sanitize the value(s)
+			if ( !is_array( $values ) ) {
+				$values = array( $values );
+			}
+			$tax_values = array();
+			foreach ( $values as &$value ) {
+				$value = call_user_func( $this->sanitize, $value );
+				if ( !empty( $value ) && is_numeric( $value ) ) {
+					$tax_values[] = $value;
+				}
+			}
+			$this->save_taxonomy( $tax_values );
+		}
+		return $values;
+	}
+
+	/**
+	 * Save taxonomy data
+	 * @param mixed[] $tax_values
 	 * @return void
 	 */
-	public function presave( $value, $current_value = array() ) {
+	public function save_taxonomy( $tax_values ) {
+		$tax_values = array_map( 'intval', $tax_values );
+		$tax_values = array_unique( $tax_values );
+		
+		// Also assign the taxonomy to an array if it is not one since there may be grouped fields
+		$taxonomies = $this->taxonomy;
+		if ( !is_array( $this->taxonomy ) ) $taxonomies = array( $this->taxonomy );
 	
-		// Sanitize the value(s)
-		$value = call_user_func( $this->sanitize, $value );
-		
-		// If this is a taxonomy-based field, must also save the value(s) as an object term
-		if ( isset( $this->taxonomy ) && isset( $value ) ) {
-			
-			// If the value is not an array, make it one, cast the values to integers and ensure uniqueness		
-			if ( !is_array( $value ) ) $tax_values = array( $value ); 
-			else $tax_values = $value;
-						
-			$tax_values = array_map( 'intval', $tax_values );
-    		$tax_values = array_unique( $tax_values );
-    		
-    		// Also assign the taxonomy to an array if it is not one since there may be grouped fields
-    		$taxonomies = $this->taxonomy;
-    		if ( !is_array( $this->taxonomy ) ) $taxonomies = array( $this->taxonomy );
-		
-			// Store the each term for this post. Handle grouped fields differently since multiple taxonomies are present.
-			if ( is_array( $this->taxonomy ) ) {
-				// Build the taxonomy insert data
-				$taxonomy_insert_data = $this->get_taxonomy_insert_data( $tax_values );
-				foreach ( $taxonomy_insert_data as $taxonomy => $terms ) {
-					wp_set_object_terms( $this->data_id, $terms, $taxonomy, $this->append_taxonomy );
-				}
-			} else {
-				wp_set_object_terms( $this->data_id, $tax_values, $this->taxonomy, $this->append_taxonomy );
+		// Store the each term for this post. Handle grouped fields differently since multiple taxonomies are present.
+		if ( is_array( $this->taxonomy ) ) {
+			// Build the taxonomy insert data
+			$taxonomy_insert_data = $this->get_taxonomy_insert_data( $tax_values );
+			foreach ( $taxonomy_insert_data as $taxonomy => $terms ) {
+				wp_set_object_terms( $this->data_id, $terms, $taxonomy, $this->append_taxonomy );
 			}
-					
+		} else {
+			wp_set_object_terms( $this->data_id, $tax_values, $this->taxonomy, $this->append_taxonomy );
 		}
-		
-		// Return the sanitized value
-		return $value;
-		
 	}
 	
 	/**

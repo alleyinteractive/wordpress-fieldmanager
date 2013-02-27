@@ -138,13 +138,13 @@ abstract class Fieldmanager_Field {
 	 * @var int|null
 	 * ID for $this->data_type, eg $post->ID, generally set internally
 	 */
-	public $data_id = NULL;
+	public $data_id = Null;
 
 	/**
 	 * @var boolean
 	 * If true, save empty elements to DB (if $this->limit != 1; single elements are always saved)
 	 */
-	public $save_empty = FALSE;
+	public $save_empty = False;
 
 	/**
 	 * @var array[]
@@ -535,8 +535,10 @@ abstract class Fieldmanager_Field {
 	 * @return mixed[] sanitized values
 	 */
 	public function presave_all( $values, $current_values ) {
+
 		if ( $this->limit == 1 ) {
-			return $this->presave( $values );
+			$values = $this->presave_alter_values( array( $values ), $current_values );
+			return $this->presave( $values[0] );
 		}
 		
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
@@ -554,7 +556,9 @@ abstract class Fieldmanager_Field {
 		if ( isset( $values['proto'] ) ) {
 			unset( $values['proto'] );
 		}
+
 		$values = $this->presave_alter_values( $values, $current_values );
+
 		foreach ( $values as $i => $value ) {
 			if ( !is_numeric( $i ) ) {
 				// If $this->limit != 1 and $values contains something other than a numeric key...
