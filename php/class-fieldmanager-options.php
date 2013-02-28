@@ -85,10 +85,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			$keys = array_keys( $options['options'] );
 			$use_name_as_value = ( array_keys( $keys ) === $keys );
 			foreach ( $options['options'] as $k => $v ) {
-				$this->data[] = array(
-					'name' => $v,
-					'value' => $use_name_as_value ? $v : $k,
-				);
+				$this->add_option_data( $v, ( $use_name_as_value ? $v : $k ) );
 			}
 		}
 
@@ -306,6 +303,10 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			foreach ( $this->taxonomy as $tax ) {
 				if ( array_key_exists( $tax, $term_groups ) && is_array( $term_groups[$tax] ) ) {
 					$terms = array_merge( $terms, $term_groups[$tax] );
+				} else if ( !array_key_exists( $tax, $term_groups ) && $this->taxonomy_preload == false ) {
+					// Add a default blank group so that the blank optgroup is still present for inserting terms from typeahead search
+					$taxonomy_data = get_taxonomy( $tax );
+					$this->add_option_data( "", "", $taxonomy_data->label, $taxonomy_data->name );
 				}
 			}
 			
@@ -315,13 +316,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		foreach ( $terms as $term ) {
 			// Store the label for the taxonomy as the group since it will be used for display
 			$taxonomy_data = get_taxonomy( $term->taxonomy );
-		
-			$this->data[] = array( 
-				'name' => $term->name,
-				'value' => $term->term_id,
-				'group' => $taxonomy_data->label,
-				'group_id' => $taxonomy_data->name
-			);
+			$this->add_option_data( $term->name, $term->term_id, $taxonomy_data->label, $taxonomy_data->name );
 		}
 	}
 
@@ -344,12 +339,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 				$prefix .= '--';
 			}
 			
-			$this->data[] = array(
-				'name' => $prefix . ' ' . $term->name,
-				'value' => $term->term_id,
-				'group' => $taxonomy_data->label,
-				'group_id' => $taxonomy_data->name,
-			);
+			$this->add_option_data( $prefix . ' ' . $term->name, $term->term_id, $taxonomy_data->label, $taxonomy_data->name );
 			
 			// Find child terms of this. If any, recur on this function.
 			$tax_args['parent'] = $term->term_id;
@@ -366,14 +356,38 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return array $values with taxonomy IDs for saving.
 	 */
 	protected function get_taxonomy_insert_data( $values ) {
-	
+		global $wpdb;
+		
 		// If the option field data was grouped and is taxonomy-based, we need to find the taxonomy for each value in order to store it
 		$taxonomy_insert_data = array();
-		foreach ( $this->data as $element ) {
-			if ( in_array( $element['value'], $values ) ) $taxonomy_insert_data[$element['group_id']][] = intval( $element['value'] );
+		foreach ( $values as $value ) {
+			$taxonomy = $wpdb->get_var( $wpdb->prepare( 
+				"select taxonomy from wp_term_taxonomy where term_id=%d;", 
+				$value
+			) );
+			if ( isset( $taxonomy ) ) $taxonomy_insert_data[$taxonomy][] = intval( $value );
 		}
 		
 		return $taxonomy_insert_data;
+	}
+	
+	/**
+	 * Add option data to the data attribute of this object
+	 * @param string $name
+	 * @param mixed $value
+	 * @param string $group
+	 * @param string|int $group_id
+	 * @return void
+	 */
+	protected function add_option_data( $name, $value, $group=null, $group_id=null ) {
+		$data = array( 
+			'name' => $name,
+			'value' => $value
+		);
+		if( isset( $group ) ) $data['group'] = $group;
+		if( isset( $group_id ) ) $data['group_id'] = $group_id;
+		
+		$this->data[] = $data;
 	}
 
 }
