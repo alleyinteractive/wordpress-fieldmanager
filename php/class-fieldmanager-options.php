@@ -206,7 +206,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param int[] $current_values
 	 * @return int[] $values
 	 */
-	public function presave_alter_values( $values, $current_values ) {
+	public function presave_alter_values( $values, $current_values ) {	
 		// If this is a taxonomy-based field, must also save the value(s) as an object term
 		if ( isset( $this->taxonomy ) && !empty( $values ) ) {
 			// Sanitize the value(s)
@@ -216,8 +216,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			$tax_values = array();
 			foreach ( $values as &$value ) {
 				$value = call_user_func( $this->sanitize, $value );
-				if ( !empty( $value ) && is_numeric( $value ) ) {
-					$tax_values[] = $value;
+				if ( !empty( $value ) ) {
+					if( is_numeric( $value ) )
+						$tax_values[] = $value;
+					else if( is_array( $value ) )
+						$tax_values = $value;
 				}
 			}
 			$this->save_taxonomy( $tax_values );
@@ -231,6 +234,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return void
 	 */
 	public function save_taxonomy( $tax_values ) {
+	
 		$tax_values = array_map( 'intval', $tax_values );
 		$tax_values = array_unique( $tax_values );
 		
