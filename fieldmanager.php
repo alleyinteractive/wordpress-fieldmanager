@@ -68,16 +68,13 @@ function fieldmanager_get_baseurl() {
  * @return void
  */
 function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array(), $plugin_dir = "" ) {
+	if( !is_admin() ) return;
 	if( $plugin_dir == "" ) $plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
 	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
 		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver );
 		if ( !empty( $data_object ) && !empty( $data ) ) wp_localize_script( $handle, $data_object, $data );
 	};
-	if ( is_admin() ) {
-		add_action( 'admin_enqueue_scripts', $add_script );
-	} else {
-		add_action( 'wp_enqueue_scripts', $add_script );
-	}
+	add_action( 'admin_enqueue_scripts', $add_script );
 }
 
 /**
@@ -90,15 +87,12 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
  * @return void
  */
 function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all' ) {
+	if( !is_admin() ) return;
 	$add_script = function() use ( $handle, $path, $deps, $ver, $media ) {
 		wp_register_style( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver, $media );
         wp_enqueue_style( $handle );
 	};
-	if ( is_admin() ) {
-		add_action( 'admin_enqueue_scripts', $add_script );
-	} else {
-		add_action( 'wp_enqueue_scripts', $add_script );
-	}
+	add_action( 'admin_enqueue_scripts', $add_script );
 }
 
 /**
