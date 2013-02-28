@@ -181,6 +181,24 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		if ( ( $options != null && !empty( $options ) ) && in_array( $current_option, $options ) ) return $attribute;
 		else return '';
 	}
+	
+	/**
+	 * Presave function, which handles sanitization and validation
+	 * @param mixed $value If a single field expects to manage an array, it must override presave()
+	 * @return sanitized values. 
+	 */
+	public function presave( $value, $current_value = array() ) {
+		foreach ( $this->validate as $func ) {
+			if ( !call_user_func( $func, $value ) ) {
+				$this->_failed_validation( sprintf(
+					__( 'Input "%1$s" is not valid for field "%2$s" ' ),
+					(string) $value,
+					$this->label
+				) );
+			}
+		}
+		return call_user_func( $this->sanitize, $value );
+	}
 
 	/**
 	 * Presave hook to set taxonomy data, maybe
