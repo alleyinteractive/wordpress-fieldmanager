@@ -270,21 +270,23 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		// Query for all terms for the defined taxonomies
 		// If preload is set to false ONLY load the terms selected previously
 		if( $this->taxonomy_preload == false ) {
-			if( empty( $value ) )
-				// Nothing has been selected yet so just return
+			if( empty( $value ) && !is_array( $this->taxonomy ) )
+				// Nothing has been selected and we don't have to pre-populate optgroups, so just return
 				return;
 			
-			if( !is_array( $value ) ) 
-				// Make sure we have an array
-				$value = array( $value );
+			if( !empty( $value ) ) {
+				if( !is_array( $value ) ) 
+					// Make sure we have an array
+					$value = array( $value );
 				
-			// Make sure all the values are integers
-			$value = array_map( 'intval', $value );
+				// Make sure all the values are integers
+				$value = array_map( 'intval', $value );
 			
-			// Finally, make sure we are only including these terms
-			$this->taxonomy_args['include'] = $value;
+				// Finally, make sure we are only including these terms
+				$this->taxonomy_args['include'] = $value;
+			}
 		}
-		$terms = get_terms ( $this->taxonomy, $this->taxonomy_args );
+		$terms = get_terms( $this->taxonomy, $this->taxonomy_args );
 		
 		// If the taxonomy list was an array and group display is set, ensure all terms are grouped by taxonomy
 		// Use the order of the taxonomy array list for sorting the groups to make this controllable for developers
@@ -294,16 +296,19 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			
 			// Group the data
 			$term_groups = array();
+			foreach ( $this->taxonomy as $tax ) {
+				$term_groups[$tax] = array();
+			}
 			foreach ( $terms as $term ) {
 				$term_groups[$term->taxonomy][] = $term;
 			}
-						
+									
 			// Sort the groups by the provided taxonomy order and replace the original $terms data
 			$terms = array();
 			foreach ( $this->taxonomy as $tax ) {
-				if ( array_key_exists( $tax, $term_groups ) && is_array( $term_groups[$tax] ) ) {
+				if ( !empty( $term_groups[$tax] ) ) {
 					$terms = array_merge( $terms, $term_groups[$tax] );
-				} else if ( !array_key_exists( $tax, $term_groups ) && $this->taxonomy_preload == false ) {
+				} else if ( empty( $term_groups[$tax] ) && $this->taxonomy_preload == false ) {
 					// Add a default blank group so that the blank optgroup is still present for inserting terms from typeahead search
 					$taxonomy_data = get_taxonomy( $tax );
 					$this->add_option_data( "", "", $taxonomy_data->label, $taxonomy_data->name );
