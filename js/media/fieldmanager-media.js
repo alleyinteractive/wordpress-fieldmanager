@@ -24,7 +24,7 @@ $( document ).on( 'click', '.fm-media-button', function() {
 		$(input).parent().find('.media-wrapper').html('Uploaded file:<br /> ' + html + '<br /><a class="remove-link" href="#">remove image</a>').find('img').removeClass('alignright');
 		$(input).parent().find('.media-wrapper').find('.remove-link').click(function(e) {
 			e.preventDefault();
-			$(input).parent().find('fm-media-id').val(0);
+			$(input).parent().find('.fm-media-id').val(0);
 			$(input).parent().find('.media-wrapper').html('');
 		});
 		window.send_to_editor = old_send_to_editor;
