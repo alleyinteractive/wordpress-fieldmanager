@@ -23,6 +23,12 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 
 	/**
 	 * @var string
+	 * Class to attach to thumbnail media display
+	 */
+	public $thumbnail_class = 'alignright';
+
+	/**
+	 * @var string
 	 * Static variable so we only load media JS once
 	 */
 	public static $has_registered_media = False;
@@ -46,16 +52,19 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * Presave; convert a URL to an attachment ID.
 	 */
 	public function presave( $value, $current_value = array() ) {
-		global $wpdb;
-		if ( !empty( $value ) && !is_numeric( $value ) ) {
-			$attachment = $wpdb->get_row(
-				$wpdb->prepare(
-					"SELECT ID FROM $wpdb->posts WHERE guid = %s AND post_type = 'attachment'",
-					$value
-				)
-			);
-			if ( !empty( $attachment->ID ) ) return $attachment->ID;
-			else return NULL;
+		//global $wpdb;
+		// if ( !empty( $value ) && !is_numeric( $value ) ) {
+		// 	$attachment = $wpdb->get_row(
+		// 		$wpdb->prepare(
+		// 			"SELECT ID FROM $wpdb->posts WHERE guid = %s AND post_type = 'attachment'",
+		// 			$value
+		// 		)
+		// 	);
+		// 	if ( !empty( $attachment->ID ) ) return $attachment->ID;
+		// 	else return NULL;
+		// }
+		if ( $value == 0) {
+			return NULL;
 		}
 		return $value;
 	}
@@ -74,7 +83,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$this->get_form_name(),
 			$this->button_label,
 			$value,
-			is_numeric( $value ) && $value > 0 ? wp_get_attachment_link( $value, 'thumbnail' ) : ''
+			is_numeric( $value ) && $value > 0 ? 'Uploaded image:<br />' . wp_get_attachment_image( $value, 'thumbnail', false, array( 'class' => $this->thumbnail_class ) ) . '<br /><a href="#" class="remove-link">remove image</a>' : ''
 		);
 	}
 
