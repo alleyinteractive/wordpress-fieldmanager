@@ -53,6 +53,12 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	public $taxonomy_hierarchical = false;
 
 	/**
+	 * @var int
+	 * How far to descend into taxonomy hierarchy (0 for no limit)
+	 */
+	public $taxonomy_hierarchical_depth = 0;
+
+	/**
 	 * @var boolean
 	 * Pass $append = true to wp_set_object_terms?
 	 */
@@ -63,6 +69,12 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * Helper for taxonomy-based option sets; whether or not to preload all terms
 	 */
 	public $taxonomy_preload = True;
+
+	/**
+	 * @var string
+	 * If true, additionally save taxonomy terms to WP's terms tables.
+	 */
+	public $taxonomy_save_to_terms = True;
 
 	/**
 	 * @var boolean
@@ -205,7 +217,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function presave_alter_values( $values, $current_values ) {	
 		// If this is a taxonomy-based field, must also save the value(s) as an object term
-		if ( isset( $this->taxonomy ) && !empty( $values ) ) {
+		if ( $this->taxonomy_save_to_terms && isset( $this->taxonomy ) && !empty( $values ) ) {
 			// Sanitize the value(s)
 			if ( !is_array( $values ) ) {
 				$values = array( $values );
@@ -346,11 +358,13 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			
 			$this->add_option_data( $prefix . ' ' . $term->name, $term->term_id, $taxonomy_data->label, $taxonomy_data->name );
 			
-			// Find child terms of this. If any, recur on this function.
+			// Find child terms of this. If any, recurse on this function.
 			$tax_args['parent'] = $term->term_id;
 			$child_terms = get_terms( $this->taxonomy, $tax_args );
-			if ( !empty( $child_terms ) ) {
-				$this->build_hierarchical_term_data( $child_terms, $this->taxonomy_args, $depth + 1 );
+			if ( $this->taxonomy_hierarchical_depth == 0 || $depth + 1 < $this->taxonomy_hierarchical_depth ) {
+				if ( !empty( $child_terms ) ) {
+					$this->build_hierarchical_term_data( $child_terms, $this->taxonomy_args, $depth + 1 );
+				}
 			}
 		}
 	}

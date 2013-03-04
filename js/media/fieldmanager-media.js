@@ -1,35 +1,32 @@
 ( function( $ ) {
 
-$( document ).ready(function() {
-	$('a.remove-link').click(function(e) {
-		e.preventDefault();
-		$(this).parents('.fm-image').find('.fm-media-id').val(0);
-		$(this).parents('.fm-image').find('.media-wrapper').html('');
-	});
+$( document ).on( 'click', '.fm-media-remove', function(e) {
+	e.preventDefault();
+	$(this).parents( '.fm-item.fm-media' ).find( '.fm-media-id' ).val( 0 );
+	$(this).parents( '.fm-item.fm-media' ).find( '.media-wrapper' ).html( '' );
 });
 
 $( document ).on( 'click', '.fm-media-button', function() {
-	tb_show( '', 'media-upload.php?TB_iframe=true' );
-	var old_send_to_editor = window.send_to_editor;
+	var old_send_to_editor = wp.media.editor.send.attachment;
 	var input = this;
-	window.send_to_editor = function( html ) {
-		var classes = $('img', html).attr('class').split(' ');
-		var attachment_id = 0;
-		for (i = 0; i < classes.length; i++) {
-			if (classes[i].indexOf('wp-image') >= 0) {
-				attachment_id = classes[i].split('-')[2];
-			}
+	wp.media.editor.send.attachment = function( props, attachment ) {
+		props.size = 'thumbnail';
+		props = wp.media.string.props( props, attachment );
+		props.align = null;
+		$(input).parent().find('.fm-media-id').val( attachment.id );
+		if ( attachment.type == 'image' ) {
+			props.url = props.src;
+			var preview = 'Uploaded file:<br />';
+			preview += wp.media.string.image( props );
+		} else {
+			var preview = 'Uploaded file:&nbsp;';
+			preview += wp.media.string.link( props );
 		}
-		$(input).parent().find('.fm-media-id').val(attachment_id);
-		$(input).parent().find('.media-wrapper').html('Uploaded file:<br /> ' + html + '<br /><a class="remove-link" href="#">remove image</a>').find('img').removeClass('alignright');
-		$(input).parent().find('.media-wrapper').find('.remove-link').click(function(e) {
-			e.preventDefault();
-			$(input).parent().find('.fm-media-id').val(0);
-			$(input).parent().find('.media-wrapper').html('');
-		});
-		window.send_to_editor = old_send_to_editor;
-		tb_remove();
+		preview += '<br /><a class="fm-media-remove fm-delete" href="#">remove</a>';
+		$( input ).parent().find( '.media-wrapper' ).html( preview );
+		wp.media.editor.send.attachment = old_send_to_editor;
 	}
+	wp.media.editor.open( input );
 } );
 
 } )( jQuery );

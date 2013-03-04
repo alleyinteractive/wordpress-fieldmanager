@@ -237,3 +237,18 @@ div.fm-group-label-wrapper .fmjs-remove {
 	padding: 5px;
 	margin: 10px 0;
 }
+
+a.fm-delete {
+	color: #bc0b0b;
+	text-decoration: none;
+}
+
+a.fm-delete:hover {
+	color: #f00;
+}
+
+.media-wrapper {
+	margin: 5px 0 15px 15px;
+	padding-left: 10px;
+	border-left: solid 1px #ccc;
+}

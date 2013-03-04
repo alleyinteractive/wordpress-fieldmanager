@@ -25,7 +25,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @var string
 	 * Class to attach to thumbnail media display
 	 */
-	public $thumbnail_class = 'alignright';
+	public $thumbnail_class = 'thumbnail';
 
 	/**
 	 * @var string
@@ -34,14 +34,12 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public static $has_registered_media = False;
 
 	/**
-	 * Construct default attributes; 50x10 textarea
+	 * Construct default attributes
 	 * @param array $options
 	 */
 	public function __construct( $options = array() ) {
 		if ( !self::$has_registered_media ) {
-			wp_enqueue_script( 'media-upload' );
-			wp_enqueue_script( 'thickbox' );
-			wp_enqueue_style( 'thickbox' );
+			wp_enqueue_media();
 			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js' );
 			self::$has_registered_media = True;
 		}
@@ -64,15 +62,28 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @return string HTML
 	 */
 	public function form_element( $value = array() ) {
+		if ( is_numeric( $value ) && $value > 0 ) {
+			$attachment = get_post( $value );
+			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
+				$preview = sprintf( '%s<br />', __( 'Uploaded image:' ) );
+				$preview .= wp_get_attachment_image( $value, 'thumbnail', false, array( 'class' => $this->thumbnail_class ) );
+			} else {
+				$preview = sprintf( '%s', __( 'Uploaded file:' ) ) . '&nbsp;';
+				$preview .= wp_get_attachment_link( $value, 'thumbnail', True, True, $attachment->post_title );
+			}
+			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
+		} else {
+			$preview = '';
+		}
 		return sprintf(
 			'<input type="button" class="fm-media-button" id="%1$s" value="%3$s" />
-			<input type="hidden" name="%2$s" value="%4$s" class="fm-media-id" />
+			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
 			<div class="media-wrapper">%5$s</div>',
 			$this->get_element_id(),
 			$this->get_form_name(),
 			$this->button_label,
 			$value,
-			is_numeric( $value ) && $value > 0 ? 'Uploaded image:<br />' . wp_get_attachment_image( $value, 'thumbnail', false, array( 'class' => $this->thumbnail_class ) ) . '<br /><a href="#" class="remove-link">remove image</a>' : ''
+			$preview
 		);
 	}
 

@@ -27,11 +27,18 @@ var init_label_macros = function() {
 			if ( typeof $src.val === 'function' ) {
 				var $label = $( this );
 				var title_macro = function() {
-					var token = $src.val();
+					var token = '';
+					if ( $src.prop( 'tagName' ) == 'SELECT' ) {
+						var $option = $src.find( 'option:selected' );
+						if ( $option.val() ) {
+							token = $option.text();
+						}
+					} else {
+						token = $src.val();
+					}
 					if ( token.length > 0 ) {
 						$label.html( $label.data( 'label-format' ).replace( '%s', token ) );
-					}
-					else {
+					} else {
 						$label.html( $label.data( 'label-original' ) );
 					}
 				};
@@ -48,7 +55,7 @@ var fm_renumber = function( $wrappers ) {
 		var order = 0;
 		if ( level_pos > 0 ) {
 			$( this ).find( '> .fm-item:visible' ).each( function() {
-				$( this ).find( '.fm-element:visible' ).each( function() {
+				$( this ).find( '.fm-element:visible, input[type=hidden].fm-element' ).each( function() {
 					var fname = $(this).attr( 'name' );
 					fname = fname.replace( /\]/g, '' );
 					parts = fname.split( '[' );
