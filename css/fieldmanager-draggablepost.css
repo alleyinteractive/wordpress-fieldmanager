@@ -1,0 +1,43 @@
+#fm-draggablepost {
+	overflow: hidden;
+}
+
+.draggable-post {
+	border: 1px dotted #bbb; 
+	padding: 5px; 
+	margin-bottom: 10px;
+}
+
+.post-bin {
+	border: 2px dotted #bbb; 
+	padding: 5px; 
+	margin-bottom: 10px;
+}
+
+.post-repository {
+	border: 2px dotted #bbb; 
+	padding: 5px; 
+	margin-bottom: 10px;
+}
+
+.post-repository-wrapper {
+	float: left;
+	width: 48%;
+}
+
+.post-bin-wrapper {
+	float: right;
+	width: 48%;
+}
+
+.post-bin em, .post-bin-active em {
+	color: #999;
+}
+
+.post-bin-active {
+	border: 2px solid #f00;
+}
+
+.post-repository-active {
+	border: 2px solid #000;
+}
