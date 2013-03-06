@@ -1,8 +1,8 @@
 ( function( $ ) {
 
 $.fn.fm_grid_serialize = function() {
-	console.log('serialize');
 	var rows = [], row_counter = 0, self = this, bottom_row_with_data = 0;
+	if ( this.find( 'tbody:visible' ).length == 0 ) return;
 	this.find( 'tbody tr:visible' ).each( function() {
 		var row = [];
 		$( this ).find( 'td' ).each( function() {
@@ -23,7 +23,6 @@ $.fn.fm_grid_serialize = function() {
 	} );
 	var json_data = JSON.stringify( rows.slice( 0, bottom_row_with_data + 1 ) );
 	$( this.data( 'input-selector' ) ).val( json_data );
-	console.log($( this.data( 'input-selector' ) ).val( ));
 }
 
 $.fn.fm_grid = function( opts ) {
