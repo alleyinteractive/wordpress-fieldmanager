@@ -66,7 +66,6 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 		$out .= sprintf("
 			<script type=\"text/javascript\">
 				jQuery( document ).ready( function() {
-					console.log('here i am');
 					jQuery( '#%s' ).one( 'click', function( e ) {
 						e.preventDefault();
 						var grid = jQuery( this ).parents( '.grid-toggle-wrapper' ).find( '.fm-grid' )[0];
