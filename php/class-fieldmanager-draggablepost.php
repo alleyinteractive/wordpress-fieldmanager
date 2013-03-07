@@ -3,11 +3,6 @@
  * Class file for draggable post selector field
  * @package Fieldmanager
  */
-
-/**
- * Checkbox field
- * @package Fieldmanager
- */
 class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 
 	/**
@@ -34,6 +29,11 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 */
 	public $use_image_checkbox = False;
 
+
+	/**
+	 * Add scripts and styles and other setup tasks.
+	 * @param array $options
+	 */
 	public function __construct( $options = array() ) {
 		// Refuse to allow more than one instance of this field type.
 		if ( isset( $options['limit'] ) ) {
@@ -49,6 +49,12 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		parent::__construct( $options );
 	} 
 
+
+	/**
+	 * Massage form data into proper storage format..
+	 * @param array $value
+	 * @return array $value
+	 */
 	public function presave( $value, $current_values = array() ) {
 
 		foreach ( $this->bins as $bin => $name ) {
@@ -68,6 +74,11 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		return $value;
 	}
 
+	/**
+	 * Render form element
+	 * @param mixed $value
+	 * @return string HTML
+	 */
 	public function form_element( $value ) {
 		// Avoid null array errors later.
 		$value['_image_flags'] = isset( $value['_image_flags'] ) ? $value['_image_flags'] : array();
@@ -90,7 +101,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 				if ( in_array( get_the_ID(), $all ) ) {
 					continue;
 				}
-				$out .= $this->draggable_item_div( get_the_ID() );
+				$out .= $this->draggable_item_html( get_the_ID() );
 			}
 			$out .= "</ul>";
 		}
@@ -98,13 +109,13 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		$out .= '<div class="post-bin-wrapper">';
 		foreach ( $this->bins as $name => $bin ) {
 			$out .= sprintf( '<h2>%s</h2>', $bin );
-			$out .= sprintf( '<ul class="post-bin sortables" id="%s-bin"><em class="empty-message">drop stories here</em>', $name );
+			$out .= sprintf( '<ul class="post-bin sortables" id="%s-bin"><em class="empty-message">drop posts here</em>', $name );
 			if ( isset( $value[$name] ) ) {
 				foreach ( $value[$name] as $id ) {
 					if ( !$id ) {
 						continue;
 					}
-					$out .= $this->draggable_item_div( $id, in_array( $id, $value['_image_flags'] ) );
+					$out .= $this->draggable_item_html( $id, in_array( $id, $value['_image_flags'] ) );
 				}
 			}
 		    $out .= "</ul>";
@@ -121,7 +132,13 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		return $out;
 	}
 
-	protected function draggable_item_div( $post_id, $use_image_checked = false ) {
+	/**
+	 * Generate the html for a single draggable item
+	 * @param int $post_id
+	 * @param boolean $use_image_checked if true, render this item with the "use image" checkbox checked (if enabled)
+	 * @return string containing the li element.
+	 */
+	protected function draggable_item_html( $post_id, $use_image_checked = false ) {
 		$post = get_post( $post_id );
 		$bylines = array();
 		if ( is_plugin_active( 'co-authors-plus/co-authors-plus.php' ) ) {
@@ -130,7 +147,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 				$bylines[] = $author->display_name;
 			}
 			if ( empty( $bylines ) ) {
-				$authorstr = '(no byline)';
+				$authorstr = '(no authors)';
 			}
 			else {
 				$authorstr = implode(', ', $bylines);
@@ -173,6 +190,11 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		return $li;
 	}
 
+	/**
+	 * Helper to convert the value passed to form_element into a non-hierarchical list of post_ids so we know which posts are already assigned to a bin and thus should be skipped in rendering.
+	 * @param array $value as passed to form_element()
+	 * @return array containing post_ids in any subarray, except the one attached to key '_image_flags'.
+	 */
 	protected function flatten_arrays( $value ) {
 		if ( empty ( $value ) ) {
 			return array();
