@@ -58,13 +58,14 @@ var fm_renumber = function( $wrappers ) {
 				if ( $( this ).hasClass( 'fmjs-proto' ) ) return; // continue
 				$( this ).find( '.fm-element' ).each( function() {
 					var fname = $(this).attr( 'name' );
+					if ( !fname ) return;
 					fname = fname.replace( /\]/g, '' );
 					parts = fname.split( '[' );
 					if ( parts[ level_pos ] != order ) {
 						parts[ level_pos ] = order;
 						var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
 						$( this ).attr( 'name', new_fname );
-						if ( $( this ).attr( 'id' ).match( '-proto' ) ) {
+						if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) ) {
 							$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
 							dynamic_seq++;
 						}

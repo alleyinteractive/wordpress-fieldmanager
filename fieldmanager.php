@@ -26,6 +26,8 @@ require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-post.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-media.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-draggablepost.php' );
 
+define( 'FM_GLOBAL_ASSET_VERSION', 1 );
+
 /**
  * Add CSS and JS to admin area, hooked into admin_enqueue_scripts.
  */
@@ -69,8 +71,9 @@ function fieldmanager_get_baseurl() {
  * @return void
  */
 function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array(), $plugin_dir = "" ) {
-	if( !is_admin() ) return;
-	if( $plugin_dir == "" ) $plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
+	if ( !is_admin() ) return;
+	if ( !$ver ) $ver = FM_GLOBAL_ASSET_VERSION;
+	if ( $plugin_dir == "" ) $plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
 	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
 		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver );
 		if ( !empty( $data_object ) && !empty( $data ) ) wp_localize_script( $handle, $data_object, $data );
@@ -89,6 +92,7 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
  */
 function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all' ) {
 	if( !is_admin() ) return;
+	if ( !$ver ) $ver = FM_GLOBAL_ASSET_VERSION;
 	$add_script = function() use ( $handle, $path, $deps, $ver, $media ) {
 		wp_register_style( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver, $media );
         wp_enqueue_style( $handle );

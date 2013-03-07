@@ -111,9 +111,8 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		}
 
 		$element = sprintf(
-			'%s<input class="fm-post-element fm-element" type="text" name="%s" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-post-date="%s" data-show-post-type="%s" data-show-post-date="%s" data-action="%s" %s />%s%s',
+			'%s<input class="fm-post-element fm-element" type="text" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-post-date="%s" data-show-post-type="%s" data-show-post-date="%s" data-action="%s" %s />%s%s',
 			( $this->limit == 1 ) ? '<div class="fmjs-clearable-element">' : '',
-			$this->get_form_name(),
 			$this->get_element_id(),
 			htmlspecialchars( $value['title'] ),
 			$this->editable,
@@ -126,6 +125,10 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			$this->get_element_attributes(),
 			( $this->limit == 1 ) ? '</div>' : '',
 			( $this->limit == 1 ) ? $this->get_clear_handle() : ''
+		);
+		$element .= sprintf(
+			'<input class="fm-post-hidden fm-element" type="hidden" name="%s" value="" />',
+			$this->get_form_name()
 		);
 		if ( $this->show_view_link ) {
 			$element .= sprintf(

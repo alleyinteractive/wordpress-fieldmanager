@@ -76,7 +76,7 @@ $( document ).ready( function () {
     		$( this ).parent().siblings('.fmjs-clear').show();
     	}
     	
-	});
+	} );
 	$( '.fmjs-clear' ).live( 'click', function( e ) {
 		// Typeahead is disabled once a post is selected to allow editing of the title for use in frontend display
 		// The clear action is enabled when sortable/deletable items aren't used to allow selection of a new post
@@ -90,21 +90,20 @@ $( document ).ready( function () {
 		
 		// Trigger the clear action so other functions can hook into it if needed
 		$( this ).trigger( 'fm_post_clear', [$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element')] );
-		
 	} );
-	$( "#post" ).submit( function() {
+	$( "#post" ).submit( function( e ) {
 		$( '.fm-post-element' ).each( function( index ) {
 			// Create a JSON object from the data to be parsed and handled on save, if the field is not empty
 			if ( $( this ).val() != "" ) {
 				var json_val = '{"id":"' + $( this ).data('id') + '","title":"' + $( this ).val() + '","post_type":"' + $( this ).data('postType') + '","post_date":"' + $( this ).data('postDate') + '"}';
-				$( this ).val(json_val);
+				$( this ).siblings( '.fm-post-hidden' ).val( json_val );
 			}
-		});
-	});
+		} );
+	} );
 	$( '.fm-wrapper' ).bind('fm_added_element', function( event ) {
   		$post_element = $(event.target).find( '.fm-post-element' );
 		if ( $post_element.length != 0 ) fm_typeahead_action( $post_element );
-	});
+	} );
 } );
 
 } )( jQuery );
