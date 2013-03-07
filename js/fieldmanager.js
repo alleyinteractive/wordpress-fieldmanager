@@ -54,8 +54,9 @@ var fm_renumber = function( $wrappers ) {
 		var level_pos = $( this ).data( 'fm-array-position' );
 		var order = 0;
 		if ( level_pos > 0 ) {
-			$( this ).find( '> .fm-item:visible' ).each( function() {
-				$( this ).find( '.fm-element:visible, input[type=hidden].fm-element' ).each( function() {
+			$( this ).find( '> .fm-item' ).each( function() {
+				if ( $( this ).hasClass( 'fmjs-proto' ) ) return; // continue
+				$( this ).find( '.fm-element' ).each( function() {
 					var fname = $(this).attr( 'name' );
 					fname = fname.replace( /\]/g, '' );
 					parts = fname.split( '[' );
