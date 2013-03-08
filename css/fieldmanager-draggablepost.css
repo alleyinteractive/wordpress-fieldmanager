@@ -18,6 +18,8 @@
 	border: 2px dotted #bbb; 
 	padding: 5px; 
 	margin-bottom: 10px;
+	height: 300px;
+	overflow: auto;
 }
 
 .post-repository-wrapper {
