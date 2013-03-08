@@ -13,7 +13,11 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 *		- 'length' (int) number of items to show in the box
 	 *	 	- 'orderby' (string) field to order the query by, as allowed by WP_Query
 	 *		- 'order' (string) ASC or DESC
-	 *		- 'taxonomy_args' (array) arguments to pass to WP_Query to filter by category (see https://codex.wordpress.org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy filtering will be performed.
+	 *		- 'taxonomy_args' (array) arguments to pass to WP_Query to filter by category (see https://codex.wordpress.
+	 *			org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy filtering will be performed.
+	 *		- 'callback' (callable) a custom function to call in lieu of WP_Query to retrieve posts for this repository. The function 
+	 *			must have the signature callback($key, $data) and must return an array of post ids. If callback is set, all the above 
+	 *			options (except label) will be overridden.
 	 */
 	public $repositories = array();
 
@@ -87,21 +91,35 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		$out = '<div id="fm-draggablepost"><div class="post-repository-wrapper">';
 		foreach ( $this->repositories as $name => $repo ) {
 			$out .= sprintf( '<h2>%s</h2><ul class="post-repository sortables">', $repo['label'] );
-			$query_args = array(
-				'post_type' => $repo['post_type'],
-				'post_status' => 'publish',
-				'posts_per_page' => $repo['length'],
-				'orderby' => $repo['orderby'],
-				'order' => $repo['order'],
-				'tax_query' => array($repo['taxonomy_args']),
-			);
-			$q = new WP_Query( $query_args );
-			while ( $q->have_posts() ) {
-				$q->the_post();
-				if ( in_array( get_the_ID(), $all ) ) {
-					continue;
+			if ( isset( $repo['callback'] ) ) {
+				$ids = call_user_func( $repo['callback'], $name, $repo );
+				if ( !empty( $ids ) ) {
+					// Return value here should be all numeric post ids, but we'll tolerate non-numerics if they show up.
+					foreach ( $ids as $id ) {
+						if ( !is_numeric( $id ) || in_array( $id, $all ) ) {
+							continue;
+						}
+						$out .= $this->draggable_item_html( $id );
+					}
 				}
-				$out .= $this->draggable_item_html( get_the_ID() );
+			}
+			else {
+				$query_args = array(
+					'post_type' => $repo['post_type'],
+					'post_status' => 'publish',
+					'posts_per_page' => $repo['length'],
+					'orderby' => $repo['orderby'],
+					'order' => $repo['order'],
+					'tax_query' => array($repo['taxonomy_args']),
+				);
+				$q = new WP_Query( $query_args );
+				while ( $q->have_posts() ) {
+					$q->the_post();
+					if ( in_array( get_the_ID(), $all ) ) {
+						continue;
+					}
+					$out .= $this->draggable_item_html( get_the_ID() );
+				}
 			}
 			$out .= "</ul>";
 		}
@@ -123,7 +141,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 
 		foreach ( $this->bins as $bin => $label ) {
 			$out .= sprintf( '<input type="hidden" value="%s" name="%s" id="%s" />', 
-						implode( ',', $value[$bin] ),
+						empty( $value[$bin] ) ?  '' : implode( ',', $value[$bin] ),
 						$this->get_form_name() . '[' . $bin . ']',
 						$bin
 					);
