@@ -295,12 +295,20 @@ abstract class Fieldmanager_Field {
 				}
 			}
 		}
-		$out .= sprintf( '<div class="%s" data-fm-array-position="%d" data-display-src=\'%s\' data-display-value=\'%s\'>',
-		implode( ' ', $classes ),
-		$html_array_position,
-		$this->display_if['src'],
-		$this->display_if['value']
-		);
+		if ( isset( $this->display_if ) && !empty( $this->display_if ) ) {
+			$out .= sprintf( '<div class="%s" data-fm-array-position="%d" data-display-src=\'%s\' data-display-value=\'%s\'>',
+			implode( ' ', $classes ),
+			$html_array_position,
+			$this->display_if['src'],
+			$this->display_if['value']
+			);
+		}
+		else {
+			$out .= sprintf( '<div class="%s" data-fm-array-position="%d">',
+			implode( ' ', $classes ),
+			$html_array_position
+			);
+		}
 		
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );

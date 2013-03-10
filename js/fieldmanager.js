@@ -112,25 +112,29 @@ $( document ).ready( function () {
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
 		var value = $( this ).data( 'display-value' );
-		$( this ).siblings( '.fm-' + src + '-wrapper' ).find('.fm-element').addClass( 'display-trigger' );
-		if ( $( '.display-trigger' ).val() != value ) {
+		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find('.fm-element');
+		trigger.addClass( 'display-trigger' );
+		if ( trigger.val() != value ) {
 			$( this ).hide();
 		}
 	} );
 
-	// $( '.display-trigger' ).change( function() {
-	// 	console.log('changed');
-	// 	 var val = $( this ).val();
-	// 	$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
-	// 		if ( $( this ).hasClass( 'display-if') ) {
-	// 			if ( $( this ).data( 'display-value' ) == val ) {
-	// 				$( this ).show();
-	// 			} else {
-	// 				$( this ).hide();
-	// 			}
-	// 		}
-	// 	} );
-	// } );
+	// Controls the trigger to show or hide fields
+	$( '.display-trigger' ).on( 'change', function() {
+		var val = $( this ).val();
+		var name = $( this ).attr('name');
+		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
+			if ( $( this ).hasClass( 'display-if') ) {
+				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
+					if ( $( this ).data( 'display-value' ) == val ) {
+						$( this ).show();
+					} else {
+						$( this ).hide();
+					}
+				}
+			}
+		} );
+	} );
 
 	// init_display_triggers();
 	init_label_macros();
