@@ -292,6 +292,8 @@ abstract class Fieldmanager_Field {
 				}
 			}
 		}
+
+		// Checks to see if element has display_if data values, and inserts the data attributes if it does
 		if ( isset( $this->display_if ) && !empty( $this->display_if ) ) {
 			$classes[] = 'display-if';
 			$out .= sprintf( '<div class="%s" data-fm-array-position="%d" data-display-src=\'%s\' data-display-value=\'%s\'>',
