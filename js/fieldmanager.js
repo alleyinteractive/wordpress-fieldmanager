@@ -136,7 +136,6 @@ $( document ).ready( function () {
 		} );
 	} );
 
-	// init_display_triggers();
 	init_label_macros();
 	init_sortable();
 } );
