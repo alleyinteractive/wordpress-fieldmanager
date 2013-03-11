@@ -112,7 +112,7 @@ $( document ).ready( function () {
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
 		var value = $( this ).data( 'display-value' );
-		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find('.fm-element');
+		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
 		trigger.addClass( 'display-trigger' );
 		if ( trigger.val() != value ) {
 			$( this ).hide();
@@ -124,7 +124,7 @@ $( document ).ready( function () {
 		var val = $( this ).val();
 		var name = $( this ).attr('name');
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
-			if ( $( this ).hasClass( 'display-if') ) {
+			if ( $( this ).hasClass( 'display-if' ) ) {
 				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
 					if ( $( this ).data( 'display-value' ) == val ) {
 						$( this ).show();
