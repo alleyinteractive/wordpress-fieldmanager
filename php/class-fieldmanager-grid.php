@@ -18,11 +18,22 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	public $field_class = 'grid';
 
 	/**
+	 * @var callable
+	 * Sort a grid before rendering (takes entire grid as a parameter)
+	 */
+	public $grid_sort = Null;
+
+	/**
+	 * @var string[]
+	 * Options to pass to grid manager
+	 */
+	public $js_options = array();
+
+	/**
 	 * Constructor which adds several scrips and CSS
 	 * @param array $options
 	 */
 	public function __construct( $options = array() ) {
-		$this->js_options = array();
 		$this->sanitize = function( $row, $col, $values ) {
 			foreach ( $values as $k => $val ) {
 				$values[$k] = sanitize_text_field( $val );
@@ -50,6 +61,9 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 */
 	public function form_element( $value = '' ) {
 		$grid_activate_id = 'grid-activate-' . uniqid();
+		if ( !empty( $value ) && is_callable( $this->grid_sort ) ) {
+			$value = call_user_func( $this->grid_sort, $value );
+		}
 		$out = sprintf(
 			'<div class="grid-toggle-wrapper">
 				<div class="fm-grid" id="%2$s" data-fm-grid-name="%1$s"></div>
