@@ -109,6 +109,34 @@ $( document ).ready( function () {
 		$( this ).find( '.fm-group-inner' ).hide();
 	} );
 
+	// Initializes triggers to conditionally hide or show fields
+	$( '.display-if' ).each( function() {
+		var src = $( this ).data( 'display-src' );
+		var value = $( this ).data( 'display-value' );
+		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
+		trigger.addClass( 'display-trigger' );
+		if ( trigger.val() != value ) {
+			$( this ).hide();
+		}
+	} );
+
+	// Controls the trigger to show or hide fields
+	$( '.display-trigger' ).on( 'change', function() {
+		var val = $( this ).val();
+		var name = $( this ).attr('name');
+		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
+			if ( $( this ).hasClass( 'display-if' ) ) {
+				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
+					if ( $( this ).data( 'display-value' ) == val ) {
+						$( this ).show();
+					} else {
+						$( this ).hide();
+					}
+				}
+			}
+		} );
+	} );
+
 	init_label_macros();
 	init_sortable();
 } );

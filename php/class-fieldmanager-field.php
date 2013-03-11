@@ -160,6 +160,16 @@ abstract class Fieldmanager_Field {
 	public $content_types = array();
 
 	/**
+	 * @var array[]
+	 * Field name and value on which to display element. Sample:
+	 * $element->display_if = array(
+	 *	'src' => 'display-if-src-element',
+	 *	'value' => 'display-if-src-value'
+	 * );
+	 */
+	public $display_if = array();
+
+	/**
 	 * @var int
 	 * If $this->limit > 1, which element in sequence are we currently rendering?
 	 */
@@ -255,7 +265,7 @@ abstract class Fieldmanager_Field {
 		$classes = array_merge( $classes, $this->get_extra_element_classes() );
 
 		$out = '';
-		
+
 		// If this element is part of tabbed output, there needs to be a wrapper to contain the tab content
 		if ( $this->is_tab ) { 
 			$tab_display_style = ( $this->parent->child_count > 0 ) ? ' style="display: none"' : '';
@@ -282,7 +292,23 @@ abstract class Fieldmanager_Field {
 				}
 			}
 		}
-		$out .= sprintf( '<div class="%s" data-fm-array-position="%d">', implode( ' ', $classes ), $html_array_position );
+
+		// Checks to see if element has display_if data values, and inserts the data attributes if it does
+		if ( isset( $this->display_if ) && !empty( $this->display_if ) ) {
+			$classes[] = 'display-if';
+			$out .= sprintf( '<div class="%s" data-fm-array-position="%d" data-display-src=\'%s\' data-display-value=\'%s\'>',
+			implode( ' ', $classes ),
+			$html_array_position,
+			$this->display_if['src'],
+			$this->display_if['value']
+			);
+		}
+		else {
+			$out .= sprintf( '<div class="%s" data-fm-array-position="%d">',
+			implode( ' ', $classes ),
+			$html_array_position
+			);
+		}
 		
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
