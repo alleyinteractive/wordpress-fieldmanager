@@ -259,6 +259,7 @@ abstract class Fieldmanager_Field {
 		}
 
 		$classes = array( 'fm-wrapper', 'fm-' . $this->name . '-wrapper' );
+		$fm_wrapper_attrs = array();
 		if ( $this->sortable ) {
 			$classes[] = 'fmjs-sortable';
 		}
@@ -296,19 +297,18 @@ abstract class Fieldmanager_Field {
 		// Checks to see if element has display_if data values, and inserts the data attributes if it does
 		if ( isset( $this->display_if ) && !empty( $this->display_if ) ) {
 			$classes[] = 'display-if';
-			$out .= sprintf( '<div class="%s" data-fm-array-position="%d" data-display-src=\'%s\' data-display-value=\'%s\'>',
+			$fm_wrapper_attrs['data-display-src'] = $this->display_if['src'];
+			$fm_wrapper_attrs['data-display-value'] = $this->display_if['value'];
+		}
+		$fm_wrapper_attr_string = '';
+		foreach ( $fm_wrapper_attrs as $attr => $val ) {
+			$fm_wrapper_attr_string .= sprintf( '%s="%v" ', $attr, htmlentities( $val ) );
+		}
+		$out .= sprintf( '<div class="%s" data-fm-array-position="%d" %s>',
 			implode( ' ', $classes ),
 			$html_array_position,
-			$this->display_if['src'],
-			$this->display_if['value']
-			);
-		}
-		else {
-			$out .= sprintf( '<div class="%s" data-fm-array-position="%d">',
-			implode( ' ', $classes ),
-			$html_array_position
-			);
-		}
+			$fm_wrapper_attr_string
+		);
 		
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
