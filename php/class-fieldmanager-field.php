@@ -262,9 +262,6 @@ abstract class Fieldmanager_Field {
 		if ( $this->sortable ) {
 			$classes[] = 'fmjs-sortable';
 		}
-		if ( isset( $this->display_if ) && !empty( $this->display_if ) ) {
-			$classes[] = 'display-if';
-		}
 		$classes = array_merge( $classes, $this->get_extra_element_classes() );
 
 		$out = '';
@@ -296,6 +293,7 @@ abstract class Fieldmanager_Field {
 			}
 		}
 		if ( isset( $this->display_if ) && !empty( $this->display_if ) ) {
+			$classes[] = 'display-if';
 			$out .= sprintf( '<div class="%s" data-fm-array-position="%d" data-display-src=\'%s\' data-display-value=\'%s\'>',
 			implode( ' ', $classes ),
 			$html_array_position,
