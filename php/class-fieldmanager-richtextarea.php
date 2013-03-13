@@ -35,6 +35,12 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public static $has_registered_tinymce = False;
 
 	/**
+	 * @var string
+	 * Static variable so we only load footer scripts once
+	 */
+	public static $has_added_footer_scripts = False;
+
+	/**
 	 * Construct default attributes; 50x10 textarea
 	 * @param array $options
 	 */
@@ -52,13 +58,6 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 					includes_url()
 				);
 			} );
-			if ( is_admin() ) {
-				add_action( 'admin_print_footer_scripts', array( __CLASS__, 'editor_js'), 50 );
-				add_action( 'admin_footer', array( __CLASS__, 'enqueue_scripts'), 1 );
-			} else {
-				add_action( 'wp_print_footer_scripts', array( __CLASS__, 'editor_js'), 50 );
-				add_action( 'wp_footer', array( __CLASS__, 'enqueue_scripts'), 1 );
-			}
 		}
 		$this->attributes = array(
 			'cols' => '50',
@@ -147,6 +146,16 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 	 * @return string HTML
 	 */
 	public function form_element( $value = '' ) {
+		if ( !self::$has_added_footer_scripts ) {
+			if ( is_admin() ) {
+				add_action( 'admin_print_footer_scripts', array( __CLASS__, 'editor_js'), 50 );
+				add_action( 'admin_footer', array( __CLASS__, 'enqueue_scripts'), 1 );
+			} else {
+				add_action( 'wp_print_footer_scripts', array( __CLASS__, 'editor_js'), 50 );
+				add_action( 'wp_footer', array( __CLASS__, 'enqueue_scripts'), 1 );
+			}
+			self::$has_added_footer_scripts = True;
+		}
 		return sprintf(
 			'<textarea class="fm-element fm-richtext" name="%1$s" id="%2$s" %3$s data-mce-options="%5$s" />%4$s</textarea>',
 			$this->get_form_name(),
