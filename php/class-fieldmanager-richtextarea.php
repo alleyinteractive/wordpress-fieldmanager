@@ -4,7 +4,8 @@
  */
 
 /**
- * Textarea field
+ * Use WordPress's TinyMCE control in Fieldmanager.
+ * With a hat tip to _WP_Editors, and a glare at its 'final' keyword.
  * @package Fieldmanager
  */
 class Fieldmanager_RichTextArea extends Fieldmanager_Field {
@@ -51,6 +52,13 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 					includes_url()
 				);
 			} );
+			if ( is_admin() ) {
+				add_action( 'admin_print_footer_scripts', array( __CLASS__, 'editor_js'), 50 );
+				add_action( 'admin_footer', array( __CLASS__, 'enqueue_scripts'), 1 );
+			} else {
+				add_action( 'wp_print_footer_scripts', array( __CLASS__, 'editor_js'), 50 );
+				add_action( 'wp_footer', array( __CLASS__, 'enqueue_scripts'), 1 );
+			}
 		}
 		$this->attributes = array(
 			'cols' => '50',
@@ -61,6 +69,31 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 		};
 		fm_add_script( 'fm_richtext', 'js/richtext.js' );
 		parent::__construct( $options );
+	}
+
+
+	/**
+	 * Enqueue JS for TinyMCE control.
+	 * We push out all TinyMCE scripts, because we might have many controls on the page
+	 * and would otherwise have to compare them. Our default editor ships with all these
+	 * controls, anyways.
+	 */
+	public static function enqueue_scripts() {
+		wp_enqueue_script( 'wplink' );
+		wp_enqueue_script( 'wpeditor' );
+		wp_enqueue_script( 'wpdialogs-popup' );
+		wp_enqueue_style( 'wp-jquery-ui-dialog' );
+		wp_enqueue_script( 'wp-fullscreen' );
+		add_thickbox();
+		wp_enqueue_script( 'media-upload' );
+	}
+
+	public function editor_js() {
+		if ( ! class_exists( '_WP_Editors' ) )
+			require( ABSPATH . WPINC . '/class-wp-editor.php' );
+
+		_WP_Editors::wp_link_dialog();
+		_WP_Editors::wp_fullscreen_html();
 	}
 
 	public function get_mce_options() {
