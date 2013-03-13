@@ -302,7 +302,7 @@ abstract class Fieldmanager_Field {
 		}
 		$fm_wrapper_attr_string = '';
 		foreach ( $fm_wrapper_attrs as $attr => $val ) {
-			$fm_wrapper_attr_string .= sprintf( '%s="%v" ', $attr, htmlentities( $val ) );
+			$fm_wrapper_attr_string .= sprintf( '%s="%s" ', $attr, htmlentities( $val ) );
 		}
 		$out .= sprintf( '<div class="%s" data-fm-array-position="%d" %s>',
 			implode( ' ', $classes ),
