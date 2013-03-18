@@ -20,7 +20,7 @@ var fm_typeahead_action = function( $element ) {
 	$element.typeahead( {
 		source: function ( query, process ) {
 			// If the post title is editable and a post is already set, disable typeahead to turn the text field into an edit field.
-			if ( $element.data('editable') != 1 || $element.data('id') == "" ) {
+			if ( $element.data('id') == "" ) {
 				// Query for posts matching the current text in the field
 				//console.log(fm_post);
 				$.post( ajaxurl, { action: $element.data('action'), fm_post_search_term: query, fm_post_search_nonce: fm_post.nonce }, function ( result ) {
@@ -76,20 +76,6 @@ $( document ).ready( function () {
     		$( this ).parent().siblings('.fmjs-clear').show();
     	}
     	
-	} );
-	$( '.fmjs-clear' ).live( 'click', function( e ) {
-		// Typeahead is disabled once a post is selected to allow editing of the title for use in frontend display
-		// The clear action is enabled when sortable/deletable items aren't used to allow selection of a new post
-		e.preventDefault();
-		$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element').data( 'id', '' );
-		$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element').data( 'postType', '' );
-		$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element').data( 'postDate', '' );
-		$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element').val( '' );
-		$( this ).siblings('.fmjs-post-type, .fmjs-post-date').remove();
-		$( this ).hide();
-		
-		// Trigger the clear action so other functions can hook into it if needed
-		$( this ).trigger( 'fm_post_clear', [$( this ).siblings('.fmjs-clearable-element').children('.fm-post-element')] );
 	} );
 	$( "#post" ).submit( function( e ) {
 		$( '.fm-post-element' ).each( function( index ) {

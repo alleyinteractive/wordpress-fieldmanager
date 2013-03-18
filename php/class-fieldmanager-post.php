@@ -27,12 +27,6 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 
 	/**
 	 * @var boolean
-	 * Allow editing of the target post title?
-	 */
-	public $editable = False;
-
-	/**
-	 * @var boolean
 	 */
 	public $show_edit_link = False;
 
@@ -111,20 +105,16 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 		}
 
 		$element = sprintf(
-			'%s<input class="fm-post-element fm-element" type="text" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-editable="%s" data-id="%s" data-post-type="%s" data-post-date="%s" data-show-post-type="%s" data-show-post-date="%s" data-action="%s" %s />%s%s',
-			( $this->limit == 1 ) ? '<div class="fmjs-clearable-element">' : '',
+			'<input class="fm-post-element fm-element" type="text" id="%s" value="%s" autocomplete="off" data-provide="typeahead" data-id="%s" data-post-type="%s" data-post-date="%s" data-show-post-type="%s" data-show-post-date="%s" data-action="%s" %s />',
 			$this->get_element_id(),
 			htmlspecialchars( $value['title'] ),
-			$this->editable,
 			htmlspecialchars( $value['id'] ),
 			htmlspecialchars( $value['post_type'] ),
 			htmlspecialchars( $value['post_date'] ),
 			$this->show_post_type,
 			$this->show_post_date,
 			'fm_search_posts_' . sanitize_title( $this->label ),
-			$this->get_element_attributes(),
-			( $this->limit == 1 ) ? '</div>' : '',
-			( $this->limit == 1 ) ? $this->get_clear_handle() : ''
+			$this->get_element_attributes()
 		);
 		$element .= sprintf(
 			'<input class="fm-post-hidden fm-element" type="hidden" name="%s" value="" />',
