@@ -79,6 +79,15 @@ var fm_renumber = function( $wrappers ) {
 	} );
 }
 
+var match_value = function( values, match_string ) {
+	for ( var index in values ) {
+		if ( values[index] == match_string ) {
+			return true;
+		}
+	}
+	return false;
+}
+
 $( document ).ready( function () {
 	$( '.fm-add-another' ).live( 'click', function( e ) {
 		e.preventDefault();
@@ -115,22 +124,22 @@ $( document ).ready( function () {
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
-		var value = $( this ).data( 'display-value' );
+		var values = $( this ).data( 'display-value' ).split( ',' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
 		trigger.addClass( 'display-trigger' );
-		if ( trigger.val() != value ) {
+		if ( !match_value( values, trigger.val() ) ) {
 			$( this ).hide();
 		}
 	} );
 
 	// Controls the trigger to show or hide fields
 	$( document ).on( 'change', '.display-trigger', function() {
-		var val = $( this ).val();
+		var val = $( this ).val().split(',');
 		var name = $( this ).attr('name');
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
 			if ( $( this ).hasClass( 'display-if' ) ) {
 				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
-					if ( $( this ).data( 'display-value' ) == val ) {
+					if ( match_value( $( this ).data( 'display-value' ).split( ',' ), val ) ) {
 						$( this ).show();
 					} else {
 						$( this ).hide();
