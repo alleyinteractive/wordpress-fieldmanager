@@ -46,7 +46,7 @@ $( document ).ready( function() {
 
 	// Track changes to the chosen text field linked to the select in order to update options via AJAX
 	// Used for taxonomy-based fields where preload is disabled
-	$( '.fm-item .chzn-choices,.fm-item .chzn-search' ).on( 'keyup', 'input', function( e ) {
+	$('.fm-wrapper').on( 'keyup', '.fm-item .chzn-choices input,.fm-item .chzn-search input', function( e ) {
 		// Do not execute this function for arrow key presses
 		if( e.keyCode >= 37 && e.keyCode <= 40 ) return;
 
@@ -94,7 +94,7 @@ $( document ).ready( function() {
 	} );
 
 	// Clear the non-selected options when entering or exiting the typeahead text field
-	$( '.fm-item .chzn-choices input' ).live( 'click', function( e ) {
+	$('.fm-wrapper').on( 'click', '.fm-item .chzn-choices input', function( e ) {
 		var $this_select_field = $(this).parents('.chzn-container').siblings('select');
 		if( $this_select_field.data("taxonomy") != "" && $this_select_field.data("taxonomyPreload") == false ) fm_select_clear_terms( $this_select_field, $(this).parents('.chzn-choices'), true );
 	} );
