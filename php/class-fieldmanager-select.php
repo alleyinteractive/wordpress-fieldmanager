@@ -47,7 +47,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		);
 
 		// Add the Fieldmanager Select javascript library
-		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), false, false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
+		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.1', false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
 
 		// Add the action hook for typeahead handling via AJAX
 		add_action('wp_ajax_fm_search_terms', array( $this, 'search_terms' ) );
@@ -248,15 +248,10 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		?>
 		<script type="text/javascript">
 		jQuery(function($){
-			$('.fm-wrapper').on("fm_added_element",".fm-item",function(){
-				$('.chzn-select',this).each(function(key,el){
-					$(el).show().removeClass('chzn-done');
-					$(el).next().remove();
-				});
-				$(".chzn-select",this).chosen({allow_single_deselect:true})
+			$('.fm-wrapper').on("fm_added_element,fm_collapsible_toggle",".fm-item",function(){
+				$(".chzn-select:visible",this).chosen({allow_single_deselect:true})
 			});
-			$(".chzn-select").chosen({allow_single_deselect:true});
-
+			$(".chzn-select:visible").chosen({allow_single_deselect:true});
 		});
 		</script>
 		<?php
