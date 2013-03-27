@@ -427,21 +427,17 @@ abstract class Fieldmanager_Field {
 	public function get_form_name( $multiple = "" ) {
 		$tree = $this->get_form_tree();
 		$name = '';
-		for ( $i = 0; $i < count( $tree ); $i++ ) {
-			if ( $i == 0 ) {
-				$name .= $tree[$i]->name;
+		foreach ( $tree as $level => $branch ) {
+			if ( 0 == $level ) {
+				$name .= $branch->name;
+			} else {
+				$name .= '[' . $branch->name . ']';
 			}
-			else {
-				$name .= '[' . $tree[$i]->name . ']';
+			if ( $branch->limit != 1 ) {
+				$name .= '[' . $branch->get_seq() . ']';
 			}
-			if ( $tree[$i]->limit != 1 ) {
-				$name .= '[' . $tree[$i]->get_seq() . ']';
-			}
-			if ( $i == count( $tree ) );
 		}
-		$name .= $multiple;
-		
-		return $name;
+		return $name . $multiple;
 	}
 
 	/**
