@@ -507,6 +507,9 @@ abstract class Fieldmanager_Field {
 	 */
 	public function save_fields_for_post( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
+		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) )
+			return;
+
 		$use_this_post_type = False;
 		foreach ( $this->content_types as $type ) {
 			if ( $type['content_type'] == $_POST['post_type'] ) {
