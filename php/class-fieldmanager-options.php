@@ -125,7 +125,8 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	public function form_data_elements( $value ) {
 	
 		// If the taxonomy parameter is set, populate the data from the given taxonomy if valid
-		if ( !$this->has_built_data ) {
+		// Also, if the taxonomy data is not preloaded, this must be run each time to load selected terms
+		if ( !$this->has_built_data || !$this->taxonomy_preload ) {
 			if ( $this->taxonomy != null ) $this->get_taxonomy_data( $value );
 		
 			// Add the first element to the data array. This is useful for database-based data sets that require a first element.
@@ -282,6 +283,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		// Query for all terms for the defined taxonomies
 		// If preload is set to false ONLY load the terms selected previously
 		if( $this->taxonomy_preload == false ) {
+			// In case this is used with a repeating field, clear any previously loaded taxonomy data
+			$this->data = array();
+		
 			if( empty( $value ) && !is_array( $this->taxonomy ) )
 				// Nothing has been selected and we don't have to pre-populate optgroups, so just return
 				return;
