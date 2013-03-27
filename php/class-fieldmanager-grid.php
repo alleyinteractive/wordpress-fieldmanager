@@ -67,7 +67,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 		$out = sprintf(
 			'<div class="grid-toggle-wrapper">
 				<div class="fm-grid" id="%2$s" data-fm-grid-name="%1$s"></div>
-				<input name="%1$s" type="hidden" value="%3$s" />
+				<input name="%1$s" class="fm-element" type="hidden" value="%3$s" />
 				<p><a href="#" class="grid-activate" id="%6$s" data-with-grid-title="%5$s">%4$s</a></p>
 			</div>',
 			$this->get_form_name(),
