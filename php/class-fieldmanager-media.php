@@ -39,7 +39,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 */
 	public function __construct( $options = array() ) {
 		if ( !self::$has_registered_media ) {
-			wp_enqueue_media();
+			// possibly need to add wp_enqueue_media here in some cases, but it breaks 'set featured image' if we do.
 			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js' );
 			self::$has_registered_media = True;
 		}
