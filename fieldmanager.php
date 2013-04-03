@@ -25,6 +25,9 @@ require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-options.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-post.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-media.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-draggablepost.php' );
+require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-autocomplete.php' );
+require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource.php' );
+require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource-post.php' );
 
 define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 

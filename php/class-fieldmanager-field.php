@@ -240,6 +240,14 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Hook fired once the full form tree is built
+	 * @return void
+	 */
+	public function after_root_init() {
+
+	}
+
+	/**
 	 * Generates all markup needed for all form elements in this field.
 	 * Could be called directly by a plugin or theme.
 	 * @param array $values the current values of this element, in a tree structure if the element has children.
@@ -445,6 +453,18 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Get full path (e.g. parent_group_element)
+	 * @return string full path
+	 */
+	public function get_full_path() {
+		$names = array();
+		foreach ( $this->get_form_tree() as $level ) {
+			$names[] = $level->name;
+		}
+		return implode( '_', $names );
+	}
+
+	/**
 	 * Recursively build path to this element (e.g. array(grandparent, parent, this) )
 	 * @return array of parents
 	 */
@@ -563,8 +583,8 @@ abstract class Fieldmanager_Field {
 	public function presave_all( $values, $current_values ) {
 
 		if ( $this->limit == 1 ) {
-			$values = $this->presave_alter_values( array( $values ), $current_values );
-			return $this->presave( $values[0] );
+			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
+			return $this->presave( $values[0], $current_values );
 		}
 		
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
