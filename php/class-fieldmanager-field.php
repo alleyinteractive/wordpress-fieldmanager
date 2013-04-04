@@ -539,6 +539,7 @@ abstract class Fieldmanager_Field {
 			}
 		}
 		if ( !$use_this_post_type ) return;
+		if ( $_POST['action'] == 'inline-save' ) return; // no fieldmanager on quick edit yet
 
 		// Make sure the current user can save this post
 		if( $_POST['post_type'] == 'post' ) {

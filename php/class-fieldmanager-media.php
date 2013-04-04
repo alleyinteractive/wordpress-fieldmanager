@@ -38,8 +38,15 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @param array $options
 	 */
 	public function __construct( $options = array() ) {
+		add_action( 'admin_print_scripts', function() {
+			$post = get_post();	
+			$args = array();
+			if ( $post->ID ) {
+				$args['post'] = $post->ID;
+			}
+			wp_enqueue_media( $args ); // generally on post pages this will not have an impact.
+		} );
 		if ( !self::$has_registered_media ) {
-			// possibly need to add wp_enqueue_media here in some cases, but it breaks 'set featured image' if we do.
 			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js' );
 			self::$has_registered_media = True;
 		}
