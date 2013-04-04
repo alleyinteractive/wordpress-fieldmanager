@@ -57,9 +57,11 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 
 	/**
 	 * Add libraries for autocomplete
+	 * @param string $label
 	 * @param array $options
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label = '', $options = array() ) {
+		parent::__construct( $label, $options );
 
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
 		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array(), false, false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
@@ -67,8 +69,6 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		$this->attributes = array(
 			'size' => '50',
 		);
-
-		parent::__construct( $options );
 
 		if ( empty( $this->datasource ) ) {
 			$message = __( 'You must supply a datasource for the autocomplete field' );
@@ -78,8 +78,6 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 				wp_die( $message, __( 'No Datasource' ) );
 			}
 		}
-
-		$this->datasource->init( $this );
 	}
 
 	/**

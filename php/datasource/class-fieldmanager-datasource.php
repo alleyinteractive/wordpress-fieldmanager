@@ -72,11 +72,10 @@ class Fieldmanager_Datasource {
 				unset( $this->options[$k] );
 			}
 		}
-	}
 
-	public function init( Fieldmanager_Field $field ) {
-		// Add the action hook for typeahead handling via AJAX
-		add_action( 'wp_ajax_' . $this->get_ajax_action( $field->name ), array( $this, 'autocomplete_search' ) );
+		if ( $this->use_ajax ) {
+			add_action( 'wp_ajax_' . $this->get_ajax_action(), array( $this, 'autocomplete_search' ) );
+		}
 	}
 
 	public function get_value( $id ) {
@@ -94,8 +93,8 @@ class Fieldmanager_Datasource {
 		return $ret;
 	}
 
-	public function get_ajax_action( $name ) {
-		return 'fm_datasource_' . $this->ajax_idx . '_' . $name;
+	public function get_ajax_action() {
+		return 'fm_datasource_' . $this->ajax_idx;
 	}
 
 	/**

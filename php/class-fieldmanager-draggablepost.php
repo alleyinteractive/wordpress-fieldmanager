@@ -36,21 +36,19 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 
 	/**
 	 * Add scripts and styles and other setup tasks.
+	 * @param string $label
 	 * @param array $options
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label = '', $options = array() ) {
+		parent::__construct( $label, $options );
 		// Refuse to allow more than one instance of this field type.
-		if ( isset( $options['limit'] ) ) {
-			$options['limit'] = 1;
-		}
+		$this->limit = 1;
 
 		wp_enqueue_script( 'jquery-ui-draggable' );
 		wp_enqueue_script( 'jquery-ui-droppable' );
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		fm_add_script( 'fm_draggablepost_js', 'js/fieldmanager-draggablepost.js' );
 		fm_add_style( 'fm_draggablepost_css', 'css/fieldmanager-draggablepost.css' );
-
-		parent::__construct( $options );
 	} 
 
 

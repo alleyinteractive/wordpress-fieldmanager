@@ -17,14 +17,15 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 
 	/**
 	 * Construct default attributes; 50x10 textarea
+	 * @param string $label
 	 * @param array $options
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label = '', $options = array() ) {
 		$this->attributes = array(
 			'cols' => '50',
 			'rows' => '10'
 		);
-		parent::__construct($options);
+		parent::__construct( $label, $options );
 	}
 
 	/**

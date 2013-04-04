@@ -39,9 +39,11 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 	/**
 	 * Override constructor to add chosen.js maybe
+	 * @param string $label
 	 * @param array $options
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label = '', $options = array() ) {
+
 		$this->attributes = array(
 			'size' => '1'
 		);
@@ -52,7 +54,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		// Add the action hook for typeahead handling via AJAX
 		add_action('wp_ajax_fm_search_terms', array( $this, 'search_terms' ) );
 
-		parent::__construct( $options );
+		parent::__construct( $label, $options );
 
 		// Add the chosen library for type-ahead capabilities
 		if ( $this->type_ahead ) {

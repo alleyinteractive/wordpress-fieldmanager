@@ -80,9 +80,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	/**
 	 * Constructor; add CSS if we're looking at a tabbed view
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label = '', $options = array() ) {
 
-		parent::__construct($options);
+		parent::__construct( $label, $options );
 
 		if ( $this->collapsed ) $this->collapsible = True;
 		

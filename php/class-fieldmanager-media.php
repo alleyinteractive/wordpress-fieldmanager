@@ -35,9 +35,10 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 
 	/**
 	 * Construct default attributes
+	 * @param string $label
 	 * @param array $options
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label, $options = array() ) {
 		add_action( 'admin_print_scripts', function() {
 			$post = get_post();	
 			$args = array();
@@ -50,7 +51,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js' );
 			self::$has_registered_media = True;
 		}
-		parent::__construct( $options );
+		parent::__construct( $label, $options );
 	}
 
 	/**

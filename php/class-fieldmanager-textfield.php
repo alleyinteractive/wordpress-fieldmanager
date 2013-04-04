@@ -17,13 +17,14 @@ class Fieldmanager_TextField extends Fieldmanager_Field {
 
 	/**
 	 * Override constructor to set default size.
+	 * @param string $label
 	 * @param array $options
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label = '', $options = array() ) {
 		$this->attributes = array(
 			'size' => '50',
 		);
-		parent::__construct($options);
+		parent::__construct( $label, $options );
 	}
 
 	/**

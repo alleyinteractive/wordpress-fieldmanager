@@ -56,9 +56,10 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 
 	/**
 	 * Add libraries for autocomplete
+	 * @param string $label
 	 * @param array $options
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label = '', $options = array() ) {
 		$this->attributes = array(
 			'size' => '50',
 		);
@@ -75,7 +76,7 @@ class Fieldmanager_Post extends Fieldmanager_Field {
 			$this->query_callback = array( $this, 'search_posts_using_get_posts' );
 		}
 
-		parent::__construct($options);
+		parent::__construct( $label, $options );
 
 		// Add the action hook for typeahead handling via AJAX
 		add_action( 'wp_ajax_fm_search_posts_' . sanitize_title( $this->label ) , array( $this, 'search_posts' ) );

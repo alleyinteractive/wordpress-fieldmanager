@@ -90,18 +90,18 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	
 	/**
 	 * Add CSS, configure taxonomy, construct parent
+	 * @param string $label
 	 * @param mixed $options
 	 */
-	public function __construct( $options = array() ) {
-		if ( !empty( $options['options'] ) ) {
-			$keys = array_keys( $options['options'] );
+	public function __construct( $label= '', $options = array() ) {
+		parent::__construct( $label, $options );
+		if ( !empty( $this->options ) ) {
+			$keys = array_keys( $this->options );
 			$use_name_as_value = ( array_keys( $keys ) === $keys );
-			foreach ( $options['options'] as $k => $v ) {
+			foreach ( $this->options as $k => $v ) {
 				$this->add_option_data( $v, ( $use_name_as_value ? $v : $k ) );
 			}
 		}
-
-		parent::__construct($options);
 		
 		// Add the options CSS
 		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css' );

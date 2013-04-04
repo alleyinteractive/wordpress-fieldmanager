@@ -31,20 +31,20 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 
 	/**
 	 * Constructor which adds several scrips and CSS
+	 * @param string $label
 	 * @param array $options
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label = '', $options = array() ) {
+		$this->attributes = array(
+			'size' => '50',
+		);
+		parent::__construct( $label, $options );
 		$this->sanitize = function( $row, $col, $values ) {
 			foreach ( $values as $k => $val ) {
 				$values[$k] = sanitize_text_field( $val );
 			}
 			return $values;
 		};
-		$this->attributes = array(
-			'size' => '50',
-		);
-
-		parent::__construct( $options );
 
 		fm_add_script( 'handsontable', 'js/grid/jquery.handsontable.js' );
 		fm_add_script( 'contextmenu', 'js/grid/lib/jQuery-contextMenu/jquery.contextMenu.js' );

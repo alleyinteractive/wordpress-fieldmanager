@@ -44,7 +44,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * Construct default attributes; 50x10 textarea
 	 * @param array $options
 	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $label, $options = array() ) {
+
 		if ( !self::$has_registered_tinymce ) {
 			wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tiny_mce.js' ) );
 			wp_enqueue_script( 'wp-langs-en.js', includes_url( 'js/tinymce/langs/wp-langs-en.js' ) );
@@ -67,7 +68,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 			return wp_kses_post( $value );
 		};
 		fm_add_script( 'fm_richtext', 'js/richtext.js' );
-		parent::__construct( $options );
+		parent::__construct( $label, $options );
 	}
 
 

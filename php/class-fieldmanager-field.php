@@ -195,6 +195,11 @@ abstract class Fieldmanager_Field {
 	protected $is_tab = False;
 
 	/**
+	 * Have we added this field as a meta box yet?
+	 */
+	private $meta_box_actions_added = False;
+
+	/**
 	 * @var int Global Sequence
 	 * The global sequence of elements
 	 */
@@ -210,11 +215,25 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Superclass constructor, just populates options and sanity-checks common elements.
 	 * It might also die, but only helpfully, to catch errors in development.
+	 * @param string $label title of form field
+	 * @param array $options with keys matching vars of the field in use.
+	 */
+	public function __construct( $label = '', $options = array() ) {
+		$this->parse_options( $label, $options );
+		$this->register_meta_box_actions();
+	}
+
+	/**
+	 * Build options into properties and throw errors if developers add an unsupported opt.
+	 * @param string $label title of form field
 	 * @param array $options with keys matching vars of the field in use.
 	 * @throws FM_Developer_Exception if an option is set but not defined in this class or the child class.
 	 * @throws FM_Developer_Exception if an option is set but not public.
 	 */
-	public function __construct( $options = array() ) {
+	protected function parse_options( $label, $options ) {
+		if ( is_array( $label ) ) $options = $label;
+		else $options['label'] = $label;
+
 		foreach ( $options as $k => $v ) {
 			try {
 				$reflection = new ReflectionProperty( $this, $k ); // Would throw a ReflectionException if item doesn't exist (developer error)
@@ -233,18 +252,6 @@ abstract class Fieldmanager_Field {
 				}
 			}
 		}
-		if ( !empty( $this->content_types ) ) {
-			add_action( 'admin_init', array( $this, 'add_meta_boxes' ) );
-			add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
-		}
-	}
-
-	/**
-	 * Hook fired once the full form tree is built
-	 * @return void
-	 */
-	public function after_root_init() {
-
 	}
 
 	/**
@@ -493,18 +500,40 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Add this field as a metabox to a content type
+	 * @param string $title
+	 * @param string|string[] $post_type
+	 * @param string $context
+	 * @param string $priority
+	 */
+	public function add_meta_box( $title, $post_types, $context = 'normal', $priority = 'default' ) {
+		if ( !is_array( $post_types ) ) $post_types = array( $post_types );
+		foreach ( $post_types as $type ) {
+			$this->content_types[] = array(
+				'meta_box_name' => 'fm-metabox-' . $this->name,
+				'meta_box_title' => $title,
+				'content_type' => $type,
+				'context' => $context,
+				'priority' => $priority,
+			);
+		}
+		$this->register_meta_box_actions();
+	}
+
+	/**
 	 * admin_init callback to add meta boxes to content types
 	 * Registers render_meta_box()
 	 * @return void
 	 */
-	public function add_meta_boxes() {
+	public function meta_box_render_callback() {
 		foreach ( $this->content_types as $type ) {
 			add_meta_box(
 				$type['meta_box_name'],
 				$type['meta_box_title'],
 				array( $this, 'render_meta_box' ),
 				$type['content_type'],
-				isset( $type['context'] ) ? $type['context'] : 'normal'
+				isset( $type['context'] ) ? $type['context'] : 'normal',
+				isset( $type['priority'] ) ? $type['priority'] : 'default'
 			);
 		}
 	}
@@ -794,5 +823,16 @@ abstract class Fieldmanager_Field {
 		if ( $this->is_proto ) return True;
 		if ( $this->parent ) return $this->parent->has_proto();
 		return False;
+	}
+
+	/**
+	 * Register meta box actions
+	 */
+	private function register_meta_box_actions() {
+		if ( !empty( $this->content_types ) && !$this->meta_box_actions_added ) {
+			add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
+			add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
+			$this->meta_box_actions_added = True;
+		}
 	}
 }
