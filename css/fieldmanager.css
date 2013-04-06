@@ -252,3 +252,7 @@ a.fm-delete:hover {
 	padding-left: 10px;
 	border-left: solid 1px #ccc;
 }
+
+.fm-submenu-form-wrapper {
+	padding: 20px 0;
+}

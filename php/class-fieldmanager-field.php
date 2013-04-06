@@ -147,6 +147,12 @@ abstract class Fieldmanager_Field {
 	public $save_empty = False;
 
 	/**
+	 * @var string|Null
+	 * Only used for options pages
+	 */
+	public $submit_button_label = Null;	
+
+	/**
 	 * @var array[]
 	 * Array of content type assignments for these fields. Sample:
 	 * $element->content_types = array(
@@ -168,6 +174,12 @@ abstract class Fieldmanager_Field {
 	 * );
 	 */
 	public $display_if = array();
+
+	/**
+	 * @var string
+	 * For submenu pages, set autoload to true or false
+	 */
+	public $wp_option_autoload = False;
 
 	/**
 	 * @var int
@@ -198,6 +210,11 @@ abstract class Fieldmanager_Field {
 	 * Have we added this field as a meta box yet?
 	 */
 	private $meta_box_actions_added = False;
+
+	/**
+	 * Internal arguments buffer for add_submenu_page()
+	 */
+	private $submenu_page_args = array();
 
 	/**
 	 * @var int Global Sequence
@@ -518,6 +535,73 @@ abstract class Fieldmanager_Field {
 			);
 		}
 		$this->register_meta_box_actions();
+	}
+
+	/**
+	 * Add this field to an options page
+	 * @param string $title
+	 */
+	public function add_submenu_page( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null ) {
+		$menu_slug = $menu_slug ?: $this->name;
+		$menu_title = $menu_title ?: $page_title;
+		$this->submenu_page_args = array(
+			'parent_slug' => $parent_slug,
+			'page_title' => $page_title,
+			'menu_title' => $menu_title,
+			'capability' => $capability,
+			'menu_slug' => $menu_slug,
+			'callback' => array( $this, 'render_submenu_page' ),
+		);
+		add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
+	}
+
+	/**
+	 * Register a submenu page with WordPress
+	 */
+	public function register_submenu_page() {
+		call_user_func_array( 'add_submenu_page', array_values( $this->submenu_page_args ) );
+	}
+
+	/**
+	 * Save a submenu page
+	 */
+	public function handle_submenu_save() {
+		if ( !empty( $_POST ) && $_GET['page'] == $this->name && current_user_can( $this->submenu_page_args['capability'] ) ) {
+			// Make sure that our nonce field arrived intact
+			if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->name . '-nonce'], 'fieldmanager-save-' . $this->name ) ) {
+				$this->_unauthorized_access( 'Nonce validation failed' );
+			}
+			$this->data_id = $this->name;
+			$this->data_type = 'options';
+			$current = get_option( $this->name );
+			$data = $this->presave_all( $_POST[ $this->name ], $current );
+			if ( get_option( $this->name ) ) {
+				update_option( $this->name, $data );
+			} else {
+				add_option( $this->name, $data, ' ', $this->wp_option_autoload ? 'yes' : 'no' );
+			}
+		}
+	}
+
+	/**
+	 * Helper to attach element_markup() to add_meta_box(). Prints markup for options page.
+	 * @return void.
+	 */
+	public function render_submenu_page() {
+		$values = get_option( $this->name );
+		echo '<div class="wrap">';
+		screen_icon();
+		printf( '<h2>%s</h2>', $this->submenu_page_args['page_title'] );
+		echo '<form method="POST">';
+		echo '<div class="fm-submenu-form-wrapper">';
+		printf( '<input type="hidden" name="fm-options-action" value="%s" />', sanitize_title( $this->name ) );
+		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
+		echo $this->element_markup( $values );
+		echo '</div>';
+		printf( '<input type="submit" name="fm-submit" value="%s" />', $this->submit_button_label ?: __( 'Save Options' ) );
+		echo '</form>';
+		echo '</div>';
 	}
 
 	/**
