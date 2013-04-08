@@ -106,7 +106,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 		$editor_id = $this->get_element_id();
 		$buttons = array(
 			apply_filters( 'mce_buttons', array( 'bold', 'italic', 'strikethrough', 'bullist', 'numlist', 'blockquote', 'justifyleft', 'justifycenter', 'justifyright', 'add_media', 'link', 'unlink', 'wp_more', 'spellchecker', 'fullscreen', 'wp_adv' ), $editor_id ),
-			apply_filters( 'mce_buttons_2', array( 'formatselect', 'underline', 'justifyfull', 'forecolor', 'pastetext', 'pasteword', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help' ), $editor_id ),
+			apply_filters( 'mce_buttons_2', array( 'formatselect', 'underline', 'justifyfull', 'forecolor', 'pastetext', 'pasteword', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help', 'code' ), $editor_id ),
 			apply_filters( 'mce_buttons_3', array(), $editor_id ),
 			apply_filters( 'mce_buttons_4', array(), $editor_id ),
 		);
