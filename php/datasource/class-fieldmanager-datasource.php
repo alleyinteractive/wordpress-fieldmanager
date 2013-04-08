@@ -52,7 +52,7 @@ class Fieldmanager_Datasource {
 					throw new FM_Developer_Exception( $message );
 				}
 			}
-			$this->ajax_idx = self::$counter++;
+			$this->ajax_idx = Fieldmanager_Datasource::$counter++;
 		}
 
 		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
@@ -111,7 +111,7 @@ class Fieldmanager_Datasource {
 		} else {
 			echo "0";
 		}
-		
+
 		die();
 	}
 
