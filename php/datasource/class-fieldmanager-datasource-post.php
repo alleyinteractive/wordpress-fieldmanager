@@ -29,6 +29,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			'order' => 'DESC',
 			'post_status' => 'publish',
 			'post_type' => 'any',
+			'suppress_filters' => False,
 		);
 		$post_args = array_merge( $default_args, $this->query_args );
 		$ret = array();
@@ -59,7 +60,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 					$ret[ $post_id ] = html_entity_decode( $exact_post->post_title );
 				}
 			}
-			$post_args['suppress_filters'] = False;
 			$this->_fragment = $fragment;
 			add_filter( 'posts_where', array( $this, 'title_like' ), 10, 2 );
 		}
