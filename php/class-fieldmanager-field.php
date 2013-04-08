@@ -599,7 +599,7 @@ abstract class Fieldmanager_Field {
 		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
 		echo $this->element_markup( $values );
 		echo '</div>';
-		printf( '<input type="submit" name="fm-submit" value="%s" />', $this->submit_button_label ?: __( 'Save Options' ) );
+		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', $this->submit_button_label ?: __( 'Save Options' ) );
 		echo '</form>';
 		echo '</div>';
 	}

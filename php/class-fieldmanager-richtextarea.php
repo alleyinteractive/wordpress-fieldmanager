@@ -84,8 +84,14 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 		wp_enqueue_script( 'wpdialogs-popup' );
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
 		wp_enqueue_script( 'wp-fullscreen' );
-		add_thickbox();
-		wp_enqueue_script( 'media-upload' );
+		add_action( 'admin_print_scripts', function() {
+			$post = get_post();	
+			$args = array();
+			if ( $post->ID ) {
+				$args['post'] = $post->ID;
+			}
+			wp_enqueue_media( $args ); // generally on post pages this will not have an impact.
+		} );
 	}
 
 	public function editor_js() {
@@ -99,7 +105,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 	public function get_mce_options() {
 		$editor_id = $this->get_element_id();
 		$buttons = array(
-			apply_filters( 'mce_buttons', array( 'bold', 'italic', 'strikethrough', 'bullist', 'numlist', 'blockquote', 'justifyleft', 'justifycenter', 'justifyright', 'link', 'unlink', 'wp_more', 'spellchecker', 'fullscreen', 'wp_adv' ), $editor_id ),
+			apply_filters( 'mce_buttons', array( 'bold', 'italic', 'strikethrough', 'bullist', 'numlist', 'blockquote', 'justifyleft', 'justifycenter', 'justifyright', 'add_media', 'link', 'unlink', 'wp_more', 'spellchecker', 'fullscreen', 'wp_adv' ), $editor_id ),
 			apply_filters( 'mce_buttons_2', array( 'formatselect', 'underline', 'justifyfull', 'forecolor', 'pastetext', 'pasteword', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help' ), $editor_id ),
 			apply_filters( 'mce_buttons_3', array(), $editor_id ),
 			apply_filters( 'mce_buttons_4', array(), $editor_id ),
