@@ -52,6 +52,12 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 	/**
 	 * @var boolean
+	 * If true, group taxonomies
+	 */
+	public $grouped = False;
+
+	/**
+	 * @var boolean
 	 * Build this datasource using AJAX
 	 */
 	public $use_ajax = True;
@@ -193,7 +199,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		// Use the order of the taxonomy array list for sorting the groups to make this controllable for developers
 		// Order of the terms within the groups is already controllable via $taxonomy_args
 		// Skip this entirely if there is only one taxonomy even if group display is set as it would be unnecessary
-		if ( count( $this->taxonomy ) > 1 && $this->allow_optgroups ) {
+		if ( count( $this->taxonomy ) > 1 && $this->grouped && $this->allow_optgroups ) {
 			// Group the data
 			$term_groups = array();
 			foreach ( $this->taxonomy as $tax ) {
