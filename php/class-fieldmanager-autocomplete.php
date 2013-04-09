@@ -11,12 +11,6 @@
 class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 
 	/**
-	 * @var string
-	 * Override field class
-	 */
-	public $field_class = 'post';
-
-	/**
 	 * @var Fieldmanager_Datasource
 	 * Data source to use for this Autocomplete
 	 */

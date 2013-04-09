@@ -16,7 +16,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 
 	public function get_value( $value ) {
 		$id = intval( $value );
-		return get_the_title( $id );
+		return $id ? get_the_title( $id ) : '';
 	}
 
 	public function get_items( $fragment = Null ) {
@@ -88,8 +88,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * @param array $current_values existing post values
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
-		print_r( $values ); exit;
-		if ( $field->data_type != 'post' || !$this->reciprocal ) return;
+		if ( $field->data_type != 'post' || !$this->reciprocal ) return $values;
 		foreach ( $current_values as $reciprocal_post_id ) {
 			delete_post_meta( $reciprocal_post_id, $this->reciprocal, $field->data_id );
 		}

@@ -46,6 +46,12 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 	/**
 	 * @var boolean
+	 * If true, store the term_taxonomy_id instead of the term_id
+	 */
+	public $store_term_taxonomy_id = False;
+
+	/**
+	 * @var boolean
 	 * Build this datasource using AJAX
 	 */
 	public $use_ajax = True;
@@ -202,7 +208,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		// Put the taxonomy data into the proper data structure to be used for display
 		foreach ( $terms as $term ) {
 			// Store the label for the taxonomy as the group since it will be used for display
-			$stack[ $term->term_id ] = $term->name;
+			$key = $this->store_term_taxonomy_id ? $term->term_taxonomy_id : $term->term_id;
+			$stack[ $key ] = $term->name;
 		}
 		return $stack;
 	}
@@ -227,7 +234,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				$prefix .= '--';
 			}
 			
-			$stack[$term->term_id] = $prefix . ' ' . $term->name;
+			$key = $this->store_term_taxonomy_id ? $term->term_taxonomy_id : $term->term_id;
+			$stack[ $key ] = $prefix . ' ' . $term->name;
 			
 			// Find child terms of this. If any, recurse on this function.
 			$tax_args['parent'] = $term->term_id;
