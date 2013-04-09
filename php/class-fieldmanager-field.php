@@ -150,7 +150,13 @@ abstract class Fieldmanager_Field {
 	 * @var string|Null
 	 * Only used for options pages
 	 */
-	public $submit_button_label = Null;	
+	public $submit_button_label = Null;
+
+	/**
+	 * @var boolean
+	 * Do not save this field (useful for fields which handle saving their own data)
+	 */
+	public $skip_save = False;
 
 	/**
 	 * @var array[]
@@ -278,6 +284,7 @@ abstract class Fieldmanager_Field {
 	 * @return string HTML for all form elements.
 	 */
 	public function element_markup( $values = array() ) {
+		$values = $this->preload_alter_values( $values );
 		if ( $this->limit == 0 ) {
 			if ( count( $values ) + $this->extra_elements <= $this->starting_count ) {
 				$max = $this->starting_count;
@@ -431,6 +438,14 @@ abstract class Fieldmanager_Field {
 
 		$out .= '</div>';
 		return $out;
+	}
+
+	/**
+	 * Alter values before rendering
+	 * @param array $values
+	 */
+	public function preload_alter_values( $values ) {
+		return $values;
 	}
 
 	/**
@@ -632,6 +647,8 @@ abstract class Fieldmanager_Field {
 	public function render_meta_box( $post, $form_struct ) {
 		$key = $form_struct['callback'][0]->name;
 		$values = get_post_meta( $post->ID, $key, TRUE );
+		$this->data_type = 'post';
+		$this->data_id = $post->ID;
 		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
 		echo $this->element_markup( $values );
 	}
@@ -686,7 +703,7 @@ abstract class Fieldmanager_Field {
 		}
 		$current = get_post_meta( $this->data_id, $this->name, True );
 		$data = $this->presave_all( $data, $current );
-		update_post_meta( $post_id, $this->name, $data );
+		if ( !$this->skip_save ) update_post_meta( $post_id, $this->name, $data );
 	}
 
 	/**

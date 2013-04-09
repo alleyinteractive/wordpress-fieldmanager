@@ -4,8 +4,14 @@ development of this toolkit possible.
 
 Authors:
 
-* Austin Smith, Founder, Alley Interactive LLC
+* Austin Smith, Co-founder, Alley Interactive LLC
 * Brad Campeau-Laurion, Chief Technologist, Alley Interactive LLC
+
+Contributors:
+
+* Matthew Boynes, Alley Interactive LLC
+* Matthew Johnson, Co-founder, Alley Interactive LLC
+* Will Gladstone, Alley Interactive LLC
 
 Open Source components consulted or used:
 
@@ -21,3 +27,6 @@ Open Source components consulted or used:
              Patrick Filler and Matthew Lettini at Harvest
 * [11/06/12] Incorporated bootstrap.js (http://twitter.github.com/bootstrap/)
 			 Developed at Twitter by @mdo and @fat
+* [4/8/13]   Consulted Simon Wheatley's demo plugin to support using the 
+			 term_order field to sort core taxonomies.
+			 (http://simonwheatley.co.uk/2012/07/ordering-terms-in-wordpress-taxonomies/)

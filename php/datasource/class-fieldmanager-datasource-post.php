@@ -87,11 +87,13 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * @param array $values new post values
 	 * @param array $current_values existing post values
 	 */
-	public function presave_alter( Fieldmanager_Field $field, $values, $current_values ) {
+	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
+		print_r( $values ); exit;
 		if ( $field->data_type != 'post' || !$this->reciprocal ) return;
 		foreach ( $current_values as $reciprocal_post_id ) {
 			delete_post_meta( $reciprocal_post_id, $this->reciprocal, $field->data_id );
 		}
+		return $values;
 	}
 
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {

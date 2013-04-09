@@ -36,45 +36,58 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 	/**
 	 * @var string
+	 * @deprecated use Fieldmanager_Datsource_Term
 	 * Helper for taxonomy-based option sets; taxonomy name
 	 */
 	public $taxonomy = null;
 
 	/**
 	 * @var array
+	 * @deprecated use Fieldmanager_Datsource_Term
 	 * Helper for taxonomy-based option sets; arguments to find terms
 	 */
 	public $taxonomy_args = array();
 
 	/**
 	 * @var boolean
+	 * @deprecated use Fieldmanager_Datsource_Term
 	 * Sort taxonomy hierarchically and indent child categories with dashes?
 	 */
 	public $taxonomy_hierarchical = false;
 
 	/**
 	 * @var int
+	 * @deprecated use Fieldmanager_Datsource_Term
 	 * How far to descend into taxonomy hierarchy (0 for no limit)
 	 */
 	public $taxonomy_hierarchical_depth = 0;
 
 	/**
 	 * @var boolean
+	 * @deprecated use Fieldmanager_Datsource_Term
 	 * Pass $append = true to wp_set_object_terms?
 	 */
 	public $append_taxonomy = False;
 	
 	/**
 	 * @var string
+	 * @deprecated use Fieldmanager_Datsource_Term
 	 * Helper for taxonomy-based option sets; whether or not to preload all terms
 	 */
 	public $taxonomy_preload = True;
 
 	/**
 	 * @var string
+	 * @deprecated use Fieldmanager_Datsource_Term
 	 * If true, additionally save taxonomy terms to WP's terms tables.
 	 */
 	public $taxonomy_save_to_terms = True;
+
+	/**
+	 * @var Fieldmanager_Datasource
+	 * Optionally generate field from datasource
+	 */
+	public $datasource = Null;
 
 	/**
 	 * @var boolean
@@ -95,12 +108,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function __construct( $label= '', $options = array() ) {
 		parent::__construct( $label, $options );
+
 		if ( !empty( $this->options ) ) {
-			$keys = array_keys( $this->options );
-			$use_name_as_value = ( array_keys( $keys ) === $keys );
-			foreach ( $this->options as $k => $v ) {
-				$this->add_option_data( $v, ( $use_name_as_value ? $v : $k ) );
-			}
+			$this->add_options( $this->options );
 		}
 		
 		// Add the options CSS
@@ -116,6 +126,28 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			}
 		};
 	}
+
+	/**
+	 * Add options
+	 * @param array $options
+	 * @return void
+	 */
+	public function add_options( $options ) {
+		$values = array_values( $options );
+		if ( is_array( $values[0] ) ) {
+			foreach ( $options as $group => $data ) {
+				foreach ( $data as $value => $label ) {
+					$this->add_option_data( $value, $label, $group, $group );
+				}
+			}
+		} else {
+			$keys = array_keys( $options );
+			$use_name_as_value = ( array_keys( $keys ) === $keys );
+			foreach ( $options as $k => $v ) {
+				$this->add_option_data( $v, ( $use_name_as_value ? $v : $k ) );
+			}
+		}
+	}
 	
 	/**
 	 * Generate form elements.
@@ -123,6 +155,10 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return string HTML
 	 */
 	public function form_data_elements( $value ) {
+
+		if ( $this->datasource ) {
+			$this->add_options( $this->datasource->get_items() );
+		}
 	
 		// If the taxonomy parameter is set, populate the data from the given taxonomy if valid
 		// Also, if the taxonomy data is not preloaded, this must be run each time to load selected terms
@@ -167,7 +203,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			}
 			
 			// If this was grouped display, close the final group
-			if( $this->grouped ) $form_data_elements_html .= $this->form_data_end_group();
+			if( $this->grouped || $this->datasource->grouped ) $form_data_elements_html .= $this->form_data_end_group();
 		}
 		
 		return $form_data_elements_html;
@@ -198,6 +234,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return sanitized values. 
 	 */
 	public function presave( $value, $current_value = array() ) {
+		if ( !empty( $this->datasource ) ) {
+			return $this->datasource->presave( $this, $value, $current_value );
+		}
 		foreach ( $this->validate as $func ) {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
@@ -211,12 +250,24 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	}
 
 	/**
+	 * Alter values before rendering
+	 * @param array $values
+	 */
+	public function preload_alter_values( $values ) {
+		if ( $this->datasource ) return $this->datasource->preload_alter_values( $this, $values );
+		return $values;
+	}
+
+	/**
 	 * Presave hook to set taxonomy data, maybe
 	 * @param int[] $values
 	 * @param int[] $current_values
 	 * @return int[] $values
 	 */
-	public function presave_alter_values( $values, $current_values ) {	
+	public function presave_alter_values( $values, $current_values ) {
+		if ( !empty( $this->datasource ) ) {
+			return $this->datasource->presave_alter_values( $this, $values, $current_values );
+		}
 		// If this is a taxonomy-based field, must also save the value(s) as an object term
 		if ( $this->taxonomy_save_to_terms && isset( $this->taxonomy ) && !empty( $values ) ) {
 			// Sanitize the value(s)

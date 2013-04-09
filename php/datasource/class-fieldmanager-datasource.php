@@ -22,6 +22,11 @@ class Fieldmanager_Datasource {
 	public $use_ajax = False;
 
 	/**
+	 * @var boolean
+	 */
+	public $allow_optgroups = True;
+
+	/**
 	 * @var int
 	 * Local instance of self::$counter
 	 */
@@ -122,8 +127,19 @@ class Fieldmanager_Datasource {
 	 * @param string|int|null $current_value
 	 * @return string cleaned value
 	 */
-	public function presave_alter( Fieldmanager_Field $field, $values, $current_values ) {
+	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
 		// nothing here, but some child classes need this method.
+		return $values;
+	}
+
+	/**
+	 * Modify values before rendering editor
+	 * @param Fieldmanager_Field $field
+	 * @param array $values
+	 * @return array $values loaded up, if applicable.
+	 */
+	public function preload_alter_values( Fieldmanager_Field $field, $values ) {
+		return $values;
 	}
 
 	/**

@@ -88,6 +88,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		
 		foreach ( $this->children as $name => $element ) {
 			if ( !$element->name ) $element->name = $name;
+			// Propagate data type and ID info down the chain
 		}
 
 		// Add the tab JS and CSS if it is needed
@@ -171,6 +172,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		
 			// Get markup for the child element
 			$child_value = empty( $value[ $element->name ] ) ? Null : $value[ $element->name ];
+
+			// propagate editor state down the chain
+			if ( $this->data_type ) $element->data_type = $this->data_type;
+			if ( $this->data_id ) $element->data_id = $this->data_id;
+			
 			$out .= $element->element_markup( $child_value );
 			
 			$this->child_count++;

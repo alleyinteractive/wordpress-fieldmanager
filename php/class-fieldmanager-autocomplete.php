@@ -61,14 +61,13 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 * @param array $options
 	 */
 	public function __construct( $label = '', $options = array() ) {
+		$this->attributes = array(
+			'size' => '50',
+		);
 		parent::__construct( $label, $options );
 
 		wp_enqueue_script( 'jquery-ui-autocomplete' );
 		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array(), false, false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
-
-		$this->attributes = array(
-			'size' => '50',
-		);
 
 		if ( empty( $this->datasource ) ) {
 			$message = __( 'You must supply a datasource for the autocomplete field' );
@@ -78,6 +77,16 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 				wp_die( $message, __( 'No Datasource' ) );
 			}
 		}
+		$this->datasource->allow_optgroups = False;
+	}
+
+	/**
+	 * Alter values before rendering
+	 * @param array $values
+	 */
+	public function preload_alter_values( $values ) {
+		if ( $this->datasource ) return $this->datasource->preload_alter_values( $this, $values );
+		return $values;
 	}
 
 	/**
@@ -85,16 +94,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 * @param mixed $value
 	 * @return string HTML
 	 */
-	public function form_element( $value = '' ) {
-		if ( empty( $value ) ) {
-			// No value or invalid data was present. Use empty values.
-			$value = array(
-				'id' => '',
-				'title' => '',
-				'post_type' => '',
-				'post_date' => ''
-			);
-		}
+	public function form_element( $value = Null ) {
 
 		if ( $this->exact_match ) {
 			$this->attributes['data-exact-match'] = True;
@@ -137,9 +137,8 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
 		// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.
-		if ( empty( $current_values) || empty( $this->data_id ) || $this->data_type !== 'post' ) return $values;
-		$this->datasource->presave_alter( $this, $values, $current_values );
-		return $values;
+		if ( empty( $this->data_id ) || $this->data_type !== 'post' ) return $values;
+		return $this->datasource->presave_alter_values( $this, $values, $current_values );
 	}
 	
 	/**
