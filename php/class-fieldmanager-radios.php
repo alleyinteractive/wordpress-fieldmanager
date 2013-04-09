@@ -21,11 +21,9 @@ class Fieldmanager_Radios extends Fieldmanager_Options {
 	 * @return string HTML
 	 */
 	public function form_element( $value = array() ) {
-		return sprintf(
-			'<div class="fm-radio-group" id="%s"></div>',
-			$this->get_element_id(),
-			$this->form_data_elements( $value )
-		);
+
+		return $this->form_data_elements( $value );
+
 	}
 
 	/**
@@ -36,7 +34,7 @@ class Fieldmanager_Radios extends Fieldmanager_Options {
 	 * @return string HTML
 	 */
 	public function form_data_element( $data_row, $value = array() ) {
-	
+		
 		return sprintf(
 			'<div class="fm-option"><input class="fm-element" type="radio" value="%s" name="%s" %s %s/><div class="fm-option-label">%s</div></div>',
 			$data_row['value'],

@@ -9,7 +9,7 @@
  * @package Fieldmanager
  */
 class Fieldmanager_Autocomplete extends Fieldmanager_Field {
-
+	
 	/**
 	 * @var Fieldmanager_Datasource
 	 * Data source to use for this Autocomplete
