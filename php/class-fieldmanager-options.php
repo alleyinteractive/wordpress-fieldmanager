@@ -155,14 +155,13 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return string HTML
 	 */
 	public function form_data_elements( $value ) {
-
-		if ( $this->datasource ) {
-			$this->add_options( $this->datasource->get_items() );
-		}
 	
 		// If the taxonomy parameter is set, populate the data from the given taxonomy if valid
 		// Also, if the taxonomy data is not preloaded, this must be run each time to load selected terms
 		if ( !$this->has_built_data || !$this->taxonomy_preload ) {
+			if ( $this->datasource ) {
+				$this->add_options( $this->datasource->get_items() );
+			}
 			if ( $this->taxonomy != null ) $this->get_taxonomy_data( $value );
 		
 			// Add the first element to the data array. This is useful for database-based data sets that require a first element.
