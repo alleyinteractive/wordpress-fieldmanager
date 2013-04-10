@@ -53,6 +53,16 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $tab_limit = 0;
 
 	/**
+	 * @var array
+	 * Label macro is a more convenient shortcut to label_format and label_token. The first element
+	 * of the two-element array is the title with a placeholder (%s), and the second element is
+	 * simply the name of the child element to pull from, e.g.:
+	 *
+	 * array( 'Section: %s', 'section_title' )
+	 */
+	public $label_macro = Null;
+
+	/**
 	 * @var string
 	 * If specified, $label_format combined with $label_token will override $label, but only if
 	 * $(label).find(label_token).val() is not null.
@@ -254,6 +264,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		$extra_attrs = '';
+		if ( $this->label_macro ) {
+			$this->label_format = $this->label_macro[0];
+			$this->label_token = sprintf( '.fm-%s input.fm-element', $this->label_macro[1] );
+		}
+
 		if ( $this->label_format && $this->label_token ) {
 			$extra_attrs = sprintf(
 				'data-label-format="%1$s" data-label-token="%2$s"',

@@ -131,6 +131,16 @@ function fm_get_post_meta( $post_id, $var, $single = True ) {
 }
 
 /**
+ * Cheap way to tell if we're looking at a post edit page.
+ * It's a good idea to use this at the beginning of implementations which use metaboxes
+ * to avoid initializing your Fieldmanager chain on every page load.
+ * @return boolean are we editing or creating a post?
+ */
+function fm_is_post_edit_screen() {
+	return stripos( $_SERVER['PHP_SELF'], '/post.php' ) !== FALSE || stripos( $_SERVER['PHP_SELF'], '/post-new.php' ) !== FALSE;
+}
+
+/**
  * Exception class for this plugin's fatal errors; mostly to differentiate in unit tests.
  * @package Fieldmanager
  */
