@@ -159,6 +159,12 @@ abstract class Fieldmanager_Field {
 	public $skip_save = False;
 
 	/**
+	 * @var string
+	 * Save this field additionally to an index
+	 */
+	public $index = False;
+
+	/**
 	 * @var array[]
 	 * Array of content type assignments for these fields. Sample:
 	 * $element->content_types = array(
@@ -715,7 +721,11 @@ abstract class Fieldmanager_Field {
 
 		if ( $this->limit == 1 ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
-			return $this->presave( $values[0], $current_values );
+			$value = $this->presave( $values[0], $current_values );
+			if ( $this->save_empty || !empty( $value ) ) {
+				if ( !empty( $this->index ) ) $this->save_index( array( $value ), array( $current_values ) );
+			}
+			return $value;
 		}
 		
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
@@ -744,7 +754,27 @@ abstract class Fieldmanager_Field {
 			$values[$i] = $this->presave( $value, empty( $current_values[$i] ) ? array() : $current_values[$i] );
 			if ( !$this->save_empty && empty( $values[$i] ) ) unset( $values[$i] );
 		}
+		if ( !empty( $this->index ) ) $this->save_index( $values, $current_values );
 		return $values;
+	}
+
+	/**
+	 * Optionally save fields to a separate postmeta index for easy lookup with WP_Query
+	 * @param array $values
+	 * @return void
+	 */
+	protected function save_index( $values, $current_values ) {
+		if ( $this->data_type != 'post' || empty( $this->data_id ) ) return;
+		// Must delete current values specifically, then add new ones, to support a scenario where the 
+		// same field in repeating groups with limit = 1 is going to create more than one entry here, and
+		// if we called update_post_meta() we would overwrite the index with each new group.
+		foreach ( $current_values as $v ) {
+			delete_post_meta( $this->data_id, $this->index, $v );
+		}
+		// add new values
+		foreach ( $values as $v ) {
+			add_post_meta( $this->data_id, $this->index, $v );
+		}
 	}
 
 	/**
