@@ -121,7 +121,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 			'theme_advanced_resizing' => true,
 			'theme_advanced_resize_horizontal' => false,
 			'dialog_type' => "modal",
-			'content_css' => apply_filters( 'mce_css', "/wp-content/themes/vip/kff/inc/fieldmanager/css/fieldmanager-richtext-content.css" ),
+			'content_css' => apply_filters( 'mce_css', fieldmanager_get_baseurl() . 'css/fieldmanager-richtext-content.css' ),
 			'theme_advanced_toolbar_location' => "top",
 			'theme_advanced_buttons1' => implode( ',', $buttons[0] ),
 			'theme_advanced_buttons2' => implode( ',', $buttons[1] ),
