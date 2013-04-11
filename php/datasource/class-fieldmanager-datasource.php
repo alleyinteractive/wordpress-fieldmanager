@@ -36,7 +36,7 @@ class Fieldmanager_Datasource {
 	 * @var int
 	 * Counter to create uniquely named AJAX actions.
 	 */
-	private static $counter = 0;
+	public static $counter = 0;
 
 	public function __construct( $options ) {
 
@@ -57,8 +57,8 @@ class Fieldmanager_Datasource {
 					throw new FM_Developer_Exception( $message );
 				}
 			}
-			$this->ajax_idx = Fieldmanager_Datasource::$counter++;
 		}
+		$this->ajax_idx = Fieldmanager_Datasource::$counter++;
 
 		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
 			$message = __( 'Invalid options for Datasource; must use the options parameter to supply an array.' );
