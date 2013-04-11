@@ -65,7 +65,8 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 			'rows' => '10'
 		);
 		$this->sanitize = function( $value ) {
-			return wp_kses_post( $value );
+			// wpautop required post 3.6, otherwise paragraphs run together
+			return wpautop( wp_kses_post( $value ) );
 		};
 		fm_add_script( 'fm_richtext', 'js/richtext.js' );
 		parent::__construct( $label, $options );
