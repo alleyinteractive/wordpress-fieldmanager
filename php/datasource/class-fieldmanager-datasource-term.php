@@ -68,24 +68,31 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	public function __construct( $options = array() ) {
 		global $wp_taxonomies;
 
+		// default to showing empty tags, which generally makes more sense for the types of fields
+		// that fieldmanager supports
+		if ( !isset( $options['taxonomy_args']['hide_empty'] ) ) {
+			$options['taxonomy_args']['hide_empty'] = False;
+		}
+
 		parent::__construct( $options );
-		if ( !is_array( $this->taxonomy ) ) $this->taxonomy = array( $this->taxonomy );
 		if ( $this->only_save_to_taxonomy ) $this->taxonomy_save_to_terms = True;
 
 		// make post_tag and category sortable via term_order, if they're set as taxonomies, and if
 		// we're not using Fieldmanager storage
-		if ( $this->only_save_to_taxonomy && in_array( 'post_tag', $this->taxonomy ) ) {
+		if ( $this->only_save_to_taxonomy && in_array( 'post_tag', $this->get_taxonomies() ) ) {
 			$wp_taxonomies['post_tag']->sort = True;
 		}
-		if ( $this->only_save_to_taxonomy && in_array( 'category', $this->taxonomy ) ) {
+		if ( $this->only_save_to_taxonomy && in_array( 'category', $this->get_taxonomies() ) ) {
 			$wp_taxonomies['category']->sort = True;
 		}
+	}
 
-		// default to showing empty tags, which generally makes more sense for the types of fields
-		// that fieldmanager supports
-		if ( !isset( $this->taxonomy_args['hide_empty'] ) ) {
-			$this->taxonomy_args['hide_empty'] = False;
-		}
+	/**
+	 * Get taxonomies; normalizes $this->taxonomy to an array
+	 * @return array of taxonomies
+	 */
+	protected function get_taxonomies() {
+		return is_array( $this->taxonomy ) ? $this->taxonomy : array( $this->taxonomy );
 	}
 
 	/**
@@ -95,12 +102,11 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 */
 	public function get_ajax_action() {
 		if ( !empty( $this->ajax_action ) ) return $this->ajax_action;
-		$unique_key = 'term';
-		$unique_key .= json_encode( $this->taxonomy_args );
-		$unique_key .= (string) $this->taxonomy;
+		$unique_key = json_encode( $this->taxonomy_args );
+		$unique_key .= json_encode( $this->get_taxonomies() );
 		$unique_key .= (string) $this->taxonomy_hierarchical;
 		$unique_key .= (string) $this->taxonomy_hierarchical_depth;
-		return 'fm_datasource_' . crc32( $unique_key );
+		return 'fm_datasource_term_' . crc32( $unique_key );
 	}
 
 	/**
@@ -112,7 +118,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 */
 	public function preload_alter_values( Fieldmanager_Field $field, $values ) {
 		if ( $this->only_save_to_taxonomy ) {
-			$terms = wp_get_object_terms( $field->data_id, $this->taxonomy[0], array( 'orderby' => 'term_order' ) );
+			$taxonomies = get_taxonomies();
+			$terms = wp_get_object_terms( $field->data_id, $taxonomies[0], array( 'orderby' => 'term_order' ) );
 
 			if ( count( $terms ) > 0 ) {
 				if ( $field->limit == 1 ) {
@@ -173,9 +180,10 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 		$tax_values = array_map( 'intval', $tax_values );
 		$tax_values = array_unique( $tax_values );
+		$taxonomies = $this->get_taxonomies();
 
 		// Store the each term for this post. Handle grouped fields differently since multiple taxonomies are present.
-		if ( count( $this->taxonomy ) > 1 ) {
+		if ( count( $taxonomies ) > 1 ) {
 			// Build the taxonomy insert data
 			$taxonomies_to_save = array();
 			foreach ( $tax_values as $term_id ) {
@@ -187,7 +195,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				wp_set_object_terms( $data_id, $terms, $taxonomy, $this->append_taxonomy );
 			}
 		} else {
-			wp_set_object_terms( $data_id, $tax_values, $this->taxonomy[0], $this->append_taxonomy );
+			wp_set_object_terms( $data_id, $tax_values, $taxonomies[0], $this->append_taxonomy );
 		}
 	}
 
@@ -202,22 +210,22 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		if ( $this->taxonomy_hierarchical ) {
 			$tax_args = $this->taxonomy_args;
 			$tax_args['parent'] = 0;
-			$parent_terms = get_terms( $this->taxonomy, $tax_args );
+			$parent_terms = get_terms( $this->get_taxonomies(), $tax_args );
 			return $this->build_hierarchical_term_data( $parent_terms, $this->taxonomy_args, 0, $fragment );
 		}
 
 		$tax_args = $this->taxonomy_args;
 		if ( !empty( $fragment ) ) $tax_args['search'] = $fragment;
-		$terms = get_terms( $this->taxonomy, $tax_args );
+		$terms = get_terms( $this->get_taxonomies(), $tax_args );
 
 		// If the taxonomy list was an array and group display is set, ensure all terms are grouped by taxonomy
 		// Use the order of the taxonomy array list for sorting the groups to make this controllable for developers
 		// Order of the terms within the groups is already controllable via $taxonomy_args
 		// Skip this entirely if there is only one taxonomy even if group display is set as it would be unnecessary
-		if ( count( $this->taxonomy ) > 1 && $this->grouped && $this->allow_optgroups ) {
+		if ( count( $this->get_taxonomies() ) > 1 && $this->grouped && $this->allow_optgroups ) {
 			// Group the data
 			$term_groups = array();
-			foreach ( $this->taxonomy as $tax ) {
+			foreach ( $this->get_taxonomies() as $tax ) {
 				$term_groups[$tax] = array();
 			}
 			foreach ( $terms as $term ) {
@@ -261,7 +269,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			// Find child terms of this. If any, recurse on this function.
 			$tax_args['parent'] = $term->term_id;
 			if ( !empty( $pattern ) ) $tax_args['search'] = $fragment;
-			$child_terms = get_terms( $this->taxonomy, $tax_args );
+			$child_terms = get_terms( $this->get_taxonomies(), $tax_args );
 			if ( $this->taxonomy_hierarchical_depth == 0 || $depth + 1 < $this->taxonomy_hierarchical_depth ) {
 				if ( !empty( $child_terms ) ) {
 					$stack = $this->build_hierarchical_term_data( $child_terms, $this->taxonomy_args, $depth + 1, $stack );
@@ -293,7 +301,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			global $wpdb;
 			return $wpdb->get_row( $wpdb->prepare( "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.term_taxonomy_id = %d LIMIT 1", $term_id ) );
 		} else {
-			$terms = get_terms( $this->taxonomy, array( 'include' => array( $term_id ), 'number' => 1 ) );
+			$terms = get_terms( $this->get_taxonomies(), array( 'include' => array( $term_id ), 'number' => 1 ) );
 			return !empty( $terms[0] ) ? $terms[0] : Null;
 		}
 	}

@@ -80,10 +80,9 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 */
 	public function get_ajax_action() {
 		if ( !empty( $this->ajax_action ) ) return $this->ajax_action;
-		$unique_key = 'post';
-		$unique_key .= json_encode( $this->query_args );
+		$unique_key = json_encode( $this->query_args );
 		$unique_key .= (string) $this->query_callback;
-		return 'fm_datasource_' . crc32( $unique_key );
+		return 'fm_datasource_post' . crc32( $unique_key );
 	}
 
 	/**
