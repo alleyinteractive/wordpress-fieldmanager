@@ -27,10 +27,9 @@ class Fieldmanager_Datasource {
 	public $allow_optgroups = True;
 
 	/**
-	 * @var int
-	 * Local instance of self::$counter
+	 * @var string
 	 */
-	private $ajax_idx = 0;
+	public $ajax_action = '';
 
 	/**
 	 * @var int
@@ -58,7 +57,6 @@ class Fieldmanager_Datasource {
 				}
 			}
 		}
-		$this->ajax_idx = Fieldmanager_Datasource::$counter++;
 
 		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
 			$message = __( 'Invalid options for Datasource; must use the options parameter to supply an array.' );
@@ -98,8 +96,14 @@ class Fieldmanager_Datasource {
 		return $ret;
 	}
 
+	/**
+	 * Get an action to register by hashing (non cryptographically for speed)
+	 * the options that make this datasource unique.
+	 * @return string ajax action
+	 */
 	public function get_ajax_action() {
-		return 'fm_datasource_' . $this->ajax_idx;
+		if ( !empty( $this->ajax_action ) ) return $this->ajax_action;
+		return 'fm_datasource_' . crc32( 'base' . json_encode( $this->options ) . $this->options_callback );
 	}
 
 	/**

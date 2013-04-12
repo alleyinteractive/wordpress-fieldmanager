@@ -89,6 +89,21 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	}
 
 	/**
+	 * Get an action to register by hashing (non cryptographically for speed)
+	 * the options that make this datasource unique.
+	 * @return string ajax action
+	 */
+	public function get_ajax_action() {
+		if ( !empty( $this->ajax_action ) ) return $this->ajax_action;
+		$unique_key = 'term';
+		$unique_key .= json_encode( $this->taxonomy_args );
+		$unique_key .= (string) $this->taxonomy;
+		$unique_key .= (string) $this->taxonomy_hierarchical;
+		$unique_key .= (string) $this->taxonomy_hierarchical_depth;
+		return 'fm_datasource_' . crc32( $unique_key );
+	}
+
+	/**
 	 * Unique among FM types, the taxonomy datasource can store data outside FM's array.
 	 * This is how we add it back into the array for editing.
 	 * @param Fieldmanager_Field $field
