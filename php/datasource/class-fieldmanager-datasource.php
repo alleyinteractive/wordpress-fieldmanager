@@ -1,8 +1,12 @@
 <?php
+/**
+ * @package Fieldmanager_Datasource
+ */
 
 /**
- * Fieldmanager Datasource
- * Connects autocomplete and option fields to various dynamic data sources
+ * Base data source; can provide static options for Option fields or
+ * Autocomplete fields.
+ * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Datasource {
 
@@ -37,7 +41,10 @@ class Fieldmanager_Datasource {
 	 */
 	public static $counter = 0;
 
-	public function __construct( $options ) {
+	/**
+	 * Constructor
+	 */
+	public function __construct( $options = array() ) {
 
 		foreach ( $options as $k => $v ) {
 			try {
@@ -81,10 +88,21 @@ class Fieldmanager_Datasource {
 		}
 	}
 
+	/**
+	 * Get the value of an item; most clearly used by Post and Term, which
+	 * take database IDs and return user-friendly titles.
+	 * @param int $id
+	 * @return string value
+	 */
 	public function get_value( $id ) {
 		return $this->options[$id] ?: '';
 	}
 
+	/**
+	 * Get available options, optionally filtering by a fragment (e.g. for Autocomplete)
+	 * @param string $fragment optional fragment to filter by
+	 * @return array, key => value of available options
+	 */
 	public function get_items( $fragment = Null ) {
 		if ( !$fragment ) {
 			return $this->options;
@@ -108,6 +126,7 @@ class Fieldmanager_Datasource {
 
 	/**
 	 * AJAX callback to find posts
+	 * @return void, causes process to exit.
 	 */
 	public function autocomplete_search() {
 		// Check the nonce before we do anything

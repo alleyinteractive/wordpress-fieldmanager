@@ -1,5 +1,12 @@
 <?php
+/**
+ * @package Fieldmanager_Datasource
+ */
 
+/**
+ * Data source for WordPress Terms, for autocomplete and option types.
+ * @package Fieldmanager_Datasource
+ */
 class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 	/**
@@ -307,17 +314,26 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	}
 
 	/**
-	 * Link to view a term
+	 * Get link to view a term
+	 * @param int $value term id
+	 * @return string
 	 */
 	public function get_view_link( $value ) {
-		return '';
+		return sprintf(
+			' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
+			empty( $value ) ? 'fm-hidden' : '',
+			empty( $value ) ? '#' : get_term_link( $this->get_term( $value ) ),
+			__( 'View' )
+		);
 	}
 
 	/**
-	 * Link to edit a term
+	 * Get link to edit a term
+	 * @param int $value term id
+	 * @return string
 	 */
 	public function get_edit_link( $value ) {
-		return '';
+		return edit_term_link( __( 'Edit' ), '', '', $this->get_term( $value ), False );
 	}
 
 }
