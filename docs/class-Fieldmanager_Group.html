@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class Fieldmanager_Group | Fieldmanager API</title>
+
+	<script type="text/javascript" src="resources/combined.js?3233261031"></script>
+	<script type="text/javascript" src="elementlist.js?770940545"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', "UA-17061659-2"]);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
+						<ul>
+				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
+						</li>
+							</ul></li>
+				<li><a href="package-PHP.html">PHP</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Fieldmanager_Autocomplete.html">Fieldmanager_Autocomplete</a></li>
+				<li><a href="class-Fieldmanager_Checkbox.html">Fieldmanager_Checkbox</a></li>
+				<li><a href="class-Fieldmanager_Checkboxes.html">Fieldmanager_Checkboxes</a></li>
+				<li><a href="class-Fieldmanager_DraggablePost.html">Fieldmanager_DraggablePost</a></li>
+				<li><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></li>
+				<li><a href="class-Fieldmanager_Grid.html">Fieldmanager_Grid</a></li>
+				<li class="active"><a href="class-Fieldmanager_Group.html">Fieldmanager_Group</a></li>
+				<li><a href="class-Fieldmanager_Hidden.html">Fieldmanager_Hidden</a></li>
+				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
+				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Post.html">Fieldmanager_Post</a></li>
+				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
+				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
+				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
+				<li><a href="class-Fieldmanager_TextArea.html">Fieldmanager_TextArea</a></li>
+				<li><a href="class-Fieldmanager_TextField.html">Fieldmanager_TextField</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></li>
+				<li><a href="class-FM_Exception.html">FM_Exception</a></li>
+				<li><a href="class-FM_Validation_Exception.html">FM_Validation_Exception</a></li>
+			</ul>
+
+
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="function-_fieldmanager_registry.html">_fieldmanager_registry</a></li>
+				<li><a href="function-fieldmanager_enqueue_scripts.html">fieldmanager_enqueue_scripts</a></li>
+				<li><a href="function-fieldmanager_get_baseurl.html">fieldmanager_get_baseurl</a></li>
+				<li><a href="function-fieldmanager_set_baseurl.html">fieldmanager_set_baseurl</a></li>
+				<li><a href="function-fm_add_script.html">fm_add_script</a></li>
+				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
+				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
+				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Fieldmanager.html" title="Summary of Fieldmanager"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Fieldmanager_Group</h1>
+
+
+	<div class="description">
+	
+<p>Fieldmanager Group; allows associating multiple fields together and required
+as the base element.</p>
+
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+			<a href="class-Fieldmanager_Field.html"><span>Fieldmanager_Field</span></a>
+			
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by" />
+<b><span>Fieldmanager_Group</span></b>			
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-Fieldmanager.html">Fieldmanager</a><br />
+
+		<b>Located at</b> <a href="source-class-Fieldmanager_Group.html#6-315" title="Go to source code">class-fieldmanager-group.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Fieldmanager_Group.html#90-110" title="Go to source code">__construct</a>( <span>string <var>$label</var> = <span class="php-quote">''</span></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>() </span> )</code>
+
+		<div class="description short">
+			
+<p>Constructor; add CSS if we're looking at a tabbed view</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Constructor; add CSS if we're looking at a tabbed view</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$label</var></dt>
+					<dd><code>string</code><br>$label title of form field</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options with keys matching vars of the field in use.</dd>
+				</dl></div>
+
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Fieldmanager_Field.html#___construct">Fieldmanager_Field::__construct()</a></code></div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="form_element" id="_form_element">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_form_element">#</a>
+		<code><a href="source-class-Fieldmanager_Group.html#112-206" title="Go to source code">form_element</a>( <span>mixed <var>$value</var> = <span class="php-keyword1">NULL</span> </span> )</code>
+
+		<div class="description short">
+			
+<p>Render the element, iterating over children and calling their form_element()
+functions.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Render the element, iterating over children and calling their form_element()
+functions.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>HTML for the element. Generate HTML for the form element itself. Generally
+should be just one tag, no wrappers.<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="presave" id="_presave">
+
+		<td class="attributes"><code>
+			 public 
+			mixed[]
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_presave">#</a>
+		<code><a href="source-class-Fieldmanager_Group.html#208-248" title="Go to source code">presave</a>( <span>mixed <var>$values</var></span>, <span>mixed <var>$current_values</var> = <span class="php-keyword1">array</span>() </span> )</code>
+
+		<div class="description short">
+			
+<p>Presave override for groups which dispatches to child presave_all
+methods.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Presave override for groups which dispatches to child presave_all
+methods.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$values</var></dt>
+					<dd><code>mixed</code><br>$value If a single field expects to manage an array, it must override presave()</dd>
+					<dt><var>$current_values</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>mixed[]</code><br>values<br />
+				</div>
+
+
+				<h4>Input</h4>
+				<div class="list">
+						mixed[] values<br />
+				</div>
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Fieldmanager_Field.html#_presave">Fieldmanager_Field::presave()</a></code></div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_element_label" id="_get_element_label">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_element_label">#</a>
+		<code><a href="source-class-Fieldmanager_Group.html#250-290" title="Go to source code">get_element_label</a>( <span>array <var>$classes</var> = <span class="php-keyword1">array</span>() </span> )</code>
+
+		<div class="description short">
+			
+<p>Get an HTML label for this element.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Get an HTML label for this element.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$classes</var></dt>
+					<dd><code>array</code><br>$classes extra CSS classes.</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>HTML label.<br />
+				</div>
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Fieldmanager_Field.html#_get_element_label">Fieldmanager_Field::get_element_label()</a></code></div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="wrap_with_multi_tools" id="_wrap_with_multi_tools">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_wrap_with_multi_tools">#</a>
+		<code><a href="source-class-Fieldmanager_Group.html#292-299" title="Go to source code">wrap_with_multi_tools</a>( <span>string <var>$html</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Groups have their own drag and remove tools in the label.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Groups have their own drag and remove tools in the label.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$html</var></dt>
+					<dd><code>string</code><br>$html</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br />
+				</div>
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Fieldmanager_Field.html#_wrap_with_multi_tools">Fieldmanager_Field::wrap_with_multi_tools()</a></code></div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="get_extra_element_classes" id="_get_extra_element_classes">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_get_extra_element_classes">#</a>
+		<code><a href="source-class-Fieldmanager_Group.html#301-314" title="Go to source code">get_extra_element_classes</a>( )</code>
+
+		<div class="description short">
+			
+<p>Maybe add the collapsible class for groups</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Maybe add the collapsible class for groups</p>
+
+
+
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br />
+				</div>
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Fieldmanager_Field.html#_get_extra_element_classes">Fieldmanager_Field::get_extra_element_classes()</a></code></div>
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Fieldmanager_Field.html#methods">Fieldmanager_Field</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Fieldmanager_Field.html#__failed_validation">_failed_validation()</a>, 
+			<a href="class-Fieldmanager_Field.html#__unauthorized_access">_unauthorized_access()</a>, 
+			<a href="class-Fieldmanager_Field.html#_add_another">add_another()</a>, 
+			<a href="class-Fieldmanager_Field.html#_add_meta_box">add_meta_box()</a>, 
+			<a href="class-Fieldmanager_Field.html#_add_submenu_page">add_submenu_page()</a>, 
+			<a href="class-Fieldmanager_Field.html#_element_markup">element_markup()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_collapse_handle">get_collapse_handle()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_element_attributes">get_element_attributes()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_element_id">get_element_id()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_form_name">get_form_name()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_form_tree">get_form_tree()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_full_path">get_full_path()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_multiple_count">get_multiple_count()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_remove_handle">get_remove_handle()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_seq">get_seq()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_sort_handle">get_sort_handle()</a>, 
+			<a href="class-Fieldmanager_Field.html#_handle_submenu_save">handle_submenu_save()</a>, 
+			<a href="class-Fieldmanager_Field.html#_has_proto">has_proto()</a>, 
+			<a href="class-Fieldmanager_Field.html#_meta_box_render_callback">meta_box_render_callback()</a>, 
+			<a href="class-Fieldmanager_Field.html#_parse_options">parse_options()</a>, 
+			<a href="class-Fieldmanager_Field.html#_preload_alter_values">preload_alter_values()</a>, 
+			<a href="class-Fieldmanager_Field.html#_presave_all">presave_all()</a>, 
+			<a href="class-Fieldmanager_Field.html#_presave_alter_values">presave_alter_values()</a>, 
+			<a href="class-Fieldmanager_Field.html#_register_submenu_page">register_submenu_page()</a>, 
+			<a href="class-Fieldmanager_Field.html#_render_meta_box">render_meta_box()</a>, 
+			<a href="class-Fieldmanager_Field.html#_render_submenu_page">render_submenu_page()</a>, 
+			<a href="class-Fieldmanager_Field.html#_save_fields_for_post">save_fields_for_post()</a>, 
+			<a href="class-Fieldmanager_Field.html#_save_index">save_index()</a>, 
+			<a href="class-Fieldmanager_Field.html#_save_to_post_meta">save_to_post_meta()</a>, 
+			<a href="class-Fieldmanager_Field.html#_single_element_markup">single_element_markup()</a>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="children" id="$children">
+		<td class="attributes"><code>
+			public  
+			<code><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a>[]</code>
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#13-17" title="Go to source code"><var>$children</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
+		<td class="description"><div>
+			<a href="#$children" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Children elements of this group. Not much point in creating an empty
+group.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Children elements of this group. Not much point in creating an empty
+group.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="field_class" id="$field_class">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#19-23" title="Go to source code"><var>$field_class</var></a>
+		</td>
+		<td class="value"><code><span class="php-quote">'group'</span></code></td>
+		<td class="description"><div>
+			<a href="#$field_class" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Override field class</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Override field class</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="label_element" id="$label_element">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#25-29" title="Go to source code"><var>$label_element</var></a>
+		</td>
+		<td class="value"><code><span class="php-quote">'h4'</span></code></td>
+		<td class="description"><div>
+			<a href="#$label_element" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Override label element</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Override label element</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="collapsible" id="$collapsible">
+		<td class="attributes"><code>
+			public  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#31-35" title="Go to source code"><var>$collapsible</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">FALSE</span></code></td>
+		<td class="description"><div>
+			<a href="#$collapsible" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>If true, this group can be collapsed by clicking its header.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>If true, this group can be collapsed by clicking its header.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="collapsed" id="$collapsed">
+		<td class="attributes"><code>
+			public  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#37-41" title="Go to source code"><var>$collapsed</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">FALSE</span></code></td>
+		<td class="description"><div>
+			<a href="#$collapsed" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>If true, this group is collapsed by default.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>If true, this group is collapsed by default.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="tabbed" id="$tabbed">
+		<td class="attributes"><code>
+			public  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#43-47" title="Go to source code"><var>$tabbed</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">FALSE</span></code></td>
+		<td class="description"><div>
+			<a href="#$tabbed" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>If true, render children in tabs.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>If true, render children in tabs.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="tab_limit" id="$tab_limit">
+		<td class="attributes"><code>
+			public  
+			integer
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#49-53" title="Go to source code"><var>$tab_limit</var></a>
+		</td>
+		<td class="value"><code><span class="php-num">0</span></code></td>
+		<td class="description"><div>
+			<a href="#$tab_limit" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>How many tabs, maximum?</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>How many tabs, maximum?</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="label_macro" id="$label_macro">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#55-63" title="Go to source code"><var>$label_macro</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">Null</span></code></td>
+		<td class="description"><div>
+			<a href="#$label_macro" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Label macro is a more convenient shortcut to label_format and label_token.
+The first element of the two-element array is the title with a placeholder (%s),
+and the second element is simply the name of the child element to pull from,
+e.g.:</p>
+
+<p>array( 'Section: %s', 'section_title' )</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Label macro is a more convenient shortcut to label_format and label_token.
+The first element of the two-element array is the title with a placeholder (%s),
+and the second element is simply the name of the child element to pull from,
+e.g.:</p>
+
+<p>array( 'Section: %s', 'section_title' )</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="label_format" id="$label_format">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#65-70" title="Go to source code"><var>$label_format</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">Null</span></code></td>
+		<td class="description"><div>
+			<a href="#$label_format" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>If specified, $label_format combined with $label_token will override $label,
+but only if $(label).find(label_token).val() is not null.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>If specified, $label_format combined with $label_token will override $label,
+but only if $(label).find(label_token).val() is not null.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="label_token" id="$label_token">
+		<td class="attributes"><code>
+			public  
+			string
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#72-76" title="Go to source code"><var>$label_token</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">Null</span></code></td>
+		<td class="description"><div>
+			<a href="#$label_token" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>CSS selector to an element to get the token for the label format</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>CSS selector to an element to get the token for the label format</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="group_is_empty" id="$group_is_empty">
+		<td class="attributes"><code>
+			public  
+			callable|null
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#78-82" title="Go to source code"><var>$group_is_empty</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">Null</span></code></td>
+		<td class="description"><div>
+			<a href="#$group_is_empty" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Function that tells whether the group is empty or not. Gets an array of form
+values.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Function that tells whether the group is empty or not. Gets an array of form
+values.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="child_count" id="$child_count">
+		<td class="attributes"><code>
+			protected  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_Group.html#84-88" title="Go to source code"><var>$child_count</var></a>
+		</td>
+		<td class="value"><code><span class="php-num">0</span></code></td>
+		<td class="description"><div>
+			<a href="#$child_count" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Iterator value for how many children we have rendered.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Iterator value for how many children we have rendered.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+	<table class="summary inherited">
+	<caption>Properties inherited from <a href="class-Fieldmanager_Field.html#properties">Fieldmanager_Field</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Fieldmanager_Field.html#$add_more_label"><var>$add_more_label</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$attributes"><var>$attributes</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$content_types"><var>$content_types</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$data_id"><var>$data_id</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$data_type"><var>$data_type</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$debug"><var>$debug</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$description"><var>$description</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$display_if"><var>$display_if</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$extra_elements"><var>$extra_elements</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$index"><var>$index</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$inline_label"><var>$inline_label</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$is_proto"><var>$is_proto</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$is_tab"><var>$is_tab</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$label"><var>$label</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$label_after_element"><var>$label_after_element</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$limit"><var>$limit</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$name"><var>$name</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$one_label_per_item"><var>$one_label_per_item</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$parent"><var>$parent</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$sanitize"><var>$sanitize</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$save_empty"><var>$save_empty</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$seq"><var>$seq</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$skip_save"><var>$skip_save</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$sortable"><var>$sortable</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$starting_count"><var>$starting_count</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$submit_button_label"><var>$submit_button_label</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$validate"><var>$validate</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$wp_option_autoload"><var>$wp_option_autoload</var></a>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Fieldmanager API API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

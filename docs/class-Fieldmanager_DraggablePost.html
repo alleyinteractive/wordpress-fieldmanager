@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class Fieldmanager_DraggablePost | Fieldmanager API</title>
+
+	<script type="text/javascript" src="resources/combined.js?3233261031"></script>
+	<script type="text/javascript" src="elementlist.js?770940545"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', "UA-17061659-2"]);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
+						<ul>
+				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
+						</li>
+							</ul></li>
+				<li><a href="package-PHP.html">PHP</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Fieldmanager_Autocomplete.html">Fieldmanager_Autocomplete</a></li>
+				<li><a href="class-Fieldmanager_Checkbox.html">Fieldmanager_Checkbox</a></li>
+				<li><a href="class-Fieldmanager_Checkboxes.html">Fieldmanager_Checkboxes</a></li>
+				<li class="active"><a href="class-Fieldmanager_DraggablePost.html">Fieldmanager_DraggablePost</a></li>
+				<li><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></li>
+				<li><a href="class-Fieldmanager_Grid.html">Fieldmanager_Grid</a></li>
+				<li><a href="class-Fieldmanager_Group.html">Fieldmanager_Group</a></li>
+				<li><a href="class-Fieldmanager_Hidden.html">Fieldmanager_Hidden</a></li>
+				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
+				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Post.html">Fieldmanager_Post</a></li>
+				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
+				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
+				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
+				<li><a href="class-Fieldmanager_TextArea.html">Fieldmanager_TextArea</a></li>
+				<li><a href="class-Fieldmanager_TextField.html">Fieldmanager_TextField</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></li>
+				<li><a href="class-FM_Exception.html">FM_Exception</a></li>
+				<li><a href="class-FM_Validation_Exception.html">FM_Validation_Exception</a></li>
+			</ul>
+
+
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="function-_fieldmanager_registry.html">_fieldmanager_registry</a></li>
+				<li><a href="function-fieldmanager_enqueue_scripts.html">fieldmanager_enqueue_scripts</a></li>
+				<li><a href="function-fieldmanager_get_baseurl.html">fieldmanager_get_baseurl</a></li>
+				<li><a href="function-fieldmanager_set_baseurl.html">fieldmanager_set_baseurl</a></li>
+				<li><a href="function-fm_add_script.html">fm_add_script</a></li>
+				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
+				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
+				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Fieldmanager.html" title="Summary of Fieldmanager"><span>Package</span></a>
+			</li>
+			<li class="active">
+<span>Class</span>			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<div id="content" class="class">
+	<h1>Class Fieldmanager_DraggablePost</h1>
+
+
+	<div class="description">
+	
+<p>Class file for draggable post selector field</p>
+
+	</div>
+
+	<dl class="tree">
+		<dd style="padding-left:0px">
+			<a href="class-Fieldmanager_Field.html"><span>Fieldmanager_Field</span></a>
+			
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by" />
+<b><span>Fieldmanager_DraggablePost</span></b>			
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="info">
+		
+		
+		
+		<b>Package:</b> <a href="package-Fieldmanager.html">Fieldmanager</a><br />
+
+		<b>Located at</b> <a href="source-class-Fieldmanager_DraggablePost.html#2-233" title="Go to source code">class-fieldmanager-draggablepost.php</a><br />
+	</div>
+
+
+
+	<table class="summary" id="methods">
+	<caption>Methods summary</caption>
+	<tr data-order="__construct" id="___construct">
+
+		<td class="attributes"><code>
+			 public 
+			
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#___construct">#</a>
+		<code><a href="source-class-Fieldmanager_DraggablePost.html#37-52" title="Go to source code">__construct</a>( <span>string <var>$label</var> = <span class="php-quote">''</span></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>() </span> )</code>
+
+		<div class="description short">
+			
+<p>Add scripts and styles and other setup tasks.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Add scripts and styles and other setup tasks.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$label</var></dt>
+					<dd><code>string</code><br>$label</dd>
+					<dt><var>$options</var></dt>
+					<dd><code>array</code><br>$options</dd>
+				</dl></div>
+
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Fieldmanager_Field.html#___construct">Fieldmanager_Field::__construct()</a></code></div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="presave" id="_presave">
+
+		<td class="attributes"><code>
+			 public 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_presave">#</a>
+		<code><a href="source-class-Fieldmanager_DraggablePost.html#55-77" title="Go to source code">presave</a>( <span>array <var>$value</var></span>, <span>mixed <var>$current_values</var> = <span class="php-keyword1">array</span>() </span> )</code>
+
+		<div class="description short">
+			
+<p>Massage form data into proper storage format..</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Massage form data into proper storage format..</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd><code>array</code><br>$value</dd>
+					<dt><var>$current_values</var></dt>
+					<dd></dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>$value<br />
+				</div>
+
+
+
+				<h4>Overrides</h4>
+				<div class="list"><code><a href="class-Fieldmanager_Field.html#_presave">Fieldmanager_Field::presave()</a></code></div>
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="form_element" id="_form_element">
+
+		<td class="attributes"><code>
+			 public 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_form_element">#</a>
+		<code><a href="source-class-Fieldmanager_DraggablePost.html#79-149" title="Go to source code">form_element</a>( <span>mixed <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Render form element</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Render form element</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd><code>mixed</code><br>$value</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>HTML<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="draggable_item_html" id="_draggable_item_html">
+
+		<td class="attributes"><code>
+			 protected 
+			string
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_draggable_item_html">#</a>
+		<code><a href="source-class-Fieldmanager_DraggablePost.html#151-207" title="Go to source code">draggable_item_html</a>( <span>integer <var>$post_id</var></span>, <span>boolean <var>$use_image_checked</var> = <span class="php-keyword1">false</span> </span> )</code>
+
+		<div class="description short">
+			
+<p>Generate the html for a single draggable item</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Generate the html for a single draggable item</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$post_id</var></dt>
+					<dd><code>integer</code><br>$post_id</dd>
+					<dt><var>$use_image_checked</var></dt>
+					<dd><code>boolean</code><br>$use_image_checked if true, render this item with the "use image" checkbox
+checked (if enabled)</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>string</code><br>containing the li element.<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	<tr data-order="flatten_arrays" id="_flatten_arrays">
+
+		<td class="attributes"><code>
+			 protected 
+			array
+			
+			</code>
+		</td>
+
+		<td class="name"><div>
+		<a class="anchor" href="#_flatten_arrays">#</a>
+		<code><a href="source-class-Fieldmanager_DraggablePost.html#209-232" title="Go to source code">flatten_arrays</a>( <span>array <var>$value</var></span> )</code>
+
+		<div class="description short">
+			
+<p>Helper to convert the value passed to form_element into a non-hierarchical
+list of post_ids so we know which posts are already assigned to a bin and thus
+should be skipped in rendering.</p>
+
+		</div>
+
+		<div class="description detailed hidden">
+			
+<p>Helper to convert the value passed to form_element into a non-hierarchical
+list of post_ids so we know which posts are already assigned to a bin and thus
+should be skipped in rendering.</p>
+
+
+
+				<h4>Parameters</h4>
+				<div class="list"><dl>
+					<dt><var>$value</var></dt>
+					<dd><code>array</code><br>$value as passed to form_element()</dd>
+				</dl></div>
+
+				<h4>Returns</h4>
+				<div class="list">
+					<code>array</code><br>containing post_ids in any subarray, except the one attached to key
+'_image_flags'.<br />
+				</div>
+
+
+
+
+		</div>
+		</div></td>
+	</tr>
+	</table>
+
+	<table class="summary inherited">
+	<caption>Methods inherited from <a href="class-Fieldmanager_Field.html#methods">Fieldmanager_Field</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Fieldmanager_Field.html#__failed_validation">_failed_validation()</a>, 
+			<a href="class-Fieldmanager_Field.html#__unauthorized_access">_unauthorized_access()</a>, 
+			<a href="class-Fieldmanager_Field.html#_add_another">add_another()</a>, 
+			<a href="class-Fieldmanager_Field.html#_add_meta_box">add_meta_box()</a>, 
+			<a href="class-Fieldmanager_Field.html#_add_submenu_page">add_submenu_page()</a>, 
+			<a href="class-Fieldmanager_Field.html#_element_markup">element_markup()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_collapse_handle">get_collapse_handle()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_element_attributes">get_element_attributes()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_element_id">get_element_id()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_element_label">get_element_label()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_extra_element_classes">get_extra_element_classes()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_form_name">get_form_name()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_form_tree">get_form_tree()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_full_path">get_full_path()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_multiple_count">get_multiple_count()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_remove_handle">get_remove_handle()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_seq">get_seq()</a>, 
+			<a href="class-Fieldmanager_Field.html#_get_sort_handle">get_sort_handle()</a>, 
+			<a href="class-Fieldmanager_Field.html#_handle_submenu_save">handle_submenu_save()</a>, 
+			<a href="class-Fieldmanager_Field.html#_has_proto">has_proto()</a>, 
+			<a href="class-Fieldmanager_Field.html#_meta_box_render_callback">meta_box_render_callback()</a>, 
+			<a href="class-Fieldmanager_Field.html#_parse_options">parse_options()</a>, 
+			<a href="class-Fieldmanager_Field.html#_preload_alter_values">preload_alter_values()</a>, 
+			<a href="class-Fieldmanager_Field.html#_presave_all">presave_all()</a>, 
+			<a href="class-Fieldmanager_Field.html#_presave_alter_values">presave_alter_values()</a>, 
+			<a href="class-Fieldmanager_Field.html#_register_submenu_page">register_submenu_page()</a>, 
+			<a href="class-Fieldmanager_Field.html#_render_meta_box">render_meta_box()</a>, 
+			<a href="class-Fieldmanager_Field.html#_render_submenu_page">render_submenu_page()</a>, 
+			<a href="class-Fieldmanager_Field.html#_save_fields_for_post">save_fields_for_post()</a>, 
+			<a href="class-Fieldmanager_Field.html#_save_index">save_index()</a>, 
+			<a href="class-Fieldmanager_Field.html#_save_to_post_meta">save_to_post_meta()</a>, 
+			<a href="class-Fieldmanager_Field.html#_single_element_markup">single_element_markup()</a>, 
+			<a href="class-Fieldmanager_Field.html#_wrap_with_multi_tools">wrap_with_multi_tools()</a>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+
+
+
+
+
+
+	<table class="summary" id="properties">
+	<caption>Properties summary</caption>
+	<tr data-order="repositories" id="$repositories">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_DraggablePost.html#8-22" title="Go to source code"><var>$repositories</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
+		<td class="description"><div>
+			<a href="#$repositories" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Keyed array defining repository boxes and what their content should be. Keys
+are the machine names of the repositories. Each can include:<br />
+- 'label' (string) the publicly displayed label of the box (eg 'News
+Artickes')<br />
+- 'post_type' (string or array of strings) post type(s) to select for this
+box<br />
+- 'length' (int) number of items to show in the box<br />
+- 'orderby' (string) field to order the query by, as allowed by WP_Query<br />
+- 'order' (string) ASC or DESC<br />
+- 'taxonomy_args' (array) arguments to pass to WP_Query to filter by category
+(see <a href="https://codex.wordpress">https://codex.wordpress</a>.<br />
+org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy
+filtering will be performed.<br />
+- 'callback' (callable) a custom function to call in lieu of WP_Query to
+retrieve posts for this repository. The function<br />
+must have the signature callback($key, $data) and must return an array of post
+ids. If callback is set, all the above<br />
+options (except label) will be overridden.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Keyed array defining repository boxes and what their content should be. Keys
+are the machine names of the repositories. Each can include: - 'label' (string)
+the publicly displayed label of the box (eg 'News Artickes') - 'post_type'
+(string or array of strings) post type(s) to select for this box - 'length'
+(int) number of items to show in the box - 'orderby' (string) field to order the
+query by, as allowed by WP_Query - 'order' (string) ASC or DESC -
+'taxonomy_args' (array) arguments to pass to WP_Query to filter by category (see
+<a href="https://codex.wordpress">https://codex.wordpress</a>.
+org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy
+filtering will be performed. - 'callback' (callable) a custom function to call
+in lieu of WP_Query to retrieve posts for this repository. The function must
+have the signature callback($key, $data) and must return an array of post ids.
+If callback is set, all the above options (except label) will be overridden.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="bins" id="$bins">
+		<td class="attributes"><code>
+			public  
+			array
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_DraggablePost.html#24-28" title="Go to source code"><var>$bins</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
+		<td class="description"><div>
+			<a href="#$bins" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Keyed array defining the bins (destination droppable locations) for the
+draggable items. Keys are machine names, values are labels.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Keyed array defining the bins (destination droppable locations) for the
+draggable items. Keys are machine names, values are labels.</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	<tr data-order="use_image_checkbox" id="$use_image_checkbox">
+		<td class="attributes"><code>
+			public  
+			boolean
+		</code></td>
+
+		<td class="name">
+				<a href="source-class-Fieldmanager_DraggablePost.html#30-34" title="Go to source code"><var>$use_image_checkbox</var></a>
+		</td>
+		<td class="value"><code><span class="php-keyword1">False</span></code></td>
+		<td class="description"><div>
+			<a href="#$use_image_checkbox" class="anchor">#</a>
+
+			<div class="description short">
+				
+<p>Provide "Use image?" checkbox for draggable divs?</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Provide "Use image?" checkbox for draggable divs?</p>
+
+
+			</div>
+		</div></td>
+	</tr>
+	</table>
+
+	<table class="summary inherited">
+	<caption>Properties inherited from <a href="class-Fieldmanager_Field.html#properties">Fieldmanager_Field</a></caption>
+	<tr>
+		<td><code>
+			<a href="class-Fieldmanager_Field.html#$add_more_label"><var>$add_more_label</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$attributes"><var>$attributes</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$content_types"><var>$content_types</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$data_id"><var>$data_id</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$data_type"><var>$data_type</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$debug"><var>$debug</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$description"><var>$description</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$display_if"><var>$display_if</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$extra_elements"><var>$extra_elements</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$field_class"><var>$field_class</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$index"><var>$index</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$inline_label"><var>$inline_label</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$is_proto"><var>$is_proto</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$is_tab"><var>$is_tab</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$label"><var>$label</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$label_after_element"><var>$label_after_element</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$label_element"><var>$label_element</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$limit"><var>$limit</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$name"><var>$name</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$one_label_per_item"><var>$one_label_per_item</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$parent"><var>$parent</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$sanitize"><var>$sanitize</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$save_empty"><var>$save_empty</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$seq"><var>$seq</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$skip_save"><var>$skip_save</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$sortable"><var>$sortable</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$starting_count"><var>$starting_count</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$submit_button_label"><var>$submit_button_label</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$validate"><var>$validate</var></a>, 
+			<a href="class-Fieldmanager_Field.html#$wp_option_autoload"><var>$wp_option_autoload</var></a>
+		</code></td>
+	</tr>
+	</table>
+
+
+
+
+
+</div>
+
+	<div id="footer">
+		Fieldmanager API API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>

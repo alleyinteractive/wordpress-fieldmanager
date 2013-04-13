@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+	<meta name="robots" content="noindex" />
+
+	<title>File class-fieldmanager-draggablepost.php | Fieldmanager API</title>
+
+	<script type="text/javascript" src="resources/combined.js?3233261031"></script>
+	<script type="text/javascript" src="elementlist.js?770940545"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', "UA-17061659-2"]);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</head>
+
+<body>
+<div id="left">
+	<div id="menu">
+		<a href="index.html" title="Overview"><span>Overview</span></a>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
+						<ul>
+				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
+						</li>
+							</ul></li>
+				<li><a href="package-PHP.html">PHP</a>
+						</li>
+			</ul>
+		</div>
+
+		<hr />
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Fieldmanager_Autocomplete.html">Fieldmanager_Autocomplete</a></li>
+				<li><a href="class-Fieldmanager_Checkbox.html">Fieldmanager_Checkbox</a></li>
+				<li><a href="class-Fieldmanager_Checkboxes.html">Fieldmanager_Checkboxes</a></li>
+				<li class="active"><a href="class-Fieldmanager_DraggablePost.html">Fieldmanager_DraggablePost</a></li>
+				<li><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></li>
+				<li><a href="class-Fieldmanager_Grid.html">Fieldmanager_Grid</a></li>
+				<li><a href="class-Fieldmanager_Group.html">Fieldmanager_Group</a></li>
+				<li><a href="class-Fieldmanager_Hidden.html">Fieldmanager_Hidden</a></li>
+				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
+				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Post.html">Fieldmanager_Post</a></li>
+				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
+				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
+				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
+				<li><a href="class-Fieldmanager_TextArea.html">Fieldmanager_TextArea</a></li>
+				<li><a href="class-Fieldmanager_TextField.html">Fieldmanager_TextField</a></li>
+			</ul>
+
+
+
+			<h3>Exceptions</h3>
+			<ul>
+				<li><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></li>
+				<li><a href="class-FM_Exception.html">FM_Exception</a></li>
+				<li><a href="class-FM_Validation_Exception.html">FM_Validation_Exception</a></li>
+			</ul>
+
+
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="function-_fieldmanager_registry.html">_fieldmanager_registry</a></li>
+				<li><a href="function-fieldmanager_enqueue_scripts.html">fieldmanager_enqueue_scripts</a></li>
+				<li><a href="function-fieldmanager_get_baseurl.html">fieldmanager_get_baseurl</a></li>
+				<li><a href="function-fieldmanager_set_baseurl.html">fieldmanager_set_baseurl</a></li>
+				<li><a href="function-fm_add_script.html">fm_add_script</a></li>
+				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
+				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
+				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+<div id="rightInner">
+	<form id="search">
+		<input type="hidden" name="cx" value="" />
+		<input type="hidden" name="ie" value="UTF-8" />
+		<input type="text" name="q" class="text" />
+		<input type="submit" value="Search" />
+	</form>
+
+	<div id="navigation">
+		<ul>
+			<li>
+				<a href="index.html" title="Overview"><span>Overview</span></a>
+			</li>
+			<li>
+				<a href="package-Fieldmanager.html" title="Summary of Fieldmanager"><span>Package</span></a>
+			</li>
+			<li>
+				<a href="class-Fieldmanager_DraggablePost.html" title="Summary of Fieldmanager_DraggablePost"><span>Class</span></a>
+			</li>
+		</ul>
+		<ul>
+			<li>
+				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+			</li>
+		</ul>
+		<ul>
+		</ul>
+	</div>
+
+<pre><code><span id="1" class="l"><a class="l" href="#1">  1: </a><span class="xlang">&lt;?php</span>
+</span><span id="2" class="l"><a class="l" href="#2">  2: </a><span class="php-comment">/**
+</span></span><span id="3" class="l"><a class="l" href="#3">  3: </a><span class="php-comment"> * Class file for draggable post selector field
+</span></span><span id="4" class="l"><a class="l" href="#4">  4: </a><span class="php-comment"> * @package Fieldmanager
+</span></span><span id="5" class="l"><a class="l" href="#5">  5: </a><span class="php-comment"> */</span>
+</span><span id="6" class="l"><a class="l" href="#6">  6: </a><span class="php-keyword1">class</span> <a id="Fieldmanager_DraggablePost" href="#Fieldmanager_DraggablePost">Fieldmanager_DraggablePost</a> <span class="php-keyword1">extends</span> Fieldmanager_Field {
+</span><span id="7" class="l"><a class="l" href="#7">  7: </a>
+</span><span id="8" class="l"><a class="l" href="#8">  8: </a>    <span class="php-comment">/**
+</span></span><span id="9" class="l"><a class="l" href="#9">  9: </a><span class="php-comment">     * @var array
+</span></span><span id="10" class="l"><a class="l" href="#10"> 10: </a><span class="php-comment">     * Keyed array defining repository boxes and what their content should be. Keys are the machine names of the repositories. Each can include:
+</span></span><span id="11" class="l"><a class="l" href="#11"> 11: </a><span class="php-comment">     *      - 'label' (string) the publicly displayed label of the box (eg 'News Artickes')
+</span></span><span id="12" class="l"><a class="l" href="#12"> 12: </a><span class="php-comment">     *      - 'post_type' (string or array of strings) post type(s) to select for this box
+</span></span><span id="13" class="l"><a class="l" href="#13"> 13: </a><span class="php-comment">     *      - 'length' (int) number of items to show in the box
+</span></span><span id="14" class="l"><a class="l" href="#14"> 14: </a><span class="php-comment">     *      - 'orderby' (string) field to order the query by, as allowed by WP_Query
+</span></span><span id="15" class="l"><a class="l" href="#15"> 15: </a><span class="php-comment">     *      - 'order' (string) ASC or DESC
+</span></span><span id="16" class="l"><a class="l" href="#16"> 16: </a><span class="php-comment">     *      - 'taxonomy_args' (array) arguments to pass to WP_Query to filter by category (see https://codex.wordpress.
+</span></span><span id="17" class="l"><a class="l" href="#17"> 17: </a><span class="php-comment">     *          org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy filtering will be performed.
+</span></span><span id="18" class="l"><a class="l" href="#18"> 18: </a><span class="php-comment">     *      - 'callback' (callable) a custom function to call in lieu of WP_Query to retrieve posts for this repository. The function 
+</span></span><span id="19" class="l"><a class="l" href="#19"> 19: </a><span class="php-comment">     *          must have the signature callback($key, $data) and must return an array of post ids. If callback is set, all the above 
+</span></span><span id="20" class="l"><a class="l" href="#20"> 20: </a><span class="php-comment">     *          options (except label) will be overridden.
+</span></span><span id="21" class="l"><a class="l" href="#21"> 21: </a><span class="php-comment">     */</span>
+</span><span id="22" class="l"><a class="l" href="#22"> 22: </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$repositories" href="#$repositories">$repositories</a></span> = <span class="php-keyword1">array</span>();
+</span><span id="23" class="l"><a class="l" href="#23"> 23: </a>
+</span><span id="24" class="l"><a class="l" href="#24"> 24: </a>    <span class="php-comment">/**
+</span></span><span id="25" class="l"><a class="l" href="#25"> 25: </a><span class="php-comment">     * @var array
+</span></span><span id="26" class="l"><a class="l" href="#26"> 26: </a><span class="php-comment">     * Keyed array defining the bins (destination droppable locations) for the draggable items. Keys are machine names, values are labels.
+</span></span><span id="27" class="l"><a class="l" href="#27"> 27: </a><span class="php-comment">     */</span>
+</span><span id="28" class="l"><a class="l" href="#28"> 28: </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$bins" href="#$bins">$bins</a></span> = <span class="php-keyword1">array</span>();
+</span><span id="29" class="l"><a class="l" href="#29"> 29: </a>
+</span><span id="30" class="l"><a class="l" href="#30"> 30: </a>    <span class="php-comment">/**
+</span></span><span id="31" class="l"><a class="l" href="#31"> 31: </a><span class="php-comment">     * @var boolean
+</span></span><span id="32" class="l"><a class="l" href="#32"> 32: </a><span class="php-comment">     * Provide &quot;Use image?&quot; checkbox for draggable divs? 
+</span></span><span id="33" class="l"><a class="l" href="#33"> 33: </a><span class="php-comment">     */</span>
+</span><span id="34" class="l"><a class="l" href="#34"> 34: </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$use_image_checkbox" href="#$use_image_checkbox">$use_image_checkbox</a></span> = <span class="php-keyword1">False</span>;
+</span><span id="35" class="l"><a class="l" href="#35"> 35: </a>
+</span><span id="36" class="l"><a class="l" href="#36"> 36: </a>
+</span><span id="37" class="l"><a class="l" href="#37"> 37: </a>    <span class="php-comment">/**
+</span></span><span id="38" class="l"><a class="l" href="#38"> 38: </a><span class="php-comment">     * Add scripts and styles and other setup tasks.
+</span></span><span id="39" class="l"><a class="l" href="#39"> 39: </a><span class="php-comment">     * @param string $label
+</span></span><span id="40" class="l"><a class="l" href="#40"> 40: </a><span class="php-comment">     * @param array $options
+</span></span><span id="41" class="l"><a class="l" href="#41"> 41: </a><span class="php-comment">     */</span>
+</span><span id="42" class="l"><a class="l" href="#42"> 42: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>( <span class="php-var">$label</span> = <span class="php-quote">''</span>, <span class="php-var">$options</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="43" class="l"><a class="l" href="#43"> 43: </a>        parent::__construct( <span class="php-var">$label</span>, <span class="php-var">$options</span> );
+</span><span id="44" class="l"><a class="l" href="#44"> 44: </a>        <span class="php-comment">// Refuse to allow more than one instance of this field type.</span>
+</span><span id="45" class="l"><a class="l" href="#45"> 45: </a>        <span class="php-var">$this</span>-&gt;limit = <span class="php-num">1</span>;
+</span><span id="46" class="l"><a class="l" href="#46"> 46: </a>
+</span><span id="47" class="l"><a class="l" href="#47"> 47: </a>        wp_enqueue_script( <span class="php-quote">'jquery-ui-draggable'</span> );
+</span><span id="48" class="l"><a class="l" href="#48"> 48: </a>        wp_enqueue_script( <span class="php-quote">'jquery-ui-droppable'</span> );
+</span><span id="49" class="l"><a class="l" href="#49"> 49: </a>        wp_enqueue_script( <span class="php-quote">'jquery-ui-sortable'</span> );
+</span><span id="50" class="l"><a class="l" href="#50"> 50: </a>        fm_add_script( <span class="php-quote">'fm_draggablepost_js'</span>, <span class="php-quote">'js/fieldmanager-draggablepost.js'</span> );
+</span><span id="51" class="l"><a class="l" href="#51"> 51: </a>        fm_add_style( <span class="php-quote">'fm_draggablepost_css'</span>, <span class="php-quote">'css/fieldmanager-draggablepost.css'</span> );
+</span><span id="52" class="l"><a class="l" href="#52"> 52: </a>    } 
+</span><span id="53" class="l"><a class="l" href="#53"> 53: </a>
+</span><span id="54" class="l"><a class="l" href="#54"> 54: </a>
+</span><span id="55" class="l"><a class="l" href="#55"> 55: </a>    <span class="php-comment">/**
+</span></span><span id="56" class="l"><a class="l" href="#56"> 56: </a><span class="php-comment">     * Massage form data into proper storage format..
+</span></span><span id="57" class="l"><a class="l" href="#57"> 57: </a><span class="php-comment">     * @param array $value
+</span></span><span id="58" class="l"><a class="l" href="#58"> 58: </a><span class="php-comment">     * @return array $value
+</span></span><span id="59" class="l"><a class="l" href="#59"> 59: </a><span class="php-comment">     */</span>
+</span><span id="60" class="l"><a class="l" href="#60"> 60: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( <span class="php-var">$value</span>, <span class="php-var">$current_values</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="61" class="l"><a class="l" href="#61"> 61: </a>
+</span><span id="62" class="l"><a class="l" href="#62"> 62: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;bins <span class="php-keyword1">as</span> <span class="php-var">$bin</span> =&gt; <span class="php-var">$name</span> ) {
+</span><span id="63" class="l"><a class="l" href="#63"> 63: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$value</span>[<span class="php-var">$bin</span>] ) ) {
+</span><span id="64" class="l"><a class="l" href="#64"> 64: </a>                <span class="php-var">$value</span>[<span class="php-var">$bin</span>] = <span class="php-keyword2">explode</span>(<span class="php-quote">','</span>, <span class="php-var">$value</span>[<span class="php-var">$bin</span>]);
+</span><span id="65" class="l"><a class="l" href="#65"> 65: </a>            }
+</span><span id="66" class="l"><a class="l" href="#66"> 66: </a>        }
+</span><span id="67" class="l"><a class="l" href="#67"> 67: </a>
+</span><span id="68" class="l"><a class="l" href="#68"> 68: </a>        <span class="php-var">$image_flags</span> = <span class="php-keyword1">array</span>();
+</span><span id="69" class="l"><a class="l" href="#69"> 69: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$value</span>[<span class="php-quote">'_image_flags'</span>] ) ) {
+</span><span id="70" class="l"><a class="l" href="#70"> 70: </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$value</span>[<span class="php-quote">'_image_flags'</span>] <span class="php-keyword1">as</span> <span class="php-var">$id</span> =&gt; <span class="php-var">$val</span> ) {
+</span><span id="71" class="l"><a class="l" href="#71"> 71: </a>                <span class="php-var">$image_flags</span>[] = <span class="php-var">$id</span>;
+</span><span id="72" class="l"><a class="l" href="#72"> 72: </a>            }
+</span><span id="73" class="l"><a class="l" href="#73"> 73: </a>            <span class="php-var">$value</span>[<span class="php-quote">'_image_flags'</span>] = <span class="php-var">$image_flags</span>;
+</span><span id="74" class="l"><a class="l" href="#74"> 74: </a>        }
+</span><span id="75" class="l"><a class="l" href="#75"> 75: </a>
+</span><span id="76" class="l"><a class="l" href="#76"> 76: </a>        <span class="php-keyword1">return</span> <span class="php-var">$value</span>;
+</span><span id="77" class="l"><a class="l" href="#77"> 77: </a>    }
+</span><span id="78" class="l"><a class="l" href="#78"> 78: </a>
+</span><span id="79" class="l"><a class="l" href="#79"> 79: </a>    <span class="php-comment">/**
+</span></span><span id="80" class="l"><a class="l" href="#80"> 80: </a><span class="php-comment">     * Render form element
+</span></span><span id="81" class="l"><a class="l" href="#81"> 81: </a><span class="php-comment">     * @param mixed $value
+</span></span><span id="82" class="l"><a class="l" href="#82"> 82: </a><span class="php-comment">     * @return string HTML
+</span></span><span id="83" class="l"><a class="l" href="#83"> 83: </a><span class="php-comment">     */</span>
+</span><span id="84" class="l"><a class="l" href="#84"> 84: </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_form_element" href="#_form_element">form_element</a>( <span class="php-var">$value</span> ) {
+</span><span id="85" class="l"><a class="l" href="#85"> 85: </a>        <span class="php-comment">// Avoid null array errors later.</span>
+</span><span id="86" class="l"><a class="l" href="#86"> 86: </a>        <span class="php-var">$value</span>[<span class="php-quote">'_image_flags'</span>] = <span class="php-keyword1">isset</span>( <span class="php-var">$value</span>[<span class="php-quote">'_image_flags'</span>] ) ? <span class="php-var">$value</span>[<span class="php-quote">'_image_flags'</span>] : <span class="php-keyword1">array</span>();
+</span><span id="87" class="l"><a class="l" href="#87"> 87: </a>
+</span><span id="88" class="l"><a class="l" href="#88"> 88: </a>        <span class="php-var">$all</span> = <span class="php-var">$this</span>-&gt;flatten_arrays( <span class="php-var">$value</span> );
+</span><span id="89" class="l"><a class="l" href="#89"> 89: </a>        <span class="php-var">$out</span> = <span class="php-quote">'&lt;div id=&quot;fm-draggablepost&quot;&gt;&lt;div class=&quot;post-repository-wrapper&quot;&gt;'</span>;
+</span><span id="90" class="l"><a class="l" href="#90"> 90: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;repositories <span class="php-keyword1">as</span> <span class="php-var">$name</span> =&gt; <span class="php-var">$repo</span> ) {
+</span><span id="91" class="l"><a class="l" href="#91"> 91: </a>            <span class="php-var">$out</span> .= <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;h2&gt;%s&lt;/h2&gt;&lt;ul class=&quot;post-repository sortables&quot;&gt;'</span>, <span class="php-var">$repo</span>[<span class="php-quote">'label'</span>] );
+</span><span id="92" class="l"><a class="l" href="#92"> 92: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$repo</span>[<span class="php-quote">'callback'</span>] ) ) {
+</span><span id="93" class="l"><a class="l" href="#93"> 93: </a>                <span class="php-var">$ids</span> = <span class="php-keyword2">call_user_func</span>( <span class="php-var">$repo</span>[<span class="php-quote">'callback'</span>], <span class="php-var">$name</span>, <span class="php-var">$repo</span> );
+</span><span id="94" class="l"><a class="l" href="#94"> 94: </a>                <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$ids</span> ) ) {
+</span><span id="95" class="l"><a class="l" href="#95"> 95: </a>                    <span class="php-comment">// Return value here should be all numeric post ids, but we'll tolerate non-numerics if they show up.</span>
+</span><span id="96" class="l"><a class="l" href="#96"> 96: </a>                    <span class="php-keyword1">foreach</span> ( <span class="php-var">$ids</span> <span class="php-keyword1">as</span> <span class="php-var">$id</span> ) {
+</span><span id="97" class="l"><a class="l" href="#97"> 97: </a>                        <span class="php-keyword1">if</span> ( !<span class="php-keyword2">is_numeric</span>( <span class="php-var">$id</span> ) || <span class="php-keyword2">in_array</span>( <span class="php-var">$id</span>, <span class="php-var">$all</span> ) ) {
+</span><span id="98" class="l"><a class="l" href="#98"> 98: </a>                            <span class="php-keyword1">continue</span>;
+</span><span id="99" class="l"><a class="l" href="#99"> 99: </a>                        }
+</span><span id="100" class="l"><a class="l" href="#100">100: </a>                        <span class="php-var">$out</span> .= <span class="php-var">$this</span>-&gt;draggable_item_html( <span class="php-var">$id</span> );
+</span><span id="101" class="l"><a class="l" href="#101">101: </a>                    }
+</span><span id="102" class="l"><a class="l" href="#102">102: </a>                }
+</span><span id="103" class="l"><a class="l" href="#103">103: </a>            }
+</span><span id="104" class="l"><a class="l" href="#104">104: </a>            <span class="php-keyword1">else</span> {
+</span><span id="105" class="l"><a class="l" href="#105">105: </a>                <span class="php-var">$query_args</span> = <span class="php-keyword1">array</span>(
+</span><span id="106" class="l"><a class="l" href="#106">106: </a>                    <span class="php-quote">'post_type'</span> =&gt; <span class="php-var">$repo</span>[<span class="php-quote">'post_type'</span>],
+</span><span id="107" class="l"><a class="l" href="#107">107: </a>                    <span class="php-quote">'post_status'</span> =&gt; <span class="php-quote">'publish'</span>,
+</span><span id="108" class="l"><a class="l" href="#108">108: </a>                    <span class="php-quote">'posts_per_page'</span> =&gt; <span class="php-var">$repo</span>[<span class="php-quote">'length'</span>],
+</span><span id="109" class="l"><a class="l" href="#109">109: </a>                    <span class="php-quote">'orderby'</span> =&gt; <span class="php-var">$repo</span>[<span class="php-quote">'orderby'</span>],
+</span><span id="110" class="l"><a class="l" href="#110">110: </a>                    <span class="php-quote">'order'</span> =&gt; <span class="php-var">$repo</span>[<span class="php-quote">'order'</span>],
+</span><span id="111" class="l"><a class="l" href="#111">111: </a>                    <span class="php-quote">'tax_query'</span> =&gt; <span class="php-keyword1">array</span>(<span class="php-var">$repo</span>[<span class="php-quote">'taxonomy_args'</span>]),
+</span><span id="112" class="l"><a class="l" href="#112">112: </a>                );
+</span><span id="113" class="l"><a class="l" href="#113">113: </a>                <span class="php-var">$q</span> = <span class="php-keyword1">new</span> WP_Query( <span class="php-var">$query_args</span> );
+</span><span id="114" class="l"><a class="l" href="#114">114: </a>                <span class="php-keyword1">while</span> ( <span class="php-var">$q</span>-&gt;have_posts() ) {
+</span><span id="115" class="l"><a class="l" href="#115">115: </a>                    <span class="php-var">$q</span>-&gt;the_post();
+</span><span id="116" class="l"><a class="l" href="#116">116: </a>                    <span class="php-keyword1">if</span> ( <span class="php-keyword2">in_array</span>( get_the_ID(), <span class="php-var">$all</span> ) ) {
+</span><span id="117" class="l"><a class="l" href="#117">117: </a>                        <span class="php-keyword1">continue</span>;
+</span><span id="118" class="l"><a class="l" href="#118">118: </a>                    }
+</span><span id="119" class="l"><a class="l" href="#119">119: </a>                    <span class="php-var">$out</span> .= <span class="php-var">$this</span>-&gt;draggable_item_html( get_the_ID() );
+</span><span id="120" class="l"><a class="l" href="#120">120: </a>                }
+</span><span id="121" class="l"><a class="l" href="#121">121: </a>            }
+</span><span id="122" class="l"><a class="l" href="#122">122: </a>            <span class="php-var">$out</span> .= <span class="php-quote">&quot;&lt;/ul&gt;&quot;</span>;
+</span><span id="123" class="l"><a class="l" href="#123">123: </a>        }
+</span><span id="124" class="l"><a class="l" href="#124">124: </a>        <span class="php-var">$out</span> .= <span class="php-quote">&quot;&lt;/div&gt;&quot;</span>;
+</span><span id="125" class="l"><a class="l" href="#125">125: </a>        <span class="php-var">$out</span> .= <span class="php-quote">'&lt;div class=&quot;post-bin-wrapper&quot;&gt;'</span>;
+</span><span id="126" class="l"><a class="l" href="#126">126: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;bins <span class="php-keyword1">as</span> <span class="php-var">$name</span> =&gt; <span class="php-var">$bin</span> ) {
+</span><span id="127" class="l"><a class="l" href="#127">127: </a>            <span class="php-var">$out</span> .= <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;h2&gt;%s&lt;/h2&gt;'</span>, <span class="php-var">$bin</span> );
+</span><span id="128" class="l"><a class="l" href="#128">128: </a>            <span class="php-var">$out</span> .= <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;ul class=&quot;post-bin sortables&quot; id=&quot;%s-bin&quot;&gt;&lt;em class=&quot;empty-message&quot;&gt;drop posts here&lt;/em&gt;'</span>, <span class="php-var">$name</span> );
+</span><span id="129" class="l"><a class="l" href="#129">129: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$value</span>[<span class="php-var">$name</span>] ) ) {
+</span><span id="130" class="l"><a class="l" href="#130">130: </a>                <span class="php-keyword1">foreach</span> ( <span class="php-var">$value</span>[<span class="php-var">$name</span>] <span class="php-keyword1">as</span> <span class="php-var">$id</span> ) {
+</span><span id="131" class="l"><a class="l" href="#131">131: </a>                    <span class="php-keyword1">if</span> ( !<span class="php-var">$id</span> ) {
+</span><span id="132" class="l"><a class="l" href="#132">132: </a>                        <span class="php-keyword1">continue</span>;
+</span><span id="133" class="l"><a class="l" href="#133">133: </a>                    }
+</span><span id="134" class="l"><a class="l" href="#134">134: </a>                    <span class="php-var">$out</span> .= <span class="php-var">$this</span>-&gt;draggable_item_html( <span class="php-var">$id</span>, <span class="php-keyword2">in_array</span>( <span class="php-var">$id</span>, <span class="php-var">$value</span>[<span class="php-quote">'_image_flags'</span>] ) );
+</span><span id="135" class="l"><a class="l" href="#135">135: </a>                }
+</span><span id="136" class="l"><a class="l" href="#136">136: </a>            }
+</span><span id="137" class="l"><a class="l" href="#137">137: </a>            <span class="php-var">$out</span> .= <span class="php-quote">&quot;&lt;/ul&gt;&quot;</span>;
+</span><span id="138" class="l"><a class="l" href="#138">138: </a>        }
+</span><span id="139" class="l"><a class="l" href="#139">139: </a>
+</span><span id="140" class="l"><a class="l" href="#140">140: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;bins <span class="php-keyword1">as</span> <span class="php-var">$bin</span> =&gt; <span class="php-var">$label</span> ) {
+</span><span id="141" class="l"><a class="l" href="#141">141: </a>            <span class="php-var">$out</span> .= <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;input type=&quot;hidden&quot; value=&quot;%s&quot; name=&quot;%s&quot; id=&quot;%s&quot; /&gt;'</span>, 
+</span><span id="142" class="l"><a class="l" href="#142">142: </a>                        <span class="php-keyword1">empty</span>( <span class="php-var">$value</span>[<span class="php-var">$bin</span>] ) ?  <span class="php-quote">''</span> : <span class="php-keyword2">implode</span>( <span class="php-quote">','</span>, <span class="php-var">$value</span>[<span class="php-var">$bin</span>] ),
+</span><span id="143" class="l"><a class="l" href="#143">143: </a>                        <span class="php-var">$this</span>-&gt;get_form_name() . <span class="php-quote">'['</span> . <span class="php-var">$bin</span> . <span class="php-quote">']'</span>,
+</span><span id="144" class="l"><a class="l" href="#144">144: </a>                        <span class="php-var">$bin</span>
+</span><span id="145" class="l"><a class="l" href="#145">145: </a>                    );
+</span><span id="146" class="l"><a class="l" href="#146">146: </a>        }
+</span><span id="147" class="l"><a class="l" href="#147">147: </a>        <span class="php-var">$out</span> .= <span class="php-quote">'&lt;/div&gt;&lt;/div&gt;'</span>;
+</span><span id="148" class="l"><a class="l" href="#148">148: </a>        <span class="php-keyword1">return</span> <span class="php-var">$out</span>;
+</span><span id="149" class="l"><a class="l" href="#149">149: </a>    }
+</span><span id="150" class="l"><a class="l" href="#150">150: </a>
+</span><span id="151" class="l"><a class="l" href="#151">151: </a>    <span class="php-comment">/**
+</span></span><span id="152" class="l"><a class="l" href="#152">152: </a><span class="php-comment">     * Generate the html for a single draggable item
+</span></span><span id="153" class="l"><a class="l" href="#153">153: </a><span class="php-comment">     * @param int $post_id
+</span></span><span id="154" class="l"><a class="l" href="#154">154: </a><span class="php-comment">     * @param boolean $use_image_checked if true, render this item with the &quot;use image&quot; checkbox checked (if enabled)
+</span></span><span id="155" class="l"><a class="l" href="#155">155: </a><span class="php-comment">     * @return string containing the li element.
+</span></span><span id="156" class="l"><a class="l" href="#156">156: </a><span class="php-comment">     */</span>
+</span><span id="157" class="l"><a class="l" href="#157">157: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_draggable_item_html" href="#_draggable_item_html">draggable_item_html</a>( <span class="php-var">$post_id</span>, <span class="php-var">$use_image_checked</span> = <span class="php-keyword1">false</span> ) {
+</span><span id="158" class="l"><a class="l" href="#158">158: </a>        <span class="php-var">$post</span> = get_post( <span class="php-var">$post_id</span> );
+</span><span id="159" class="l"><a class="l" href="#159">159: </a>        <span class="php-var">$bylines</span> = <span class="php-keyword1">array</span>();
+</span><span id="160" class="l"><a class="l" href="#160">160: </a>        <span class="php-keyword1">if</span> ( is_plugin_active( <span class="php-quote">'co-authors-plus/co-authors-plus.php'</span> ) ) {
+</span><span id="161" class="l"><a class="l" href="#161">161: </a>            <span class="php-var">$authors</span> = get_coauthors( <span class="php-var">$post_id</span> );
+</span><span id="162" class="l"><a class="l" href="#162">162: </a>            <span class="php-keyword1">foreach</span> (<span class="php-var">$authors</span> <span class="php-keyword1">as</span> <span class="php-var">$author</span>) {
+</span><span id="163" class="l"><a class="l" href="#163">163: </a>                <span class="php-var">$bylines</span>[] = <span class="php-var">$author</span>-&gt;display_name;
+</span><span id="164" class="l"><a class="l" href="#164">164: </a>            }
+</span><span id="165" class="l"><a class="l" href="#165">165: </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$bylines</span> ) ) {
+</span><span id="166" class="l"><a class="l" href="#166">166: </a>                <span class="php-var">$authorstr</span> = <span class="php-quote">'(no authors)'</span>;
+</span><span id="167" class="l"><a class="l" href="#167">167: </a>            }
+</span><span id="168" class="l"><a class="l" href="#168">168: </a>            <span class="php-keyword1">else</span> {
+</span><span id="169" class="l"><a class="l" href="#169">169: </a>                <span class="php-var">$authorstr</span> = <span class="php-keyword2">implode</span>(<span class="php-quote">', '</span>, <span class="php-var">$bylines</span>);
+</span><span id="170" class="l"><a class="l" href="#170">170: </a>            }
+</span><span id="171" class="l"><a class="l" href="#171">171: </a>        }
+</span><span id="172" class="l"><a class="l" href="#172">172: </a>        <span class="php-keyword1">else</span> {
+</span><span id="173" class="l"><a class="l" href="#173">173: </a>            <span class="php-var">$author</span> = get_userdata( <span class="php-var">$post</span>-&gt;post_author );
+</span><span id="174" class="l"><a class="l" href="#174">174: </a>            <span class="php-var">$authorstr</span> = <span class="php-var">$author</span>-&gt;display_name;
+</span><span id="175" class="l"><a class="l" href="#175">175: </a>        }
+</span><span id="176" class="l"><a class="l" href="#176">176: </a>
+</span><span id="177" class="l"><a class="l" href="#177">177: </a>        <span class="php-var">$image_meta</span> = get_post_meta( <span class="php-var">$post_id</span>, <span class="php-quote">'_thumbnail_id'</span> );
+</span><span id="178" class="l"><a class="l" href="#178">178: </a>
+</span><span id="179" class="l"><a class="l" href="#179">179: </a>        <span class="php-var">$permalink</span> = get_permalink( <span class="php-var">$post_id</span> );
+</span><span id="180" class="l"><a class="l" href="#180">180: </a>
+</span><span id="181" class="l"><a class="l" href="#181">181: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$image_meta</span>[<span class="php-num">0</span>] ) ) {
+</span><span id="182" class="l"><a class="l" href="#182">182: </a>            <span class="php-var">$image</span> = wp_get_attachment_image( <span class="php-var">$image_meta</span>[<span class="php-num">0</span>], <span class="php-keyword1">array</span>(<span class="php-num">32</span>,<span class="php-num">32</span>) );
+</span><span id="183" class="l"><a class="l" href="#183">183: </a>        }
+</span><span id="184" class="l"><a class="l" href="#184">184: </a>        <span class="php-keyword1">else</span>{
+</span><span id="185" class="l"><a class="l" href="#185">185: </a>            <span class="php-var">$image</span> = <span class="php-quote">''</span>;
+</span><span id="186" class="l"><a class="l" href="#186">186: </a>        }
+</span><span id="187" class="l"><a class="l" href="#187">187: </a>
+</span><span id="188" class="l"><a class="l" href="#188">188: </a>        <span class="php-var">$li</span> = <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;li class=&quot;draggable-post&quot; id=&quot;draggable-post-%d&quot; post_id=&quot;%d&quot;&gt;'</span>, <span class="php-var">$post_id</span>, <span class="php-var">$post_id</span> );
+</span><span id="189" class="l"><a class="l" href="#189">189: </a>        <span class="php-var">$li_inner</span> = <span class="php-keyword2">sprintf</span>(<span class="php-quote">'&lt;strong&gt;&lt;a href=&quot;%s&quot; target=&quot;_new&quot;&gt;%s&lt;/a&gt;&lt;/strong&gt;&lt;br /&gt;
+</span></span><span id="190" class="l"><a class="l" href="#190">190: </a><span class="php-quote">                            &lt;small&gt;%s &amp;mdash; %s&lt;/small&gt;&lt;br /&gt;
+</span></span><span id="191" class="l"><a class="l" href="#191">191: </a><span class="php-quote">                            &lt;small&gt;&lt;em&gt;%s %s&lt;/em&gt;&lt;/small&gt;'</span>,
+</span><span id="192" class="l"><a class="l" href="#192">192: </a>            <span class="php-var">$permalink</span>,
+</span><span id="193" class="l"><a class="l" href="#193">193: </a>            <span class="php-var">$post</span>-&gt;post_title,
+</span><span id="194" class="l"><a class="l" href="#194">194: </a>            <span class="php-var">$post</span>-&gt;post_date,
+</span><span id="195" class="l"><a class="l" href="#195">195: </a>            <span class="php-var">$authorstr</span>,
+</span><span id="196" class="l"><a class="l" href="#196">196: </a>            <span class="php-var">$image</span>,
+</span><span id="197" class="l"><a class="l" href="#197">197: </a>            <span class="php-var">$post</span>-&gt;post_excerpt
+</span><span id="198" class="l"><a class="l" href="#198">198: </a>        );
+</span><span id="199" class="l"><a class="l" href="#199">199: </a>
+</span><span id="200" class="l"><a class="l" href="#200">200: </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;use_image_checkbox &amp;&amp; <span class="php-var">$image</span> ) {
+</span><span id="201" class="l"><a class="l" href="#201">201: </a>            <span class="php-var">$checked</span> = <span class="php-var">$use_image_checked</span> ? <span class="php-quote">'checked'</span> : <span class="php-quote">''</span>;
+</span><span id="202" class="l"><a class="l" href="#202">202: </a>            <span class="php-var">$li_inner</span> .= <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;small&gt;&lt;input type=&quot;checkbox&quot; value=&quot;1&quot; name=&quot;%s[_image_flags][%d]&quot; %s /&gt; Use image?&lt;/small&gt;'</span>, <span class="php-var">$this</span>-&gt;get_form_name(), <span class="php-var">$post_id</span>, <span class="php-var">$checked</span> );
+</span><span id="203" class="l"><a class="l" href="#203">203: </a>        }
+</span><span id="204" class="l"><a class="l" href="#204">204: </a>
+</span><span id="205" class="l"><a class="l" href="#205">205: </a>        <span class="php-var">$li</span> = <span class="php-var">$li</span> . apply_filters( <span class="php-quote">'fieldmanager_draggablepost_li_content'</span>, <span class="php-keyword1">array</span>(<span class="php-quote">'li_inner'</span> =&gt; <span class="php-var">$li_inner</span>, <span class="php-quote">'post_id'</span> =&gt; <span class="php-var">$post_id</span>) ) . <span class="php-quote">'&lt;/li&gt;'</span>;
+</span><span id="206" class="l"><a class="l" href="#206">206: </a>        <span class="php-keyword1">return</span> <span class="php-var">$li</span>;
+</span><span id="207" class="l"><a class="l" href="#207">207: </a>    }
+</span><span id="208" class="l"><a class="l" href="#208">208: </a>
+</span><span id="209" class="l"><a class="l" href="#209">209: </a>    <span class="php-comment">/**
+</span></span><span id="210" class="l"><a class="l" href="#210">210: </a><span class="php-comment">     * Helper to convert the value passed to form_element into a non-hierarchical list of post_ids so we know which posts are already assigned to a bin and thus should be skipped in rendering.
+</span></span><span id="211" class="l"><a class="l" href="#211">211: </a><span class="php-comment">     * @param array $value as passed to form_element()
+</span></span><span id="212" class="l"><a class="l" href="#212">212: </a><span class="php-comment">     * @return array containing post_ids in any subarray, except the one attached to key '_image_flags'.
+</span></span><span id="213" class="l"><a class="l" href="#213">213: </a><span class="php-comment">     */</span>
+</span><span id="214" class="l"><a class="l" href="#214">214: </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_flatten_arrays" href="#_flatten_arrays">flatten_arrays</a>( <span class="php-var">$value</span> ) {
+</span><span id="215" class="l"><a class="l" href="#215">215: </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span> ( <span class="php-var">$value</span> ) ) {
+</span><span id="216" class="l"><a class="l" href="#216">216: </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">array</span>();
+</span><span id="217" class="l"><a class="l" href="#217">217: </a>        }
+</span><span id="218" class="l"><a class="l" href="#218">218: </a>        <span class="php-var">$result</span> = <span class="php-keyword1">array</span>();
+</span><span id="219" class="l"><a class="l" href="#219">219: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$value</span> <span class="php-keyword1">as</span> <span class="php-var">$key</span> =&gt; <span class="php-var">$array</span> ) {
+</span><span id="220" class="l"><a class="l" href="#220">220: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$key</span> == <span class="php-quote">'_image_flags'</span> ) {
+</span><span id="221" class="l"><a class="l" href="#221">221: </a>                <span class="php-keyword1">continue</span>;
+</span><span id="222" class="l"><a class="l" href="#222">222: </a>            }
+</span><span id="223" class="l"><a class="l" href="#223">223: </a>            <span class="php-var">$result</span> = <span class="php-keyword2">array_merge</span>( <span class="php-var">$result</span>, <span class="php-var">$value</span>[<span class="php-var">$key</span>] );
+</span><span id="224" class="l"><a class="l" href="#224">224: </a>        }
+</span><span id="225" class="l"><a class="l" href="#225">225: </a>        <span class="php-var">$return</span> = <span class="php-keyword1">array</span>();
+</span><span id="226" class="l"><a class="l" href="#226">226: </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$result</span> <span class="php-keyword1">as</span> <span class="php-var">$id</span> ) {
+</span><span id="227" class="l"><a class="l" href="#227">227: </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$id</span> ) {
+</span><span id="228" class="l"><a class="l" href="#228">228: </a>                <span class="php-var">$return</span>[] = <span class="php-var">$id</span>;
+</span><span id="229" class="l"><a class="l" href="#229">229: </a>            }
+</span><span id="230" class="l"><a class="l" href="#230">230: </a>        }
+</span><span id="231" class="l"><a class="l" href="#231">231: </a>        <span class="php-keyword1">return</span> <span class="php-var">$return</span>;
+</span><span id="232" class="l"><a class="l" href="#232">232: </a>    }
+</span><span id="233" class="l"><a class="l" href="#233">233: </a></span>}</code></pre>
+
+	<div id="footer">
+		Fieldmanager API API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</div>
+</body>
+</html>
