@@ -7,7 +7,6 @@ fm.richtextarea = {
 				var opts = $( this ).data( 'mce-options' );
 				if ( opts ) {
 					opts['elements'] = $( this ).attr( 'id' );
-					tinyMCE.baseURL = "/wp-includes/js/tinymce/";
 					tinyMCE.init( opts );
 					$( this ).addClass( 'fm-tinymce' );
 				}

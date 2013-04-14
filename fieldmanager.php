@@ -17,6 +17,7 @@ require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-field.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-group.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-checkbox.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textfield.php' );
+require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-link.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textarea.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-richtextarea.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-grid.php' );

@@ -1,61 +1,24 @@
 <?php
-/**
- * @package Fieldmanager_Datasource
- */
 
-/**
- * Data source for WordPress Posts, for autocomplete and option types.
- * @package Fieldmanager_Datasource
- */
 class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 
-	/**
-	 * Supply a function which returns a list of posts; takes one argument,
-	 * a possible fragement
-	 */
 	public $query_callback = Null;
 
-	/**
-	 * Arguments to get_posts(), which uses WP's defaults, plus
-	 * suppress_filters = False, which can be overriden by setting
-	 * suppress_filters = True here.
-	 * @see http://codex.wordpress.org/Template_Tags/get_posts
-	 */
 	public $query_args = array();
 
-	/**
-	 * @var boolean
-	 * Allow AJAX. If set to false, Autocomplete will pre-load get_items() with no fragment,
-	 * so False could cause performance problems.
-	 */
 	public $use_ajax = True;
 
-	/**
-	 * @var string|Null
-	 * If not empty, set this post's ID as a value on the linked post. This is used to
-	 * establish two-way relationships.
-	 */
 	public $reciprocal = Null;
 
-	// constructor not required for this datasource; options are just set to keys,
-	// which Fieldmanager_Datasource does.
+	public function __construct( $options = array() ) {
+		parent::__construct( $options );
+	}
 
-	/**
-	 * Get a post title by post ID
-	 * @param int $value post_id
-	 * @return string post title
-	 */
 	public function get_value( $value ) {
 		$id = intval( $value );
 		return $id ? get_the_title( $id ) : '';
 	}
 
-	/**
-	 * Get posts which match this datasource, optionally filtered by 
-	 * a fragment, e.g. for Autocomplete.
-	 * @param string $fragment
-	 * @return array post_id => post_title for display or AJAX
-	 */
 	public function get_items( $fragment = Null ) {
 		if ( is_callable( $this->query_callback ) ) {
 			return call_user_func( $this->query_callback, $fragment );
@@ -111,18 +74,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	}
 
 	/**
-	 * Get an action to register by hashing (non cryptographically for speed)
-	 * the options that make this datasource unique.
-	 * @return string ajax action
-	 */
-	public function get_ajax_action() {
-		if ( !empty( $this->ajax_action ) ) return $this->ajax_action;
-		$unique_key = json_encode( $this->query_args );
-		$unique_key .= (string) $this->query_callback;
-		return 'fm_datasource_post' . crc32( $unique_key );
-	}
-
-	/**
 	 * Perform a LIKE search on post_title, since 's' in WP_Query is too fuzzy when trying to autocomplete a title
 	 */
 	public function title_like( $where, &$wp_query ) {
@@ -144,11 +95,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		return $values;
 	}
 
-	/**
-	 * Handle reciprocal postmeta
-	 * @param int $value
-	 * @return string
-	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
 		$value = intval( $value );
 		if( !current_user_can( 'edit_post', $value ) ) {
@@ -160,39 +106,27 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		return $value;
 	}
 
-	/**
-	 * Get edit link for a post
-	 * @param int $value
-	 * @return string
-	 */
 	public function get_view_link( $value ) {
 		return sprintf(
-			' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
+			' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">View</a>',
 			empty( $value ) ? 'fm-hidden' : '',
-			empty( $value ) ? '#' : get_permalink( $value ),
-			__( 'View' )
+			empty( $value ) ? '#' : get_permalink( $value )
 		);
 	}
 
-	/**
-	 * Get edit link for a post
-	 * @param int $value
-	 * @return string
-	 */
 	public function get_edit_link( $value ) {
 		return sprintf(
-			' <a target="_new" class="fm-autocomplete-edit-link %s" href="%s">%s</a>',
+			' <a target="_new" class="fm-autocomplete-edit-link %s" href="%s">Edit</a>',
 			empty( $value ) ? 'fm-hidden' : '',
-			empty( $value ) ? '#' : get_edit_post_link( $value ),
-			__( 'Edit' )
+			empty( $value ) ? '#' : get_edit_post_link( $value )
 		);
 	}
 
 }
 
 /**
- * Post URLs to IDs function, supports custom post types.
- * Borrowed and modified from url_to_postid() in wp-includes/rewrite.php
+ * Post URLs to IDs function, supports custom post types
+ * borrowed and modified from url_to_postid() in wp-includes/rewrite.php
  * @author http://betterwp.net/
  * @param string $url
  * @return int|boolean post ID on success, false on failure

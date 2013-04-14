@@ -1,12 +1,8 @@
 <?php
-/**
- * @package Fieldmanager_Datasource
- */
 
 /**
- * Base data source; can provide static options for Option fields or
- * Autocomplete fields.
- * @package Fieldmanager_Datasource
+ * Fieldmanager Datasource
+ * Connects autocomplete and option fields to various dynamic data sources
  */
 class Fieldmanager_Datasource {
 
@@ -31,20 +27,18 @@ class Fieldmanager_Datasource {
 	public $allow_optgroups = True;
 
 	/**
-	 * @var string
+	 * @var int
+	 * Local instance of self::$counter
 	 */
-	public $ajax_action = '';
+	private $ajax_idx = 0;
 
 	/**
 	 * @var int
 	 * Counter to create uniquely named AJAX actions.
 	 */
-	public static $counter = 0;
+	private static $counter = 0;
 
-	/**
-	 * Constructor
-	 */
-	public function __construct( $options = array() ) {
+	public function __construct( $options ) {
 
 		foreach ( $options as $k => $v ) {
 			try {
@@ -63,6 +57,7 @@ class Fieldmanager_Datasource {
 					throw new FM_Developer_Exception( $message );
 				}
 			}
+			$this->ajax_idx = Fieldmanager_Datasource::$counter++;
 		}
 
 		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
@@ -88,21 +83,10 @@ class Fieldmanager_Datasource {
 		}
 	}
 
-	/**
-	 * Get the value of an item; most clearly used by Post and Term, which
-	 * take database IDs and return user-friendly titles.
-	 * @param int $id
-	 * @return string value
-	 */
 	public function get_value( $id ) {
 		return $this->options[$id] ?: '';
 	}
 
-	/**
-	 * Get available options, optionally filtering by a fragment (e.g. for Autocomplete)
-	 * @param string $fragment optional fragment to filter by
-	 * @return array, key => value of available options
-	 */
 	public function get_items( $fragment = Null ) {
 		if ( !$fragment ) {
 			return $this->options;
@@ -114,19 +98,12 @@ class Fieldmanager_Datasource {
 		return $ret;
 	}
 
-	/**
-	 * Get an action to register by hashing (non cryptographically for speed)
-	 * the options that make this datasource unique.
-	 * @return string ajax action
-	 */
 	public function get_ajax_action() {
-		if ( !empty( $this->ajax_action ) ) return $this->ajax_action;
-		return 'fm_datasource_' . crc32( 'base' . json_encode( $this->options ) . $this->options_callback );
+		return 'fm_datasource_' . $this->ajax_idx;
 	}
 
 	/**
 	 * AJAX callback to find posts
-	 * @return void, causes process to exit.
 	 */
 	public function autocomplete_search() {
 		// Check the nonce before we do anything

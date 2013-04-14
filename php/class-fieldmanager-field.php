@@ -789,7 +789,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Presave function, which handles sanitization and validation
 	 * @param mixed $value If a single field expects to manage an array, it must override presave()
-	 * @return mixed sanitized values. 
+	 * @return sanitized values. 
 	 */
 	public function presave( $value, $current_value = array() ) {
 		// It's possible that some elements (Grid is one) would be arrays at

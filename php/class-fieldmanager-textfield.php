@@ -4,7 +4,7 @@
  */
 
 /**
- * Text field. A good simple implementation guide, too.
+ * Text field. A good basic implementation guide, too.
  * @package Fieldmanager
  */
 class Fieldmanager_TextField extends Fieldmanager_Field {
