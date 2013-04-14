@@ -480,21 +480,17 @@ abstract class Fieldmanager_Field {
 	public function get_form_name( $multiple = "" ) {
 		$tree = $this->get_form_tree();
 		$name = '';
-		for ( $i = 0; $i < count( $tree ); $i++ ) {
-			if ( $i == 0 ) {
-				$name .= $tree[$i]->name;
+		foreach ( $tree as $level => $branch ) {
+			if ( 0 == $level ) {
+				$name .= $branch->name;
+			} else {
+				$name .= '[' . $branch->name . ']';
 			}
-			else {
-				$name .= '[' . $tree[$i]->name . ']';
+			if ( $branch->limit != 1 ) {
+				$name .= '[' . $branch->get_seq() . ']';
 			}
-			if ( $tree[$i]->limit != 1 ) {
-				$name .= '[' . $tree[$i]->get_seq() . ']';
-			}
-			if ( $i == count( $tree ) );
 		}
-		$name .= $multiple;
-		
-		return $name;
+		return $name . $multiple;
 	}
 
 	/**
@@ -667,6 +663,9 @@ abstract class Fieldmanager_Field {
 	 */
 	public function save_fields_for_post( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
+		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) )
+			return;
+
 		$use_this_post_type = False;
 		foreach ( $this->content_types as $type ) {
 			if ( $type['content_type'] == $_POST['post_type'] ) {
