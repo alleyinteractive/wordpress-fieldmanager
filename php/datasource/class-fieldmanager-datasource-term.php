@@ -125,7 +125,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 */
 	public function preload_alter_values( Fieldmanager_Field $field, $values ) {
 		if ( $this->only_save_to_taxonomy ) {
-			$taxonomies = get_taxonomies();
+			$taxonomies = $this->get_taxonomies();
 			$terms = wp_get_object_terms( $field->data_id, $taxonomies[0], array( 'orderby' => 'term_order' ) );
 
 			if ( count( $terms ) > 0 ) {
