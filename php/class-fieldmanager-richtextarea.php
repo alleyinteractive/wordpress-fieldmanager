@@ -55,8 +55,10 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 					'<script type="text/javascript">
 tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/langs/en.js" );
 tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
+if ( undefined === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%2$s" };
 </script>',
-					includes_url()
+					includes_url(),
+					includes_url( 'js/tinymce' )
 				);
 			} );
 		}
