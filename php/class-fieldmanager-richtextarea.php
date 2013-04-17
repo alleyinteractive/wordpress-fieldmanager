@@ -43,6 +43,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	/**
 	 * Construct default attributes; 50x10 textarea
 	 * @param array $options
+	 * @todo dectect locale and apply correct language file
 	 */
 	public function __construct( $label, $options = array() ) {
 
@@ -50,15 +51,23 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 			wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tiny_mce.js' ) );
 			wp_enqueue_script( 'wp-langs-en.js', includes_url( 'js/tinymce/langs/wp-langs-en.js' ) );
 			self::$has_registered_tinymce = True;
+			// add tinyMCEPreInit early enough in the process that it's available before TinyMCE inits.
+			// WP Core may overwrite tinyMCEPreInit, but that's fine with us.
+			add_action( 'admin_print_scripts', function() {
+				printf( '<script>
+if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%s", suffix: "" };
+</script>',
+					includes_url( 'js/tinymce' )
+				);
+			} );
+			// Mark the language files as loaded; prevents a baffling JS error.
 			add_action( 'admin_head', function() {
 				printf(
 					'<script type="text/javascript">
 tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/langs/en.js" );
 tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
-if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%2$s" };
 </script>',
-					includes_url(),
-					includes_url( 'js/tinymce' )
+					includes_url()
 				);
 			} );
 		}
@@ -69,6 +78,9 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%2$s" };
 		$this->sanitize = function( $value ) {
 			return wp_kses_post( $value );
 		};
+		// Unlike WP Core, we init TinyMCE on demand, and preserve its natural ability to move
+		// about the DOM—richtext.js takes care of initializing our options, which are stored 
+		// per-field, not globally.
 		fm_add_script( 'fm_richtext', 'js/richtext.js' );
 		parent::__construct( $label, $options );
 	}
@@ -96,6 +108,11 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%2$s" };
 		} );
 	}
 
+	/**
+	 * Cribbed from _WP_Editors, render the necessary HTML at the bottom of the page to show
+	 * the link and fullscreen edit popups
+	 * @return void
+	 */
 	public function editor_js() {
 		if ( ! class_exists( '_WP_Editors' ) )
 			require( ABSPATH . WPINC . '/class-wp-editor.php' );
@@ -104,6 +121,10 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%2$s" };
 		_WP_Editors::wp_fullscreen_html();
 	}
 
+	/**
+	 * Get default TinyMCE options; can be overriden per field type with $this->init_options
+	 * @return array of options to pass to TinyMCE in JS.
+	 */
 	public function get_mce_options() {
 		$editor_id = $this->get_element_id();
 		$buttons = array(
@@ -150,7 +171,7 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%2$s" };
 	}
 
 	/**
-	 * Form element
+	 * Render the form element, which is a textarea by default.
 	 * @param mixed $value
 	 * @return string HTML
 	 */
