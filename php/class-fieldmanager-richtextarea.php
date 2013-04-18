@@ -76,7 +76,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 			'rows' => '10'
 		);
 		$this->sanitize = function( $value ) {
-			return wp_kses_post( $value );
+			return wp_filter_post_kses( $value );
 		};
 		// Unlike WP Core, we init TinyMCE on demand, and preserve its natural ability to move
 		// about the DOM—richtext.js takes care of initializing our options, which are stored 
