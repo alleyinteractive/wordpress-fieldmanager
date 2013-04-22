@@ -150,9 +150,10 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * @return string
      */
     public function presave( Fieldmanager_Field $field, $value, $current_value ) {
+        if ( empty( $value ) ) return;
         $value = intval( $value );
         if( !current_user_can( 'edit_post', $value ) ) {
-            $this->_unauthorized_access( 'Tried to refer to post ' . $value . ' which user cannot edit.' );  
+            die( 'Tried to refer to post ' . $value . ' which user cannot edit.' );  
         }
         if ( $this->reciprocal ) {
             add_post_meta( $value, $this->reciprocal, $field->data_id );

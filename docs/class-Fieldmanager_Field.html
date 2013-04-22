@@ -4,11 +4,12 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="generator" content="ApiGen 2.8.0" />
 
-	<title>Class Fieldmanager_Field | Fieldmanager API</title>
+	<title>Class Fieldmanager_Field | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?3233261031"></script>
-	<script type="text/javascript" src="elementlist.js?770940545"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
+	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -24,9 +25,41 @@
 </head>
 
 <body>
-<div id="left">
+	<div id="navigation" class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a href="index.html" class="brand">Fieldmanager</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li>
+							<a href="package-Fieldmanager.html" title="Summary of Fieldmanager"><span>Package</span></a>
+						</li>
+						<li class="active">
+<span>Class</span>						</li>
+
+						<li class="divider-vertical"></li>
+
+						<li>
+							<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+						</li>
+						<li>
+							<a href="todo.html" title="Todo list"><span>Todo</span></a>
+						</li>
+
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="left">
 	<div id="menu">
-		<a href="index.html" title="Overview"><span>Overview</span></a>
+		<form id="search" class="form-search">
+			<input type="hidden" name="cx" value="" />
+			<input type="hidden" name="ie" value="UTF-8" />
+			<input type="text" name="q" class="search-query" placeholder="Search" />
+		</form>
 
 
 		<div id="groups">
@@ -37,12 +70,8 @@
 				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
 							</ul></li>
-				<li><a href="package-PHP.html">PHP</a>
-						</li>
 			</ul>
 		</div>
-
-		<hr />
 
 
 		<div id="elements">
@@ -51,14 +80,15 @@
 				<li><a href="class-Fieldmanager_Autocomplete.html">Fieldmanager_Autocomplete</a></li>
 				<li><a href="class-Fieldmanager_Checkbox.html">Fieldmanager_Checkbox</a></li>
 				<li><a href="class-Fieldmanager_Checkboxes.html">Fieldmanager_Checkboxes</a></li>
+				<li><a href="class-Fieldmanager_Datepicker.html">Fieldmanager_Datepicker</a></li>
 				<li><a href="class-Fieldmanager_DraggablePost.html">Fieldmanager_DraggablePost</a></li>
 				<li class="active"><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></li>
 				<li><a href="class-Fieldmanager_Grid.html">Fieldmanager_Grid</a></li>
 				<li><a href="class-Fieldmanager_Group.html">Fieldmanager_Group</a></li>
 				<li><a href="class-Fieldmanager_Hidden.html">Fieldmanager_Hidden</a></li>
+				<li><a href="class-Fieldmanager_Link.html">Fieldmanager_Link</a></li>
 				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
 				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
-				<li><a href="class-Fieldmanager_Post.html">Fieldmanager_Post</a></li>
 				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
 				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
 				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
@@ -81,6 +111,7 @@
 				<li><a href="function-_fieldmanager_registry.html">_fieldmanager_registry</a></li>
 				<li><a href="function-fieldmanager_enqueue_scripts.html">fieldmanager_enqueue_scripts</a></li>
 				<li><a href="function-fieldmanager_get_baseurl.html">fieldmanager_get_baseurl</a></li>
+				<li><a href="function-fieldmanager_get_template.html">fieldmanager_get_template</a></li>
 				<li><a href="function-fieldmanager_set_baseurl.html">fieldmanager_set_baseurl</a></li>
 				<li><a href="function-fm_add_script.html">fm_add_script</a></li>
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
@@ -94,34 +125,7 @@
 <div id="splitter"></div>
 
 <div id="right">
-<div id="rightInner">
-	<form id="search">
-		<input type="hidden" name="cx" value="" />
-		<input type="hidden" name="ie" value="UTF-8" />
-		<input type="text" name="q" class="text" />
-		<input type="submit" value="Search" />
-	</form>
-
-	<div id="navigation">
-		<ul>
-			<li>
-				<a href="index.html" title="Overview"><span>Overview</span></a>
-			</li>
-			<li>
-				<a href="package-Fieldmanager.html" title="Summary of Fieldmanager"><span>Package</span></a>
-			</li>
-			<li class="active">
-<span>Class</span>			</li>
-		</ul>
-		<ul>
-			<li>
-				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
-			</li>
-		</ul>
-		<ul>
-		</ul>
-	</div>
-
+	<div id="rightInner">
 <div id="content" class="class">
 	<h1>Class Fieldmanager_Field</h1>
 
@@ -167,616 +171,573 @@ to save to the DB. The default sanitizer is sanitize_text_field().</p>
 
 
 	<div>
-		<h4>Direct known subclasses</h4>
-			<a href="class-Fieldmanager_Autocomplete.html">Fieldmanager_Autocomplete</a>, 
-			<a href="class-Fieldmanager_Checkbox.html">Fieldmanager_Checkbox</a>, 
-			<a href="class-Fieldmanager_TextArea.html">Fieldmanager_TextArea</a>, 
-			<a href="class-Fieldmanager_TextField.html">Fieldmanager_TextField</a>, 
-			<a href="class-Fieldmanager_DraggablePost.html">Fieldmanager_DraggablePost</a>, 
-			<a href="class-Fieldmanager_Grid.html">Fieldmanager_Grid</a>, 
-			<a href="class-Fieldmanager_Group.html">Fieldmanager_Group</a>, 
-			<a href="class-Fieldmanager_Hidden.html">Fieldmanager_Hidden</a>, 
-			<a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a>, 
-			<a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a>, 
-			<a href="class-Fieldmanager_Post.html">Fieldmanager_Post</a>, 
-			<a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a>
+		<h3>Direct known subclasses</h3>
+		<p class="elementList">
+			<code><a href="class-Fieldmanager_Autocomplete.html">Fieldmanager_Autocomplete</a></code>, 
+			<code><a href="class-Fieldmanager_Checkbox.html">Fieldmanager_Checkbox</a></code>, 
+			<code><a href="class-Fieldmanager_TextArea.html">Fieldmanager_TextArea</a></code>, 
+			<code><a href="class-Fieldmanager_TextField.html">Fieldmanager_TextField</a></code>, 
+			<code><a href="class-Fieldmanager_Datepicker.html">Fieldmanager_Datepicker</a></code>, 
+			<code><a href="class-Fieldmanager_DraggablePost.html">Fieldmanager_DraggablePost</a></code>, 
+			<code><a href="class-Fieldmanager_Grid.html">Fieldmanager_Grid</a></code>, 
+			<code><a href="class-Fieldmanager_Group.html">Fieldmanager_Group</a></code>, 
+			<code><a href="class-Fieldmanager_Hidden.html">Fieldmanager_Hidden</a></code>, 
+			<code><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></code>, 
+			<code><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></code>, 
+			<code><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></code>
+		</p>
 	</div>
 
 	<div>
-		<h4>Indirect known subclasses</h4>
-			<a href="class-Fieldmanager_Checkboxes.html">Fieldmanager_Checkboxes</a>, 
-			<a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a>, 
-			<a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a>
+		<h3>Indirect known subclasses</h3>
+		<p class="elementList">
+			<code><a href="class-Fieldmanager_Checkboxes.html">Fieldmanager_Checkboxes</a></code>, 
+			<code><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></code>, 
+			<code><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></code>
+		</p>
 	</div>
 
 
 
 
 
-	<div class="info">
+	<div class="alert alert-info">
 		<b>Abstract</b><br />
 		
 		
 		<b>Package:</b> <a href="package-Fieldmanager.html">Fieldmanager</a><br />
 
-		<b>Located at</b> <a href="source-class-Fieldmanager_Field.html#6-969" title="Go to source code">class-fieldmanager-field.php</a><br />
+		<b>Located at</b> <a href="source-class-Fieldmanager_Field.html#6-979" title="Go to source code">class-fieldmanager-field.php</a><br />
 	</div>
 
 
 
-	<table class="summary" id="methods">
-	<caption>Methods summary</caption>
-	<tr data-order="form_element" id="_form_element">
+		<h2>Methods summary</h2>
+		<table class="summary table table-bordered table-striped" id="methods">
+		<tr data-order="form_element" id="_form_element">
 
-		<td class="attributes"><code>
-			abstract public 
-			string
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_form_element">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#237-242" title="Go to source code">form_element</a>( <span>mixed <var>$value</var></span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_form_element">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#237-250" title="Go to source code">form_element</a>( <span>mixed <var>$value</var></span> )</code>
 
-		<div class="description short">
-			
-		</div>
+			<div class="description short">
+				
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$value</var></dt>
-					<dd><code>mixed</code><br>string[]|string the value of the element.</dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd><code>mixed</code><br>string[]|string the value of the element.</dd>
+					</dl></div>
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>HTML for the element. Generate HTML for the form element itself. Generally
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>HTML for the element. Generate HTML for the form element itself. Generally
 should be just one tag, no wrappers.<br />
-				</div>
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="__construct" id="___construct">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="__construct" id="___construct">
 
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#___construct">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#244-253" title="Go to source code">__construct</a>( <span>string <var>$label</var> = <span class="php-quote">''</span></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>() </span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#___construct">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#252-263" title="Go to source code">__construct</a>( <span>string <var>$label</var> = <span class="php-quote">''</span></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Superclass constructor, just populates options and sanity-checks common
 elements. It might also die, but only helpfully, to catch errors in
 development.</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Superclass constructor, just populates options and sanity-checks common
 elements. It might also die, but only helpfully, to catch errors in
 development.</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$label</var></dt>
-					<dd><code>string</code><br>$label title of form field</dd>
-					<dt><var>$options</var></dt>
-					<dd><code>array</code><br>$options with keys matching vars of the field in use.</dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$label</var></dt>
+						<dd><code>string</code><br>$label title of form field</dd>
+						<dt><var>$options</var></dt>
+						<dd><code>array</code><br>$options with keys matching vars of the field in use.</dd>
+					</dl></div>
 
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="parse_options" id="_parse_options">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="element_markup" id="_element_markup">
 
-		<td class="attributes"><code>
-			 protected 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_parse_options">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#255-284" title="Go to source code">parse_options</a>( <span>string <var>$label</var></span>, <span>array <var>$options</var></span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_element_markup">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#296-393" title="Go to source code">element_markup</a>( <span>array <var>$values</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
-		<div class="description short">
-			
-<p>Build options into properties and throw errors if developers add an
-unsupported opt.</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Build options into properties and throw errors if developers add an
-unsupported opt.</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$label</var></dt>
-					<dd><code>string</code><br>$label title of form field</dd>
-					<dt><var>$options</var></dt>
-					<dd><code>array</code><br>$options with keys matching vars of the field in use.</dd>
-				</dl></div>
-
-
-				<h4>Throws</h4>
-				<div class="list">
-					<code><code><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></code></code><br>if an option is set but not defined in this class or the child class.<br />
-					<code><code><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></code></code><br>if an option is set but not public.<br />
-				</div>
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="element_markup" id="_element_markup">
-
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_element_markup">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#286-383" title="Go to source code">element_markup</a>( <span>array <var>$values</var> = <span class="php-keyword1">array</span>() </span> )</code>
-
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Generates all markup needed for all form elements in this field. Could be
 called directly by a plugin or theme.</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Generates all markup needed for all form elements in this field. Could be
 called directly by a plugin or theme.</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$values</var></dt>
-					<dd><code>array</code><br>$values the current values of this element, in a tree structure if the element
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$values</var></dt>
+						<dd><code>array</code><br>$values the current values of this element, in a tree structure if the element
 has children.</dd>
-				</dl></div>
+					</dl></div>
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>HTML for all form elements.<br />
-				</div>
-
-
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>HTML for all form elements.<br />
+					</div>
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="single_element_markup" id="_single_element_markup">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_single_element_markup">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#385-447" title="Go to source code">single_element_markup</a>( <span>mixed <var>$value</var> = <span class="php-keyword1">Null</span></span>, <span>boolean <var>$is_proto</var> = <span class="php-keyword1">False</span> </span> )</code>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="single_element_markup" id="_single_element_markup">
 
-		<div class="description short">
-			
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_single_element_markup">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#395-457" title="Go to source code">single_element_markup</a>( <span>mixed <var>$value</var> = <span class="php-keyword1">Null</span></span>, <span>boolean <var>$is_proto</var> = <span class="php-keyword1">False</span> </span> )</code>
+
+			<div class="description short">
+				
 <p>Generate wrappers and labels for one form element. Is called by
 element_markup(), calls form_element().</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Generate wrappers and labels for one form element. Is called by
 element_markup(), calls form_element().</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$value</var></dt>
-					<dd><code>mixed</code><br>$value the current value of this element.</dd>
-					<dt><var>$is_proto</var></dt>
-					<dd><code>boolean</code><br>$is_proto true to generate a prototype element for Javascript.</dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd><code>mixed</code><br>$value the current value of this element.</dd>
+						<dt><var>$is_proto</var></dt>
+						<dd><code>boolean</code><br>$is_proto true to generate a prototype element for Javascript.</dd>
+					</dl></div>
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>HTML for a single form element.<br />
-				</div>
-
-
-				<h4>See</h4>
-				<div class="list">
-						<code><code><a href="class-Fieldmanager_Field.html#_element_markup">Fieldmanager_Field::element_markup()</a></code></code><br />
-						<code><code><a href="class-Fieldmanager_Field.html#_form_element">Fieldmanager_Field::form_element()</a></code></code><br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>HTML for a single form element.<br />
+					</div>
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="preload_alter_values" id="_preload_alter_values">
+					<h4>See</h4>
+					<div class="list">
+							<code><code><a href="class-Fieldmanager_Field.html#_element_markup">Fieldmanager_Field::element_markup()</a></code></code><br />
+							<code><code><a href="class-Fieldmanager_Field.html#_form_element">Fieldmanager_Field::form_element()</a></code></code><br />
+					</div>
 
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_preload_alter_values">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#449-455" title="Go to source code">preload_alter_values</a>( <span>array <var>$values</var></span> )</code>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="preload_alter_values" id="_preload_alter_values">
 
-		<div class="description short">
-			
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_preload_alter_values">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#459-465" title="Go to source code">preload_alter_values</a>( <span>array <var>$values</var></span> )</code>
+
+			<div class="description short">
+				
 <p>Alter values before rendering</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Alter values before rendering</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$values</var></dt>
-					<dd><code>array</code><br>$values</dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$values</var></dt>
+						<dd><code>array</code><br>$values</dd>
+					</dl></div>
 
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="wrap_with_multi_tools" id="_wrap_with_multi_tools">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="wrap_with_multi_tools" id="_wrap_with_multi_tools">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_wrap_with_multi_tools">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#457-474" title="Go to source code">wrap_with_multi_tools</a>( <span>string <var>$html</var></span>, <span>mixed <var>$classes</var> = <span class="php-keyword1">array</span>() </span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_wrap_with_multi_tools">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#467-484" title="Go to source code">wrap_with_multi_tools</a>( <span>string <var>$html</var></span>, <span>mixed <var>$classes</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Wrap a chunk of HTML with "remove" and "move" buttons if applicable.</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Wrap a chunk of HTML with "remove" and "move" buttons if applicable.</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$html</var></dt>
-					<dd><code>string</code><br>$html HTML to wrap.</dd>
-					<dt><var>$classes</var></dt>
-					<dd></dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$html</var></dt>
+						<dd><code>string</code><br>$html HTML to wrap.</dd>
+						<dt><var>$classes</var></dt>
+						<dd></dd>
+					</dl></div>
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>wrapped HTML.<br />
-				</div>
-
-
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>wrapped HTML.<br />
+					</div>
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_form_name" id="_get_form_name">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_form_name">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#476-498" title="Go to source code">get_form_name</a>( <span>mixed <var>$multiple</var> = <span class="php-quote">&quot;&quot;</span> </span> )</code>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_form_name" id="_get_form_name">
 
-		<div class="description short">
-			
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_form_name">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#486-504" title="Go to source code">get_form_name</a>( <span>mixed <var>$multiple</var> = <span class="php-quote">&quot;&quot;</span> </span> )</code>
+
+			<div class="description short">
+				
 <p>Get HTML form name (e.g. questions[answer]).</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Get HTML form name (e.g. questions[answer]).</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>form name<br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>form name<br />
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_full_path" id="_get_full_path">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_full_path" id="_get_full_path">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_full_path">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#500-510" title="Go to source code">get_full_path</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_get_full_path">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#506-516" title="Go to source code">get_full_path</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Get full path (e.g. parent_group_element)</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Get full path (e.g. parent_group_element)</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>full path<br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>full path<br />
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_form_tree" id="_get_form_tree">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_form_tree" id="_get_form_tree">
 
-		<td class="attributes"><code>
-			 public 
-			array
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_form_tree">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#512-523" title="Go to source code">get_form_tree</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_get_form_tree">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#518-529" title="Go to source code">get_form_tree</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Recursively build path to this element (e.g. array(grandparent, parent, this)
 )</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Recursively build path to this element (e.g. array(grandparent, parent, this)
 )</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>array</code><br>of parents<br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>array</code><br>of parents<br />
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_element_id" id="_get_element_id">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_element_id" id="_get_element_id">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_element_id">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#525-538" title="Go to source code">get_element_id</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_get_element_id">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#531-544" title="Go to source code">get_element_id</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Get the ID for the form element itself, uses $this-&gt;seq (e.g. which
 position is this element in).</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Get the ID for the form element itself, uses $this-&gt;seq (e.g. which
 position is this element in).</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>ID for use in a form element.<br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>ID for use in a form element.<br />
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="add_meta_box" id="_add_meta_box">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="add_meta_box" id="_add_meta_box">
 
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_add_meta_box">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#540-559" title="Go to source code">add_meta_box</a>( <span>string <var>$title</var></span>, <span>string|string[] <var>$post_types</var></span>, <span>string <var>$context</var> = <span class="php-quote">'normal'</span></span>, <span>string <var>$priority</var> = <span class="php-quote">'default'</span> </span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_add_meta_box">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#546-565" title="Go to source code">add_meta_box</a>( <span>string <var>$title</var></span>, <span>string|string[] <var>$post_types</var></span>, <span>string <var>$context</var> = <span class="php-quote">'normal'</span></span>, <span>string <var>$priority</var> = <span class="php-quote">'default'</span> </span> )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Add this field as a metabox to a content type</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Add this field as a metabox to a content type</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$title</var></dt>
-					<dd><code>string</code><br>$title</dd>
-					<dt><var>$post_types</var></dt>
-					<dd><code>string|string[]</code><br>$post_type</dd>
-					<dt><var>$context</var></dt>
-					<dd><code>string</code><br>$context</dd>
-					<dt><var>$priority</var></dt>
-					<dd><code>string</code><br>$priority</dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$title</var></dt>
+						<dd><code>string</code><br>$title</dd>
+						<dt><var>$post_types</var></dt>
+						<dd><code>string|string[]</code><br>$post_type</dd>
+						<dt><var>$context</var></dt>
+						<dd><code>string</code><br>$context</dd>
+						<dt><var>$priority</var></dt>
+						<dd><code>string</code><br>$priority</dd>
+					</dl></div>
 
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="add_submenu_page" id="_add_submenu_page">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="add_submenu_page" id="_add_submenu_page">
 
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_add_submenu_page">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#561-578" title="Go to source code">add_submenu_page</a>( <span>string <var>$parent_slug</var></span>, <span>mixed <var>$page_title</var></span>, <span>mixed <var>$menu_title</var> = <span class="php-keyword1">Null</span></span>, <span>mixed <var>$capability</var> = <span class="php-quote">'manage_options'</span></span>, <span>mixed <var>$menu_slug</var> = <span class="php-keyword1">Null</span> </span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_add_submenu_page">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#567-584" title="Go to source code">add_submenu_page</a>( <span>string <var>$parent_slug</var></span>, <span>mixed <var>$page_title</var></span>, <span>mixed <var>$menu_title</var> = <span class="php-keyword1">Null</span></span>, <span>mixed <var>$capability</var> = <span class="php-quote">'manage_options'</span></span>, <span>mixed <var>$menu_slug</var> = <span class="php-keyword1">Null</span> </span> )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Add this field to an options page</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Add this field to an options page</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$parent_slug</var></dt>
-					<dd><code>string</code><br>$title</dd>
-					<dt><var>$page_title</var></dt>
-					<dd></dd>
-					<dt><var>$menu_title</var></dt>
-					<dd></dd>
-					<dt><var>$capability</var></dt>
-					<dd></dd>
-					<dt><var>$menu_slug</var></dt>
-					<dd></dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$parent_slug</var></dt>
+						<dd><code>string</code><br>$title</dd>
+						<dt><var>$page_title</var></dt>
+						<dd></dd>
+						<dt><var>$menu_title</var></dt>
+						<dd></dd>
+						<dt><var>$capability</var></dt>
+						<dd></dd>
+						<dt><var>$menu_slug</var></dt>
+						<dd></dd>
+					</dl></div>
 
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="register_submenu_page" id="_register_submenu_page">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="register_submenu_page" id="_register_submenu_page">
 
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_register_submenu_page">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#580-585" title="Go to source code">register_submenu_page</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_register_submenu_page">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#586-591" title="Go to source code">register_submenu_page</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Register a submenu page with WordPress</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Register a submenu page with WordPress</p>
 
 
@@ -786,30 +747,30 @@ position is this element in).</p>
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="handle_submenu_save" id="_handle_submenu_save">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="handle_submenu_save" id="_handle_submenu_save">
 
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_handle_submenu_save">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#587-606" title="Go to source code">handle_submenu_save</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_handle_submenu_save">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#593-613" title="Go to source code">handle_submenu_save</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Save a submenu page</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Save a submenu page</p>
 
 
@@ -819,70 +780,70 @@ position is this element in).</p>
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="render_submenu_page" id="_render_submenu_page">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="render_submenu_page" id="_render_submenu_page">
 
-		<td class="attributes"><code>
-			 public 
-			void.
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				void.
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_render_submenu_page">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#608-626" title="Go to source code">render_submenu_page</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_render_submenu_page">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#615-633" title="Go to source code">render_submenu_page</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Helper to attach element_markup() to add_meta_box(). Prints markup for
 options page.</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Helper to attach element_markup() to add_meta_box(). Prints markup for
 options page.</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>void.</code><br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>void.</code><br />
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="meta_box_render_callback" id="_meta_box_render_callback">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="meta_box_render_callback" id="_meta_box_render_callback">
 
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_meta_box_render_callback">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#628-644" title="Go to source code">meta_box_render_callback</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_meta_box_render_callback">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#635-651" title="Go to source code">meta_box_render_callback</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>admin_init callback to add meta boxes to content types Registers
 render_meta_box()</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>admin_init callback to add meta boxes to content types Registers
 render_meta_box()</p>
 
@@ -893,1435 +854,1140 @@ render_meta_box()</p>
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="render_meta_box" id="_render_meta_box">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="render_meta_box" id="_render_meta_box">
 
-		<td class="attributes"><code>
-			 public 
-			void.
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				void.
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_render_meta_box">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#646-660" title="Go to source code">render_meta_box</a>( <span>mixed <var>$post</var></span>, <span>mixed <var>$form_struct</var></span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_render_meta_box">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#653-667" title="Go to source code">render_meta_box</a>( <span>mixed <var>$post</var></span>, <span>mixed <var>$form_struct</var></span> )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Helper to attach element_markup() to add_meta_box(). Prints markup for post
 editor.</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Helper to attach element_markup() to add_meta_box(). Prints markup for post
 editor.</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$post</var></dt>
-					<dd><code>mixed</code><br>$post the post object.</dd>
-					<dt><var>$form_struct</var></dt>
-					<dd><code>mixed</code><br>$form_struct the structure of the form itself (not very useful).</dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$post</var></dt>
+						<dd><code>mixed</code><br>$post the post object.</dd>
+						<dt><var>$form_struct</var></dt>
+						<dd><code>mixed</code><br>$form_struct the structure of the form itself (not very useful).</dd>
+					</dl></div>
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>void.</code><br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>void.</code><br />
+					</div>
 
 
-				<h4>See</h4>
-				<div class="list">
-						<a
+					<h4>See</h4>
+					<div class="list">
+							<a
 href="http://codex.wordpress.org/Function_Reference/add_meta_box">http://codex.wordpress.org/Function_Reference/add_meta_box</a><br />
-				</div>
+					</div>
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="save_fields_for_post" id="_save_fields_for_post">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="save_fields_for_post" id="_save_fields_for_post">
 
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_save_fields_for_post">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#662-694" title="Go to source code">save_fields_for_post</a>( <span>integer <var>$post_id</var></span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_save_fields_for_post">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#669-703" title="Go to source code">save_fields_for_post</a>( <span>integer <var>$post_id</var></span> )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Takes $_POST data and saves it to, calling save_to_post_meta() once
 validation is passed When using Fieldmanager as an API, do not call this
 function directly, call save_to_post_meta()</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Takes $_POST data and saves it to, calling save_to_post_meta() once
 validation is passed When using Fieldmanager as an API, do not call this
 function directly, call save_to_post_meta()</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$post_id</var></dt>
-					<dd><code>integer</code><br>$post_id</dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$post_id</var></dt>
+						<dd><code>integer</code><br>$post_id</dd>
+					</dl></div>
 
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="save_to_post_meta" id="_save_to_post_meta">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="save_to_post_meta" id="_save_to_post_meta">
 
-		<td class="attributes"><code>
-			 public 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_save_to_post_meta">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#696-713" title="Go to source code">save_to_post_meta</a>( <span>integer <var>$post_id</var></span>, <span>array <var>$data</var></span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_save_to_post_meta">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#705-722" title="Go to source code">save_to_post_meta</a>( <span>integer <var>$post_id</var></span>, <span>array <var>$data</var></span> )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Helper to save an array of data to post meta</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Helper to save an array of data to post meta</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$post_id</var></dt>
-					<dd><code>integer</code><br>$post_id</dd>
-					<dt><var>$data</var></dt>
-					<dd><code>array</code><br>$data</dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$post_id</var></dt>
+						<dd><code>integer</code><br>$post_id</dd>
+						<dt><var>$data</var></dt>
+						<dd><code>array</code><br>$data</dd>
+					</dl></div>
 
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="presave_all" id="_presave_all">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="presave_all" id="_presave_all">
 
-		<td class="attributes"><code>
-			 public 
-			mixed[]
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				mixed[]
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_presave_all">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#715-759" title="Go to source code">presave_all</a>( <span>mixed <var>$values</var></span>, <span>mixed <var>$current_values</var></span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_presave_all">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#724-767" title="Go to source code">presave_all</a>( <span>mixed <var>$values</var></span>, <span>mixed <var>$current_values</var></span> )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Presaves all elements in what could be a set of them, dispatches to
 $this-&gt;presave()</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Presaves all elements in what could be a set of them, dispatches to
 $this-&gt;presave()</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>mixed[]</code><br>sanitized values<br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>mixed[]</code><br>sanitized values<br />
+					</div>
 
 
-				<h4>Input</h4>
-				<div class="list">
-						mixed[] $values<br />
-				</div>
+					<h4>Input</h4>
+					<div class="list">
+							mixed[] $values<br />
+					</div>
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="save_index" id="_save_index">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="presave" id="_presave">
 
-		<td class="attributes"><code>
-			 protected 
-			
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				sanitized
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_save_index">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#761-778" title="Go to source code">save_index</a>( <span>array <var>$values</var></span>, <span>mixed <var>$current_values</var></span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_presave">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#799-821" title="Go to source code">presave</a>( <span>mixed <var>$value</var></span>, <span>mixed <var>$current_value</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
-		<div class="description short">
-			
-<p>Optionally save fields to a separate postmeta index for easy lookup with
-WP_Query</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Optionally save fields to a separate postmeta index for easy lookup with
-WP_Query</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$values</var></dt>
-					<dd><code>array</code><br>$values</dd>
-					<dt><var>$current_values</var></dt>
-					<dd></dd>
-				</dl></div>
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="presave_alter_values" id="_presave_alter_values">
-
-		<td class="attributes"><code>
-			 protected 
-			array
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_presave_alter_values">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#780-787" title="Go to source code">presave_alter_values</a>( <span>array <var>$values</var></span>, <span>mixed <var>$current_values</var> = <span class="php-keyword1">array</span>() </span> )</code>
-
-		<div class="description short">
-			
-<p>Hook to alter or respond to all the values of a particular element</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Hook to alter or respond to all the values of a particular element</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$values</var></dt>
-					<dd><code>array</code><br>$values</dd>
-					<dt><var>$current_values</var></dt>
-					<dd></dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code>array</code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="presave" id="_presave">
-
-		<td class="attributes"><code>
-			 public 
-			mixed
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_presave">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#789-811" title="Go to source code">presave</a>( <span>mixed <var>$value</var></span>, <span>mixed <var>$current_value</var> = <span class="php-keyword1">array</span>() </span> )</code>
-
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Presave function, which handles sanitization and validation</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Presave function, which handles sanitization and validation</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$value</var></dt>
-					<dd><code>mixed</code><br>$value If a single field expects to manage an array, it must override presave()</dd>
-					<dt><var>$current_value</var></dt>
-					<dd></dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd><code>mixed</code><br>$value If a single field expects to manage an array, it must override presave()</dd>
+						<dt><var>$current_value</var></dt>
+						<dd></dd>
+					</dl></div>
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>mixed</code><br>sanitized values.<br />
-				</div>
-
-
+					<h4>Returns</h4>
+					<div class="list">
+						<code>sanitized</code><br>values.<br />
+					</div>
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_element_attributes" id="_get_element_attributes">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_element_attributes">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#813-824" title="Go to source code">get_element_attributes</a>( )</code>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_element_attributes" id="_get_element_attributes">
 
-		<div class="description short">
-			
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_element_attributes">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#823-834" title="Go to source code">get_element_attributes</a>( )</code>
+
+			<div class="description short">
+				
 <p>Generates an HTML attribute string based on the value of
 $this-&gt;attributes.</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Generates an HTML attribute string based on the value of
 $this-&gt;attributes.</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>attributes ready to insert into an HTML tag.<br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>attributes ready to insert into an HTML tag.<br />
+					</div>
 
 
-				<h4>See</h4>
-				<div class="list">
-						<code><code><a href="class-Fieldmanager_Field.html#$attributes">Fieldmanager_Field::<var>$attributes</var></a></code></code><br />
-				</div>
+					<h4>See</h4>
+					<div class="list">
+							<code><code><a href="class-Fieldmanager_Field.html#$attributes">Fieldmanager_Field::<var>$attributes</var></a></code></code><br />
+					</div>
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_element_label" id="_get_element_label">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_element_label" id="_get_element_label">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_element_label">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#826-849" title="Go to source code">get_element_label</a>( <span>array <var>$classes</var> = <span class="php-keyword1">array</span>() </span> )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_get_element_label">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#836-859" title="Go to source code">get_element_label</a>( <span>array <var>$classes</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Get an HTML label for this element.</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Get an HTML label for this element.</p>
 
 
 
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$classes</var></dt>
-					<dd><code>array</code><br>$classes extra CSS classes.</dd>
-				</dl></div>
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$classes</var></dt>
+						<dd><code>array</code><br>$classes extra CSS classes.</dd>
+					</dl></div>
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>HTML label.<br />
-				</div>
-
-
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>HTML label.<br />
+					</div>
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="add_another" id="_add_another">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_add_another">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#851-867" title="Go to source code">add_another</a>( )</code>
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="add_another" id="_add_another">
 
-		<div class="description short">
-			
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_add_another">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#861-877" title="Go to source code">add_another</a>( )</code>
+
+			<div class="description short">
+				
 <p>Generates HTML for the "Add Another" button.</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Generates HTML for the "Add Another" button.</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br>button HTML.<br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>button HTML.<br />
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_sort_handle" id="_get_sort_handle">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_sort_handle" id="_get_sort_handle">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_sort_handle">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#869-875" title="Go to source code">get_sort_handle</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_get_sort_handle">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#879-885" title="Go to source code">get_sort_handle</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Return HTML for the sort handle (multi-tools); a separate function to
 override</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Return HTML for the sort handle (multi-tools); a separate function to
 override</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br />
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_remove_handle" id="_get_remove_handle">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_remove_handle" id="_get_remove_handle">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_remove_handle">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#877-883" title="Go to source code">get_remove_handle</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_get_remove_handle">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#887-893" title="Go to source code">get_remove_handle</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Return HTML for the remove handle (multi-tools); a separate function to
 override</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Return HTML for the remove handle (multi-tools); a separate function to
 override</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br />
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_collapse_handle" id="_get_collapse_handle">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_collapse_handle" id="_get_collapse_handle">
 
-		<td class="attributes"><code>
-			 public 
-			string
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_collapse_handle">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#885-891" title="Go to source code">get_collapse_handle</a>( )</code>
+			<td class="name"><div>
+			<a class="anchor" href="#_get_collapse_handle">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#895-901" title="Go to source code">get_collapse_handle</a>( )</code>
 
-		<div class="description short">
-			
+			<div class="description short">
+				
 <p>Return HTML for the collapse handle (multi-tools); a separate function to
 override</p>
 
-		</div>
+			</div>
 
-		<div class="description detailed hidden">
-			
+			<div class="description detailed hidden">
+				
 <p>Return HTML for the collapse handle (multi-tools); a separate function to
 override</p>
 
 
 
 
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br />
-				</div>
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br />
+					</div>
 
 
 
 
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_extra_element_classes" id="_get_extra_element_classes">
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_extra_element_classes" id="_get_extra_element_classes">
 
-		<td class="attributes"><code>
-			 public 
-			array
-			
-			</code>
-		</td>
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
 
-		<td class="name"><div>
-		<a class="anchor" href="#_get_extra_element_classes">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#893-899" title="Go to source code">get_extra_element_classes</a>( )</code>
-
-		<div class="description short">
-			
-<p>Return extra element classes; overriden by some fields.</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Return extra element classes; overriden by some fields.</p>
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code>array</code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_multiple_count" id="_get_multiple_count">
-
-		<td class="attributes"><code>
-			 protected 
-			string
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_get_multiple_count">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#901-912" title="Go to source code">get_multiple_count</a>( <span>mixed <var>$values</var></span> )</code>
-
-		<div class="description short">
-			
-<p>How many elements should we render?</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>How many elements should we render?</p>
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code>string</code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_unauthorized_access" id="__unauthorized_access">
-
-		<td class="attributes"><code>
-			 protected 
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__unauthorized_access">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#914-926" title="Go to source code">_unauthorized_access</a>( <span>string <var>$debug_message</var> = <span class="php-quote">''</span> </span> )</code>
-
-		<div class="description short">
-			
-<p>Die violently. If self::$debug is true, throw an exception.</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Die violently. If self::$debug is true, throw an exception.</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$debug_message</var></dt>
-					<dd><code>string</code><br>$debug_message</dd>
-				</dl></div>
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code></code><br>e.g. return _you_ into a void.<br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="_failed_validation" id="__failed_validation">
-
-		<td class="attributes"><code>
-			 protected 
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#__failed_validation">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#928-943" title="Go to source code">_failed_validation</a>( <span>string <var>$debug_message</var> = <span class="php-quote">''</span> </span> )</code>
-
-		<div class="description short">
-			
-<p>Fail validation. If self::$debug is true, throw an exception.</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>Fail validation. If self::$debug is true, throw an exception.</p>
-
-
-
-				<h4>Parameters</h4>
-				<div class="list"><dl>
-					<dt><var>$debug_message</var></dt>
-					<dd><code>string</code><br>$error_message</dd>
-				</dl></div>
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="get_seq" id="_get_seq">
-
-		<td class="attributes"><code>
-			 protected 
-			integer
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_get_seq">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#945-951" title="Go to source code">get_seq</a>( )</code>
-
-		<div class="description short">
-			
-<p>In a multiple element set, return the index of the current element we're
-rendering.</p>
-
-		</div>
-
-		<div class="description detailed hidden">
-			
-<p>In a multiple element set, return the index of the current element we're
-rendering.</p>
-
-
-
-
-				<h4>Returns</h4>
-				<div class="list">
-					<code>integer</code><br />
-				</div>
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	<tr data-order="has_proto" id="_has_proto">
-
-		<td class="attributes"><code>
-			 protected 
-			
-			
-			</code>
-		</td>
-
-		<td class="name"><div>
-		<a class="anchor" href="#_has_proto">#</a>
-		<code><a href="source-class-Fieldmanager_Field.html#953-957" title="Go to source code">has_proto</a>( )</code>
-
-		<div class="description short">
-			
-		</div>
-
-		<div class="description detailed hidden">
-			
-
-
-
-
-
-
-
-		</div>
-		</div></td>
-	</tr>
-	</table>
-
-
-
-
-
-
-
-
-
-
-
-
-	<table class="summary" id="properties">
-	<caption>Properties summary</caption>
-	<tr data-order="debug" id="$debug">
-		<td class="attributes"><code>
-			public static 
-			<code><a href="class-Fieldmanager_Field.html#$debug">Fieldmanager_Field::<var>$debug</var></a></code>
-		</code></td>
-
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#29-33" title="Go to source code"><var>$debug</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">True</span></code></td>
-		<td class="description"><div>
-			<a href="#$debug" class="anchor">#</a>
+			<td class="name"><div>
+			<a class="anchor" href="#_get_extra_element_classes">#</a>
+			<code><a href="source-class-Fieldmanager_Field.html#903-909" title="Go to source code">get_extra_element_classes</a>( )</code>
 
 			<div class="description short">
 				
-<p>If true, throw exceptions for illegal behavior</p>
+<p>Return extra element classes; overriden by some fields.</p>
 
 			</div>
 
 			<div class="description detailed hidden">
 				
+<p>Return extra element classes; overriden by some fields.</p>
+
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code>array</code><br />
+					</div>
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
+		</table>
+
+
+
+		<h3>Magic methods summary</h3>
+
+
+
+
+
+
+
+
+		<h2>Properties summary</h2>
+		<table class="summary table table-bordered table-striped" id="properties">
+		<tr data-order="debug" id="$debug">
+			<td class="attributes"><code>
+				public static 
+				<code><a href="class-Fieldmanager_Field.html#$debug">Fieldmanager_Field::<var>$debug</var></a></code>
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#29-33" title="Go to source code"><var>$debug</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$debug" class="anchor">#</a>
+
+				<div class="description short">
+					
+<p>If true, throw exceptions for illegal behavior</p>
+
+				</div>
+
+				<div class="description detailed hidden">
+					
 <p>If true, throw exceptions for illegal behavior</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="limit" id="$limit">
-		<td class="attributes"><code>
-			public  
-			integer
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="limit" id="$limit">
+			<td class="attributes"><code>
+				public  
+				integer
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#35-39" title="Go to source code"><var>$limit</var></a>
-		</td>
-		<td class="value"><code><span class="php-num">1</span></code></td>
-		<td class="description"><div>
-			<a href="#$limit" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#35-39" title="Go to source code"><var>$limit</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$limit" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>How many of these fields to display, 0 for no limit</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>How many of these fields to display, 0 for no limit</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="starting_count" id="$starting_count">
-		<td class="attributes"><code>
-			public  
-			integer
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="starting_count" id="$starting_count">
+			<td class="attributes"><code>
+				public  
+				integer
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#41-45" title="Go to source code"><var>$starting_count</var></a>
-		</td>
-		<td class="value"><code><span class="php-num">1</span></code></td>
-		<td class="description"><div>
-			<a href="#$starting_count" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#41-45" title="Go to source code"><var>$starting_count</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$starting_count" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>How many of these fields to display initially, if $limit &gt; 1</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>How many of these fields to display initially, if $limit &gt; 1</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="extra_elements" id="$extra_elements">
-		<td class="attributes"><code>
-			public  
-			integer
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="extra_elements" id="$extra_elements">
+			<td class="attributes"><code>
+				public  
+				integer
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#47-51" title="Go to source code"><var>$extra_elements</var></a>
-		</td>
-		<td class="value"><code><span class="php-num">1</span></code></td>
-		<td class="description"><div>
-			<a href="#$extra_elements" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#47-51" title="Go to source code"><var>$extra_elements</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$extra_elements" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>How many extra elements to display if there is already form data and $limit
 &gt; 1</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>How many extra elements to display if there is already form data and $limit
 &gt; 1</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="add_more_label" id="$add_more_label">
-		<td class="attributes"><code>
-			public  
-			string
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="add_more_label" id="$add_more_label">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#53-57" title="Go to source code"><var>$add_more_label</var></a>
-		</td>
-		<td class="value"><code><span class="php-quote">''</span></code></td>
-		<td class="description"><div>
-			<a href="#$add_more_label" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#53-57" title="Go to source code"><var>$add_more_label</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$add_more_label" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Text for add more button</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Text for add more button</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="name" id="$name">
-		<td class="attributes"><code>
-			public  
-			string
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="name" id="$name">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#59-63" title="Go to source code"><var>$name</var></a>
-		</td>
-		<td class="value"><code><span class="php-quote">''</span></code></td>
-		<td class="description"><div>
-			<a href="#$name" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#59-63" title="Go to source code"><var>$name</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$name" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>The name of the form element, As in 'foo' in &lt;input name="foo" /&gt;</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>The name of the form element, As in 'foo' in &lt;input name="foo" /&gt;</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="label" id="$label">
-		<td class="attributes"><code>
-			public  
-			string
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="label" id="$label">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#65-69" title="Go to source code"><var>$label</var></a>
-		</td>
-		<td class="value"><code><span class="php-quote">''</span></code></td>
-		<td class="description"><div>
-			<a href="#$label" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#65-69" title="Go to source code"><var>$label</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$label" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Label to use for form element</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Label to use for form element</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="inline_label" id="$inline_label">
-		<td class="attributes"><code>
-			public  
-			boolean
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="inline_label" id="$inline_label">
+			<td class="attributes"><code>
+				public  
+				boolean
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#71-75" title="Go to source code"><var>$inline_label</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">False</span></code></td>
-		<td class="description"><div>
-			<a href="#$inline_label" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#71-75" title="Go to source code"><var>$inline_label</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$inline_label" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>If true, the label and the element will display on the same line. Some
 elements may not support this.</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>If true, the label and the element will display on the same line. Some
 elements may not support this.</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="label_after_element" id="$label_after_element">
-		<td class="attributes"><code>
-			public  
-			boolean
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="label_after_element" id="$label_after_element">
+			<td class="attributes"><code>
+				public  
+				boolean
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#77-81" title="Go to source code"><var>$label_after_element</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">False</span></code></td>
-		<td class="description"><div>
-			<a href="#$label_after_element" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#77-81" title="Go to source code"><var>$label_after_element</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$label_after_element" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>If true, the label will be displayed after the element.</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>If true, the label will be displayed after the element.</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="description" id="$description">
-		<td class="attributes"><code>
-			public  
-			string
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="description" id="$description">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#83-87" title="Go to source code"><var>$description</var></a>
-		</td>
-		<td class="value"><code><span class="php-quote">''</span></code></td>
-		<td class="description"><div>
-			<a href="#$description" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#83-87" title="Go to source code"><var>$description</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$description" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Description for the form element</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Description for the form element</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="attributes" id="$attributes">
-		<td class="attributes"><code>
-			public  
-			string[]
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="attributes" id="$attributes">
+			<td class="attributes"><code>
+				public  
+				string[]
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#89-93" title="Go to source code"><var>$attributes</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
-		<td class="description"><div>
-			<a href="#$attributes" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#89-93" title="Go to source code"><var>$attributes</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$attributes" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Extra HTML attributes to apply to the form element</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Extra HTML attributes to apply to the form element</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="field_class" id="$field_class">
-		<td class="attributes"><code>
-			public  
-			string
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="field_class" id="$field_class">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#95-99" title="Go to source code"><var>$field_class</var></a>
-		</td>
-		<td class="value"><code><span class="php-quote">'element'</span></code></td>
-		<td class="description"><div>
-			<a href="#$field_class" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#95-99" title="Go to source code"><var>$field_class</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$field_class" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>CSS class for form element</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>CSS class for form element</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="one_label_per_item" id="$one_label_per_item">
-		<td class="attributes"><code>
-			public  
-			boolean
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="one_label_per_item" id="$one_label_per_item">
+			<td class="attributes"><code>
+				public  
+				boolean
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#101-105" title="Go to source code"><var>$one_label_per_item</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">TRUE</span></code></td>
-		<td class="description"><div>
-			<a href="#$one_label_per_item" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#101-105" title="Go to source code"><var>$one_label_per_item</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$one_label_per_item" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Repeat the label for each element if $limit &gt; 1</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Repeat the label for each element if $limit &gt; 1</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="sortable" id="$sortable">
-		<td class="attributes"><code>
-			public  
-			boolean
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="sortable" id="$sortable">
+			<td class="attributes"><code>
+				public  
+				boolean
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#107-111" title="Go to source code"><var>$sortable</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">FALSE</span></code></td>
-		<td class="description"><div>
-			<a href="#$sortable" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#107-111" title="Go to source code"><var>$sortable</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$sortable" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Allow draggable sorting if $limit &gt; 1</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Allow draggable sorting if $limit &gt; 1</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="label_element" id="$label_element">
-		<td class="attributes"><code>
-			public  
-			string
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="label_element" id="$label_element">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#113-117" title="Go to source code"><var>$label_element</var></a>
-		</td>
-		<td class="value"><code><span class="php-quote">'div'</span></code></td>
-		<td class="description"><div>
-			<a href="#$label_element" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#113-117" title="Go to source code"><var>$label_element</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$label_element" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>HTML element to use for label</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>HTML element to use for label</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="sanitize" id="$sanitize">
-		<td class="attributes"><code>
-			public  
-			callable
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="sanitize" id="$sanitize">
+			<td class="attributes"><code>
+				public  
+				callable
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#119-123" title="Go to source code"><var>$sanitize</var></a>
-		</td>
-		<td class="value"><code><span class="php-quote">'sanitize_text_field'</span></code></td>
-		<td class="description"><div>
-			<a href="#$sanitize" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#119-123" title="Go to source code"><var>$sanitize</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$sanitize" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Function to use to sanitize input</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Function to use to sanitize input</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="validate" id="$validate">
-		<td class="attributes"><code>
-			public  
-			callback[]
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="validate" id="$validate">
+			<td class="attributes"><code>
+				public  
+				callback[]
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#125-129" title="Go to source code"><var>$validate</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
-		<td class="description"><div>
-			<a href="#$validate" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#125-129" title="Go to source code"><var>$validate</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$validate" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Functions to use to validate input</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Functions to use to validate input</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="data_type" id="$data_type">
-		<td class="attributes"><code>
-			public  
-			string|null
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="data_type" id="$data_type">
+			<td class="attributes"><code>
+				public  
+				string|null
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#131-135" title="Go to source code"><var>$data_type</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">NULL</span></code></td>
-		<td class="description"><div>
-			<a href="#$data_type" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#131-135" title="Go to source code"><var>$data_type</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$data_type" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Data type this element is used in, generally set internally</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Data type this element is used in, generally set internally</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="data_id" id="$data_id">
-		<td class="attributes"><code>
-			public  
-			integer|null
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="data_id" id="$data_id">
+			<td class="attributes"><code>
+				public  
+				integer|null
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#137-141" title="Go to source code"><var>$data_id</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">Null</span></code></td>
-		<td class="description"><div>
-			<a href="#$data_id" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#137-141" title="Go to source code"><var>$data_id</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$data_id" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>ID for $this-&gt;data_type, eg $post-&gt;ID, generally set internally</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>ID for $this-&gt;data_type, eg $post-&gt;ID, generally set internally</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="save_empty" id="$save_empty">
-		<td class="attributes"><code>
-			public  
-			boolean
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="save_empty" id="$save_empty">
+			<td class="attributes"><code>
+				public  
+				boolean
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#143-147" title="Go to source code"><var>$save_empty</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">False</span></code></td>
-		<td class="description"><div>
-			<a href="#$save_empty" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#143-147" title="Go to source code"><var>$save_empty</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$save_empty" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>If true, save empty elements to DB (if $this-&gt;limit != 1; single elements
 are always saved)</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>If true, save empty elements to DB (if $this-&gt;limit != 1; single elements
 are always saved)</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="submit_button_label" id="$submit_button_label">
-		<td class="attributes"><code>
-			public  
-			string|Null
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="submit_button_label" id="$submit_button_label">
+			<td class="attributes"><code>
+				public  
+				string|Null
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#149-153" title="Go to source code"><var>$submit_button_label</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">Null</span></code></td>
-		<td class="description"><div>
-			<a href="#$submit_button_label" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#149-153" title="Go to source code"><var>$submit_button_label</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$submit_button_label" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Only used for options pages</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Only used for options pages</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="skip_save" id="$skip_save">
-		<td class="attributes"><code>
-			public  
-			boolean
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="skip_save" id="$skip_save">
+			<td class="attributes"><code>
+				public  
+				boolean
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#155-159" title="Go to source code"><var>$skip_save</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">False</span></code></td>
-		<td class="description"><div>
-			<a href="#$skip_save" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#155-159" title="Go to source code"><var>$skip_save</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$skip_save" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Do not save this field (useful for fields which handle saving their own
 data)</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Do not save this field (useful for fields which handle saving their own
 data)</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="index" id="$index">
-		<td class="attributes"><code>
-			public  
-			string
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="index" id="$index">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#161-165" title="Go to source code"><var>$index</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">False</span></code></td>
-		<td class="description"><div>
-			<a href="#$index" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#161-165" title="Go to source code"><var>$index</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$index" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Save this field additionally to an index</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Save this field additionally to an index</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="content_types" id="$content_types">
-		<td class="attributes"><code>
-			public  
-			array[]
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="content_types" id="$content_types">
+			<td class="attributes"><code>
+				public  
+				array[]
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#167-178" title="Go to source code"><var>$content_types</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
-		<td class="description"><div>
-			<a href="#$content_types" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#167-178" title="Go to source code"><var>$content_types</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$content_types" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Array of content type assignments for these fields. Sample:
 $element-&gt;content_types = array(<br />
 array(<br />
@@ -2330,192 +1996,76 @@ array(<br />
 'content_type' =&gt; 'quiz'<br />
 ) );</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Array of content type assignments for these fields. Sample:
 $element-&gt;content_types = array( array( 'meta_box_name' =&gt;
 'quiz_question', 'meta_box_title' =&gt; 'Quiz Question', 'content_type' =&gt;
 'quiz' ) );</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="display_if" id="$display_if">
-		<td class="attributes"><code>
-			public  
-			array[]
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="display_if" id="$display_if">
+			<td class="attributes"><code>
+				public  
+				array[]
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#180-188" title="Go to source code"><var>$display_if</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">array</span>()</code></td>
-		<td class="description"><div>
-			<a href="#$display_if" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#180-188" title="Go to source code"><var>$display_if</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$display_if" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>Field name and value on which to display element. Sample:
 $element-&gt;display_if = array( 'src' =&gt; 'display-if-src-element', 'value'
 =&gt; 'display-if-src-value' );</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>Field name and value on which to display element. Sample:
 $element-&gt;display_if = array( 'src' =&gt; 'display-if-src-element', 'value'
 =&gt; 'display-if-src-value' );</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="wp_option_autoload" id="$wp_option_autoload">
-		<td class="attributes"><code>
-			public  
-			string
-		</code></td>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="wp_option_autoload" id="$wp_option_autoload">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
 
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#190-194" title="Go to source code"><var>$wp_option_autoload</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">False</span></code></td>
-		<td class="description"><div>
-			<a href="#$wp_option_autoload" class="anchor">#</a>
+			<td class="name">
+					<a href="source-class-Fieldmanager_Field.html#190-194" title="Go to source code"><var>$wp_option_autoload</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$wp_option_autoload" class="anchor">#</a>
 
-			<div class="description short">
-				
+				<div class="description short">
+					
 <p>For submenu pages, set autoload to true or false</p>
 
-			</div>
+				</div>
 
-			<div class="description detailed hidden">
-				
+				<div class="description detailed hidden">
+					
 <p>For submenu pages, set autoload to true or false</p>
 
 
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="seq" id="$seq">
-		<td class="attributes"><code>
-			protected  
-			integer
-		</code></td>
-
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#196-200" title="Go to source code"><var>$seq</var></a>
-		</td>
-		<td class="value"><code><span class="php-num">0</span></code></td>
-		<td class="description"><div>
-			<a href="#$seq" class="anchor">#</a>
-
-			<div class="description short">
-				
-<p>If $this-&gt;limit &gt; 1, which element in sequence are we currently
-rendering?</p>
-
-			</div>
-
-			<div class="description detailed hidden">
-				
-<p>If $this-&gt;limit &gt; 1, which element in sequence are we currently
-rendering?</p>
-
-
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="is_proto" id="$is_proto">
-		<td class="attributes"><code>
-			protected  
-			boolean
-		</code></td>
-
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#202-206" title="Go to source code"><var>$is_proto</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">False</span></code></td>
-		<td class="description"><div>
-			<a href="#$is_proto" class="anchor">#</a>
-
-			<div class="description short">
-				
-<p>If $is_proto is true, we're rendering the prototype element for a field that
-can have infinite instances.</p>
-
-			</div>
-
-			<div class="description detailed hidden">
-				
-<p>If $is_proto is true, we're rendering the prototype element for a field that
-can have infinite instances.</p>
-
-
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="parent" id="$parent">
-		<td class="attributes"><code>
-			protected  
-			<code><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></code>
-		</code></td>
-
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#208-212" title="Go to source code"><var>$parent</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">Null</span></code></td>
-		<td class="description"><div>
-			<a href="#$parent" class="anchor">#</a>
-
-			<div class="description short">
-				
-<p>Parent element, if applicable. Would be a Fieldmanager_Group unless
-third-party plugins support this.</p>
-
-			</div>
-
-			<div class="description detailed hidden">
-				
-<p>Parent element, if applicable. Would be a Fieldmanager_Group unless
-third-party plugins support this.</p>
-
-
-			</div>
-		</div></td>
-	</tr>
-	<tr data-order="is_tab" id="$is_tab">
-		<td class="attributes"><code>
-			protected  
-			boolean
-		</code></td>
-
-		<td class="name">
-				<a href="source-class-Fieldmanager_Field.html#214-219" title="Go to source code"><var>$is_tab</var></a>
-		</td>
-		<td class="value"><code><span class="php-keyword1">False</span></code></td>
-		<td class="description"><div>
-			<a href="#$is_tab" class="anchor">#</a>
-
-			<div class="description short">
-				
-<p>Render this element in a tab?</p>
-
-			</div>
-
-			<div class="description detailed hidden">
-				
-<p>Render this element in a tab?</p>
-
-
-			</div>
-		</div></td>
-	</tr>
-	</table>
+				</div>
+			</div></td>
+		</tr>
+		</table>
 
 
 
@@ -2523,11 +2073,11 @@ third-party plugins support this.</p>
 
 
 </div>
+	</div>
 
 	<div id="footer">
-		Fieldmanager API API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+		Fieldmanager API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
 	</div>
-</div>
 </div>
 </body>
 </html>

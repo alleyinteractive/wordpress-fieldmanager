@@ -5,11 +5,12 @@
 	<meta name="generator" content="ApiGen 2.8.0" />
 	<meta name="robots" content="noindex" />
 
-	<title>Page not found | Fieldmanager API</title>
+	<title>Page not found | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?3233261031"></script>
-	<script type="text/javascript" src="elementlist.js?770940545"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?3505392360" />
+	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
+	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -25,9 +26,40 @@
 </head>
 
 <body>
-<div id="left">
+	<div id="navigation" class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a href="index.html" class="brand">Fieldmanager</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li>
+<span>Package</span>						</li>
+						<li>
+<span>Class</span>						</li>
+
+						<li class="divider-vertical"></li>
+
+						<li>
+							<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+						</li>
+						<li>
+							<a href="todo.html" title="Todo list"><span>Todo</span></a>
+						</li>
+
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="left">
 	<div id="menu">
-		<a href="index.html" title="Overview"><span>Overview</span></a>
+		<form id="search" class="form-search">
+			<input type="hidden" name="cx" value="" />
+			<input type="hidden" name="ie" value="UTF-8" />
+			<input type="text" name="q" class="search-query" placeholder="Search" />
+		</form>
 
 
 		<div id="groups">
@@ -38,12 +70,8 @@
 				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
 							</ul></li>
-				<li><a href="package-PHP.html">PHP</a>
-						</li>
 			</ul>
 		</div>
-
-		<hr />
 
 
 		<div id="elements">
@@ -55,14 +83,15 @@
 				<li><a href="class-Fieldmanager_Datasource.html">Fieldmanager_Datasource</a></li>
 				<li><a href="class-Fieldmanager_Datasource_Post.html">Fieldmanager_Datasource_Post</a></li>
 				<li><a href="class-Fieldmanager_Datasource_Term.html">Fieldmanager_Datasource_Term</a></li>
+				<li><a href="class-Fieldmanager_Datepicker.html">Fieldmanager_Datepicker</a></li>
 				<li><a href="class-Fieldmanager_DraggablePost.html">Fieldmanager_DraggablePost</a></li>
 				<li><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></li>
 				<li><a href="class-Fieldmanager_Grid.html">Fieldmanager_Grid</a></li>
 				<li><a href="class-Fieldmanager_Group.html">Fieldmanager_Group</a></li>
 				<li><a href="class-Fieldmanager_Hidden.html">Fieldmanager_Hidden</a></li>
+				<li><a href="class-Fieldmanager_Link.html">Fieldmanager_Link</a></li>
 				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
 				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
-				<li><a href="class-Fieldmanager_Post.html">Fieldmanager_Post</a></li>
 				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
 				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
 				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
@@ -74,7 +103,6 @@
 
 			<h3>Exceptions</h3>
 			<ul>
-				<li><a href="class-Exception.html">Exception</a></li>
 				<li><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></li>
 				<li><a href="class-FM_Exception.html">FM_Exception</a></li>
 				<li><a href="class-FM_Validation_Exception.html">FM_Validation_Exception</a></li>
@@ -86,6 +114,7 @@
 				<li><a href="function-_fieldmanager_registry.html">_fieldmanager_registry</a></li>
 				<li><a href="function-fieldmanager_enqueue_scripts.html">fieldmanager_enqueue_scripts</a></li>
 				<li><a href="function-fieldmanager_get_baseurl.html">fieldmanager_get_baseurl</a></li>
+				<li><a href="function-fieldmanager_get_template.html">fieldmanager_get_template</a></li>
 				<li><a href="function-fieldmanager_set_baseurl.html">fieldmanager_set_baseurl</a></li>
 				<li><a href="function-fm_add_script.html">fm_add_script</a></li>
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
@@ -100,44 +129,18 @@
 <div id="splitter"></div>
 
 <div id="right">
-<div id="rightInner">
-	<form id="search">
-		<input type="hidden" name="cx" value="" />
-		<input type="hidden" name="ie" value="UTF-8" />
-		<input type="text" name="q" class="text" />
-		<input type="submit" value="Search" />
-	</form>
-
-	<div id="navigation">
-		<ul>
-			<li>
-				<a href="index.html" title="Overview"><span>Overview</span></a>
-			</li>
-			<li>
-<span>Package</span>			</li>
-			<li>
-<span>Class</span>			</li>
-		</ul>
-		<ul>
-			<li>
-				<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
-			</li>
-		</ul>
-		<ul>
-		</ul>
-	</div>
-
+	<div id="rightInner">
 <div id="content">
 	<h1>Page not found</h1>
 	<p>The requested page could not be found.</p>
 	<p>You have probably clicked on a link that is outdated and points to a page that does not exist any more or you have made an typing error in the address.</p>
 	<p>To continue please try to find requested page in the menu, take a look at <a href="tree.html">the tree view</a> of the whole project or use search field on the top.</p>
 </div>
+	</div>
 
 	<div id="footer">
-		Fieldmanager API API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+		Fieldmanager API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
 	</div>
-</div>
 </div>
 </body>
 </html>

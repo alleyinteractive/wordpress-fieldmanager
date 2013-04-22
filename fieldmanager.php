@@ -23,10 +23,10 @@ require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-richtextarea.php' )
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-grid.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-hidden.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-options.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-post.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-media.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-draggablepost.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-autocomplete.php' );
+require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-datepicker.php' );
 require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource.php' );
 require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource-post.php' );
 require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource-term.php' );
@@ -61,6 +61,10 @@ function fieldmanager_get_baseurl() {
 		return $path_override;
 	}
 	return plugin_dir_url( __FILE__ );
+}
+
+function fieldmanager_get_template( $tpl_slug ) {
+	return plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php';
 }
 
 /**

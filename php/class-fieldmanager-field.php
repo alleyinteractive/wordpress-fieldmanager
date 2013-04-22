@@ -239,7 +239,15 @@ abstract class Fieldmanager_Field {
 	 * @return string HTML for the element.
 	 * Generate HTML for the form element itself. Generally should be just one tag, no wrappers.
 	 */
-	public abstract function form_element( $value );
+	public function form_element( $value ) {
+		if ( !$this->template ) {
+			$tpl_slug = strtolower( str_replace( 'Fieldmanager_', '', get_class( $this ) ));
+			$this->template = fieldmanager_get_template( $tpl_slug );
+		}
+		ob_start();
+		include $this->template;
+		return ob_get_clean();
+	}
 
 	/**
 	 * Superclass constructor, just populates options and sanity-checks common elements.
@@ -769,10 +777,12 @@ abstract class Fieldmanager_Field {
 		// same field in repeating groups with limit = 1 is going to create more than one entry here, and
 		// if we called update_post_meta() we would overwrite the index with each new group.
 		foreach ( $current_values as $v ) {
+			if ( empty( $v ) ) $v = 0; // false or null should be saved as 0 to prevent duplicates
 			delete_post_meta( $this->data_id, $this->index, $v );
 		}
 		// add new values
 		foreach ( $values as $v ) {
+			if ( empty( $v ) ) $v = 0; // false or null should be saved as 0 to prevent duplicates
 			add_post_meta( $this->data_id, $this->index, $v );
 		}
 	}

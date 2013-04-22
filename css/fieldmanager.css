@@ -256,3 +256,11 @@ a.fm-delete:hover {
 .fm-submenu-form-wrapper {
 	padding: 20px 0;
 }
+
+.fm-datepicker-popup {
+	width: 100px;
+}
+
+.fm-datepicker-time {
+	width: 25px;
+}

@@ -1,0 +1,19 @@
+googleAnalytics: UA-17061659-2
+templateConfig: './docs-src/templates/bootstrap/config.neon'
+source: [
+	php/, php/datasource/, fieldmanager.php
+]
+destination: docs/
+title: Fieldmanager
+php: no
+debug: yes
+todo: yes
+allowedHtml: [
+	b,i,a,ul,ol,li,p,br,var,samp,kbd,tt,em,strong
+]
+autocomplete: [
+	classes,constants,functions,methods,properties
+]
+accessLevels: [
+	public
+]

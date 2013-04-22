@@ -206,6 +206,15 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	}
 
 	/**
+	 * Add a child element to this group.
+	 * @param Fieldmanager_Field $child
+	 * @return void
+	 */
+	public function add_child( Fieldmanager_Field $child ) {
+		$this->children[] = $child;
+	}
+
+	/**
 	 * Presave override for groups which dispatches to child presave_all methods.
 	 * @input mixed[] values
 	 * @return mixed[] values
