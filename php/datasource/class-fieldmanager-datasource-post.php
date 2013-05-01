@@ -106,7 +106,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
                     else {
                         $date_pad = NULL;
                     }
-                    $ret[ $post_id ] = html_entity_decode( $exact_post->post_title ) . ($date_pad ? $date_pad : '');
+                    $ret[ $post_id ] = html_entity_decode( $exact_post->post_title ) . ( $date_pad ? $date_pad : '' );
                 }
             }
             $this->_fragment = $fragment;
@@ -123,7 +123,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             else {
                 $date_pad = 'no';
             }
-            $ret[$p->ID] = $p->post_title . ($date_pad ? $date_pad : '');
+            $ret[$p->ID] = $p->post_title . ( $date_pad ? $date_pad : '' );
         }
         return $ret;
     }
