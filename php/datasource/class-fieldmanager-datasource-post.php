@@ -36,6 +36,12 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * establish two-way relationships.
      */
     public $reciprocal = Null;
+
+    /**
+     * @var boolean
+     * Display the post publish date in the typeahead menu.
+     */
+    public $show_date = False;
  
     // constructor not required for this datasource; options are just set to keys,
     // which Fieldmanager_Datasource does.
@@ -94,7 +100,13 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
                     $post_args['post_type'] == $exact_post->post_type ||
                     in_array( $exact_post->post_type, $post_args['post_type'] )
                 ) ) {
-                    $ret[ $post_id ] = html_entity_decode( $exact_post->post_title );
+                    if ( $this->show_date ) {
+                        $date_pad = ' (' . date( 'Y-m-d', strtotime( $exact_post->post_date ) ) . ')';
+                    }
+                    else {
+                        $date_pad = NULL;
+                    }
+                    $ret[ $post_id ] = html_entity_decode( $exact_post->post_title ) . ($date_pad ? $date_pad : '');
                 }
             }
             $this->_fragment = $fragment;
@@ -105,7 +117,13 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             remove_filter( 'posts_where', array( $this, 'title_like' ), 10, 2 );
         }
         foreach ( $posts as $p ) {
-            $ret[$p->ID] = $p->post_title;
+            if ( $this->show_date ) {
+                $date_pad = ' (' . date( 'Y-m-d', strtotime( $p->post_date ) ) . ')';
+            }
+            else {
+                $date_pad = 'no';
+            }
+            $ret[$p->ID] = $p->post_title . ($date_pad ? $date_pad : '');
         }
         return $ret;
     }
