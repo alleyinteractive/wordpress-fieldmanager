@@ -173,6 +173,9 @@ class Fieldmanager_Datasource {
 	 * @return string cleaned value
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
+		if ( is_array( $value ) ) {
+			return array_map( 'sanitize_text_field', $value );
+		}
 		return sanitize_text_field( $value );
 	}
 

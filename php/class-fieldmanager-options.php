@@ -57,7 +57,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param string $label
 	 * @param mixed $options
 	 */
-	public function __construct( $label= '', $options = array() ) {
+	public function __construct( $label = '', $options = array() ) {
 		parent::__construct( $label, $options );
 
 		if ( !empty( $this->options ) ) {
@@ -160,7 +160,15 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * A single element for a single bit of data, e.g. '<option>'
 	 * @param mixed $value
 	 */
-	public abstract function form_data_element( $value );
+	public function form_data_element( $data_row, $value ) {
+		if ( !$this->options_template ) {
+			$tpl_slug = 'options-' . strtolower( str_replace( 'Fieldmanager_', '', get_class( $this ) ));
+			$this->options_template = fieldmanager_get_template( $tpl_slug );
+		}
+		ob_start();
+		include $this->options_template;
+		return ob_get_clean();
+	}
 
 	/**
 	 * Helper for output functions to toggle a selected options

@@ -730,9 +730,7 @@ abstract class Fieldmanager_Field {
 		if ( $this->limit == 1 ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
 			$value = $this->presave( $values[0], $current_values );
-			if ( $this->save_empty || !empty( $value ) ) {
-				if ( !empty( $this->index ) ) $this->save_index( array( $value ), array( $current_values ) );
-			}
+			if ( !empty( $this->index ) ) $this->save_index( array( $value ), array( $current_values ) );
 			return $value;
 		}
 
@@ -768,6 +766,8 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Optionally save fields to a separate postmeta index for easy lookup with WP_Query
+	 * Handles internal arrays (e.g. for fieldmanager-options).
+	 * Is called multiple times for multi-fields (e.g. limit => 0)
 	 * @param array $values
 	 * @return void
 	 */
@@ -776,14 +776,20 @@ abstract class Fieldmanager_Field {
 		// Must delete current values specifically, then add new ones, to support a scenario where the
 		// same field in repeating groups with limit = 1 is going to create more than one entry here, and
 		// if we called update_post_meta() we would overwrite the index with each new group.
-		foreach ( $current_values as $v ) {
-			if ( empty( $v ) ) $v = 0; // false or null should be saved as 0 to prevent duplicates
-			delete_post_meta( $this->data_id, $this->index, $v );
+		foreach ( $current_values as $old_value ) {
+			if ( !is_array( $old_value ) ) $old_value = array( $old_value );
+			foreach ( $old_value as $value ) {
+				if ( empty( $value ) ) $value = 0; // false or null should be saved as 0 to prevent duplicates
+				delete_post_meta( $this->data_id, $this->index, $value );
+			}
 		}
 		// add new values
-		foreach ( $values as $v ) {
-			if ( empty( $v ) ) $v = 0; // false or null should be saved as 0 to prevent duplicates
-			add_post_meta( $this->data_id, $this->index, $v );
+		foreach ( $values as $new_value ) {
+			if ( !is_array( $new_value ) ) $new_value = array( $new_value );
+			foreach ( $new_value as $value ) {
+				if ( empty( $value ) ) $value = 0; // false or null should be saved as 0 to prevent duplicates
+				add_post_meta( $this->data_id, $this->index, $value );
+			}
 		}
 	}
 
