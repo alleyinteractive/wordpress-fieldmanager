@@ -530,9 +530,10 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Get the ID for the form element itself, uses $this->seq (e.g. which position is this element in).
+	 * Relying on the element's ID for anything isn't a great idea since it can be rewritten in JS.
 	 * @return string ID for use in a form element.
 	 */
-	public function get_element_id( ) {
+	public function get_element_id() {
 		$el = $this;
 		$id_slugs = array();
 		while ( $el ) {
@@ -541,6 +542,14 @@ abstract class Fieldmanager_Field {
 			$el = $el->parent;
 		}
 		return 'fm-' . implode( '-', $id_slugs );
+	}
+
+	/**
+	 * Add a form on user pages
+	 * @param string $title
+	 */
+	public function add_user_form( $title = '' ) {
+		return new Fieldmanager_Context_User( $title, $this );
 	}
 
 	/**
@@ -932,7 +941,7 @@ abstract class Fieldmanager_Field {
 	 * @param string $debug_message
 	 * @return void e.g. return _you_ into a void.
 	 */
-	protected function _unauthorized_access( $debug_message = '' ) {
+	public function _unauthorized_access( $debug_message = '' ) {
 		if ( self::$debug ) {
 			throw new FM_Exception( $debug_message );
 		}

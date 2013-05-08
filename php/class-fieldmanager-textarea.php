@@ -25,6 +25,10 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 			'cols' => '50',
 			'rows' => '10'
 		);
+
+		// Sanitize the textarea to preserve newlines. Could be overriden.
+		$this->sanitize = 'fm_sanitize_textarea';
+
 		parent::__construct( $label, $options );
 	}
 
