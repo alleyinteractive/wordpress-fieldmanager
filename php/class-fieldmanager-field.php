@@ -553,6 +553,14 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Add a form on a frontend page
+	 * @param string $uniqid a unique identifier for this form
+	 */
+	public function add_page_form( $uniqid ) {
+		return new Fieldmanager_Context_Page( $uniqid, $this );
+	}
+
+	/**
 	 * Add this field as a metabox to a content type
 	 * @param string $title
 	 * @param string|string[] $post_type
