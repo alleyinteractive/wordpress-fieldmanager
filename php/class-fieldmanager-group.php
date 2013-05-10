@@ -321,4 +321,22 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 		return $classes;
 	}
+	
+	/**
+	 * Helper function to get the list of default meta boxes to remove.
+	 * For Fieldmanager_Group, iterate over all children to see if they have meta boxes to remove.
+	 * If $remove_default_meta_boxes is true for this group, set all children to also remove any default meta boxes if applicable.
+	 * @param $meta_boxes_to_remove the array of meta boxes to remove
+	 * @return array list of meta boxes to remove
+	 */
+	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {
+		foreach( $this->children as $child ) {
+			// If remove default meta boxes was true for the group, set it for all children
+			if ( $this->remove_default_meta_boxes ) {
+				$child->remove_default_meta_boxes = true;
+			}
+			
+			$child->add_meta_boxes_to_remove( $meta_boxes_to_remove );
+		}
+	}
 }

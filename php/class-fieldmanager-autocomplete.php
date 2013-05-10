@@ -137,5 +137,30 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	public function presave( $value, $current_value = array() ) {
 		return $this->datasource->presave( $this, $value, $current_value );
 	}
-
+	
+	/**
+	 * Helper function to get the list of default meta boxes to remove.
+	 * If $remove_default_meta_boxes is true and the datasource is Fieldmanager_Datasource_Term, 
+	 * this will return a list of all default meta boxes for the specified taxonomies.
+	 * We only need to return id and context since the page will be handled by the list of post types provided to add_meta_box.
+	 * Otherwise, this will just return an empty array.
+	 * @param array current list of meta boxes to remove
+	 * @return array list of meta boxes to remove
+	 */
+	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {
+		if ( $this->remove_default_meta_boxes && get_class( $this->datasource ) == 'Fieldmanager_Datasource_Term' ) {
+			// Iterate over the list and build the list of meta boxes
+			$meta_boxes = array();
+			foreach( $this->datasource->get_taxonomies() as $taxonomy ) {
+				$id = 'tagsdiv-' . $taxonomy;
+				$meta_boxes[$id] = array(
+					'id' => $id,
+					'context' => 'side'
+				);
+			}
+			
+			// Merge in the new meta boxes to remove
+			$meta_boxes_to_remove = array_merge( $meta_boxes_to_remove, $meta_boxes );
+		}
+	}
 }

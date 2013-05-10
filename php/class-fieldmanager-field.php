@@ -198,6 +198,18 @@ abstract class Fieldmanager_Field {
 	 * For submenu pages, set autoload to true or false
 	 */
 	public $wp_option_autoload = False;
+	
+	/**
+	 * @var boolean
+	 * If true, remove any default meta boxes that are overridden by Fieldmanager fields
+	 */
+	public $remove_default_meta_boxes = False;
+	
+	/**
+	 * @var array
+	 * If $remove_default_meta_boxes is true, this array will be populated with the list of default meta boxes to remove
+	 */
+	protected $meta_boxes_to_remove = array();
 
 	/**
 	 * @var int
@@ -574,6 +586,7 @@ abstract class Fieldmanager_Field {
 	 * @param string $priority
 	 */
 	public function add_meta_box( $title, $post_types, $context = 'normal', $priority = 'default' ) {
+		// Populate the list of post types for which to add this meta box with the given settings
 		if ( !is_array( $post_types ) ) $post_types = array( $post_types );
 		foreach ( $post_types as $type ) {
 			$this->content_types[] = array(
@@ -584,6 +597,11 @@ abstract class Fieldmanager_Field {
 				'priority' => $priority,
 			);
 		}
+				
+		// Check if any default meta boxes need to be removed for this field 
+		$this->add_meta_boxes_to_remove( $this->meta_boxes_to_remove );
+		
+		// Register the actions required to handle adding/removing meta boxes
 		$this->register_meta_box_actions();
 	}
 
@@ -687,6 +705,20 @@ abstract class Fieldmanager_Field {
 		$this->data_id = $post->ID;
 		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
 		echo $this->element_markup( $values );
+	}
+	
+	/**
+	 * Helper to remove all built-in meta boxes for all specified taxonomies on a post type
+	 * @param $post_type the post type
+	 * @param $taxonomies the taxonomies for which to remove default meta boxes
+	 * @return void.
+	 */
+	public function remove_meta_boxes() {
+		foreach( $this->content_types as $type ) {
+			foreach( $this->meta_boxes_to_remove as $meta_box ) {
+				remove_meta_box( $meta_box['id'], $type['content_type'], $meta_box['context'] );
+			}
+		}
 	}
 
 	/**
@@ -999,10 +1031,21 @@ abstract class Fieldmanager_Field {
 	 * Register meta box actions
 	 */
 	private function register_meta_box_actions() {
-		if ( !empty( $this->content_types ) && !$this->meta_box_actions_added ) {
+		if ( ! empty( $this->content_types ) && ! $this->meta_box_actions_added ) {
 			add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
 			add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
-			$this->meta_box_actions_added = True;
+			
+			// Check if any meta boxes need to be removed
+			if ( ! empty( $this->meta_boxes_to_remove ) ) {
+				add_action( 'admin_init', array( $this, 'remove_meta_boxes' ) );
+			}
 		}
 	}
+	
+	/**
+	 * Helper function to add to the list of meta boxes to remove. This will be defined in child classes that require this functionality.
+	 * @param array current list of meta boxes to remove
+	 * @return void
+	 */
+	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {}
 }

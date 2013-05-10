@@ -98,7 +98,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * Get taxonomies; normalizes $this->taxonomy to an array
 	 * @return array of taxonomies
 	 */
-	protected function get_taxonomies() {
+	public function get_taxonomies() {
 		return is_array( $this->taxonomy ) ? $this->taxonomy : array( $this->taxonomy );
 	}
 
