@@ -176,6 +176,12 @@ abstract class Fieldmanager_Field {
 	 * );
 	 */
 	public $content_types = array();
+	
+	/**
+	 * @var Fieldmanager_Datasource
+	 * Optionally generate field from datasource. Used by Fieldmanager_Autocomplete and Fieldmanager_Options.
+	 */
+	public $datasource = Null;
 
 	/**
 	 * @var array[]

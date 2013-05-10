@@ -11,12 +11,6 @@
 class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	
 	/**
-	 * @var Fieldmanager_Datasource
-	 * Data source to use for this Autocomplete
-	 */
-	public $datasource = Null;
-
-	/**
 	 * @var boolean
 	 * Require an exact match; e.g. prevent the user from entering free text
 	 */

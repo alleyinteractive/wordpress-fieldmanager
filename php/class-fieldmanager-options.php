@@ -35,12 +35,6 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	public $first_element = array();
 
 	/**
-	 * @var Fieldmanager_Datasource
-	 * Optionally generate field from datasource
-	 */
-	public $datasource = Null;
-
-	/**
 	 * @var boolean
 	 * Allow multiple selections?
 	 */
