@@ -321,7 +321,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 		return $classes;
 	}
-	
+
 	/**
 	 * Helper function to get the list of default meta boxes to remove.
 	 * For Fieldmanager_Group, iterate over all children to see if they have meta boxes to remove.
@@ -339,4 +339,5 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$child->add_meta_boxes_to_remove( $meta_boxes_to_remove );
 		}
 	}
+
 }

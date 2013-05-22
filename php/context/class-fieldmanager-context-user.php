@@ -9,8 +9,17 @@
  */
 class Fieldmanager_Context_User extends Fieldmanager_Context {
 
+	/**
+	 * @var string
+	 * Group Title
+	 */
 	public $title;
 
+	/**
+	 * Add fieldmanager to user form
+	 * @param string $title
+	 * @param Fieldmanager_Field $fm
+	 */
 	public function __construct( $title = '', $fm = Null ) {
 		$this->title = $title;
 		$this->fm = $fm;
@@ -22,6 +31,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 
 	/**
 	 * Render the form on the user profile page
+	 * @return void
 	 */
 	public function render_user_form( $user ) {
 		$values = get_user_meta( $user->ID, $this->fm->name, True );
@@ -32,6 +42,11 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 		echo '</div>';
 	}
 
+	/**
+	 * Save user form
+	 * @param int $user_id
+	 * @return void
+	 */
 	public function save_user_form( $user_id ) {
 		if ( !empty( $_POST ) && current_user_can( 'edit_user', $user_id ) ) {
 			// Make sure that our nonce field arrived intact

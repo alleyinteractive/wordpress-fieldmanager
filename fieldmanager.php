@@ -37,6 +37,8 @@ require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasour
 require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context.php' );
 require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-user.php' );
 require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-page.php' );
+require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-post.php' );
+require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-submenu.php' );
 
 define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 

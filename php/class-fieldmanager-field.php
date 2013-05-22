@@ -147,12 +147,6 @@ abstract class Fieldmanager_Field {
 	public $save_empty = False;
 
 	/**
-	 * @var string|Null
-	 * Only used for options pages
-	 */
-	public $submit_button_label = Null;
-
-	/**
 	 * @var boolean
 	 * Do not save this field (useful for fields which handle saving their own data)
 	 */
@@ -163,19 +157,6 @@ abstract class Fieldmanager_Field {
 	 * Save this field additionally to an index
 	 */
 	public $index = False;
-
-	/**
-	 * @var array[]
-	 * Array of content type assignments for these fields. Sample:
-	 * $element->content_types = array(
-	 *     array(
-	 *        'meta_box_name' => 'quiz_question',
-	 *        'meta_box_title' => 'Quiz Question',
-	 *        'content_type' => 'quiz'
-	 *     )
-	 * );
-	 */
-	public $content_types = array();
 	
 	/**
 	 * @var Fieldmanager_Datasource
@@ -192,12 +173,6 @@ abstract class Fieldmanager_Field {
 	 * );
 	 */
 	public $display_if = array();
-
-	/**
-	 * @var string
-	 * For submenu pages, set autoload to true or false
-	 */
-	public $wp_option_autoload = False;
 	
 	/**
 	 * @var boolean
@@ -242,11 +217,6 @@ abstract class Fieldmanager_Field {
 	private $meta_box_actions_added = False;
 
 	/**
-	 * Internal arguments buffer for add_submenu_page()
-	 */
-	private $submenu_page_args = array();
-
-	/**
 	 * @var int Global Sequence
 	 * The global sequence of elements
 	 */
@@ -274,8 +244,7 @@ abstract class Fieldmanager_Field {
 	 * @param array $options with keys matching vars of the field in use.
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		$this->parse_options( $label, $options );
-		$this->register_meta_box_actions();
+		$this->set_options( $label, $options );
 
 		add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
 	}
@@ -287,7 +256,7 @@ abstract class Fieldmanager_Field {
 	 * @throws FM_Developer_Exception if an option is set but not defined in this class or the child class.
 	 * @throws FM_Developer_Exception if an option is set but not public.
 	 */
-	protected function parse_options( $label, $options ) {
+	public function set_options( $label, $options ) {
 		if ( is_array( $label ) ) $options = $label;
 		else $options['label'] = $label;
 
@@ -563,220 +532,6 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Add a form on user pages
-	 * @param string $title
-	 */
-	public function add_user_form( $title = '' ) {
-		return new Fieldmanager_Context_User( $title, $this );
-	}
-
-	/**
-	 * Add a form on a frontend page
-	 * @param string $uniqid a unique identifier for this form
-	 */
-	public function add_page_form( $uniqid ) {
-		return new Fieldmanager_Context_Page( $uniqid, $this );
-	}
-
-	/**
-	 * Add this field as a metabox to a content type
-	 * @param string $title
-	 * @param string|string[] $post_type
-	 * @param string $context
-	 * @param string $priority
-	 */
-	public function add_meta_box( $title, $post_types, $context = 'normal', $priority = 'default' ) {
-		// Populate the list of post types for which to add this meta box with the given settings
-		if ( !is_array( $post_types ) ) $post_types = array( $post_types );
-		foreach ( $post_types as $type ) {
-			$this->content_types[] = array(
-				'meta_box_name' => 'fm-metabox-' . $this->name,
-				'meta_box_title' => $title,
-				'content_type' => $type,
-				'context' => $context,
-				'priority' => $priority,
-			);
-		}
-				
-		// Check if any default meta boxes need to be removed for this field 
-		$this->add_meta_boxes_to_remove( $this->meta_boxes_to_remove );
-		
-		// Register the actions required to handle adding/removing meta boxes
-		$this->register_meta_box_actions();
-	}
-
-	/**
-	 * Add this field to an options page
-	 * @param string $title
-	 */
-	public function add_submenu_page( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null ) {
-		$menu_slug = $menu_slug ?: $this->name;
-		$menu_title = $menu_title ?: $page_title;
-		$this->submenu_page_args = array(
-			'parent_slug' => $parent_slug,
-			'page_title' => $page_title,
-			'menu_title' => $menu_title,
-			'capability' => $capability,
-			'menu_slug' => $menu_slug,
-			'callback' => array( $this, 'render_submenu_page' ),
-		);
-		add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
-		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
-	}
-
-	/**
-	 * Register a submenu page with WordPress
-	 */
-	public function register_submenu_page() {
-		call_user_func_array( 'add_submenu_page', array_values( $this->submenu_page_args ) );
-	}
-
-	/**
-	 * Save a submenu page
-	 */
-	public function handle_submenu_save() {
-		if ( !empty( $_POST ) && $_GET['page'] == $this->name && current_user_can( $this->submenu_page_args['capability'] ) ) {
-			// Make sure that our nonce field arrived intact
-			if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->name . '-nonce'], 'fieldmanager-save-' . $this->name ) ) {
-				$this->_unauthorized_access( 'Nonce validation failed' );
-			}
-			$this->data_id = $this->name;
-			$this->data_type = 'options';
-			$current = get_option( $this->name );
-			$data = $this->presave_all( $_POST[ $this->name ], $current );
-			$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
-			if ( get_option( $this->name ) ) {
-				update_option( $this->name, $data );
-			} else {
-				add_option( $this->name, $data, ' ', $this->wp_option_autoload ? 'yes' : 'no' );
-			}
-		}
-	}
-
-	/**
-	 * Helper to attach element_markup() to add_meta_box(). Prints markup for options page.
-	 * @return void.
-	 */
-	public function render_submenu_page() {
-		$values = get_option( $this->name );
-		echo '<div class="wrap">';
-		screen_icon();
-		printf( '<h2>%s</h2>', $this->submenu_page_args['page_title'] );
-		echo '<form method="POST">';
-		echo '<div class="fm-submenu-form-wrapper">';
-		printf( '<input type="hidden" name="fm-options-action" value="%s" />', sanitize_title( $this->name ) );
-		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
-		echo $this->element_markup( $values );
-		echo '</div>';
-		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', $this->submit_button_label ?: __( 'Save Options' ) );
-		echo '</form>';
-		echo '</div>';
-	}
-
-	/**
-	 * admin_init callback to add meta boxes to content types
-	 * Registers render_meta_box()
-	 * @return void
-	 */
-	public function meta_box_render_callback() {
-		foreach ( $this->content_types as $type ) {
-			add_meta_box(
-				$type['meta_box_name'],
-				$type['meta_box_title'],
-				array( $this, 'render_meta_box' ),
-				$type['content_type'],
-				isset( $type['context'] ) ? $type['context'] : 'normal',
-				isset( $type['priority'] ) ? $type['priority'] : 'default'
-			);
-		}
-	}
-
-	/**
-	 * Helper to attach element_markup() to add_meta_box(). Prints markup for post editor.
-	 * @see http://codex.wordpress.org/Function_Reference/add_meta_box
-	 * @param $post the post object.
-	 * @param $form_struct the structure of the form itself (not very useful).
-	 * @return void.
-	 */
-	public function render_meta_box( $post, $form_struct ) {
-		$key = $form_struct['callback'][0]->name;
-		$values = get_post_meta( $post->ID, $key, TRUE );
-		$this->data_type = 'post';
-		$this->data_id = $post->ID;
-		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
-		echo $this->element_markup( $values );
-	}
-	
-	/**
-	 * Helper to remove all built-in meta boxes for all specified taxonomies on a post type
-	 * @param $post_type the post type
-	 * @param $taxonomies the taxonomies for which to remove default meta boxes
-	 * @return void.
-	 */
-	public function remove_meta_boxes() {
-		foreach( $this->content_types as $type ) {
-			foreach( $this->meta_boxes_to_remove as $meta_box ) {
-				remove_meta_box( $meta_box['id'], $type['content_type'], $meta_box['context'] );
-			}
-		}
-	}
-
-	/**
-	 * Takes $_POST data and saves it to, calling save_to_post_meta() once validation is passed
-	 * When using Fieldmanager as an API, do not call this function directly, call save_to_post_meta()
-	 * @param int $post_id
-	 * @return void
-	 */
-	public function save_fields_for_post( $post_id ) {
-		// Make sure this field is attached to the post type being saved.
-		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) )
-			return;
-		$use_this_post_type = False;
-		foreach ( $this->content_types as $type ) {
-			if ( $type['content_type'] == $_POST['post_type'] ) {
-				$use_this_post_type = True;
-				break;
-			}
-		}
-		if ( !$use_this_post_type ) return;
-		if ( $_POST['action'] == 'inline-save' ) return; // no fieldmanager on quick edit yet
-
-		// Make sure the current user can save this post
-		if( $_POST['post_type'] == 'post' ) {
-			if( !current_user_can( 'edit_post', $post_id ) ) {
-				$this->_unauthorized_access( 'User cannot edit this post' );
-				return;
-			}
-		}
-
-		// Make sure that our nonce field arrived intact
-		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->name . '-nonce'], 'fieldmanager-save-' . $this->name ) ) {
-			$this->_unauthorized_access( 'Nonce validation failed' );
-		}
-
-		$this->save_to_post_meta( $post_id, $_POST[ $this->name ] );
-	}
-
-	/**
-	 * Helper to save an array of data to post meta
-	 * @param int $post_id
-	 * @param array $data
-	 * @return void
-	 */
-	public function save_to_post_meta( $post_id, $data ) {
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
-		$this->data_id = $post_id;
-		$this->data_type = 'post';
-		$post = get_post( $post_id );
-		if ( $post->post_type = 'revision' && $post->post_parent != 0 ) {
-			$this->data_id = $post->post_parent;
-		}
-		$current = get_post_meta( $this->data_id, $this->name, True );
-		$data = $this->presave_all( $data, $current );
-		if ( !$this->skip_save ) update_post_meta( $post_id, $this->name, $data );
-	}
-
-	/**
 	 * Presaves all elements in what could be a set of them, dispatches to $this->presave()
 	 * @input mixed[] $values
 	 * @return mixed[] sanitized values
@@ -970,6 +725,53 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Add a form on user pages
+	 * @param string $title
+	 */
+	public function add_user_form( $title = '' ) {
+		$this->require_base();
+		return new Fieldmanager_Context_User( $title, $this );
+	}
+
+	/**
+	 * Add a form on a frontend page
+	 * @param string $uniqid a unique identifier for this form
+	 */
+	public function add_page_form( $uniqid ) {
+		$this->require_base();
+		return new Fieldmanager_Context_Page( $uniqid, $this );
+	}
+
+	/**
+	 * Add this field as a metabox to a content type
+	 * @param string $title
+	 * @param string|string[] $post_type
+	 * @param string $context
+	 * @param string $priority
+	 */
+	public function add_meta_box( $title, $post_types, $context = 'normal', $priority = 'default' ) {
+		$this->require_base();
+		// Check if any default meta boxes need to be removed for this field 
+		$this->add_meta_boxes_to_remove( $this->meta_boxes_to_remove );
+		return new Fieldmanager_Context_Post( $title, $post_types, $context, $priority, $this );
+	}
+
+	/**
+	 * Add this group to an options page
+	 * @param string $title
+	 */
+	public function add_submenu_page( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null ) {
+		$this->require_base();
+		return new Fieldmanager_Context_Submenu( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $this );
+	}
+
+	private function require_base() {
+		if ( !empty( $this->parent ) ) {
+			throw new FM_Developer_Exception( __( 'You cannot use this method on a subgroup' ) );
+		}
+	}
+
+	/**
 	 * How many elements should we render?
 	 * @return string
 	 */
@@ -1025,21 +827,6 @@ abstract class Fieldmanager_Field {
 		if ( $this->is_proto ) return True;
 		if ( $this->parent ) return $this->parent->has_proto();
 		return False;
-	}
-
-	/**
-	 * Register meta box actions
-	 */
-	private function register_meta_box_actions() {
-		if ( ! empty( $this->content_types ) && ! $this->meta_box_actions_added ) {
-			add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
-			add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
-			
-			// Check if any meta boxes need to be removed
-			if ( ! empty( $this->meta_boxes_to_remove ) ) {
-				add_action( 'admin_init', array( $this, 'remove_meta_boxes' ) );
-			}
-		}
 	}
 	
 	/**
