@@ -245,6 +245,12 @@ abstract class Fieldmanager_Field {
 	 * Internal arguments buffer for add_submenu_page()
 	 */
 	private $submenu_page_args = array();
+	
+	/**
+	 * @var boolean
+	 * Whether or not this field is present on the attachment edit screen
+	 */
+	private $is_attachment = false;
 
 	/**
 	 * @var int Global Sequence
@@ -596,6 +602,10 @@ abstract class Fieldmanager_Field {
 				'context' => $context,
 				'priority' => $priority,
 			);
+			
+			// If the content type is 'attachment', set the is_attachment flag to enable the proper save action
+			if ( $type == 'attachment' )
+				$this->is_attachment = true;
 		}
 				
 		// Check if any default meta boxes need to be removed for this field 
@@ -755,6 +765,21 @@ abstract class Fieldmanager_Field {
 		}
 
 		$this->save_to_post_meta( $post_id, $_POST[ $this->name ] );
+	}
+	
+	/**
+	 * Handles saving Fieldmanager data when the custom meta boxes are used on an attachment.
+	 * Calls save_fields_for_post with the post ID.
+	 * @param array $post The post fields
+	 * @param array $attachment The attachment fields
+	 * @return void
+	 */
+	public function save_fields_for_attachment( $post, $attachment ) {
+		// Use save_fields_for_post to handle saving any Fieldmanager meta data
+		$this->save_fields_for_post( $post['ID'] );
+		
+		// Return the post data for the attachment unmodified 
+		return $post;
 	}
 
 	/**
@@ -1034,6 +1059,11 @@ abstract class Fieldmanager_Field {
 		if ( ! empty( $this->content_types ) && ! $this->meta_box_actions_added ) {
 			add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
 			add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
+			
+			// If this meta box is on an attachment page, add the appropriate filter hook to save the data
+			if ( $this->is_attachment ) {
+				add_filter( 'attachment_fields_to_save', array( $this, 'save_fields_for_attachment' ), 10, 2 );
+			}
 			
 			// Check if any meta boxes need to be removed
 			if ( ! empty( $this->meta_boxes_to_remove ) ) {
