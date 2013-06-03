@@ -19,6 +19,7 @@ class Fieldmanager_Link extends Fieldmanager_Textfield {
 		$this->sanitize = function( $value ) {
 			return sanitize_url( $value );
 		};
+		$this->template = fieldmanager_get_template( 'textfield' );
 		parent::__construct( $label, $options );
 	}
 
