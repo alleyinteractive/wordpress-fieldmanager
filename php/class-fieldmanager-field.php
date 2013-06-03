@@ -204,7 +204,13 @@ abstract class Fieldmanager_Field {
 	 * If true, remove any default meta boxes that are overridden by Fieldmanager fields
 	 */
 	public $remove_default_meta_boxes = False;
-	
+
+	/**
+	 * @var string Template
+	 * The path to the field template
+	 */
+	public $template = Null;
+
 	/**
 	 * @var array
 	 * If $remove_default_meta_boxes is true, this array will be populated with the list of default meta boxes to remove
