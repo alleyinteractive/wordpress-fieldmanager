@@ -176,7 +176,7 @@ abstract class Fieldmanager_Field {
 	 * );
 	 */
 	public $content_types = array();
-	
+
 	/**
 	 * @var Fieldmanager_Datasource
 	 * Optionally generate field from datasource. Used by Fieldmanager_Autocomplete and Fieldmanager_Options.
@@ -198,7 +198,7 @@ abstract class Fieldmanager_Field {
 	 * For submenu pages, set autoload to true or false
 	 */
 	public $wp_option_autoload = False;
-	
+
 	/**
 	 * @var boolean
 	 * If true, remove any default meta boxes that are overridden by Fieldmanager fields
@@ -251,7 +251,7 @@ abstract class Fieldmanager_Field {
 	 * Internal arguments buffer for add_submenu_page()
 	 */
 	private $submenu_page_args = array();
-	
+
 	/**
 	 * @var boolean
 	 * Whether or not this field is present on the attachment edit screen
@@ -608,15 +608,15 @@ abstract class Fieldmanager_Field {
 				'context' => $context,
 				'priority' => $priority,
 			);
-			
+
 			// If the content type is 'attachment', set the is_attachment flag to enable the proper save action
 			if ( $type == 'attachment' )
 				$this->is_attachment = true;
 		}
-				
-		// Check if any default meta boxes need to be removed for this field 
+
+		// Check if any default meta boxes need to be removed for this field
 		$this->add_meta_boxes_to_remove( $this->meta_boxes_to_remove );
-		
+
 		// Register the actions required to handle adding/removing meta boxes
 		$this->register_meta_box_actions();
 	}
@@ -722,7 +722,7 @@ abstract class Fieldmanager_Field {
 		wp_nonce_field( 'fieldmanager-save-' . $this->name, 'fieldmanager-' . $this->name . '-nonce' );
 		echo $this->element_markup( $values );
 	}
-	
+
 	/**
 	 * Helper to remove all built-in meta boxes for all specified taxonomies on a post type
 	 * @param $post_type the post type
@@ -772,7 +772,7 @@ abstract class Fieldmanager_Field {
 
 		$this->save_to_post_meta( $post_id, $_POST[ $this->name ] );
 	}
-	
+
 	/**
 	 * Handles saving Fieldmanager data when the custom meta boxes are used on an attachment.
 	 * Calls save_fields_for_post with the post ID.
@@ -783,8 +783,8 @@ abstract class Fieldmanager_Field {
 	public function save_fields_for_attachment( $post, $attachment ) {
 		// Use save_fields_for_post to handle saving any Fieldmanager meta data
 		$this->save_fields_for_post( $post['ID'] );
-		
-		// Return the post data for the attachment unmodified 
+
+		// Return the post data for the attachment unmodified
 		return $post;
 	}
 
@@ -1065,19 +1065,19 @@ abstract class Fieldmanager_Field {
 		if ( ! empty( $this->content_types ) && ! $this->meta_box_actions_added ) {
 			add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
 			add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
-			
+
 			// If this meta box is on an attachment page, add the appropriate filter hook to save the data
 			if ( $this->is_attachment ) {
 				add_filter( 'attachment_fields_to_save', array( $this, 'save_fields_for_attachment' ), 10, 2 );
 			}
-			
+
 			// Check if any meta boxes need to be removed
 			if ( ! empty( $this->meta_boxes_to_remove ) ) {
 				add_action( 'admin_init', array( $this, 'remove_meta_boxes' ) );
 			}
 		}
 	}
-	
+
 	/**
 	 * Helper function to add to the list of meta boxes to remove. This will be defined in child classes that require this functionality.
 	 * @param array current list of meta boxes to remove
