@@ -39,19 +39,26 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @param array $options
 	 */
 	public function __construct( $label, $options = array() ) {
-		add_action( 'admin_print_scripts', function() {
-			$post = get_post();	
-			$args = array();
-			if ( $post->ID ) {
-				$args['post'] = $post->ID;
-			}
-			wp_enqueue_media( $args ); // generally on post pages this will not have an impact.
-		} );
+		add_action( 'admin_print_scripts', array( &$this, 'enqueue_media' ) );
+
 		if ( !self::$has_registered_media ) {
 			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js' );
 			self::$has_registered_media = True;
 		}
 		parent::__construct( $label, $options );
+	}
+
+	/**
+	 * Run wp_enqueue_media with pre-set args
+	 * @return void
+	 */
+	public function enqueue_media() {
+		$post = get_post();
+		$args = array();
+		if ( is_object( $post ) && $post->ID ) {
+			$args['post'] = $post->ID;
+		}
+		wp_enqueue_media( $args ); // generally on post pages this will not have an impact.
 	}
 
 	/**
