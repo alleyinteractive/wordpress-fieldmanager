@@ -39,8 +39,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @param array $options
 	 */
 	public function __construct( $label, $options = array() ) {
-		add_action( 'admin_print_scripts-post.php',     array( &$this, 'enqueue_media' ) );
-		add_action( 'admin_print_scripts-post-new.php', array( &$this, 'enqueue_media' ) );
+		add_action( 'admin_print_scripts', array( &$this, 'enqueue_media' ) );
 
 		if ( !self::$has_registered_media ) {
 			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js' );
@@ -49,6 +48,10 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		parent::__construct( $label, $options );
 	}
 
+	/**
+	 * Run wp_enqueue_media with pre-set args
+	 * @return void
+	 */
 	public function enqueue_media() {
 		$post = get_post();
 		$args = array();
