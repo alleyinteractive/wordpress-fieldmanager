@@ -58,6 +58,10 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm = $fm;
 
 		add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
+		// If this meta box is on an attachment page, add the appropriate filter hook to save the data
+		if ( $this->fm->is_attachment ) {
+			add_filter( 'attachment_fields_to_save', array( $this, 'save_fields_for_attachment' ), 10, 2 );
+		}
 		add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
 		// Check if any meta boxes need to be removed
 		if ( $this->fm && !empty( $this->fm->meta_boxes_to_remove ) ) {
@@ -111,6 +115,21 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 				remove_meta_box( $meta_box['id'], $type, $meta_box['context'] );
 			}
 		}
+	}
+
+	/**
+	 * Handles saving Fieldmanager data when the custom meta boxes are used on an attachment.
+	 * Calls save_fields_for_post with the post ID.
+	 * @param array $post The post fields
+	 * @param array $attachment The attachment fields
+	 * @return void
+	 */
+	public function save_fields_for_attachment( $post, $attachment ) {
+		// Use save_fields_for_post to handle saving any Fieldmanager meta data
+		$this->save_fields_for_post( $post['ID'] );
+
+		// Return the post data for the attachment unmodified
+		return $post;
 	}
 
 	/**

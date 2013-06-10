@@ -157,7 +157,7 @@ abstract class Fieldmanager_Field {
 	 * Save this field additionally to an index
 	 */
 	public $index = False;
-	
+
 	/**
 	 * @var Fieldmanager_Datasource
 	 * Optionally generate field from datasource. Used by Fieldmanager_Autocomplete and Fieldmanager_Options.
@@ -173,13 +173,19 @@ abstract class Fieldmanager_Field {
 	 * );
 	 */
 	public $display_if = array();
-	
+
 	/**
 	 * @var boolean
 	 * If true, remove any default meta boxes that are overridden by Fieldmanager fields
 	 */
 	public $remove_default_meta_boxes = False;
-	
+
+	/**
+	 * @var string Template
+	 * The path to the field template
+	 */
+	public $template = Null;
+
 	/**
 	 * @var array
 	 * If $remove_default_meta_boxes is true, this array will be populated with the list of default meta boxes to remove
@@ -215,6 +221,12 @@ abstract class Fieldmanager_Field {
 	 * Have we added this field as a meta box yet?
 	 */
 	private $meta_box_actions_added = False;
+
+	/**
+	 * @var boolean
+	 * Whether or not this field is present on the attachment edit screen
+	 */
+	private $is_attachment = false;
 
 	/**
 	 * @var int Global Sequence
@@ -828,7 +840,7 @@ abstract class Fieldmanager_Field {
 		if ( $this->parent ) return $this->parent->has_proto();
 		return False;
 	}
-	
+
 	/**
 	 * Helper function to add to the list of meta boxes to remove. This will be defined in child classes that require this functionality.
 	 * @param array current list of meta boxes to remove
