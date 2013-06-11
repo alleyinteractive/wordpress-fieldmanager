@@ -443,6 +443,9 @@ abstract class Fieldmanager_Field {
 			}
 		}
 
+		if ( Null === $value && Null !== $this->default_value )
+			$value = $this->default_value;
+
 		$form_element = $this->form_element( $value );
 
 		if ( $this->limit == 0 && !$this->one_label_per_item ) {

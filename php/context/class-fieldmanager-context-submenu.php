@@ -2,9 +2,9 @@
 /**
  * @package Fieldmanager_Context
  */
- 
+
 /**
- * Use fieldmanager to create meta boxes on 
+ * Use fieldmanager to create meta boxes on
  * @package Fieldmanager_Context
  */
 class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
@@ -84,7 +84,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 * @return void.
 	 */
 	public function render_submenu_page() {
-		$values = get_option( $this->fm->name );
+		$values = get_option( $this->fm->name, Null );
 		echo '<div class="wrap">';
 		screen_icon();
 		printf( '<h2>%s</h2>', $this->page_title );

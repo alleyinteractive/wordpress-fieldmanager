@@ -96,10 +96,8 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 */
 	public function render_meta_box( $post, $form_struct ) {
 		$key = $form_struct['callback'][0]->fm->name;
-		$values = get_post_meta( $post->ID, $key, TRUE );
-		if ( null !== $this->fm->default_value && !isset( $_GET['post'] ) && 'auto-draft' == $post->post_status && '' == $values )
-			$values = $this->fm->default_value;
-
+		$values = get_post_meta( $post->ID, $key );
+		$values = empty( $values ) ? Null : $values[0];
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
