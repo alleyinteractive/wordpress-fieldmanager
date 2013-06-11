@@ -2,7 +2,7 @@
 /**
  * @package Fieldmanager_Context
  */
- 
+
 /**
  * Use fieldmanager on user management forms
  * @package Fieldmanager_Datasource
@@ -34,7 +34,8 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function render_user_form( $user ) {
-		$values = get_user_meta( $user->ID, $this->fm->name, True );
+		$values = get_user_meta( $user->ID, $this->fm->name );
+		$values = empty( $values ) ? Null : $values[0];
 		if ( !empty( $this->title ) ) echo '<h3>' . $this->title . '</h3>';
 		echo '<div class="fm-user-form-wrapper">';
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
