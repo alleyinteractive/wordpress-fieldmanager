@@ -193,6 +193,12 @@ abstract class Fieldmanager_Field {
 	public $meta_boxes_to_remove = array();
 
 	/**
+	 * @var mixed Default value
+	 * The default value for the field, if unset
+	 */
+	public $default_value = null;
+
+	/**
 	 * @var int
 	 * If $this->limit > 1, which element in sequence are we currently rendering?
 	 */
@@ -436,6 +442,9 @@ abstract class Fieldmanager_Field {
 				$render_label_after = True;
 			}
 		}
+
+		if ( Null === $value && Null !== $this->default_value )
+			$value = $this->default_value;
 
 		$form_element = $this->form_element( $value );
 
@@ -763,7 +772,7 @@ abstract class Fieldmanager_Field {
 	 */
 	public function add_meta_box( $title, $post_types, $context = 'normal', $priority = 'default' ) {
 		$this->require_base();
-		// Check if any default meta boxes need to be removed for this field 
+		// Check if any default meta boxes need to be removed for this field
 		$this->add_meta_boxes_to_remove( $this->meta_boxes_to_remove );
 		return new Fieldmanager_Context_Post( $title, $post_types, $context, $priority, $this );
 	}
