@@ -2,9 +2,9 @@
 /**
  * @package Fieldmanager_Context
  */
- 
+
 /**
- * Use fieldmanager to create meta boxes on 
+ * Use fieldmanager to create meta boxes on
  * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Context_Post extends Fieldmanager_Context {
@@ -97,12 +97,15 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	public function render_meta_box( $post, $form_struct ) {
 		$key = $form_struct['callback'][0]->fm->name;
 		$values = get_post_meta( $post->ID, $key, TRUE );
+		if ( null !== $this->fm->default_value && !isset( $_GET['post'] ) && 'auto-draft' == $post->post_status && '' == $values )
+			$values = $this->fm->default_value;
+
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $values );
 	}
-	
+
 	/**
 	 * Helper to remove all built-in meta boxes for all specified taxonomies on a post type
 	 * @param $post_type the post type
