@@ -190,7 +190,7 @@ abstract class Fieldmanager_Field {
 	 * @var array
 	 * If $remove_default_meta_boxes is true, this array will be populated with the list of default meta boxes to remove
 	 */
-	protected $meta_boxes_to_remove = array();
+	public $meta_boxes_to_remove = array();
 
 	/**
 	 * @var int
