@@ -141,7 +141,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 */
 	public function save_fields_for_post( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
-		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) )
+		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' )
 			return;
 		$use_this_post_type = False;
 		foreach ( $this->post_types as $type ) {

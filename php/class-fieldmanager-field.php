@@ -762,6 +762,18 @@ abstract class Fieldmanager_Field {
 		$this->require_base();
 		return new Fieldmanager_Context_Page( $uniqid, $this );
 	}
+	
+	/**
+	 * Add a form on a term add/edit page
+	 * @param string $title
+	 * @param string $uniqid a unique identifier for this form
+	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
+	 * @param boolean $show_on_edit Whether or not to show the fields on the edit term form
+	 */
+	public function add_term_form( $title, $uniqid, $show_on_add = true, $show_on_edit = true ) {
+		$this->require_base();
+		return new Fieldmanager_Context_Term( $title, $uniqid, $show_on_add, $show_on_edit, $this );
+	}
 
 	/**
 	 * Add this field as a metabox to a content type
@@ -833,6 +845,20 @@ abstract class Fieldmanager_Field {
 				$debug_message . "\n\n" .
 				__( 'You may be able to use your browser\'s back button to resolve this error. ', 'fieldmanager' )
 			);
+		}
+	}
+	
+	/**
+	 * Die violently. If self::$debug is true, throw an exception.
+	 * @param string $debug_message
+	 * @return void e.g. return _you_ into a void.
+	 */
+	public function _invalid_definition( $debug_message = '' ) {
+		if ( self::$debug ) {
+			throw new FM_Exception( $debug_message );
+		}
+		else {
+			wp_die( __( 'Sorry, you\'ve created an invalid field definition. Please check your code and try again.', 'fieldmanager' ) );
 		}
 	}
 
