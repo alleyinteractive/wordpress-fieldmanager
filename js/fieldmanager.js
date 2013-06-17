@@ -88,26 +88,34 @@ var match_value = function( values, match_string ) {
 	return false;
 }
 
+fm_add_another = function( $element ) {
+	var el_name = $element.attr( 'data-related-element' );
+	$new_element = $( '.fmjs-proto.fm-' + el_name ).first().clone();
+	$new_element.removeClass( 'fmjs-proto' );
+	$new_element = $new_element.insertBefore( $element.parent() );
+	fm_renumber( $element.parents( '.fm-wrapper' ) );
+	// Trigger for subclasses to do any post-add event handling for the new element
+	$element.parent().siblings().last().trigger( 'fm_added_element' );
+	init_label_macros();
+	init_sortable();
+}
+
+fm_remove = function( $element ) {
+	$wrapper = $( this ).parents( '.fm-wrapper' ).first();
+	$element.parents( '.fm-item' ).first().remove();
+	fm_renumber( $wrapper );
+}
+
 $( document ).ready( function () {
 	$( '.fm-add-another' ).live( 'click', function( e ) {
 		e.preventDefault();
-		var el_name = $( this ).attr( 'data-related-element' );
-		$new_element = $( '.fmjs-proto.fm-' + el_name ).first().clone();
-		$new_element.removeClass( 'fmjs-proto' );
-		$new_element = $new_element.insertBefore( $( this ).parent() );
-		fm_renumber( $( this ).parents( '.fm-wrapper' ) );
-		// Trigger for subclasses to do any post-add event handling for the new element
-		$(this).parent().siblings().last().trigger( 'fm_added_element' );
-		init_label_macros();
-		init_sortable();
+		fm_add_another( $( this ) );
 	} );
 
 	// Handle remove events
 	$( '.fmjs-remove' ).live( 'click', function( e ) {
 		e.preventDefault();
-		$wrapper = $( this ).parents( '.fm-wrapper' ).first();
-		$( this ).parents( '.fm-item' ).first().remove();
-		fm_renumber( $wrapper );
+		fm_remove( $( this ) );
 	} );
 
 	// Handle collapse events
