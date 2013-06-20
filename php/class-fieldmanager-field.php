@@ -766,13 +766,14 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Add a form on a term add/edit page
 	 * @param string $title
-	 * @param string $uniqid a unique identifier for this form
+	 * @param string|array $taxonomies The taxonomies on which to display this form
 	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
 	 * @param boolean $show_on_edit Whether or not to show the fields on the edit term form
+	 * @param int $parent Only show this field on child terms of this parent term ID
 	 */
-	public function add_term_form( $title, $uniqid, $show_on_add = true, $show_on_edit = true ) {
+	public function add_term_form( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
 		$this->require_base();
-		return new Fieldmanager_Context_Term( $title, $uniqid, $show_on_add, $show_on_edit, $this );
+		return new Fieldmanager_Context_Term( $title, $taxonomies, $show_on_add, $show_on_edit, $parent, $this );
 	}
 
 	/**

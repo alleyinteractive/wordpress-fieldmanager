@@ -152,11 +152,19 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 			// Iterate over the list and build the list of meta boxes
 			$meta_boxes = array();
 			foreach( $this->datasource->get_taxonomies() as $taxonomy ) {
-				$id = 'tagsdiv-' . $taxonomy;
-				$meta_boxes[$id] = array(
-					'id' => $id,
-					'context' => 'side'
-				);
+				// The ID differs if this is a hierarchical taxonomy or not. Get the taxonomy object.
+				$taxonomy_obj = get_taxonomy( $taxonomy );
+				if ( false !== $taxonomy_obj ) {
+					if ( $taxonomy_obj->hierarchical )
+						$id = $taxonomy . "div";
+					else
+						$id = 'tagsdiv-' . $taxonomy;
+					
+					$meta_boxes[$id] = array(
+						'id' => $id,
+						'context' => 'side'
+					);
+				}
 			}
 			
 			// Merge in the new meta boxes to remove

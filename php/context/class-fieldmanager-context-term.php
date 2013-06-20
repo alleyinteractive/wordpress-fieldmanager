@@ -33,6 +33,12 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	public $show_on_edit = true;
 	
 	/**
+	 * @var int
+	 * Only show this field on child terms of this parent
+	 */
+	public $parent = '';
+	
+	/**
 	 * @var array
 	 * Field names reserved for WordPress on the term add/edit forms
 	 */
@@ -51,7 +57,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 * @param boolean $show_on_edit Whether or not to show the fields on the edit term form
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function __construct( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $fm = null ) {
+	public function __construct( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '', $fm = null ) {
 		// Populate the list of taxonomies for which to add this meta box with the given settings
 		if ( !is_array( $taxonomies ) ) $taxonomies = array( $taxonomies );
 		
@@ -60,6 +66,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$this->taxonomies = $taxonomies;
 		$this->show_on_add = $show_on_add;
 		$this->show_on_edit = $show_on_edit;
+		$this->parent = $parent;
 		$this->fm = $fm;
 		
 		// Iterate through the taxonomies and add the fields to the requested forms
@@ -90,6 +97,10 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function add_term_fields( $taxonomy ) {
+		// If the parent is set, do nothing because we don't know what the parent term is yet
+		if ( ! empty( $this->parent ) )
+			return;
+	
 		// Create the HTML template for output
 		$html_template = '<div class="form-field">%s%s%s</div>';
 
@@ -105,6 +116,10 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function edit_term_fields( $term, $taxonomy ) {
+		// Check if this term's parent matches the specified term if it is set
+		if ( ! empty( $this->parent ) && $this->parent != $term->parent )
+			return;
+	
 		// Create the HTML template for output
 		$html_template = '<tr class="form-field"><th scope="row" valign="top">%s</th><td>%s%s</td></tr>';
 		
@@ -127,7 +142,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	
 		// Check if there are any current values to retrieve
 		if ( isset( $term->term_id ) ) {
-			$term_meta = Fieldmanager_Context_Term_Meta();
+			$term_meta = Fieldmanager_Util_Term_Meta();
 			$values = $term_meta->get_term_meta( $term->term_id, $this->fm->name, true );
 		}
 		$values = empty( $values ) ? null : $values;
@@ -196,7 +211,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$this->fm->data_type = 'term';
 		
 		// Get an instance of the term meta class
-		$term_meta = Fieldmanager_Context_Term_Meta();
+		$term_meta = Fieldmanager_Util_Term_Meta();
 		
 		// Get the current data and run presave
 		$current = $term_meta->get_term_meta( $this->fm->data_id, $this->fm->name, true );
@@ -219,7 +234,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function delete_term_fields( $term_id, $tt_id, $taxonomy, $deleted_term ) {
 		// Get an instance of the term meta class
-		$term_meta = Fieldmanager_Context_Term_Meta();
+		$term_meta = Fieldmanager_Util_Term_Meta();
 		
 		// Delete any instance of this field for the term that was deleted
 		$term_meta->delete_term_meta( $term_id, $this->fm->name );

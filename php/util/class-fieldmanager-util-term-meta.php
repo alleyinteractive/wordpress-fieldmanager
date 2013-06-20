@@ -1,12 +1,12 @@
 <?php
 /**
- * @package Fieldmanager_Context
+ * @package Fieldmanager_Util
  */
 
 /**
  * Use fieldmanager to store meta data for taxonomy terms
  */
-class Fieldmanager_Context_Term_Meta {
+class Fieldmanager_Util_Term_Meta {
 	
 	/**
 	 * Instance of the class
@@ -32,7 +32,7 @@ class Fieldmanager_Context_Term_Meta {
 	 */
 	public static function instance( $settings = array() ) {
 		if ( ! isset( self::$instance ) ) {
-			self::$instance = new Fieldmanager_Context_Term_Meta;
+			self::$instance = new Fieldmanager_Util_Term_Meta;
 			self::$instance->setup( $settings );
 		}
 		return self::$instance;
@@ -244,7 +244,7 @@ class Fieldmanager_Context_Term_Meta {
  *
  * @return object
  */
-function Fieldmanager_Context_Term_Meta() {
-	return Fieldmanager_Context_Term_Meta::instance();
+function Fieldmanager_Util_Term_Meta() {
+	return Fieldmanager_Util_Term_Meta::instance();
 }
-Fieldmanager_Context_Term_Meta();
+Fieldmanager_Util_Term_Meta();
