@@ -30,7 +30,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 		$this->fm = $fm;
 		self::$forms[$uniqid] = $this;
 		$this->uniqid = $uniqid;
-		$this->validate_form_ids = array( $this->uniqid );
+
 		// since this should be set up in init, check for submit now
 		if ( !empty( $_POST ) && !empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) {
 			$this->save_page_form();
@@ -71,6 +71,10 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', $this->fm->submit_button_label ?: __( 'Save Options' ) );
 		echo '</form>';
 		echo '</div>';
+		
+		// Check if any validation is required
+		$fm_validation = Fieldmanager_Util_Validation( $this->uniqid, 'page' );
+		$fm_validation->add_field( $this->fm );
 	}
 
 	/**

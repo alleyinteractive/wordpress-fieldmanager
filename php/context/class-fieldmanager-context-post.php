@@ -56,7 +56,6 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->context = $context;
 		$this->priority = $priority;
 		$this->fm = $fm;
-		$this->validate_form_ids = array( 'post' );
 
 		add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
 		// If this meta box is on an attachment page, add the appropriate filter hook to save the data
@@ -103,6 +102,10 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_id = $post->ID;
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $values );
+		
+		// Check if any validation is required
+		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );
+		$fm_validation->add_field( $this->fm );
 	}
 
 	/**

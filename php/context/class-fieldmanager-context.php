@@ -20,11 +20,5 @@ abstract class Fieldmanager_Context {
 	 * Unique ID of the form. Used for forms that are not built into WordPress.
 	 */
 	public $uniqid;
-	
-	/**
-	 * @var string[]
-	 * Array of IDs used for form validation, if enabled
-	 */
-	public $validate_form_ids;
 
 }

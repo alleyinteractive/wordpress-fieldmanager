@@ -68,7 +68,6 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->page_title = $page_title;
 		$this->capability = $capability;
 		$this->uniqid = $this->fm->get_element_id() . '_form';
-		$this->validate_form_ids = array( $this->uniqid );
 		add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
 	}
@@ -99,6 +98,10 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', $this->submit_button_label ?: __( 'Save Options' ) );
 		echo '</form>';
 		echo '</div>';
+		
+		// Check if any validation is required
+		$fm_validation = Fieldmanager_Util_Validation( $this->uniqid, 'submenu' );
+		$fm_validation->add_field( $this->fm );
 	}
 
 	/**

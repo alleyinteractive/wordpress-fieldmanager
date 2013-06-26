@@ -75,13 +75,11 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			if ( $this->show_on_add ) {
 				add_action( $taxonomy . '_add_form_fields', array( $this, 'add_term_fields' ), 10, 1 );
 				add_action( 'created_term', array( $this, 'save_term_fields'), 10, 3 );
-				$this->validate_form_ids[] = 'addtag';
 			}
 			
 			if ( $this->show_on_edit ) {			
 				add_action( $taxonomy . '_edit_form_fields', array( $this, 'edit_term_fields' ), 10, 2 );
 				add_action( 'edited_term', array( $this, 'save_term_fields'), 10, 3 );
-				$this->validate_form_ids[] = 'edittag';
 			}
 			
 			// Also handle removing data when a term is deleted
@@ -108,6 +106,10 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 
 		// Display the field
 		echo $this->term_fields( $html_template, $taxonomy );
+		
+		// Check if any validation is required
+		$fm_validation = Fieldmanager_Util_Validation( 'addtag', 'term' );
+		$fm_validation->add_field( $this->fm );
 	}
 	
 	/**
@@ -127,6 +129,10 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		
 		// Display the field
 		echo $this->term_fields( $html_template, $taxonomy, $term );
+		
+		// Check if any validation is required
+		$fm_validation = Fieldmanager_Util_Validation( 'edittag', 'term' );
+		$fm_validation->add_field( $this->fm );
 	}
 	
 	/**

@@ -238,7 +238,7 @@ class Fieldmanager_Util_Term_Meta {
 }
 
 /**
- * Singleton helper for Term_Meta
+ * Singleton helper for Fieldmanager_Util_Term_Meta
  *
  * @return object
  */

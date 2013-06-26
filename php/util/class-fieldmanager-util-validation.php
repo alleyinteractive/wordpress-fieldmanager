@@ -3,7 +3,7 @@
  * @package Fieldmanager_Util
  */
 
-class Fieldmanager_Util_Validation  {
+class Fieldmanager_Util_Validation {
 	
 	/**
 	 * Instance of this class
@@ -86,6 +86,7 @@ class Fieldmanager_Util_Validation  {
 	 * @access private
 	 * @param string $form_id
 	 * @param string $context
+	 * @return Fieldmanager_Util_Validation
 	 */
 	private function setup( $form_id, $context ) {
 		// Set class variables
@@ -106,10 +107,6 @@ class Fieldmanager_Util_Validation  {
 		
 		// Hook the action
 		add_action( $action, array( &$this, 'add_validation' ) );
-		
-		// Add the jQuery validation script
-		// http://jqueryvalidation.org/
-		fm_add_script( 'fm_validation_js', 'js/validation/jquery.validate.min.js', array(), false, true, "", array(), "", $admin );
 	}
 
 	/**
@@ -119,6 +116,13 @@ class Fieldmanager_Util_Validation  {
 	 * @param Fieldmanager_Field $fm
 	 */
 	public function add_field( $fm ) {
+		// If this field is a Fieldmanager_Group, iterate over the children
+		if ( get_class( $fm ) == "Fieldmanager_Group" ) {
+			foreach ( $fm->children as $child ) {
+				$this->add_field( $child );
+			}
+		}
+	
 		// Check if this field has validation enabled. If not, return.
 		if ( empty( $fm->validation_rules ) )
 			return;
@@ -166,27 +170,121 @@ class Fieldmanager_Util_Validation  {
 	 */
 	public function add_validation() {
 		// Iterate through the fields and output the required Javascript
+		$rules = array();
+		$messages = array();
 		foreach ( $this->fields as $field ) {
-			// Get the field name
-			$name = $this->quote_field_name( $field );
+			// Add the rule string to an array
+			$rule = $this->value_to_js( $field, $this->rules );
+			if ( ! empty( $rule ) ) {
+				$rules[] = $rule;
 			
-			// Convert boolean values to string
-			
-			// Add rule string to an array (separate function?), then implode with commas and newlines, maybe add tabs for pretty display in source
-			
-			// Add message to an array (separate function/same as above?), then implode with commas and newlines, maybe add tabs for pretty display in source
+				// Add the message to an array, if it exists
+				$message = $this->value_to_js( $field, $this->messages );
+				if ( ! empty( $message ) )
+					$messages[] = $message;
+			}
 		}
 		
 		// Create final rule string
-		
-		// Create final message string
-		
-		// Add any other options (check http://jqueryvalidation.org/validate)
-		
-		// Add to final validate method with form ID, wrap in script tags and output
-		
+		if ( ! empty( $rules ) ) {
+			$rules_js = $this->array_to_js( $rules, "rules" );
+			$messages_js = $this->array_to_js( $messages, "messages" );	
+			
+			// Add a comma and newline if messages is not empty
+			if ( ! empty( $messages_js ) ) {
+				$rules_js .= ",\n";
+			}
+			
+			// Add the jQuery validation script
+			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/jquery.validate.min.js'></script>\n";
+					
+			// Add to final validate method with form ID, wrap in script tags and output
+			echo sprintf(
+				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\t$( '#%s' ).validate( {\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
+				$this->form_id,
+				$rules_js,
+				$messages_js
+			);
+		}	
 	}
 	
+	/**
+	 * Converts a single rule or message value into Javascript
+	 *
+	 * @access private
+	 * @param string $field
+	 * @param string $data
+	 * @return string The Javascript output or an empty string if no data was provided
+	 */
+	private function value_to_js( $field, $data ) {
+		// Check the array for the corresponding value. If it doesn't exist, return an empty string.
+		if ( ! isset( $data[$field] ) )
+			return "";
+			
+		// Format the field name
+		$name = $this->quote_field_name( $field );
+		
+		// Iterate over the values convert them into a single string
+		$values = array();
+		foreach ( $data[$field] as $k => $v ) {
+			$values[] = sprintf(
+				"\t\t\t\t\t\t%s: %s",
+				$k,
+				$this->format_value( $v )
+			);
+		}
+		
+		// Convert the array to a string
+		$value = sprintf(
+			"{\n%s\n\t\t\t\t\t}",
+			implode( ",\n", $values )
+		);
+		
+		// Combine the name and value and return it
+		return sprintf(
+			"\t\t\t\t\t%s: %s",
+			$name,
+			$value
+		);
+	}
+	
+	/**
+	 * Converts an array of values into Javascript 
+	 *
+	 * @access private
+	 * @param array $data
+	 * @param string $label
+	 * @return string The Javascript output or an empty string if no data was provided
+	 */
+	private function array_to_js( $data, $label ) {
+		return sprintf(
+			"\t\t\t\t%s: {\n%s\n\t\t\t\t}",
+			$label,
+			implode( ",\n", $data )
+		);
+	}
+	
+	/**
+	 * Converts a PHP value to the required format for Javascript
+	 *
+	 * @access private
+	 * @param string $value
+	 * @return string The formatted value
+	 */
+	private function format_value( $value ) {
+		// Determine the data type and return the value formatted appropriately
+		if ( is_bool( $value ) ) {
+			// Convert the value to a string
+			return ( $value ) ? "true" : "false";
+		} else if ( is_numeric( $value ) ) {
+			// Return as-is
+			return $value;
+		} else {
+			// For any other type (should only be a string) sanitize to a string and quote it
+			return '"' . strval( $value ) . '"';
+		}
+	}
+		
 	/**
 	 * Determine if the field name needs to be quoted for Javascript output
 	 *
@@ -200,4 +298,15 @@ class Fieldmanager_Util_Validation  {
 		else
 			return '"' . $field . '"';
 	}
+}
+
+/**
+ * Singleton helper for Fieldmanager_Util_Validation
+ *
+ * @param string $form_id
+ * @param string $context
+ * @return object
+ */
+function Fieldmanager_Util_Validation( $form_id, $context ) {
+	return Fieldmanager_Util_Validation::instance( $form_id, $context );
 }

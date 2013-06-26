@@ -35,6 +35,7 @@ require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasour
 require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource-user.php' );
 
 require_once( dirname( __FILE__ ) . '/php/util/class-fieldmanager-util-term-meta.php' );
+require_once( dirname( __FILE__ ) . '/php/util/class-fieldmanager-util-validation.php' );
 
 require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context.php' );
 require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-user.php' );
