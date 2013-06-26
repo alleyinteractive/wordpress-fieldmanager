@@ -70,16 +70,18 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$this->fm = $fm;
 		
 		// Iterate through the taxonomies and add the fields to the requested forms
-		// Also add handlers for saving the fields
+		// Also add handlers for saving the fields and which forms to validate (if enabled)
 		foreach ( $taxonomies as $taxonomy ) {
 			if ( $this->show_on_add ) {
 				add_action( $taxonomy . '_add_form_fields', array( $this, 'add_term_fields' ), 10, 1 );
 				add_action( 'created_term', array( $this, 'save_term_fields'), 10, 3 );
+				$this->validate_form_ids[] = 'addtag';
 			}
 			
 			if ( $this->show_on_edit ) {			
 				add_action( $taxonomy . '_edit_form_fields', array( $this, 'edit_term_fields' ), 10, 2 );
 				add_action( 'edited_term', array( $this, 'save_term_fields'), 10, 3 );
+				$this->validate_form_ids[] = 'edittag';
 			}
 			
 			// Also handle removing data when a term is deleted

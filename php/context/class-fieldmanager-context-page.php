@@ -16,12 +16,6 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	public static $forms = array();
 
 	/**
-	 * @var string
-	 * Unique ID of the form
-	 */
-	public $uniqid;
-
-	/**
 	 * @var boolean
 	 * Was the form saved?
 	 */
@@ -36,6 +30,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 		$this->fm = $fm;
 		self::$forms[$uniqid] = $this;
 		$this->uniqid = $uniqid;
+		$this->validate_form_ids = array( $this->uniqid );
 		// since this should be set up in init, check for submit now
 		if ( !empty( $_POST ) && !empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) {
 			$this->save_page_form();

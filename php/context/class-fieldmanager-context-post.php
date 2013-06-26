@@ -56,6 +56,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->context = $context;
 		$this->priority = $priority;
 		$this->fm = $fm;
+		$this->validate_form_ids = array( 'post' );
 
 		add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
 		// If this meta box is on an attachment page, add the appropriate filter hook to save the data

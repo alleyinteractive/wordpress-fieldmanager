@@ -127,6 +127,23 @@ abstract class Fieldmanager_Field {
 	 * Functions to use to validate input
 	 */
 	public $validate = array();
+	
+	/**
+	 * @var string|array
+	 * jQuery validation rule(s) used to validate this field, entered as a string or associative array.
+	 * These rules will be automatically converted to the appropriate Javascript format.
+	 * For more information see http://jqueryvalidation.org/documentation/
+	 */
+	public $validation_rules;
+	
+	/**
+	 * @var string|array
+	 * jQuery validation messages used by the rule(s) defined for this field, entered as a string or associative array.
+	 * These rules will be automatically converted to the appropriate Javascript format.
+	 * Any messages without a corresponding rule will be ignored.
+	 * For more information see http://jqueryvalidation.org/documentation/
+	 */
+	public $validation_messages;
 
 	/**
 	 * @var string|null

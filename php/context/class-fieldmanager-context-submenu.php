@@ -67,6 +67,8 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->parent_slug = $parent_slug;
 		$this->page_title = $page_title;
 		$this->capability = $capability;
+		$this->uniqid = $this->fm->get_element_id() . '_form';
+		$this->validate_form_ids = array( $this->uniqid );
 		add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
 	}
@@ -88,7 +90,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		echo '<div class="wrap">';
 		screen_icon();
 		printf( '<h2>%s</h2>', $this->page_title );
-		echo '<form method="POST">';
+		echo '<form method="POST" id="' . $this->uniqid . '">';
 		echo '<div class="fm-submenu-form-wrapper">';
 		printf( '<input type="hidden" name="fm-options-action" value="%s" />', sanitize_title( $this->fm->name ) );
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );

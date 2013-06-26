@@ -26,7 +26,6 @@ require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-grid.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-link.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-media.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-options.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-password.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-richtextarea.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textarea.php' );
 
@@ -90,9 +89,10 @@ function fieldmanager_get_template( $tpl_slug ) {
  * @param string $data_object
  * @param array $data
  * @param string $plugin_dir
+ * @param boolean $admin
  * @return void
  */
-function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array(), $plugin_dir = "" ) {
+function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array(), $plugin_dir = "", $admin = true ) {
 	if ( !is_admin() ) return;
 	if ( !$ver ) $ver = FM_GLOBAL_ASSET_VERSION;
 	if ( $plugin_dir == "" ) $plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
@@ -100,7 +100,11 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
 		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver );
 		if ( !empty( $data_object ) && !empty( $data ) ) wp_localize_script( $handle, $data_object, $data );
 	};
-	add_action( 'admin_enqueue_scripts', $add_script );
+	
+	if ( $admin )
+		add_action( 'admin_enqueue_scripts', $add_script );
+	else
+		add_action( 'wp_enqueue_scripts', $add_script );
 }
 
 /**
@@ -110,16 +114,21 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
  * @param string[] $deps
  * @param boolean $ver
  * @param string $media
+ * @param boolean $admin
  * @return void
  */
-function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all' ) {
+function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
 	if( !is_admin() ) return;
 	if ( !$ver ) $ver = FM_GLOBAL_ASSET_VERSION;
 	$add_script = function() use ( $handle, $path, $deps, $ver, $media ) {
 		wp_register_style( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver, $media );
         wp_enqueue_style( $handle );
 	};
-	add_action( 'admin_enqueue_scripts', $add_script );
+	
+	if ( $admin )
+		add_action( 'admin_enqueue_scripts', $add_script );
+	else
+		add_action( 'wp_enqueue_scripts', $add_script );
 }
 
 /**

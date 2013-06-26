@@ -27,13 +27,12 @@ class Fieldmanager_Util_Term_Meta {
 	/**
 	 * Singleton helper
 	 *
-	 * @param array $settings
 	 * @return object The singleton instance
 	 */
-	public static function instance( $settings = array() ) {
+	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
 			self::$instance = new Fieldmanager_Util_Term_Meta;
-			self::$instance->setup( $settings );
+			self::$instance->setup();
 		}
 		return self::$instance;
 	}
@@ -42,10 +41,9 @@ class Fieldmanager_Util_Term_Meta {
 	 * Sets up the class
 	 *
 	 * @access public
-	 * @param array $settings
 	 * @return void
 	 */
-	public function setup( $settings ) {
+	public function setup() {
 		$this->create_content_type();
 	}
 
