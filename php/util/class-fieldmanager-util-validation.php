@@ -195,13 +195,34 @@ class Fieldmanager_Util_Validation {
 				$rules_js .= ",\n";
 			}
 			
+			// Fields that should always be ignored
+			$ignore[] = ".fm-autocomplete";
+			$ignore[] = "input[type='button']";
+			
+			// Certain fields need to be ignored depending on the context
+			switch ( $this->context ) {
+				case "post":
+					$ignore[] = "#active_post_lock";
+					break;
+			}
+			
+			// Add JS for fields to ignore
+			$ignore_js = implode( ", ", $ignore );
+			
+			// Add the Fieldmanager validation script and CSS
+			// This is not done via the normal enqueue process since there is no way to know at that point if any fields will require validation
+			// Doing this here avoids loading JS/CSS for validation if not in use
+			echo "<link rel='stylesheet' id='fm-validation-css' href='" . fieldmanager_get_baseurl() . "css/fieldmanager-validation.css' />\n";
+			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/fieldmanager-validation.js'></script>\n";
+			
 			// Add the jQuery validation script
 			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/jquery.validate.min.js'></script>\n";
 					
-			// Add to final validate method with form ID, wrap in script tags and output
+			// Add the ignore, rules and messages to final validate method with form ID, wrap in script tags and output
 			echo sprintf(
-				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\t$( '#%s' ).validate( {\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
+				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm.validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm.validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n\t\t\t\tdebug: true,\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
 				$this->form_id,
+				$ignore_js,
 				$rules_js,
 				$messages_js
 			);
@@ -293,7 +314,8 @@ class Fieldmanager_Util_Validation {
 	 * @return string The field name with quotes added if necessary
 	 */
 	private function quote_field_name( $field ) {
-		if ( ctype_alnum( $field ) )
+		// Check if the field name is alphanumeric (underscores and dashes are allowed)
+		if ( ctype_alnum( str_replace( array( '_', '-'), '', $field ) ) )
 			return $field;
 		else
 			return '"' . $field . '"';
