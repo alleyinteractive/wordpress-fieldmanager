@@ -144,6 +144,13 @@ abstract class Fieldmanager_Field {
 	 * For more information see http://jqueryvalidation.org/documentation/
 	 */
 	public $validation_messages;
+	
+	/**
+	 * @var boolean
+	 * Makes the field required on WordPress context forms that already have built-in validation.
+	 * This is necessary only for the fields used with the term add context.
+	 */
+	public $required = false;
 
 	/**
 	 * @var string|null
@@ -432,6 +439,11 @@ abstract class Fieldmanager_Field {
 		// Drop the fm-group class to hide inner box display if no label is set
 		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
 			$classes[] = 'fm-' . $this->field_class;
+		}
+		
+		// Check if the required attribute is set. If so, add the class.
+		if ( $this->required ) {
+			$classes[] = 'form-required';
 		}
 
 		if ( $this->get_seq() == 0 && $this->limit == 0 ) {

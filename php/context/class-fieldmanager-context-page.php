@@ -62,7 +62,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	 */
 	public function render_page_form() {
 		$current = apply_filters( 'fm_' . $this->uniqid . '_load', array(), $this->fm );
-		echo '<form method="POST">';
+		echo '<form method="POST" id="' . $this->uniqid . '">';
 		echo '<div class="fm-page-form-wrapper">';
 		printf( '<input type="hidden" name="fm-page-action" value="%s" />', sanitize_title( $this->uniqid ) );
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );

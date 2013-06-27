@@ -104,12 +104,12 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Create the HTML template for output
 		$html_template = '<div class="form-field">%s%s%s</div>';
 
-		// Display the field
-		echo $this->term_fields( $html_template, $taxonomy );
-		
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'addtag', 'term' );
 		$fm_validation->add_field( $this->fm );
+
+		// Display the field
+		echo $this->term_fields( $html_template, $taxonomy );
 	}
 	
 	/**
@@ -127,12 +127,12 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Create the HTML template for output
 		$html_template = '<tr class="form-field"><th scope="row" valign="top">%s</th><td>%s%s</td></tr>';
 		
-		// Display the field
-		echo $this->term_fields( $html_template, $taxonomy, $term );
-		
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'edittag', 'term' );
 		$fm_validation->add_field( $this->fm );
+		
+		// Display the field
+		echo $this->term_fields( $html_template, $taxonomy, $term );
 	}
 	
 	/**

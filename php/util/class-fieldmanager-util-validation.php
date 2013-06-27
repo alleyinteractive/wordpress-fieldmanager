@@ -47,7 +47,7 @@ class Fieldmanager_Util_Validation {
 	 * The context this form appears in
 	 */
 	private $context;
-	
+
 	/**
 	 * @var array
 	 * @access private
@@ -115,7 +115,7 @@ class Fieldmanager_Util_Validation {
 	 * @access public
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function add_field( $fm ) {
+	public function add_field( &$fm ) {
 		// If this field is a Fieldmanager_Group, iterate over the children
 		if ( get_class( $fm ) == "Fieldmanager_Group" ) {
 			foreach ( $fm->children as $child ) {
@@ -133,7 +133,7 @@ class Fieldmanager_Util_Validation {
 		if ( ! is_array( $fm->validation_rules ) ) {
 			// If a string, the only acceptable value is "required".
 			if ( ! is_string( $fm->validation_rules ) || $fm->validation_rules != 'required' )
-				$this->fm->_invalid_definition( 'The validation rule ' . $fm->validation_rules . ' does not exist.' );
+				$fm->_invalid_definition( 'The validation rule ' . $fm->validation_rules . ' does not exist.' );
 			
 			// Convert the value to an array since we standardize the Javascript output on this format
 			$fm->validation_rules = array( 'required' => true );
@@ -147,7 +147,7 @@ class Fieldmanager_Util_Validation {
 			foreach ( $fm->validation_rules as $validation_key => $validation_rule ) {
 				if ( ! in_array( $validation_key, $this->valid_rules ) ) {
 					// This is not a rule available in jQuery validation
-					$this->fm->_invalid_definition( 'The validation rule ' . $validation_key . ' does not exist.' );
+					$fm->_invalid_definition( 'The validation rule ' . $validation_key . ' does not exist.' );
 				} else {
 					// This rule is valid so check for any messages
 					if ( isset( $fm->validation_messages[$validation_key] ) )
@@ -155,6 +155,12 @@ class Fieldmanager_Util_Validation {
 				}
 			}
 		}
+		
+		// If this is the term context and the field is required, modify the original element to have the required property.
+		// This is necessary because it is the only way validation is supported on the term add form.
+		// Other validation methods won't work and will just fail gracefully.
+		if ( $this->context == 'term' && isset( $fm->validation_rules['required'] ) && $fm->validation_rules['required'] )
+			$fm->required = true;
 			
 		// If we have reached this point, there were no errors so store the field and the corresponding rules and messages
 		$name = $fm->get_form_name();
@@ -220,7 +226,7 @@ class Fieldmanager_Util_Validation {
 					
 			// Add the ignore, rules and messages to final validate method with form ID, wrap in script tags and output
 			echo sprintf(
-				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm.validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm.validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n\t\t\t\tdebug: true,\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
+				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm_validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n\t\t\t\tdebug: true,\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
 				$this->form_id,
 				$ignore_js,
 				$rules_js,

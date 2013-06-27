@@ -1,9 +1,8 @@
 ( function( $ ) {
 
-fm.validation = {
+fm_validation = {
 	
 	invalidHandler: function( event, validator ) {
-		console.log( "invalid" );
 		// Certain WordPress forms require additional cleanup to work smoothly with jQuery validation
 		var form = $( validator.currentForm ).attr( 'id' );
 		switch ( form ) {
@@ -14,8 +13,10 @@ fm.validation = {
 		}
 	},
 	submitHandler: function( form_element ) {
-		console.log( "success" );
-		form_element.submit();
+		// The below method will skip running validation again and avoid an infinite loop.
+		// It will also work around the fact that many WordPress built in forms have submit buttons called 'submit'
+		// which removes the ability to call the Javascript .submit() method for the form.
+		HTMLFormElement.prototype.submit.call( $( form_element )[0] );
 	}
 }
 

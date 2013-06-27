@@ -1,4 +1,5 @@
 .fm-js-error {
-	margin-top: 5px;
+	margin: 5px 0px;
 	color: red;
+	display: block;
 }
