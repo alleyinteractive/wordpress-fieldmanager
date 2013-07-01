@@ -143,7 +143,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			}
 			
 			// If this was grouped display, close the final group
-			if( $this->grouped || $this->datasource->grouped ) $form_data_elements_html .= $this->form_data_end_group();
+			if( $this->grouped || ( isset( $this->datasource ) && $this->datasource->grouped ) ) $form_data_elements_html .= $this->form_data_end_group();
 		}
 
 		return $form_data_elements_html;

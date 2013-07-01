@@ -59,7 +59,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 
 		add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
 		// If this meta box is on an attachment page, add the appropriate filter hook to save the data
-		if ( $this->fm->is_attachment ) {
+		if ( isset( $this->fm->is_attachment ) && $this->fm->is_attachment ) {
 			add_filter( 'attachment_fields_to_save', array( $this, 'save_fields_for_attachment' ), 10, 2 );
 		}
 		add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
