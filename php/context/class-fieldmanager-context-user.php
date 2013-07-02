@@ -41,6 +41,10 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $values );
 		echo '</div>';
+		
+		// Check if any validation is required
+		$fm_validation = Fieldmanager_Util_Validation( 'your-profile', 'user' );
+		$fm_validation->add_field( $this->fm );
 	}
 
 	/**

@@ -264,3 +264,11 @@ a.fm-delete:hover {
 .fm-datepicker-time {
 	width: 25px;
 }
+
+.edit-tags-php input[type="checkbox"] {
+	width: 16px;
+}
+
+.edit-tags-php .fm-media-button {
+	width: 200px;
+}

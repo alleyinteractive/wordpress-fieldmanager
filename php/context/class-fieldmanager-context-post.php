@@ -59,7 +59,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 
 		add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
 		// If this meta box is on an attachment page, add the appropriate filter hook to save the data
-		if ( $this->fm->is_attachment ) {
+		if ( isset( $this->fm->is_attachment ) && $this->fm->is_attachment ) {
 			add_filter( 'attachment_fields_to_save', array( $this, 'save_fields_for_attachment' ), 10, 2 );
 		}
 		add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
@@ -102,6 +102,10 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_id = $post->ID;
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $values );
+		
+		// Check if any validation is required
+		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );
+		$fm_validation->add_field( $this->fm );
 	}
 
 	/**
@@ -141,7 +145,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 */
 	public function save_fields_for_post( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
-		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) )
+		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' )
 			return;
 		$use_this_post_type = False;
 		foreach ( $this->post_types as $type ) {

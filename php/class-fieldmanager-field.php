@@ -127,6 +127,30 @@ abstract class Fieldmanager_Field {
 	 * Functions to use to validate input
 	 */
 	public $validate = array();
+	
+	/**
+	 * @var string|array
+	 * jQuery validation rule(s) used to validate this field, entered as a string or associative array.
+	 * These rules will be automatically converted to the appropriate Javascript format.
+	 * For more information see http://jqueryvalidation.org/documentation/
+	 */
+	public $validation_rules;
+	
+	/**
+	 * @var string|array
+	 * jQuery validation messages used by the rule(s) defined for this field, entered as a string or associative array.
+	 * These rules will be automatically converted to the appropriate Javascript format.
+	 * Any messages without a corresponding rule will be ignored.
+	 * For more information see http://jqueryvalidation.org/documentation/
+	 */
+	public $validation_messages;
+	
+	/**
+	 * @var boolean
+	 * Makes the field required on WordPress context forms that already have built-in validation.
+	 * This is necessary only for the fields used with the term add context.
+	 */
+	public $required = false;
 
 	/**
 	 * @var string|null
@@ -415,6 +439,11 @@ abstract class Fieldmanager_Field {
 		// Drop the fm-group class to hide inner box display if no label is set
 		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
 			$classes[] = 'fm-' . $this->field_class;
+		}
+		
+		// Check if the required attribute is set. If so, add the class.
+		if ( $this->required ) {
+			$classes[] = 'form-required';
 		}
 
 		if ( $this->get_seq() == 0 && $this->limit == 0 ) {
@@ -762,6 +791,19 @@ abstract class Fieldmanager_Field {
 		$this->require_base();
 		return new Fieldmanager_Context_Page( $uniqid, $this );
 	}
+	
+	/**
+	 * Add a form on a term add/edit page
+	 * @param string $title
+	 * @param string|array $taxonomies The taxonomies on which to display this form
+	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
+	 * @param boolean $show_on_edit Whether or not to show the fields on the edit term form
+	 * @param int $parent Only show this field on child terms of this parent term ID
+	 */
+	public function add_term_form( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
+		$this->require_base();
+		return new Fieldmanager_Context_Term( $title, $taxonomies, $show_on_add, $show_on_edit, $parent, $this );
+	}
 
 	/**
 	 * Add this field as a metabox to a content type
@@ -833,6 +875,20 @@ abstract class Fieldmanager_Field {
 				$debug_message . "\n\n" .
 				__( 'You may be able to use your browser\'s back button to resolve this error. ', 'fieldmanager' )
 			);
+		}
+	}
+	
+	/**
+	 * Die violently. If self::$debug is true, throw an exception.
+	 * @param string $debug_message
+	 * @return void e.g. return _you_ into a void.
+	 */
+	public function _invalid_definition( $debug_message = '' ) {
+		if ( self::$debug ) {
+			throw new FM_Exception( $debug_message );
+		}
+		else {
+			wp_die( __( 'Sorry, you\'ve created an invalid field definition. Please check your code and try again.', 'fieldmanager' ) );
 		}
 	}
 
