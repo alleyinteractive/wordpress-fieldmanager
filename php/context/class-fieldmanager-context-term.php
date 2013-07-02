@@ -163,8 +163,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		if ( ! empty( $this->title ) ) {
 			$label = sprintf(
 				'<label for="%s">%s</label>',
-				$this->fm->name,
-				$this->title
+				esc_attr( $this->fm->name ),
+				esc_html( $this->title )
 			);
 		} else {
 			$label = '';
