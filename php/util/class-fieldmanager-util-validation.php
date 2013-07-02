@@ -288,7 +288,7 @@ class Fieldmanager_Util_Validation {
 		
 		return sprintf(
 			"\t\t\t\t%s: {\n%s\n\t\t\t\t}",
-			$label,
+			esc_js( $label ),
 			implode( ",\n", $data )
 		);
 	}
