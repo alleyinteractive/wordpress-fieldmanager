@@ -32,7 +32,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 		$this->uniqid = $uniqid;
 
 		// since this should be set up in init, check for submit now
-		if ( !empty( $_POST ) && !empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) {
+		if ( !empty( $_POST ) && ! empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) {
 			$this->save_page_form();
 		}
 	}
@@ -46,10 +46,11 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 			$this->fm->_unauthorized_access( 'Nonce validation failed' );
 		}
 		$this->fm->data_id = $user_id;
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
 		if ( empty( $this->fm->data_type ) ) $this->fm->data_type = 'page';
 		if ( empty( $this->fm->data_id ) ) $this->fm->data_id = $this->uniqid;
 		$current = apply_filters( 'fm_' . $this->uniqid . '_load', array(), $this->fm );
-		$data = apply_filters( 'fm_' . $this->uniqid . '_presave', $_POST[ $this->fm->name ], $this->fm );
+		$data = apply_filters( 'fm_' . $this->uniqid . '_presave', $value, $this->fm );
 		$data = $this->fm->presave_all( $data, $current );
 		$data = apply_filters( 'fm_presave_data', $data, $this->fm );
 		do_action( 'fm_' . $this->uniqid . '_save', $data, $current, $this->fm );

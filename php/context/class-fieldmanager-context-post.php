@@ -170,8 +170,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 			$this->fm->_unauthorized_access( 'Nonce validation failed' );
 		}
-
-		$this->save_to_post_meta( $post_id, $_POST[ $this->fm->name ] );
+		
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+		$this->save_to_post_meta( $post_id, $value );
 	}
 
 	/**

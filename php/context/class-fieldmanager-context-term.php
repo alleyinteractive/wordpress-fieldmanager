@@ -204,7 +204,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		}
 
 		// Save the data
-		$this->save_to_term_meta( $term_id, $_POST[ $this->fm->name ] );
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+		$this->save_to_term_meta( $term_id, $value );
 	}
 
 	/**
