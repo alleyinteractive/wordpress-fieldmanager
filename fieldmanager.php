@@ -103,10 +103,8 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
 		if ( !empty( $data_object ) && !empty( $data ) ) wp_localize_script( $handle, $data_object, $data );
 	};
 	
-	if ( $admin )
-		add_action( 'admin_enqueue_scripts', $add_script );
-	else
-		add_action( 'wp_enqueue_scripts', $add_script );
+	add_action( 'admin_enqueue_scripts', $add_script );
+	add_action( 'wp_enqueue_scripts', $add_script );
 }
 
 /**
@@ -127,10 +125,8 @@ function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = '
         wp_enqueue_style( $handle );
 	};
 	
-	if ( $admin )
-		add_action( 'admin_enqueue_scripts', $add_script );
-	else
-		add_action( 'wp_enqueue_scripts', $add_script );
+	add_action( 'admin_enqueue_scripts', $add_script );
+	add_action( 'wp_enqueue_scripts', $add_script );
 }
 
 /**
