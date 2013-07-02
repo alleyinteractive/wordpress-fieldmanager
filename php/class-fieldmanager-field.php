@@ -232,7 +232,7 @@ abstract class Fieldmanager_Field {
 	 * @var boolean
 	 * Whether or not this field is present on the attachment edit screen
 	 */
-	private $is_attachment = false;
+	public $is_attachment = false;
 
 	/**
 	 * @var int Global Sequence
