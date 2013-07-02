@@ -89,13 +89,13 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		echo '<div class="wrap">';
 		screen_icon();
 		printf( '<h2>%s</h2>', $this->page_title );
-		echo '<form method="POST" id="' . $this->uniqid . '">';
+		echo '<form method="POST" id="' . esc_attr( $this->uniqid ) . '">';
 		echo '<div class="fm-submenu-form-wrapper">';
 		printf( '<input type="hidden" name="fm-options-action" value="%s" />', sanitize_title( $this->fm->name ) );
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $values );
 		echo '</div>';
-		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', $this->submit_button_label ?: __( 'Save Options' ) );
+		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->submit_button_label ) ?: __( 'Save Options' ) );
 		echo '</form>';
 		echo '</div>';
 		
