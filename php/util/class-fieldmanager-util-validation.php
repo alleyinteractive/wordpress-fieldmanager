@@ -227,7 +227,7 @@ class Fieldmanager_Util_Validation {
 			// Add the ignore, rules and messages to final validate method with form ID, wrap in script tags and output
 			echo sprintf(
 				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm_validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
-				$this->form_id,
+				esc_js( $this->form_id ),
 				$ignore_js,
 				$rules_js,
 				$messages_js
@@ -256,8 +256,8 @@ class Fieldmanager_Util_Validation {
 		foreach ( $data[$field] as $k => $v ) {
 			$values[] = sprintf(
 				"\t\t\t\t\t\t%s: %s",
-				$k,
-				$this->format_value( $v )
+				esc_js( $k ),
+				esc_js( $this->format_value( $v ) )
 			);
 		}
 		
@@ -270,7 +270,7 @@ class Fieldmanager_Util_Validation {
 		// Combine the name and value and return it
 		return sprintf(
 			"\t\t\t\t\t%s: %s",
-			$name,
+			esc_js( $name ),
 			$value
 		);
 	}
@@ -284,9 +284,11 @@ class Fieldmanager_Util_Validation {
 	 * @return string The Javascript output or an empty string if no data was provided
 	 */
 	private function array_to_js( $data, $label ) {
+		$data = array_map( 'esc_js', $data );
+		
 		return sprintf(
 			"\t\t\t\t%s: {\n%s\n\t\t\t\t}",
-			$label,
+			esc_js( $label ),
 			implode( ",\n", $data )
 		);
 	}

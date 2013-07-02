@@ -55,10 +55,8 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		parent::__construct( $label, $options );
 
 		// Enqueue required scripts in the proper context
-		if ( is_admin() )
-			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
-		else
-			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		
 		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array(), false, false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
 
