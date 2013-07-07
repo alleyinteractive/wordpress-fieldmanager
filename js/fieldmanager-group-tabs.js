@@ -4,7 +4,7 @@ var fm_select_tab = function( $element ) {
 	var t = $element.attr( 'href' );
 	$element.parents('.fm-tab').addClass( 'wp-tab-active' ).siblings( 'li' ).removeClass( 'wp-tab-active' );
 	$( t ).siblings( 'div' ).hide();
-	$( t ).show();
+	$( t ).show().trigger( 'fm_activate_tab' );
 }
 
 $( document ).ready( function () {
@@ -45,7 +45,7 @@ $( document ).ready( function () {
 				m.css('margin-top', '-'+o+'px');
 			else
 				m.css('margin-top', '');
-				
+
 			$(this).find('.fm-submenu').css('left', menuleft);
 
 			$(this).find('.fm-submenu').removeClass('sub-open');
