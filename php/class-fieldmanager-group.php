@@ -95,7 +95,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		parent::__construct( $label, $options );
 
 		if ( $this->collapsed ) $this->collapsible = True;
-		
+
 		foreach ( $this->children as $name => $element ) {
 			if ( !$element->name ) $element->name = $name;
 			// Propagate data type and ID info down the chain
@@ -103,10 +103,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// Add the tab JS and CSS if it is needed
 		if ( $this->tabbed ) {
-			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js' );
+			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery' ), '1.0.1' );
 			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css' );
 		}
-		
+
 	}
 
 	/**
@@ -117,25 +117,25 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		$out = '';
 		$tab_group = '';
 		$tab_group_submenu = '';
-		
+
 		// We do not need the wrapper class for extra padding if no label is set for the group
 		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '<div class="fm-group-inner">';
-		
+
 		// If the display output for this group is set to tabs, build the tab group for navigation
 		if ( $this->tabbed ) $tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar" id="%s-tabs">', $this->get_element_id() );
-		
+
 		// Produce HTML for each of the children
 		foreach ( $this->children as $element ) {
-			
+
 			$element->parent = $this;
-			
+
 			// If the display output for this group is set to tabs, add a tab for this child
 			if ( $this->tabbed ) {
-				
+
 				// Set default classes to display the first tab content and hide others
 				$tab_classes = array( 'fm-tab' );
 			    $tab_classes[] = ( $this->child_count == 0 ) ? "wp-tab-active" : "hide-if-no-js";
-			
+
 				// Generate output for the tab. Depends on whether or not there is a tab limit in place.
 				if ( $this->tab_limit == 0 || $this->child_count < $this->tab_limit ) {
 					$tab_group .=  sprintf( '<li class="%s"><a href="#%s-tab">%s</a></li>',
@@ -147,7 +147,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 					$submenu_item_classes = array( 'fm-submenu-item' );
 					$submenu_item_link_class = "";
 
-					// Create the More tab when first hitting the tab limit					
+					// Create the More tab when first hitting the tab limit
 					if ( $this->child_count == $this->tab_limit ) {
 						// Create the tab
 						$tab_group_submenu .=  sprintf( '<li class="fm-tab fm-has-submenu %s"><a href="#%s-tab">%s</a>',
@@ -155,18 +155,18 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 							$element->get_element_id(),
 							__( 'More...' )
 						 );
-						 
+
 						 // Start the submenu
-						 $tab_group_submenu .= sprintf( 
+						 $tab_group_submenu .= sprintf(
 						 	'<div class="fm-submenu" id="%s-submenu"><div class="fm-submenu-wrap fm-submenu-wrap"><ul>',
 						 	$this->get_element_id()
 						 );
-						 
+
 						 // Make sure the first submenu item is designated
 						 $submenu_item_classes[] = 'fm-first-item';
 						 $submenu_item_link_class = 'class="fm-first-item"';
 					}
-					
+
 					// Add this element to the More menu
 					$tab_group_submenu .=  sprintf( '<li class="%s"><a href="#%s-tab" %s>%s</a></li>',
 						implode( ' ', $submenu_item_classes ),
@@ -175,32 +175,32 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 						$element->label
 					);
 				}
-								
+
 				// Ensure the child is aware it is tab content
 				$element->is_tab = TRUE;
 			}
-		
+
 			// Get markup for the child element
 			$child_value = empty( $value[ $element->name ] ) ? Null : $value[ $element->name ];
 
 			// propagate editor state down the chain
 			if ( $this->data_type ) $element->data_type = $this->data_type;
 			if ( $this->data_id ) $element->data_id = $this->data_id;
-			
+
 			$out .= $element->element_markup( $child_value );
-			
+
 			$this->child_count++;
-			
+
 		}
-		
+
 		// We do not need the wrapper class for extra padding if no label is set for the group
 		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '</div>';
-		
+
 		// If the display output for this group is set to tabs, build the tab group for navigation
 		if ( $this->tab_limit != 0 && $this->child_count >= $this->tab_limit ) $tab_group_submenu .= '</ul></div></div></li>';
 		if ( $this->tabbed ) $tab_group .= $tab_group_submenu . '</ul>';
 
-		
+
 		// Return the complete HTML
 		return $tab_group . $out;
 	}
@@ -230,7 +230,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				}
 			}
 		}
-		
+
 		// Then, dispatch them for sanitization to the children.
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
@@ -335,7 +335,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			if ( $this->remove_default_meta_boxes ) {
 				$child->remove_default_meta_boxes = true;
 			}
-			
+
 			$child->add_meta_boxes_to_remove( $meta_boxes_to_remove );
 		}
 	}
