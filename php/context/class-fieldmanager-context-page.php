@@ -16,12 +16,6 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	public static $forms = array();
 
 	/**
-	 * @var string
-	 * Unique ID of the form
-	 */
-	public $uniqid;
-
-	/**
 	 * @var boolean
 	 * Was the form saved?
 	 */
@@ -36,8 +30,9 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 		$this->fm = $fm;
 		self::$forms[$uniqid] = $this;
 		$this->uniqid = $uniqid;
+
 		// since this should be set up in init, check for submit now
-		if ( !empty( $_POST ) && !empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) {
+		if ( !empty( $_POST ) && ! empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) {
 			$this->save_page_form();
 		}
 	}
@@ -51,10 +46,11 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 			$this->fm->_unauthorized_access( 'Nonce validation failed' );
 		}
 		$this->fm->data_id = $user_id;
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
 		if ( empty( $this->fm->data_type ) ) $this->fm->data_type = 'page';
 		if ( empty( $this->fm->data_id ) ) $this->fm->data_id = $this->uniqid;
 		$current = apply_filters( 'fm_' . $this->uniqid . '_load', array(), $this->fm );
-		$data = apply_filters( 'fm_' . $this->uniqid . '_presave', $_POST[ $this->fm->name ], $this->fm );
+		$data = apply_filters( 'fm_' . $this->uniqid . '_presave', $value, $this->fm );
 		$data = $this->fm->presave_all( $data, $current );
 		$data = apply_filters( 'fm_presave_data', $data, $this->fm );
 		do_action( 'fm_' . $this->uniqid . '_save', $data, $current, $this->fm );
@@ -67,15 +63,19 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	 */
 	public function render_page_form() {
 		$current = apply_filters( 'fm_' . $this->uniqid . '_load', array(), $this->fm );
-		echo '<form method="POST">';
+		echo '<form method="POST" id="' . esc_attr( $this->uniqid ) . '">';
 		echo '<div class="fm-page-form-wrapper">';
 		printf( '<input type="hidden" name="fm-page-action" value="%s" />', sanitize_title( $this->uniqid ) );
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $current );
 		echo '</div>';
-		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', $this->fm->submit_button_label ?: __( 'Save Options' ) );
+		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->fm->submit_button_label ) ?: __( 'Save Options' ) );
 		echo '</form>';
 		echo '</div>';
+		
+		// Check if any validation is required
+		$fm_validation = Fieldmanager_Util_Validation( $this->uniqid, 'page' );
+		$fm_validation->add_field( $this->fm );
 	}
 
 	/**

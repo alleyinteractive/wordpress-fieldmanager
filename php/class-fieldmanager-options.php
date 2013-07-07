@@ -143,7 +143,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			}
 			
 			// If this was grouped display, close the final group
-			if( $this->grouped || $this->datasource->grouped ) $form_data_elements_html .= $this->form_data_end_group();
+			if( $this->grouped || ( isset( $this->datasource ) && $this->datasource->grouped ) ) $form_data_elements_html .= $this->form_data_end_group();
 		}
 
 		return $form_data_elements_html;
@@ -253,11 +253,19 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			// Iterate over the list and build the list of meta boxes
 			$meta_boxes = array();
 			foreach( $this->datasource->get_taxonomies() as $taxonomy ) {
-				$id = 'tagsdiv-' . $taxonomy;
-				$meta_boxes[$id] = array(
-					'id' => $id,
-					'context' => 'side'
-				);
+				// The ID differs if this is a hierarchical taxonomy or not. Get the taxonomy object.
+				$taxonomy_obj = get_taxonomy( $taxonomy );
+				if ( false !== $taxonomy_obj ) {
+					if ( $taxonomy_obj->hierarchical )
+						$id = $taxonomy . "div";
+					else
+						$id = 'tagsdiv-' . $taxonomy;
+					
+					$meta_boxes[$id] = array(
+						'id' => $id,
+						'context' => 'side'
+					);
+				}
 			}
 			
 			// Merge in the new meta boxes to remove

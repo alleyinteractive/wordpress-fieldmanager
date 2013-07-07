@@ -54,7 +54,10 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		);
 		parent::__construct( $label, $options );
 
-		wp_enqueue_script( 'jquery-ui-autocomplete' );
+		// Enqueue required scripts in the proper context
+		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
+		
 		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array(), false, false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
 
 		if ( empty( $this->datasource ) ) {
@@ -66,6 +69,14 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 			}
 		}
 		$this->datasource->allow_optgroups = False;
+	}
+
+	/**
+	 * Handle enqueuing built-in scripts required for autocomplete
+	 * @return void
+	 */
+	public function enqueue_scripts() {
+		wp_enqueue_script( 'jquery-ui-autocomplete' );
 	}
 
 	/**
@@ -107,11 +118,11 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 			$value
 		);
 
-		if ( $this->show_view_link ) {
+		if ( isset( $this->show_view_link ) && $this->show_view_link ) {
 			$element .= $this->datasource->get_view_link( $value );
 		}
 
-		if ( $this->show_edit_link ) {
+		if ( isset( $this->show_edit_link ) && $this->show_edit_link ) {
 			$element .= $this->datasource->get_edit_link( $value );
 		}
 
@@ -152,11 +163,19 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 			// Iterate over the list and build the list of meta boxes
 			$meta_boxes = array();
 			foreach( $this->datasource->get_taxonomies() as $taxonomy ) {
-				$id = 'tagsdiv-' . $taxonomy;
-				$meta_boxes[$id] = array(
-					'id' => $id,
-					'context' => 'side'
-				);
+				// The ID differs if this is a hierarchical taxonomy or not. Get the taxonomy object.
+				$taxonomy_obj = get_taxonomy( $taxonomy );
+				if ( false !== $taxonomy_obj ) {
+					if ( $taxonomy_obj->hierarchical )
+						$id = $taxonomy . "div";
+					else
+						$id = 'tagsdiv-' . $taxonomy;
+					
+					$meta_boxes[$id] = array(
+						'id' => $id,
+						'context' => 'side'
+					);
+				}
 			}
 			
 			// Merge in the new meta boxes to remove
