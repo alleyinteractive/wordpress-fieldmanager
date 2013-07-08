@@ -329,13 +329,21 @@ abstract class Fieldmanager_Field {
 	 * @return string HTML for all form elements.
 	 */
 	public function element_markup( $values = array() ) {
+		if ( ! is_array( $values ) && ! $values )
+			$count = 0;
+		elseif ( !is_array( $values ) )
+			$count = 1;
+		else
+			$count = count( $values );
+
 		$values = $this->preload_alter_values( $values );
+
 		if ( $this->limit == 0 ) {
-			if ( count( $values ) + $this->extra_elements <= $this->starting_count ) {
+			if ( $count + $this->extra_elements <= $this->starting_count ) {
 				$max = $this->starting_count;
 			}
 			else {
-				$max = count( $values ) + $this->extra_elements;
+				$max = $count + $this->extra_elements;
 			}
 		}
 		else {
