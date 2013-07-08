@@ -79,9 +79,9 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 			return wpautop( wp_filter_post_kses( $value ) ); // run through wpautop first to preserve breaks.
 		};
 		// Unlike WP Core, we init TinyMCE on demand, and preserve its natural ability to move
-		// about the DOM—richtext.js takes care of initializing our options, which are stored 
+		// about the DOM—richtext.js takes care of initializing our options, which are stored
 		// per-field, not globally.
-		fm_add_script( 'fm_richtext', 'js/richtext.js' );
+		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.1' );
 		parent::__construct( $label, $options );
 	}
 
@@ -99,7 +99,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 		wp_enqueue_style( 'wp-jquery-ui-dialog' );
 		wp_enqueue_script( 'wp-fullscreen' );
 		add_action( 'admin_print_scripts', function() {
-			$post = get_post();	
+			$post = get_post();
 			$args = array();
 			if ( $post->ID ) {
 				$args['post'] = $post->ID;
@@ -138,7 +138,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 			'theme' => "advanced",
 			'language' => 'en',
 			'skin' => "wp_theme",
-			'editor_css' => "/wp-includes/css/editor.css", 
+			'editor_css' => "/wp-includes/css/editor.css",
 			'theme_advanced_toolbar_align' => "left",
 			'theme_advanced_statusbar_location' => "bottom",
 			'theme_advanced_resizing' => true,
@@ -164,7 +164,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 		if ( isset( $options['style_formats'] ) && !is_array( $options['style_formats'] ) ) {
 			$options['style_formats'] = json_decode( $options['style_formats'] );
 		}
- 
+
 		// print_r($options); exit;
 		unset( $options['elements'] );
 		return $options;
@@ -195,5 +195,5 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 			htmlspecialchars( json_encode( $this->get_mce_options() ), ENT_QUOTES )
 		);
 	}
-	
+
 }
