@@ -1,7 +1,7 @@
 ( function( $ ) {
 
 fm.autocomplete = {
-	
+
 	prepare_options: function( raw_opts ) {
 		var opts = [];
 		for ( var k in raw_opts ) opts.push( { label: raw_opts[k], value: k } );
@@ -30,7 +30,7 @@ fm.autocomplete = {
 							if ( $.type( results ) == 'object' ) {
 								response( fm.autocomplete.prepare_options( results ) );
 							}
-							else response( [] ); 
+							else response( [] );
 						} );
 					};
 				} else if ( $el.data( 'options' ) ) {
@@ -54,7 +54,6 @@ fm.autocomplete = {
 }
 
 $( document ).ready( fm.autocomplete.enable_autocomplete );
-$( document ).on( 'fm_collapsible_toggle', fm.autocomplete.enable_autocomplete );
-$( document ).on( 'fm_added_element', fm.autocomplete.enable_autocomplete );
+$( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle', fm.autocomplete.enable_autocomplete );
 
 } ) ( jQuery );

@@ -152,6 +152,7 @@ $( document ).ready( function () {
 					} else {
 						$( this ).hide();
 					}
+					$( this ).trigger( 'fm_displayif_toggle' );
 				}
 			}
 		} );
