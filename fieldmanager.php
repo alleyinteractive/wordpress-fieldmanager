@@ -50,8 +50,8 @@ define( 'FM_GLOBAL_ASSET_VERSION', 1 );
  * Add CSS and JS to admin area, hooked into admin_enqueue_scripts.
  */
 function fieldmanager_enqueue_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css' );
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.1' );
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.0' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
 add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
@@ -102,7 +102,7 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
 		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver );
 		if ( !empty( $data_object ) && !empty( $data ) ) wp_localize_script( $handle, $data_object, $data );
 	};
-	
+
 	add_action( 'admin_enqueue_scripts', $add_script );
 	add_action( 'wp_enqueue_scripts', $add_script );
 }
@@ -124,7 +124,7 @@ function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = '
 		wp_register_style( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver, $media );
         wp_enqueue_style( $handle );
 	};
-	
+
 	add_action( 'admin_enqueue_scripts', $add_script );
 	add_action( 'wp_enqueue_scripts', $add_script );
 }
