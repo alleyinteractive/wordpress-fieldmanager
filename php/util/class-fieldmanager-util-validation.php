@@ -307,8 +307,8 @@ class Fieldmanager_Util_Validation {
 			// Return as-is
 			return $value;
 		} else {
-			// For any other type (should only be a string) sanitize to a string and quote it
-			return '"' . strval( $value ) . '"';
+			// For any other type (should only be a string) escape for JS output
+			return '"' . esc_js( $value ) . '"';
 		}
 	}
 		
