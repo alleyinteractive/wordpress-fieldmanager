@@ -16,6 +16,5 @@ fm.richtextarea = {
 }
 
 $( document ).ready( fm.richtextarea.add_rte_to_visible_textareas );
-$( document ).on( 'fm_collapsible_toggle fm_added_element fm_activate_tab', fm.richtextarea.add_rte_to_visible_textareas );
-
+$( document ).on( 'fm_collapsible_toggle fm_added_element fm_activate_tab fm_displayif_toggle', fm.richtextarea.add_rte_to_visible_textareas );
 } ) ( jQuery );
