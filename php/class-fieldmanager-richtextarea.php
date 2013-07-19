@@ -81,7 +81,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 		// Unlike WP Core, we init TinyMCE on demand, and preserve its natural ability to move
 		// about the DOM—richtext.js takes care of initializing our options, which are stored
 		// per-field, not globally.
-		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.1' );
+		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.2' );
 		parent::__construct( $label, $options );
 	}
 
