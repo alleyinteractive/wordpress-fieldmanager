@@ -152,6 +152,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 			'theme_advanced_buttons4' => implode( ',', $buttons[3] ),
 			'height' => "250",
 			'width' => "100%",
+			'convert_urls' => false,
 		);
 		$options['plugins'] = array( 'inlinepopups', 'spellchecker', 'tabfocus', 'paste', 'media', 'fullscreen', 'wordpress', 'wpeditimage', 'wpgallery', 'wplink', 'wpdialogs' );
 		$options['plugins'] = array_unique( apply_filters('tiny_mce_plugins', $options['plugins'] ) );
