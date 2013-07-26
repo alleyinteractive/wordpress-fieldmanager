@@ -16,7 +16,7 @@ Author URI: http://www.alleyinteractive.com/
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-field.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-group.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textfield.php' );
-
+require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-password.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-autocomplete.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-checkbox.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-datepicker.php' );
