@@ -13,31 +13,31 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 * Title of field to display in standard term form field location
 	 */
 	public $title = '';
-	
+
 	/**
 	 * @var string[]
 	 * What taxonomies to render these fields
 	 */
 	public $taxonomies = array();
-	
+
 	/**
 	 * @var boolean
 	 * Whether or not to show the fields on the term add form
 	 */
 	public $show_on_add = true;
-	
+
 	/**
 	 * @var boolean
 	 * Whether or not to show the fields on the term edit form
 	 */
 	public $show_on_edit = true;
-	
+
 	/**
 	 * @var int
 	 * Only show this field on child terms of this parent
 	 */
 	public $parent = '';
-	
+
 	/**
 	 * @var array
 	 * Field names reserved for WordPress on the term add/edit forms
@@ -60,7 +60,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	public function __construct( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '', $fm = null ) {
 		// Populate the list of taxonomies for which to add this meta box with the given settings
 		if ( !is_array( $taxonomies ) ) $taxonomies = array( $taxonomies );
-		
+
 		// Set the class variables
 		$this->title = $title;
 		$this->taxonomies = $taxonomies;
@@ -68,7 +68,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$this->show_on_edit = $show_on_edit;
 		$this->parent = $parent;
 		$this->fm = $fm;
-		
+
 		// Iterate through the taxonomies and add the fields to the requested forms
 		// Also add handlers for saving the fields and which forms to validate (if enabled)
 		foreach ( $taxonomies as $taxonomy ) {
@@ -76,20 +76,20 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 				add_action( $taxonomy . '_add_form_fields', array( $this, 'add_term_fields' ), 10, 1 );
 				add_action( 'created_term', array( $this, 'save_term_fields'), 10, 3 );
 			}
-			
-			if ( $this->show_on_edit ) {			
+
+			if ( $this->show_on_edit ) {
 				add_action( $taxonomy . '_edit_form_fields', array( $this, 'edit_term_fields' ), 10, 2 );
 				add_action( 'edited_term', array( $this, 'save_term_fields'), 10, 3 );
 			}
-			
+
 			// Also handle removing data when a term is deleted
 			add_action( 'delete_term', array( $this, 'delete_term_fields'), 10, 4 );
 		}
-		
-		
-		
+
+
+
 	}
-	
+
 	/**
 	 * Creates the HTML template for wrapping fields on the add term form and prints the field
 	 * @access public
@@ -100,7 +100,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// If the parent is set, do nothing because we don't know what the parent term is yet
 		if ( ! empty( $this->parent ) )
 			return;
-	
+
 		// Create the HTML template for output
 		$html_template = '<div class="form-field">%s%s%s</div>';
 
@@ -111,7 +111,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Display the field
 		echo $this->term_fields( $html_template, $taxonomy );
 	}
-	
+
 	/**
 	 * Creates the HTML template for wrapping fields on the edit term form and prints the field
 	 * @access public
@@ -123,18 +123,18 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Check if this term's parent matches the specified term if it is set
 		if ( ! empty( $this->parent ) && $this->parent != $term->parent )
 			return;
-	
+
 		// Create the HTML template for output
 		$html_template = '<tr class="form-field"><th scope="row" valign="top">%s</th><td>%s%s</td></tr>';
-		
+
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'edittag', 'term' );
 		$fm_validation->add_field( $this->fm );
-		
+
 		// Display the field
 		echo $this->term_fields( $html_template, $taxonomy, $term );
 	}
-	
+
 	/**
 	 * Generates HTML for the term field
 	 * @access public
@@ -147,18 +147,18 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Make sure the user hasn't specified a field name we can't use
 		if ( in_array( $this->fm->name, $this->reserved_fields ) )
 			$this->fm->_invalid_definition( 'The field name ' . $this->fm->name . ' is reserved for WordPress on the term form.' );
-	
+
 		// Check if there are any current values to retrieve
 		if ( isset( $term->term_id ) ) {
 			$term_meta = Fieldmanager_Util_Term_Meta();
-			$values = $term_meta->get_term_meta( $term->term_id, $this->fm->name, true );
+			$values = $term_meta->get_term_meta( $term->term_id, $taxonomy, $this->fm->name, true );
 		}
 		$values = empty( $values ) ? null : $values;
-		
+
 		// Set the data type and ID
 		$this->fm->data_type = 'term';
 		$this->fm->data_id = $term->term_id;
-		
+
 		// Create the display label if one is set
 		if ( ! empty( $this->title ) ) {
 			$label = sprintf(
@@ -170,7 +170,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			$label = '';
 		}
 
-		// Create the markup and return it 
+		// Create the markup and return it
 		return sprintf(
 			$html_template,
 			$label,
@@ -178,7 +178,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			$this->fm->element_markup( $values )
 		);
 	}
-	
+
 	/**
 	 * Saves custom term fields
 	 * @access public
@@ -205,7 +205,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 
 		// Save the data
 		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$this->save_to_term_meta( $term_id, $value );
+		$this->save_to_term_meta( $term_id, $taxonomy, $value );
 	}
 
 	/**
@@ -214,21 +214,21 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 * @param array $data
 	 * @return void
 	 */
-	public function save_to_term_meta( $term_id, $data ) {
+	public function save_to_term_meta( $term_id, $taxonomy, $data ) {
 		// Set the data ID and type
 		$this->fm->data_id = $term_id;
 		$this->fm->data_type = 'term';
-		
+
 		// Get an instance of the term meta class
 		$term_meta = Fieldmanager_Util_Term_Meta();
-		
+
 		// Get the current data and run presave
 		$current = $term_meta->get_term_meta( $this->fm->data_id, $this->fm->name, true );
 		$data = $this->fm->presave_all( $data, $current );
-		
+
 		// Unless we are skipping the save, store the new value in term meta
-		if ( ! $this->fm->skip_save ) 
-			$term_meta->update_term_meta( $term_id, $this->fm->name, $data );
+		if ( ! $this->fm->skip_save )
+			$term_meta->update_term_meta( $term_id, $taxonomy, $this->fm->name, $data );
 	}
 
 	/**
@@ -244,7 +244,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	public function delete_term_fields( $term_id, $tt_id, $taxonomy, $deleted_term ) {
 		// Get an instance of the term meta class
 		$term_meta = Fieldmanager_Util_Term_Meta();
-		
+
 		// Delete any instance of this field for the term that was deleted
 		$term_meta->delete_term_meta( $term_id, $this->fm->name );
 	}
