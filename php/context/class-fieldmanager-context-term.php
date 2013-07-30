@@ -223,7 +223,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$term_meta = Fieldmanager_Util_Term_Meta();
 
 		// Get the current data and run presave
-		$current = $term_meta->get_term_meta( $this->fm->data_id, $this->fm->name, true );
+		$current = $term_meta->get_term_meta( $this->fm->data_id, $taxonomy, $this->fm->name, true );
 		$data = $this->fm->presave_all( $data, $current );
 
 		// Unless we are skipping the save, store the new value in term meta
@@ -246,6 +246,6 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$term_meta = Fieldmanager_Util_Term_Meta();
 
 		// Delete any instance of this field for the term that was deleted
-		$term_meta->delete_term_meta( $term_id, $this->fm->name );
+		$term_meta->delete_term_meta( $term_id, $taxonomy, $this->fm->name );
 	}
 }
