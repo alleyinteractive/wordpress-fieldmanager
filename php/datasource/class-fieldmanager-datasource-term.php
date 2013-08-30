@@ -150,14 +150,39 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @return int[] $values
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
+		if ( !is_array( $values ) ) {
+			$values = array( $values );
+		}
+
+		// maybe we can create terms here.
+		if ( get_class( $field ) == 'Fieldmanager_Autocomplete' && !$field->exact_match && isset( $this->taxonomy ) ) {
+			foreach( $values as $i => $value ) {
+				 // could be a mix of valid term IDs and new terms.
+				if ( is_numeric( $value ) ) continue;
+
+				// the JS adds a '-' to the front if it's not a found term to prevent problems with new numeric terms.
+				$value = sanitize_text_field( substr( $value, 1 ) );
+
+				// an affordance for our friends at WordPress.com
+				$term_by = function_exists( 'wpcom_vip_get_term_by' ) ? 'wpcom_vip_get_term_by' : 'get_term_by';
+				$term = call_user_func( $term_by, 'name', $value, $this->taxonomy );
+
+				if ( !$term ) {
+					$term = wp_insert_term( $value, $this->taxonomy );
+					if ( is_wp_error( $term ) ) {
+						unset( $value );
+						continue;
+					}
+					$term = (object) $term;
+				}
+				$values[$i] = $term->term_id;
+			}
+		}
+
 		// If this is a taxonomy-based field, must also save the value(s) as an object term
 		if ( $this->taxonomy_save_to_terms && isset( $this->taxonomy ) && !empty( $values ) ) {
-			// Sanitize the value(s)
-			if ( !is_array( $values ) ) {
-				$values = array( $values );
-			}
 			$tax_values = array();
-			foreach ( $values as &$value ) {
+			foreach ( $values as $value ) {
 				if ( !empty( $value ) ) {
 					if( is_numeric( $value ) )
 						$tax_values[] = $value;

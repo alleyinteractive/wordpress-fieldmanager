@@ -587,6 +587,7 @@ abstract class Fieldmanager_Field {
 	 * @return mixed[] sanitized values
 	 */
 	public function presave_all( $values, $current_values ) {
+
 		if ( $this->limit == 1 ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
 			if ( ! empty( $values ) )
