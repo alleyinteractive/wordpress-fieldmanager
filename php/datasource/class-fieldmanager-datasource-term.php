@@ -333,7 +333,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			global $wpdb;
 			return $wpdb->get_row( $wpdb->prepare( "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.term_taxonomy_id = %d LIMIT 1", $term_id ) );
 		} else {
-			$terms = get_terms( $this->get_taxonomies(), array( 'include' => array( $term_id ), 'number' => 1 ) );
+			$terms = get_terms( $this->get_taxonomies(), array( 'hide_empty' => false, 'include' => array( $term_id ), 'number' => 1 ) );
 			return !empty( $terms[0] ) ? $terms[0] : Null;
 		}
 	}
