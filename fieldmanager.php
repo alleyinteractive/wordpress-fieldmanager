@@ -26,6 +26,7 @@ require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-grid.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-link.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-media.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-options.php' );
+require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-post.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-richtextarea.php' );
 require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textarea.php' );
 
