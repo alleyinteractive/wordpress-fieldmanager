@@ -40,7 +40,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 */
 	public function __construct( $label, $options = array() ) {
 		add_action( 'admin_print_scripts', function() {
-			$post = get_post();	
+			$post = get_post();
 			$args = array();
 			if ( isset( $post ) && $post->ID ) {
 				$args['post'] = $post->ID;
@@ -55,13 +55,13 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Presave; convert a URL to an attachment ID.
+	 * Presave; ensure that the value is an absolute integer
 	 */
 	public function presave( $value, $current_value = array() ) {
 		if ( $value == 0 || !is_numeric( $value ) ) {
 			return NULL;
 		}
-		return $value;
+		return absint( $value );
 	}
 
 	/**
