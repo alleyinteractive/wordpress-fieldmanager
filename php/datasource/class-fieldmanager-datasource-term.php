@@ -318,6 +318,9 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 */
 	public function get_value( $value ) {
 		$id = intval( $value );
+		if ( ! $id )
+			return null;
+
 		$term = $this->get_term( $id );
 		$value = is_object( $term ) ? $term->name : '';
 		return apply_filters( 'fm_datasource_term_get_value', $value, $term, $this );
