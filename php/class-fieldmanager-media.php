@@ -28,6 +28,12 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public $thumbnail_class = 'thumbnail';
 
 	/**
+	 * @var string|array
+	 * Which size a preview image should be
+	 */
+	public $preview_size = 'thumbnail';
+
+	/**
 	 * @var string
 	 * Static variable so we only load media JS once
 	 */
@@ -74,10 +80,10 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$attachment = get_post( $value );
 			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
 				$preview = sprintf( '%s<br />', __( 'Uploaded image:' ) );
-				$preview .= wp_get_attachment_image( $value, 'thumbnail', false, array( 'class' => $this->thumbnail_class ) );
+				$preview .= wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) );
 			} else {
 				$preview = sprintf( '%s', __( 'Uploaded file:' ) ) . '&nbsp;';
-				$preview .= wp_get_attachment_link( $value, 'thumbnail', True, True, $attachment->post_title );
+				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 			}
 			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
 		} else {
@@ -86,12 +92,17 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		return sprintf(
 			'<input type="button" class="fm-media-button" id="%1$s" value="%3$s" />
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
-			<div class="media-wrapper">%5$s</div>',
+			<div class="media-wrapper">%5$s</div>
+			<script type="text/javascript">
+			var fm_preview_size = fm_preview_size || [];
+			fm_preview_size["%1$s"]=%6$s;
+			</script>',
 			$this->get_element_id(),
 			$this->get_form_name(),
 			$this->button_label,
 			$value,
-			$preview
+			$preview,
+			json_encode( $this->preview_size )
 		);
 	}
 

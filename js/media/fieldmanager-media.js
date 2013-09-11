@@ -10,7 +10,7 @@ $( document ).on( 'click', '.fm-media-button', function() {
 	var old_send_to_editor = wp.media.editor.send.attachment;
 	var input = this;
 	wp.media.editor.send.attachment = function( props, attachment ) {
-		props.size = 'thumbnail';
+		props.size = fm_preview_size[ $(input).attr('id') ] || 'thumbnail';
 		props = wp.media.string.props( props, attachment );
 		props.align = null;
 		$(input).parent().find('.fm-media-id').val( attachment.id );
