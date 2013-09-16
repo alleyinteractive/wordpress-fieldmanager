@@ -100,6 +100,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 */
 	public function presave( $value, $current_value = array() ) {
 		$rows = json_decode( stripslashes( $value ), TRUE );
+		if ( !is_array( $rows ) ) return array();
 		foreach ( $rows as $i => $cells ) {
 			foreach ( $cells as $k => $cell ) {
 				$cell = call_user_func( $this->sanitize, $i, $k, $cell );
