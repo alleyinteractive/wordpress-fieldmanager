@@ -1,0 +1,692 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="generator" content="ApiGen 2.8.0" />
+
+	<title>Class Fieldmanager_Datasource_User | Fieldmanager</title>
+
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
+
+	<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', "UA-17061659-2"]);
+		_gaq.push(['_trackPageview']);
+
+		(function() {
+			var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+			ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+			var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+		})();
+	</script>
+</head>
+
+<body>
+	<div id="navigation" class="navbar navbar-fixed-top">
+		<div class="navbar-inner">
+			<div class="container">
+				<a href="index.html" class="brand">Fieldmanager</a>
+				<div class="nav-collapse">
+					<ul class="nav">
+						<li>
+							<a href="package-Fieldmanager.Datasource.html" title="Summary of Fieldmanager\Datasource"><span>Package</span></a>
+						</li>
+						<li class="active">
+<span>Class</span>						</li>
+
+						<li class="divider-vertical"></li>
+
+						<li>
+							<a href="tree.html" title="Tree view of classes, interfaces, traits and exceptions"><span>Tree</span></a>
+						</li>
+						<li>
+							<a href="todo.html" title="Todo list"><span>Todo</span></a>
+						</li>
+
+
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div id="left">
+	<div id="menu">
+		<form id="search" class="form-search">
+			<input type="hidden" name="cx" value="" />
+			<input type="hidden" name="ie" value="UTF-8" />
+			<input type="text" name="q" class="search-query" placeholder="Search" />
+		</form>
+
+
+		<div id="groups">
+			<h3>Packages</h3>
+			<ul>
+				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
+						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
+				<li class="active"><a href="package-Fieldmanager.Datasource.html">Datasource</a>
+						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
+							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
+			</ul>
+		</div>
+
+
+		<div id="elements">
+			<h3>Classes</h3>
+			<ul>
+				<li><a href="class-Fieldmanager_Context_Page.html">Fieldmanager_Context_Page</a></li>
+				<li><a href="class-Fieldmanager_Context_Post.html">Fieldmanager_Context_Post</a></li>
+				<li><a href="class-Fieldmanager_Context_Term.html">Fieldmanager_Context_Term</a></li>
+				<li><a href="class-Fieldmanager_Context_User.html">Fieldmanager_Context_User</a></li>
+				<li><a href="class-Fieldmanager_Datasource.html">Fieldmanager_Datasource</a></li>
+				<li><a href="class-Fieldmanager_Datasource_Post.html">Fieldmanager_Datasource_Post</a></li>
+				<li><a href="class-Fieldmanager_Datasource_Term.html">Fieldmanager_Datasource_Term</a></li>
+				<li class="active"><a href="class-Fieldmanager_Datasource_User.html">Fieldmanager_Datasource_User</a></li>
+			</ul>
+
+
+
+
+
+			<h3>Functions</h3>
+			<ul>
+				<li><a href="function-fm_url_to_post_id.html">fm_url_to_post_id</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+
+<div id="splitter"></div>
+
+<div id="right">
+	<div id="rightInner">
+<div id="content" class="class">
+	<h1>Class Fieldmanager_Datasource_User</h1>
+
+
+	<div class="description">
+	
+<p>Data source for WordPress Posts, for autocomplete and option types.</p>
+
+	</div>
+
+	<dl class="tree well">
+		<dd style="padding-left:0px">
+			<a href="class-Fieldmanager_Datasource.html"><span>Fieldmanager_Datasource</span></a>
+			
+			
+			
+		</dd>
+		<dd style="padding-left:30px">
+			<img src="resources/inherit.png" alt="Extended by" />
+<b><span>Fieldmanager_Datasource_User</span></b>			
+			
+			
+		</dd>
+	</dl>
+
+
+
+
+
+
+
+
+	<div class="alert alert-info">
+		
+		
+		
+		<b>Package:</b> <a href="package-Fieldmanager.html">Fieldmanager</a>\<a href="package-Fieldmanager.Datasource.html">Datasource</a><br />
+
+		<b>Located at</b> <a href="source-class-Fieldmanager_Datasource_User.html#6-159" title="Go to source code">datasource/class-fieldmanager-datasource-user.php</a><br />
+	</div>
+
+
+
+		<h2>Methods summary</h2>
+		<table class="summary table table-bordered table-striped" id="methods">
+		<tr data-order="get_value" id="_get_value">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_value">#</a>
+			<code><a href="source-class-Fieldmanager_Datasource_User.html#55-64" title="Go to source code">get_value</a>( <span>integer <var>$value</var></span> )</code>
+
+			<div class="description short">
+				
+<p>Get a post title by post ID</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Get a post title by post ID</p>
+
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd><code>integer</code><br>$value post_id</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>post title<br />
+					</div>
+
+
+
+					<h4>Overrides</h4>
+					<div class="list"><code><a href="class-Fieldmanager_Datasource.html#_get_value">Fieldmanager_Datasource::get_value</a></code></div>
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_items" id="_get_items">
+
+			<td class="attributes"><code>
+				 public 
+				array
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_items">#</a>
+			<code><a href="source-class-Fieldmanager_Datasource_User.html#66-85" title="Go to source code">get_items</a>( <span>string <var>$fragment</var> = <span class="php-keyword1">Null</span> </span> )</code>
+
+			<div class="description short">
+				
+<p>Get users which match this datasource, optionally filtered by a search
+fragment, e.g. for Autocomplete.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Get users which match this datasource, optionally filtered by a search
+fragment, e.g. for Autocomplete.</p>
+
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$fragment</var></dt>
+						<dd><code>string</code><br>$fragment</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code>array</code><br>post_id =&gt; post_title for display or AJAX<br />
+					</div>
+
+
+
+					<h4>Overrides</h4>
+					<div class="list"><code><a href="class-Fieldmanager_Datasource.html#_get_items">Fieldmanager_Datasource::get_items</a></code></div>
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_ajax_action" id="_get_ajax_action">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_ajax_action">#</a>
+			<code><a href="source-class-Fieldmanager_Datasource_User.html#87-98" title="Go to source code">get_ajax_action</a>( )</code>
+
+			<div class="description short">
+				
+<p>Get an action to register by hashing (non cryptographically for speed) the
+options that make this datasource unique.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Get an action to register by hashing (non cryptographically for speed) the
+options that make this datasource unique.</p>
+
+
+
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>ajax action<br />
+					</div>
+
+
+
+					<h4>Overrides</h4>
+					<div class="list"><code><a href="class-Fieldmanager_Datasource.html#_get_ajax_action">Fieldmanager_Datasource::get_ajax_action</a></code></div>
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="presave_alter_values" id="_presave_alter_values">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_presave_alter_values">#</a>
+			<code><a href="source-class-Fieldmanager_Datasource_User.html#100-111" title="Go to source code">presave_alter_values</a>( <span><code><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></code> <var>$field</var></span>, <span>array <var>$values</var></span>, <span>string|integer|null <var>$current_values</var></span> )</code>
+
+			<div class="description short">
+				
+<p>For post relationships, delete reciprocal post metadata prior to saving
+(presave will re-add)</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>For post relationships, delete reciprocal post metadata prior to saving
+(presave will re-add)</p>
+
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$field</var></dt>
+						<dd><code>array</code><br>$values new post values</dd>
+						<dt><var>$values</var></dt>
+						<dd><code>array</code><br>$current_values existing post values</dd>
+						<dt><var>$current_values</var></dt>
+						<dd><code>string|integer|null</code><br>$current_value</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br>cleaned value<br />
+					</div>
+
+
+
+					<h4>Overrides</h4>
+					<div class="list"><code><a href="class-Fieldmanager_Datasource.html#_presave_alter_values">Fieldmanager_Datasource::presave_alter_values</a></code></div>
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="presave" id="_presave">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_presave">#</a>
+			<code><a href="source-class-Fieldmanager_Datasource_User.html#113-135" title="Go to source code">presave</a>( <span><code><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></code> <var>$field</var></span>, <span>string|integer <var>$value</var></span>, <span>string|integer|null <var>$current_value</var></span> )</code>
+
+			<div class="description short">
+				
+<p>Handle reciprocal postmeta</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Handle reciprocal postmeta</p>
+
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$field</var></dt>
+						<dd><code>integer</code><br>$value</dd>
+						<dt><var>$value</var></dt>
+						<dd><code>string|integer</code><br>$value</dd>
+						<dt><var>$current_value</var></dt>
+						<dd><code>string|integer|null</code><br>$current_value</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br />
+					</div>
+
+
+
+					<h4>Overrides</h4>
+					<div class="list"><code><a href="class-Fieldmanager_Datasource.html#_presave">Fieldmanager_Datasource::presave</a></code></div>
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_view_link" id="_get_view_link">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_view_link">#</a>
+			<code><a href="source-class-Fieldmanager_Datasource_User.html#137-144" title="Go to source code">get_view_link</a>( <span>integer <var>$value</var></span> )</code>
+
+			<div class="description short">
+				
+<p>Get view link for a user</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Get view link for a user</p>
+
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd><code>integer</code><br>$value</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br />
+					</div>
+
+
+
+					<h4>Overrides</h4>
+					<div class="list"><code><a href="class-Fieldmanager_Datasource.html#_get_view_link">Fieldmanager_Datasource::get_view_link</a></code></div>
+
+			</div>
+			</div></td>
+		</tr>
+		<tr data-order="get_edit_link" id="_get_edit_link">
+
+			<td class="attributes"><code>
+				 public 
+				string
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_get_edit_link">#</a>
+			<code><a href="source-class-Fieldmanager_Datasource_User.html#146-158" title="Go to source code">get_edit_link</a>( <span>integer <var>$value</var></span> )</code>
+
+			<div class="description short">
+				
+<p>Get edit link for a user</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Get edit link for a user</p>
+
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$value</var></dt>
+						<dd><code>integer</code><br>$value</dd>
+					</dl></div>
+
+					<h4>Returns</h4>
+					<div class="list">
+						<code>string</code><br />
+					</div>
+
+
+
+					<h4>Overrides</h4>
+					<div class="list"><code><a href="class-Fieldmanager_Datasource.html#_get_edit_link">Fieldmanager_Datasource::get_edit_link</a></code></div>
+
+			</div>
+			</div></td>
+		</tr>
+		</table>
+
+		<h3>Methods inherited from <a href="class-Fieldmanager_Datasource.html#methods">Fieldmanager_Datasource</a></h3>
+		<p class="elementList">
+			<code><a href="class-Fieldmanager_Datasource.html#___construct">__construct()</a></code>, 
+			<code><a href="class-Fieldmanager_Datasource.html#_autocomplete_search">autocomplete_search()</a></code>, 
+			<code><a href="class-Fieldmanager_Datasource.html#_preload_alter_values">preload_alter_values()</a></code>
+		</p>
+
+
+		<h3>Magic methods summary</h3>
+
+
+
+
+
+
+
+
+		<h2>Properties summary</h2>
+		<table class="summary table table-bordered table-striped" id="properties">
+		<tr data-order="query_callback" id="$query_callback">
+			<td class="attributes"><code>
+				public  
+				mixed
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-Fieldmanager_Datasource_User.html#12-16" title="Go to source code"><var>$query_callback</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$query_callback" class="anchor">#</a>
+
+				<div class="description short">
+					
+<p>Supply a function which returns a list of users; takes one argument, a
+possible fragement</p>
+
+				</div>
+
+				<div class="description detailed hidden">
+					
+<p>Supply a function which returns a list of users; takes one argument, a
+possible fragement</p>
+
+
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="query_args" id="$query_args">
+			<td class="attributes"><code>
+				public  
+				array
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-Fieldmanager_Datasource_User.html#18-22" title="Go to source code"><var>$query_args</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$query_args" class="anchor">#</a>
+
+				<div class="description short">
+					
+<p>Arguments to get_users(), which uses WP's defaults.</p>
+
+				</div>
+
+				<div class="description detailed hidden">
+					
+<p>Arguments to get_users(), which uses WP's defaults.</p>
+
+
+						<h4>See</h4>
+						<div class="list">
+								<a
+href="http://codex.wordpress.org/Template_Tags/get_users">http://codex.wordpress.org/Template_Tags/get_users</a><br />
+						</div>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="use_ajax" id="$use_ajax">
+			<td class="attributes"><code>
+				public  
+				boolean
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-Fieldmanager_Datasource_User.html#24-29" title="Go to source code"><var>$use_ajax</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$use_ajax" class="anchor">#</a>
+
+				<div class="description short">
+					
+<p>Allow AJAX. If set to false, Autocomplete will pre-load get_items() with no
+fragment, so False could cause performance problems.</p>
+
+				</div>
+
+				<div class="description detailed hidden">
+					
+<p>Allow AJAX. If set to false, Autocomplete will pre-load get_items() with no
+fragment, so False could cause performance problems.</p>
+
+
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="display_property" id="$display_property">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-Fieldmanager_Datasource_User.html#31-36" title="Go to source code"><var>$display_property</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$display_property" class="anchor">#</a>
+
+				<div class="description short">
+					
+<p>Display property. Defaults to display_name, but can also be 'user_login',
+'user_email', or 'user_nicename'</p>
+
+				</div>
+
+				<div class="description detailed hidden">
+					
+<p>Display property. Defaults to display_name, but can also be 'user_login',
+'user_email', or 'user_nicename'</p>
+
+
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="capability" id="$capability">
+			<td class="attributes"><code>
+				public  
+				string
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-Fieldmanager_Datasource_User.html#38-43" title="Go to source code"><var>$capability</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$capability" class="anchor">#</a>
+
+				<div class="description short">
+					
+<p>Capability required to refer to a user via this datasource.</p>
+
+				</div>
+
+				<div class="description detailed hidden">
+					
+<p>Capability required to refer to a user via this datasource.</p>
+
+
+						<h4>See</h4>
+						<div class="list">
+								<a
+href="http://codex.wordpress.org/Roles_and_Capabilities">http://codex.wordpress.org/Roles_and_Capabilities</a><br />
+						</div>
+				</div>
+			</div></td>
+		</tr>
+		<tr data-order="reciprocal" id="$reciprocal">
+			<td class="attributes"><code>
+				public  
+				string|Null
+			</code></td>
+
+			<td class="name">
+					<a href="source-class-Fieldmanager_Datasource_User.html#45-50" title="Go to source code"><var>$reciprocal</var></a>
+			</td>
+			<td class="description"><div>
+				<a href="#$reciprocal" class="anchor">#</a>
+
+				<div class="description short">
+					
+<p>If not empty, set this post's ID as a value on the user. This is used to
+establish two-way relationships.</p>
+
+				</div>
+
+				<div class="description detailed hidden">
+					
+<p>If not empty, set this post's ID as a value on the user. This is used to
+establish two-way relationships.</p>
+
+
+				</div>
+			</div></td>
+		</tr>
+		</table>
+
+		<h3>Properties inherited from <a href="class-Fieldmanager_Datasource.html#properties">Fieldmanager_Datasource</a></h3>
+		<p class="elementList">
+			<code><a href="class-Fieldmanager_Datasource.html#$ajax_action"><var>$ajax_action</var></a></code>, 
+			<code><a href="class-Fieldmanager_Datasource.html#$allow_optgroups"><var>$allow_optgroups</var></a></code>, 
+			<code><a href="class-Fieldmanager_Datasource.html#$counter"><var>$counter</var></a></code>, 
+			<code><a href="class-Fieldmanager_Datasource.html#$options"><var>$options</var></a></code>, 
+			<code><a href="class-Fieldmanager_Datasource.html#$options_callback"><var>$options_callback</var></a></code>
+		</p>
+
+
+
+
+
+</div>
+	</div>
+
+	<div id="footer">
+		Fieldmanager API documentation generated by <a href="http://apigen.org">ApiGen 2.8.0</a>
+	</div>
+</div>
+</body>
+</html>

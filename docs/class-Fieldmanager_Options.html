@@ -6,8 +6,8 @@
 
 	<title>Class Fieldmanager_Options | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
-	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
@@ -67,9 +67,15 @@
 			<ul>
 				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
 						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
 				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
 							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
 			</ul>
 		</div>
 
@@ -89,6 +95,7 @@
 				<li><a href="class-Fieldmanager_Link.html">Fieldmanager_Link</a></li>
 				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
 				<li class="active"><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Password.html">Fieldmanager_Password</a></li>
 				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
 				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
 				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
@@ -117,6 +124,7 @@
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
 				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
 				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
 			</ul>
 		</div>
 	</div>
@@ -172,7 +180,7 @@
 		
 		<b>Package:</b> <a href="package-Fieldmanager.html">Fieldmanager</a><br />
 
-		<b>Located at</b> <a href="source-class-Fieldmanager_Options.html#6-240" title="Go to source code">class-fieldmanager-options.php</a><br />
+		<b>Located at</b> <a href="source-class-Fieldmanager_Options.html#6-275" title="Go to source code">class-fieldmanager-options.php</a><br />
 	</div>
 
 
@@ -190,7 +198,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code><a href="source-class-Fieldmanager_Options.html#55-78" title="Go to source code">__construct</a>( <span>string <var>$label</var> = <span class="php-quote">''</span></span>, <span>mixed <var>$options</var> = <span class="php-keyword1">array</span>() </span> )</code>
+			<code><a href="source-class-Fieldmanager_Options.html#49-72" title="Go to source code">__construct</a>( <span>string <var>$label</var> = <span class="php-quote">''</span></span>, <span>mixed <var>$options</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 			<div class="description short">
 				
@@ -232,7 +240,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_add_options">#</a>
-			<code><a href="source-class-Fieldmanager_Options.html#80-100" title="Go to source code">add_options</a>( <span>array <var>$options</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Options.html#74-94" title="Go to source code">add_options</a>( <span>array <var>$options</var></span> )</code>
 
 			<div class="description short">
 				
@@ -270,7 +278,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_form_data_elements">#</a>
-			<code><a href="source-class-Fieldmanager_Options.html#102-157" title="Go to source code">form_data_elements</a>( <span>mixed <var>$value</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Options.html#96-151" title="Go to source code">form_data_elements</a>( <span>mixed <var>$value</var></span> )</code>
 
 			<div class="description short">
 				
@@ -304,7 +312,7 @@
 		<tr data-order="form_data_element" id="_form_data_element">
 
 			<td class="attributes"><code>
-				abstract public 
+				 public 
 				
 				
 				</code>
@@ -312,7 +320,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_form_data_element">#</a>
-			<code><a href="source-class-Fieldmanager_Options.html#159-163" title="Go to source code">form_data_element</a>( <span>mixed <var>$value</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Options.html#153-165" title="Go to source code">form_data_element</a>( <span>mixed <var>$data_row</var></span>, <span>mixed <var>$value</var></span> )</code>
 
 			<div class="description short">
 				
@@ -328,8 +336,10 @@
 
 					<h4>Parameters</h4>
 					<div class="list"><dl>
-						<dt><var>$value</var></dt>
+						<dt><var>$data_row</var></dt>
 						<dd><code>mixed</code><br>$value</dd>
+						<dt><var>$value</var></dt>
+						<dd></dd>
 					</dl></div>
 
 
@@ -350,7 +360,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_option_selected">#</a>
-			<code><a href="source-class-Fieldmanager_Options.html#165-175" title="Go to source code">option_selected</a>( <span>string <var>$current_option</var></span>, <span>array <var>$options</var></span>, <span>string <var>$attribute</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Options.html#167-177" title="Go to source code">option_selected</a>( <span>string <var>$current_option</var></span>, <span>array <var>$options</var></span>, <span>string <var>$attribute</var></span> )</code>
 
 			<div class="description short">
 				
@@ -396,7 +406,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_presave">#</a>
-			<code><a href="source-class-Fieldmanager_Options.html#177-196" title="Go to source code">presave</a>( <span>mixed <var>$value</var></span>, <span>mixed <var>$current_value</var> = <span class="php-keyword1">array</span>() </span> )</code>
+			<code><a href="source-class-Fieldmanager_Options.html#179-198" title="Go to source code">presave</a>( <span>mixed <var>$value</var></span>, <span>mixed <var>$current_value</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 			<div class="description short">
 				
@@ -442,7 +452,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_preload_alter_values">#</a>
-			<code><a href="source-class-Fieldmanager_Options.html#198-205" title="Go to source code">preload_alter_values</a>( <span>array <var>$values</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Options.html#200-207" title="Go to source code">preload_alter_values</a>( <span>array <var>$values</var></span> )</code>
 
 			<div class="description short">
 				
@@ -482,7 +492,7 @@
 
 			<td class="name"><div>
 			<a class="anchor" href="#_presave_alter_values">#</a>
-			<code><a href="source-class-Fieldmanager_Options.html#207-218" title="Go to source code">presave_alter_values</a>( <span>int[] <var>$values</var></span>, <span>int[] <var>$current_values</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Options.html#209-220" title="Go to source code">presave_alter_values</a>( <span>int[] <var>$values</var></span>, <span>int[] <var>$current_values</var></span> )</code>
 
 			<div class="description short">
 				
@@ -519,9 +529,14 @@
 
 		<h3>Methods inherited from <a href="class-Fieldmanager_Field.html#methods">Fieldmanager_Field</a></h3>
 		<p class="elementList">
+			<code><a href="class-Fieldmanager_Field.html#__invalid_definition">_invalid_definition()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#__unauthorized_access">_unauthorized_access()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_another">add_another()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_meta_box">add_meta_box()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_add_page_form">add_page_form()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_submenu_page">add_submenu_page()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_add_term_form">add_term_form()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_add_user_form">add_user_form()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_element_markup">element_markup()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_form_element">form_element()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_collapse_handle">get_collapse_handle()</a></code>, 
@@ -534,14 +549,8 @@
 			<code><a href="class-Fieldmanager_Field.html#_get_full_path">get_full_path()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_remove_handle">get_remove_handle()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_sort_handle">get_sort_handle()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_handle_submenu_save">handle_submenu_save()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_meta_box_render_callback">meta_box_render_callback()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_presave_all">presave_all()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_register_submenu_page">register_submenu_page()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_render_meta_box">render_meta_box()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_render_submenu_page">render_submenu_page()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_save_fields_for_post">save_fields_for_post()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_save_to_post_meta">save_to_post_meta()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_set_options">set_options()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_single_element_markup">single_element_markup()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_wrap_with_multi_tools">wrap_with_multi_tools()</a></code>
 		</p>
@@ -662,32 +671,6 @@
 				</div>
 			</div></td>
 		</tr>
-		<tr data-order="datasource" id="$datasource">
-			<td class="attributes"><code>
-				public  
-				<code><a href="class-Fieldmanager_Datasource.html">Fieldmanager_Datasource</a></code>
-			</code></td>
-
-			<td class="name">
-					<a href="source-class-Fieldmanager_Options.html#37-41" title="Go to source code"><var>$datasource</var></a>
-			</td>
-			<td class="description"><div>
-				<a href="#$datasource" class="anchor">#</a>
-
-				<div class="description short">
-					
-<p>Optionally generate field from datasource</p>
-
-				</div>
-
-				<div class="description detailed hidden">
-					
-<p>Optionally generate field from datasource</p>
-
-
-				</div>
-			</div></td>
-		</tr>
 		<tr data-order="multiple" id="$multiple">
 			<td class="attributes"><code>
 				public  
@@ -695,7 +678,7 @@
 			</code></td>
 
 			<td class="name">
-					<a href="source-class-Fieldmanager_Options.html#43-47" title="Go to source code"><var>$multiple</var></a>
+					<a href="source-class-Fieldmanager_Options.html#37-41" title="Go to source code"><var>$multiple</var></a>
 			</td>
 			<td class="description"><div>
 				<a href="#$multiple" class="anchor">#</a>
@@ -720,30 +703,36 @@
 		<p class="elementList">
 			<code><a href="class-Fieldmanager_Field.html#$add_more_label"><var>$add_more_label</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$attributes"><var>$attributes</var></a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#$content_types"><var>$content_types</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$data_id"><var>$data_id</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$data_type"><var>$data_type</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$datasource"><var>$datasource</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$debug"><var>$debug</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$default_value"><var>$default_value</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$description"><var>$description</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$display_if"><var>$display_if</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$extra_elements"><var>$extra_elements</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$field_class"><var>$field_class</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$index"><var>$index</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$inline_label"><var>$inline_label</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$is_attachment"><var>$is_attachment</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$label"><var>$label</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$label_after_element"><var>$label_after_element</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$label_element"><var>$label_element</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$limit"><var>$limit</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$meta_boxes_to_remove"><var>$meta_boxes_to_remove</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$name"><var>$name</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$one_label_per_item"><var>$one_label_per_item</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$remove_default_meta_boxes"><var>$remove_default_meta_boxes</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$required"><var>$required</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$sanitize"><var>$sanitize</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$save_empty"><var>$save_empty</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$skip_save"><var>$skip_save</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$sortable"><var>$sortable</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$starting_count"><var>$starting_count</var></a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#$submit_button_label"><var>$submit_button_label</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$template"><var>$template</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$validate"><var>$validate</var></a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#$wp_option_autoload"><var>$wp_option_autoload</var></a></code>
+			<code><a href="class-Fieldmanager_Field.html#$validation_messages"><var>$validation_messages</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$validation_rules"><var>$validation_rules</var></a></code>
 		</p>
 
 

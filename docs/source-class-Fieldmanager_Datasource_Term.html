@@ -7,8 +7,8 @@
 
 	<title>File datasource/class-fieldmanager-datasource-term.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
-	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
@@ -69,9 +69,15 @@
 			<ul>
 				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
 						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
 				<li class="active"><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
 							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
 			</ul>
 		</div>
 
@@ -79,9 +85,14 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Fieldmanager_Context_Page.html">Fieldmanager_Context_Page</a></li>
+				<li><a href="class-Fieldmanager_Context_Post.html">Fieldmanager_Context_Post</a></li>
+				<li><a href="class-Fieldmanager_Context_Term.html">Fieldmanager_Context_Term</a></li>
+				<li><a href="class-Fieldmanager_Context_User.html">Fieldmanager_Context_User</a></li>
 				<li><a href="class-Fieldmanager_Datasource.html">Fieldmanager_Datasource</a></li>
 				<li><a href="class-Fieldmanager_Datasource_Post.html">Fieldmanager_Datasource_Post</a></li>
 				<li class="active"><a href="class-Fieldmanager_Datasource_Term.html">Fieldmanager_Datasource_Term</a></li>
+				<li><a href="class-Fieldmanager_Datasource_User.html">Fieldmanager_Datasource_User</a></li>
 			</ul>
 
 
@@ -200,7 +211,7 @@
 </span></span><span id="98" class="l"><a class="l" href="#98"> 98 </a><span class="php-comment">     * Get taxonomies; normalizes $this-&gt;taxonomy to an array
 </span></span><span id="99" class="l"><a class="l" href="#99"> 99 </a><span class="php-comment">     * @return array of taxonomies
 </span></span><span id="100" class="l"><a class="l" href="#100">100 </a><span class="php-comment">     */</span>
-</span><span id="101" class="l"><a class="l" href="#101">101 </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_get_taxonomies" href="#_get_taxonomies">get_taxonomies</a>() {
+</span><span id="101" class="l"><a class="l" href="#101">101 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_taxonomies" href="#_get_taxonomies">get_taxonomies</a>() {
 </span><span id="102" class="l"><a class="l" href="#102">102 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">is_array</span>( <span class="php-var">$this</span>-&gt;taxonomy ) ? <span class="php-var">$this</span>-&gt;taxonomy : <span class="php-keyword1">array</span>( <span class="php-var">$this</span>-&gt;taxonomy );
 </span><span id="103" class="l"><a class="l" href="#103">103 </a>    }
 </span><span id="104" class="l"><a class="l" href="#104">104 </a>
@@ -252,193 +263,221 @@
 </span></span><span id="150" class="l"><a class="l" href="#150">150 </a><span class="php-comment">     * @return int[] $values
 </span></span><span id="151" class="l"><a class="l" href="#151">151 </a><span class="php-comment">     */</span>
 </span><span id="152" class="l"><a class="l" href="#152">152 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave_alter_values" href="#_presave_alter_values">presave_alter_values</a>( Fieldmanager_Field <span class="php-var">$field</span>, <span class="php-var">$values</span>, <span class="php-var">$current_values</span> ) {
-</span><span id="153" class="l"><a class="l" href="#153">153 </a>        <span class="php-comment">// If this is a taxonomy-based field, must also save the value(s) as an object term</span>
-</span><span id="154" class="l"><a class="l" href="#154">154 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;taxonomy_save_to_terms &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;taxonomy ) &amp;&amp; !<span class="php-keyword1">empty</span>( <span class="php-var">$values</span> ) ) {
-</span><span id="155" class="l"><a class="l" href="#155">155 </a>            <span class="php-comment">// Sanitize the value(s)</span>
-</span><span id="156" class="l"><a class="l" href="#156">156 </a>            <span class="php-keyword1">if</span> ( !<span class="php-keyword2">is_array</span>( <span class="php-var">$values</span> ) ) {
-</span><span id="157" class="l"><a class="l" href="#157">157 </a>                <span class="php-var">$values</span> = <span class="php-keyword1">array</span>( <span class="php-var">$values</span> );
-</span><span id="158" class="l"><a class="l" href="#158">158 </a>            }
-</span><span id="159" class="l"><a class="l" href="#159">159 </a>            <span class="php-var">$tax_values</span> = <span class="php-keyword1">array</span>();
-</span><span id="160" class="l"><a class="l" href="#160">160 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$values</span> <span class="php-keyword1">as</span> &amp;<span class="php-var">$value</span> ) {
-</span><span id="161" class="l"><a class="l" href="#161">161 </a>                <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$value</span> ) ) {
-</span><span id="162" class="l"><a class="l" href="#162">162 </a>                    <span class="php-keyword1">if</span>( <span class="php-keyword2">is_numeric</span>( <span class="php-var">$value</span> ) )
-</span><span id="163" class="l"><a class="l" href="#163">163 </a>                        <span class="php-var">$tax_values</span>[] = <span class="php-var">$value</span>;
-</span><span id="164" class="l"><a class="l" href="#164">164 </a>                    <span class="php-keyword1">else</span> <span class="php-keyword1">if</span>( <span class="php-keyword2">is_array</span>( <span class="php-var">$value</span> ) )
-</span><span id="165" class="l"><a class="l" href="#165">165 </a>                        <span class="php-var">$tax_values</span> = <span class="php-var">$value</span>;
-</span><span id="166" class="l"><a class="l" href="#166">166 </a>                }
-</span><span id="167" class="l"><a class="l" href="#167">167 </a>            }
-</span><span id="168" class="l"><a class="l" href="#168">168 </a>            <span class="php-var">$this</span>-&gt;save_taxonomy( <span class="php-var">$tax_values</span>, <span class="php-var">$field</span>-&gt;data_id );
-</span><span id="169" class="l"><a class="l" href="#169">169 </a>        }
-</span><span id="170" class="l"><a class="l" href="#170">170 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;only_save_to_taxonomy ) <span class="php-keyword1">return</span> <span class="php-keyword1">array</span>();
-</span><span id="171" class="l"><a class="l" href="#171">171 </a>        <span class="php-keyword1">return</span> <span class="php-var">$values</span>;
-</span><span id="172" class="l"><a class="l" href="#172">172 </a>    }
-</span><span id="173" class="l"><a class="l" href="#173">173 </a>
-</span><span id="174" class="l"><a class="l" href="#174">174 </a>    <span class="php-comment">/**
-</span></span><span id="175" class="l"><a class="l" href="#175">175 </a><span class="php-comment">     * Sanitize a value
-</span></span><span id="176" class="l"><a class="l" href="#176">176 </a><span class="php-comment">     */</span>
-</span><span id="177" class="l"><a class="l" href="#177">177 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( Fieldmanager_Field <span class="php-var">$field</span>, <span class="php-var">$value</span>, <span class="php-var">$current_value</span> ) {
-</span><span id="178" class="l"><a class="l" href="#178">178 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">intval</span>( <span class="php-var">$value</span> );
-</span><span id="179" class="l"><a class="l" href="#179">179 </a>    }
-</span><span id="180" class="l"><a class="l" href="#180">180 </a>
-</span><span id="181" class="l"><a class="l" href="#181">181 </a>    <span class="php-comment">/**
-</span></span><span id="182" class="l"><a class="l" href="#182">182 </a><span class="php-comment">     * Save taxonomy data
-</span></span><span id="183" class="l"><a class="l" href="#183">183 </a><span class="php-comment">     * @param mixed[] $tax_values
-</span></span><span id="184" class="l"><a class="l" href="#184">184 </a><span class="php-comment">     * @return void
-</span></span><span id="185" class="l"><a class="l" href="#185">185 </a><span class="php-comment">     */</span>
-</span><span id="186" class="l"><a class="l" href="#186">186 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_save_taxonomy" href="#_save_taxonomy">save_taxonomy</a>( <span class="php-var">$tax_values</span>, <span class="php-var">$data_id</span> ) {
-</span><span id="187" class="l"><a class="l" href="#187">187 </a>
-</span><span id="188" class="l"><a class="l" href="#188">188 </a>        <span class="php-var">$tax_values</span> = <span class="php-keyword2">array_map</span>( <span class="php-quote">'intval'</span>, <span class="php-var">$tax_values</span> );
-</span><span id="189" class="l"><a class="l" href="#189">189 </a>        <span class="php-var">$tax_values</span> = <span class="php-keyword2">array_unique</span>( <span class="php-var">$tax_values</span> );
-</span><span id="190" class="l"><a class="l" href="#190">190 </a>        <span class="php-var">$taxonomies</span> = <span class="php-var">$this</span>-&gt;get_taxonomies();
-</span><span id="191" class="l"><a class="l" href="#191">191 </a>
-</span><span id="192" class="l"><a class="l" href="#192">192 </a>        <span class="php-comment">// Store the each term for this post. Handle grouped fields differently since multiple taxonomies are present.</span>
-</span><span id="193" class="l"><a class="l" href="#193">193 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">count</span>( <span class="php-var">$taxonomies</span> ) &gt; <span class="php-num">1</span> ) {
-</span><span id="194" class="l"><a class="l" href="#194">194 </a>            <span class="php-comment">// Build the taxonomy insert data</span>
-</span><span id="195" class="l"><a class="l" href="#195">195 </a>            <span class="php-var">$taxonomies_to_save</span> = <span class="php-keyword1">array</span>();
-</span><span id="196" class="l"><a class="l" href="#196">196 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$tax_values</span> <span class="php-keyword1">as</span> <span class="php-var">$term_id</span> ) {
-</span><span id="197" class="l"><a class="l" href="#197">197 </a>                <span class="php-var">$term</span> = <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$term_id</span> );
-</span><span id="198" class="l"><a class="l" href="#198">198 </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$taxonomies_to_save</span>[ <span class="php-var">$term</span>-&gt;taxonomy ] ) ) <span class="php-var">$taxonomies_to_save</span>[ <span class="php-var">$term</span>-&gt;taxonomy ] = <span class="php-keyword1">array</span>();
-</span><span id="199" class="l"><a class="l" href="#199">199 </a>                <span class="php-var">$taxonomies_to_save</span>[ <span class="php-var">$term</span>-&gt;taxonomy ][] = <span class="php-var">$term_id</span>;
-</span><span id="200" class="l"><a class="l" href="#200">200 </a>            }
-</span><span id="201" class="l"><a class="l" href="#201">201 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$taxonomies_to_save</span> <span class="php-keyword1">as</span> <span class="php-var">$taxonomy</span> =&gt; <span class="php-var">$terms</span> ) {
-</span><span id="202" class="l"><a class="l" href="#202">202 </a>                wp_set_object_terms( <span class="php-var">$data_id</span>, <span class="php-var">$terms</span>, <span class="php-var">$taxonomy</span>, <span class="php-var">$this</span>-&gt;append_taxonomy );
-</span><span id="203" class="l"><a class="l" href="#203">203 </a>            }
-</span><span id="204" class="l"><a class="l" href="#204">204 </a>        } <span class="php-keyword1">else</span> {
-</span><span id="205" class="l"><a class="l" href="#205">205 </a>            wp_set_object_terms( <span class="php-var">$data_id</span>, <span class="php-var">$tax_values</span>, <span class="php-var">$taxonomies</span>[<span class="php-num">0</span>], <span class="php-var">$this</span>-&gt;append_taxonomy );
-</span><span id="206" class="l"><a class="l" href="#206">206 </a>        }
-</span><span id="207" class="l"><a class="l" href="#207">207 </a>    }
-</span><span id="208" class="l"><a class="l" href="#208">208 </a>
-</span><span id="209" class="l"><a class="l" href="#209">209 </a>    <span class="php-comment">/**
-</span></span><span id="210" class="l"><a class="l" href="#210">210 </a><span class="php-comment">     * Get taxonomy data per $this-&gt;taxonomy_args
-</span></span><span id="211" class="l"><a class="l" href="#211">211 </a><span class="php-comment">     * @param $value The value(s) currently set for this field
-</span></span><span id="212" class="l"><a class="l" href="#212">212 </a><span class="php-comment">     * @return array[] data entries for options
-</span></span><span id="213" class="l"><a class="l" href="#213">213 </a><span class="php-comment">     */</span>
-</span><span id="214" class="l"><a class="l" href="#214">214 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_items" href="#_get_items">get_items</a>( <span class="php-var">$fragment</span> = <span class="php-keyword1">Null</span> ) {
-</span><span id="215" class="l"><a class="l" href="#215">215 </a>
-</span><span id="216" class="l"><a class="l" href="#216">216 </a>        <span class="php-comment">// If taxonomy_hierarchical is set, assemble recursive term list, then bail out.</span>
-</span><span id="217" class="l"><a class="l" href="#217">217 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;taxonomy_hierarchical ) {
-</span><span id="218" class="l"><a class="l" href="#218">218 </a>            <span class="php-var">$tax_args</span> = <span class="php-var">$this</span>-&gt;taxonomy_args;
-</span><span id="219" class="l"><a class="l" href="#219">219 </a>            <span class="php-var">$tax_args</span>[<span class="php-quote">'parent'</span>] = <span class="php-num">0</span>;
-</span><span id="220" class="l"><a class="l" href="#220">220 </a>            <span class="php-var">$parent_terms</span> = get_terms( <span class="php-var">$this</span>-&gt;get_taxonomies(), <span class="php-var">$tax_args</span> );
-</span><span id="221" class="l"><a class="l" href="#221">221 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;build_hierarchical_term_data( <span class="php-var">$parent_terms</span>, <span class="php-var">$this</span>-&gt;taxonomy_args, <span class="php-num">0</span>, <span class="php-var">$fragment</span> );
-</span><span id="222" class="l"><a class="l" href="#222">222 </a>        }
-</span><span id="223" class="l"><a class="l" href="#223">223 </a>
-</span><span id="224" class="l"><a class="l" href="#224">224 </a>        <span class="php-var">$tax_args</span> = <span class="php-var">$this</span>-&gt;taxonomy_args;
-</span><span id="225" class="l"><a class="l" href="#225">225 </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$fragment</span> ) ) <span class="php-var">$tax_args</span>[<span class="php-quote">'search'</span>] = <span class="php-var">$fragment</span>;
-</span><span id="226" class="l"><a class="l" href="#226">226 </a>        <span class="php-var">$terms</span> = get_terms( <span class="php-var">$this</span>-&gt;get_taxonomies(), <span class="php-var">$tax_args</span> );
-</span><span id="227" class="l"><a class="l" href="#227">227 </a>
-</span><span id="228" class="l"><a class="l" href="#228">228 </a>        <span class="php-comment">// If the taxonomy list was an array and group display is set, ensure all terms are grouped by taxonomy</span>
-</span><span id="229" class="l"><a class="l" href="#229">229 </a>        <span class="php-comment">// Use the order of the taxonomy array list for sorting the groups to make this controllable for developers</span>
-</span><span id="230" class="l"><a class="l" href="#230">230 </a>        <span class="php-comment">// Order of the terms within the groups is already controllable via $taxonomy_args</span>
-</span><span id="231" class="l"><a class="l" href="#231">231 </a>        <span class="php-comment">// Skip this entirely if there is only one taxonomy even if group display is set as it would be unnecessary</span>
-</span><span id="232" class="l"><a class="l" href="#232">232 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">count</span>( <span class="php-var">$this</span>-&gt;get_taxonomies() ) &gt; <span class="php-num">1</span> &amp;&amp; <span class="php-var">$this</span>-&gt;grouped &amp;&amp; <span class="php-var">$this</span>-&gt;allow_optgroups ) {
-</span><span id="233" class="l"><a class="l" href="#233">233 </a>            <span class="php-comment">// Group the data</span>
-</span><span id="234" class="l"><a class="l" href="#234">234 </a>            <span class="php-var">$term_groups</span> = <span class="php-keyword1">array</span>();
-</span><span id="235" class="l"><a class="l" href="#235">235 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;get_taxonomies() <span class="php-keyword1">as</span> <span class="php-var">$tax</span> ) {
-</span><span id="236" class="l"><a class="l" href="#236">236 </a>                <span class="php-var">$term_groups</span>[<span class="php-var">$tax</span>] = <span class="php-keyword1">array</span>();
-</span><span id="237" class="l"><a class="l" href="#237">237 </a>            }
-</span><span id="238" class="l"><a class="l" href="#238">238 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$terms</span> <span class="php-keyword1">as</span> <span class="php-var">$term</span> ) {
-</span><span id="239" class="l"><a class="l" href="#239">239 </a>                <span class="php-var">$term_groups</span>[<span class="php-var">$term</span>-&gt;taxonomy][ <span class="php-var">$term</span>-&gt;term_id ] = <span class="php-var">$term</span>-&gt;name;
-</span><span id="240" class="l"><a class="l" href="#240">240 </a>            }
-</span><span id="241" class="l"><a class="l" href="#241">241 </a>            <span class="php-keyword1">return</span> <span class="php-var">$term_groups</span>;
-</span><span id="242" class="l"><a class="l" href="#242">242 </a>        }
-</span><span id="243" class="l"><a class="l" href="#243">243 </a>
-</span><span id="244" class="l"><a class="l" href="#244">244 </a>        <span class="php-comment">// Put the taxonomy data into the proper data structure to be used for display</span>
-</span><span id="245" class="l"><a class="l" href="#245">245 </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$terms</span> <span class="php-keyword1">as</span> <span class="php-var">$term</span> ) {
-</span><span id="246" class="l"><a class="l" href="#246">246 </a>            <span class="php-comment">// Store the label for the taxonomy as the group since it will be used for display</span>
-</span><span id="247" class="l"><a class="l" href="#247">247 </a>            <span class="php-var">$key</span> = <span class="php-var">$this</span>-&gt;store_term_taxonomy_id ? <span class="php-var">$term</span>-&gt;term_taxonomy_id : <span class="php-var">$term</span>-&gt;term_id;
-</span><span id="248" class="l"><a class="l" href="#248">248 </a>            <span class="php-var">$stack</span>[ <span class="php-var">$key</span> ] = <span class="php-var">$term</span>-&gt;name;
-</span><span id="249" class="l"><a class="l" href="#249">249 </a>        }
-</span><span id="250" class="l"><a class="l" href="#250">250 </a>        <span class="php-keyword1">return</span> apply_filters( <span class="php-quote">'fm_datasource_term_get_items'</span>, <span class="php-var">$stack</span>, <span class="php-var">$terms</span>, <span class="php-var">$this</span>, <span class="php-var">$fragment</span> );
-</span><span id="251" class="l"><a class="l" href="#251">251 </a>    }
+</span><span id="153" class="l"><a class="l" href="#153">153 </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword2">is_array</span>( <span class="php-var">$values</span> ) ) {
+</span><span id="154" class="l"><a class="l" href="#154">154 </a>            <span class="php-var">$values</span> = <span class="php-keyword1">array</span>( <span class="php-var">$values</span> );
+</span><span id="155" class="l"><a class="l" href="#155">155 </a>        }
+</span><span id="156" class="l"><a class="l" href="#156">156 </a>
+</span><span id="157" class="l"><a class="l" href="#157">157 </a>        <span class="php-comment">// maybe we can create terms here.</span>
+</span><span id="158" class="l"><a class="l" href="#158">158 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">get_class</span>( <span class="php-var">$field</span> ) == <span class="php-quote">'Fieldmanager_Autocomplete'</span> &amp;&amp; !<span class="php-var">$field</span>-&gt;exact_match &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;taxonomy ) ) {
+</span><span id="159" class="l"><a class="l" href="#159">159 </a>            <span class="php-keyword1">foreach</span>( <span class="php-var">$values</span> <span class="php-keyword1">as</span> <span class="php-var">$i</span> =&gt; <span class="php-var">$value</span> ) {
+</span><span id="160" class="l"><a class="l" href="#160">160 </a>                 <span class="php-comment">// could be a mix of valid term IDs and new terms.</span>
+</span><span id="161" class="l"><a class="l" href="#161">161 </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_numeric</span>( <span class="php-var">$value</span> ) ) <span class="php-keyword1">continue</span>;
+</span><span id="162" class="l"><a class="l" href="#162">162 </a>
+</span><span id="163" class="l"><a class="l" href="#163">163 </a>                <span class="php-comment">// the JS adds a '-' to the front if it's not a found term to prevent problems with new numeric terms.</span>
+</span><span id="164" class="l"><a class="l" href="#164">164 </a>                <span class="php-var">$value</span> = sanitize_text_field( <span class="php-keyword2">substr</span>( <span class="php-var">$value</span>, <span class="php-num">1</span> ) );
+</span><span id="165" class="l"><a class="l" href="#165">165 </a>
+</span><span id="166" class="l"><a class="l" href="#166">166 </a>                <span class="php-comment">// an affordance for our friends at WordPress.com</span>
+</span><span id="167" class="l"><a class="l" href="#167">167 </a>                <span class="php-var">$term_by</span> = <span class="php-keyword2">function_exists</span>( <span class="php-quote">'wpcom_vip_get_term_by'</span> ) ? <span class="php-quote">'wpcom_vip_get_term_by'</span> : <span class="php-quote">'get_term_by'</span>;
+</span><span id="168" class="l"><a class="l" href="#168">168 </a>                <span class="php-var">$term</span> = <span class="php-keyword2">call_user_func</span>( <span class="php-var">$term_by</span>, <span class="php-quote">'name'</span>, <span class="php-var">$value</span>, <span class="php-var">$this</span>-&gt;taxonomy );
+</span><span id="169" class="l"><a class="l" href="#169">169 </a>
+</span><span id="170" class="l"><a class="l" href="#170">170 </a>                <span class="php-keyword1">if</span> ( !<span class="php-var">$term</span> ) {
+</span><span id="171" class="l"><a class="l" href="#171">171 </a>                    <span class="php-var">$term</span> = wp_insert_term( <span class="php-var">$value</span>, <span class="php-var">$this</span>-&gt;taxonomy );
+</span><span id="172" class="l"><a class="l" href="#172">172 </a>                    <span class="php-keyword1">if</span> ( is_wp_error( <span class="php-var">$term</span> ) ) {
+</span><span id="173" class="l"><a class="l" href="#173">173 </a>                        <span class="php-keyword1">unset</span>( <span class="php-var">$value</span> );
+</span><span id="174" class="l"><a class="l" href="#174">174 </a>                        <span class="php-keyword1">continue</span>;
+</span><span id="175" class="l"><a class="l" href="#175">175 </a>                    }
+</span><span id="176" class="l"><a class="l" href="#176">176 </a>                    <span class="php-var">$term</span> = (object) <span class="php-var">$term</span>;
+</span><span id="177" class="l"><a class="l" href="#177">177 </a>                }
+</span><span id="178" class="l"><a class="l" href="#178">178 </a>                <span class="php-var">$values</span>[<span class="php-var">$i</span>] = <span class="php-var">$term</span>-&gt;term_id;
+</span><span id="179" class="l"><a class="l" href="#179">179 </a>            }
+</span><span id="180" class="l"><a class="l" href="#180">180 </a>        }
+</span><span id="181" class="l"><a class="l" href="#181">181 </a>
+</span><span id="182" class="l"><a class="l" href="#182">182 </a>        <span class="php-comment">// If this is a taxonomy-based field, must also save the value(s) as an object term</span>
+</span><span id="183" class="l"><a class="l" href="#183">183 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;taxonomy_save_to_terms &amp;&amp; <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;taxonomy ) &amp;&amp; !<span class="php-keyword1">empty</span>( <span class="php-var">$values</span> ) ) {
+</span><span id="184" class="l"><a class="l" href="#184">184 </a>            <span class="php-var">$tax_values</span> = <span class="php-keyword1">array</span>();
+</span><span id="185" class="l"><a class="l" href="#185">185 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$values</span> <span class="php-keyword1">as</span> <span class="php-var">$value</span> ) {
+</span><span id="186" class="l"><a class="l" href="#186">186 </a>                <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$value</span> ) ) {
+</span><span id="187" class="l"><a class="l" href="#187">187 </a>                    <span class="php-keyword1">if</span>( <span class="php-keyword2">is_numeric</span>( <span class="php-var">$value</span> ) )
+</span><span id="188" class="l"><a class="l" href="#188">188 </a>                        <span class="php-var">$tax_values</span>[] = <span class="php-var">$value</span>;
+</span><span id="189" class="l"><a class="l" href="#189">189 </a>                    <span class="php-keyword1">else</span> <span class="php-keyword1">if</span>( <span class="php-keyword2">is_array</span>( <span class="php-var">$value</span> ) )
+</span><span id="190" class="l"><a class="l" href="#190">190 </a>                        <span class="php-var">$tax_values</span> = <span class="php-var">$value</span>;
+</span><span id="191" class="l"><a class="l" href="#191">191 </a>                }
+</span><span id="192" class="l"><a class="l" href="#192">192 </a>            }
+</span><span id="193" class="l"><a class="l" href="#193">193 </a>            <span class="php-var">$this</span>-&gt;save_taxonomy( <span class="php-var">$tax_values</span>, <span class="php-var">$field</span>-&gt;data_id );
+</span><span id="194" class="l"><a class="l" href="#194">194 </a>        }
+</span><span id="195" class="l"><a class="l" href="#195">195 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;only_save_to_taxonomy ) <span class="php-keyword1">return</span> <span class="php-keyword1">array</span>();
+</span><span id="196" class="l"><a class="l" href="#196">196 </a>        <span class="php-keyword1">return</span> <span class="php-var">$values</span>;
+</span><span id="197" class="l"><a class="l" href="#197">197 </a>    }
+</span><span id="198" class="l"><a class="l" href="#198">198 </a>
+</span><span id="199" class="l"><a class="l" href="#199">199 </a>    <span class="php-comment">/**
+</span></span><span id="200" class="l"><a class="l" href="#200">200 </a><span class="php-comment">     * Sanitize a value
+</span></span><span id="201" class="l"><a class="l" href="#201">201 </a><span class="php-comment">     */</span>
+</span><span id="202" class="l"><a class="l" href="#202">202 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( Fieldmanager_Field <span class="php-var">$field</span>, <span class="php-var">$value</span>, <span class="php-var">$current_value</span> ) {
+</span><span id="203" class="l"><a class="l" href="#203">203 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">intval</span>( <span class="php-var">$value</span> );
+</span><span id="204" class="l"><a class="l" href="#204">204 </a>    }
+</span><span id="205" class="l"><a class="l" href="#205">205 </a>
+</span><span id="206" class="l"><a class="l" href="#206">206 </a>    <span class="php-comment">/**
+</span></span><span id="207" class="l"><a class="l" href="#207">207 </a><span class="php-comment">     * Save taxonomy data
+</span></span><span id="208" class="l"><a class="l" href="#208">208 </a><span class="php-comment">     * @param mixed[] $tax_values
+</span></span><span id="209" class="l"><a class="l" href="#209">209 </a><span class="php-comment">     * @return void
+</span></span><span id="210" class="l"><a class="l" href="#210">210 </a><span class="php-comment">     */</span>
+</span><span id="211" class="l"><a class="l" href="#211">211 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_save_taxonomy" href="#_save_taxonomy">save_taxonomy</a>( <span class="php-var">$tax_values</span>, <span class="php-var">$data_id</span> ) {
+</span><span id="212" class="l"><a class="l" href="#212">212 </a>
+</span><span id="213" class="l"><a class="l" href="#213">213 </a>        <span class="php-var">$tax_values</span> = <span class="php-keyword2">array_map</span>( <span class="php-quote">'intval'</span>, <span class="php-var">$tax_values</span> );
+</span><span id="214" class="l"><a class="l" href="#214">214 </a>        <span class="php-var">$tax_values</span> = <span class="php-keyword2">array_unique</span>( <span class="php-var">$tax_values</span> );
+</span><span id="215" class="l"><a class="l" href="#215">215 </a>        <span class="php-var">$taxonomies</span> = <span class="php-var">$this</span>-&gt;get_taxonomies();
+</span><span id="216" class="l"><a class="l" href="#216">216 </a>
+</span><span id="217" class="l"><a class="l" href="#217">217 </a>        <span class="php-comment">// Store the each term for this post. Handle grouped fields differently since multiple taxonomies are present.</span>
+</span><span id="218" class="l"><a class="l" href="#218">218 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">count</span>( <span class="php-var">$taxonomies</span> ) &gt; <span class="php-num">1</span> ) {
+</span><span id="219" class="l"><a class="l" href="#219">219 </a>            <span class="php-comment">// Build the taxonomy insert data</span>
+</span><span id="220" class="l"><a class="l" href="#220">220 </a>            <span class="php-var">$taxonomies_to_save</span> = <span class="php-keyword1">array</span>();
+</span><span id="221" class="l"><a class="l" href="#221">221 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$tax_values</span> <span class="php-keyword1">as</span> <span class="php-var">$term_id</span> ) {
+</span><span id="222" class="l"><a class="l" href="#222">222 </a>                <span class="php-var">$term</span> = <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$term_id</span> );
+</span><span id="223" class="l"><a class="l" href="#223">223 </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$taxonomies_to_save</span>[ <span class="php-var">$term</span>-&gt;taxonomy ] ) ) <span class="php-var">$taxonomies_to_save</span>[ <span class="php-var">$term</span>-&gt;taxonomy ] = <span class="php-keyword1">array</span>();
+</span><span id="224" class="l"><a class="l" href="#224">224 </a>                <span class="php-var">$taxonomies_to_save</span>[ <span class="php-var">$term</span>-&gt;taxonomy ][] = <span class="php-var">$term_id</span>;
+</span><span id="225" class="l"><a class="l" href="#225">225 </a>            }
+</span><span id="226" class="l"><a class="l" href="#226">226 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$taxonomies_to_save</span> <span class="php-keyword1">as</span> <span class="php-var">$taxonomy</span> =&gt; <span class="php-var">$terms</span> ) {
+</span><span id="227" class="l"><a class="l" href="#227">227 </a>                wp_set_object_terms( <span class="php-var">$data_id</span>, <span class="php-var">$terms</span>, <span class="php-var">$taxonomy</span>, <span class="php-var">$this</span>-&gt;append_taxonomy );
+</span><span id="228" class="l"><a class="l" href="#228">228 </a>            }
+</span><span id="229" class="l"><a class="l" href="#229">229 </a>        } <span class="php-keyword1">else</span> {
+</span><span id="230" class="l"><a class="l" href="#230">230 </a>            wp_set_object_terms( <span class="php-var">$data_id</span>, <span class="php-var">$tax_values</span>, <span class="php-var">$taxonomies</span>[<span class="php-num">0</span>], <span class="php-var">$this</span>-&gt;append_taxonomy );
+</span><span id="231" class="l"><a class="l" href="#231">231 </a>        }
+</span><span id="232" class="l"><a class="l" href="#232">232 </a>    }
+</span><span id="233" class="l"><a class="l" href="#233">233 </a>
+</span><span id="234" class="l"><a class="l" href="#234">234 </a>    <span class="php-comment">/**
+</span></span><span id="235" class="l"><a class="l" href="#235">235 </a><span class="php-comment">     * Get taxonomy data per $this-&gt;taxonomy_args
+</span></span><span id="236" class="l"><a class="l" href="#236">236 </a><span class="php-comment">     * @param $value The value(s) currently set for this field
+</span></span><span id="237" class="l"><a class="l" href="#237">237 </a><span class="php-comment">     * @return array[] data entries for options
+</span></span><span id="238" class="l"><a class="l" href="#238">238 </a><span class="php-comment">     */</span>
+</span><span id="239" class="l"><a class="l" href="#239">239 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_items" href="#_get_items">get_items</a>( <span class="php-var">$fragment</span> = <span class="php-keyword1">Null</span> ) {
+</span><span id="240" class="l"><a class="l" href="#240">240 </a>
+</span><span id="241" class="l"><a class="l" href="#241">241 </a>        <span class="php-comment">// If taxonomy_hierarchical is set, assemble recursive term list, then bail out.</span>
+</span><span id="242" class="l"><a class="l" href="#242">242 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;taxonomy_hierarchical ) {
+</span><span id="243" class="l"><a class="l" href="#243">243 </a>            <span class="php-var">$tax_args</span> = <span class="php-var">$this</span>-&gt;taxonomy_args;
+</span><span id="244" class="l"><a class="l" href="#244">244 </a>            <span class="php-var">$tax_args</span>[<span class="php-quote">'parent'</span>] = <span class="php-num">0</span>;
+</span><span id="245" class="l"><a class="l" href="#245">245 </a>            <span class="php-var">$parent_terms</span> = get_terms( <span class="php-var">$this</span>-&gt;get_taxonomies(), <span class="php-var">$tax_args</span> );
+</span><span id="246" class="l"><a class="l" href="#246">246 </a>            <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;build_hierarchical_term_data( <span class="php-var">$parent_terms</span>, <span class="php-var">$this</span>-&gt;taxonomy_args, <span class="php-num">0</span>, <span class="php-var">$fragment</span> );
+</span><span id="247" class="l"><a class="l" href="#247">247 </a>        }
+</span><span id="248" class="l"><a class="l" href="#248">248 </a>
+</span><span id="249" class="l"><a class="l" href="#249">249 </a>        <span class="php-var">$tax_args</span> = <span class="php-var">$this</span>-&gt;taxonomy_args;
+</span><span id="250" class="l"><a class="l" href="#250">250 </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$fragment</span> ) ) <span class="php-var">$tax_args</span>[<span class="php-quote">'search'</span>] = <span class="php-var">$fragment</span>;
+</span><span id="251" class="l"><a class="l" href="#251">251 </a>        <span class="php-var">$terms</span> = get_terms( <span class="php-var">$this</span>-&gt;get_taxonomies(), <span class="php-var">$tax_args</span> );
 </span><span id="252" class="l"><a class="l" href="#252">252 </a>
-</span><span id="253" class="l"><a class="l" href="#253">253 </a>    <span class="php-comment">/**
-</span></span><span id="254" class="l"><a class="l" href="#254">254 </a><span class="php-comment">     * Helper to support recursive building of a hierarchical taxonomy list.
-</span></span><span id="255" class="l"><a class="l" href="#255">255 </a><span class="php-comment">     * @param array $parent_terms
-</span></span><span id="256" class="l"><a class="l" href="#256">256 </a><span class="php-comment">     * @param array $tax_args as used in top-level get_terms() call.
-</span></span><span id="257" class="l"><a class="l" href="#257">257 </a><span class="php-comment">     * @param int $depth current recursive depth level.
-</span></span><span id="258" class="l"><a class="l" href="#258">258 </a><span class="php-comment">     * @param string $fragment optional matching pattern
-</span></span><span id="259" class="l"><a class="l" href="#259">259 </a><span class="php-comment">     * @return array of terms or false if no children found.
-</span></span><span id="260" class="l"><a class="l" href="#260">260 </a><span class="php-comment">     */</span>
-</span><span id="261" class="l"><a class="l" href="#261">261 </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_build_hierarchical_term_data" href="#_build_hierarchical_term_data">build_hierarchical_term_data</a>( <span class="php-var">$parent_terms</span>, <span class="php-var">$tax_args</span>, <span class="php-var">$depth</span>, <span class="php-var">$stack</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$pattern</span> = <span class="php-quote">''</span> ) {
-</span><span id="262" class="l"><a class="l" href="#262">262 </a>
-</span><span id="263" class="l"><a class="l" href="#263">263 </a>        <span class="php-comment">// Walk through each term passed, add it (at current depth) to the data stack.</span>
-</span><span id="264" class="l"><a class="l" href="#264">264 </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$parent_terms</span> <span class="php-keyword1">as</span> <span class="php-var">$term</span> ) {
-</span><span id="265" class="l"><a class="l" href="#265">265 </a>            <span class="php-var">$taxonomy_data</span> = get_taxonomy( <span class="php-var">$term</span>-&gt;taxonomy );
-</span><span id="266" class="l"><a class="l" href="#266">266 </a>            <span class="php-var">$prefix</span> = <span class="php-quote">''</span>;
-</span><span id="267" class="l"><a class="l" href="#267">267 </a>
-</span><span id="268" class="l"><a class="l" href="#268">268 </a>            <span class="php-comment">// Prefix term based on depth. For $depth = 0, prefix will remain empty.</span>
-</span><span id="269" class="l"><a class="l" href="#269">269 </a>            <span class="php-keyword1">for</span> ( <span class="php-var">$i</span> = <span class="php-num">0</span>; <span class="php-var">$i</span> &lt; <span class="php-var">$depth</span>; <span class="php-var">$i</span>++ ) {
-</span><span id="270" class="l"><a class="l" href="#270">270 </a>                <span class="php-var">$prefix</span> .= <span class="php-quote">'--'</span>;
-</span><span id="271" class="l"><a class="l" href="#271">271 </a>            }
-</span><span id="272" class="l"><a class="l" href="#272">272 </a>
-</span><span id="273" class="l"><a class="l" href="#273">273 </a>            <span class="php-var">$key</span> = <span class="php-var">$this</span>-&gt;store_term_taxonomy_id ? <span class="php-var">$term</span>-&gt;term_taxonomy_id : <span class="php-var">$term</span>-&gt;term_id;
-</span><span id="274" class="l"><a class="l" href="#274">274 </a>            <span class="php-var">$stack</span>[ <span class="php-var">$key</span> ] = <span class="php-var">$prefix</span> . <span class="php-quote">' '</span> . <span class="php-var">$term</span>-&gt;name;
-</span><span id="275" class="l"><a class="l" href="#275">275 </a>
-</span><span id="276" class="l"><a class="l" href="#276">276 </a>            <span class="php-comment">// Find child terms of this. If any, recurse on this function.</span>
-</span><span id="277" class="l"><a class="l" href="#277">277 </a>            <span class="php-var">$tax_args</span>[<span class="php-quote">'parent'</span>] = <span class="php-var">$term</span>-&gt;term_id;
-</span><span id="278" class="l"><a class="l" href="#278">278 </a>            <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$pattern</span> ) ) <span class="php-var">$tax_args</span>[<span class="php-quote">'search'</span>] = <span class="php-var">$fragment</span>;
-</span><span id="279" class="l"><a class="l" href="#279">279 </a>            <span class="php-var">$child_terms</span> = get_terms( <span class="php-var">$this</span>-&gt;get_taxonomies(), <span class="php-var">$tax_args</span> );
-</span><span id="280" class="l"><a class="l" href="#280">280 </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;taxonomy_hierarchical_depth == <span class="php-num">0</span> || <span class="php-var">$depth</span> + <span class="php-num">1</span> &lt; <span class="php-var">$this</span>-&gt;taxonomy_hierarchical_depth ) {
-</span><span id="281" class="l"><a class="l" href="#281">281 </a>                <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$child_terms</span> ) ) {
-</span><span id="282" class="l"><a class="l" href="#282">282 </a>                    <span class="php-var">$stack</span> = <span class="php-var">$this</span>-&gt;build_hierarchical_term_data( <span class="php-var">$child_terms</span>, <span class="php-var">$this</span>-&gt;taxonomy_args, <span class="php-var">$depth</span> + <span class="php-num">1</span>, <span class="php-var">$stack</span> );
-</span><span id="283" class="l"><a class="l" href="#283">283 </a>                }
-</span><span id="284" class="l"><a class="l" href="#284">284 </a>            }
-</span><span id="285" class="l"><a class="l" href="#285">285 </a>        }
-</span><span id="286" class="l"><a class="l" href="#286">286 </a>        <span class="php-keyword1">return</span> <span class="php-var">$stack</span>;
-</span><span id="287" class="l"><a class="l" href="#287">287 </a>    }
-</span><span id="288" class="l"><a class="l" href="#288">288 </a>
-</span><span id="289" class="l"><a class="l" href="#289">289 </a>    <span class="php-comment">/**
-</span></span><span id="290" class="l"><a class="l" href="#290">290 </a><span class="php-comment">     * Translate term id to title, e.g. for autocomplete
-</span></span><span id="291" class="l"><a class="l" href="#291">291 </a><span class="php-comment">     * @param mixed $value
-</span></span><span id="292" class="l"><a class="l" href="#292">292 </a><span class="php-comment">     * @return string
-</span></span><span id="293" class="l"><a class="l" href="#293">293 </a><span class="php-comment">     */</span>
-</span><span id="294" class="l"><a class="l" href="#294">294 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_value" href="#_get_value">get_value</a>( <span class="php-var">$value</span> ) {
-</span><span id="295" class="l"><a class="l" href="#295">295 </a>        <span class="php-var">$id</span> = <span class="php-keyword2">intval</span>( <span class="php-var">$value</span> );
-</span><span id="296" class="l"><a class="l" href="#296">296 </a>        <span class="php-var">$term</span> = <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$id</span> );
-</span><span id="297" class="l"><a class="l" href="#297">297 </a>        <span class="php-var">$value</span> = <span class="php-keyword2">is_object</span>( <span class="php-var">$term</span> ) ? <span class="php-var">$term</span>-&gt;name : <span class="php-quote">''</span>;
-</span><span id="298" class="l"><a class="l" href="#298">298 </a>        <span class="php-keyword1">return</span> apply_filters( <span class="php-quote">'fm_datasource_term_get_value'</span>, <span class="php-var">$value</span>, <span class="php-var">$term</span>, <span class="php-var">$this</span> );
-</span><span id="299" class="l"><a class="l" href="#299">299 </a>    }
+</span><span id="253" class="l"><a class="l" href="#253">253 </a>        <span class="php-comment">// If the taxonomy list was an array and group display is set, ensure all terms are grouped by taxonomy</span>
+</span><span id="254" class="l"><a class="l" href="#254">254 </a>        <span class="php-comment">// Use the order of the taxonomy array list for sorting the groups to make this controllable for developers</span>
+</span><span id="255" class="l"><a class="l" href="#255">255 </a>        <span class="php-comment">// Order of the terms within the groups is already controllable via $taxonomy_args</span>
+</span><span id="256" class="l"><a class="l" href="#256">256 </a>        <span class="php-comment">// Skip this entirely if there is only one taxonomy even if group display is set as it would be unnecessary</span>
+</span><span id="257" class="l"><a class="l" href="#257">257 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">count</span>( <span class="php-var">$this</span>-&gt;get_taxonomies() ) &gt; <span class="php-num">1</span> &amp;&amp; <span class="php-var">$this</span>-&gt;grouped &amp;&amp; <span class="php-var">$this</span>-&gt;allow_optgroups ) {
+</span><span id="258" class="l"><a class="l" href="#258">258 </a>            <span class="php-comment">// Group the data</span>
+</span><span id="259" class="l"><a class="l" href="#259">259 </a>            <span class="php-var">$term_groups</span> = <span class="php-keyword1">array</span>();
+</span><span id="260" class="l"><a class="l" href="#260">260 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$this</span>-&gt;get_taxonomies() <span class="php-keyword1">as</span> <span class="php-var">$tax</span> ) {
+</span><span id="261" class="l"><a class="l" href="#261">261 </a>                <span class="php-var">$term_groups</span>[<span class="php-var">$tax</span>] = <span class="php-keyword1">array</span>();
+</span><span id="262" class="l"><a class="l" href="#262">262 </a>            }
+</span><span id="263" class="l"><a class="l" href="#263">263 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$terms</span> <span class="php-keyword1">as</span> <span class="php-var">$term</span> ) {
+</span><span id="264" class="l"><a class="l" href="#264">264 </a>                <span class="php-var">$term_groups</span>[<span class="php-var">$term</span>-&gt;taxonomy][ <span class="php-var">$term</span>-&gt;term_id ] = <span class="php-var">$term</span>-&gt;name;
+</span><span id="265" class="l"><a class="l" href="#265">265 </a>            }
+</span><span id="266" class="l"><a class="l" href="#266">266 </a>            <span class="php-keyword1">return</span> <span class="php-var">$term_groups</span>;
+</span><span id="267" class="l"><a class="l" href="#267">267 </a>        }
+</span><span id="268" class="l"><a class="l" href="#268">268 </a>
+</span><span id="269" class="l"><a class="l" href="#269">269 </a>        <span class="php-comment">// Put the taxonomy data into the proper data structure to be used for display</span>
+</span><span id="270" class="l"><a class="l" href="#270">270 </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$terms</span> <span class="php-keyword1">as</span> <span class="php-var">$term</span> ) {
+</span><span id="271" class="l"><a class="l" href="#271">271 </a>            <span class="php-comment">// Store the label for the taxonomy as the group since it will be used for display</span>
+</span><span id="272" class="l"><a class="l" href="#272">272 </a>            <span class="php-var">$key</span> = <span class="php-var">$this</span>-&gt;store_term_taxonomy_id ? <span class="php-var">$term</span>-&gt;term_taxonomy_id : <span class="php-var">$term</span>-&gt;term_id;
+</span><span id="273" class="l"><a class="l" href="#273">273 </a>            <span class="php-var">$stack</span>[ <span class="php-var">$key</span> ] = <span class="php-var">$term</span>-&gt;name;
+</span><span id="274" class="l"><a class="l" href="#274">274 </a>        }
+</span><span id="275" class="l"><a class="l" href="#275">275 </a>        <span class="php-keyword1">return</span> apply_filters( <span class="php-quote">'fm_datasource_term_get_items'</span>, <span class="php-var">$stack</span>, <span class="php-var">$terms</span>, <span class="php-var">$this</span>, <span class="php-var">$fragment</span> );
+</span><span id="276" class="l"><a class="l" href="#276">276 </a>    }
+</span><span id="277" class="l"><a class="l" href="#277">277 </a>
+</span><span id="278" class="l"><a class="l" href="#278">278 </a>    <span class="php-comment">/**
+</span></span><span id="279" class="l"><a class="l" href="#279">279 </a><span class="php-comment">     * Helper to support recursive building of a hierarchical taxonomy list.
+</span></span><span id="280" class="l"><a class="l" href="#280">280 </a><span class="php-comment">     * @param array $parent_terms
+</span></span><span id="281" class="l"><a class="l" href="#281">281 </a><span class="php-comment">     * @param array $tax_args as used in top-level get_terms() call.
+</span></span><span id="282" class="l"><a class="l" href="#282">282 </a><span class="php-comment">     * @param int $depth current recursive depth level.
+</span></span><span id="283" class="l"><a class="l" href="#283">283 </a><span class="php-comment">     * @param string $fragment optional matching pattern
+</span></span><span id="284" class="l"><a class="l" href="#284">284 </a><span class="php-comment">     * @return array of terms or false if no children found.
+</span></span><span id="285" class="l"><a class="l" href="#285">285 </a><span class="php-comment">     */</span>
+</span><span id="286" class="l"><a class="l" href="#286">286 </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_build_hierarchical_term_data" href="#_build_hierarchical_term_data">build_hierarchical_term_data</a>( <span class="php-var">$parent_terms</span>, <span class="php-var">$tax_args</span>, <span class="php-var">$depth</span>, <span class="php-var">$stack</span> = <span class="php-keyword1">array</span>(), <span class="php-var">$pattern</span> = <span class="php-quote">''</span> ) {
+</span><span id="287" class="l"><a class="l" href="#287">287 </a>
+</span><span id="288" class="l"><a class="l" href="#288">288 </a>        <span class="php-comment">// Walk through each term passed, add it (at current depth) to the data stack.</span>
+</span><span id="289" class="l"><a class="l" href="#289">289 </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$parent_terms</span> <span class="php-keyword1">as</span> <span class="php-var">$term</span> ) {
+</span><span id="290" class="l"><a class="l" href="#290">290 </a>            <span class="php-var">$taxonomy_data</span> = get_taxonomy( <span class="php-var">$term</span>-&gt;taxonomy );
+</span><span id="291" class="l"><a class="l" href="#291">291 </a>            <span class="php-var">$prefix</span> = <span class="php-quote">''</span>;
+</span><span id="292" class="l"><a class="l" href="#292">292 </a>
+</span><span id="293" class="l"><a class="l" href="#293">293 </a>            <span class="php-comment">// Prefix term based on depth. For $depth = 0, prefix will remain empty.</span>
+</span><span id="294" class="l"><a class="l" href="#294">294 </a>            <span class="php-keyword1">for</span> ( <span class="php-var">$i</span> = <span class="php-num">0</span>; <span class="php-var">$i</span> &lt; <span class="php-var">$depth</span>; <span class="php-var">$i</span>++ ) {
+</span><span id="295" class="l"><a class="l" href="#295">295 </a>                <span class="php-var">$prefix</span> .= <span class="php-quote">'--'</span>;
+</span><span id="296" class="l"><a class="l" href="#296">296 </a>            }
+</span><span id="297" class="l"><a class="l" href="#297">297 </a>
+</span><span id="298" class="l"><a class="l" href="#298">298 </a>            <span class="php-var">$key</span> = <span class="php-var">$this</span>-&gt;store_term_taxonomy_id ? <span class="php-var">$term</span>-&gt;term_taxonomy_id : <span class="php-var">$term</span>-&gt;term_id;
+</span><span id="299" class="l"><a class="l" href="#299">299 </a>            <span class="php-var">$stack</span>[ <span class="php-var">$key</span> ] = <span class="php-var">$prefix</span> . <span class="php-quote">' '</span> . <span class="php-var">$term</span>-&gt;name;
 </span><span id="300" class="l"><a class="l" href="#300">300 </a>
-</span><span id="301" class="l"><a class="l" href="#301">301 </a>    <span class="php-comment">/**
-</span></span><span id="302" class="l"><a class="l" href="#302">302 </a><span class="php-comment">     * Get term by ID only, potentially using multiple taxonomies
-</span></span><span id="303" class="l"><a class="l" href="#303">303 </a><span class="php-comment">     * @param int $term_id
-</span></span><span id="304" class="l"><a class="l" href="#304">304 </a><span class="php-comment">     * @return object|null
-</span></span><span id="305" class="l"><a class="l" href="#305">305 </a><span class="php-comment">     */</span>
-</span><span id="306" class="l"><a class="l" href="#306">306 </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> <a id="_get_term" href="#_get_term">get_term</a>( <span class="php-var">$term_id</span> ) {
-</span><span id="307" class="l"><a class="l" href="#307">307 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;store_term_taxonomy_id ) {
-</span><span id="308" class="l"><a class="l" href="#308">308 </a>            <span class="php-keyword1">global</span> <span class="php-var">$wpdb</span>;
-</span><span id="309" class="l"><a class="l" href="#309">309 </a>            <span class="php-keyword1">return</span> <span class="php-var">$wpdb</span>-&gt;get_row( <span class="php-var">$wpdb</span>-&gt;prepare( <span class="php-quote">&quot;SELECT t.*, tt.* FROM </span><span class="php-var">$wpdb</span><span class="php-quote">-&gt;terms AS t INNER JOIN </span><span class="php-var">$wpdb</span><span class="php-quote">-&gt;term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.term_taxonomy_id = %d LIMIT 1&quot;</span>, <span class="php-var">$term_id</span> ) );
-</span><span id="310" class="l"><a class="l" href="#310">310 </a>        } <span class="php-keyword1">else</span> {
-</span><span id="311" class="l"><a class="l" href="#311">311 </a>            <span class="php-var">$terms</span> = get_terms( <span class="php-var">$this</span>-&gt;get_taxonomies(), <span class="php-keyword1">array</span>( <span class="php-quote">'include'</span> =&gt; <span class="php-keyword1">array</span>( <span class="php-var">$term_id</span> ), <span class="php-quote">'number'</span> =&gt; <span class="php-num">1</span> ) );
-</span><span id="312" class="l"><a class="l" href="#312">312 </a>            <span class="php-keyword1">return</span> !<span class="php-keyword1">empty</span>( <span class="php-var">$terms</span>[<span class="php-num">0</span>] ) ? <span class="php-var">$terms</span>[<span class="php-num">0</span>] : <span class="php-keyword1">Null</span>;
-</span><span id="313" class="l"><a class="l" href="#313">313 </a>        }
-</span><span id="314" class="l"><a class="l" href="#314">314 </a>    }
-</span><span id="315" class="l"><a class="l" href="#315">315 </a>
-</span><span id="316" class="l"><a class="l" href="#316">316 </a>    <span class="php-comment">/**
-</span></span><span id="317" class="l"><a class="l" href="#317">317 </a><span class="php-comment">     * Get link to view a term
-</span></span><span id="318" class="l"><a class="l" href="#318">318 </a><span class="php-comment">     * @param int $value term id
-</span></span><span id="319" class="l"><a class="l" href="#319">319 </a><span class="php-comment">     * @return string
-</span></span><span id="320" class="l"><a class="l" href="#320">320 </a><span class="php-comment">     */</span>
-</span><span id="321" class="l"><a class="l" href="#321">321 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_view_link" href="#_get_view_link">get_view_link</a>( <span class="php-var">$value</span> ) {
-</span><span id="322" class="l"><a class="l" href="#322">322 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
-</span><span id="323" class="l"><a class="l" href="#323">323 </a>            <span class="php-quote">' &lt;a target=&quot;_new&quot; class=&quot;fm-autocomplete-view-link %s&quot; href=&quot;%s&quot;&gt;%s&lt;/a&gt;'</span>,
-</span><span id="324" class="l"><a class="l" href="#324">324 </a>            <span class="php-keyword1">empty</span>( <span class="php-var">$value</span> ) ? <span class="php-quote">'fm-hidden'</span> : <span class="php-quote">''</span>,
-</span><span id="325" class="l"><a class="l" href="#325">325 </a>            <span class="php-keyword1">empty</span>( <span class="php-var">$value</span> ) ? <span class="php-quote">'#'</span> : get_term_link( <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$value</span> ) ),
-</span><span id="326" class="l"><a class="l" href="#326">326 </a>            __( <span class="php-quote">'View'</span> )
-</span><span id="327" class="l"><a class="l" href="#327">327 </a>        );
-</span><span id="328" class="l"><a class="l" href="#328">328 </a>    }
-</span><span id="329" class="l"><a class="l" href="#329">329 </a>
-</span><span id="330" class="l"><a class="l" href="#330">330 </a>    <span class="php-comment">/**
-</span></span><span id="331" class="l"><a class="l" href="#331">331 </a><span class="php-comment">     * Get link to edit a term
-</span></span><span id="332" class="l"><a class="l" href="#332">332 </a><span class="php-comment">     * @param int $value term id
-</span></span><span id="333" class="l"><a class="l" href="#333">333 </a><span class="php-comment">     * @return string
-</span></span><span id="334" class="l"><a class="l" href="#334">334 </a><span class="php-comment">     */</span>
-</span><span id="335" class="l"><a class="l" href="#335">335 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_edit_link" href="#_get_edit_link">get_edit_link</a>( <span class="php-var">$value</span> ) {
-</span><span id="336" class="l"><a class="l" href="#336">336 </a>        <span class="php-keyword1">return</span> edit_term_link( __( <span class="php-quote">'Edit'</span> ), <span class="php-quote">''</span>, <span class="php-quote">''</span>, <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$value</span> ), <span class="php-keyword1">False</span> );
-</span><span id="337" class="l"><a class="l" href="#337">337 </a>    }
-</span><span id="338" class="l"><a class="l" href="#338">338 </a>
-</span><span id="339" class="l"><a class="l" href="#339">339 </a></span>}</code></pre>
+</span><span id="301" class="l"><a class="l" href="#301">301 </a>            <span class="php-comment">// Find child terms of this. If any, recurse on this function.</span>
+</span><span id="302" class="l"><a class="l" href="#302">302 </a>            <span class="php-var">$tax_args</span>[<span class="php-quote">'parent'</span>] = <span class="php-var">$term</span>-&gt;term_id;
+</span><span id="303" class="l"><a class="l" href="#303">303 </a>            <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$pattern</span> ) ) <span class="php-var">$tax_args</span>[<span class="php-quote">'search'</span>] = <span class="php-var">$fragment</span>;
+</span><span id="304" class="l"><a class="l" href="#304">304 </a>            <span class="php-var">$child_terms</span> = get_terms( <span class="php-var">$this</span>-&gt;get_taxonomies(), <span class="php-var">$tax_args</span> );
+</span><span id="305" class="l"><a class="l" href="#305">305 </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;taxonomy_hierarchical_depth == <span class="php-num">0</span> || <span class="php-var">$depth</span> + <span class="php-num">1</span> &lt; <span class="php-var">$this</span>-&gt;taxonomy_hierarchical_depth ) {
+</span><span id="306" class="l"><a class="l" href="#306">306 </a>                <span class="php-keyword1">if</span> ( !<span class="php-keyword1">empty</span>( <span class="php-var">$child_terms</span> ) ) {
+</span><span id="307" class="l"><a class="l" href="#307">307 </a>                    <span class="php-var">$stack</span> = <span class="php-var">$this</span>-&gt;build_hierarchical_term_data( <span class="php-var">$child_terms</span>, <span class="php-var">$this</span>-&gt;taxonomy_args, <span class="php-var">$depth</span> + <span class="php-num">1</span>, <span class="php-var">$stack</span> );
+</span><span id="308" class="l"><a class="l" href="#308">308 </a>                }
+</span><span id="309" class="l"><a class="l" href="#309">309 </a>            }
+</span><span id="310" class="l"><a class="l" href="#310">310 </a>        }
+</span><span id="311" class="l"><a class="l" href="#311">311 </a>        <span class="php-keyword1">return</span> <span class="php-var">$stack</span>;
+</span><span id="312" class="l"><a class="l" href="#312">312 </a>    }
+</span><span id="313" class="l"><a class="l" href="#313">313 </a>
+</span><span id="314" class="l"><a class="l" href="#314">314 </a>    <span class="php-comment">/**
+</span></span><span id="315" class="l"><a class="l" href="#315">315 </a><span class="php-comment">     * Translate term id to title, e.g. for autocomplete
+</span></span><span id="316" class="l"><a class="l" href="#316">316 </a><span class="php-comment">     * @param mixed $value
+</span></span><span id="317" class="l"><a class="l" href="#317">317 </a><span class="php-comment">     * @return string
+</span></span><span id="318" class="l"><a class="l" href="#318">318 </a><span class="php-comment">     */</span>
+</span><span id="319" class="l"><a class="l" href="#319">319 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_value" href="#_get_value">get_value</a>( <span class="php-var">$value</span> ) {
+</span><span id="320" class="l"><a class="l" href="#320">320 </a>        <span class="php-var">$id</span> = <span class="php-keyword2">intval</span>( <span class="php-var">$value</span> );
+</span><span id="321" class="l"><a class="l" href="#321">321 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-var">$id</span> )
+</span><span id="322" class="l"><a class="l" href="#322">322 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">null</span>;
+</span><span id="323" class="l"><a class="l" href="#323">323 </a>
+</span><span id="324" class="l"><a class="l" href="#324">324 </a>        <span class="php-var">$term</span> = <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$id</span> );
+</span><span id="325" class="l"><a class="l" href="#325">325 </a>        <span class="php-var">$value</span> = <span class="php-keyword2">is_object</span>( <span class="php-var">$term</span> ) ? <span class="php-var">$term</span>-&gt;name : <span class="php-quote">''</span>;
+</span><span id="326" class="l"><a class="l" href="#326">326 </a>        <span class="php-keyword1">return</span> apply_filters( <span class="php-quote">'fm_datasource_term_get_value'</span>, <span class="php-var">$value</span>, <span class="php-var">$term</span>, <span class="php-var">$this</span> );
+</span><span id="327" class="l"><a class="l" href="#327">327 </a>    }
+</span><span id="328" class="l"><a class="l" href="#328">328 </a>
+</span><span id="329" class="l"><a class="l" href="#329">329 </a>    <span class="php-comment">/**
+</span></span><span id="330" class="l"><a class="l" href="#330">330 </a><span class="php-comment">     * Get term by ID only, potentially using multiple taxonomies
+</span></span><span id="331" class="l"><a class="l" href="#331">331 </a><span class="php-comment">     * @param int $term_id
+</span></span><span id="332" class="l"><a class="l" href="#332">332 </a><span class="php-comment">     * @return object|null
+</span></span><span id="333" class="l"><a class="l" href="#333">333 </a><span class="php-comment">     */</span>
+</span><span id="334" class="l"><a class="l" href="#334">334 </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> <a id="_get_term" href="#_get_term">get_term</a>( <span class="php-var">$term_id</span> ) {
+</span><span id="335" class="l"><a class="l" href="#335">335 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;store_term_taxonomy_id ) {
+</span><span id="336" class="l"><a class="l" href="#336">336 </a>            <span class="php-keyword1">global</span> <span class="php-var">$wpdb</span>;
+</span><span id="337" class="l"><a class="l" href="#337">337 </a>            <span class="php-keyword1">return</span> <span class="php-var">$wpdb</span>-&gt;get_row( <span class="php-var">$wpdb</span>-&gt;prepare( <span class="php-quote">&quot;SELECT t.*, tt.* FROM </span><span class="php-var">$wpdb</span><span class="php-quote">-&gt;terms AS t INNER JOIN </span><span class="php-var">$wpdb</span><span class="php-quote">-&gt;term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.term_taxonomy_id = %d LIMIT 1&quot;</span>, <span class="php-var">$term_id</span> ) );
+</span><span id="338" class="l"><a class="l" href="#338">338 </a>        } <span class="php-keyword1">else</span> {
+</span><span id="339" class="l"><a class="l" href="#339">339 </a>            <span class="php-var">$terms</span> = get_terms( <span class="php-var">$this</span>-&gt;get_taxonomies(), <span class="php-keyword1">array</span>( <span class="php-quote">'hide_empty'</span> =&gt; <span class="php-keyword1">false</span>, <span class="php-quote">'include'</span> =&gt; <span class="php-keyword1">array</span>( <span class="php-var">$term_id</span> ), <span class="php-quote">'number'</span> =&gt; <span class="php-num">1</span> ) );
+</span><span id="340" class="l"><a class="l" href="#340">340 </a>            <span class="php-keyword1">return</span> !<span class="php-keyword1">empty</span>( <span class="php-var">$terms</span>[<span class="php-num">0</span>] ) ? <span class="php-var">$terms</span>[<span class="php-num">0</span>] : <span class="php-keyword1">Null</span>;
+</span><span id="341" class="l"><a class="l" href="#341">341 </a>        }
+</span><span id="342" class="l"><a class="l" href="#342">342 </a>    }
+</span><span id="343" class="l"><a class="l" href="#343">343 </a>
+</span><span id="344" class="l"><a class="l" href="#344">344 </a>    <span class="php-comment">/**
+</span></span><span id="345" class="l"><a class="l" href="#345">345 </a><span class="php-comment">     * Get link to view a term
+</span></span><span id="346" class="l"><a class="l" href="#346">346 </a><span class="php-comment">     * @param int $value term id
+</span></span><span id="347" class="l"><a class="l" href="#347">347 </a><span class="php-comment">     * @return string
+</span></span><span id="348" class="l"><a class="l" href="#348">348 </a><span class="php-comment">     */</span>
+</span><span id="349" class="l"><a class="l" href="#349">349 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_view_link" href="#_get_view_link">get_view_link</a>( <span class="php-var">$value</span> ) {
+</span><span id="350" class="l"><a class="l" href="#350">350 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
+</span><span id="351" class="l"><a class="l" href="#351">351 </a>            <span class="php-quote">' &lt;a target=&quot;_new&quot; class=&quot;fm-autocomplete-view-link %s&quot; href=&quot;%s&quot;&gt;%s&lt;/a&gt;'</span>,
+</span><span id="352" class="l"><a class="l" href="#352">352 </a>            <span class="php-keyword1">empty</span>( <span class="php-var">$value</span> ) ? <span class="php-quote">'fm-hidden'</span> : <span class="php-quote">''</span>,
+</span><span id="353" class="l"><a class="l" href="#353">353 </a>            <span class="php-keyword1">empty</span>( <span class="php-var">$value</span> ) ? <span class="php-quote">'#'</span> : get_term_link( <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$value</span> ) ),
+</span><span id="354" class="l"><a class="l" href="#354">354 </a>            __( <span class="php-quote">'View'</span> )
+</span><span id="355" class="l"><a class="l" href="#355">355 </a>        );
+</span><span id="356" class="l"><a class="l" href="#356">356 </a>    }
+</span><span id="357" class="l"><a class="l" href="#357">357 </a>
+</span><span id="358" class="l"><a class="l" href="#358">358 </a>    <span class="php-comment">/**
+</span></span><span id="359" class="l"><a class="l" href="#359">359 </a><span class="php-comment">     * Get link to edit a term
+</span></span><span id="360" class="l"><a class="l" href="#360">360 </a><span class="php-comment">     * @param int $value term id
+</span></span><span id="361" class="l"><a class="l" href="#361">361 </a><span class="php-comment">     * @return string
+</span></span><span id="362" class="l"><a class="l" href="#362">362 </a><span class="php-comment">     */</span>
+</span><span id="363" class="l"><a class="l" href="#363">363 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_edit_link" href="#_get_edit_link">get_edit_link</a>( <span class="php-var">$value</span> ) {
+</span><span id="364" class="l"><a class="l" href="#364">364 </a>        <span class="php-keyword1">return</span> edit_term_link( __( <span class="php-quote">'Edit'</span> ), <span class="php-quote">''</span>, <span class="php-quote">''</span>, <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$value</span> ), <span class="php-keyword1">False</span> );
+</span><span id="365" class="l"><a class="l" href="#365">365 </a>    }
+</span><span id="366" class="l"><a class="l" href="#366">366 </a>
+</span><span id="367" class="l"><a class="l" href="#367">367 </a></span>}</code></pre>
 	</div>
 
 	<div id="footer">

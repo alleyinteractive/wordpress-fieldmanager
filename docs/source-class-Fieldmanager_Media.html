@@ -7,8 +7,8 @@
 
 	<title>File class-fieldmanager-media.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
-	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
@@ -69,9 +69,15 @@
 			<ul>
 				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
 						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
 				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
 							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
 			</ul>
 		</div>
 
@@ -91,6 +97,7 @@
 				<li><a href="class-Fieldmanager_Link.html">Fieldmanager_Link</a></li>
 				<li class="active"><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
 				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Password.html">Fieldmanager_Password</a></li>
 				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
 				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
 				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
@@ -119,6 +126,7 @@
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
 				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
 				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
 			</ul>
 		</div>
 	</div>
@@ -128,104 +136,135 @@
 
 <div id="right">
 	<div id="rightInner">
-<pre id="source"><code><span id="1" class="l"><a class="l" href="#1"> 1 </a><span class="xlang">&lt;?php</span>
-</span><span id="2" class="l"><a class="l" href="#2"> 2 </a><span class="php-comment">/**
-</span></span><span id="3" class="l"><a class="l" href="#3"> 3 </a><span class="php-comment"> * @package Fieldmanager
-</span></span><span id="4" class="l"><a class="l" href="#4"> 4 </a><span class="php-comment"> */</span>
-</span><span id="5" class="l"><a class="l" href="#5"> 5 </a>
-</span><span id="6" class="l"><a class="l" href="#6"> 6 </a><span class="php-comment">/**
-</span></span><span id="7" class="l"><a class="l" href="#7"> 7 </a><span class="php-comment"> * Textarea field
-</span></span><span id="8" class="l"><a class="l" href="#8"> 8 </a><span class="php-comment"> * @package Fieldmanager
-</span></span><span id="9" class="l"><a class="l" href="#9"> 9 </a><span class="php-comment"> */</span>
-</span><span id="10" class="l"><a class="l" href="#10">10 </a><span class="php-keyword1">class</span> <a id="Fieldmanager_Media" href="#Fieldmanager_Media">Fieldmanager_Media</a> <span class="php-keyword1">extends</span> Fieldmanager_Field {
-</span><span id="11" class="l"><a class="l" href="#11">11 </a>
-</span><span id="12" class="l"><a class="l" href="#12">12 </a>    <span class="php-comment">/**
-</span></span><span id="13" class="l"><a class="l" href="#13">13 </a><span class="php-comment">     * @var string
-</span></span><span id="14" class="l"><a class="l" href="#14">14 </a><span class="php-comment">     * Override field_class
-</span></span><span id="15" class="l"><a class="l" href="#15">15 </a><span class="php-comment">     */</span>
-</span><span id="16" class="l"><a class="l" href="#16">16 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$field_class" href="#$field_class">$field_class</a></span> = <span class="php-quote">'media'</span>;
-</span><span id="17" class="l"><a class="l" href="#17">17 </a>
-</span><span id="18" class="l"><a class="l" href="#18">18 </a>    <span class="php-comment">/**
-</span></span><span id="19" class="l"><a class="l" href="#19">19 </a><span class="php-comment">     * @var string
-</span></span><span id="20" class="l"><a class="l" href="#20">20 </a><span class="php-comment">     * Button Label
-</span></span><span id="21" class="l"><a class="l" href="#21">21 </a><span class="php-comment">     */</span>
-</span><span id="22" class="l"><a class="l" href="#22">22 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$button_label" href="#$button_label">$button_label</a></span> = <span class="php-quote">'Attach a file'</span>;
-</span><span id="23" class="l"><a class="l" href="#23">23 </a>
-</span><span id="24" class="l"><a class="l" href="#24">24 </a>    <span class="php-comment">/**
-</span></span><span id="25" class="l"><a class="l" href="#25">25 </a><span class="php-comment">     * @var string
-</span></span><span id="26" class="l"><a class="l" href="#26">26 </a><span class="php-comment">     * Class to attach to thumbnail media display
-</span></span><span id="27" class="l"><a class="l" href="#27">27 </a><span class="php-comment">     */</span>
-</span><span id="28" class="l"><a class="l" href="#28">28 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$thumbnail_class" href="#$thumbnail_class">$thumbnail_class</a></span> = <span class="php-quote">'thumbnail'</span>;
-</span><span id="29" class="l"><a class="l" href="#29">29 </a>
-</span><span id="30" class="l"><a class="l" href="#30">30 </a>    <span class="php-comment">/**
-</span></span><span id="31" class="l"><a class="l" href="#31">31 </a><span class="php-comment">     * @var string
-</span></span><span id="32" class="l"><a class="l" href="#32">32 </a><span class="php-comment">     * Static variable so we only load media JS once
-</span></span><span id="33" class="l"><a class="l" href="#33">33 </a><span class="php-comment">     */</span>
-</span><span id="34" class="l"><a class="l" href="#34">34 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-var"><a id="$has_registered_media" href="#$has_registered_media">$has_registered_media</a></span> = <span class="php-keyword1">False</span>;
-</span><span id="35" class="l"><a class="l" href="#35">35 </a>
-</span><span id="36" class="l"><a class="l" href="#36">36 </a>    <span class="php-comment">/**
-</span></span><span id="37" class="l"><a class="l" href="#37">37 </a><span class="php-comment">     * Construct default attributes
-</span></span><span id="38" class="l"><a class="l" href="#38">38 </a><span class="php-comment">     * @param string $label
-</span></span><span id="39" class="l"><a class="l" href="#39">39 </a><span class="php-comment">     * @param array $options
-</span></span><span id="40" class="l"><a class="l" href="#40">40 </a><span class="php-comment">     */</span>
-</span><span id="41" class="l"><a class="l" href="#41">41 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>( <span class="php-var">$label</span>, <span class="php-var">$options</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="42" class="l"><a class="l" href="#42">42 </a>        add_action( <span class="php-quote">'admin_print_scripts'</span>, <span class="php-keyword1">function</span>() {
-</span><span id="43" class="l"><a class="l" href="#43">43 </a>            <span class="php-var">$post</span> = get_post(); 
-</span><span id="44" class="l"><a class="l" href="#44">44 </a>            <span class="php-var">$args</span> = <span class="php-keyword1">array</span>();
-</span><span id="45" class="l"><a class="l" href="#45">45 </a>            <span class="php-keyword1">if</span> ( <span class="php-var">$post</span>-&gt;ID ) {
-</span><span id="46" class="l"><a class="l" href="#46">46 </a>                <span class="php-var">$args</span>[<span class="php-quote">'post'</span>] = <span class="php-var">$post</span>-&gt;ID;
-</span><span id="47" class="l"><a class="l" href="#47">47 </a>            }
-</span><span id="48" class="l"><a class="l" href="#48">48 </a>            wp_enqueue_media( <span class="php-var">$args</span> ); <span class="php-comment">// generally on post pages this will not have an impact.</span>
-</span><span id="49" class="l"><a class="l" href="#49">49 </a>        } );
-</span><span id="50" class="l"><a class="l" href="#50">50 </a>        <span class="php-keyword1">if</span> ( !self::<span class="php-var">$has_registered_media</span> ) {
-</span><span id="51" class="l"><a class="l" href="#51">51 </a>            fm_add_script( <span class="php-quote">'fm_media'</span>, <span class="php-quote">'js/media/fieldmanager-media.js'</span> );
-</span><span id="52" class="l"><a class="l" href="#52">52 </a>            self::<span class="php-var">$has_registered_media</span> = <span class="php-keyword1">True</span>;
-</span><span id="53" class="l"><a class="l" href="#53">53 </a>        }
-</span><span id="54" class="l"><a class="l" href="#54">54 </a>        parent::__construct( <span class="php-var">$label</span>, <span class="php-var">$options</span> );
-</span><span id="55" class="l"><a class="l" href="#55">55 </a>    }
-</span><span id="56" class="l"><a class="l" href="#56">56 </a>
-</span><span id="57" class="l"><a class="l" href="#57">57 </a>    <span class="php-comment">/**
-</span></span><span id="58" class="l"><a class="l" href="#58">58 </a><span class="php-comment">     * Presave; convert a URL to an attachment ID.
-</span></span><span id="59" class="l"><a class="l" href="#59">59 </a><span class="php-comment">     */</span>
-</span><span id="60" class="l"><a class="l" href="#60">60 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( <span class="php-var">$value</span>, <span class="php-var">$current_value</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="61" class="l"><a class="l" href="#61">61 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$value</span> == <span class="php-num">0</span> || !<span class="php-keyword2">is_numeric</span>( <span class="php-var">$value</span> ) ) {
-</span><span id="62" class="l"><a class="l" href="#62">62 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">NULL</span>;
-</span><span id="63" class="l"><a class="l" href="#63">63 </a>        }
-</span><span id="64" class="l"><a class="l" href="#64">64 </a>        <span class="php-keyword1">return</span> <span class="php-var">$value</span>;
-</span><span id="65" class="l"><a class="l" href="#65">65 </a>    }
-</span><span id="66" class="l"><a class="l" href="#66">66 </a>
-</span><span id="67" class="l"><a class="l" href="#67">67 </a>    <span class="php-comment">/**
-</span></span><span id="68" class="l"><a class="l" href="#68">68 </a><span class="php-comment">     * Form element
-</span></span><span id="69" class="l"><a class="l" href="#69">69 </a><span class="php-comment">     * @param mixed $value
-</span></span><span id="70" class="l"><a class="l" href="#70">70 </a><span class="php-comment">     * @return string HTML
-</span></span><span id="71" class="l"><a class="l" href="#71">71 </a><span class="php-comment">     */</span>
-</span><span id="72" class="l"><a class="l" href="#72">72 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_form_element" href="#_form_element">form_element</a>( <span class="php-var">$value</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="73" class="l"><a class="l" href="#73">73 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_numeric</span>( <span class="php-var">$value</span> ) &amp;&amp; <span class="php-var">$value</span> &gt; <span class="php-num">0</span> ) {
-</span><span id="74" class="l"><a class="l" href="#74">74 </a>            <span class="php-var">$attachment</span> = get_post( <span class="php-var">$value</span> );
-</span><span id="75" class="l"><a class="l" href="#75">75 </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">strpos</span>( <span class="php-var">$attachment</span>-&gt;post_mime_type, <span class="php-quote">'image/'</span> ) === <span class="php-num">0</span> ) {
-</span><span id="76" class="l"><a class="l" href="#76">76 </a>                <span class="php-var">$preview</span> = <span class="php-keyword2">sprintf</span>( <span class="php-quote">'%s&lt;br /&gt;'</span>, __( <span class="php-quote">'Uploaded image:'</span> ) );
-</span><span id="77" class="l"><a class="l" href="#77">77 </a>                <span class="php-var">$preview</span> .= wp_get_attachment_image( <span class="php-var">$value</span>, <span class="php-quote">'thumbnail'</span>, <span class="php-keyword1">false</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'class'</span> =&gt; <span class="php-var">$this</span>-&gt;thumbnail_class ) );
-</span><span id="78" class="l"><a class="l" href="#78">78 </a>            } <span class="php-keyword1">else</span> {
-</span><span id="79" class="l"><a class="l" href="#79">79 </a>                <span class="php-var">$preview</span> = <span class="php-keyword2">sprintf</span>( <span class="php-quote">'%s'</span>, __( <span class="php-quote">'Uploaded file:'</span> ) ) . <span class="php-quote">'&amp;nbsp;'</span>;
-</span><span id="80" class="l"><a class="l" href="#80">80 </a>                <span class="php-var">$preview</span> .= wp_get_attachment_link( <span class="php-var">$value</span>, <span class="php-quote">'thumbnail'</span>, <span class="php-keyword1">True</span>, <span class="php-keyword1">True</span>, <span class="php-var">$attachment</span>-&gt;post_title );
-</span><span id="81" class="l"><a class="l" href="#81">81 </a>            }
-</span><span id="82" class="l"><a class="l" href="#82">82 </a>            <span class="php-var">$preview</span> .= <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;br /&gt;&lt;a href=&quot;#&quot; class=&quot;fm-media-remove fm-delete&quot;&gt;%s&lt;/a&gt;'</span>, __( <span class="php-quote">'remove'</span> ) );
-</span><span id="83" class="l"><a class="l" href="#83">83 </a>        } <span class="php-keyword1">else</span> {
-</span><span id="84" class="l"><a class="l" href="#84">84 </a>            <span class="php-var">$preview</span> = <span class="php-quote">''</span>;
-</span><span id="85" class="l"><a class="l" href="#85">85 </a>        }
-</span><span id="86" class="l"><a class="l" href="#86">86 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
-</span><span id="87" class="l"><a class="l" href="#87">87 </a>            <span class="php-quote">'&lt;input type=&quot;button&quot; class=&quot;fm-media-button&quot; id=&quot;%1$s&quot; value=&quot;%3$s&quot; /&gt;
-</span></span><span id="88" class="l"><a class="l" href="#88">88 </a><span class="php-quote">            &lt;input type=&quot;hidden&quot; name=&quot;%2$s&quot; value=&quot;%4$s&quot; class=&quot;fm-element fm-media-id&quot; /&gt;
-</span></span><span id="89" class="l"><a class="l" href="#89">89 </a><span class="php-quote">            &lt;div class=&quot;media-wrapper&quot;&gt;%5$s&lt;/div&gt;'</span>,
-</span><span id="90" class="l"><a class="l" href="#90">90 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
-</span><span id="91" class="l"><a class="l" href="#91">91 </a>            <span class="php-var">$this</span>-&gt;get_form_name(),
-</span><span id="92" class="l"><a class="l" href="#92">92 </a>            <span class="php-var">$this</span>-&gt;button_label,
-</span><span id="93" class="l"><a class="l" href="#93">93 </a>            <span class="php-var">$value</span>,
-</span><span id="94" class="l"><a class="l" href="#94">94 </a>            <span class="php-var">$preview</span>
-</span><span id="95" class="l"><a class="l" href="#95">95 </a>        );
-</span><span id="96" class="l"><a class="l" href="#96">96 </a>    }
-</span><span id="97" class="l"><a class="l" href="#97">97 </a>
-</span><span id="98" class="l"><a class="l" href="#98">98 </a></span>}</code></pre>
+<pre id="source"><code><span id="1" class="l"><a class="l" href="#1">  1 </a><span class="xlang">&lt;?php</span>
+</span><span id="2" class="l"><a class="l" href="#2">  2 </a><span class="php-comment">/**
+</span></span><span id="3" class="l"><a class="l" href="#3">  3 </a><span class="php-comment"> * @package Fieldmanager
+</span></span><span id="4" class="l"><a class="l" href="#4">  4 </a><span class="php-comment"> */</span>
+</span><span id="5" class="l"><a class="l" href="#5">  5 </a>
+</span><span id="6" class="l"><a class="l" href="#6">  6 </a><span class="php-comment">/**
+</span></span><span id="7" class="l"><a class="l" href="#7">  7 </a><span class="php-comment"> * Textarea field
+</span></span><span id="8" class="l"><a class="l" href="#8">  8 </a><span class="php-comment"> * @package Fieldmanager
+</span></span><span id="9" class="l"><a class="l" href="#9">  9 </a><span class="php-comment"> */</span>
+</span><span id="10" class="l"><a class="l" href="#10"> 10 </a><span class="php-keyword1">class</span> <a id="Fieldmanager_Media" href="#Fieldmanager_Media">Fieldmanager_Media</a> <span class="php-keyword1">extends</span> Fieldmanager_Field {
+</span><span id="11" class="l"><a class="l" href="#11"> 11 </a>
+</span><span id="12" class="l"><a class="l" href="#12"> 12 </a>    <span class="php-comment">/**
+</span></span><span id="13" class="l"><a class="l" href="#13"> 13 </a><span class="php-comment">     * @var string
+</span></span><span id="14" class="l"><a class="l" href="#14"> 14 </a><span class="php-comment">     * Override field_class
+</span></span><span id="15" class="l"><a class="l" href="#15"> 15 </a><span class="php-comment">     */</span>
+</span><span id="16" class="l"><a class="l" href="#16"> 16 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$field_class" href="#$field_class">$field_class</a></span> = <span class="php-quote">'media'</span>;
+</span><span id="17" class="l"><a class="l" href="#17"> 17 </a>
+</span><span id="18" class="l"><a class="l" href="#18"> 18 </a>    <span class="php-comment">/**
+</span></span><span id="19" class="l"><a class="l" href="#19"> 19 </a><span class="php-comment">     * @var string
+</span></span><span id="20" class="l"><a class="l" href="#20"> 20 </a><span class="php-comment">     * Button Label
+</span></span><span id="21" class="l"><a class="l" href="#21"> 21 </a><span class="php-comment">     */</span>
+</span><span id="22" class="l"><a class="l" href="#22"> 22 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$button_label" href="#$button_label">$button_label</a></span>;
+</span><span id="23" class="l"><a class="l" href="#23"> 23 </a>
+</span><span id="24" class="l"><a class="l" href="#24"> 24 </a>    <span class="php-comment">/**
+</span></span><span id="25" class="l"><a class="l" href="#25"> 25 </a><span class="php-comment">     * @var string
+</span></span><span id="26" class="l"><a class="l" href="#26"> 26 </a><span class="php-comment">     * Button label in the media modal popup
+</span></span><span id="27" class="l"><a class="l" href="#27"> 27 </a><span class="php-comment">     */</span>
+</span><span id="28" class="l"><a class="l" href="#28"> 28 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$modal_button_label" href="#$modal_button_label">$modal_button_label</a></span>;
+</span><span id="29" class="l"><a class="l" href="#29"> 29 </a>
+</span><span id="30" class="l"><a class="l" href="#30"> 30 </a>    <span class="php-comment">/**
+</span></span><span id="31" class="l"><a class="l" href="#31"> 31 </a><span class="php-comment">     * @var string
+</span></span><span id="32" class="l"><a class="l" href="#32"> 32 </a><span class="php-comment">     * Title of the media modal popup
+</span></span><span id="33" class="l"><a class="l" href="#33"> 33 </a><span class="php-comment">     */</span>
+</span><span id="34" class="l"><a class="l" href="#34"> 34 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$modal_title" href="#$modal_title">$modal_title</a></span>;
+</span><span id="35" class="l"><a class="l" href="#35"> 35 </a>
+</span><span id="36" class="l"><a class="l" href="#36"> 36 </a>    <span class="php-comment">/**
+</span></span><span id="37" class="l"><a class="l" href="#37"> 37 </a><span class="php-comment">     * @var string
+</span></span><span id="38" class="l"><a class="l" href="#38"> 38 </a><span class="php-comment">     * Class to attach to thumbnail media display
+</span></span><span id="39" class="l"><a class="l" href="#39"> 39 </a><span class="php-comment">     */</span>
+</span><span id="40" class="l"><a class="l" href="#40"> 40 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$thumbnail_class" href="#$thumbnail_class">$thumbnail_class</a></span> = <span class="php-quote">'thumbnail'</span>;
+</span><span id="41" class="l"><a class="l" href="#41"> 41 </a>
+</span><span id="42" class="l"><a class="l" href="#42"> 42 </a>    <span class="php-comment">/**
+</span></span><span id="43" class="l"><a class="l" href="#43"> 43 </a><span class="php-comment">     * @var string
+</span></span><span id="44" class="l"><a class="l" href="#44"> 44 </a><span class="php-comment">     * Which size a preview image should be.
+</span></span><span id="45" class="l"><a class="l" href="#45"> 45 </a><span class="php-comment">     * Should be a string (e.g. &quot;thumbnail&quot;, &quot;large&quot;, or some size created with add_image_size)
+</span></span><span id="46" class="l"><a class="l" href="#46"> 46 </a><span class="php-comment">     * You can use an array here
+</span></span><span id="47" class="l"><a class="l" href="#47"> 47 </a><span class="php-comment">     */</span>
+</span><span id="48" class="l"><a class="l" href="#48"> 48 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$preview_size" href="#$preview_size">$preview_size</a></span> = <span class="php-quote">'thumbnail'</span>;
+</span><span id="49" class="l"><a class="l" href="#49"> 49 </a>
+</span><span id="50" class="l"><a class="l" href="#50"> 50 </a>    <span class="php-comment">/**
+</span></span><span id="51" class="l"><a class="l" href="#51"> 51 </a><span class="php-comment">     * @var string
+</span></span><span id="52" class="l"><a class="l" href="#52"> 52 </a><span class="php-comment">     * Static variable so we only load media JS once
+</span></span><span id="53" class="l"><a class="l" href="#53"> 53 </a><span class="php-comment">     */</span>
+</span><span id="54" class="l"><a class="l" href="#54"> 54 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">static</span> <span class="php-var"><a id="$has_registered_media" href="#$has_registered_media">$has_registered_media</a></span> = <span class="php-keyword1">False</span>;
+</span><span id="55" class="l"><a class="l" href="#55"> 55 </a>
+</span><span id="56" class="l"><a class="l" href="#56"> 56 </a>    <span class="php-comment">/**
+</span></span><span id="57" class="l"><a class="l" href="#57"> 57 </a><span class="php-comment">     * Construct default attributes
+</span></span><span id="58" class="l"><a class="l" href="#58"> 58 </a><span class="php-comment">     * @param string $label
+</span></span><span id="59" class="l"><a class="l" href="#59"> 59 </a><span class="php-comment">     * @param array $options
+</span></span><span id="60" class="l"><a class="l" href="#60"> 60 </a><span class="php-comment">     */</span>
+</span><span id="61" class="l"><a class="l" href="#61"> 61 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>( <span class="php-var">$label</span>, <span class="php-var">$options</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="62" class="l"><a class="l" href="#62"> 62 </a>        <span class="php-var">$this</span>-&gt;button_label       = __( <span class="php-quote">'Attach a File'</span>, <span class="php-quote">'fieldmanager'</span> );
+</span><span id="63" class="l"><a class="l" href="#63"> 63 </a>        <span class="php-var">$this</span>-&gt;modal_button_label = __( <span class="php-quote">'Select Attachment'</span>, <span class="php-quote">'fieldmanager'</span> );
+</span><span id="64" class="l"><a class="l" href="#64"> 64 </a>        <span class="php-var">$this</span>-&gt;modal_title        = __( <span class="php-quote">'Choose an Attachment'</span>, <span class="php-quote">'fieldmanager'</span> );
+</span><span id="65" class="l"><a class="l" href="#65"> 65 </a>
+</span><span id="66" class="l"><a class="l" href="#66"> 66 </a>        add_action( <span class="php-quote">'admin_print_scripts'</span>, <span class="php-keyword1">function</span>() {
+</span><span id="67" class="l"><a class="l" href="#67"> 67 </a>            <span class="php-var">$post</span> = get_post();
+</span><span id="68" class="l"><a class="l" href="#68"> 68 </a>            <span class="php-var">$args</span> = <span class="php-keyword1">array</span>();
+</span><span id="69" class="l"><a class="l" href="#69"> 69 </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$post</span> ) &amp;&amp; <span class="php-var">$post</span>-&gt;ID ) {
+</span><span id="70" class="l"><a class="l" href="#70"> 70 </a>                <span class="php-var">$args</span>[<span class="php-quote">'post'</span>] = <span class="php-var">$post</span>-&gt;ID;
+</span><span id="71" class="l"><a class="l" href="#71"> 71 </a>            }
+</span><span id="72" class="l"><a class="l" href="#72"> 72 </a>            wp_enqueue_media( <span class="php-var">$args</span> ); <span class="php-comment">// generally on post pages this will not have an impact.</span>
+</span><span id="73" class="l"><a class="l" href="#73"> 73 </a>        } );
+</span><span id="74" class="l"><a class="l" href="#74"> 74 </a>        <span class="php-keyword1">if</span> ( !self::<span class="php-var">$has_registered_media</span> ) {
+</span><span id="75" class="l"><a class="l" href="#75"> 75 </a>            fm_add_script( <span class="php-quote">'fm_media'</span>, <span class="php-quote">'js/media/fieldmanager-media.js'</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'jquery'</span> ), <span class="php-quote">'1.0.1'</span> );
+</span><span id="76" class="l"><a class="l" href="#76"> 76 </a>            self::<span class="php-var">$has_registered_media</span> = <span class="php-keyword1">True</span>;
+</span><span id="77" class="l"><a class="l" href="#77"> 77 </a>        }
+</span><span id="78" class="l"><a class="l" href="#78"> 78 </a>        parent::__construct( <span class="php-var">$label</span>, <span class="php-var">$options</span> );
+</span><span id="79" class="l"><a class="l" href="#79"> 79 </a>    }
+</span><span id="80" class="l"><a class="l" href="#80"> 80 </a>
+</span><span id="81" class="l"><a class="l" href="#81"> 81 </a>    <span class="php-comment">/**
+</span></span><span id="82" class="l"><a class="l" href="#82"> 82 </a><span class="php-comment">     * Presave; ensure that the value is an absolute integer
+</span></span><span id="83" class="l"><a class="l" href="#83"> 83 </a><span class="php-comment">     */</span>
+</span><span id="84" class="l"><a class="l" href="#84"> 84 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( <span class="php-var">$value</span>, <span class="php-var">$current_value</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="85" class="l"><a class="l" href="#85"> 85 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$value</span> == <span class="php-num">0</span> || !<span class="php-keyword2">is_numeric</span>( <span class="php-var">$value</span> ) ) {
+</span><span id="86" class="l"><a class="l" href="#86"> 86 </a>            <span class="php-keyword1">return</span> <span class="php-keyword1">NULL</span>;
+</span><span id="87" class="l"><a class="l" href="#87"> 87 </a>        }
+</span><span id="88" class="l"><a class="l" href="#88"> 88 </a>        <span class="php-keyword1">return</span> absint( <span class="php-var">$value</span> );
+</span><span id="89" class="l"><a class="l" href="#89"> 89 </a>    }
+</span><span id="90" class="l"><a class="l" href="#90"> 90 </a>
+</span><span id="91" class="l"><a class="l" href="#91"> 91 </a>    <span class="php-comment">/**
+</span></span><span id="92" class="l"><a class="l" href="#92"> 92 </a><span class="php-comment">     * Form element
+</span></span><span id="93" class="l"><a class="l" href="#93"> 93 </a><span class="php-comment">     * @param mixed $value
+</span></span><span id="94" class="l"><a class="l" href="#94"> 94 </a><span class="php-comment">     * @return string HTML
+</span></span><span id="95" class="l"><a class="l" href="#95"> 95 </a><span class="php-comment">     */</span>
+</span><span id="96" class="l"><a class="l" href="#96"> 96 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_form_element" href="#_form_element">form_element</a>( <span class="php-var">$value</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="97" class="l"><a class="l" href="#97"> 97 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_numeric</span>( <span class="php-var">$value</span> ) &amp;&amp; <span class="php-var">$value</span> &gt; <span class="php-num">0</span> ) {
+</span><span id="98" class="l"><a class="l" href="#98"> 98 </a>            <span class="php-var">$attachment</span> = get_post( <span class="php-var">$value</span> );
+</span><span id="99" class="l"><a class="l" href="#99"> 99 </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword2">strpos</span>( <span class="php-var">$attachment</span>-&gt;post_mime_type, <span class="php-quote">'image/'</span> ) === <span class="php-num">0</span> ) {
+</span><span id="100" class="l"><a class="l" href="#100">100 </a>                <span class="php-var">$preview</span> = <span class="php-keyword2">sprintf</span>( <span class="php-quote">'%s&lt;br /&gt;'</span>, __( <span class="php-quote">'Uploaded image:'</span> ) );
+</span><span id="101" class="l"><a class="l" href="#101">101 </a>                <span class="php-var">$preview</span> .= <span class="php-quote">'&lt;a href=&quot;#&quot;&gt;'</span> . wp_get_attachment_image( <span class="php-var">$value</span>, <span class="php-var">$this</span>-&gt;preview_size, <span class="php-keyword1">false</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'class'</span> =&gt; <span class="php-var">$this</span>-&gt;thumbnail_class ) ) . <span class="php-quote">'&lt;/a&gt;'</span>;
+</span><span id="102" class="l"><a class="l" href="#102">102 </a>            } <span class="php-keyword1">else</span> {
+</span><span id="103" class="l"><a class="l" href="#103">103 </a>                <span class="php-var">$preview</span> = <span class="php-keyword2">sprintf</span>( <span class="php-quote">'%s'</span>, __( <span class="php-quote">'Uploaded file:'</span> ) ) . <span class="php-quote">'&amp;nbsp;'</span>;
+</span><span id="104" class="l"><a class="l" href="#104">104 </a>                <span class="php-var">$preview</span> .= wp_get_attachment_link( <span class="php-var">$value</span>, <span class="php-var">$this</span>-&gt;preview_size, <span class="php-keyword1">True</span>, <span class="php-keyword1">True</span>, <span class="php-var">$attachment</span>-&gt;post_title );
+</span><span id="105" class="l"><a class="l" href="#105">105 </a>            }
+</span><span id="106" class="l"><a class="l" href="#106">106 </a>            <span class="php-var">$preview</span> .= <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;br /&gt;&lt;a href=&quot;#&quot; class=&quot;fm-media-remove fm-delete&quot;&gt;%s&lt;/a&gt;'</span>, __( <span class="php-quote">'remove'</span> ) );
+</span><span id="107" class="l"><a class="l" href="#107">107 </a>        } <span class="php-keyword1">else</span> {
+</span><span id="108" class="l"><a class="l" href="#108">108 </a>            <span class="php-var">$preview</span> = <span class="php-quote">''</span>;
+</span><span id="109" class="l"><a class="l" href="#109">109 </a>        }
+</span><span id="110" class="l"><a class="l" href="#110">110 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
+</span><span id="111" class="l"><a class="l" href="#111">111 </a>            <span class="php-quote">'&lt;input type=&quot;button&quot; class=&quot;fm-media-button&quot; id=&quot;%1$s&quot; value=&quot;%3$s&quot; data-choose=&quot;%7$s&quot; data-update=&quot;%8$s&quot; /&gt;
+</span></span><span id="112" class="l"><a class="l" href="#112">112 </a><span class="php-quote">            &lt;input type=&quot;hidden&quot; name=&quot;%2$s&quot; value=&quot;%4$s&quot; class=&quot;fm-element fm-media-id&quot; /&gt;
+</span></span><span id="113" class="l"><a class="l" href="#113">113 </a><span class="php-quote">            &lt;div class=&quot;media-wrapper&quot;&gt;%5$s&lt;/div&gt;
+</span></span><span id="114" class="l"><a class="l" href="#114">114 </a><span class="php-quote">            &lt;script type=&quot;text/javascript&quot;&gt;
+</span></span><span id="115" class="l"><a class="l" href="#115">115 </a><span class="php-quote">            var fm_preview_size = fm_preview_size || [];
+</span></span><span id="116" class="l"><a class="l" href="#116">116 </a><span class="php-quote">            fm_preview_size[&quot;%1$s&quot;]=%6$s;
+</span></span><span id="117" class="l"><a class="l" href="#117">117 </a><span class="php-quote">            &lt;/script&gt;'</span>,
+</span><span id="118" class="l"><a class="l" href="#118">118 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
+</span><span id="119" class="l"><a class="l" href="#119">119 </a>            <span class="php-var">$this</span>-&gt;get_form_name(),
+</span><span id="120" class="l"><a class="l" href="#120">120 </a>            esc_attr( <span class="php-var">$this</span>-&gt;button_label ),
+</span><span id="121" class="l"><a class="l" href="#121">121 </a>            esc_attr( <span class="php-var">$value</span> ),
+</span><span id="122" class="l"><a class="l" href="#122">122 </a>            <span class="php-var">$preview</span>,
+</span><span id="123" class="l"><a class="l" href="#123">123 </a>            <span class="php-keyword2">json_encode</span>( <span class="php-var">$this</span>-&gt;preview_size ),
+</span><span id="124" class="l"><a class="l" href="#124">124 </a>            esc_attr( <span class="php-var">$this</span>-&gt;modal_title ),
+</span><span id="125" class="l"><a class="l" href="#125">125 </a>            esc_attr( <span class="php-var">$this</span>-&gt;modal_button_label )
+</span><span id="126" class="l"><a class="l" href="#126">126 </a>        );
+</span><span id="127" class="l"><a class="l" href="#127">127 </a>    }
+</span><span id="128" class="l"><a class="l" href="#128">128 </a>
+</span><span id="129" class="l"><a class="l" href="#129">129 </a></span>}</code></pre>
 	</div>
 
 	<div id="footer">

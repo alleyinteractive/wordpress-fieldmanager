@@ -7,8 +7,8 @@
 
 	<title>File class-fieldmanager-checkboxes.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
-	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
@@ -69,9 +69,15 @@
 			<ul>
 				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
 						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
 				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
 							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
 			</ul>
 		</div>
 
@@ -91,6 +97,7 @@
 				<li><a href="class-Fieldmanager_Link.html">Fieldmanager_Link</a></li>
 				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
 				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Password.html">Fieldmanager_Password</a></li>
 				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
 				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
 				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
@@ -119,6 +126,7 @@
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
 				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
 				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
 			</ul>
 		</div>
 	</div>
@@ -144,42 +152,24 @@
 </span></span><span id="14" class="l"><a class="l" href="#14">14 </a><span class="php-comment">     * Override field_class
 </span></span><span id="15" class="l"><a class="l" href="#15">15 </a><span class="php-comment">     */</span>
 </span><span id="16" class="l"><a class="l" href="#16">16 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$field_class" href="#$field_class">$field_class</a></span> = <span class="php-quote">'checkboxes'</span>;
-</span><span id="17" class="l"><a class="l" href="#17">17 </a>    
-</span><span id="18" class="l"><a class="l" href="#18">18 </a>    <span class="php-comment">/**
-</span></span><span id="19" class="l"><a class="l" href="#19">19 </a><span class="php-comment">     * Render form element
-</span></span><span id="20" class="l"><a class="l" href="#20">20 </a><span class="php-comment">     * @param mixed $value
-</span></span><span id="21" class="l"><a class="l" href="#21">21 </a><span class="php-comment">     * @return string HTML
-</span></span><span id="22" class="l"><a class="l" href="#22">22 </a><span class="php-comment">     */</span>
-</span><span id="23" class="l"><a class="l" href="#23">23 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_form_element" href="#_form_element">form_element</a>( <span class="php-var">$value</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="24" class="l"><a class="l" href="#24">24 </a>        
-</span><span id="25" class="l"><a class="l" href="#25">25 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
-</span><span id="26" class="l"><a class="l" href="#26">26 </a>            <span class="php-quote">'&lt;div class=&quot;fm-checkbox-group&quot; id=&quot;%s&quot;&gt;&lt;/div&gt;'</span>,
-</span><span id="27" class="l"><a class="l" href="#27">27 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
-</span><span id="28" class="l"><a class="l" href="#28">28 </a>            <span class="php-var">$this</span>-&gt;form_data_elements( <span class="php-var">$value</span> )
-</span><span id="29" class="l"><a class="l" href="#29">29 </a>        );
-</span><span id="30" class="l"><a class="l" href="#30">30 </a>    }
-</span><span id="31" class="l"><a class="l" href="#31">31 </a>    
-</span><span id="32" class="l"><a class="l" href="#32">32 </a>    <span class="php-comment">/**
-</span></span><span id="33" class="l"><a class="l" href="#33">33 </a><span class="php-comment">     * Individual checkbox element
-</span></span><span id="34" class="l"><a class="l" href="#34">34 </a><span class="php-comment">     * @see Fieldmanager_Options::form_data_elements()
-</span></span><span id="35" class="l"><a class="l" href="#35">35 </a><span class="php-comment">     * @param mixed $data_row
-</span></span><span id="36" class="l"><a class="l" href="#36">36 </a><span class="php-comment">     * @param mixed $value
-</span></span><span id="37" class="l"><a class="l" href="#37">37 </a><span class="php-comment">     * @return string HTML
-</span></span><span id="38" class="l"><a class="l" href="#38">38 </a><span class="php-comment">     */</span>
-</span><span id="39" class="l"><a class="l" href="#39">39 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_form_data_element" href="#_form_data_element">form_data_element</a>( <span class="php-var">$data_row</span>, <span class="php-var">$value</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="40" class="l"><a class="l" href="#40">40 </a>    
-</span><span id="41" class="l"><a class="l" href="#41">41 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
-</span><span id="42" class="l"><a class="l" href="#42">42 </a>            <span class="php-quote">'&lt;div class=&quot;fm-option&quot;&gt;&lt;input class=&quot;fm-element&quot; type=&quot;checkbox&quot; value=&quot;%s&quot; name=&quot;%s&quot; %s %s/&gt;&lt;div class=&quot;fm-option-label&quot;&gt;%s&lt;/div&gt;&lt;/div&gt;'</span>,
-</span><span id="43" class="l"><a class="l" href="#43">43 </a>            <span class="php-var">$data_row</span>[<span class="php-quote">'value'</span>],
-</span><span id="44" class="l"><a class="l" href="#44">44 </a>            <span class="php-var">$this</span>-&gt;get_form_name(),
-</span><span id="45" class="l"><a class="l" href="#45">45 </a>            <span class="php-var">$this</span>-&gt;get_element_attributes(),
-</span><span id="46" class="l"><a class="l" href="#46">46 </a>            <span class="php-var">$this</span>-&gt;option_selected( <span class="php-var">$data_row</span>[<span class="php-quote">'value'</span>], <span class="php-var">$value</span>, <span class="php-quote">&quot;checked&quot;</span> ),
-</span><span id="47" class="l"><a class="l" href="#47">47 </a>            <span class="php-keyword2">htmlspecialchars</span>( <span class="php-var">$data_row</span>[<span class="php-quote">'name'</span>] )
-</span><span id="48" class="l"><a class="l" href="#48">48 </a>        );                      
-</span><span id="49" class="l"><a class="l" href="#49">49 </a>    
-</span><span id="50" class="l"><a class="l" href="#50">50 </a>    }
-</span><span id="51" class="l"><a class="l" href="#51">51 </a>
-</span><span id="52" class="l"><a class="l" href="#52">52 </a></span>}</code></pre>
+</span><span id="17" class="l"><a class="l" href="#17">17 </a>
+</span><span id="18" class="l"><a class="l" href="#18">18 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$multiple" href="#$multiple">$multiple</a></span> = <span class="php-keyword1">True</span>;
+</span><span id="19" class="l"><a class="l" href="#19">19 </a>    
+</span><span id="20" class="l"><a class="l" href="#20">20 </a>    <span class="php-comment">/**
+</span></span><span id="21" class="l"><a class="l" href="#21">21 </a><span class="php-comment">     * Render form element
+</span></span><span id="22" class="l"><a class="l" href="#22">22 </a><span class="php-comment">     * @param mixed $value
+</span></span><span id="23" class="l"><a class="l" href="#23">23 </a><span class="php-comment">     * @return string HTML
+</span></span><span id="24" class="l"><a class="l" href="#24">24 </a><span class="php-comment">     */</span>
+</span><span id="25" class="l"><a class="l" href="#25">25 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_form_element" href="#_form_element">form_element</a>( <span class="php-var">$value</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="26" class="l"><a class="l" href="#26">26 </a>        
+</span><span id="27" class="l"><a class="l" href="#27">27 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
+</span><span id="28" class="l"><a class="l" href="#28">28 </a>            <span class="php-quote">'&lt;div class=&quot;fm-checkbox-group&quot; id=&quot;%s&quot;&gt;%s&lt;/div&gt;'</span>,
+</span><span id="29" class="l"><a class="l" href="#29">29 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
+</span><span id="30" class="l"><a class="l" href="#30">30 </a>            <span class="php-var">$this</span>-&gt;form_data_elements( <span class="php-var">$value</span> )
+</span><span id="31" class="l"><a class="l" href="#31">31 </a>        );
+</span><span id="32" class="l"><a class="l" href="#32">32 </a>    }
+</span><span id="33" class="l"><a class="l" href="#33">33 </a>
+</span><span id="34" class="l"><a class="l" href="#34">34 </a></span>}</code></pre>
 	</div>
 
 	<div id="footer">

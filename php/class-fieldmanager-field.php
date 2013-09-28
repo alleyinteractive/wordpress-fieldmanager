@@ -541,18 +541,6 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Get full path (e.g. parent_group_element)
-	 * @return string full path
-	 */
-	public function get_full_path() {
-		$names = array();
-		foreach ( $this->get_form_tree() as $level ) {
-			$names[] = $level->name;
-		}
-		return implode( '_', $names );
-	}
-
-	/**
 	 * Recursively build path to this element (e.g. array(grandparent, parent, this) )
 	 * @return array of parents
 	 */
@@ -634,6 +622,7 @@ abstract class Fieldmanager_Field {
 	 * Is called multiple times for multi-fields (e.g. limit => 0)
 	 * @param array $values
 	 * @return void
+	 * @todo make this a context method
 	 */
 	protected function save_index( $values, $current_values ) {
 		if ( $this->data_type != 'post' || empty( $this->data_id ) ) return;
@@ -835,19 +824,6 @@ abstract class Fieldmanager_Field {
 	private function require_base() {
 		if ( !empty( $this->parent ) ) {
 			throw new FM_Developer_Exception( __( 'You cannot use this method on a subgroup' ) );
-		}
-	}
-
-	/**
-	 * How many elements should we render?
-	 * @return string
-	 */
-	protected function get_multiple_count( $values ) {
-		if ( $this->limit == 0 ) {
-			return max( $this->starting_count, count( $values ) + $this->extra_elements );
-		}
-		else {
-			return $this->limit;
 		}
 	}
 
