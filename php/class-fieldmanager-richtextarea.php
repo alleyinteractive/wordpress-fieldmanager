@@ -114,11 +114,12 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 	 * @return void
 	 */
 	public function editor_js() {
-		if ( ! class_exists( '_WP_Editors' ) )
+		if ( ! class_exists( '_WP_Editors' ) ) {
 			require( ABSPATH . WPINC . '/class-wp-editor.php' );
 
-		_WP_Editors::wp_link_dialog();
-		_WP_Editors::wp_fullscreen_html();
+			_WP_Editors::wp_link_dialog();
+			_WP_Editors::wp_fullscreen_html();
+		}
 	}
 
 	/**
