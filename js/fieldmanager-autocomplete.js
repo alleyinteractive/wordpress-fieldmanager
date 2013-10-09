@@ -34,7 +34,7 @@ fm.autocomplete = {
 						} );
 					};
 				} else if ( $el.data( 'options' ) ) {
-					ac_params.source = fm.autocomplete.prepare_options( opts );
+					ac_params.source = fm.autocomplete.prepare_options( $el.data( 'options' ) );
 				}
 
 				if ( $el.data( 'exact-match' ) ) {

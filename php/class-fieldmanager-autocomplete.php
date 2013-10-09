@@ -58,7 +58,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array(), '1.0.1', false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
+		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array(), '1.0.2', false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
 
 		if ( empty( $this->datasource ) ) {
 			$message = __( 'You must supply a datasource for the autocomplete field' );
