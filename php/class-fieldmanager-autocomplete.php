@@ -102,7 +102,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		if ( $this->datasource->use_ajax ) {
 			$this->attributes['data-action'] = $this->datasource->get_ajax_action( $this->name );
 		} else {
-			$this->attributes['data-options'] = htmlspecialchars( json_encode( $this->datasource->options ) );
+			$this->attributes['data-options'] = htmlspecialchars( json_encode( $this->datasource->get_items() ) );
 		}
 
 		$element = sprintf(
