@@ -9,7 +9,7 @@ fm.autocomplete = {
 	},
 
 	enable_autocomplete: function() {
-		$( '.fm-autocomplete:visible' ).each( function() {
+		$( 'input.fm-autocomplete:visible' ).each( function() {
 			if ( !$( this ).hasClass( 'fm-autocomplete-enabled' ) ) {
 				var ac_params = {};
 				var $el = $( this );
