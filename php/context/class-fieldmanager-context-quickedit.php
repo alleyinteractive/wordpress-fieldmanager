@@ -83,6 +83,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function manage_custom_columns( $column_name, $post_id ) {
+		if ( $column_name != $this->fm->name ) return;
 		$data = get_post_meta( $post_id, $this->fm->name, true );
 		if ( !empty( $data ) ) {
 			$column_text = call_user_func( $this->column_not_empty_callback, $data );
