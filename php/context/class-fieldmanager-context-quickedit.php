@@ -19,13 +19,13 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @var callback
 	 * Function to return a string to be displayed in the posts admin column if data is set
 	 */
-	public $column_not_empty_callback = array( $this, 'default_not_empty' );
+	//public $column_not_empty_callback = array( $this, 'default_not_empty' );
 
 	/**
 	 * @var callback
 	 * Function to return a string to be displayed in the posts admin column if data is not set.
 	 */
-	public $column_empty_callback = array( $this, 'default_empty' );
+	//public $column_empty_callback = array( $this, 'default_empty' );
 
 	/**
 	 * @var string[]
