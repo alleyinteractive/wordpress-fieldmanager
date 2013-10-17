@@ -19,13 +19,13 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @var callback
 	 * Function to return a string to be displayed in the posts admin column if data is set
 	 */
-	//public $column_not_empty_callback = array( $this, 'default_not_empty' );
+	public $column_not_empty_callback = '';
 
 	/**
 	 * @var callback
 	 * Function to return a string to be displayed in the posts admin column if data is not set.
 	 */
-	//public $column_empty_callback = array( $this, 'default_empty' );
+	public $column_empty_callback = '';
 
 	/**
 	 * @var string[]
@@ -125,7 +125,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 */
 	public function save_fields_for_quickedit( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
-		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' )
+		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'inline-save' )
 			return;
 		$use_this_post_type = False;
 		foreach ( $this->post_types as $type ) {
@@ -135,8 +135,6 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 			}
 		}
 		if ( !$use_this_post_type ) return;
-
-		if ( $_POST['action'] != 'inline-save' ) return; // no fieldmanager on quick edit yet
 
 		// Make sure the current user can save this post
 		if( $_POST['post_type'] == 'post' ) {
