@@ -9,7 +9,7 @@ fm.autocomplete = {
 	},
 
 	enable_autocomplete: function() {
-		$( '.fm-autocomplete:visible' ).each( function() {
+		$( 'input.fm-autocomplete:visible' ).each( function() {
 			if ( !$( this ).hasClass( 'fm-autocomplete-enabled' ) ) {
 				var ac_params = {};
 				var $el = $( this );
@@ -34,7 +34,7 @@ fm.autocomplete = {
 						} );
 					};
 				} else if ( $el.data( 'options' ) ) {
-					ac_params.source = fm.autocomplete.prepare_options( opts );
+					ac_params.source = fm.autocomplete.prepare_options( $el.data( 'options' ) );
 				}
 
 				if ( $el.data( 'exact-match' ) ) {
@@ -44,6 +44,11 @@ fm.autocomplete = {
 							$el.val( '' );
 						}
 					}
+				} else {
+					$( this ).on( 'keyup', function( e ) {
+						if ( e.keyCode == 27 || e.keyCode == 13 ) return;
+						$hidden.val( '=' + $el.val() );
+					} );
 				}
 
 				$( this ).autocomplete( ac_params );

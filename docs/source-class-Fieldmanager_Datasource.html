@@ -7,8 +7,8 @@
 
 	<title>File datasource/class-fieldmanager-datasource.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
-	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
@@ -69,9 +69,15 @@
 			<ul>
 				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
 						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
 				<li class="active"><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
 							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
 			</ul>
 		</div>
 
@@ -79,9 +85,14 @@
 		<div id="elements">
 			<h3>Classes</h3>
 			<ul>
+				<li><a href="class-Fieldmanager_Context_Page.html">Fieldmanager_Context_Page</a></li>
+				<li><a href="class-Fieldmanager_Context_Post.html">Fieldmanager_Context_Post</a></li>
+				<li><a href="class-Fieldmanager_Context_Term.html">Fieldmanager_Context_Term</a></li>
+				<li><a href="class-Fieldmanager_Context_User.html">Fieldmanager_Context_User</a></li>
 				<li class="active"><a href="class-Fieldmanager_Datasource.html">Fieldmanager_Datasource</a></li>
 				<li><a href="class-Fieldmanager_Datasource_Post.html">Fieldmanager_Datasource_Post</a></li>
 				<li><a href="class-Fieldmanager_Datasource_Term.html">Fieldmanager_Datasource_Term</a></li>
+				<li><a href="class-Fieldmanager_Datasource_User.html">Fieldmanager_Datasource_User</a></li>
 			</ul>
 
 
@@ -275,28 +286,31 @@
 </span></span><span id="173" class="l"><a class="l" href="#173">173 </a><span class="php-comment">     * @return string cleaned value
 </span></span><span id="174" class="l"><a class="l" href="#174">174 </a><span class="php-comment">     */</span>
 </span><span id="175" class="l"><a class="l" href="#175">175 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( Fieldmanager_Field <span class="php-var">$field</span>, <span class="php-var">$value</span>, <span class="php-var">$current_value</span> ) {
-</span><span id="176" class="l"><a class="l" href="#176">176 </a>        <span class="php-keyword1">return</span> sanitize_text_field( <span class="php-var">$value</span> );
-</span><span id="177" class="l"><a class="l" href="#177">177 </a>    }
-</span><span id="178" class="l"><a class="l" href="#178">178 </a>
-</span><span id="179" class="l"><a class="l" href="#179">179 </a>    <span class="php-comment">/**
-</span></span><span id="180" class="l"><a class="l" href="#180">180 </a><span class="php-comment">     * Get view link, not used here but meant for override
-</span></span><span id="181" class="l"><a class="l" href="#181">181 </a><span class="php-comment">     * @param int|string $value
-</span></span><span id="182" class="l"><a class="l" href="#182">182 </a><span class="php-comment">     * @return string
-</span></span><span id="183" class="l"><a class="l" href="#183">183 </a><span class="php-comment">     */</span>
-</span><span id="184" class="l"><a class="l" href="#184">184 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_view_link" href="#_get_view_link">get_view_link</a>( <span class="php-var">$value</span> ) {
-</span><span id="185" class="l"><a class="l" href="#185">185 </a>        <span class="php-keyword1">return</span> <span class="php-quote">''</span>;
-</span><span id="186" class="l"><a class="l" href="#186">186 </a>    }
-</span><span id="187" class="l"><a class="l" href="#187">187 </a>
-</span><span id="188" class="l"><a class="l" href="#188">188 </a>    <span class="php-comment">/**
-</span></span><span id="189" class="l"><a class="l" href="#189">189 </a><span class="php-comment">     * Get edit link, not used here but meant for override
-</span></span><span id="190" class="l"><a class="l" href="#190">190 </a><span class="php-comment">     * @param int|string $value
-</span></span><span id="191" class="l"><a class="l" href="#191">191 </a><span class="php-comment">     * @return string
-</span></span><span id="192" class="l"><a class="l" href="#192">192 </a><span class="php-comment">     */</span>
-</span><span id="193" class="l"><a class="l" href="#193">193 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_edit_link" href="#_get_edit_link">get_edit_link</a>( <span class="php-var">$value</span> ) {
-</span><span id="194" class="l"><a class="l" href="#194">194 </a>        <span class="php-keyword1">return</span> <span class="php-quote">''</span>;
-</span><span id="195" class="l"><a class="l" href="#195">195 </a>    }
-</span><span id="196" class="l"><a class="l" href="#196">196 </a>
-</span><span id="197" class="l"><a class="l" href="#197">197 </a></span>}</code></pre>
+</span><span id="176" class="l"><a class="l" href="#176">176 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword2">is_array</span>( <span class="php-var">$value</span> ) ) {
+</span><span id="177" class="l"><a class="l" href="#177">177 </a>            <span class="php-keyword1">return</span> <span class="php-keyword2">array_map</span>( <span class="php-quote">'sanitize_text_field'</span>, <span class="php-var">$value</span> );
+</span><span id="178" class="l"><a class="l" href="#178">178 </a>        }
+</span><span id="179" class="l"><a class="l" href="#179">179 </a>        <span class="php-keyword1">return</span> sanitize_text_field( <span class="php-var">$value</span> );
+</span><span id="180" class="l"><a class="l" href="#180">180 </a>    }
+</span><span id="181" class="l"><a class="l" href="#181">181 </a>
+</span><span id="182" class="l"><a class="l" href="#182">182 </a>    <span class="php-comment">/**
+</span></span><span id="183" class="l"><a class="l" href="#183">183 </a><span class="php-comment">     * Get view link, not used here but meant for override
+</span></span><span id="184" class="l"><a class="l" href="#184">184 </a><span class="php-comment">     * @param int|string $value
+</span></span><span id="185" class="l"><a class="l" href="#185">185 </a><span class="php-comment">     * @return string
+</span></span><span id="186" class="l"><a class="l" href="#186">186 </a><span class="php-comment">     */</span>
+</span><span id="187" class="l"><a class="l" href="#187">187 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_view_link" href="#_get_view_link">get_view_link</a>( <span class="php-var">$value</span> ) {
+</span><span id="188" class="l"><a class="l" href="#188">188 </a>        <span class="php-keyword1">return</span> <span class="php-quote">''</span>;
+</span><span id="189" class="l"><a class="l" href="#189">189 </a>    }
+</span><span id="190" class="l"><a class="l" href="#190">190 </a>
+</span><span id="191" class="l"><a class="l" href="#191">191 </a>    <span class="php-comment">/**
+</span></span><span id="192" class="l"><a class="l" href="#192">192 </a><span class="php-comment">     * Get edit link, not used here but meant for override
+</span></span><span id="193" class="l"><a class="l" href="#193">193 </a><span class="php-comment">     * @param int|string $value
+</span></span><span id="194" class="l"><a class="l" href="#194">194 </a><span class="php-comment">     * @return string
+</span></span><span id="195" class="l"><a class="l" href="#195">195 </a><span class="php-comment">     */</span>
+</span><span id="196" class="l"><a class="l" href="#196">196 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_edit_link" href="#_get_edit_link">get_edit_link</a>( <span class="php-var">$value</span> ) {
+</span><span id="197" class="l"><a class="l" href="#197">197 </a>        <span class="php-keyword1">return</span> <span class="php-quote">''</span>;
+</span><span id="198" class="l"><a class="l" href="#198">198 </a>    }
+</span><span id="199" class="l"><a class="l" href="#199">199 </a>
+</span><span id="200" class="l"><a class="l" href="#200">200 </a></span>}</code></pre>
 	</div>
 
 	<div id="footer">

@@ -1,5 +1,5 @@
 <phpunit
-	bootstrap="wp-unit-test/includes/bootstrap.php"
+	bootstrap="tests/php/bootstrap.php"
         backupGlobals="false"
         colors="true"
         >
@@ -17,4 +17,9 @@
     <logging>
         <log type="junit" target="build/logs/junit.xml" logIncompleteSkipped="false"/>
     </logging>
+	<filter>
+		<whitelist processUncoveredFilesFromWhitelist="true">
+			<directory suffix=".php">php</directory>
+		</whitelist>
+	</filter>
 </phpunit>

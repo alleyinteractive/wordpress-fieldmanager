@@ -6,8 +6,8 @@
 
 	<title>Class Fieldmanager_Hidden | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
-	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
@@ -67,9 +67,15 @@
 			<ul>
 				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
 						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
 				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
 							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
 			</ul>
 		</div>
 
@@ -89,6 +95,7 @@
 				<li><a href="class-Fieldmanager_Link.html">Fieldmanager_Link</a></li>
 				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
 				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Password.html">Fieldmanager_Password</a></li>
 				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
 				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
 				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
@@ -117,6 +124,7 @@
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
 				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
 				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
 			</ul>
 		</div>
 	</div>
@@ -220,9 +228,14 @@
 		<h3>Methods inherited from <a href="class-Fieldmanager_Field.html#methods">Fieldmanager_Field</a></h3>
 		<p class="elementList">
 			<code><a href="class-Fieldmanager_Field.html#___construct">__construct()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#__invalid_definition">_invalid_definition()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#__unauthorized_access">_unauthorized_access()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_another">add_another()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_meta_box">add_meta_box()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_add_page_form">add_page_form()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_submenu_page">add_submenu_page()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_add_term_form">add_term_form()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_add_user_form">add_user_form()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_element_markup">element_markup()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_collapse_handle">get_collapse_handle()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_element_attributes">get_element_attributes()</a></code>, 
@@ -234,16 +247,10 @@
 			<code><a href="class-Fieldmanager_Field.html#_get_full_path">get_full_path()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_remove_handle">get_remove_handle()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_sort_handle">get_sort_handle()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_handle_submenu_save">handle_submenu_save()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_meta_box_render_callback">meta_box_render_callback()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_preload_alter_values">preload_alter_values()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_presave">presave()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_presave_all">presave_all()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_register_submenu_page">register_submenu_page()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_render_meta_box">render_meta_box()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_render_submenu_page">render_submenu_page()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_save_fields_for_post">save_fields_for_post()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_save_to_post_meta">save_to_post_meta()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_set_options">set_options()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_single_element_markup">single_element_markup()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_wrap_with_multi_tools">wrap_with_multi_tools()</a></code>
 		</p>
@@ -292,29 +299,35 @@
 		<p class="elementList">
 			<code><a href="class-Fieldmanager_Field.html#$add_more_label"><var>$add_more_label</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$attributes"><var>$attributes</var></a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#$content_types"><var>$content_types</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$data_id"><var>$data_id</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$data_type"><var>$data_type</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$datasource"><var>$datasource</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$debug"><var>$debug</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$default_value"><var>$default_value</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$description"><var>$description</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$display_if"><var>$display_if</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$extra_elements"><var>$extra_elements</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$index"><var>$index</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$inline_label"><var>$inline_label</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$is_attachment"><var>$is_attachment</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$label"><var>$label</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$label_after_element"><var>$label_after_element</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$label_element"><var>$label_element</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$limit"><var>$limit</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$meta_boxes_to_remove"><var>$meta_boxes_to_remove</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$name"><var>$name</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$one_label_per_item"><var>$one_label_per_item</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$remove_default_meta_boxes"><var>$remove_default_meta_boxes</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$required"><var>$required</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$sanitize"><var>$sanitize</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$save_empty"><var>$save_empty</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$skip_save"><var>$skip_save</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$sortable"><var>$sortable</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$starting_count"><var>$starting_count</var></a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#$submit_button_label"><var>$submit_button_label</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$template"><var>$template</var></a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#$validate"><var>$validate</var></a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#$wp_option_autoload"><var>$wp_option_autoload</var></a></code>
+			<code><a href="class-Fieldmanager_Field.html#$validation_messages"><var>$validation_messages</var></a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#$validation_rules"><var>$validation_rules</var></a></code>
 		</p>
 
 

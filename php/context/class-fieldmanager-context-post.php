@@ -48,6 +48,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @param Fieldmanager_Field $fm
 	 */
 	public function __construct( $title, $post_types, $context = 'normal', $priority = 'default', $fm = Null ) {
+
 		// Populate the list of post types for which to add this meta box with the given settings
 		if ( !is_array( $post_types ) ) $post_types = array( $post_types );
 
@@ -147,6 +148,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		// Make sure this field is attached to the post type being saved.
 		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' )
 			return;
+
+		if ( get_post_type( $post_id ) == 'revision' ) return; // prevents saving the same post twice; FM does not yet use revisions.
+
 		$use_this_post_type = False;
 		foreach ( $this->post_types as $type ) {
 			if ( $type == $_POST['post_type'] ) {
@@ -185,10 +189,6 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
-		$post = get_post( $post_id );
-		if ( $post->post_type = 'revision' && $post->post_parent != 0 ) {
-			$this->fm->data_id = $post->post_parent;
-		}
 		$current = get_post_meta( $this->fm->data_id, $this->fm->name, True );
 		$data = $this->fm->presave_all( $data, $current );
 		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );

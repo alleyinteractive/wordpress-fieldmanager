@@ -7,8 +7,8 @@
 
 	<title>File class-fieldmanager-grid.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
-	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
@@ -69,9 +69,15 @@
 			<ul>
 				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
 						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
 				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
 							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
 			</ul>
 		</div>
 
@@ -91,6 +97,7 @@
 				<li><a href="class-Fieldmanager_Link.html">Fieldmanager_Link</a></li>
 				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
 				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Password.html">Fieldmanager_Password</a></li>
 				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
 				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
 				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
@@ -119,6 +126,7 @@
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
 				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
 				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
 			</ul>
 		</div>
 	</div>
@@ -230,15 +238,16 @@
 </span></span><span id="100" class="l"><a class="l" href="#100">100 </a><span class="php-comment">     */</span>
 </span><span id="101" class="l"><a class="l" href="#101">101 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( <span class="php-var">$value</span>, <span class="php-var">$current_value</span> = <span class="php-keyword1">array</span>() ) {
 </span><span id="102" class="l"><a class="l" href="#102">102 </a>        <span class="php-var">$rows</span> = <span class="php-keyword2">json_decode</span>( <span class="php-keyword2">stripslashes</span>( <span class="php-var">$value</span> ), <span class="php-keyword1">TRUE</span> );
-</span><span id="103" class="l"><a class="l" href="#103">103 </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$rows</span> <span class="php-keyword1">as</span> <span class="php-var">$i</span> =&gt; <span class="php-var">$cells</span> ) {
-</span><span id="104" class="l"><a class="l" href="#104">104 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$cells</span> <span class="php-keyword1">as</span> <span class="php-var">$k</span> =&gt; <span class="php-var">$cell</span> ) {
-</span><span id="105" class="l"><a class="l" href="#105">105 </a>                <span class="php-var">$cell</span> = <span class="php-keyword2">call_user_func</span>( <span class="php-var">$this</span>-&gt;sanitize, <span class="php-var">$i</span>, <span class="php-var">$k</span>, <span class="php-var">$cell</span> );
-</span><span id="106" class="l"><a class="l" href="#106">106 </a>            }
-</span><span id="107" class="l"><a class="l" href="#107">107 </a>        }
-</span><span id="108" class="l"><a class="l" href="#108">108 </a>        <span class="php-keyword1">return</span> <span class="php-var">$rows</span>;
-</span><span id="109" class="l"><a class="l" href="#109">109 </a>    }
-</span><span id="110" class="l"><a class="l" href="#110">110 </a>
-</span><span id="111" class="l"><a class="l" href="#111">111 </a></span>}</code></pre>
+</span><span id="103" class="l"><a class="l" href="#103">103 </a>        <span class="php-keyword1">if</span> ( !<span class="php-keyword2">is_array</span>( <span class="php-var">$rows</span> ) ) <span class="php-keyword1">return</span> <span class="php-keyword1">array</span>();
+</span><span id="104" class="l"><a class="l" href="#104">104 </a>        <span class="php-keyword1">foreach</span> ( <span class="php-var">$rows</span> <span class="php-keyword1">as</span> <span class="php-var">$i</span> =&gt; <span class="php-var">$cells</span> ) {
+</span><span id="105" class="l"><a class="l" href="#105">105 </a>            <span class="php-keyword1">foreach</span> ( <span class="php-var">$cells</span> <span class="php-keyword1">as</span> <span class="php-var">$k</span> =&gt; <span class="php-var">$cell</span> ) {
+</span><span id="106" class="l"><a class="l" href="#106">106 </a>                <span class="php-var">$cell</span> = <span class="php-keyword2">call_user_func</span>( <span class="php-var">$this</span>-&gt;sanitize, <span class="php-var">$i</span>, <span class="php-var">$k</span>, <span class="php-var">$cell</span> );
+</span><span id="107" class="l"><a class="l" href="#107">107 </a>            }
+</span><span id="108" class="l"><a class="l" href="#108">108 </a>        }
+</span><span id="109" class="l"><a class="l" href="#109">109 </a>        <span class="php-keyword1">return</span> <span class="php-var">$rows</span>;
+</span><span id="110" class="l"><a class="l" href="#110">110 </a>    }
+</span><span id="111" class="l"><a class="l" href="#111">111 </a>
+</span><span id="112" class="l"><a class="l" href="#112">112 </a></span>}</code></pre>
 	</div>
 
 	<div id="footer">

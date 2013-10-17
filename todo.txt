@@ -1,5 +1,0 @@
-* Validation
-* Rich Text
-* File Upload
-* Unit Tests
-* Alpha Release

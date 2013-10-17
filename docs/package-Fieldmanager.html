@@ -6,8 +6,8 @@
 
 	<title>Package Fieldmanager | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
-	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
@@ -66,9 +66,15 @@
 			<ul>
 				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
 						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
 				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
 							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
 			</ul>
 		</div>
 
@@ -88,6 +94,7 @@
 				<li><a href="class-Fieldmanager_Link.html">Fieldmanager_Link</a></li>
 				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
 				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Password.html">Fieldmanager_Password</a></li>
 				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
 				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
 				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
@@ -116,6 +123,7 @@
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
 				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
 				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
 			</ul>
 		</div>
 	</div>
@@ -131,7 +139,13 @@
 	<h2>Packages summary</h2>
 	<table class="summary table table-bordered table-striped" id="packages">
 	<tr>
+		<td class="name"><a href="package-Fieldmanager.Context.html">Fieldmanager\Context</a></td>
+	</tr>
+	<tr>
 		<td class="name"><a href="package-Fieldmanager.Datasource.html">Fieldmanager\Datasource</a></td>
+	</tr>
+	<tr>
+		<td class="name"><a href="package-Fieldmanager.Util.html">Fieldmanager\Util</a></td>
 	</tr>
 	</table>
 
@@ -188,6 +202,10 @@ the base element.</td>
 <tr>
 	<td class="name"><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></td>
 	<td>Base class for handling option fields, like checkboxes or radios</td>
+</tr>
+<tr>
+	<td class="name"><a href="class-Fieldmanager_Password.html">Fieldmanager_Password</a></td>
+	<td>Text field. A good basic implementation guide, too.</td>
 </tr>
 <tr>
 	<td class="name"><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></td>
@@ -274,6 +292,10 @@ unit tests. Validation errors in WordPress are not really recoverable.</td>
 	<td>Cheap way to tell if we're looking at a post edit page. It's a good idea to use
 this at the beginning of implementations which use metaboxes to avoid
 initializing your Fieldmanager chain on every page load.</td>
+</tr>
+<tr>
+	<td class="name"><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></td>
+	<td>Sanitize multi-line text</td>
 </tr>
 </table>
 </div>

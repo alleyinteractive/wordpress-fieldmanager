@@ -7,8 +7,8 @@
 
 	<title>File class-fieldmanager-autocomplete.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4125126544"></script>
-	<script type="text/javascript" src="elementlist.js?1879813049"></script>
+	<script type="text/javascript" src="resources/combined.js?809599316"></script>
+	<script type="text/javascript" src="elementlist.js?4223749464"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
 
@@ -69,9 +69,15 @@
 			<ul>
 				<li class="active"><a href="package-Fieldmanager.html">Fieldmanager<span></span></a>
 						<ul>
+				<li><a href="package-Fieldmanager.Context.html">Context</a>
+						</li>
 				<li><a href="package-Fieldmanager.Datasource.html">Datasource</a>
 						</li>
+				<li><a href="package-Fieldmanager.Util.html">Util</a>
+						</li>
 							</ul></li>
+				<li><a href="package-None.html">None</a>
+						</li>
 			</ul>
 		</div>
 
@@ -91,6 +97,7 @@
 				<li><a href="class-Fieldmanager_Link.html">Fieldmanager_Link</a></li>
 				<li><a href="class-Fieldmanager_Media.html">Fieldmanager_Media</a></li>
 				<li><a href="class-Fieldmanager_Options.html">Fieldmanager_Options</a></li>
+				<li><a href="class-Fieldmanager_Password.html">Fieldmanager_Password</a></li>
 				<li><a href="class-Fieldmanager_Radios.html">Fieldmanager_Radios</a></li>
 				<li><a href="class-Fieldmanager_RichTextArea.html">Fieldmanager_RichTextArea</a></li>
 				<li><a href="class-Fieldmanager_Select.html">Fieldmanager_Select</a></li>
@@ -119,6 +126,7 @@
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
 				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
 				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
 			</ul>
 		</div>
 	</div>
@@ -139,142 +147,181 @@
 </span></span><span id="9" class="l"><a class="l" href="#9">  9 </a><span class="php-comment"> * @package Fieldmanager
 </span></span><span id="10" class="l"><a class="l" href="#10"> 10 </a><span class="php-comment"> */</span>
 </span><span id="11" class="l"><a class="l" href="#11"> 11 </a><span class="php-keyword1">class</span> <a id="Fieldmanager_Autocomplete" href="#Fieldmanager_Autocomplete">Fieldmanager_Autocomplete</a> <span class="php-keyword1">extends</span> Fieldmanager_Field {
-</span><span id="12" class="l"><a class="l" href="#12"> 12 </a>    
+</span><span id="12" class="l"><a class="l" href="#12"> 12 </a>
 </span><span id="13" class="l"><a class="l" href="#13"> 13 </a>    <span class="php-comment">/**
-</span></span><span id="14" class="l"><a class="l" href="#14"> 14 </a><span class="php-comment">     * @var Fieldmanager_Datasource
-</span></span><span id="15" class="l"><a class="l" href="#15"> 15 </a><span class="php-comment">     * Data source to use for this Autocomplete
+</span></span><span id="14" class="l"><a class="l" href="#14"> 14 </a><span class="php-comment">     * @var boolean
+</span></span><span id="15" class="l"><a class="l" href="#15"> 15 </a><span class="php-comment">     * Require an exact match; e.g. prevent the user from entering free text
 </span></span><span id="16" class="l"><a class="l" href="#16"> 16 </a><span class="php-comment">     */</span>
-</span><span id="17" class="l"><a class="l" href="#17"> 17 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$datasource" href="#$datasource">$datasource</a></span> = <span class="php-keyword1">Null</span>;
+</span><span id="17" class="l"><a class="l" href="#17"> 17 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$exact_match" href="#$exact_match">$exact_match</a></span> = <span class="php-keyword1">True</span>;
 </span><span id="18" class="l"><a class="l" href="#18"> 18 </a>
 </span><span id="19" class="l"><a class="l" href="#19"> 19 </a>    <span class="php-comment">/**
 </span></span><span id="20" class="l"><a class="l" href="#20"> 20 </a><span class="php-comment">     * @var boolean
-</span></span><span id="21" class="l"><a class="l" href="#21"> 21 </a><span class="php-comment">     * Require an exact match; e.g. prevent the user from entering free text
-</span></span><span id="22" class="l"><a class="l" href="#22"> 22 </a><span class="php-comment">     */</span>
-</span><span id="23" class="l"><a class="l" href="#23"> 23 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$exact_match" href="#$exact_match">$exact_match</a></span> = <span class="php-keyword1">True</span>;
-</span><span id="24" class="l"><a class="l" href="#24"> 24 </a>
-</span><span id="25" class="l"><a class="l" href="#25"> 25 </a>    <span class="php-comment">/**
-</span></span><span id="26" class="l"><a class="l" href="#26"> 26 </a><span class="php-comment">     * @var boolean
+</span></span><span id="21" class="l"><a class="l" href="#21"> 21 </a><span class="php-comment">     */</span>
+</span><span id="22" class="l"><a class="l" href="#22"> 22 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$show_edit_link" href="#$show_edit_link">$show_edit_link</a></span> = <span class="php-keyword1">False</span>;
+</span><span id="23" class="l"><a class="l" href="#23"> 23 </a>
+</span><span id="24" class="l"><a class="l" href="#24"> 24 </a>    <span class="php-comment">/**
+</span></span><span id="25" class="l"><a class="l" href="#25"> 25 </a><span class="php-comment">     * @var string
+</span></span><span id="26" class="l"><a class="l" href="#26"> 26 </a><span class="php-comment">     * Key for reciprocal relationship; if defined will add an entry to postmeta on the mirrored post.
 </span></span><span id="27" class="l"><a class="l" href="#27"> 27 </a><span class="php-comment">     */</span>
-</span><span id="28" class="l"><a class="l" href="#28"> 28 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$show_edit_link" href="#$show_edit_link">$show_edit_link</a></span> = <span class="php-keyword1">False</span>;
+</span><span id="28" class="l"><a class="l" href="#28"> 28 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$reciprocal" href="#$reciprocal">$reciprocal</a></span> = <span class="php-keyword1">Null</span>;
 </span><span id="29" class="l"><a class="l" href="#29"> 29 </a>
 </span><span id="30" class="l"><a class="l" href="#30"> 30 </a>    <span class="php-comment">/**
-</span></span><span id="31" class="l"><a class="l" href="#31"> 31 </a><span class="php-comment">     * @var string
-</span></span><span id="32" class="l"><a class="l" href="#32"> 32 </a><span class="php-comment">     * Key for reciprocal relationship; if defined will add an entry to postmeta on the mirrored post.
-</span></span><span id="33" class="l"><a class="l" href="#33"> 33 </a><span class="php-comment">     */</span>
-</span><span id="34" class="l"><a class="l" href="#34"> 34 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$reciprocal" href="#$reciprocal">$reciprocal</a></span> = <span class="php-keyword1">Null</span>;
-</span><span id="35" class="l"><a class="l" href="#35"> 35 </a>
-</span><span id="36" class="l"><a class="l" href="#36"> 36 </a>    <span class="php-comment">/**
-</span></span><span id="37" class="l"><a class="l" href="#37"> 37 </a><span class="php-comment">     * @var callable
-</span></span><span id="38" class="l"><a class="l" href="#38"> 38 </a><span class="php-comment">     * What function to call to match posts. Initialized to Null here because it will be 
-</span></span><span id="39" class="l"><a class="l" href="#39"> 39 </a><span class="php-comment">     * written in __construct to an internal function that calls get_posts, so only
-</span></span><span id="40" class="l"><a class="l" href="#40"> 40 </a><span class="php-comment">     * overwrite it if you do /not/ want to use get_posts.
-</span></span><span id="41" class="l"><a class="l" href="#41"> 41 </a><span class="php-comment">     * 
-</span></span><span id="42" class="l"><a class="l" href="#42"> 42 </a><span class="php-comment">     * The function signature should be query_callback( $match, $args );
+</span></span><span id="31" class="l"><a class="l" href="#31"> 31 </a><span class="php-comment">     * @var callable
+</span></span><span id="32" class="l"><a class="l" href="#32"> 32 </a><span class="php-comment">     * What function to call to match posts. Initialized to Null here because it will be
+</span></span><span id="33" class="l"><a class="l" href="#33"> 33 </a><span class="php-comment">     * written in __construct to an internal function that calls get_posts, so only
+</span></span><span id="34" class="l"><a class="l" href="#34"> 34 </a><span class="php-comment">     * overwrite it if you do /not/ want to use get_posts.
+</span></span><span id="35" class="l"><a class="l" href="#35"> 35 </a><span class="php-comment">     *
+</span></span><span id="36" class="l"><a class="l" href="#36"> 36 </a><span class="php-comment">     * The function signature should be query_callback( $match, $args );
+</span></span><span id="37" class="l"><a class="l" href="#37"> 37 </a><span class="php-comment">     */</span>
+</span><span id="38" class="l"><a class="l" href="#38"> 38 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$query_callback" href="#$query_callback">$query_callback</a></span> = <span class="php-keyword1">Null</span>;
+</span><span id="39" class="l"><a class="l" href="#39"> 39 </a>
+</span><span id="40" class="l"><a class="l" href="#40"> 40 </a>    <span class="php-comment">/**
+</span></span><span id="41" class="l"><a class="l" href="#41"> 41 </a><span class="php-comment">     * @var boolean
+</span></span><span id="42" class="l"><a class="l" href="#42"> 42 </a><span class="php-comment">     * Override save_empty for this element type
 </span></span><span id="43" class="l"><a class="l" href="#43"> 43 </a><span class="php-comment">     */</span>
-</span><span id="44" class="l"><a class="l" href="#44"> 44 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$query_callback" href="#$query_callback">$query_callback</a></span> = <span class="php-keyword1">Null</span>;
+</span><span id="44" class="l"><a class="l" href="#44"> 44 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$save_empty" href="#$save_empty">$save_empty</a></span> = <span class="php-keyword1">False</span>;
 </span><span id="45" class="l"><a class="l" href="#45"> 45 </a>
 </span><span id="46" class="l"><a class="l" href="#46"> 46 </a>    <span class="php-comment">/**
-</span></span><span id="47" class="l"><a class="l" href="#47"> 47 </a><span class="php-comment">     * @var boolean
-</span></span><span id="48" class="l"><a class="l" href="#48"> 48 </a><span class="php-comment">     * Override save_empty for this element type
-</span></span><span id="49" class="l"><a class="l" href="#49"> 49 </a><span class="php-comment">     */</span>
-</span><span id="50" class="l"><a class="l" href="#50"> 50 </a>    <span class="php-keyword1">public</span> <span class="php-var"><a id="$save_empty" href="#$save_empty">$save_empty</a></span> = <span class="php-keyword1">False</span>;
-</span><span id="51" class="l"><a class="l" href="#51"> 51 </a>
-</span><span id="52" class="l"><a class="l" href="#52"> 52 </a>    <span class="php-comment">/**
-</span></span><span id="53" class="l"><a class="l" href="#53"> 53 </a><span class="php-comment">     * Add libraries for autocomplete
-</span></span><span id="54" class="l"><a class="l" href="#54"> 54 </a><span class="php-comment">     * @param string $label
-</span></span><span id="55" class="l"><a class="l" href="#55"> 55 </a><span class="php-comment">     * @param array $options
-</span></span><span id="56" class="l"><a class="l" href="#56"> 56 </a><span class="php-comment">     */</span>
-</span><span id="57" class="l"><a class="l" href="#57"> 57 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>( <span class="php-var">$label</span> = <span class="php-quote">''</span>, <span class="php-var">$options</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="58" class="l"><a class="l" href="#58"> 58 </a>        <span class="php-var">$this</span>-&gt;attributes = <span class="php-keyword1">array</span>(
-</span><span id="59" class="l"><a class="l" href="#59"> 59 </a>            <span class="php-quote">'size'</span> =&gt; <span class="php-quote">'50'</span>,
-</span><span id="60" class="l"><a class="l" href="#60"> 60 </a>        );
-</span><span id="61" class="l"><a class="l" href="#61"> 61 </a>        parent::__construct( <span class="php-var">$label</span>, <span class="php-var">$options</span> );
+</span></span><span id="47" class="l"><a class="l" href="#47"> 47 </a><span class="php-comment">     * Add libraries for autocomplete
+</span></span><span id="48" class="l"><a class="l" href="#48"> 48 </a><span class="php-comment">     * @param string $label
+</span></span><span id="49" class="l"><a class="l" href="#49"> 49 </a><span class="php-comment">     * @param array $options
+</span></span><span id="50" class="l"><a class="l" href="#50"> 50 </a><span class="php-comment">     */</span>
+</span><span id="51" class="l"><a class="l" href="#51"> 51 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>( <span class="php-var">$label</span> = <span class="php-quote">''</span>, <span class="php-var">$options</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="52" class="l"><a class="l" href="#52"> 52 </a>        <span class="php-var">$this</span>-&gt;attributes = <span class="php-keyword1">array</span>(
+</span><span id="53" class="l"><a class="l" href="#53"> 53 </a>            <span class="php-quote">'size'</span> =&gt; <span class="php-quote">'50'</span>,
+</span><span id="54" class="l"><a class="l" href="#54"> 54 </a>        );
+</span><span id="55" class="l"><a class="l" href="#55"> 55 </a>        parent::__construct( <span class="php-var">$label</span>, <span class="php-var">$options</span> );
+</span><span id="56" class="l"><a class="l" href="#56"> 56 </a>
+</span><span id="57" class="l"><a class="l" href="#57"> 57 </a>        <span class="php-comment">// Enqueue required scripts in the proper context</span>
+</span><span id="58" class="l"><a class="l" href="#58"> 58 </a>        add_action( <span class="php-quote">'admin_enqueue_scripts'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'enqueue_scripts'</span> ) );
+</span><span id="59" class="l"><a class="l" href="#59"> 59 </a>        add_action( <span class="php-quote">'wp_enqueue_scripts'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'enqueue_scripts'</span> ) );
+</span><span id="60" class="l"><a class="l" href="#60"> 60 </a>
+</span><span id="61" class="l"><a class="l" href="#61"> 61 </a>        fm_add_script( <span class="php-quote">'fm_autocomplete_js'</span>, <span class="php-quote">'js/fieldmanager-autocomplete.js'</span>, <span class="php-keyword1">array</span>(), <span class="php-quote">'1.0.1'</span>, <span class="php-keyword1">false</span>, <span class="php-quote">'fm_search'</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'nonce'</span> =&gt; wp_create_nonce( <span class="php-quote">'fm_search_nonce'</span> ) ) );
 </span><span id="62" class="l"><a class="l" href="#62"> 62 </a>
-</span><span id="63" class="l"><a class="l" href="#63"> 63 </a>        wp_enqueue_script( <span class="php-quote">'jquery-ui-autocomplete'</span> );
-</span><span id="64" class="l"><a class="l" href="#64"> 64 </a>        fm_add_script( <span class="php-quote">'fm_autocomplete_js'</span>, <span class="php-quote">'js/fieldmanager-autocomplete.js'</span>, <span class="php-keyword1">array</span>(), <span class="php-keyword1">false</span>, <span class="php-keyword1">false</span>, <span class="php-quote">'fm_search'</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'nonce'</span> =&gt; wp_create_nonce( <span class="php-quote">'fm_search_nonce'</span> ) ) );
-</span><span id="65" class="l"><a class="l" href="#65"> 65 </a>
-</span><span id="66" class="l"><a class="l" href="#66"> 66 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$this</span>-&gt;datasource ) ) {
-</span><span id="67" class="l"><a class="l" href="#67"> 67 </a>            <span class="php-var">$message</span> = __( <span class="php-quote">'You must supply a datasource for the autocomplete field'</span> );
-</span><span id="68" class="l"><a class="l" href="#68"> 68 </a>            <span class="php-keyword1">if</span> ( Fieldmanager_Field::<span class="php-var">$debug</span> ) {
-</span><span id="69" class="l"><a class="l" href="#69"> 69 </a>                <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> FM_Developer_Exception( <span class="php-var">$message</span> );
-</span><span id="70" class="l"><a class="l" href="#70"> 70 </a>            } <span class="php-keyword1">else</span> {
-</span><span id="71" class="l"><a class="l" href="#71"> 71 </a>                wp_die( <span class="php-var">$message</span>, __( <span class="php-quote">'No Datasource'</span> ) );
-</span><span id="72" class="l"><a class="l" href="#72"> 72 </a>            }
-</span><span id="73" class="l"><a class="l" href="#73"> 73 </a>        }
-</span><span id="74" class="l"><a class="l" href="#74"> 74 </a>        <span class="php-var">$this</span>-&gt;datasource-&gt;allow_optgroups = <span class="php-keyword1">False</span>;
-</span><span id="75" class="l"><a class="l" href="#75"> 75 </a>    }
-</span><span id="76" class="l"><a class="l" href="#76"> 76 </a>
-</span><span id="77" class="l"><a class="l" href="#77"> 77 </a>    <span class="php-comment">/**
-</span></span><span id="78" class="l"><a class="l" href="#78"> 78 </a><span class="php-comment">     * Alter values before rendering
-</span></span><span id="79" class="l"><a class="l" href="#79"> 79 </a><span class="php-comment">     * @param array $values
-</span></span><span id="80" class="l"><a class="l" href="#80"> 80 </a><span class="php-comment">     */</span>
-</span><span id="81" class="l"><a class="l" href="#81"> 81 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_preload_alter_values" href="#_preload_alter_values">preload_alter_values</a>( <span class="php-var">$values</span> ) {
-</span><span id="82" class="l"><a class="l" href="#82"> 82 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;datasource ) <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;preload_alter_values( <span class="php-var">$this</span>, <span class="php-var">$values</span> );
-</span><span id="83" class="l"><a class="l" href="#83"> 83 </a>        <span class="php-keyword1">return</span> <span class="php-var">$values</span>;
-</span><span id="84" class="l"><a class="l" href="#84"> 84 </a>    }
-</span><span id="85" class="l"><a class="l" href="#85"> 85 </a>
-</span><span id="86" class="l"><a class="l" href="#86"> 86 </a>    <span class="php-comment">/**
-</span></span><span id="87" class="l"><a class="l" href="#87"> 87 </a><span class="php-comment">     * Render form element
-</span></span><span id="88" class="l"><a class="l" href="#88"> 88 </a><span class="php-comment">     * @param mixed $value
-</span></span><span id="89" class="l"><a class="l" href="#89"> 89 </a><span class="php-comment">     * @return string HTML
-</span></span><span id="90" class="l"><a class="l" href="#90"> 90 </a><span class="php-comment">     */</span>
-</span><span id="91" class="l"><a class="l" href="#91"> 91 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_form_element" href="#_form_element">form_element</a>( <span class="php-var">$value</span> = <span class="php-keyword1">Null</span> ) {
-</span><span id="92" class="l"><a class="l" href="#92"> 92 </a>
-</span><span id="93" class="l"><a class="l" href="#93"> 93 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;exact_match ) {
-</span><span id="94" class="l"><a class="l" href="#94"> 94 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-exact-match'</span>] = <span class="php-keyword1">True</span>;
-</span><span id="95" class="l"><a class="l" href="#95"> 95 </a>        }
-</span><span id="96" class="l"><a class="l" href="#96"> 96 </a>
-</span><span id="97" class="l"><a class="l" href="#97"> 97 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;datasource-&gt;use_ajax ) {
-</span><span id="98" class="l"><a class="l" href="#98"> 98 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-action'</span>] = <span class="php-var">$this</span>-&gt;datasource-&gt;get_ajax_action( <span class="php-var">$this</span>-&gt;name );
-</span><span id="99" class="l"><a class="l" href="#99"> 99 </a>        } <span class="php-keyword1">else</span> {
-</span><span id="100" class="l"><a class="l" href="#100">100 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-options'</span>] = <span class="php-keyword2">htmlspecialchars</span>( <span class="php-keyword2">json_encode</span>( <span class="php-var">$this</span>-&gt;datasource-&gt;options ) );
-</span><span id="101" class="l"><a class="l" href="#101">101 </a>        }
-</span><span id="102" class="l"><a class="l" href="#102">102 </a>
-</span><span id="103" class="l"><a class="l" href="#103">103 </a>        <span class="php-var">$element</span> = <span class="php-keyword2">sprintf</span>(
-</span><span id="104" class="l"><a class="l" href="#104">104 </a>            <span class="php-quote">'&lt;input class=&quot;fm-autocomplete fm-element&quot; type=&quot;text&quot; id=&quot;%s&quot; value=&quot;%s&quot; %s /&gt;'</span>,
-</span><span id="105" class="l"><a class="l" href="#105">105 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
-</span><span id="106" class="l"><a class="l" href="#106">106 </a>            <span class="php-var">$this</span>-&gt;datasource-&gt;get_value( <span class="php-var">$value</span> ),
-</span><span id="107" class="l"><a class="l" href="#107">107 </a>            <span class="php-var">$this</span>-&gt;get_element_attributes()
-</span><span id="108" class="l"><a class="l" href="#108">108 </a>        );
-</span><span id="109" class="l"><a class="l" href="#109">109 </a>
-</span><span id="110" class="l"><a class="l" href="#110">110 </a>        <span class="php-var">$element</span> .= <span class="php-keyword2">sprintf</span>(
-</span><span id="111" class="l"><a class="l" href="#111">111 </a>            <span class="php-quote">'&lt;input class=&quot;fm-autocomplete-hidden fm-element&quot; type=&quot;hidden&quot; name=&quot;%s&quot; value=&quot;%s&quot; /&gt;'</span>,
-</span><span id="112" class="l"><a class="l" href="#112">112 </a>            <span class="php-var">$this</span>-&gt;get_form_name(),
-</span><span id="113" class="l"><a class="l" href="#113">113 </a>            <span class="php-var">$value</span>
-</span><span id="114" class="l"><a class="l" href="#114">114 </a>        );
-</span><span id="115" class="l"><a class="l" href="#115">115 </a>
-</span><span id="116" class="l"><a class="l" href="#116">116 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;show_view_link ) {
-</span><span id="117" class="l"><a class="l" href="#117">117 </a>            <span class="php-var">$element</span> .= <span class="php-var">$this</span>-&gt;datasource-&gt;get_view_link( <span class="php-var">$value</span> );
-</span><span id="118" class="l"><a class="l" href="#118">118 </a>        }
-</span><span id="119" class="l"><a class="l" href="#119">119 </a>
-</span><span id="120" class="l"><a class="l" href="#120">120 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;show_edit_link ) {
-</span><span id="121" class="l"><a class="l" href="#121">121 </a>            <span class="php-var">$element</span> .= <span class="php-var">$this</span>-&gt;datasource-&gt;get_edit_link( <span class="php-var">$value</span> );
-</span><span id="122" class="l"><a class="l" href="#122">122 </a>        }
-</span><span id="123" class="l"><a class="l" href="#123">123 </a>
-</span><span id="124" class="l"><a class="l" href="#124">124 </a>        <span class="php-keyword1">return</span> <span class="php-var">$element</span>;
-</span><span id="125" class="l"><a class="l" href="#125">125 </a>    }
-</span><span id="126" class="l"><a class="l" href="#126">126 </a>
-</span><span id="127" class="l"><a class="l" href="#127">127 </a>    <span class="php-comment">/**
-</span></span><span id="128" class="l"><a class="l" href="#128">128 </a><span class="php-comment">     * Trigger datasource's presave_alter() event to allow it to handle reciprocal values
-</span></span><span id="129" class="l"><a class="l" href="#129">129 </a><span class="php-comment">     * @param array $values new post values
-</span></span><span id="130" class="l"><a class="l" href="#130">130 </a><span class="php-comment">     * @param array $current_values existing post values
-</span></span><span id="131" class="l"><a class="l" href="#131">131 </a><span class="php-comment">     */</span>
-</span><span id="132" class="l"><a class="l" href="#132">132 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave_alter_values" href="#_presave_alter_values">presave_alter_values</a>( <span class="php-var">$values</span>, <span class="php-var">$current_values</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="133" class="l"><a class="l" href="#133">133 </a>        <span class="php-comment">// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.</span>
-</span><span id="134" class="l"><a class="l" href="#134">134 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$this</span>-&gt;data_id ) || <span class="php-var">$this</span>-&gt;data_type !== <span class="php-quote">'post'</span> ) <span class="php-keyword1">return</span> <span class="php-var">$values</span>;
-</span><span id="135" class="l"><a class="l" href="#135">135 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;presave_alter_values( <span class="php-var">$this</span>, <span class="php-var">$values</span>, <span class="php-var">$current_values</span> );
-</span><span id="136" class="l"><a class="l" href="#136">136 </a>    }
-</span><span id="137" class="l"><a class="l" href="#137">137 </a>    
-</span><span id="138" class="l"><a class="l" href="#138">138 </a>    <span class="php-comment">/**
-</span></span><span id="139" class="l"><a class="l" href="#139">139 </a><span class="php-comment">     * Delegate sanitization and validation to the datasource's presave() method.
-</span></span><span id="140" class="l"><a class="l" href="#140">140 </a><span class="php-comment">     * @param array $value
-</span></span><span id="141" class="l"><a class="l" href="#141">141 </a><span class="php-comment">     * @return array $value
-</span></span><span id="142" class="l"><a class="l" href="#142">142 </a><span class="php-comment">     */</span>
-</span><span id="143" class="l"><a class="l" href="#143">143 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( <span class="php-var">$value</span>, <span class="php-var">$current_value</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="144" class="l"><a class="l" href="#144">144 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;presave( <span class="php-var">$this</span>, <span class="php-var">$value</span>, <span class="php-var">$current_value</span> );
-</span><span id="145" class="l"><a class="l" href="#145">145 </a>    }
-</span><span id="146" class="l"><a class="l" href="#146">146 </a>
-</span><span id="147" class="l"><a class="l" href="#147">147 </a></span>}</code></pre>
+</span><span id="63" class="l"><a class="l" href="#63"> 63 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$this</span>-&gt;datasource ) ) {
+</span><span id="64" class="l"><a class="l" href="#64"> 64 </a>            <span class="php-var">$message</span> = __( <span class="php-quote">'You must supply a datasource for the autocomplete field'</span> );
+</span><span id="65" class="l"><a class="l" href="#65"> 65 </a>            <span class="php-keyword1">if</span> ( Fieldmanager_Field::<span class="php-var">$debug</span> ) {
+</span><span id="66" class="l"><a class="l" href="#66"> 66 </a>                <span class="php-keyword1">throw</span> <span class="php-keyword1">new</span> FM_Developer_Exception( <span class="php-var">$message</span> );
+</span><span id="67" class="l"><a class="l" href="#67"> 67 </a>            } <span class="php-keyword1">else</span> {
+</span><span id="68" class="l"><a class="l" href="#68"> 68 </a>                wp_die( <span class="php-var">$message</span>, __( <span class="php-quote">'No Datasource'</span> ) );
+</span><span id="69" class="l"><a class="l" href="#69"> 69 </a>            }
+</span><span id="70" class="l"><a class="l" href="#70"> 70 </a>        }
+</span><span id="71" class="l"><a class="l" href="#71"> 71 </a>        <span class="php-var">$this</span>-&gt;datasource-&gt;allow_optgroups = <span class="php-keyword1">False</span>;
+</span><span id="72" class="l"><a class="l" href="#72"> 72 </a>    }
+</span><span id="73" class="l"><a class="l" href="#73"> 73 </a>
+</span><span id="74" class="l"><a class="l" href="#74"> 74 </a>    <span class="php-comment">/**
+</span></span><span id="75" class="l"><a class="l" href="#75"> 75 </a><span class="php-comment">     * Handle enqueuing built-in scripts required for autocomplete
+</span></span><span id="76" class="l"><a class="l" href="#76"> 76 </a><span class="php-comment">     * @return void
+</span></span><span id="77" class="l"><a class="l" href="#77"> 77 </a><span class="php-comment">     */</span>
+</span><span id="78" class="l"><a class="l" href="#78"> 78 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_enqueue_scripts" href="#_enqueue_scripts">enqueue_scripts</a>() {
+</span><span id="79" class="l"><a class="l" href="#79"> 79 </a>        wp_enqueue_script( <span class="php-quote">'jquery-ui-autocomplete'</span> );
+</span><span id="80" class="l"><a class="l" href="#80"> 80 </a>    }
+</span><span id="81" class="l"><a class="l" href="#81"> 81 </a>
+</span><span id="82" class="l"><a class="l" href="#82"> 82 </a>    <span class="php-comment">/**
+</span></span><span id="83" class="l"><a class="l" href="#83"> 83 </a><span class="php-comment">     * Alter values before rendering
+</span></span><span id="84" class="l"><a class="l" href="#84"> 84 </a><span class="php-comment">     * @param array $values
+</span></span><span id="85" class="l"><a class="l" href="#85"> 85 </a><span class="php-comment">     */</span>
+</span><span id="86" class="l"><a class="l" href="#86"> 86 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_preload_alter_values" href="#_preload_alter_values">preload_alter_values</a>( <span class="php-var">$values</span> ) {
+</span><span id="87" class="l"><a class="l" href="#87"> 87 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;datasource ) <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;preload_alter_values( <span class="php-var">$this</span>, <span class="php-var">$values</span> );
+</span><span id="88" class="l"><a class="l" href="#88"> 88 </a>        <span class="php-keyword1">return</span> <span class="php-var">$values</span>;
+</span><span id="89" class="l"><a class="l" href="#89"> 89 </a>    }
+</span><span id="90" class="l"><a class="l" href="#90"> 90 </a>
+</span><span id="91" class="l"><a class="l" href="#91"> 91 </a>    <span class="php-comment">/**
+</span></span><span id="92" class="l"><a class="l" href="#92"> 92 </a><span class="php-comment">     * Render form element
+</span></span><span id="93" class="l"><a class="l" href="#93"> 93 </a><span class="php-comment">     * @param mixed $value
+</span></span><span id="94" class="l"><a class="l" href="#94"> 94 </a><span class="php-comment">     * @return string HTML
+</span></span><span id="95" class="l"><a class="l" href="#95"> 95 </a><span class="php-comment">     */</span>
+</span><span id="96" class="l"><a class="l" href="#96"> 96 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_form_element" href="#_form_element">form_element</a>( <span class="php-var">$value</span> = <span class="php-keyword1">Null</span> ) {
+</span><span id="97" class="l"><a class="l" href="#97"> 97 </a>
+</span><span id="98" class="l"><a class="l" href="#98"> 98 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;exact_match ) {
+</span><span id="99" class="l"><a class="l" href="#99"> 99 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-exact-match'</span>] = <span class="php-keyword1">True</span>;
+</span><span id="100" class="l"><a class="l" href="#100">100 </a>        }
+</span><span id="101" class="l"><a class="l" href="#101">101 </a>
+</span><span id="102" class="l"><a class="l" href="#102">102 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;datasource-&gt;use_ajax ) {
+</span><span id="103" class="l"><a class="l" href="#103">103 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-action'</span>] = <span class="php-var">$this</span>-&gt;datasource-&gt;get_ajax_action( <span class="php-var">$this</span>-&gt;name );
+</span><span id="104" class="l"><a class="l" href="#104">104 </a>        } <span class="php-keyword1">else</span> {
+</span><span id="105" class="l"><a class="l" href="#105">105 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-options'</span>] = <span class="php-keyword2">htmlspecialchars</span>( <span class="php-keyword2">json_encode</span>( <span class="php-var">$this</span>-&gt;datasource-&gt;options ) );
+</span><span id="106" class="l"><a class="l" href="#106">106 </a>        }
+</span><span id="107" class="l"><a class="l" href="#107">107 </a>
+</span><span id="108" class="l"><a class="l" href="#108">108 </a>        <span class="php-var">$element</span> = <span class="php-keyword2">sprintf</span>(
+</span><span id="109" class="l"><a class="l" href="#109">109 </a>            <span class="php-quote">'&lt;input class=&quot;fm-autocomplete fm-element&quot; type=&quot;text&quot; id=&quot;%s&quot; value=&quot;%s&quot; %s /&gt;'</span>,
+</span><span id="110" class="l"><a class="l" href="#110">110 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
+</span><span id="111" class="l"><a class="l" href="#111">111 </a>            <span class="php-var">$this</span>-&gt;datasource-&gt;get_value( <span class="php-var">$value</span> ),
+</span><span id="112" class="l"><a class="l" href="#112">112 </a>            <span class="php-var">$this</span>-&gt;get_element_attributes()
+</span><span id="113" class="l"><a class="l" href="#113">113 </a>        );
+</span><span id="114" class="l"><a class="l" href="#114">114 </a>
+</span><span id="115" class="l"><a class="l" href="#115">115 </a>        <span class="php-var">$element</span> .= <span class="php-keyword2">sprintf</span>(
+</span><span id="116" class="l"><a class="l" href="#116">116 </a>            <span class="php-quote">'&lt;input class=&quot;fm-autocomplete-hidden fm-element&quot; type=&quot;hidden&quot; name=&quot;%s&quot; value=&quot;%s&quot; /&gt;'</span>,
+</span><span id="117" class="l"><a class="l" href="#117">117 </a>            <span class="php-var">$this</span>-&gt;get_form_name(),
+</span><span id="118" class="l"><a class="l" href="#118">118 </a>            <span class="php-var">$value</span>
+</span><span id="119" class="l"><a class="l" href="#119">119 </a>        );
+</span><span id="120" class="l"><a class="l" href="#120">120 </a>
+</span><span id="121" class="l"><a class="l" href="#121">121 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;show_view_link ) &amp;&amp; <span class="php-var">$this</span>-&gt;show_view_link ) {
+</span><span id="122" class="l"><a class="l" href="#122">122 </a>            <span class="php-var">$element</span> .= <span class="php-var">$this</span>-&gt;datasource-&gt;get_view_link( <span class="php-var">$value</span> );
+</span><span id="123" class="l"><a class="l" href="#123">123 </a>        }
+</span><span id="124" class="l"><a class="l" href="#124">124 </a>
+</span><span id="125" class="l"><a class="l" href="#125">125 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;show_edit_link ) &amp;&amp; <span class="php-var">$this</span>-&gt;show_edit_link ) {
+</span><span id="126" class="l"><a class="l" href="#126">126 </a>            <span class="php-var">$element</span> .= <span class="php-var">$this</span>-&gt;datasource-&gt;get_edit_link( <span class="php-var">$value</span> );
+</span><span id="127" class="l"><a class="l" href="#127">127 </a>        }
+</span><span id="128" class="l"><a class="l" href="#128">128 </a>
+</span><span id="129" class="l"><a class="l" href="#129">129 </a>        <span class="php-keyword1">return</span> <span class="php-var">$element</span>;
+</span><span id="130" class="l"><a class="l" href="#130">130 </a>    }
+</span><span id="131" class="l"><a class="l" href="#131">131 </a>
+</span><span id="132" class="l"><a class="l" href="#132">132 </a>    <span class="php-comment">/**
+</span></span><span id="133" class="l"><a class="l" href="#133">133 </a><span class="php-comment">     * Trigger datasource's presave_alter() event to allow it to handle reciprocal values
+</span></span><span id="134" class="l"><a class="l" href="#134">134 </a><span class="php-comment">     * @param array $values new post values
+</span></span><span id="135" class="l"><a class="l" href="#135">135 </a><span class="php-comment">     * @param array $current_values existing post values
+</span></span><span id="136" class="l"><a class="l" href="#136">136 </a><span class="php-comment">     */</span>
+</span><span id="137" class="l"><a class="l" href="#137">137 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave_alter_values" href="#_presave_alter_values">presave_alter_values</a>( <span class="php-var">$values</span>, <span class="php-var">$current_values</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="138" class="l"><a class="l" href="#138">138 </a>        <span class="php-comment">// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.</span>
+</span><span id="139" class="l"><a class="l" href="#139">139 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$this</span>-&gt;data_id ) || <span class="php-var">$this</span>-&gt;data_type !== <span class="php-quote">'post'</span> ) <span class="php-keyword1">return</span> <span class="php-var">$values</span>;
+</span><span id="140" class="l"><a class="l" href="#140">140 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;presave_alter_values( <span class="php-var">$this</span>, <span class="php-var">$values</span>, <span class="php-var">$current_values</span> );
+</span><span id="141" class="l"><a class="l" href="#141">141 </a>    }
+</span><span id="142" class="l"><a class="l" href="#142">142 </a>
+</span><span id="143" class="l"><a class="l" href="#143">143 </a>    <span class="php-comment">/**
+</span></span><span id="144" class="l"><a class="l" href="#144">144 </a><span class="php-comment">     * Delegate sanitization and validation to the datasource's presave() method.
+</span></span><span id="145" class="l"><a class="l" href="#145">145 </a><span class="php-comment">     * @param array $value
+</span></span><span id="146" class="l"><a class="l" href="#146">146 </a><span class="php-comment">     * @return array $value
+</span></span><span id="147" class="l"><a class="l" href="#147">147 </a><span class="php-comment">     */</span>
+</span><span id="148" class="l"><a class="l" href="#148">148 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( <span class="php-var">$value</span>, <span class="php-var">$current_value</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="149" class="l"><a class="l" href="#149">149 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;presave( <span class="php-var">$this</span>, <span class="php-var">$value</span>, <span class="php-var">$current_value</span> );
+</span><span id="150" class="l"><a class="l" href="#150">150 </a>    }
+</span><span id="151" class="l"><a class="l" href="#151">151 </a>
+</span><span id="152" class="l"><a class="l" href="#152">152 </a>    <span class="php-comment">/**
+</span></span><span id="153" class="l"><a class="l" href="#153">153 </a><span class="php-comment">     * Helper function to get the list of default meta boxes to remove.
+</span></span><span id="154" class="l"><a class="l" href="#154">154 </a><span class="php-comment">     * If $remove_default_meta_boxes is true and the datasource is Fieldmanager_Datasource_Term,
+</span></span><span id="155" class="l"><a class="l" href="#155">155 </a><span class="php-comment">     * this will return a list of all default meta boxes for the specified taxonomies.
+</span></span><span id="156" class="l"><a class="l" href="#156">156 </a><span class="php-comment">     * We only need to return id and context since the page will be handled by the list of post types provided to add_meta_box.
+</span></span><span id="157" class="l"><a class="l" href="#157">157 </a><span class="php-comment">     * Otherwise, this will just return an empty array.
+</span></span><span id="158" class="l"><a class="l" href="#158">158 </a><span class="php-comment">     * @param array current list of meta boxes to remove
+</span></span><span id="159" class="l"><a class="l" href="#159">159 </a><span class="php-comment">     * @return array list of meta boxes to remove
+</span></span><span id="160" class="l"><a class="l" href="#160">160 </a><span class="php-comment">     */</span>
+</span><span id="161" class="l"><a class="l" href="#161">161 </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_add_meta_boxes_to_remove" href="#_add_meta_boxes_to_remove">add_meta_boxes_to_remove</a>( &amp;<span class="php-var">$meta_boxes_to_remove</span> ) {
+</span><span id="162" class="l"><a class="l" href="#162">162 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;remove_default_meta_boxes &amp;&amp; <span class="php-keyword2">get_class</span>( <span class="php-var">$this</span>-&gt;datasource ) == <span class="php-quote">'Fieldmanager_Datasource_Term'</span> ) {
+</span><span id="163" class="l"><a class="l" href="#163">163 </a>            <span class="php-comment">// Iterate over the list and build the list of meta boxes</span>
+</span><span id="164" class="l"><a class="l" href="#164">164 </a>            <span class="php-var">$meta_boxes</span> = <span class="php-keyword1">array</span>();
+</span><span id="165" class="l"><a class="l" href="#165">165 </a>            <span class="php-keyword1">foreach</span>( <span class="php-var">$this</span>-&gt;datasource-&gt;get_taxonomies() <span class="php-keyword1">as</span> <span class="php-var">$taxonomy</span> ) {
+</span><span id="166" class="l"><a class="l" href="#166">166 </a>                <span class="php-comment">// The ID differs if this is a hierarchical taxonomy or not. Get the taxonomy object.</span>
+</span><span id="167" class="l"><a class="l" href="#167">167 </a>                <span class="php-var">$taxonomy_obj</span> = get_taxonomy( <span class="php-var">$taxonomy</span> );
+</span><span id="168" class="l"><a class="l" href="#168">168 </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> !== <span class="php-var">$taxonomy_obj</span> ) {
+</span><span id="169" class="l"><a class="l" href="#169">169 </a>                    <span class="php-keyword1">if</span> ( <span class="php-var">$taxonomy_obj</span>-&gt;hierarchical )
+</span><span id="170" class="l"><a class="l" href="#170">170 </a>                        <span class="php-var">$id</span> = <span class="php-var">$taxonomy</span> . <span class="php-quote">&quot;div&quot;</span>;
+</span><span id="171" class="l"><a class="l" href="#171">171 </a>                    <span class="php-keyword1">else</span>
+</span><span id="172" class="l"><a class="l" href="#172">172 </a>                        <span class="php-var">$id</span> = <span class="php-quote">'tagsdiv-'</span> . <span class="php-var">$taxonomy</span>;
+</span><span id="173" class="l"><a class="l" href="#173">173 </a>
+</span><span id="174" class="l"><a class="l" href="#174">174 </a>                    <span class="php-var">$meta_boxes</span>[<span class="php-var">$id</span>] = <span class="php-keyword1">array</span>(
+</span><span id="175" class="l"><a class="l" href="#175">175 </a>                        <span class="php-quote">'id'</span> =&gt; <span class="php-var">$id</span>,
+</span><span id="176" class="l"><a class="l" href="#176">176 </a>                        <span class="php-quote">'context'</span> =&gt; <span class="php-quote">'side'</span>
+</span><span id="177" class="l"><a class="l" href="#177">177 </a>                    );
+</span><span id="178" class="l"><a class="l" href="#178">178 </a>                }
+</span><span id="179" class="l"><a class="l" href="#179">179 </a>            }
+</span><span id="180" class="l"><a class="l" href="#180">180 </a>
+</span><span id="181" class="l"><a class="l" href="#181">181 </a>            <span class="php-comment">// Merge in the new meta boxes to remove</span>
+</span><span id="182" class="l"><a class="l" href="#182">182 </a>            <span class="php-var">$meta_boxes_to_remove</span> = <span class="php-keyword2">array_merge</span>( <span class="php-var">$meta_boxes_to_remove</span>, <span class="php-var">$meta_boxes</span> );
+</span><span id="183" class="l"><a class="l" href="#183">183 </a>        }
+</span><span id="184" class="l"><a class="l" href="#184">184 </a>    }
+</span><span id="185" class="l"><a class="l" href="#185">185 </a>}
+</span><span id="186" class="l"><a class="l" href="#186">186 </a></span></code></pre>
 	</div>
 
 	<div id="footer">

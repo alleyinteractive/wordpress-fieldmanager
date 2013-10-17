@@ -127,7 +127,7 @@ abstract class Fieldmanager_Field {
 	 * Functions to use to validate input
 	 */
 	public $validate = array();
-	
+
 	/**
 	 * @var string|array
 	 * jQuery validation rule(s) used to validate this field, entered as a string or associative array.
@@ -135,7 +135,7 @@ abstract class Fieldmanager_Field {
 	 * For more information see http://jqueryvalidation.org/documentation/
 	 */
 	public $validation_rules;
-	
+
 	/**
 	 * @var string|array
 	 * jQuery validation messages used by the rule(s) defined for this field, entered as a string or associative array.
@@ -144,7 +144,7 @@ abstract class Fieldmanager_Field {
 	 * For more information see http://jqueryvalidation.org/documentation/
 	 */
 	public $validation_messages;
-	
+
 	/**
 	 * @var boolean
 	 * Makes the field required on WordPress context forms that already have built-in validation.
@@ -440,7 +440,7 @@ abstract class Fieldmanager_Field {
 		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
 			$classes[] = 'fm-' . $this->field_class;
 		}
-		
+
 		// Check if the required attribute is set. If so, add the class.
 		if ( $this->required ) {
 			$classes[] = 'form-required';
@@ -541,18 +541,6 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Get full path (e.g. parent_group_element)
-	 * @return string full path
-	 */
-	public function get_full_path() {
-		$names = array();
-		foreach ( $this->get_form_tree() as $level ) {
-			$names[] = $level->name;
-		}
-		return implode( '_', $names );
-	}
-
-	/**
 	 * Recursively build path to this element (e.g. array(grandparent, parent, this) )
 	 * @return array of parents
 	 */
@@ -587,6 +575,7 @@ abstract class Fieldmanager_Field {
 	 * @return mixed[] sanitized values
 	 */
 	public function presave_all( $values, $current_values ) {
+
 		if ( $this->limit == 1 ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
 			if ( ! empty( $values ) )
@@ -633,6 +622,7 @@ abstract class Fieldmanager_Field {
 	 * Is called multiple times for multi-fields (e.g. limit => 0)
 	 * @param array $values
 	 * @return void
+	 * @todo make this a context method
 	 */
 	protected function save_index( $values, $current_values ) {
 		if ( $this->data_type != 'post' || empty( $this->data_id ) ) return;
@@ -732,7 +722,7 @@ abstract class Fieldmanager_Field {
 	 * @return string button HTML.
 	 */
 	public function add_another() {
-		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another' );
+		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
 			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" />',
@@ -794,7 +784,7 @@ abstract class Fieldmanager_Field {
 		$this->require_base();
 		return new Fieldmanager_Context_Page( $uniqid, $this );
 	}
-	
+
 	/**
 	 * Add a form on a term add/edit page
 	 * @param string $title
@@ -848,19 +838,6 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * How many elements should we render?
-	 * @return string
-	 */
-	protected function get_multiple_count( $values ) {
-		if ( $this->limit == 0 ) {
-			return max( $this->starting_count, count( $values ) + $this->extra_elements );
-		}
-		else {
-			return $this->limit;
-		}
-	}
-
-	/**
 	 * Die violently. If self::$debug is true, throw an exception.
 	 * @param string $debug_message
 	 * @return void e.g. return _you_ into a void.
@@ -890,7 +867,7 @@ abstract class Fieldmanager_Field {
 			);
 		}
 	}
-	
+
 	/**
 	 * Die violently. If self::$debug is true, throw an exception.
 	 * @param string $debug_message
