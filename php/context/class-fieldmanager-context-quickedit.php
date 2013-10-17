@@ -88,7 +88,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 			$column_text = call_user_func( $this->column_not_empty_callback, $data );
 		}
 		else {
-			$column_text = call_user_func( $this->column_empty_callback, $data );
+			$column_text = call_user_func( $this->column_empty_callback );
 		}
 		echo $column_text;
 	}
@@ -175,9 +175,18 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 
 	/**
 	 * Default display function for non-empty columns.
+	 * @var mixed $data
 	 */
 	public function default_not_empty( $data ) {
-		
+		return "Data set.";
 	}
+
+	/**
+	 * Default display function for non-empty columns.
+	 */
+	public function default_empty() {
+		return "Data not set.";
+	}
+
 
 }

@@ -43,6 +43,7 @@ require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-pag
 require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-post.php' );
 require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-submenu.php' );
 require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-term.php' );
+require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-quickedit.php' );
 
 define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 
