@@ -823,6 +823,16 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Add this field to a post type's quick edit box.
+	 * @param string $title
+	 * @param string|string[] $post_type
+	 */
+	public function add_quickedit_box( $title, $post_types ) {
+		$this->require_base();
+		return new Fieldmanager_Context_QuickEdit( $title, $post_types, $this );
+	}
+
+	/**
 	 * Add this group to an options page
 	 * @param string $title
 	 */
