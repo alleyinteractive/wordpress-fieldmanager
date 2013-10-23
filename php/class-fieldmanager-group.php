@@ -303,7 +303,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @param string $html
 	 * @return string
 	 */
-	public function wrap_with_multi_tools( $html ) {
+	public function wrap_with_multi_tools( $html, $classes = array() ) {
 		return $html;
 	}
 
