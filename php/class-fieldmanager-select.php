@@ -22,6 +22,13 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	public $type_ahead = False;
 
 	/**
+	 * @var array
+	 * This will force the selectbox to use the builtin wp_dropdown_categories function to generate a selectbox of terms.
+	 * This approach is capable of nesting parent/children within the selectbox.
+	 */
+	public $wp_dropdown_categories_args = array();
+
+	/**
 	 * @var boolean
 	 * Send an empty element first
 	 */
@@ -85,13 +92,25 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		}
 		$opts .= $this->form_data_elements( $value );
 
-		return sprintf(
-			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s />%s</select>',
-			$this->get_form_name( $do_multiple ),
-			$this->get_element_id(),
-			$this->get_element_attributes(),
-			$opts
-		);
+		// Use builtin wp_dropdown_categories function
+		if ( !empty( $this->wp_dropdown_categories_args ) && is_array( $this->wp_dropdown_categories_args ) ) {
+			$fm_dropdown_args = array(
+				'echo'	=> 0,
+				'id'	=> $this->get_element_id(),
+				'name'	=> $this->get_form_name( $do_multiple ),
+				'class'	=> implode( " ", $select_classes ),
+			);
+			$args = array_merge( $this->wp_dropdown_categories_args, $fm_dropdown_args );
+			return wp_dropdown_categories( $args );
+		} else  {
+			return sprintf(
+				'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s />%s</select>',
+				$this->get_form_name( $do_multiple ),
+				$this->get_element_id(),
+				$this->get_element_attributes(),
+				$opts
+			);
+		}
 	}
 
 	/**
