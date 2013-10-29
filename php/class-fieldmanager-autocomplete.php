@@ -106,7 +106,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		}
 
 		$element = sprintf(
-			'<input class="fm-autocomplete fm-element" type="text" id="%s" value="%s" %s />',
+			'<input class="fm-autocomplete fm-element fm-incrementable" type="text" id="%s" value="%s" %s />',
 			$this->get_element_id(),
 			$this->datasource->get_value( $value ),
 			$this->get_element_attributes()

@@ -108,7 +108,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$preview = '';
 		}
 		return sprintf(
-			'<input type="button" class="fm-media-button button-secondary" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" />
+			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" />
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
 			<div class="media-wrapper">%5$s</div>
 			<script type="text/javascript">

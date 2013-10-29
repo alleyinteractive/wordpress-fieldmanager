@@ -58,7 +58,12 @@ var fm_renumber = function( $wrappers ) {
 		if ( level_pos > 0 ) {
 			$( this ).find( '> .fm-item' ).each( function() {
 				if ( $( this ).hasClass( 'fmjs-proto' ) ) return; // continue
-				$( this ).find( '.fm-element' ).each( function() {
+				$( this ).find( '.fm-element, .fm-incrementable' ).each( function() {
+					if ( $( this ).hasClass( 'fm-incrementable' ) ) {
+						$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
+						dynamic_seq++;
+						return; // continue;
+					}
 					var fname = $(this).attr( 'name' );
 					if ( !fname ) return;
 					fname = fname.replace( /\]/g, '' );
