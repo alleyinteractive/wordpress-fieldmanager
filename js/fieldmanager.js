@@ -59,23 +59,24 @@ var fm_renumber = function( $wrappers ) {
 			$( this ).find( '> .fm-item' ).each( function() {
 				if ( $( this ).hasClass( 'fmjs-proto' ) ) return; // continue
 				$( this ).find( '.fm-element, .fm-incrementable' ).each( function() {
+					var fname = $(this).attr( 'name' );
+					if ( fname ) {
+						fname = fname.replace( /\]/g, '' );
+						parts = fname.split( '[' );
+						if ( parts[ level_pos ] != order ) {
+							parts[ level_pos ] = order;
+							var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
+							$( this ).attr( 'name', new_fname );
+							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) ) {
+								$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
+								dynamic_seq++;
+								return; // continue;
+							}
+						}
+					}
 					if ( $( this ).hasClass( 'fm-incrementable' ) ) {
 						$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
 						dynamic_seq++;
-						return; // continue;
-					}
-					var fname = $(this).attr( 'name' );
-					if ( !fname ) return;
-					fname = fname.replace( /\]/g, '' );
-					parts = fname.split( '[' );
-					if ( parts[ level_pos ] != order ) {
-						parts[ level_pos ] = order;
-						var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
-						$( this ).attr( 'name', new_fname );
-						if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) ) {
-							$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
-							dynamic_seq++;
-						}
 					}
 				} );
 				order++;
