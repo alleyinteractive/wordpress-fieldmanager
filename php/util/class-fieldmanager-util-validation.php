@@ -245,7 +245,7 @@ class Fieldmanager_Util_Validation {
 	 */
 	private function value_to_js( $field, $data ) {
 		// Check the array for the corresponding value. If it doesn't exist, return an empty string.
-		if ( ! isset( $data[$field] ) )
+		if ( empty( $data[$field] ) )
 			return "";
 			
 		// Format the field name
