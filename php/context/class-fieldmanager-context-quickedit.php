@@ -61,7 +61,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 			add_action( 'manage_' . $post_type . '_posts_columns', array( $this, 'add_custom_columns' ) );
 		}
 
-		add_action( 'manage_posts_custom_column', array( $this, 'manage_custom_columns' ) );
+		add_action( 'manage_posts_custom_column', array( $this, 'manage_custom_columns' ), 10, 2 );
 		add_action( 'quick_edit_custom_box', array( $this, 'add_quickedit_box' ) );
 		add_action( 'save_post', array( $this, 'save_fields_for_quickedit' ) );
 	}
@@ -86,10 +86,10 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		if ( $column_name != $this->fm->name ) return;
 		$data = get_post_meta( $post_id, $this->fm->name, true );
 		if ( !empty( $data ) ) {
-			$column_text = call_user_func( $this->column_not_empty_callback, $data );
+			$column_text = call_user_func( $this->column_not_empty_callback, $data, $post_id );
 		}
 		else {
-			$column_text = call_user_func( $this->column_empty_callback );
+			$column_text = call_user_func( $this->column_empty_callback, $post_id );
 		}
 		echo $column_text;
 	}
