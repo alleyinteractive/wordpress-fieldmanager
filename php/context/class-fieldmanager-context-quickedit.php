@@ -17,13 +17,15 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 
 	/**
 	 * @var callback
-	 * Function to return a string to be displayed in the posts admin column if data is set
+	 * Since QuickEdit fields are tied directly to custom posts admin columns, this context will create one and manage it.
+	 * This callback will provide the contents of each cell of this column where the post has data set.
 	 */
 	public $column_not_empty_callback = '';
 
 	/**
 	 * @var callback
-	 * Function to return a string to be displayed in the posts admin column if data is not set.
+	 * Since QuickEdit fields are tied directly to custom posts admin columns, this context will create one and manage it.
+	 * This callback will provide the contents of each cell of this column where the post does NOT have data set.
 	 */
 	public $column_empty_callback = '';
 
@@ -43,8 +45,8 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * Add a context to a fieldmanager
 	 * @param string $title
 	 * @param string|string[] $post_types
-	 * @param string $context (normal, advanced, or side)
-	 * @param string $priority (high, core, default, or low)
+	 * @param callback $column_not_empty_callback
+	 * @param callback $column_empty_callback
 	 * @param Fieldmanager_Field $fm
 	 */
 	public function __construct( $title, $post_types, $column_not_empty_callback, $column_empty_callback, $fm = Null ) {
