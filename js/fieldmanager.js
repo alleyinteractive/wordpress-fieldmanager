@@ -4,16 +4,27 @@ var fm = {};
 
 var dynamic_seq = 0;
 
+var init_sortable_container = function( el ) {
+	if ( !$( el ).hasClass( 'ui-sortable' ) ) {
+		$( el ).sortable( {
+			handle: '.fmjs-drag',
+			items: '> .fm-item',
+			stop: function( e, ui ) {
+				var $parent = ui.item.parents( '.fm-wrapper' ).first();
+				fm_renumber( $parent );
+			}
+		} );
+	}
+}
+
 var init_sortable = function() {
 	$( '.fmjs-sortable' ).each( function() {
-		if ( !$( this ).hasClass( 'ui-sortable' ) && $( this ).is( ':visible' ) ) {
-			$( this ).sortable( {
-				handle: '.fmjs-drag',
-				items: '> .fm-item',
-				stop: function( e, ui ) {
-					var $parent = ui.item.parents( '.fm-wrapper' ).first();
-					fm_renumber( $parent );
-				}
+		if ( $( this ).is( ':visible' ) ) {
+			init_sortable_container( this );
+		} else {
+			var sortable = this;
+			$( sortable ).parents( '.fm-group' ).first().bind( 'fm_collapsible_toggle', function() {
+				init_sortable_container( sortable );
 			} );
 		}
 	} );
