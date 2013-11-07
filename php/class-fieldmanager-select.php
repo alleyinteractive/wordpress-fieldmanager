@@ -86,7 +86,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		$opts .= $this->form_data_elements( $value );
 
 		return sprintf(
-			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s />%s</select>',
+			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s>%s</select>',
 			$this->get_form_name( $do_multiple ),
 			$this->get_element_id(),
 			$this->get_element_attributes(),
