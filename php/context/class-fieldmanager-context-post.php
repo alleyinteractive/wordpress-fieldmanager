@@ -190,9 +190,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 		$current = get_post_meta( $this->fm->data_id, $this->fm->name, True );
-		print_r($data);
 		$data = $this->fm->presave_all( $data, $current );
-		print_r($data); die();
 		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );
 	}
 
