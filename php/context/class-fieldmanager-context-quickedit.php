@@ -86,19 +86,6 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		return $columns;
 	}
 
-
-	/**
-	 * callback to add JS to the footer to populate quickedit box fields.
-	 * @return void
-	 */
-	function add_admin_footer_js() {
-		if ( !in_array( $_GET['post_type'], $this->post_types ) {
-			return;
-		}
-		fm_add_script( 'quickedit-js', 'js/fieldmanager-quickedit.js' );
-	}
-
-
 	/**
 	 * manage_posts_custom_column callback
 	 * @param string $column_name
