@@ -1,5 +1,5 @@
 ( function( $ ) {
-	if ( typeof( inlineEditPost ) == 'null' ) {
+	if ( typeof( inlineEditPost ) == 'undefined' ) {
 		return;
 	}
 
