@@ -57,10 +57,6 @@ div.fm-group-label-wrapper {
 	display: none;
 }
 
-.fmjs-removable {
-	overflow: auto;
-}
-
 .fmjs-removable-element, .fmjs-clearable-element {
 	float: left;
 }
@@ -83,7 +79,7 @@ div.fm-group-label-wrapper {
 	background: transparent url(../images/draggable.png) no-repeat 0px 0px;
 	height: 15px;
 	width: 15px;
-	margin: 5px 3px 0 0;
+	margin: 3px 3px 0 0;
 	text-indent: -9999px;
 	float: left;
 }
@@ -265,10 +261,13 @@ a.fm-delete:hover {
 	width: 25px;
 }
 
-.edit-tags-php input[type="checkbox"] {
-	width: 16px;
+.form-field input[type="checkbox"],
+.form-field input[type="radio"],
+.form-field input.fm-add-another,
+.form-field .fm-media-button {
+	width: auto;
 }
-
-.edit-tags-php .fm-media-button {
-	width: 200px;
+.form-field .fm-option label,
+.form-field .fm-checkbox label {
+	display: inline;
 }

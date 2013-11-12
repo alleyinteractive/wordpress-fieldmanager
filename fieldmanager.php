@@ -51,7 +51,7 @@ define( 'FM_GLOBAL_ASSET_VERSION', 1 );
  */
 function fieldmanager_enqueue_scripts() {
 	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.2' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.0' );
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.1' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
 add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
