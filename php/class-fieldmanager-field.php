@@ -602,17 +602,19 @@ abstract class Fieldmanager_Field {
 			unset( $values['proto'] );
 		}
 
+		# Condense the array to account for middle items removed
+		$values = array_values( $values );
+
 		$values = $this->presave_alter_values( $values, $current_values );
 
 		foreach ( $values as $i => $value ) {
-			if ( !is_numeric( $i ) ) {
-				// If $this->limit != 1 and $values contains something other than a numeric key...
-				$this->_unauthorized_access( '$values should be a number-indexed array, but found key ' . $i );
-			}
-			$values[$i] = $this->presave( $value, empty( $current_values[$i] ) ? array() : $current_values[$i] );
-			if ( !$this->save_empty && empty( $values[$i] ) ) unset( $values[$i] );
+			$values[ $i ] = $this->presave( $value, empty( $current_values[ $i ] ) ? array() : $current_values[ $i ] );
+			if ( !$this->save_empty && empty( $values[ $i ] ) )
+				unset( $values[ $i ] );
 		}
-		if ( !empty( $this->index ) ) $this->save_index( $values, $current_values );
+		if ( !empty( $this->index ) )
+			$this->save_index( $values, $current_values );
+
 		return $values;
 	}
 
