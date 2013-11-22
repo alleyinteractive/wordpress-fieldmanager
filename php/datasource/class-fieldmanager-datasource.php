@@ -77,7 +77,6 @@ class Fieldmanager_Datasource {
 		if ( !empty( $this->options ) ) {
 			$keys = array_keys( $this->options );
 			if ( ( array_keys( $keys ) === $keys ) ) {
-				$use_name_as_value = ( array_keys( $keys ) === $keys );
 				foreach ( $this->options as $k => $v ) {
 					$this->options[$v] = $v;
 					unset( $this->options[$k] );
