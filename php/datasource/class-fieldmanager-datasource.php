@@ -76,10 +76,11 @@ class Fieldmanager_Datasource {
 
 		if ( !empty( $this->options ) ) {
 			$keys = array_keys( $this->options );
-			$use_name_as_value = ( array_keys( $keys ) === $keys );
-			foreach ( $this->options as $k => $v ) {
-				$this->options[$v] = $v;
-				unset( $this->options[$k] );
+			if ( ( array_keys( $keys ) === $keys ) ) {
+				foreach ( $this->options as $k => $v ) {
+					$this->options[$v] = $v;
+					unset( $this->options[$k] );
+				}
 			}
 		}
 
@@ -95,7 +96,7 @@ class Fieldmanager_Datasource {
 	 * @return string value
 	 */
 	public function get_value( $id ) {
-		return $this->options[$id] ?: '';
+		return isset( $this->options[$id] ) ? $this->options[$id] : '';
 	}
 
 	/**
