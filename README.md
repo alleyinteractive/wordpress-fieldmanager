@@ -4,7 +4,7 @@ Fieldmanager is a comprehensive toolkit for building forms, metaboxes, and custo
 
 ## Using Fieldmanager in your WordPress Project
 
-Fieldmanager is a powerful library which can make the development of sophisticated features a breeze. To get started, simply clone this repository into your plugins directory and activate it on the plugins screen. To learn how to use Fieldmanager's API, visit the project's official website at [Fieldmanager.org](http://www.fieldmanager.org).
+Fieldmanager is a powerful library which can make the development of sophisticated features a breeze. To get started, simply clone this repository into your plugins directory and activate it on the plugins screen. To learn how to use Fieldmanager's API, visit the project's official website at [Fieldmanager.org](http://fieldmanager.org).
 
 ## Contributing to Development
 
