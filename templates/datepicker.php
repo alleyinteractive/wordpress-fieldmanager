@@ -18,8 +18,8 @@
 		<input class="fm-element fm-datepicker-time" type="text" value="<?php echo $this->get_minute( $value ); ?>" name="<?php echo $this->get_form_name( '[minute]' ); ?>" />
 		<?php if ( $this->use_am_pm ): ?>
 			<select name="<?php echo $this->get_form_name( '[ampm]' ); ?>" />
-				<option value="am">A.M.</option>
-				<option value="pm">P.M.</option>
+				<option value="am"<?php selected( $this->get_am_pm( $value ), 'am' ) ?>>A.M.</option>
+				<option value="pm"<?php selected( $this->get_am_pm( $value ), 'pm' ) ?>>P.M.</option>
 			</select>
 		<?php endif; ?>
 	</span>
