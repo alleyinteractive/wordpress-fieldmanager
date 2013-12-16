@@ -192,6 +192,10 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		if ( ! in_array( $taxonomy, $this->taxonomies ) )
 			return;
 
+		// Make sure we're coming from the new/edit term form
+		if ( ! isset( $_POST['action'] ) || ! in_array( $_POST['action'], array( 'add-tag', 'editedtag' ) ) )
+			return;
+
 		// Make sure the current user can save this post
 		if( ! current_user_can( 'manage_categories', $post_id ) ) {
 			$this->fm->_unauthorized_access( 'User cannot edit this term' );
