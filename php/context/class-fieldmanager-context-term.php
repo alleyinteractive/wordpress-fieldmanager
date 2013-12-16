@@ -192,6 +192,10 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		if ( ! in_array( $taxonomy, $this->taxonomies ) )
 			return;
 
+		// Make sure that this field is in the post data
+		if ( ! isset( $_POST[ $this->fm->name ] ) )
+			return;
+
 		// Make sure the current user can save this post
 		if( ! current_user_can( 'manage_categories', $post_id ) ) {
 			$this->fm->_unauthorized_access( 'User cannot edit this term' );
@@ -204,8 +208,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		}
 
 		// Save the data
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$this->save_to_term_meta( $term_id, $taxonomy, $value );
+		$this->save_to_term_meta( $term_id, $taxonomy, $_POST[ $this->fm->name ] );
 	}
 
 	/**
