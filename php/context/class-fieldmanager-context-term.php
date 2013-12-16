@@ -189,11 +189,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function save_term_fields( $term_id, $tt_id, $taxonomy ) {
 		// Make sure this field is attached to the taxonomy being saved and this is the appropriate action
-		if ( ! in_array( $taxonomy, $this->taxonomies ) )
-			return;
-
-		// Make sure that this field is in the post data
-		if ( ! isset( $_POST[ $this->fm->name ] ) )
+		if ( ! in_array( $taxonomy, $this->taxonomies ) || ! isset( $_POST['action'] ) || ! in_array( $_POST['action'], array( 'add-tag', 'editedtag' ) ) )
 			return;
 
 		// Make sure the current user can save this post
@@ -208,7 +204,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		}
 
 		// Save the data
-		$this->save_to_term_meta( $term_id, $taxonomy, $_POST[ $this->fm->name ] );
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+		$this->save_to_term_meta( $term_id, $taxonomy, $value );
 	}
 
 	/**
