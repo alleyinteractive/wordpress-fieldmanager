@@ -192,8 +192,9 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		if ( ! in_array( $taxonomy, $this->taxonomies ) )
 			return;
 
-		// Make sure the current user can save this post
-		if( ! current_user_can( 'manage_categories', $post_id ) ) {
+		// Make sure the current user can modify terms in this taxonomy
+		$tax_obj = get_taxonomy( $taxonomy );
+		if( ! current_user_can( $tax_obj->cap->manage_terms ) ) {
 			$this->fm->_unauthorized_access( 'User cannot edit this term' );
 			return;
 		}
