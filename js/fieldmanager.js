@@ -93,6 +93,9 @@ var fm_renumber = function( $wrappers ) {
 				order++;
 			} );
 		}
+		$( this ).find( '.fm-wrapper' ).each( function() {
+			fm_renumber( $( this ) );
+		} );
 	} );
 }
 
