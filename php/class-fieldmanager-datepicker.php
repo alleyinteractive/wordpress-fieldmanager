@@ -23,7 +23,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 
 	/**
 	 * @var string
-	 * PHP date format, only used for rendering already-saved dates. Use js_opts['dateFormat'] for the 
+	 * PHP date format, only used for rendering already-saved dates. Use js_opts['dateFormat'] for the
 	 * date shown when a user selects an option. This option renders to '21 Apr 2013', and is fairly
 	 * friendly to international users.
 	 */
@@ -34,7 +34,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * Options to pass to the jQueryUI Datepicker. If you change dateFormat, be sure that it returns
 	 * a valid unix timestamp. Also, it's best to change js_opts['dateFormat'] and date_format together
 	 * for a consistent user experience.
-	 * 
+	 *
 	 * Default:
 	 * <code>
 	 * array(
@@ -102,6 +102,15 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 */
 	public function get_minute( $value ) {
 		return !empty( $value ) ? date( 'i', $value ) : '';
+	}
+
+	/**
+	 * Get am or pm for rendering in field
+	 * @param int $value unix timestamp
+	 * @return string 'am', 'pm', or ''
+	 */
+	public function get_am_pm( $value ) {
+		return ! empty( $value ) ? date( 'a', $value ) : '';
 	}
 
 }

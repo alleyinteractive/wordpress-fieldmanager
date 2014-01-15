@@ -11,7 +11,7 @@
 class Fieldmanager_Datasource {
 
 	/**
-	 * @var boolean
+	 * @var array
 	 */
 	public $options = array();
 

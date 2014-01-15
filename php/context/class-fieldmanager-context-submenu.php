@@ -112,7 +112,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		if ( ! empty( $_POST ) && $_GET['page'] == $this->menu_slug && current_user_can( $this->capability ) ) {
 			// Make sure that our nonce field arrived intact
 			if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-				$this->_unauthorized_access( 'Nonce validation failed' );
+				$this->fm->_unauthorized_access( 'Nonce validation failed' );
 			}
 			$this->fm->data_id = $this->fm->name;
 			$this->fm->data_type = 'options';
