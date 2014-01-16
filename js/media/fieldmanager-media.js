@@ -52,7 +52,8 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 			preview += wp.media.string.link( props );
 		}
 		preview += '<br /><a class="fm-media-remove fm-delete" href="#">remove</a>';
-		$el.parent().find( '.media-wrapper' ).html( preview );
+		var $wrapper = $el.parent().find( '.media-wrapper' );
+		$wrapper.html( preview ).trigger( 'fieldmanager_media_preview', [ $wrapper, attachment, wp ] );
 	});
 
 	fm_media_frame[ $el.attr('id') ].open();
