@@ -182,53 +182,62 @@ function fm_get_context() {
 	static $calculated_context;
 
 	if ( $calculated_context ) return $calculated_context;
-	$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
+	
 	if ( is_admin() ) { // safe to use at any point in the load process, and better than URL matching.
+
+		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
 		// context = submenu
 		if ( !empty( $_GET['page'] ) ) {
-			$calculated_context = array( 'submenu', sanitize_text_field( $_GET['page'] ) );
-		} else {
-			switch ( $script ) {
-				// context = post
-				case 'post.php':
-					if ( !empty( $_POST ) && ( $_POST['action'] == 'editpost' || $_POST['action'] == 'newpost' ) ) {
-						$type = sanitize_text_field( $_POST['post_type'] );
-					} else {
-						$type = get_post_type( intval( $_GET['post'] ) );
-					}
-					$calculated_context = array( 'post', $type );
-					break;
-				case 'post-new.php':
-					$calculated_context = array( 'post', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
-					break;
-				// context = user
-				case 'profile.php':
-				case 'user-edit.php':
-					$calculated_context = array( 'user', null );
-					break;
-				// context = quickedit
-				case 'edit.php':
-					$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
-					break;
-				case 'admin-ajax.php':
-					if ( $_POST['screen'] == 'edit-post' && $_POST['action'] == 'inline-save' ) {
-						$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
-					} elseif ( $_GET['action'] == 'fm_quickedit_render' ) {
-						$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );	
-					}
-					break;
-				// context = term
-				case 'edit-tags.php':
-					if ( !empty( $_POST['taxonomy'] )) {
-						$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
-					} else {
-						$calculated_context = array( 'term', sanitize_text_field( $_GET['taxonomy'] ) );
-					}
-					break;
+			$submenus = _fieldmanager_registry( 'submenus' );
+			foreach ( $submenus as $submenu ) {
+				if ( $script == $submenu[0] ) {
+					$calculated_context = array( 'submenu', sanitize_text_field( $_GET['page'] ) );
+					return $calculated_context;
+				}
 			}
 		}
+
+		switch ( $script ) {
+			// context = post
+			case 'post.php':
+				if ( !empty( $_POST ) && ( $_POST['action'] == 'editpost' || $_POST['action'] == 'newpost' ) ) {
+					$type = sanitize_text_field( $_POST['post_type'] );
+				} else {
+					$type = get_post_type( intval( $_GET['post'] ) );
+				}
+				$calculated_context = array( 'post', $type );
+				break;
+			case 'post-new.php':
+				$calculated_context = array( 'post', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
+				break;
+			// context = user
+			case 'profile.php':
+			case 'user-edit.php':
+				$calculated_context = array( 'user', null );
+				break;
+			// context = quickedit
+			case 'edit.php':
+				$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
+				break;
+			case 'admin-ajax.php':
+				if ( $_POST['screen'] == 'edit-post' && $_POST['action'] == 'inline-save' ) {
+					$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
+				} elseif ( $_GET['action'] == 'fm_quickedit_render' ) {
+					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );	
+				}
+				break;
+			// context = term
+			case 'edit-tags.php':
+				if ( !empty( $_POST['taxonomy'] )) {
+					$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
+				} else {
+					$calculated_context = array( 'term', sanitize_text_field( $_GET['taxonomy'] ) );
+				}
+				break;
+		}
 	}
+
 	if ( empty( $calculated_context ) ) {
 		$calculated_context = array( null, null );
 	}
@@ -270,7 +279,7 @@ function fm_trigger_context_action() {
 	do_action( $action );
 }
 
-add_action( 'init', 'fm_trigger_context_action' );
+add_action( 'init', 'fm_trigger_context_action', 99 );
 
 /**
  * Register a submenu page
