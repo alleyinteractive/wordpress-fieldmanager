@@ -25,8 +25,17 @@ if ( !defined( 'FM_DEBUG' ) ) define( 'FM_DEBUG', false );
  * @param string $class
  */
 function fieldmanager_load_class( $class ) {
+	static $first_load = true;
+
 	if ( class_exists( $class ) || strpos( $class, 'Fieldmanager' ) !== 0 ) return;
 	$class_id = strtolower( substr( $class, strrpos( $class, '_' ) + 1 ) );
+
+	if ( $first_load ) {
+		// Utility classes with helper functions
+		fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
+		fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
+		$first_load = false;
+	}
 
 	if ( strpos( $class, 'Fieldmanager_Context' ) === 0 ) {
 		if ( $class_id == 'context' ) return fieldmanager_load_file( 'context/class-fieldmanager-context.php' );	
@@ -50,10 +59,6 @@ function fieldmanager_load_file( $file ) {
 	if ( !file_exists( $file ) ) throw new FM_Class_Not_Found_Exception( $file );
 	require_once( $file );
 }
-
-// Utility classes with helper functions
-fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
-fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
 
 if ( function_exists( 'spl_autoload_register' ) ) {
 	spl_autoload_register( 'fieldmanager_load_class' );
