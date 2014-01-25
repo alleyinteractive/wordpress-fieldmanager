@@ -104,6 +104,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 			}
 			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
+			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );
 		} else {
 			$preview = '';
 		}
