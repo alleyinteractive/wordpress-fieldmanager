@@ -30,7 +30,7 @@ abstract class Fieldmanager_Field {
 	 * @var boolean
 	 * If true, throw exceptions for illegal behavior
 	 */
-	public static final $debug = FM_DEBUG;
+	public static $debug = FM_DEBUG;
 
 	/**
 	 * @var int
