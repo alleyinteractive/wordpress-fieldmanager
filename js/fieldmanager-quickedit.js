@@ -1,5 +1,3 @@
-// WHEN YOU RETURN, ADD fm_quickedit_post_type SOMEHOW. SHOULD BE A STRING WITH THE CURRENT POST
-
 ( function( $ ) {
 
 	$( document ).ready( function() {
