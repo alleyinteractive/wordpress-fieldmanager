@@ -11,27 +11,26 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 
 	/**
 	 * @var string
-	 * Title of QuickEdit box
+	 * Title of QuickEdit box; also used for the column title unless $column_title is specified.
 	 */
 	public $title = '';
 
 	/**
-	 * @var callback
-	 * Since QuickEdit fields are tied directly to custom posts admin columns, this context will create one and manage it.
-	 * This callback will provide the contents of each cell of this column where the post has data set.
+	 * @var string
+	 * Override $title for the column in the list of posts
 	 */
-	public $column_not_empty_callback = '';
+	public $column_title = '';
 
 	/**
 	 * @var callback
-	 * Since QuickEdit fields are tied directly to custom posts admin columns, this context will create one and manage it.
-	 * This callback will provide the contents of each cell of this column where the post does NOT have data set.
+	 * QuickEdit fields are tied to custom columns in the list of posts. This callback should return a value to 
+	 * display in a custom column.
 	 */
-	public $column_empty_callback = '';
+	public $column_display_callback = null;
 
 	/**
 	 * @var string[]
-	 * What post types to render this meta box
+	 * What post types to render this Quickedit form
 	 */
 	public $post_types = array();
 
@@ -49,29 +48,33 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @param callback $column_empty_callback
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function __construct( $title, $post_types, $column_not_empty_callback, $column_empty_callback, $fm = Null ) {
+	public function __construct( $title, $post_types, $column_display_callback, $column_title = '', $fm = Null ) {
+		
+		if ( !fm_match_context( 'quickedit' ) ) return; // make sure we only load up our JS if we're in a quickedit form.
+
 		// Populate the list of post types for which to add this meta box with the given settings
 		if ( !is_array( $post_types ) ) $post_types = array( $post_types );
 
 		$this->post_types = $post_types;
 		$this->title = $title;
-		$this->column_not_empty_callback = $column_not_empty_callback;
-		$this->column_empty_callback = $column_empty_callback;
+		$this->column_title = !empty( $column_title ) ? $column_title : $title;
+		$this->column_display_callback = $column_display_callback;
 		$this->fm = $fm;
 
-		foreach ( $post_types as $post_type ) {
-			add_action( 'manage_' . $post_type . '_posts_columns', array( $this, 'add_custom_columns' ) );
+		if ( is_callable( $column_display_callback ) ) {
+			foreach ( $post_types as $post_type ) {
+				add_action( 'manage_' . $post_type . '_posts_columns', array( $this, 'add_custom_columns' ) );
+			}
+			add_action( 'manage_posts_custom_column', array( $this, 'manage_custom_columns' ), 10, 2 );
 		}
 
-		add_action( 'manage_posts_custom_column', array( $this, 'manage_custom_columns' ), 10, 2 );
 		add_action( 'quick_edit_custom_box', array( $this, 'add_quickedit_box' ), 10, 2 );
 		add_action( 'save_post', array( $this, 'save_fields_for_quickedit' ) );
 		add_action( 'wp_ajax_fm_quickedit_render', array( $this, 'render_ajax_form' ), 10, 2 );
 
-		if ( !isset( $_GET['post_type'] ) ) {
-			$_GET['post_type'] = 'post';
-		}
-		if ( in_array( $_GET['post_type'], $this->post_types ) ) {
+		$post_type = !isset( $_GET['post_type'] ) ? 'post' : sanitize_text_field( $_GET['post_type'] );
+
+		if ( in_array( $post_type, $this->post_types ) ) {
 			fm_add_script( 'quickedit-js', 'js/fieldmanager-quickedit.js' );
 		}
 	}
@@ -82,7 +85,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	function add_custom_columns( $columns ) {
-		$columns[$this->fm->name] = $this->title;
+		$columns[$this->fm->name] = $this->column_title;
 		return $columns;
 	}
 
@@ -95,12 +98,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	public function manage_custom_columns( $column_name, $post_id ) {
 		if ( $column_name != $this->fm->name ) return;
 		$data = get_post_meta( $post_id, $this->fm->name, true );
-		if ( !empty( $data ) ) {
-			$column_text = call_user_func( $this->column_not_empty_callback, $data, $post_id );
-		}
-		else {
-			$column_text = call_user_func( $this->column_empty_callback, $post_id );
-		}
+		$column_text = call_user_func( $this->column_display_callback, $post_id, $data );
 		echo $column_text;
 	}
 
@@ -115,7 +113,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	public function add_quickedit_box( $column_name, $post_type, $values = array() ) {
 		if ( $column_name != $this->fm->name ) return;
 		?>
-		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo $column_name; ?>">
+		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo $column_name; ?>" data-fm-post-type="<?php echo $post_type; ?>">
 			<div class="inline-edit-col">
 				<?php wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' ); ?>
 				<?php echo $this->fm->element_markup( $values ); ?>
@@ -129,7 +127,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * Renders a form with pre-filled values to replace the one generated by $this->add_quickedit_box().
 	 * @return string
 	 */
-	public function render_ajax_form( ) {
+	public function render_ajax_form() {
 		if ( $_GET['action'] != 'fm_quickedit_render' ) {
 			return;
 		}
@@ -212,6 +210,5 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	public function default_empty() {
 		return "Data not set.";
 	}
-
 
 }

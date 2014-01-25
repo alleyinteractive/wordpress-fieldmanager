@@ -27,10 +27,10 @@
 abstract class Fieldmanager_Field {
 
 	/**
-	 * @var debug
+	 * @var boolean
 	 * If true, throw exceptions for illegal behavior
 	 */
-	public static $debug = True;
+	public static final $debug = FM_DEBUG;
 
 	/**
 	 * @var int
@@ -287,7 +287,6 @@ abstract class Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->set_options( $label, $options );
-
 		add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
 	}
 
@@ -778,6 +777,7 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Add a form on a frontend page
+	 * @see Fieldmanager_Context_Form
 	 * @param string $uniqid a unique identifier for this form
 	 */
 	public function add_page_form( $uniqid ) {
@@ -787,6 +787,7 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Add a form on a term add/edit page
+	 * @see Fieldmanager_Context_Term
 	 * @param string $title
 	 * @param string|array $taxonomies The taxonomies on which to display this form
 	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
@@ -799,7 +800,8 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Add this field as a metabox to a content type
+	 * Add this field as a metabox to a post type
+	 * @see Fieldmanager_Context_Post
 	 * @param string $title
 	 * @param string|string[] $post_type
 	 * @param string $context
@@ -814,12 +816,15 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Add this field to a post type's quick edit box.
+	 * @see Fieldmanager_Context_Quickedit
 	 * @param string $title
 	 * @param string|string[] $post_type
+	 * @param string $column_title
+	 * @param callable $column_display_callback
 	 */
-	public function add_quickedit_box( $title, $post_types, $column_not_empty_callback, $column_empty_callback ) {
+	public function add_quickedit_box( $title, $post_types, $column_display_callback, $column_title = '' ) {
 		$this->require_base();
-		return new Fieldmanager_Context_QuickEdit( $title, $post_types, $column_not_empty_callback, $column_empty_callback, $this );
+		return new Fieldmanager_Context_QuickEdit( $title, $post_types, $column_display_callback, $column_title, $this );
 	}
 
 	/**
@@ -829,6 +834,18 @@ abstract class Fieldmanager_Field {
 	public function add_submenu_page( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null ) {
 		$this->require_base();
 		return new Fieldmanager_Context_Submenu( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $this );
+	}
+
+	/**
+	 * Activate this group in an already-added submenu page
+	 * @param string $title
+	 */
+	public function activate_submenu_page() {
+		$this->require_base();
+		$submenus = _fieldmanager_registry( 'submenus' );
+		$s = $submenus[ $this->name ];
+		$active_submenu = new Fieldmanager_Context_Submenu( $s[0], $s[1], $s[2], $s[3], $s[4], $this, True );
+		_fieldmanager_registry( 'active_submenu', $active_submenu );
 	}
 
 	private function require_base() {
@@ -890,6 +907,10 @@ abstract class Fieldmanager_Field {
 		return $this->has_proto() ? 'proto' : $this->seq;
 	}
 
+	/**
+	 * Are we in the middle of generating a prototype element for repeatable fields?
+	 * @return boolean
+	 */
 	protected function has_proto() {
 		if ( $this->is_proto ) return True;
 		if ( $this->parent ) return $this->parent->has_proto();

@@ -1,16 +1,18 @@
+// WHEN YOU RETURN, ADD fm_quickedit_post_type SOMEHOW. SHOULD BE A STRING WITH THE CURRENT POST
+
 ( function( $ ) {
-	if ( typeof( inlineEditPost ) == 'undefined' ) {
-		return;
-	}
 
 	$( document ).ready( function() {
+		if ( typeof( inlineEditPost ) == 'undefined' ) {
+			return;
+		}
 		var wp_inline_edit = inlineEditPost.edit;
 
 		inlineEditPost.edit = function( id ) {
 			wp_inline_edit.apply( this, arguments );
 
 			var post_id = 0;
-			
+
 			if ( typeof( id ) == 'object' ) {
 				post_id = parseInt( this.getId( id ) );
 			}
@@ -23,7 +25,7 @@
 						return;
 					}
 					var column_name = id.substring( 13 );
-					$.get( ajaxurl, { action: 'fm_quickedit_render', 'column_name': column_name, 'post_id': post_id }, function( resp ) {
+					$.get( ajaxurl, { action: 'fm_quickedit_render', 'column_name': column_name, 'post_id': post_id, 'post_type': $( self ).data( 'fm-post-type' ) }, function( resp ) {
 						$( self ).replaceWith( resp );
 					} );
 				} );
