@@ -48,7 +48,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public function __construct( $label, $options = array() ) {
 
 		if ( !self::$has_registered_tinymce ) {
-			wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tiny_mce.js' ) );
+			wp_enqueue_script( 'tinymce.js', includes_url( 'js/tinymce/tinymce.js' ) );
 			wp_enqueue_script( 'wp-langs-en.js', includes_url( 'js/tinymce/langs/wp-langs-en.js' ) );
 			self::$has_registered_tinymce = True;
 			// add tinyMCEPreInit early enough in the process that it's available before TinyMCE inits.
