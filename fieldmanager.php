@@ -223,9 +223,15 @@ function fm_get_context() {
 				$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
 				break;
 			case 'admin-ajax.php':
-				if ( !empty( $_POST ) && 'edit-post' === $_POST['screen'] && 'inline-save' === $_POST['action'] ) {
-					$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
-				} elseif ( 'fm_quickedit_render' === $_GET['action'] ) {
+				if ( !empty( $_POST['screen'] ) && !empty( $_POST['action'] ) ) {
+					if ( 'edit-post' === $_POST['screen'] && 'inline-save' === $_POST['action'] ) {
+						$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
+					// context = term
+					} elseif ( 'add-tag' === $_POST['action'] && !empty( $_POST['taxonomy'] ) ) {
+						$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
+					}
+				// context = quickedit
+				} elseif ( !empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) {
 					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );	
 				}
 				break;
@@ -233,7 +239,7 @@ function fm_get_context() {
 			case 'edit-tags.php':
 				if ( !empty( $_POST['taxonomy'] ) ) {
 					$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
-				} elseif ( !empty( $_POST['taxonomy'] ) ) {
+				} elseif ( !empty( $_GET['taxonomy'] ) ) {
 					$calculated_context = array( 'term', sanitize_text_field( $_GET['taxonomy'] ) );
 				}
 				break;

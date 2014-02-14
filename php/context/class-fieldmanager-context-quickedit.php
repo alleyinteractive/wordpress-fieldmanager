@@ -52,6 +52,10 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		
 		if ( !fm_match_context( 'quickedit' ) ) return; // make sure we only load up our JS if we're in a quickedit form.
 
+		if ( FM_DEBUG && !is_callable( $column_display_callback ) ) {
+			throw new FM_Developer_Exception( __( 'You must set a valid column display callback.', 'fieldmanager' ) );
+		}
+
 		// Populate the list of post types for which to add this meta box with the given settings
 		if ( !is_array( $post_types ) ) $post_types = array( $post_types );
 
@@ -194,21 +198,6 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		$current = get_post_meta( $this->fm->data_id, $this->fm->name, True );
 		$data = $this->fm->presave_all( $data, $current );
 		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );
-	}
-
-	/**
-	 * Default display function for non-empty columns.
-	 * @var mixed $data
-	 */
-	public function default_not_empty( $data ) {
-		return "Data set.";
-	}
-
-	/**
-	 * Default display function for non-empty columns.
-	 */
-	public function default_empty() {
-		return "Data not set.";
 	}
 
 }
