@@ -25,7 +25,13 @@ fm.autocomplete = {
 				}
 				if ( $el.data( 'action' ) ) {
 					ac_params.source = function( request, response ) {
-						$.post( ajaxurl, { action: $el.data( 'action' ), fm_autocomplete_search: request.term, fm_search_nonce: fm_search.nonce }, function( result ) {
+						$.post( ajaxurl, {
+							action: $el.data( 'action' ),
+							fm_context: $el.data( 'context' ),
+							fm_subcontext: $el.data( 'subcontext' ),
+							fm_autocomplete_search: request.term,
+							fm_search_nonce: fm_search.nonce
+						}, function( result ) {
 							var results = JSON.parse( result );
 							if ( $.type( results ) == 'object' ) {
 								response( fm.autocomplete.prepare_options( results ) );

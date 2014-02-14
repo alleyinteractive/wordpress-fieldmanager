@@ -42,6 +42,12 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * Display the post publish date in the typeahead menu.
      */
     public $show_date = False;
+
+    /**
+     * @var boolean
+     * Show this as grouped?
+     */
+    public $grouped = False;
     
     /**
      * @var string
