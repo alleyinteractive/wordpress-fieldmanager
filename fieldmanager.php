@@ -14,7 +14,8 @@ Author URI: http://www.alleyinteractive.com/
 */
 
 define( 'FM_VERSION', '1.0-alpha' );
-if ( !defined( 'FM_DEBUG' ) ) define( 'FM_DEBUG', false );
+define( 'FM_BASE_DIR', dirname( __FILE__ ) );
+if ( !defined( 'FM_DEBUG' ) ) define( 'FM_DEBUG', WP_DEBUG );
 
 /**
  * Loads a class based on classname. Understands Fieldmanager nomenclature to find the right file.
@@ -55,7 +56,7 @@ function fieldmanager_load_class( $class ) {
  * @param string $file
  */
 function fieldmanager_load_file( $file ) {
-	$file = dirname( __FILE__ ) . '/php/' . $file;
+	$file = FM_BASE_DIR . '/php/' . $file;
 	if ( !file_exists( $file ) ) throw new FM_Class_Not_Found_Exception( $file );
 	require_once( $file );
 }
@@ -203,12 +204,11 @@ function fm_get_context() {
 		switch ( $script ) {
 			// context = post
 			case 'post.php':
-				if ( !empty( $_POST ) && ( $_POST['action'] == 'editpost' || $_POST['action'] == 'newpost' ) ) {
-					$type = sanitize_text_field( $_POST['post_type'] );
-				} else {
-					$type = get_post_type( intval( $_GET['post'] ) );
+				if ( !empty( $_POST['action'] ) && ( 'editpost' === $_POST['action'] || 'newpost' === $_POST['action'] ) ) {
+					$calculated_context = array( 'post', sanitize_text_field( $_POST['post_type'] ) );
+				} elseif ( !empty( $_GET['post'] ) ) {
+					$calculated_context = array( 'post', get_post_type( intval( $_GET['post'] ) ) );
 				}
-				$calculated_context = array( 'post', $type );
 				break;
 			case 'post-new.php':
 				$calculated_context = array( 'post', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
@@ -223,17 +223,17 @@ function fm_get_context() {
 				$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
 				break;
 			case 'admin-ajax.php':
-				if ( $_POST['screen'] == 'edit-post' && $_POST['action'] == 'inline-save' ) {
+				if ( !empty( $_POST ) && 'edit-post' === $_POST['screen'] && 'inline-save' === $_POST['action'] ) {
 					$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
-				} elseif ( $_GET['action'] == 'fm_quickedit_render' ) {
+				} elseif ( 'fm_quickedit_render' === $_GET['action'] ) {
 					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );	
 				}
 				break;
 			// context = term
 			case 'edit-tags.php':
-				if ( !empty( $_POST['taxonomy'] )) {
+				if ( !empty( $_POST['taxonomy'] ) ) {
 					$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
-				} else {
+				} elseif ( !empty( $_POST['taxonomy'] ) ) {
 					$calculated_context = array( 'term', sanitize_text_field( $_GET['taxonomy'] ) );
 				}
 				break;
@@ -298,7 +298,6 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
 
 	// will be replaced by a Fieldmanager_Context_Submenu if this submenu page is active.
 	$submenus[ $group_name ] = array( $parent_slug, $page_title, $menu_title, $capability, $menu_slug ?: $group_name, '_fm_submenu_render' );
-	// add_submenu_page( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $function );
 
 	_fieldmanager_registry( 'submenus', $submenus );
 }
