@@ -157,7 +157,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 
 		// Set the data type and ID
 		$this->fm->data_type = 'term';
-		$this->fm->data_id = $term->term_id;
+		$this->fm->data_id = is_object( $term ) ? $term->term_id : null;
 
 		// Create the display label if one is set
 		if ( ! empty( $this->title ) ) {
@@ -192,13 +192,9 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		if ( ! in_array( $taxonomy, $this->taxonomies ) )
 			return;
 
-		// Make sure we're coming from the new/edit term form
-		if ( ! isset( $_POST['action'] ) || ! in_array( $_POST['action'], array( 'add-tag', 'editedtag' ) ) )
-			return;
-
-		// Make sure the current user can modify terms in this taxonomy
+		// Make sure the current user can save this post
 		$tax_obj = get_taxonomy( $taxonomy );
-		if( ! current_user_can( $tax_obj->cap->manage_terms ) ) {
+		if( !current_user_can( $tax_obj->cap->manage_terms ) ) {
 			$this->fm->_unauthorized_access( 'User cannot edit this term' );
 			return;
 		}

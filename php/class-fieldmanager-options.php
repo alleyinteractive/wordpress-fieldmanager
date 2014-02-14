@@ -41,6 +41,12 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	public $multiple = False;
 
 	/**
+	 * @var string
+	 * Path to an options template to load.
+	 */
+	public $options_template = '';
+
+	/**
 	 * @var boolean
 	 * Ensure that the datasource only runs once.
 	 */

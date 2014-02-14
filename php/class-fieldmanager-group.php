@@ -96,9 +96,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		if ( $this->collapsed ) $this->collapsible = True;
 
+		// Convenient naming of child elements via their keys
 		foreach ( $this->children as $name => $element ) {
-			if ( !$element->name ) $element->name = $name;
-			// Propagate data type and ID info down the chain
+			// if the array key is not an int, and the name attr is set, and they don't match, we got a problem.
+			if ( $element->name && !is_int( $name ) && $element->name != $name ) throw new FM_Developer_Exception( __( 'Group child name conflict: ' ) . $name . ' / ' . $element->name );
+			else if ( !$element->name ) $element->name = $name;
 		}
 
 		// Add the tab JS and CSS if it is needed
