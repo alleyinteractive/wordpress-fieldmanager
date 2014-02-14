@@ -190,10 +190,12 @@ function fm_get_context() {
 		// context = submenu
 		if ( !empty( $_GET['page'] ) ) {
 			$submenus = _fieldmanager_registry( 'submenus' );
-			foreach ( $submenus as $submenu ) {
-				if ( $script == $submenu[0] ) {
-					$calculated_context = array( 'submenu', sanitize_text_field( $_GET['page'] ) );
-					return $calculated_context;
+			if ( $submenus ) {
+				foreach ( $submenus as $submenu ) {
+					if ( $script == $submenu[0] ) {
+						$calculated_context = array( 'submenu', sanitize_text_field( $_GET['page'] ) );
+						return $calculated_context;
+					}
 				}
 			}
 		}
