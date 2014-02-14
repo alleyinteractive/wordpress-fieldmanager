@@ -183,7 +183,7 @@ function fm_get_context() {
 	static $calculated_context;
 
 	if ( $calculated_context ) return $calculated_context;
-	
+
 	if ( is_admin() ) { // safe to use at any point in the load process, and better than URL matching.
 
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
@@ -223,7 +223,11 @@ function fm_get_context() {
 				$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
 				break;
 			case 'admin-ajax.php':
-				if ( !empty( $_POST['screen'] ) && !empty( $_POST['action'] ) ) {
+				// passed in via an ajax form
+				if ( !empty( $_POST['fm_context'] ) ) {
+					$subcontext = !empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( $_POST['fm_subcontext'] ) : null;
+					$calculated_context = array( sanitize_text_field( $_POST['fm_context'] ), $subcontext );
+				} elseif ( !empty( $_POST['screen'] ) && !empty( $_POST['action'] ) ) {
 					if ( 'edit-post' === $_POST['screen'] && 'inline-save' === $_POST['action'] ) {
 						$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
 					// context = term
