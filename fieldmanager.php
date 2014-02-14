@@ -2,7 +2,7 @@
 /**
  * Fieldmanager Base Plugin File
  * @package Fieldmanager
- * @version 0.1
+ * @version 1.0-alpha
  */
 /*
 Plugin Name: Fieldmanager
@@ -13,36 +13,57 @@ Version: 0.1
 Author URI: http://www.alleyinteractive.com/
 */
 
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-field.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-group.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textfield.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-password.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-autocomplete.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-checkbox.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-datepicker.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-draggablepost.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-hidden.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-grid.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-link.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-media.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-options.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-richtextarea.php' );
-require_once( dirname( __FILE__ ) . '/php/class-fieldmanager-textarea.php' );
+define( 'FM_VERSION', '1.0-alpha' );
+define( 'FM_BASE_DIR', dirname( __FILE__ ) );
+if ( !defined( 'FM_DEBUG' ) ) define( 'FM_DEBUG', WP_DEBUG );
 
-require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource.php' );
-require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource-post.php' );
-require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource-term.php' );
-require_once( dirname( __FILE__ ) . '/php/datasource/class-fieldmanager-datasource-user.php' );
+/**
+ * Loads a class based on classname. Understands Fieldmanager nomenclature to find the right file.
+ * Does not know how to load classes outside of Fieldmanager's plugin, so if you build your own field,
+ * you will have to include it or autoload it for yourself.
+ * @uses spl_autoload_register
+ * @uses fieldmanager_load_file
+ * @param string $class
+ */
+function fieldmanager_load_class( $class ) {
+	static $first_load = true;
 
-require_once( dirname( __FILE__ ) . '/php/util/class-fieldmanager-util-term-meta.php' );
-require_once( dirname( __FILE__ ) . '/php/util/class-fieldmanager-util-validation.php' );
+	if ( class_exists( $class ) || strpos( $class, 'Fieldmanager' ) !== 0 ) return;
+	$class_id = strtolower( substr( $class, strrpos( $class, '_' ) + 1 ) );
 
-require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context.php' );
-require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-user.php' );
-require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-page.php' );
-require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-post.php' );
-require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-submenu.php' );
-require_once( dirname( __FILE__ ) . '/php/context/class-fieldmanager-context-term.php' );
+	if ( $first_load ) {
+		// Utility classes with helper functions
+		fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
+		fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
+		$first_load = false;
+	}
+
+	if ( strpos( $class, 'Fieldmanager_Context' ) === 0 ) {
+		if ( $class_id == 'context' ) return fieldmanager_load_file( 'context/class-fieldmanager-context.php' );	
+		return fieldmanager_load_file( 'context/class-fieldmanager-context-' . $class_id . '.php' );
+	}
+
+	if ( strpos( $class, 'Fieldmanager_Datasource' ) === 0 ) {
+		if ( $class_id == 'datasource' ) return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource.php' );
+		return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource-' . $class_id . '.php' );
+	}
+	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );
+}
+
+/**
+ * Loads a Fieldmanager file
+ * @throws Fieldmanager_Class_Undefined
+ * @param string $file
+ */
+function fieldmanager_load_file( $file ) {
+	$file = FM_BASE_DIR . '/php/' . $file;
+	if ( !file_exists( $file ) ) throw new FM_Class_Not_Found_Exception( $file );
+	require_once( $file );
+}
+
+if ( function_exists( 'spl_autoload_register' ) ) {
+	spl_autoload_register( 'fieldmanager_load_class' );
+}
 
 define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 
@@ -145,25 +166,164 @@ function _fieldmanager_registry( $var, $val = NULL ) {
 }
 
 /**
- * Wrapper for get_post_meta which handles JSON quietly.
- * @param int $post_id
- * @param string $var
- * @param boolean $single
+ * Get the context for triggers and pattern matching.
+ *
+ * This function is crucial for performance. It prevents the unnecessary initialization of FM classes,
+ * and the unnecessary loading of CSS and Javascript.
+ * 
+ * You can't use this function to determine whether or not a context 'Form' will be displayed, since
+ * it can be used anywhere. We would love to use get_current_screen(), but it's not available in
+ * some POST actions, and generally not available early enough in the init process.
+ *
+ * This is a function to watch closely as WordPress changes, since it relies on paths and variables.
+ *
+ * @return string[] [$context, $type]
  */
-function fm_get_post_meta( $post_id, $var, $single = True ) {
-	$data = get_post_meta( $post_id, $var, $single );
-	return json_decode( $data, TRUE );
+function fm_get_context() {
+	static $calculated_context;
+
+	if ( $calculated_context ) return $calculated_context;
+	
+	if ( is_admin() ) { // safe to use at any point in the load process, and better than URL matching.
+
+		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
+
+		// context = submenu
+		if ( !empty( $_GET['page'] ) ) {
+			$submenus = _fieldmanager_registry( 'submenus' );
+			if ( $submenus ) {
+				foreach ( $submenus as $submenu ) {
+					if ( $script == $submenu[0] ) {
+						$calculated_context = array( 'submenu', sanitize_text_field( $_GET['page'] ) );
+						return $calculated_context;
+					}
+				}
+			}
+		}
+
+		switch ( $script ) {
+			// context = post
+			case 'post.php':
+				if ( !empty( $_POST['action'] ) && ( 'editpost' === $_POST['action'] || 'newpost' === $_POST['action'] ) ) {
+					$calculated_context = array( 'post', sanitize_text_field( $_POST['post_type'] ) );
+				} elseif ( !empty( $_GET['post'] ) ) {
+					$calculated_context = array( 'post', get_post_type( intval( $_GET['post'] ) ) );
+				}
+				break;
+			case 'post-new.php':
+				$calculated_context = array( 'post', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
+				break;
+			// context = user
+			case 'profile.php':
+			case 'user-edit.php':
+				$calculated_context = array( 'user', null );
+				break;
+			// context = quickedit
+			case 'edit.php':
+				$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
+				break;
+			case 'admin-ajax.php':
+				if ( !empty( $_POST ) && 'edit-post' === $_POST['screen'] && 'inline-save' === $_POST['action'] ) {
+					$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
+				} elseif ( 'fm_quickedit_render' === $_GET['action'] ) {
+					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );	
+				}
+				break;
+			// context = term
+			case 'edit-tags.php':
+				if ( !empty( $_POST['taxonomy'] ) ) {
+					$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
+				} elseif ( !empty( $_POST['taxonomy'] ) ) {
+					$calculated_context = array( 'term', sanitize_text_field( $_GET['taxonomy'] ) );
+				}
+				break;
+		}
+	}
+
+	if ( empty( $calculated_context ) ) {
+		$calculated_context = array( null, null );
+	}
+	return $calculated_context;
 }
 
 /**
- * Cheap way to tell if we're looking at a post edit page.
- * It's a good idea to use this at the beginning of implementations which use metaboxes
- * to avoid initializing your Fieldmanager chain on every page load.
- * @return boolean are we editing or creating a post?
+ * Check to see if a given context is active.
+ * @see fm_get_context()
+ * @param string $context one of 'post', 'quickedit', 'submenu', 'term', 'form', or 'user'.
+ * @param string|string[] $type Optional. For 'post' and 'quickedit', pass the post type. For 'term' it will be
+ *   the taxonomy. For 'submenu' it will be the page name. For all others it will be null. You can pass an array
+ *   of types to match several types.
+ * @return string[] - a two-element array, like [context, type].
  */
-function fm_is_post_edit_screen() {
-	return stripos( $_SERVER['PHP_SELF'], '/post.php' ) !== FALSE || stripos( $_SERVER['PHP_SELF'], '/post-new.php' ) !== FALSE;
+function fm_match_context( $context, $type = null ) {
+	if ( $context == 'form' ) return true; // nothing to check, since forms can be anywhere.
+	$calculated_context = fm_get_context();
+	if ( $context == $calculated_context[0] ) {
+		if ( $type !== null ) {
+			if ( is_array( $type ) ) {
+				return in_array( $calculated_context[1], $type );
+			}
+			return ( $type == $calculated_context[1] );
+		}
+		return true;
+	}
+	return false;
 }
+
+/**
+ * Trigger the action for a given context
+ * @uses fm_get_context()
+ */
+function fm_trigger_context_action() {
+	$calculated_context = fm_get_context();
+	$action = 'fm_' . $calculated_context[0];
+	if ( $calculated_context[1] ) $action .= '_' . $calculated_context[1];
+	do_action( $action );
+}
+
+add_action( 'init', 'fm_trigger_context_action', 99 );
+
+/**
+ * Register a submenu page
+ * @throws FM_Duplicate_Submenu_Name
+ */
+function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null ) {
+	$submenus = _fieldmanager_registry( 'submenus' );
+	if ( !$submenus ) $submenus = array();
+	if ( isset( $submenus[ $group_name ] ) ) {
+		throw new FM_Duplicate_Submenu_Name_Exception( $group_name . ' is already in use as a submenu name' );
+	}
+
+	if ( !$menu_title ) $menu_title = $page_title;
+
+	// will be replaced by a Fieldmanager_Context_Submenu if this submenu page is active.
+	$submenus[ $group_name ] = array( $parent_slug, $page_title, $menu_title, $capability, $menu_slug ?: $group_name, '_fm_submenu_render' );
+
+	_fieldmanager_registry( 'submenus', $submenus );
+}
+
+/**
+ * Render a registered submenu page
+ */
+function _fm_submenu_render() {
+	$context = _fieldmanager_registry( 'active_submenu' );
+	if ( !is_object( $context ) ) {
+		throw new FM_Submenu_Not_Initialized_Exception( 'The Fieldmanger context for this submenu was not initialized' );
+	}
+	$context->render_submenu_page();
+}
+
+/**
+ * Hook into admin_menu to register submenu pages
+ */
+function _fm_add_submenus() {
+	$submenus = _fieldmanager_registry( 'submenus' );
+	if ( !is_array( $submenus ) ) return;
+	foreach ( $submenus as $s ) {
+		call_user_func_array( 'add_submenu_page', $s );
+	}
+}
+add_action( 'admin_menu', '_fm_add_submenus' );
 
 /**
  * Sanitize multi-line text
@@ -179,6 +339,21 @@ function fm_sanitize_textarea( $value ) {
  * @package Fieldmanager
  */
 class FM_Exception extends Exception { }
+
+/**
+ * Exception Class for classes that could not be loaded
+ */
+class FM_Class_Not_Found_Exception extends Exception { }
+
+/**
+ * Exception class for unitialized submenus
+ */
+class FM_Submenu_Not_Initialized_Exception extends Exception { }
+
+/**
+ * Exception Class for duplicate submenus
+ */
+class FM_Duplicate_Submenu_Name_Exception extends Exception { }
 
 /**
  * Exception class for this plugin's developer errors; mostly to differentiate in unit tests.
