@@ -272,3 +272,10 @@ a.fm-delete:hover {
 .edit-tags-php .fm-media-button {
 	width: 200px;
 }
+
+/**
+ * Fix block labels inside an edit-Zone screen.
+ */
+.zone-form .fm-item label {
+	display: inline;
+}
