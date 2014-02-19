@@ -76,6 +76,11 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$this->zoninator_exists = class_exists( 'Zoninator' );
 		$this->fm = $fm;
 
+		// Set up the $zoninator global if the class exists
+		if ( $this->zoninator_exists ) {
+			global $zoninator;
+		}
+
 		// Iterate through the taxonomies and add the fields to the requested forms
 		// Also add handlers for saving the fields and which forms to validate (if enabled)
 		foreach ( $taxonomies as $taxonomy ) {
@@ -89,12 +94,10 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 				add_action( 'edited_term', array( $this, 'save_term_fields'), 10, 3 );
 			}
 
-			if ( $this->zoninator_exists ) {
-				global $zoninator;
-				if ( $taxonomy == $zoninator->zone_taxonomy ) {
-					if ( $this->show_on_add || $this->show_on_edit ) {
-						add_action( 'zoninator_post_zone_fields', array( $this, 'add_term_fields_to_zone' ), 10 );
-					}
+			// Ensure fields display when editing zones
+			if ( $this->zoninator_exists && $taxonomy == $zoninator->zone_taxonomy ) {
+				if ( $this->show_on_add || $this->show_on_edit ) {
+					add_action( 'zoninator_post_zone_fields', array( $this, 'add_term_fields_to_zone' ), 10 );
 				}
 			}
 
