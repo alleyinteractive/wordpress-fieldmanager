@@ -113,7 +113,7 @@ tinyMCE.ScriptLoader.markDone( "%1$sjs/tinymce/themes/advanced/langs/en.js" );
 	 * the link and fullscreen edit popups
 	 * @return void
 	 */
-	public function editor_js() {
+	public static function editor_js() {
 		if ( ! class_exists( '_WP_Editors' ) ) {
 			require( ABSPATH . WPINC . '/class-wp-editor.php' );
 
