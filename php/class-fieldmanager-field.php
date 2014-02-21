@@ -575,7 +575,7 @@ abstract class Fieldmanager_Field {
 	 */
 	public function presave_all( $values, $current_values ) {
 
-		if ( $this->limit == 1 ) {
+		if ( $this->limit == 1 && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
 			if ( ! empty( $values ) )
 				$value = $this->presave( $values[0], $current_values );
