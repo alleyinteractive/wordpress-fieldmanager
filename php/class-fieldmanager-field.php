@@ -597,6 +597,8 @@ abstract class Fieldmanager_Field {
 			);
 		}
 
+		if ( empty( $values ) ) $values = array();
+
 		if ( isset( $values['proto'] ) ) {
 			unset( $values['proto'] );
 		}
