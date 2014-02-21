@@ -123,7 +123,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 			if ( isset( $current ) ) {
 				update_option( $this->fm->name, $data );
 			} else {
-				add_option( $this->fm->name, $data, ' ', $this->wp_option_autoload ? 'yes' : 'no' );
+				add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
 			}
 		}
 	}
