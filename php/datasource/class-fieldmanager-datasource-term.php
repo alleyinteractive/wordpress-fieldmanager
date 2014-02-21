@@ -129,7 +129,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$terms = wp_get_object_terms( $field->data_id, $taxonomies[0], array( 'orderby' => 'term_order' ) );
 
 			if ( count( $terms ) > 0 ) {
-				if ( $field->limit == 1 ) {
+				if ( $field->limit == 1 && empty( $field->multiple ) ) {
 					return $terms[0]->term_id;
 				} else {
 					$ret = array();
