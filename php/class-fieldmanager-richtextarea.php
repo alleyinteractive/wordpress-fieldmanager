@@ -63,6 +63,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 				wp_enqueue_script( 'wp-langs-en.js', includes_url( 'js/tinymce/langs/wp-langs-en.js' ) );
 			} else {
 				wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tinymce.js' ) );
+				wp_enqueue_style( 'editor-buttons' );
 			}
 
 			self::$has_registered_tinymce = True;
@@ -190,6 +191,7 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%s", suff
 				'toolbar3' => $buttons[2],
 				'toolbar4' => $buttons[3],
 			) );
+			$plugins[] = 'link';
 		}
 
 		$options['plugins'] = implode( ',', array_unique( apply_filters('tiny_mce_plugins', $plugins ) ) );
