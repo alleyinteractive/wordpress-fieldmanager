@@ -191,7 +191,7 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%s", suff
 				'toolbar3' => $buttons[2],
 				'toolbar4' => $buttons[3],
 			) );
-			$plugins[] = 'link';
+			$plugins[] = 'wplink';
 		}
 
 		$options['plugins'] = implode( ',', array_unique( apply_filters('tiny_mce_plugins', $plugins ) ) );
