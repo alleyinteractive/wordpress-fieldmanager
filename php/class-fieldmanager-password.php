@@ -4,7 +4,7 @@
  */
 
 /**
- * Text field. A good basic implementation guide, too.
+ * Password field. A good basic implementation guide, too.
  * @package Fieldmanager
  */
 class Fieldmanager_Password extends Fieldmanager_Field {

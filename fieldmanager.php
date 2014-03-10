@@ -175,6 +175,7 @@ function _fieldmanager_registry( $var, $val = NULL ) {
  *
  * This is a function to watch closely as WordPress changes, since it relies on paths and variables.
  *
+ * @todo trigger multiple contexts
  * @return string[] [$context, $type]
  */
 function fm_get_context() {
@@ -182,7 +183,9 @@ function fm_get_context() {
 
 	if ( $calculated_context ) return $calculated_context;
 
-	if ( is_admin() ) { // safe to use at any point in the load process, and better than URL matching.
+	if ( !empty( $_POST['fm-form-context'] ) || !empty( $_GET['fm-form-context'] ) ) {
+		$calculated_context = array( 'form', sanitize_text_field( !empty( $_POST['fm-form-context'] ) ? $_POST['fm-form-context'] : $_GET['fm-form-context'] ) );
+	} else if ( is_admin() ) { // safe to use at any point in the load process, and better than URL matching.
 
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
@@ -334,6 +337,42 @@ function _fm_add_submenus() {
 add_action( 'admin_menu', '_fm_add_submenus' );
 
 /**
+ * Template tag to output a form by unique ID
+ * @param string $uniqid
+ * @return void
+ */
+function fm_the_form( $uniqid ) {
+	_fm_form_init_once( $uniqid );
+	Fieldmanager_Context_Form::get_form( $uniqid )->render_page_form();
+}
+
+/**
+ * Template tag to get a form by unique ID
+ * @param string $uniqid
+ * @return void
+ */
+function fm_get_form( $uniqid ) {
+	_fm_form_init_once( $uniqid );
+	return Fieldmanager_Context_Form::get_form( $uniqid );
+}
+
+/**
+ * Load up a form
+ */
+function _fm_form_init_once( $uniqid ) {
+	static $loaded_forms;
+	if ( !$loaded_forms ) $loaded_forms = array();
+	if ( !empty( $loaded_forms[ $uniqid ] ) ) return;
+
+	// mark this form as loaded first in case the action hooks try to reload it
+	$loaded_forms[ $uniqid ] = true;
+
+	// make sure the form wasn't initialized by fm_trigger_context_action()
+	$ctx = fm_get_context();
+	if ( $ctx[1] !== $uniqid ) do_action( 'fm_form_' . $uniqid );
+}
+
+/**
  * Sanitize multi-line text
  * @param string $value unsanitized text
  * @return string text with each line individually passed through sanitize_text_field.
@@ -376,4 +415,3 @@ class FM_Developer_Exception extends Exception { }
  * @package Fieldmanager
  */
 class FM_Validation_Exception extends Exception { }
-

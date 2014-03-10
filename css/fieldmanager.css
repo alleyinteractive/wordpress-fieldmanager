@@ -32,7 +32,13 @@ div.fm-group-label-wrapper {
 	overflow: auto;
 }
 
+.fm-wrapper label {
+	display: block;
+	margin: 0 0 5px 0;
+}
+
 .fm-label-inline {
+	display: inline;
 	margin: 0 5px 0 0;
 }
 

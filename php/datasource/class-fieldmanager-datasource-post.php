@@ -60,6 +60,12 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * Publish the child post when/if the parent is published.
      */
     public $publish_with_parent = False;
+ 
+    /**
+     * @var string
+     * Capability required to refer to this post
+     */
+    public $cap = 'edit_post';
 
     // constructor not required for this datasource; options are just set to keys,
     // which Fieldmanager_Datasource does.

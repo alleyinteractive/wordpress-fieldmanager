@@ -12,6 +12,16 @@ class Fieldmanager_Util_Validation {
 	 * @access private
 	 */
 	private static $instance;
+
+	/**
+	 * Error class
+	 */
+	public $error_class = 'fm-js-error';
+
+	/**
+	 * Skip CSS?
+	 */
+	public $skip_css = false;
 	
 	/**
 	 * @var array
@@ -95,7 +105,7 @@ class Fieldmanager_Util_Validation {
 		
 		// Add the appropriate action hook to finalize and output validation JS 
 		// Also determine where the jQuery validation script needs to be added
-		if ( $context == 'page' ) {
+		if ( $context == 'form' ) {
 			// Currently only the page context outputs to the frontend
 			$action = 'wp_footer';
 			$admin = false;
@@ -107,6 +117,7 @@ class Fieldmanager_Util_Validation {
 		
 		// Hook the action
 		add_action( $action, array( &$this, 'add_validation' ) );
+		$this->valid_rules = apply_filters( 'fm_validation_rules', $this->valid_rules );
 	}
 
 	/**
@@ -117,7 +128,7 @@ class Fieldmanager_Util_Validation {
 	 */
 	public function add_field( &$fm ) {
 		// If this field is a Fieldmanager_Group, iterate over the children
-		if ( get_class( $fm ) == "Fieldmanager_Group" ) {
+		if ( "Fieldmanager_Group" == get_class( $fm ) ) {
 			foreach ( $fm->children as $child ) {
 				$this->add_field( $child );
 			}
@@ -126,7 +137,7 @@ class Fieldmanager_Util_Validation {
 		// Check if this field has validation enabled. If not, return.
 		if ( empty( $fm->validation_rules ) )
 			return;
-			
+
 		// Determine if the rules are a string or an array and ensure they are valid.
 		// Also aggregate any messages that were set for the rules, ignoring any messages that don't match a rule.
 		$messages = "";
@@ -219,21 +230,31 @@ class Fieldmanager_Util_Validation {
 			// Add the Fieldmanager validation script and CSS
 			// This is not done via the normal enqueue process since there is no way to know at that point if any fields will require validation
 			// Doing this here avoids loading JS/CSS for validation if not in use
-			echo "<link rel='stylesheet' id='fm-validation-css' href='" . fieldmanager_get_baseurl() . "css/fieldmanager-validation.css' />\n";
+			if ( !$this->skip_css ) echo "<link rel='stylesheet' id='fm-validation-css' href='" . fieldmanager_get_baseurl() . "css/fieldmanager-validation.css' />\n";
 			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/fieldmanager-validation.js?ver=0.3'></script>\n";
 			
 			// Add the jQuery validation script
 			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/jquery.validate.min.js'></script>\n";
 					
 			// Add the ignore, rules and messages to final validate method with form ID, wrap in script tags and output
-			echo sprintf(
-				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm_validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
-				esc_js( $this->form_id ),
-				$ignore_js,
-				$rules_js,
-				$messages_js
-			);
-		}	
+			?>
+			<script type='text/javascript'>
+			( function( $ ) {
+				$( document ).ready( function () {
+					var validator = $( "#<?php echo esc_js( $this->form_id ); ?>" ).validate( {
+						invalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },
+						submitHandler: function( form ) { fm_validation.submitHandler( form ); },
+						errorPlacement: function( error, element ) { return fm_validation.errorPlacement( error, element ) },
+						errorClass: "<?php echo $this->error_class; ?>",
+						ignore: "<?php echo $ignore_js; ?>",
+						<?php echo $rules_js; ?>
+						<?php echo $messages_js; ?>
+					} )
+				} );
+			} )( jQuery );
+			</script>
+			<?php
+		}
 	}
 	
 	/**

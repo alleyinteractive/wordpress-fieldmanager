@@ -112,9 +112,15 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * @var string
+	 * Set submit button for frontend forms
+	 */
+	public $submit_button_label = 'Save options';
+
+	/**
+	 * @var string
 	 * HTML element to use for label
 	 */
-	public $label_element = 'div';
+	public $label_element = 'label';
 
 	/**
 	 * @var callback
@@ -308,8 +314,8 @@ abstract class Fieldmanager_Field {
 				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
-					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.' ),
-					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
+					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em>.' ),
+					$k, get_class( $this )
 				);
 				$title = __( 'Nonexistant or invalid option' );
 				if ( !self::$debug ) {
@@ -341,7 +347,7 @@ abstract class Fieldmanager_Field {
 			$max = $this->limit;
 		}
 
-		$classes = array( 'fm-wrapper', 'fm-' . $this->name . '-wrapper' );
+		$classes = array( 'fm-wrapper', 'form-group', 'fm-' . $this->name . '-wrapper' );
 		$fm_wrapper_attrs = array();
 		if ( $this->sortable ) {
 			$classes[] = 'fmjs-sortable';
@@ -435,9 +441,8 @@ abstract class Fieldmanager_Field {
 
 		self::$global_seq++;
 
-		// Drop the fm-group class to hide inner box display if no label is set
-		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
-			$classes[] = 'fm-' . $this->field_class;
+		if ( get_class( $this ) == 'Fieldmanager_Group' && ( $this->parent || $this->limit != 1 ) ) {
+			$classes[] = 'fm-group';
 		}
 
 		// Check if the required attribute is set. If so, add the class.
@@ -716,17 +721,17 @@ abstract class Fieldmanager_Field {
 		$classes[] = 'fm-label';
 		$classes[] = 'fm-label-' . $this->name;
 		if ( $this->inline_label ) {
-			$this->label_element = 'span';
 			$classes[] = 'fm-label-inline';
 		}
 		if ( $this->label_after_element ) {
 			$classes[] = 'fm-label-after';
 		}
+		// @TODO add inline and block to .label in stylesheet. Test this all.
 		return sprintf(
-			'<%s class="%s"><label for="%s">%s</label></%s>',
+			'<%s for="%s" class="%s">%s</%s>',
 			$this->label_element,
-			implode( ' ', $classes ),
 			$this->get_element_id( $this->get_seq() ),
+			implode( ' ', $classes ),
 			$this->label,
 			$this->label_element
 		);
@@ -796,9 +801,9 @@ abstract class Fieldmanager_Field {
 	 * @see Fieldmanager_Context_Form
 	 * @param string $uniqid a unique identifier for this form
 	 */
-	public function add_page_form( $uniqid ) {
+	public function add_form( $uniqid ) {
 		$this->require_base();
-		return new Fieldmanager_Context_Page( $uniqid, $this );
+		return new Fieldmanager_Context_Form( $uniqid, $this );
 	}
 
 	/**
