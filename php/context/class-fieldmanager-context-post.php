@@ -63,7 +63,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		if ( isset( $this->fm->is_attachment ) && $this->fm->is_attachment ) {
 			add_filter( 'attachment_fields_to_save', array( $this, 'save_fields_for_attachment' ), 10, 2 );
 		}
-		add_action( 'save_post', array( $this, 'save_fields_for_post' ) );
+		add_action( 'save_post', array( $this, 'delegate_save_post' ) );
 		// Check if any meta boxes need to be removed
 		if ( $this->fm && !empty( $this->fm->meta_boxes_to_remove ) ) {
 			add_action( 'admin_init', array( $this, 'remove_meta_boxes' ) );
@@ -103,7 +103,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_id = $post->ID;
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $values );
-		
+
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );
 		$fm_validation->add_field( $this->fm );
@@ -136,6 +136,19 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 
 		// Return the post data for the attachment unmodified
 		return $post;
+	}
+
+	/**
+	 * Action handler to delegate to appropriate methods when a post is saved.
+	 * @param int $post_id
+	 * @return void
+	 */
+	public function delegate_save_post( $post_id ) {
+		if( defined( 'DOING_CRON' ) && DOING_CRON ) {
+			$this->save_fields_for_cron( $post_id );
+		} else {
+			$this->save_fields_for_post( $post_id );
+		}
 	}
 
 	/**
@@ -174,9 +187,22 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 			$this->fm->_unauthorized_access( 'Nonce validation failed' );
 		}
-		
+
 		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
 		$this->save_to_post_meta( $post_id, $value );
+	}
+
+	/**
+	 * Process fields during a cron request, without saving data since the data isn't changing.
+	 * @param int $post_id
+	 * @return void
+	 */
+	public function save_fields_for_cron( $post_id ) {
+		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) return;
+		// don't save values since we aren't provided with any; just trigger presave so that subclass handlers can process as necessary
+		$this->fm->skip_save = true;
+		$current = get_post_meta( $post_id, $this->fm->name, True );
+		$this->save_to_post_meta( $post_id, $current );
 	}
 
 	/**
