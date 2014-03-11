@@ -7,21 +7,28 @@ fm.richtextarea = {
 				var opts = $( this ).data( 'mce-options' );
 				if ( opts ) {
 					opts['elements'] = $( this ).attr( 'id' );
-					opts['contentEditable'] = true;
 					tinyMCE.init( opts );
 					$( this ).addClass( 'fm-tinymce' );
 				}
 			}
 		} );
 	},
-	drag_rte_disable_control: function() {
-		$( this ).find( '.fm-tinymce' ).each( function() {
-			tinymce.execCommand( 'mceRemoveControl', true, $( this ).attr( 'id' ) );
+	drag_rte_disable_control: function( e, el ) {
+		$( el ).find( '.fm-tinymce' ).each( function() {
+			var cmd = 'mceRemoveControl';
+			if ( parseInt( tinymce.majorVersion ) >= 4 ) {
+				var cmd = 'mceRemoveEditor';
+			}
+			tinymce.execCommand( cmd, false, $( this ).attr( 'id' ) );
 		});
 	},
-	drop_rte_enable_control: function() {
-		$( this ).find( '.fm-tinymce' ).each( function() {
-			tinymce.execCommand( 'mceAddControl', true, $( this ).attr( 'id' ) );
+	drop_rte_enable_control: function( e, el ) {
+		$( el ).find( '.fm-tinymce' ).each( function() {
+			var cmd = 'mceAddControl';
+			if ( parseInt( tinymce.majorVersion ) >= 4 ) {
+				var cmd = 'mceAddEditor';
+			}
+			tinymce.execCommand( cmd, false, $( this ).attr( 'id' ) );
 		});
 	}
 }

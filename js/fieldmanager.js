@@ -10,12 +10,12 @@ var init_sortable_container = function( el ) {
 			handle: '.fmjs-drag',
 			items: '> .fm-item',
 			start: function( e, ui ) {
-				$( document ).trigger( 'fm-sortable-drag') ;
+				$( document ).trigger( 'fm-sortable-drag', el ) ;
 			},
 			stop: function( e, ui ) {
 				var $parent = ui.item.parents( '.fm-wrapper' ).first();
 				fm_renumber( $parent );
-				$( document ).trigger( 'fm-sortable-drop' );
+				$( document ).trigger( 'fm-sortable-drop', el );
 			}
 		} );
 	}
