@@ -44,7 +44,7 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return void
 	 */
 	public function setup() {
-		$this->create_content_type();
+		add_action( 'init', array( $this, 'create_content_type' ) );
 	}
 
 	/**
