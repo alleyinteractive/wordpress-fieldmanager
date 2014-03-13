@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="generator" content="ApiGen 2.8.0" />
-	<meta name="robots" content="noindex" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+	<meta name="robots" content="noindex">
 
 	<title>File class-fieldmanager-autocomplete.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?809599316"></script>
-	<script type="text/javascript" src="elementlist.js?4223749464"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
+	<script type="text/javascript" src="resources/combined.js?4143384459"></script>
+	<script type="text/javascript" src="elementlist.js?969459336"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822">
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609">
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -58,9 +58,9 @@
 	<div id="left">
 	<div id="menu">
 		<form id="search" class="form-search">
-			<input type="hidden" name="cx" value="" />
-			<input type="hidden" name="ie" value="UTF-8" />
-			<input type="text" name="q" class="search-query" placeholder="Search" />
+			<input type="hidden" name="cx" value="">
+			<input type="hidden" name="ie" value="UTF-8">
+			<input type="text" name="q" class="search-query" placeholder="Search">
 		</form>
 
 
@@ -109,8 +109,11 @@
 
 			<h3>Exceptions</h3>
 			<ul>
+				<li><a href="class-FM_Class_Not_Found_Exception.html">FM_Class_Not_Found_Exception</a></li>
 				<li><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></li>
+				<li><a href="class-FM_Duplicate_Submenu_Name_Exception.html">FM_Duplicate_Submenu_Name_Exception</a></li>
 				<li><a href="class-FM_Exception.html">FM_Exception</a></li>
+				<li><a href="class-FM_Submenu_Not_Initialized_Exception.html">FM_Submenu_Not_Initialized_Exception</a></li>
 				<li><a href="class-FM_Validation_Exception.html">FM_Validation_Exception</a></li>
 			</ul>
 
@@ -118,15 +121,21 @@
 			<h3>Functions</h3>
 			<ul>
 				<li><a href="function-_fieldmanager_registry.html">_fieldmanager_registry</a></li>
+				<li><a href="function-_fm_add_submenus.html">_fm_add_submenus</a></li>
+				<li><a href="function-_fm_submenu_render.html">_fm_submenu_render</a></li>
 				<li><a href="function-fieldmanager_enqueue_scripts.html">fieldmanager_enqueue_scripts</a></li>
 				<li><a href="function-fieldmanager_get_baseurl.html">fieldmanager_get_baseurl</a></li>
 				<li><a href="function-fieldmanager_get_template.html">fieldmanager_get_template</a></li>
+				<li><a href="function-fieldmanager_load_class.html">fieldmanager_load_class</a></li>
+				<li><a href="function-fieldmanager_load_file.html">fieldmanager_load_file</a></li>
 				<li><a href="function-fieldmanager_set_baseurl.html">fieldmanager_set_baseurl</a></li>
 				<li><a href="function-fm_add_script.html">fm_add_script</a></li>
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
-				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
-				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_get_context.html">fm_get_context</a></li>
+				<li><a href="function-fm_match_context.html">fm_match_context</a></li>
+				<li><a href="function-fm_register_submenu_page.html">fm_register_submenu_page</a></li>
 				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
+				<li><a href="function-fm_trigger_context_action.html">fm_trigger_context_action</a></li>
 			</ul>
 		</div>
 	</div>
@@ -196,7 +205,7 @@
 </span><span id="58" class="l"><a class="l" href="#58"> 58 </a>        add_action( <span class="php-quote">'admin_enqueue_scripts'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'enqueue_scripts'</span> ) );
 </span><span id="59" class="l"><a class="l" href="#59"> 59 </a>        add_action( <span class="php-quote">'wp_enqueue_scripts'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'enqueue_scripts'</span> ) );
 </span><span id="60" class="l"><a class="l" href="#60"> 60 </a>
-</span><span id="61" class="l"><a class="l" href="#61"> 61 </a>        fm_add_script( <span class="php-quote">'fm_autocomplete_js'</span>, <span class="php-quote">'js/fieldmanager-autocomplete.js'</span>, <span class="php-keyword1">array</span>(), <span class="php-quote">'1.0.1'</span>, <span class="php-keyword1">false</span>, <span class="php-quote">'fm_search'</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'nonce'</span> =&gt; wp_create_nonce( <span class="php-quote">'fm_search_nonce'</span> ) ) );
+</span><span id="61" class="l"><a class="l" href="#61"> 61 </a>        fm_add_script( <span class="php-quote">'fm_autocomplete_js'</span>, <span class="php-quote">'js/fieldmanager-autocomplete.js'</span>, <span class="php-keyword1">array</span>(), <span class="php-quote">'1.0.2'</span>, <span class="php-keyword1">false</span>, <span class="php-quote">'fm_search'</span>, <span class="php-keyword1">array</span>( <span class="php-quote">'nonce'</span> =&gt; wp_create_nonce( <span class="php-quote">'fm_search_nonce'</span> ) ) );
 </span><span id="62" class="l"><a class="l" href="#62"> 62 </a>
 </span><span id="63" class="l"><a class="l" href="#63"> 63 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$this</span>-&gt;datasource ) ) {
 </span><span id="64" class="l"><a class="l" href="#64"> 64 </a>            <span class="php-var">$message</span> = __( <span class="php-quote">'You must supply a datasource for the autocomplete field'</span> );
@@ -239,89 +248,92 @@
 </span><span id="101" class="l"><a class="l" href="#101">101 </a>
 </span><span id="102" class="l"><a class="l" href="#102">102 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;datasource-&gt;use_ajax ) {
 </span><span id="103" class="l"><a class="l" href="#103">103 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-action'</span>] = <span class="php-var">$this</span>-&gt;datasource-&gt;get_ajax_action( <span class="php-var">$this</span>-&gt;name );
-</span><span id="104" class="l"><a class="l" href="#104">104 </a>        } <span class="php-keyword1">else</span> {
-</span><span id="105" class="l"><a class="l" href="#105">105 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-options'</span>] = <span class="php-keyword2">htmlspecialchars</span>( <span class="php-keyword2">json_encode</span>( <span class="php-var">$this</span>-&gt;datasource-&gt;options ) );
-</span><span id="106" class="l"><a class="l" href="#106">106 </a>        }
-</span><span id="107" class="l"><a class="l" href="#107">107 </a>
-</span><span id="108" class="l"><a class="l" href="#108">108 </a>        <span class="php-var">$element</span> = <span class="php-keyword2">sprintf</span>(
-</span><span id="109" class="l"><a class="l" href="#109">109 </a>            <span class="php-quote">'&lt;input class=&quot;fm-autocomplete fm-element&quot; type=&quot;text&quot; id=&quot;%s&quot; value=&quot;%s&quot; %s /&gt;'</span>,
-</span><span id="110" class="l"><a class="l" href="#110">110 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
-</span><span id="111" class="l"><a class="l" href="#111">111 </a>            <span class="php-var">$this</span>-&gt;datasource-&gt;get_value( <span class="php-var">$value</span> ),
-</span><span id="112" class="l"><a class="l" href="#112">112 </a>            <span class="php-var">$this</span>-&gt;get_element_attributes()
-</span><span id="113" class="l"><a class="l" href="#113">113 </a>        );
-</span><span id="114" class="l"><a class="l" href="#114">114 </a>
-</span><span id="115" class="l"><a class="l" href="#115">115 </a>        <span class="php-var">$element</span> .= <span class="php-keyword2">sprintf</span>(
-</span><span id="116" class="l"><a class="l" href="#116">116 </a>            <span class="php-quote">'&lt;input class=&quot;fm-autocomplete-hidden fm-element&quot; type=&quot;hidden&quot; name=&quot;%s&quot; value=&quot;%s&quot; /&gt;'</span>,
-</span><span id="117" class="l"><a class="l" href="#117">117 </a>            <span class="php-var">$this</span>-&gt;get_form_name(),
-</span><span id="118" class="l"><a class="l" href="#118">118 </a>            <span class="php-var">$value</span>
-</span><span id="119" class="l"><a class="l" href="#119">119 </a>        );
-</span><span id="120" class="l"><a class="l" href="#120">120 </a>
-</span><span id="121" class="l"><a class="l" href="#121">121 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;show_view_link ) &amp;&amp; <span class="php-var">$this</span>-&gt;show_view_link ) {
-</span><span id="122" class="l"><a class="l" href="#122">122 </a>            <span class="php-var">$element</span> .= <span class="php-var">$this</span>-&gt;datasource-&gt;get_view_link( <span class="php-var">$value</span> );
-</span><span id="123" class="l"><a class="l" href="#123">123 </a>        }
-</span><span id="124" class="l"><a class="l" href="#124">124 </a>
-</span><span id="125" class="l"><a class="l" href="#125">125 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;show_edit_link ) &amp;&amp; <span class="php-var">$this</span>-&gt;show_edit_link ) {
-</span><span id="126" class="l"><a class="l" href="#126">126 </a>            <span class="php-var">$element</span> .= <span class="php-var">$this</span>-&gt;datasource-&gt;get_edit_link( <span class="php-var">$value</span> );
-</span><span id="127" class="l"><a class="l" href="#127">127 </a>        }
-</span><span id="128" class="l"><a class="l" href="#128">128 </a>
-</span><span id="129" class="l"><a class="l" href="#129">129 </a>        <span class="php-keyword1">return</span> <span class="php-var">$element</span>;
-</span><span id="130" class="l"><a class="l" href="#130">130 </a>    }
+</span><span id="104" class="l"><a class="l" href="#104">104 </a>            <span class="php-keyword1">list</span> ( <span class="php-var">$context</span>, <span class="php-var">$subcontext</span> ) = fm_get_context();
+</span><span id="105" class="l"><a class="l" href="#105">105 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-context'</span>] = <span class="php-var">$context</span>;
+</span><span id="106" class="l"><a class="l" href="#106">106 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-subcontext'</span>] = <span class="php-var">$subcontext</span>;
+</span><span id="107" class="l"><a class="l" href="#107">107 </a>        } <span class="php-keyword1">else</span> {
+</span><span id="108" class="l"><a class="l" href="#108">108 </a>            <span class="php-var">$this</span>-&gt;attributes[<span class="php-quote">'data-options'</span>] = <span class="php-keyword2">htmlspecialchars</span>( <span class="php-keyword2">json_encode</span>( <span class="php-var">$this</span>-&gt;datasource-&gt;get_items() ) );
+</span><span id="109" class="l"><a class="l" href="#109">109 </a>        }
+</span><span id="110" class="l"><a class="l" href="#110">110 </a>
+</span><span id="111" class="l"><a class="l" href="#111">111 </a>        <span class="php-var">$element</span> = <span class="php-keyword2">sprintf</span>(
+</span><span id="112" class="l"><a class="l" href="#112">112 </a>            <span class="php-quote">'&lt;input class=&quot;fm-autocomplete fm-element fm-incrementable&quot; type=&quot;text&quot; id=&quot;%s&quot; value=&quot;%s&quot; %s /&gt;'</span>,
+</span><span id="113" class="l"><a class="l" href="#113">113 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
+</span><span id="114" class="l"><a class="l" href="#114">114 </a>            <span class="php-var">$this</span>-&gt;datasource-&gt;get_value( <span class="php-var">$value</span> ),
+</span><span id="115" class="l"><a class="l" href="#115">115 </a>            <span class="php-var">$this</span>-&gt;get_element_attributes()
+</span><span id="116" class="l"><a class="l" href="#116">116 </a>        );
+</span><span id="117" class="l"><a class="l" href="#117">117 </a>
+</span><span id="118" class="l"><a class="l" href="#118">118 </a>        <span class="php-var">$element</span> .= <span class="php-keyword2">sprintf</span>(
+</span><span id="119" class="l"><a class="l" href="#119">119 </a>            <span class="php-quote">'&lt;input class=&quot;fm-autocomplete-hidden fm-element&quot; type=&quot;hidden&quot; name=&quot;%s&quot; value=&quot;%s&quot; /&gt;'</span>,
+</span><span id="120" class="l"><a class="l" href="#120">120 </a>            <span class="php-var">$this</span>-&gt;get_form_name(),
+</span><span id="121" class="l"><a class="l" href="#121">121 </a>            <span class="php-var">$value</span>
+</span><span id="122" class="l"><a class="l" href="#122">122 </a>        );
+</span><span id="123" class="l"><a class="l" href="#123">123 </a>
+</span><span id="124" class="l"><a class="l" href="#124">124 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;show_view_link ) &amp;&amp; <span class="php-var">$this</span>-&gt;show_view_link ) {
+</span><span id="125" class="l"><a class="l" href="#125">125 </a>            <span class="php-var">$element</span> .= <span class="php-var">$this</span>-&gt;datasource-&gt;get_view_link( <span class="php-var">$value</span> );
+</span><span id="126" class="l"><a class="l" href="#126">126 </a>        }
+</span><span id="127" class="l"><a class="l" href="#127">127 </a>
+</span><span id="128" class="l"><a class="l" href="#128">128 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$this</span>-&gt;show_edit_link ) &amp;&amp; <span class="php-var">$this</span>-&gt;show_edit_link ) {
+</span><span id="129" class="l"><a class="l" href="#129">129 </a>            <span class="php-var">$element</span> .= <span class="php-var">$this</span>-&gt;datasource-&gt;get_edit_link( <span class="php-var">$value</span> );
+</span><span id="130" class="l"><a class="l" href="#130">130 </a>        }
 </span><span id="131" class="l"><a class="l" href="#131">131 </a>
-</span><span id="132" class="l"><a class="l" href="#132">132 </a>    <span class="php-comment">/**
-</span></span><span id="133" class="l"><a class="l" href="#133">133 </a><span class="php-comment">     * Trigger datasource's presave_alter() event to allow it to handle reciprocal values
-</span></span><span id="134" class="l"><a class="l" href="#134">134 </a><span class="php-comment">     * @param array $values new post values
-</span></span><span id="135" class="l"><a class="l" href="#135">135 </a><span class="php-comment">     * @param array $current_values existing post values
-</span></span><span id="136" class="l"><a class="l" href="#136">136 </a><span class="php-comment">     */</span>
-</span><span id="137" class="l"><a class="l" href="#137">137 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave_alter_values" href="#_presave_alter_values">presave_alter_values</a>( <span class="php-var">$values</span>, <span class="php-var">$current_values</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="138" class="l"><a class="l" href="#138">138 </a>        <span class="php-comment">// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.</span>
-</span><span id="139" class="l"><a class="l" href="#139">139 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$this</span>-&gt;data_id ) || <span class="php-var">$this</span>-&gt;data_type !== <span class="php-quote">'post'</span> ) <span class="php-keyword1">return</span> <span class="php-var">$values</span>;
-</span><span id="140" class="l"><a class="l" href="#140">140 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;presave_alter_values( <span class="php-var">$this</span>, <span class="php-var">$values</span>, <span class="php-var">$current_values</span> );
-</span><span id="141" class="l"><a class="l" href="#141">141 </a>    }
-</span><span id="142" class="l"><a class="l" href="#142">142 </a>
-</span><span id="143" class="l"><a class="l" href="#143">143 </a>    <span class="php-comment">/**
-</span></span><span id="144" class="l"><a class="l" href="#144">144 </a><span class="php-comment">     * Delegate sanitization and validation to the datasource's presave() method.
-</span></span><span id="145" class="l"><a class="l" href="#145">145 </a><span class="php-comment">     * @param array $value
-</span></span><span id="146" class="l"><a class="l" href="#146">146 </a><span class="php-comment">     * @return array $value
-</span></span><span id="147" class="l"><a class="l" href="#147">147 </a><span class="php-comment">     */</span>
-</span><span id="148" class="l"><a class="l" href="#148">148 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( <span class="php-var">$value</span>, <span class="php-var">$current_value</span> = <span class="php-keyword1">array</span>() ) {
-</span><span id="149" class="l"><a class="l" href="#149">149 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;presave( <span class="php-var">$this</span>, <span class="php-var">$value</span>, <span class="php-var">$current_value</span> );
-</span><span id="150" class="l"><a class="l" href="#150">150 </a>    }
-</span><span id="151" class="l"><a class="l" href="#151">151 </a>
-</span><span id="152" class="l"><a class="l" href="#152">152 </a>    <span class="php-comment">/**
-</span></span><span id="153" class="l"><a class="l" href="#153">153 </a><span class="php-comment">     * Helper function to get the list of default meta boxes to remove.
-</span></span><span id="154" class="l"><a class="l" href="#154">154 </a><span class="php-comment">     * If $remove_default_meta_boxes is true and the datasource is Fieldmanager_Datasource_Term,
-</span></span><span id="155" class="l"><a class="l" href="#155">155 </a><span class="php-comment">     * this will return a list of all default meta boxes for the specified taxonomies.
-</span></span><span id="156" class="l"><a class="l" href="#156">156 </a><span class="php-comment">     * We only need to return id and context since the page will be handled by the list of post types provided to add_meta_box.
-</span></span><span id="157" class="l"><a class="l" href="#157">157 </a><span class="php-comment">     * Otherwise, this will just return an empty array.
-</span></span><span id="158" class="l"><a class="l" href="#158">158 </a><span class="php-comment">     * @param array current list of meta boxes to remove
-</span></span><span id="159" class="l"><a class="l" href="#159">159 </a><span class="php-comment">     * @return array list of meta boxes to remove
-</span></span><span id="160" class="l"><a class="l" href="#160">160 </a><span class="php-comment">     */</span>
-</span><span id="161" class="l"><a class="l" href="#161">161 </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_add_meta_boxes_to_remove" href="#_add_meta_boxes_to_remove">add_meta_boxes_to_remove</a>( &amp;<span class="php-var">$meta_boxes_to_remove</span> ) {
-</span><span id="162" class="l"><a class="l" href="#162">162 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;remove_default_meta_boxes &amp;&amp; <span class="php-keyword2">get_class</span>( <span class="php-var">$this</span>-&gt;datasource ) == <span class="php-quote">'Fieldmanager_Datasource_Term'</span> ) {
-</span><span id="163" class="l"><a class="l" href="#163">163 </a>            <span class="php-comment">// Iterate over the list and build the list of meta boxes</span>
-</span><span id="164" class="l"><a class="l" href="#164">164 </a>            <span class="php-var">$meta_boxes</span> = <span class="php-keyword1">array</span>();
-</span><span id="165" class="l"><a class="l" href="#165">165 </a>            <span class="php-keyword1">foreach</span>( <span class="php-var">$this</span>-&gt;datasource-&gt;get_taxonomies() <span class="php-keyword1">as</span> <span class="php-var">$taxonomy</span> ) {
-</span><span id="166" class="l"><a class="l" href="#166">166 </a>                <span class="php-comment">// The ID differs if this is a hierarchical taxonomy or not. Get the taxonomy object.</span>
-</span><span id="167" class="l"><a class="l" href="#167">167 </a>                <span class="php-var">$taxonomy_obj</span> = get_taxonomy( <span class="php-var">$taxonomy</span> );
-</span><span id="168" class="l"><a class="l" href="#168">168 </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> !== <span class="php-var">$taxonomy_obj</span> ) {
-</span><span id="169" class="l"><a class="l" href="#169">169 </a>                    <span class="php-keyword1">if</span> ( <span class="php-var">$taxonomy_obj</span>-&gt;hierarchical )
-</span><span id="170" class="l"><a class="l" href="#170">170 </a>                        <span class="php-var">$id</span> = <span class="php-var">$taxonomy</span> . <span class="php-quote">&quot;div&quot;</span>;
-</span><span id="171" class="l"><a class="l" href="#171">171 </a>                    <span class="php-keyword1">else</span>
-</span><span id="172" class="l"><a class="l" href="#172">172 </a>                        <span class="php-var">$id</span> = <span class="php-quote">'tagsdiv-'</span> . <span class="php-var">$taxonomy</span>;
-</span><span id="173" class="l"><a class="l" href="#173">173 </a>
-</span><span id="174" class="l"><a class="l" href="#174">174 </a>                    <span class="php-var">$meta_boxes</span>[<span class="php-var">$id</span>] = <span class="php-keyword1">array</span>(
-</span><span id="175" class="l"><a class="l" href="#175">175 </a>                        <span class="php-quote">'id'</span> =&gt; <span class="php-var">$id</span>,
-</span><span id="176" class="l"><a class="l" href="#176">176 </a>                        <span class="php-quote">'context'</span> =&gt; <span class="php-quote">'side'</span>
-</span><span id="177" class="l"><a class="l" href="#177">177 </a>                    );
-</span><span id="178" class="l"><a class="l" href="#178">178 </a>                }
-</span><span id="179" class="l"><a class="l" href="#179">179 </a>            }
-</span><span id="180" class="l"><a class="l" href="#180">180 </a>
-</span><span id="181" class="l"><a class="l" href="#181">181 </a>            <span class="php-comment">// Merge in the new meta boxes to remove</span>
-</span><span id="182" class="l"><a class="l" href="#182">182 </a>            <span class="php-var">$meta_boxes_to_remove</span> = <span class="php-keyword2">array_merge</span>( <span class="php-var">$meta_boxes_to_remove</span>, <span class="php-var">$meta_boxes</span> );
-</span><span id="183" class="l"><a class="l" href="#183">183 </a>        }
-</span><span id="184" class="l"><a class="l" href="#184">184 </a>    }
-</span><span id="185" class="l"><a class="l" href="#185">185 </a>}
-</span><span id="186" class="l"><a class="l" href="#186">186 </a></span></code></pre>
+</span><span id="132" class="l"><a class="l" href="#132">132 </a>        <span class="php-keyword1">return</span> <span class="php-var">$element</span>;
+</span><span id="133" class="l"><a class="l" href="#133">133 </a>    }
+</span><span id="134" class="l"><a class="l" href="#134">134 </a>
+</span><span id="135" class="l"><a class="l" href="#135">135 </a>    <span class="php-comment">/**
+</span></span><span id="136" class="l"><a class="l" href="#136">136 </a><span class="php-comment">     * Trigger datasource's presave_alter() event to allow it to handle reciprocal values
+</span></span><span id="137" class="l"><a class="l" href="#137">137 </a><span class="php-comment">     * @param array $values new post values
+</span></span><span id="138" class="l"><a class="l" href="#138">138 </a><span class="php-comment">     * @param array $current_values existing post values
+</span></span><span id="139" class="l"><a class="l" href="#139">139 </a><span class="php-comment">     */</span>
+</span><span id="140" class="l"><a class="l" href="#140">140 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave_alter_values" href="#_presave_alter_values">presave_alter_values</a>( <span class="php-var">$values</span>, <span class="php-var">$current_values</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="141" class="l"><a class="l" href="#141">141 </a>        <span class="php-comment">// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.</span>
+</span><span id="142" class="l"><a class="l" href="#142">142 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$this</span>-&gt;data_id ) || <span class="php-var">$this</span>-&gt;data_type !== <span class="php-quote">'post'</span> ) <span class="php-keyword1">return</span> <span class="php-var">$values</span>;
+</span><span id="143" class="l"><a class="l" href="#143">143 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;presave_alter_values( <span class="php-var">$this</span>, <span class="php-var">$values</span>, <span class="php-var">$current_values</span> );
+</span><span id="144" class="l"><a class="l" href="#144">144 </a>    }
+</span><span id="145" class="l"><a class="l" href="#145">145 </a>
+</span><span id="146" class="l"><a class="l" href="#146">146 </a>    <span class="php-comment">/**
+</span></span><span id="147" class="l"><a class="l" href="#147">147 </a><span class="php-comment">     * Delegate sanitization and validation to the datasource's presave() method.
+</span></span><span id="148" class="l"><a class="l" href="#148">148 </a><span class="php-comment">     * @param array $value
+</span></span><span id="149" class="l"><a class="l" href="#149">149 </a><span class="php-comment">     * @return array $value
+</span></span><span id="150" class="l"><a class="l" href="#150">150 </a><span class="php-comment">     */</span>
+</span><span id="151" class="l"><a class="l" href="#151">151 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_presave" href="#_presave">presave</a>( <span class="php-var">$value</span>, <span class="php-var">$current_value</span> = <span class="php-keyword1">array</span>() ) {
+</span><span id="152" class="l"><a class="l" href="#152">152 </a>        <span class="php-keyword1">return</span> <span class="php-var">$this</span>-&gt;datasource-&gt;presave( <span class="php-var">$this</span>, <span class="php-var">$value</span>, <span class="php-var">$current_value</span> );
+</span><span id="153" class="l"><a class="l" href="#153">153 </a>    }
+</span><span id="154" class="l"><a class="l" href="#154">154 </a>
+</span><span id="155" class="l"><a class="l" href="#155">155 </a>    <span class="php-comment">/**
+</span></span><span id="156" class="l"><a class="l" href="#156">156 </a><span class="php-comment">     * Helper function to get the list of default meta boxes to remove.
+</span></span><span id="157" class="l"><a class="l" href="#157">157 </a><span class="php-comment">     * If $remove_default_meta_boxes is true and the datasource is Fieldmanager_Datasource_Term,
+</span></span><span id="158" class="l"><a class="l" href="#158">158 </a><span class="php-comment">     * this will return a list of all default meta boxes for the specified taxonomies.
+</span></span><span id="159" class="l"><a class="l" href="#159">159 </a><span class="php-comment">     * We only need to return id and context since the page will be handled by the list of post types provided to add_meta_box.
+</span></span><span id="160" class="l"><a class="l" href="#160">160 </a><span class="php-comment">     * Otherwise, this will just return an empty array.
+</span></span><span id="161" class="l"><a class="l" href="#161">161 </a><span class="php-comment">     * @param array current list of meta boxes to remove
+</span></span><span id="162" class="l"><a class="l" href="#162">162 </a><span class="php-comment">     * @return array list of meta boxes to remove
+</span></span><span id="163" class="l"><a class="l" href="#163">163 </a><span class="php-comment">     */</span>
+</span><span id="164" class="l"><a class="l" href="#164">164 </a>    <span class="php-keyword1">protected</span> <span class="php-keyword1">function</span> <a id="_add_meta_boxes_to_remove" href="#_add_meta_boxes_to_remove">add_meta_boxes_to_remove</a>( &amp;<span class="php-var">$meta_boxes_to_remove</span> ) {
+</span><span id="165" class="l"><a class="l" href="#165">165 </a>        <span class="php-keyword1">if</span> ( <span class="php-var">$this</span>-&gt;remove_default_meta_boxes &amp;&amp; <span class="php-keyword2">get_class</span>( <span class="php-var">$this</span>-&gt;datasource ) == <span class="php-quote">'Fieldmanager_Datasource_Term'</span> ) {
+</span><span id="166" class="l"><a class="l" href="#166">166 </a>            <span class="php-comment">// Iterate over the list and build the list of meta boxes</span>
+</span><span id="167" class="l"><a class="l" href="#167">167 </a>            <span class="php-var">$meta_boxes</span> = <span class="php-keyword1">array</span>();
+</span><span id="168" class="l"><a class="l" href="#168">168 </a>            <span class="php-keyword1">foreach</span>( <span class="php-var">$this</span>-&gt;datasource-&gt;get_taxonomies() <span class="php-keyword1">as</span> <span class="php-var">$taxonomy</span> ) {
+</span><span id="169" class="l"><a class="l" href="#169">169 </a>                <span class="php-comment">// The ID differs if this is a hierarchical taxonomy or not. Get the taxonomy object.</span>
+</span><span id="170" class="l"><a class="l" href="#170">170 </a>                <span class="php-var">$taxonomy_obj</span> = get_taxonomy( <span class="php-var">$taxonomy</span> );
+</span><span id="171" class="l"><a class="l" href="#171">171 </a>                <span class="php-keyword1">if</span> ( <span class="php-keyword1">false</span> !== <span class="php-var">$taxonomy_obj</span> ) {
+</span><span id="172" class="l"><a class="l" href="#172">172 </a>                    <span class="php-keyword1">if</span> ( <span class="php-var">$taxonomy_obj</span>-&gt;hierarchical )
+</span><span id="173" class="l"><a class="l" href="#173">173 </a>                        <span class="php-var">$id</span> = <span class="php-var">$taxonomy</span> . <span class="php-quote">&quot;div&quot;</span>;
+</span><span id="174" class="l"><a class="l" href="#174">174 </a>                    <span class="php-keyword1">else</span>
+</span><span id="175" class="l"><a class="l" href="#175">175 </a>                        <span class="php-var">$id</span> = <span class="php-quote">'tagsdiv-'</span> . <span class="php-var">$taxonomy</span>;
+</span><span id="176" class="l"><a class="l" href="#176">176 </a>
+</span><span id="177" class="l"><a class="l" href="#177">177 </a>                    <span class="php-var">$meta_boxes</span>[<span class="php-var">$id</span>] = <span class="php-keyword1">array</span>(
+</span><span id="178" class="l"><a class="l" href="#178">178 </a>                        <span class="php-quote">'id'</span> =&gt; <span class="php-var">$id</span>,
+</span><span id="179" class="l"><a class="l" href="#179">179 </a>                        <span class="php-quote">'context'</span> =&gt; <span class="php-quote">'side'</span>
+</span><span id="180" class="l"><a class="l" href="#180">180 </a>                    );
+</span><span id="181" class="l"><a class="l" href="#181">181 </a>                }
+</span><span id="182" class="l"><a class="l" href="#182">182 </a>            }
+</span><span id="183" class="l"><a class="l" href="#183">183 </a>
+</span><span id="184" class="l"><a class="l" href="#184">184 </a>            <span class="php-comment">// Merge in the new meta boxes to remove</span>
+</span><span id="185" class="l"><a class="l" href="#185">185 </a>            <span class="php-var">$meta_boxes_to_remove</span> = <span class="php-keyword2">array_merge</span>( <span class="php-var">$meta_boxes_to_remove</span>, <span class="php-var">$meta_boxes</span> );
+</span><span id="186" class="l"><a class="l" href="#186">186 </a>        }
+</span><span id="187" class="l"><a class="l" href="#187">187 </a>    }
+</span><span id="188" class="l"><a class="l" href="#188">188 </a>}
+</span><span id="189" class="l"><a class="l" href="#189">189 </a></span></code></pre>
 	</div>
 
 	<div id="footer">
