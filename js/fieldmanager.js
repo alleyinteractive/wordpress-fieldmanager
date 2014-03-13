@@ -10,12 +10,12 @@ var init_sortable_container = function( el ) {
 			handle: '.fmjs-drag',
 			items: '> .fm-item',
 			start: function( e, ui ) {
-				$( document ).trigger( 'fm-sortable-drag', el ) ;
+				$( document ).trigger( 'fm_sortable_drag', el ) ;
 			},
 			stop: function( e, ui ) {
 				var $parent = ui.item.parents( '.fm-wrapper' ).first();
 				fm_renumber( $parent );
-				$( document ).trigger( 'fm-sortable-drop', el );
+				$( document ).trigger( 'fm_sortable_drop', el );
 			}
 		} );
 	}
@@ -146,7 +146,7 @@ $( document ).ready( function () {
 	$( '.fm-collapsible .fm-group-label-wrapper' ).live( 'click', function() {
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).toggle();
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
-		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
+		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle', [ $( this ).parents( '.fm-group' ).first() ] );
 	} );
 
 	$( '.fm-collapsed' ).each( function() {
