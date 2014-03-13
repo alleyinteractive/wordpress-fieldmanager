@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="generator" content="ApiGen 2.8.0" />
-	<meta name="robots" content="noindex" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+	<meta name="robots" content="noindex">
 
 	<title>File context/class-fieldmanager-context-submenu.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?809599316"></script>
-	<script type="text/javascript" src="elementlist.js?4223749464"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
+	<script type="text/javascript" src="resources/combined.js?4143384459"></script>
+	<script type="text/javascript" src="elementlist.js?969459336"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822">
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609">
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -58,9 +58,9 @@
 	<div id="left">
 	<div id="menu">
 		<form id="search" class="form-search">
-			<input type="hidden" name="cx" value="" />
-			<input type="hidden" name="ie" value="UTF-8" />
-			<input type="text" name="q" class="search-query" placeholder="Search" />
+			<input type="hidden" name="cx" value="">
+			<input type="hidden" name="ie" value="UTF-8">
+			<input type="text" name="q" class="search-query" placeholder="Search">
 		</form>
 
 
@@ -168,7 +168,7 @@
 </span></span><span id="60" class="l"><a class="l" href="#60"> 60 </a><span class="php-comment">     * @param string $menu_slug
 </span></span><span id="61" class="l"><a class="l" href="#61"> 61 </a><span class="php-comment">     * @param Fieldmanager_Field $fm
 </span></span><span id="62" class="l"><a class="l" href="#62"> 62 </a><span class="php-comment">     */</span>
-</span><span id="63" class="l"><a class="l" href="#63"> 63 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>( <span class="php-var">$parent_slug</span>, <span class="php-var">$page_title</span>, <span class="php-var">$menu_title</span> = <span class="php-keyword1">Null</span>, <span class="php-var">$capability</span> = <span class="php-quote">'manage_options'</span>, <span class="php-var">$menu_slug</span> = <span class="php-keyword1">Null</span>, <span class="php-var">$fm</span> ) {
+</span><span id="63" class="l"><a class="l" href="#63"> 63 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="___construct" href="#___construct">__construct</a>( <span class="php-var">$parent_slug</span>, <span class="php-var">$page_title</span>, <span class="php-var">$menu_title</span> = <span class="php-keyword1">Null</span>, <span class="php-var">$capability</span> = <span class="php-quote">'manage_options'</span>, <span class="php-var">$menu_slug</span> = <span class="php-keyword1">Null</span>, <span class="php-var">$fm</span> = <span class="php-keyword1">Null</span>, <span class="php-var">$already_registered</span> = <span class="php-keyword1">False</span> ) {
 </span><span id="64" class="l"><a class="l" href="#64"> 64 </a>        <span class="php-var">$this</span>-&gt;fm = <span class="php-var">$fm</span>;
 </span><span id="65" class="l"><a class="l" href="#65"> 65 </a>        <span class="php-var">$this</span>-&gt;menu_slug = <span class="php-var">$menu_slug</span> ?: <span class="php-var">$this</span>-&gt;fm-&gt;name;
 </span><span id="66" class="l"><a class="l" href="#66"> 66 </a>        <span class="php-var">$this</span>-&gt;menu_title = <span class="php-var">$menu_title</span> ?: <span class="php-var">$page_title</span>;
@@ -176,7 +176,7 @@
 </span><span id="68" class="l"><a class="l" href="#68"> 68 </a>        <span class="php-var">$this</span>-&gt;page_title = <span class="php-var">$page_title</span>;
 </span><span id="69" class="l"><a class="l" href="#69"> 69 </a>        <span class="php-var">$this</span>-&gt;capability = <span class="php-var">$capability</span>;
 </span><span id="70" class="l"><a class="l" href="#70"> 70 </a>        <span class="php-var">$this</span>-&gt;<span class="php-keyword2">uniqid</span> = <span class="php-var">$this</span>-&gt;fm-&gt;get_element_id() . <span class="php-quote">'_form'</span>;
-</span><span id="71" class="l"><a class="l" href="#71"> 71 </a>        add_action( <span class="php-quote">'admin_menu'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'register_submenu_page'</span> ) );
+</span><span id="71" class="l"><a class="l" href="#71"> 71 </a>        <span class="php-keyword1">if</span> ( !<span class="php-var">$already_registered</span> ) add_action( <span class="php-quote">'admin_menu'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'register_submenu_page'</span> ) );
 </span><span id="72" class="l"><a class="l" href="#72"> 72 </a>        add_action( <span class="php-quote">'admin_init'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'handle_submenu_save'</span> ) );
 </span><span id="73" class="l"><a class="l" href="#73"> 73 </a>    }
 </span><span id="74" class="l"><a class="l" href="#74"> 74 </a>
@@ -220,18 +220,18 @@
 </span><span id="112" class="l"><a class="l" href="#112">112 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">empty</span>( <span class="php-var">$_POST</span> ) &amp;&amp; <span class="php-var">$_GET</span>[<span class="php-quote">'page'</span>] == <span class="php-var">$this</span>-&gt;menu_slug &amp;&amp; current_user_can( <span class="php-var">$this</span>-&gt;capability ) ) {
 </span><span id="113" class="l"><a class="l" href="#113">113 </a>            <span class="php-comment">// Make sure that our nonce field arrived intact</span>
 </span><span id="114" class="l"><a class="l" href="#114">114 </a>            <span class="php-keyword1">if</span>( !wp_verify_nonce( <span class="php-var">$_POST</span>[<span class="php-quote">'fieldmanager-'</span> . <span class="php-var">$this</span>-&gt;fm-&gt;name . <span class="php-quote">'-nonce'</span>], <span class="php-quote">'fieldmanager-save-'</span> . <span class="php-var">$this</span>-&gt;fm-&gt;name ) ) {
-</span><span id="115" class="l"><a class="l" href="#115">115 </a>                <span class="php-var">$this</span>-&gt;_unauthorized_access( <span class="php-quote">'Nonce validation failed'</span> );
+</span><span id="115" class="l"><a class="l" href="#115">115 </a>                <span class="php-var">$this</span>-&gt;fm-&gt;_unauthorized_access( <span class="php-quote">'Nonce validation failed'</span> );
 </span><span id="116" class="l"><a class="l" href="#116">116 </a>            }
 </span><span id="117" class="l"><a class="l" href="#117">117 </a>            <span class="php-var">$this</span>-&gt;fm-&gt;data_id = <span class="php-var">$this</span>-&gt;fm-&gt;name;
 </span><span id="118" class="l"><a class="l" href="#118">118 </a>            <span class="php-var">$this</span>-&gt;fm-&gt;data_type = <span class="php-quote">'options'</span>;
-</span><span id="119" class="l"><a class="l" href="#119">119 </a>            <span class="php-var">$current</span> = get_option( <span class="php-var">$this</span>-&gt;fm-&gt;name );
+</span><span id="119" class="l"><a class="l" href="#119">119 </a>            <span class="php-var">$current</span> = get_option( <span class="php-var">$this</span>-&gt;fm-&gt;name, <span class="php-keyword1">null</span> );
 </span><span id="120" class="l"><a class="l" href="#120">120 </a>            <span class="php-var">$value</span> = <span class="php-keyword1">isset</span>( <span class="php-var">$_POST</span>[ <span class="php-var">$this</span>-&gt;fm-&gt;name ] ) ? <span class="php-var">$_POST</span>[ <span class="php-var">$this</span>-&gt;fm-&gt;name ] : <span class="php-quote">&quot;&quot;</span>;
 </span><span id="121" class="l"><a class="l" href="#121">121 </a>            <span class="php-var">$data</span> = <span class="php-var">$this</span>-&gt;fm-&gt;presave_all( <span class="php-var">$value</span>, <span class="php-var">$current</span> );
 </span><span id="122" class="l"><a class="l" href="#122">122 </a>            <span class="php-var">$data</span> = apply_filters( <span class="php-quote">'fm_submenu_presave_data'</span>, <span class="php-var">$data</span>, <span class="php-var">$this</span> );
-</span><span id="123" class="l"><a class="l" href="#123">123 </a>            <span class="php-keyword1">if</span> ( get_option( <span class="php-var">$this</span>-&gt;fm-&gt;name ) ) {
+</span><span id="123" class="l"><a class="l" href="#123">123 </a>            <span class="php-keyword1">if</span> ( <span class="php-keyword1">isset</span>( <span class="php-var">$current</span> ) ) {
 </span><span id="124" class="l"><a class="l" href="#124">124 </a>                update_option( <span class="php-var">$this</span>-&gt;fm-&gt;name, <span class="php-var">$data</span> );
 </span><span id="125" class="l"><a class="l" href="#125">125 </a>            } <span class="php-keyword1">else</span> {
-</span><span id="126" class="l"><a class="l" href="#126">126 </a>                add_option( <span class="php-var">$this</span>-&gt;fm-&gt;name, <span class="php-var">$data</span>, <span class="php-quote">' '</span>, <span class="php-var">$this</span>-&gt;wp_option_autoload ? <span class="php-quote">'yes'</span> : <span class="php-quote">'no'</span> );
+</span><span id="126" class="l"><a class="l" href="#126">126 </a>                add_option( <span class="php-var">$this</span>-&gt;fm-&gt;name, <span class="php-var">$data</span>, <span class="php-quote">''</span>, <span class="php-var">$this</span>-&gt;wp_option_autoload ? <span class="php-quote">'yes'</span> : <span class="php-quote">'no'</span> );
 </span><span id="127" class="l"><a class="l" href="#127">127 </a>            }
 </span><span id="128" class="l"><a class="l" href="#128">128 </a>        }
 </span><span id="129" class="l"><a class="l" href="#129">129 </a>    }

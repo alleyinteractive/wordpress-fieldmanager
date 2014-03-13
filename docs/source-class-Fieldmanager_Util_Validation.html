@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="generator" content="ApiGen 2.8.0" />
-	<meta name="robots" content="noindex" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+	<meta name="robots" content="noindex">
 
 	<title>File util/class-fieldmanager-util-validation.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?809599316"></script>
-	<script type="text/javascript" src="elementlist.js?4223749464"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
+	<script type="text/javascript" src="resources/combined.js?4143384459"></script>
+	<script type="text/javascript" src="elementlist.js?969459336"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822">
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609">
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -58,9 +58,9 @@
 	<div id="left">
 	<div id="menu">
 		<form id="search" class="form-search">
-			<input type="hidden" name="cx" value="" />
-			<input type="hidden" name="ie" value="UTF-8" />
-			<input type="text" name="q" class="search-query" placeholder="Search" />
+			<input type="hidden" name="cx" value="">
+			<input type="hidden" name="ie" value="UTF-8">
+			<input type="text" name="q" class="search-query" placeholder="Search">
 		</form>
 
 
@@ -96,6 +96,10 @@
 			<h3>Functions</h3>
 			<ul>
 				<li><a href="function-Fieldmanager_Util_Term_Meta.html">Fieldmanager_Util_Term_Meta</a></li>
+				<li><a href="function-fm_add_term_meta.html">fm_add_term_meta</a></li>
+				<li><a href="function-fm_delete_term_meta.html">fm_delete_term_meta</a></li>
+				<li><a href="function-fm_get_term_meta.html">fm_get_term_meta</a></li>
+				<li><a href="function-fm_update_term_meta.html">fm_update_term_meta</a></li>
 			</ul>
 		</div>
 	</div>
@@ -352,7 +356,7 @@
 </span></span><span id="245" class="l"><a class="l" href="#245">245 </a><span class="php-comment">     */</span>
 </span><span id="246" class="l"><a class="l" href="#246">246 </a>    <span class="php-keyword1">private</span> <span class="php-keyword1">function</span> <a id="_value_to_js" href="#_value_to_js">value_to_js</a>( <span class="php-var">$field</span>, <span class="php-var">$data</span> ) {
 </span><span id="247" class="l"><a class="l" href="#247">247 </a>        <span class="php-comment">// Check the array for the corresponding value. If it doesn't exist, return an empty string.</span>
-</span><span id="248" class="l"><a class="l" href="#248">248 </a>        <span class="php-keyword1">if</span> ( ! <span class="php-keyword1">isset</span>( <span class="php-var">$data</span>[<span class="php-var">$field</span>] ) )
+</span><span id="248" class="l"><a class="l" href="#248">248 </a>        <span class="php-keyword1">if</span> ( <span class="php-keyword1">empty</span>( <span class="php-var">$data</span>[<span class="php-var">$field</span>] ) )
 </span><span id="249" class="l"><a class="l" href="#249">249 </a>            <span class="php-keyword1">return</span> <span class="php-quote">&quot;&quot;</span>;
 </span><span id="250" class="l"><a class="l" href="#250">250 </a>            
 </span><span id="251" class="l"><a class="l" href="#251">251 </a>        <span class="php-comment">// Format the field name</span>
