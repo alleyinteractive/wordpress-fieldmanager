@@ -65,7 +65,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				'index' => '_test_index',
 			) ),
 			'test_htmlfield' => new Fieldmanager_Textarea( array(
-				'name' => 'test_textfield',
+				'name' => 'test_htmlfield',
 				'sanitize' => 'wp_kses_post',
 			) ),
 			'test_numfield' => new Fieldmanager_Textfield( array(
