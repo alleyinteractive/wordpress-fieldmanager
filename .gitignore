@@ -1,5 +1,7 @@
 tests/php/build
 tests/php/wp-unit-test
+
+# Silly Macs
 .DS_Store
 
 # Created by Apigen for logs
