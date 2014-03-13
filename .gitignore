@@ -1,3 +1,6 @@
 tests/php/build
 tests/php/wp-unit-test
 .DS_Store
+
+# Created by Apigen for logs
+/build
