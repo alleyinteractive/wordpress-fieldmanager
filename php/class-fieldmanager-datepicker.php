@@ -76,7 +76,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 */
 	public function presave( $value, $current_value = array() ) {
 		$time_to_parse = sanitize_text_field( $value['date'] );
-		if ( $this->use_time ) {
+		if ( is_numeric( $value['hour'] ) && is_numeric( $value['minute'] ) && $this->use_time ) {
 			$hour = intval( $value['hour'] );
 			if ( $hour == 0 && $this->use_am_pm ) $hour = 12;
 			$time_to_parse .= ' ' . $hour;
