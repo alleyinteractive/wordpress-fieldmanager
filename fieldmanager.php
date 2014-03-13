@@ -21,22 +21,14 @@ if ( !defined( 'FM_DEBUG' ) ) define( 'FM_DEBUG', WP_DEBUG );
  * Loads a class based on classname. Understands Fieldmanager nomenclature to find the right file.
  * Does not know how to load classes outside of Fieldmanager's plugin, so if you build your own field,
  * you will have to include it or autoload it for yourself.
+ *
  * @uses spl_autoload_register
  * @uses fieldmanager_load_file
  * @param string $class
  */
 function fieldmanager_load_class( $class ) {
-	static $first_load = true;
-
 	if ( class_exists( $class ) || strpos( $class, 'Fieldmanager' ) !== 0 ) return;
 	$class_id = strtolower( substr( $class, strrpos( $class, '_' ) + 1 ) );
-
-	if ( $first_load ) {
-		// Utility classes with helper functions
-		fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
-		fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
-		$first_load = false;
-	}
 
 	if ( strpos( $class, 'Fieldmanager_Context' ) === 0 ) {
 		if ( $class_id == 'context' ) return fieldmanager_load_file( 'context/class-fieldmanager-context.php' );	
@@ -64,6 +56,12 @@ function fieldmanager_load_file( $file ) {
 if ( function_exists( 'spl_autoload_register' ) ) {
 	spl_autoload_register( 'fieldmanager_load_class' );
 }
+
+
+// Utility classes with helper functions
+fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
+fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
+
 
 define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 
