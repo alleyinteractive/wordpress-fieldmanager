@@ -12,6 +12,7 @@ Contributors:
 * Matthew Boynes, Alley Interactive LLC
 * Matthew Johnson, Co-founder, Alley Interactive LLC
 * Will Gladstone, Alley Interactive LLC
+* Daniel Bachhuber, Digital First Media
 
 Open Source components consulted or used:
 
