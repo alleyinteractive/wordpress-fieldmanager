@@ -149,7 +149,11 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' )
 			return;
 
-		if ( get_post_type( $post_id ) == 'revision' ) return; // prevents saving the same post twice; FM does not yet use revisions.
+		// prevent saving the same post twice; FM does not yet use revisions.
+		if ( get_post_type( $post_id ) == 'revision' ) return;
+
+		// prevent nonce errors from missing fields
+		if ( ! isset( $_POST[ $this->fm->name ], $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) return;
 
 		$use_this_post_type = False;
 		foreach ( $this->post_types as $type ) {
