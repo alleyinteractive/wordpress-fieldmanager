@@ -68,7 +68,13 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->page_title = $page_title;
 		$this->capability = $capability;
 		$this->uniqid = $this->fm->get_element_id() . '_form';
-		if ( !$already_registered ) add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+		if ( ! $already_registered ) {
+			if ( 'settings.php' == $this->parent_slug ) {
+				add_action( 'network_admin_menu', array( $this, 'register_submenu_page' ) );
+			} else {
+				add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+			}
+		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
 	}
 
@@ -85,7 +91,11 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 * @return void.
 	 */
 	public function render_submenu_page() {
-		$values = get_option( $this->fm->name, Null );
+		if ( 'settings.php' == $this->parent_slug ) {
+			$values = get_site_option( $this->fm->name, Null );
+		} else {
+			$values = get_option( $this->fm->name, Null );
+		}
 		echo '<div class="wrap">';
 		screen_icon();
 		printf( '<h2>%s</h2>', $this->page_title );
@@ -116,14 +126,26 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 			}
 			$this->fm->data_id = $this->fm->name;
 			$this->fm->data_type = 'options';
-			$current = get_option( $this->fm->name, null );
+			if ( 'settings.php' == $this->parent_slug ) {
+				$current = get_site_option( $this->fm->name, null );
+			} else {
+				$current = get_option( $this->fm->name, null );
+			}
 			$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
 			$data = $this->fm->presave_all( $value, $current );
 			$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 			if ( isset( $current ) ) {
-				update_option( $this->fm->name, $data );
+				if ( 'settings.php' == $this->parent_slug ) {
+					update_site_option( $this->fm->name, $data );
+				} else {
+					update_option( $this->fm->name, $data );
+				}
 			} else {
-				add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
+				if ( 'settings.php' == $this->parent_slug ) {
+					add_site_option( $this->fm->name, $data );
+				} else {
+					add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
+				}
 			}
 		}
 	}
