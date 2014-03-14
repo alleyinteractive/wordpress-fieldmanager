@@ -146,7 +146,7 @@ $( document ).ready( function () {
 	$( '.fm-collapsible .fm-group-label-wrapper' ).live( 'click', function() {
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).toggle();
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
-		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle', [ $( this ).parents( '.fm-group' ).first() ] );
+		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
 	} );
 
 	$( '.fm-collapsed' ).each( function() {
