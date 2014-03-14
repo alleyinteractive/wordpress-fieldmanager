@@ -835,7 +835,7 @@ abstract class Fieldmanager_Field {
 	 * Add this group to an options page
 	 * @param string $title
 	 */
-	public function add_submenu_page( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null ) {
+	public function add_submenu_page( $parent_slug, $page_title, $menu_title = Null, $capability = '', $menu_slug = Null ) {
 		$this->require_base();
 		return new Fieldmanager_Context_Submenu( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $this );
 	}

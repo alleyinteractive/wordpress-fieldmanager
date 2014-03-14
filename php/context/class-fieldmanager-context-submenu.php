@@ -60,13 +60,20 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 * @param string $menu_slug
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function __construct( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null, $fm = Null, $already_registered = False ) {
+	public function __construct( $parent_slug, $page_title, $menu_title = Null, $capability = '', $menu_slug = Null, $fm = Null, $already_registered = False ) {
 		$this->fm = $fm;
 		$this->menu_slug = $menu_slug ?: $this->fm->name;
 		$this->menu_title = $menu_title ?: $page_title;
 		$this->parent_slug = $parent_slug;
 		$this->page_title = $page_title;
 		$this->capability = $capability;
+		if ( ! $this->capability ) {
+			if ( 'settings.php' == $this->parent_slug ) {
+				$this->capability = 'manage_network_options';
+			} else {
+				$this->capability = 'manage_options';
+			}
+		}
 		$this->uniqid = $this->fm->get_element_id() . '_form';
 		if ( ! $already_registered ) {
 			if ( 'settings.php' == $this->parent_slug ) {
