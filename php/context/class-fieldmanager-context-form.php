@@ -15,22 +15,20 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 */
 	public static $forms = array();
 
-	/**
-	 * @var boolean
-	 * Was the form saved?
-	 */
-	public $did_save = False;
+	public $errors = array();
+
+	public $messages = array();
+
+	public $values = array();
 
 	/**
 	 * Create page context handler.
 	 * @param string unique form ID
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function __construct( $uniqid, $fm ) {
+	private function __construct( $uniqid, $fm ) {
 		$this->fm = $fm;
 		$this->fm->build_tree(); // Fieldmanager_Group normally does this for itself when it renders, but we may be using groups without actually rendering them.
-		if ( !empty( self::$forms[$uniqid] ) ) throw new FM_Developer_Exception( $uniqid . ' has already been used' );
-		self::$forms[$uniqid] = $this;
 		$this->uniqid = $uniqid;
 
 		// since this should be set up in init, check for submit now
@@ -64,17 +62,17 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 			$this->fm->_unauthorized_access( 'Nonce validation failed' );
 		}
 
-		$submission = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+		$this->values = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
 
 		if ( empty( $this->fm->data_type ) ) $this->fm->data_type = 'page';
 		if ( empty( $this->fm->data_id ) ) $this->fm->data_id = $this->uniqid;
 
-		$current = apply_filters( 'fm_' . $this->uniqid . '_load', array(), $this->fm );
-		$submission = apply_filters( 'fm_' . $this->uniqid . '_presave', $submission, $this->fm );
-		$submission = $this->fm->presave_all( $submission, $current );
-		$submission = apply_filters( 'fm_form_presave_data', $submission, $this->fm );
-		do_action( 'fm_form_' . $this->uniqid . '_save', $submission, $current, $this->fm );
-		$this->did_save = True;
+		$current = apply_filters( 'fm_form_' . $this->uniqid . '_load', array(), $this );
+		$this->values = apply_filters( 'fm_form_' . $this->uniqid . '_presave', $this->values, $this );
+
+		$this->values = $this->fm->presave_all( $this->values, $current );
+		$this->values = apply_filters( 'fm_form_presave_data', $this->values, $this );
+		do_action( 'fm_form_' . $this->uniqid . '_save', $this->values, $current, $this );
 	}
 
 	/**
@@ -83,11 +81,12 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 */
 	public function render_page_form() {
 		echo '<div class="fm-page-form-wrapper">';
+		$this->the_errors();
+		$this->the_messages();
 		$this->form_start();
 		echo $this->fm->element_markup( $this->values );
 		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->fm->submit_button_label ) ?: __( 'Save Options' ) );
 		echo '</form>';
-		echo '</div>';
 		echo '</div>';
 	}
 
@@ -96,12 +95,13 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 * @param mixed $attributes to override defaults, eg method => GET.
 	 */
 	public function form_start( $params = array() ) {
-		$this->values = apply_filters( 'fm_' . $this->uniqid . '_values', array(), $this->fm );
+		$this->values = apply_filters( 'fm_form_' . $this->uniqid . '_values', $this->values, $this );
 		$defaults = array(
 			'role' => 'form',
 			'method' => 'POST',
 			'action' => '',
-			'id' => $this->uniqid,	
+			'id' => $this->uniqid,
+			'enctype' => 'multipart/form-data',
 		);
 		$params = array_merge( $defaults, $params );
 		$args = array();
@@ -130,6 +130,36 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 		$fm_validation->add_field( $this->fm );
 	}
 
+	public function error( $el, $message ) {
+		$this->errors[] = array( $el, $message );
+	}
+
+	public function message( $el, $message ) {
+		$this->messages[] = array( $el, $message );
+	}
+
+	public function the_errors() {
+		$this->the_messages( 'fm-errors', $this->errors );
+	}
+
+	public function the_messages( $class = 'fm-messages', $messages = null ) {
+		if ( !$messages ) $messages = $this->messages;
+		if ( empty( $messages ) ) return;
+		echo '<div class="' . $class . '">';
+		foreach ( $messages as $message ) {
+			// $error is always set in code, may contain HTML.
+			echo '<p>' . $message[1] . '</p>';
+		}
+		echo '</div>';
+	}
+
+	/**
+	 * Does the form have errors? Useful for breaking out of a submission routine.
+	 */
+	public function has_errors() {
+		return count( $this->errors ) > 0;
+	}
+
 	/**
 	 * Get the associated validator of a form
 	 * @return Fieldmanager_Util_Validation
@@ -143,17 +173,15 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 * @param string $uniqid
 	 * @return Fieldmanager_Context_Form
 	 */
-	public static function get_form( $uniqid ) {
+	public static function get_form( $uniqid, $fm = null ) {
+		if ( empty( self::$forms[$uniqid] ) ) {
+			if ( !empty( $fm ) ) {
+				self::$forms[$uniqid] = new Fieldmanager_Context_Form( $uniqid, $fm );
+			} else {
+				return null;
+			}
+		}
 		return self::$forms[$uniqid];
 	}
 
-}
-
-/**
- * Check to see if the form saved (useful for error messages)
- * @param string $uniqid
- * @return void
- */
-function fm_page_form_did_save( $uniqid ) {
-	return Fieldmanager_Context_Form::get_form( $uniqid )->did_save;
 }

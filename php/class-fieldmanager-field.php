@@ -803,7 +803,7 @@ abstract class Fieldmanager_Field {
 	 */
 	public function add_form( $uniqid ) {
 		$this->require_base();
-		return new Fieldmanager_Context_Form( $uniqid, $this );
+		return Fieldmanager_Context_Form::get_form( $uniqid, $this );
 	}
 
 	/**
