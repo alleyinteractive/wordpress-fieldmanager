@@ -189,6 +189,12 @@ abstract class Fieldmanager_Field {
 	public $index = False;
 
 	/**
+	 * @var boolean
+	 * Should this field be visible?
+	 */
+	public $visible = true;
+
+	/**
 	 * @var Fieldmanager_Datasource
 	 * Optionally generate field from datasource. Used by Fieldmanager_Autocomplete and Fieldmanager_Options.
 	 */
@@ -334,6 +340,7 @@ abstract class Fieldmanager_Field {
 	 * @return string HTML for all form elements.
 	 */
 	public function element_markup( $values = array() ) {
+		if ( !$this->visible ) return '';
 		$values = $this->preload_alter_values( $values );
 		if ( $this->limit == 0 ) {
 			if ( count( $values ) + $this->extra_elements <= $this->starting_count ) {

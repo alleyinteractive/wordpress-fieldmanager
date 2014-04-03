@@ -47,6 +47,9 @@ class Fieldmanager_File extends Fieldmanager_Field {
 		}
 
 		if ( empty( $fstruct['tmp_name'][ $this->name ] ) ) {
+			if ( is_array( $value ) && !empty( $value['saved'] ) ) {
+				return intval( $value['saved'] );
+			}
 			return false; // no upload, stop processing
 		}
 
@@ -54,6 +57,10 @@ class Fieldmanager_File extends Fieldmanager_Field {
 			$this->_failed_validation( 'This file is of an invalid type' );
 		}
 		return call_user_func_array( $this->save_function, array( $this->name, $fstruct ) );
+	}
+
+	public function get_form_saved_name() {
+		return $this->get_form_name() . '[saved]';
 	}
 
 	/**
@@ -90,7 +97,7 @@ class Fieldmanager_File extends Fieldmanager_Field {
 		require_once( ABSPATH . 'wp-admin/includes/image.php' );
 
 		// Generate the metadata for the attachment, and update the database record.
-		$attach_data = wp_generate_attachment_metadata( $attach_id, $filename );
+		$attach_data = wp_generate_attachment_metadata( $attach_id, $file['file'] );
 		wp_update_attachment_metadata( $attach_id, $attach_data );
 		return $attach_id;
 	}
