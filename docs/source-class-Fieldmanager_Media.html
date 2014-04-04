@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="generator" content="ApiGen 2.8.0" />
-	<meta name="robots" content="noindex" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+	<meta name="robots" content="noindex">
 
 	<title>File class-fieldmanager-media.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?809599316"></script>
-	<script type="text/javascript" src="elementlist.js?4223749464"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
+	<script type="text/javascript" src="resources/combined.js?4143384459"></script>
+	<script type="text/javascript" src="elementlist.js?969459336"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822">
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609">
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -58,9 +58,9 @@
 	<div id="left">
 	<div id="menu">
 		<form id="search" class="form-search">
-			<input type="hidden" name="cx" value="" />
-			<input type="hidden" name="ie" value="UTF-8" />
-			<input type="text" name="q" class="search-query" placeholder="Search" />
+			<input type="hidden" name="cx" value="">
+			<input type="hidden" name="ie" value="UTF-8">
+			<input type="text" name="q" class="search-query" placeholder="Search">
 		</form>
 
 
@@ -109,8 +109,11 @@
 
 			<h3>Exceptions</h3>
 			<ul>
+				<li><a href="class-FM_Class_Not_Found_Exception.html">FM_Class_Not_Found_Exception</a></li>
 				<li><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></li>
+				<li><a href="class-FM_Duplicate_Submenu_Name_Exception.html">FM_Duplicate_Submenu_Name_Exception</a></li>
 				<li><a href="class-FM_Exception.html">FM_Exception</a></li>
+				<li><a href="class-FM_Submenu_Not_Initialized_Exception.html">FM_Submenu_Not_Initialized_Exception</a></li>
 				<li><a href="class-FM_Validation_Exception.html">FM_Validation_Exception</a></li>
 			</ul>
 
@@ -118,15 +121,21 @@
 			<h3>Functions</h3>
 			<ul>
 				<li><a href="function-_fieldmanager_registry.html">_fieldmanager_registry</a></li>
+				<li><a href="function-_fm_add_submenus.html">_fm_add_submenus</a></li>
+				<li><a href="function-_fm_submenu_render.html">_fm_submenu_render</a></li>
 				<li><a href="function-fieldmanager_enqueue_scripts.html">fieldmanager_enqueue_scripts</a></li>
 				<li><a href="function-fieldmanager_get_baseurl.html">fieldmanager_get_baseurl</a></li>
 				<li><a href="function-fieldmanager_get_template.html">fieldmanager_get_template</a></li>
+				<li><a href="function-fieldmanager_load_class.html">fieldmanager_load_class</a></li>
+				<li><a href="function-fieldmanager_load_file.html">fieldmanager_load_file</a></li>
 				<li><a href="function-fieldmanager_set_baseurl.html">fieldmanager_set_baseurl</a></li>
 				<li><a href="function-fm_add_script.html">fm_add_script</a></li>
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
-				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
-				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_get_context.html">fm_get_context</a></li>
+				<li><a href="function-fm_match_context.html">fm_match_context</a></li>
+				<li><a href="function-fm_register_submenu_page.html">fm_register_submenu_page</a></li>
 				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
+				<li><a href="function-fm_trigger_context_action.html">fm_trigger_context_action</a></li>
 			</ul>
 		</div>
 	</div>
@@ -242,29 +251,30 @@
 </span><span id="104" class="l"><a class="l" href="#104">104 </a>                <span class="php-var">$preview</span> .= wp_get_attachment_link( <span class="php-var">$value</span>, <span class="php-var">$this</span>-&gt;preview_size, <span class="php-keyword1">True</span>, <span class="php-keyword1">True</span>, <span class="php-var">$attachment</span>-&gt;post_title );
 </span><span id="105" class="l"><a class="l" href="#105">105 </a>            }
 </span><span id="106" class="l"><a class="l" href="#106">106 </a>            <span class="php-var">$preview</span> .= <span class="php-keyword2">sprintf</span>( <span class="php-quote">'&lt;br /&gt;&lt;a href=&quot;#&quot; class=&quot;fm-media-remove fm-delete&quot;&gt;%s&lt;/a&gt;'</span>, __( <span class="php-quote">'remove'</span> ) );
-</span><span id="107" class="l"><a class="l" href="#107">107 </a>        } <span class="php-keyword1">else</span> {
-</span><span id="108" class="l"><a class="l" href="#108">108 </a>            <span class="php-var">$preview</span> = <span class="php-quote">''</span>;
-</span><span id="109" class="l"><a class="l" href="#109">109 </a>        }
-</span><span id="110" class="l"><a class="l" href="#110">110 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
-</span><span id="111" class="l"><a class="l" href="#111">111 </a>            <span class="php-quote">'&lt;input type=&quot;button&quot; class=&quot;fm-media-button&quot; id=&quot;%1$s&quot; value=&quot;%3$s&quot; data-choose=&quot;%7$s&quot; data-update=&quot;%8$s&quot; /&gt;
-</span></span><span id="112" class="l"><a class="l" href="#112">112 </a><span class="php-quote">            &lt;input type=&quot;hidden&quot; name=&quot;%2$s&quot; value=&quot;%4$s&quot; class=&quot;fm-element fm-media-id&quot; /&gt;
-</span></span><span id="113" class="l"><a class="l" href="#113">113 </a><span class="php-quote">            &lt;div class=&quot;media-wrapper&quot;&gt;%5$s&lt;/div&gt;
-</span></span><span id="114" class="l"><a class="l" href="#114">114 </a><span class="php-quote">            &lt;script type=&quot;text/javascript&quot;&gt;
-</span></span><span id="115" class="l"><a class="l" href="#115">115 </a><span class="php-quote">            var fm_preview_size = fm_preview_size || [];
-</span></span><span id="116" class="l"><a class="l" href="#116">116 </a><span class="php-quote">            fm_preview_size[&quot;%1$s&quot;]=%6$s;
-</span></span><span id="117" class="l"><a class="l" href="#117">117 </a><span class="php-quote">            &lt;/script&gt;'</span>,
-</span><span id="118" class="l"><a class="l" href="#118">118 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
-</span><span id="119" class="l"><a class="l" href="#119">119 </a>            <span class="php-var">$this</span>-&gt;get_form_name(),
-</span><span id="120" class="l"><a class="l" href="#120">120 </a>            esc_attr( <span class="php-var">$this</span>-&gt;button_label ),
-</span><span id="121" class="l"><a class="l" href="#121">121 </a>            esc_attr( <span class="php-var">$value</span> ),
-</span><span id="122" class="l"><a class="l" href="#122">122 </a>            <span class="php-var">$preview</span>,
-</span><span id="123" class="l"><a class="l" href="#123">123 </a>            <span class="php-keyword2">json_encode</span>( <span class="php-var">$this</span>-&gt;preview_size ),
-</span><span id="124" class="l"><a class="l" href="#124">124 </a>            esc_attr( <span class="php-var">$this</span>-&gt;modal_title ),
-</span><span id="125" class="l"><a class="l" href="#125">125 </a>            esc_attr( <span class="php-var">$this</span>-&gt;modal_button_label )
-</span><span id="126" class="l"><a class="l" href="#126">126 </a>        );
-</span><span id="127" class="l"><a class="l" href="#127">127 </a>    }
-</span><span id="128" class="l"><a class="l" href="#128">128 </a>
-</span><span id="129" class="l"><a class="l" href="#129">129 </a></span>}</code></pre>
+</span><span id="107" class="l"><a class="l" href="#107">107 </a>            <span class="php-var">$preview</span> = apply_filters( <span class="php-quote">'fieldmanager_media_preview'</span>, <span class="php-var">$preview</span>, <span class="php-var">$value</span>, <span class="php-var">$attachment</span> );
+</span><span id="108" class="l"><a class="l" href="#108">108 </a>        } <span class="php-keyword1">else</span> {
+</span><span id="109" class="l"><a class="l" href="#109">109 </a>            <span class="php-var">$preview</span> = <span class="php-quote">''</span>;
+</span><span id="110" class="l"><a class="l" href="#110">110 </a>        }
+</span><span id="111" class="l"><a class="l" href="#111">111 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
+</span><span id="112" class="l"><a class="l" href="#112">112 </a>            <span class="php-quote">'&lt;input type=&quot;button&quot; class=&quot;fm-media-button button-secondary fm-incrementable&quot; id=&quot;%1$s&quot; value=&quot;%3$s&quot; data-choose=&quot;%7$s&quot; data-update=&quot;%8$s&quot; /&gt;
+</span></span><span id="113" class="l"><a class="l" href="#113">113 </a><span class="php-quote">            &lt;input type=&quot;hidden&quot; name=&quot;%2$s&quot; value=&quot;%4$s&quot; class=&quot;fm-element fm-media-id&quot; /&gt;
+</span></span><span id="114" class="l"><a class="l" href="#114">114 </a><span class="php-quote">            &lt;div class=&quot;media-wrapper&quot;&gt;%5$s&lt;/div&gt;
+</span></span><span id="115" class="l"><a class="l" href="#115">115 </a><span class="php-quote">            &lt;script type=&quot;text/javascript&quot;&gt;
+</span></span><span id="116" class="l"><a class="l" href="#116">116 </a><span class="php-quote">            var fm_preview_size = fm_preview_size || [];
+</span></span><span id="117" class="l"><a class="l" href="#117">117 </a><span class="php-quote">            fm_preview_size[&quot;%1$s&quot;]=%6$s;
+</span></span><span id="118" class="l"><a class="l" href="#118">118 </a><span class="php-quote">            &lt;/script&gt;'</span>,
+</span><span id="119" class="l"><a class="l" href="#119">119 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
+</span><span id="120" class="l"><a class="l" href="#120">120 </a>            <span class="php-var">$this</span>-&gt;get_form_name(),
+</span><span id="121" class="l"><a class="l" href="#121">121 </a>            esc_attr( <span class="php-var">$this</span>-&gt;button_label ),
+</span><span id="122" class="l"><a class="l" href="#122">122 </a>            esc_attr( <span class="php-var">$value</span> ),
+</span><span id="123" class="l"><a class="l" href="#123">123 </a>            <span class="php-var">$preview</span>,
+</span><span id="124" class="l"><a class="l" href="#124">124 </a>            <span class="php-keyword2">json_encode</span>( <span class="php-var">$this</span>-&gt;preview_size ),
+</span><span id="125" class="l"><a class="l" href="#125">125 </a>            esc_attr( <span class="php-var">$this</span>-&gt;modal_title ),
+</span><span id="126" class="l"><a class="l" href="#126">126 </a>            esc_attr( <span class="php-var">$this</span>-&gt;modal_button_label )
+</span><span id="127" class="l"><a class="l" href="#127">127 </a>        );
+</span><span id="128" class="l"><a class="l" href="#128">128 </a>    }
+</span><span id="129" class="l"><a class="l" href="#129">129 </a>
+</span><span id="130" class="l"><a class="l" href="#130">130 </a></span>}</code></pre>
 	</div>
 
 	<div id="footer">

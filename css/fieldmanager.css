@@ -53,6 +53,10 @@ div.fm-group-label-wrapper {
 	margin-bottom: 5px;
 }
 
+.fm-group .fm-add-another-wrapper {
+	margin-bottom: 15px;
+}
+
 .fmjs-proto {
 	display: none;
 }

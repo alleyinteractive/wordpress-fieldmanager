@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="generator" content="ApiGen 2.8.0" />
-	<meta name="robots" content="noindex" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
+	<meta name="robots" content="noindex">
 
 	<title>File class-fieldmanager-select.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?809599316"></script>
-	<script type="text/javascript" src="elementlist.js?4223749464"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
+	<script type="text/javascript" src="resources/combined.js?4143384459"></script>
+	<script type="text/javascript" src="elementlist.js?969459336"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822">
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609">
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -58,9 +58,9 @@
 	<div id="left">
 	<div id="menu">
 		<form id="search" class="form-search">
-			<input type="hidden" name="cx" value="" />
-			<input type="hidden" name="ie" value="UTF-8" />
-			<input type="text" name="q" class="search-query" placeholder="Search" />
+			<input type="hidden" name="cx" value="">
+			<input type="hidden" name="ie" value="UTF-8">
+			<input type="text" name="q" class="search-query" placeholder="Search">
 		</form>
 
 
@@ -109,8 +109,11 @@
 
 			<h3>Exceptions</h3>
 			<ul>
+				<li><a href="class-FM_Class_Not_Found_Exception.html">FM_Class_Not_Found_Exception</a></li>
 				<li><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></li>
+				<li><a href="class-FM_Duplicate_Submenu_Name_Exception.html">FM_Duplicate_Submenu_Name_Exception</a></li>
 				<li><a href="class-FM_Exception.html">FM_Exception</a></li>
+				<li><a href="class-FM_Submenu_Not_Initialized_Exception.html">FM_Submenu_Not_Initialized_Exception</a></li>
 				<li><a href="class-FM_Validation_Exception.html">FM_Validation_Exception</a></li>
 			</ul>
 
@@ -118,15 +121,21 @@
 			<h3>Functions</h3>
 			<ul>
 				<li><a href="function-_fieldmanager_registry.html">_fieldmanager_registry</a></li>
+				<li><a href="function-_fm_add_submenus.html">_fm_add_submenus</a></li>
+				<li><a href="function-_fm_submenu_render.html">_fm_submenu_render</a></li>
 				<li><a href="function-fieldmanager_enqueue_scripts.html">fieldmanager_enqueue_scripts</a></li>
 				<li><a href="function-fieldmanager_get_baseurl.html">fieldmanager_get_baseurl</a></li>
 				<li><a href="function-fieldmanager_get_template.html">fieldmanager_get_template</a></li>
+				<li><a href="function-fieldmanager_load_class.html">fieldmanager_load_class</a></li>
+				<li><a href="function-fieldmanager_load_file.html">fieldmanager_load_file</a></li>
 				<li><a href="function-fieldmanager_set_baseurl.html">fieldmanager_set_baseurl</a></li>
 				<li><a href="function-fm_add_script.html">fm_add_script</a></li>
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
-				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
-				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_get_context.html">fm_get_context</a></li>
+				<li><a href="function-fm_match_context.html">fm_match_context</a></li>
+				<li><a href="function-fm_register_submenu_page.html">fm_register_submenu_page</a></li>
 				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
+				<li><a href="function-fm_trigger_context_action.html">fm_trigger_context_action</a></li>
 			</ul>
 		</div>
 	</div>
@@ -224,7 +233,7 @@
 </span><span id="86" class="l"><a class="l" href="#86"> 86 </a>        <span class="php-var">$opts</span> .= <span class="php-var">$this</span>-&gt;form_data_elements( <span class="php-var">$value</span> );
 </span><span id="87" class="l"><a class="l" href="#87"> 87 </a>
 </span><span id="88" class="l"><a class="l" href="#88"> 88 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
-</span><span id="89" class="l"><a class="l" href="#89"> 89 </a>            <span class="php-quote">'&lt;select class=&quot;'</span> . <span class="php-keyword2">implode</span>( <span class="php-quote">&quot; &quot;</span>, <span class="php-var">$select_classes</span> ) . <span class="php-quote">'&quot; name=&quot;%s&quot; id=&quot;%s&quot; %s /&gt;%s&lt;/select&gt;'</span>,
+</span><span id="89" class="l"><a class="l" href="#89"> 89 </a>            <span class="php-quote">'&lt;select class=&quot;'</span> . <span class="php-keyword2">implode</span>( <span class="php-quote">&quot; &quot;</span>, <span class="php-var">$select_classes</span> ) . <span class="php-quote">'&quot; name=&quot;%s&quot; id=&quot;%s&quot; %s&gt;%s&lt;/select&gt;'</span>,
 </span><span id="90" class="l"><a class="l" href="#90"> 90 </a>            <span class="php-var">$this</span>-&gt;get_form_name( <span class="php-var">$do_multiple</span> ),
 </span><span id="91" class="l"><a class="l" href="#91"> 91 </a>            <span class="php-var">$this</span>-&gt;get_element_id(),
 </span><span id="92" class="l"><a class="l" href="#92"> 92 </a>            <span class="php-var">$this</span>-&gt;get_element_attributes(),

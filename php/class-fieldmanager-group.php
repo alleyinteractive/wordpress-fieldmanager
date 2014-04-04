@@ -241,7 +241,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				$values[ $element->name ] = NULL;
 			}
 			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
-			$current_child_value = empty( $current_values[$element->name ]) ? array() : $current_values[$element->name];
+			$current_child_value = !isset( $current_values[$element->name ]) ? array() : $current_values[$element->name];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
 			if ( !$this->save_empty && $this->limit != 1 ) {
 				if ( is_array( $values[$element->name] ) && empty( $values[$element->name] ) ) unset( $values[$element->name] );

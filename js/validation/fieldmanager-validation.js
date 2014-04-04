@@ -9,6 +9,7 @@ fm_validation = {
 			case "post":
 				$( "#submitpost .spinner" ).hide();
 				$( "#submitpost #publish" ).removeClass( 'button-primary-disabled' );
+				$(window).off( 'beforeunload.edit-post' );
 				break;
 		}
 	},

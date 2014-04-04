@@ -1,15 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<meta name="generator" content="ApiGen 2.8.0" />
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<meta name="generator" content="ApiGen 2.8.0">
 
 	<title>Class Fieldmanager_Group | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?809599316"></script>
-	<script type="text/javascript" src="elementlist.js?4223749464"></script>
-	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822" />
-	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609" />
+	<script type="text/javascript" src="resources/combined.js?4143384459"></script>
+	<script type="text/javascript" src="elementlist.js?969459336"></script>
+	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822">
+	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609">
 
 	<script type="text/javascript">
 		var _gaq = _gaq || [];
@@ -56,9 +56,9 @@
 	<div id="left">
 	<div id="menu">
 		<form id="search" class="form-search">
-			<input type="hidden" name="cx" value="" />
-			<input type="hidden" name="ie" value="UTF-8" />
-			<input type="text" name="q" class="search-query" placeholder="Search" />
+			<input type="hidden" name="cx" value="">
+			<input type="hidden" name="ie" value="UTF-8">
+			<input type="text" name="q" class="search-query" placeholder="Search">
 		</form>
 
 
@@ -107,8 +107,11 @@
 
 			<h3>Exceptions</h3>
 			<ul>
+				<li><a href="class-FM_Class_Not_Found_Exception.html">FM_Class_Not_Found_Exception</a></li>
 				<li><a href="class-FM_Developer_Exception.html">FM_Developer_Exception</a></li>
+				<li><a href="class-FM_Duplicate_Submenu_Name_Exception.html">FM_Duplicate_Submenu_Name_Exception</a></li>
 				<li><a href="class-FM_Exception.html">FM_Exception</a></li>
+				<li><a href="class-FM_Submenu_Not_Initialized_Exception.html">FM_Submenu_Not_Initialized_Exception</a></li>
 				<li><a href="class-FM_Validation_Exception.html">FM_Validation_Exception</a></li>
 			</ul>
 
@@ -116,15 +119,21 @@
 			<h3>Functions</h3>
 			<ul>
 				<li><a href="function-_fieldmanager_registry.html">_fieldmanager_registry</a></li>
+				<li><a href="function-_fm_add_submenus.html">_fm_add_submenus</a></li>
+				<li><a href="function-_fm_submenu_render.html">_fm_submenu_render</a></li>
 				<li><a href="function-fieldmanager_enqueue_scripts.html">fieldmanager_enqueue_scripts</a></li>
 				<li><a href="function-fieldmanager_get_baseurl.html">fieldmanager_get_baseurl</a></li>
 				<li><a href="function-fieldmanager_get_template.html">fieldmanager_get_template</a></li>
+				<li><a href="function-fieldmanager_load_class.html">fieldmanager_load_class</a></li>
+				<li><a href="function-fieldmanager_load_file.html">fieldmanager_load_file</a></li>
 				<li><a href="function-fieldmanager_set_baseurl.html">fieldmanager_set_baseurl</a></li>
 				<li><a href="function-fm_add_script.html">fm_add_script</a></li>
 				<li><a href="function-fm_add_style.html">fm_add_style</a></li>
-				<li><a href="function-fm_get_post_meta.html">fm_get_post_meta</a></li>
-				<li><a href="function-fm_is_post_edit_screen.html">fm_is_post_edit_screen</a></li>
+				<li><a href="function-fm_get_context.html">fm_get_context</a></li>
+				<li><a href="function-fm_match_context.html">fm_match_context</a></li>
+				<li><a href="function-fm_register_submenu_page.html">fm_register_submenu_page</a></li>
 				<li><a href="function-fm_sanitize_textarea.html">fm_sanitize_textarea</a></li>
+				<li><a href="function-fm_trigger_context_action.html">fm_trigger_context_action</a></li>
 			</ul>
 		</div>
 	</div>
@@ -153,7 +162,7 @@ as the base element.</p>
 			
 		</dd>
 		<dd style="padding-left:30px">
-			<img src="resources/inherit.png" alt="Extended by" />
+			<img src="resources/inherit.png" alt="Extended by">
 <b><span>Fieldmanager_Group</span></b>			
 			
 			
@@ -171,9 +180,9 @@ as the base element.</p>
 		
 		
 		
-		<b>Package:</b> <a href="package-Fieldmanager.html">Fieldmanager</a><br />
+		<b>Package:</b> <a href="package-Fieldmanager.html">Fieldmanager</a><br>
 
-		<b>Located at</b> <a href="source-class-Fieldmanager_Group.html#6-343" title="Go to source code">class-fieldmanager-group.php</a><br />
+		<b>Located at</b> <a href="source-class-Fieldmanager_Group.html#6-345" title="Go to source code">class-fieldmanager-group.php</a><br>
 	</div>
 
 
@@ -191,7 +200,7 @@ as the base element.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#___construct">#</a>
-			<code><a href="source-class-Fieldmanager_Group.html#90-110" title="Go to source code">__construct</a>( <span>string <var>$label</var> = <span class="php-quote">''</span></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>() </span> )</code>
+			<code><a href="source-class-Fieldmanager_Group.html#90-112" title="Go to source code">__construct</a>( <span>string <var>$label</var> = <span class="php-quote">''</span></span>, <span>array <var>$options</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 			<div class="description short">
 				
@@ -233,7 +242,7 @@ as the base element.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_form_element">#</a>
-			<code><a href="source-class-Fieldmanager_Group.html#112-206" title="Go to source code">form_element</a>( <span>mixed <var>$value</var> = <span class="php-keyword1">NULL</span> </span> )</code>
+			<code><a href="source-class-Fieldmanager_Group.html#114-208" title="Go to source code">form_element</a>( <span>mixed <var>$value</var> = <span class="php-keyword1">NULL</span> </span> )</code>
 
 			<div class="description short">
 				
@@ -258,7 +267,7 @@ functions.</p>
 					<h4>Returns</h4>
 					<div class="list">
 						<code>string</code><br>HTML for the element. Generate HTML for the form element itself. Generally
-should be just one tag, no wrappers.<br />
+should be just one tag, no wrappers.<br>
 					</div>
 
 
@@ -280,7 +289,7 @@ should be just one tag, no wrappers.<br />
 
 			<td class="name"><div>
 			<a class="anchor" href="#_add_child">#</a>
-			<code><a href="source-class-Fieldmanager_Group.html#208-215" title="Go to source code">add_child</a>( <span><code><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></code> <var>$child</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Group.html#210-217" title="Go to source code">add_child</a>( <span><code><a href="class-Fieldmanager_Field.html">Fieldmanager_Field</a></code> <var>$child</var></span> )</code>
 
 			<div class="description short">
 				
@@ -318,7 +327,7 @@ should be just one tag, no wrappers.<br />
 
 			<td class="name"><div>
 			<a class="anchor" href="#_presave">#</a>
-			<code><a href="source-class-Fieldmanager_Group.html#217-257" title="Go to source code">presave</a>( <span>mixed <var>$values</var></span>, <span>mixed <var>$current_values</var> = <span class="php-keyword1">array</span>() </span> )</code>
+			<code><a href="source-class-Fieldmanager_Group.html#219-259" title="Go to source code">presave</a>( <span>mixed <var>$values</var></span>, <span>mixed <var>$current_values</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 			<div class="description short">
 				
@@ -344,13 +353,13 @@ methods.</p>
 
 					<h4>Returns</h4>
 					<div class="list">
-						<code>mixed[]</code><br>values<br />
+						<code>mixed[]</code><br>values<br>
 					</div>
 
 
 					<h4>Input</h4>
 					<div class="list">
-							mixed[] values<br />
+							mixed[] values<br>
 					</div>
 
 					<h4>Overrides</h4>
@@ -370,7 +379,7 @@ methods.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_get_element_label">#</a>
-			<code><a href="source-class-Fieldmanager_Group.html#259-299" title="Go to source code">get_element_label</a>( <span>array <var>$classes</var> = <span class="php-keyword1">array</span>() </span> )</code>
+			<code><a href="source-class-Fieldmanager_Group.html#261-301" title="Go to source code">get_element_label</a>( <span>array <var>$classes</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 			<div class="description short">
 				
@@ -392,7 +401,7 @@ methods.</p>
 
 					<h4>Returns</h4>
 					<div class="list">
-						<code>string</code><br>HTML label.<br />
+						<code>string</code><br>HTML label.<br>
 					</div>
 
 
@@ -414,7 +423,7 @@ methods.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_wrap_with_multi_tools">#</a>
-			<code><a href="source-class-Fieldmanager_Group.html#301-308" title="Go to source code">wrap_with_multi_tools</a>( <span>string <var>$html</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Group.html#303-310" title="Go to source code">wrap_with_multi_tools</a>( <span>string <var>$html</var></span>, <span>mixed <var>$classes</var> = <span class="php-keyword1">array</span>() </span> )</code>
 
 			<div class="description short">
 				
@@ -432,11 +441,13 @@ methods.</p>
 					<div class="list"><dl>
 						<dt><var>$html</var></dt>
 						<dd><code>string</code><br>$html</dd>
+						<dt><var>$classes</var></dt>
+						<dd></dd>
 					</dl></div>
 
 					<h4>Returns</h4>
 					<div class="list">
-						<code>string</code><br />
+						<code>string</code><br>
 					</div>
 
 
@@ -458,7 +469,7 @@ methods.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_get_extra_element_classes">#</a>
-			<code><a href="source-class-Fieldmanager_Group.html#310-323" title="Go to source code">get_extra_element_classes</a>( )</code>
+			<code><a href="source-class-Fieldmanager_Group.html#312-325" title="Go to source code">get_extra_element_classes</a>( )</code>
 
 			<div class="description short">
 				
@@ -475,7 +486,7 @@ methods.</p>
 
 					<h4>Returns</h4>
 					<div class="list">
-						<code>array</code><br />
+						<code>array</code><br>
 					</div>
 
 
@@ -492,9 +503,11 @@ methods.</p>
 		<p class="elementList">
 			<code><a href="class-Fieldmanager_Field.html#__invalid_definition">_invalid_definition()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#__unauthorized_access">_unauthorized_access()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_activate_submenu_page">activate_submenu_page()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_another">add_another()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_meta_box">add_meta_box()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_page_form">add_page_form()</a></code>, 
+			<code><a href="class-Fieldmanager_Field.html#_add_quickedit_box">add_quickedit_box()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_submenu_page">add_submenu_page()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_term_form">add_term_form()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_add_user_form">add_user_form()</a></code>, 
@@ -504,7 +517,6 @@ methods.</p>
 			<code><a href="class-Fieldmanager_Field.html#_get_element_id">get_element_id()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_form_name">get_form_name()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_form_tree">get_form_tree()</a></code>, 
-			<code><a href="class-Fieldmanager_Field.html#_get_full_path">get_full_path()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_remove_handle">get_remove_handle()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_get_sort_handle">get_sort_handle()</a></code>, 
 			<code><a href="class-Fieldmanager_Field.html#_preload_alter_values">preload_alter_values()</a></code>, 
