@@ -189,7 +189,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
         if ( empty( $value ) ) return;
         $value = intval( $value );
         // There are no permissions in cron, but no changes are coming from a user either
-        if( ! defined( 'DOING_CRON' ) && ! DOING_CRON && ! current_user_can( 'edit_post', $value ) ) {
+        if ( ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) && ! current_user_can( 'edit_post', $value ) ) {
             die( 'Tried to refer to post ' . $value . ' which user cannot edit.' );
         }
         $this->presave_status_transition( $field, $value );
