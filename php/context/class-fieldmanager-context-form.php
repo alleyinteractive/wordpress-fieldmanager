@@ -50,7 +50,8 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 				throw new FM_Developer_Exception( 'You referenced an element which does not exist' );
 			}
 		}
-		echo $el->element_markup( array() );
+		$values = ( ! empty( $this->values[$el->name] ) ) ? $this->values[$el->name] : array();
+		echo $el->element_markup( $values );
 	}
 
 	/**
