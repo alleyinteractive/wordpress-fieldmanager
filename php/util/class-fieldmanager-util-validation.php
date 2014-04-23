@@ -219,7 +219,7 @@ class Fieldmanager_Util_Validation {
 			// This is not done via the normal enqueue process since there is no way to know at that point if any fields will require validation
 			// Doing this here avoids loading JS/CSS for validation if not in use
 			echo "<link rel='stylesheet' id='fm-validation-css' href='" . fieldmanager_get_baseurl() . "css/fieldmanager-validation.css' />\n";
-			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/fieldmanager-validation.js'></script>\n";
+			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/fieldmanager-validation.js?ver=0.3'></script>\n";
 			
 			// Add the jQuery validation script
 			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/jquery.validate.min.js'></script>\n";
