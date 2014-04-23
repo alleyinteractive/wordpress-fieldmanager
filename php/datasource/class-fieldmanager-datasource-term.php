@@ -361,7 +361,13 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @return string
 	 */
 	public function get_edit_link( $value ) {
-		return edit_term_link( __( 'Edit' ), '', '', $this->get_term( $value ), False );
+		$term = $this->get_term( $value );
+		return sprintf(
+			'<a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
+			empty( $value ) ? 'fm-hidden' : '',
+			empty( $value ) ? '#' : get_edit_term_link( $term->term_id, $term->taxonomy ),
+			__( 'Edit' )
+		);
 	}
 
 }
