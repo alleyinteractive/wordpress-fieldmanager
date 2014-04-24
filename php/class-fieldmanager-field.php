@@ -574,7 +574,6 @@ abstract class Fieldmanager_Field {
 	 * @return mixed[] sanitized values
 	 */
 	public function presave_all( $values, $current_values ) {
-
 		if ( $this->limit == 1 && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
 			if ( ! empty( $values ) )
@@ -587,7 +586,12 @@ abstract class Fieldmanager_Field {
 
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
 		if ( $this->limit != 1 && !is_array( $values ) ) {
-			$this->_unauthorized_access( '$values should be an array because $limit is ' . $this->limit );
+			// UNLESS doing cron, where we should just do nothing if there are no values to process
+			if ( defined( 'DOING_CRON' ) && DOING_CRON && empty( $values ) ) {
+				return;
+			} else {
+				$this->_unauthorized_access( '$values should be an array because $limit is ' . $this->limit );
+			}
 		}
 
 		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
