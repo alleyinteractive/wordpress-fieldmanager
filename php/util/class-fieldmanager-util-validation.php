@@ -204,6 +204,7 @@ class Fieldmanager_Util_Validation {
 			// Fields that should always be ignored
 			$ignore[] = ".fm-autocomplete";
 			$ignore[] = "input[type='button']";
+			$ignore[] = ":hidden";
 			
 			// Certain fields need to be ignored depending on the context
 			switch ( $this->context ) {
