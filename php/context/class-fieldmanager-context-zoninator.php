@@ -40,7 +40,7 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 			return;
 		}
 
-		// Populate the list of post types for which to add this meta box with the given settings
+		// Populate the list of post types to which we will add this group in zoninator's admin
 		if ( !is_array( $post_types ) ) $post_types = array( $post_types );
 
 		$this->label = $label;
