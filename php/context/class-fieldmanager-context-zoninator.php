@@ -175,7 +175,8 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 
 		$this->save_fields_for_zone_post( intval($data['fm-zone-post-id']), $value );
 
-		echo "0"; wp_die();
+		echo "0"; 
+		die();
 	}
 
 	/**
