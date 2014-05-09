@@ -69,6 +69,7 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 			$columns['info'] = array( $this, 'zone_post_info' );
 		}
 
+		// Register ourselves as needing to be called in the event that are not the last context object to respond to this filter.
 		foreach ( $this->post_types as $post_type ) {
 			$key = 'fm_zoninator_funcs_' . $post_type;
 			$funcs = _fieldmanager_registry( $key );
@@ -101,7 +102,8 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 			$zoninator->admin_page_zone_post_col_info( $post, $zone );
 		}
 
-		// Since zoninator only supports setting one callback function in the zoninator_zone_post_columns, we need to call the functions of any FM groups here.
+		// Since zoninator only supports setting one callback function in the zoninator_zone_post_columns filter, we need to call 
+		// the zone_post_info method of any other FM group that registered this context for this post type.
 		// We do this before rendering our own markup since if we're being called here, we were the last FM group that responded to the filter.
 		$funcs = _fieldmanager_registry( 'fm_zoninator_funcs_' . $post->post_type );
 		if ( !empty( $funcs ) && $master ) {
