@@ -1,5 +1,9 @@
 <?php
 /**
+ * @package Fieldmanager_Context
+ */
+
+/**
  * Use fieldmanager to add edit-in-place fields to items in a zoninator zone
  * @package Fieldmanager_Context
  */
@@ -90,7 +94,7 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function zone_post_info( $post, $zone, $master = true ) {
-		global $zoninator;
+		$zoninator = z_get_zoninator();
 
 		if ( !in_array( $post->post_type, $this->post_types ) ) {
 			return $zoninator->admin_page_zone_post_col_info( $post, $zone );
