@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager_Context
- */
 
 /**
  * Use fieldmanager to add edit-in-place fields to items in a zoninator zone
