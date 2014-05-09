@@ -19,6 +19,12 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 	public $label = '';
 
 	/**
+	 * @var string
+	 * Unique name to substitute for $this->fm->name in order to avoid confusing JS for media fields
+	 */
+	private $unique_name = '';
+
+	/**
 	 * @var Fieldmanager_Group
 	 * Base field
 	 */
@@ -50,6 +56,11 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_scripts' ) );
 	}
 
+	/**
+	 * Basic localization for UI elements
+	 *
+	 * @return void
+	 */
 	function localize_scripts() {
 		$localization = array(
 			'updating' => __( 'Updating...' ),
@@ -117,8 +128,14 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 		// Clear the registry for the next post.
 		_fieldmanager_registry( 'fm_zoninator_funcs_' . $post->post_type, array() );
 
-		$build .= '<form method="POST" class="fm-zoninator-post-form" id="fm-zone-post-' . esc_attr( $this->fm->name ) . '"><div class="fm-zone-post-form-wrapper">';
+		$build .= '<form method="POST" class="fm-zoninator-post-form" id="fm-zone-post-' . intval( $post->ID ) . '-' . esc_attr( $this->fm->name ) . '"><div class="fm-zone-post-form-wrapper">';
 		$build .= sprintf( '<input type="hidden" name="fm-zone-post-id" value="%s" />', esc_attr( $post->ID ) );
+
+		$this->unique_name = $this->fm->name . '-zone-post-' . intval( $post->ID );
+
+		$build .= sprintf( '<input type="hidden" name="fm-original-name" value="%s" />', esc_attr( $this->fm->name ) );
+		$build .= sprintf( '<input type="hidden" name="fm-unique-name" value="%s" />', esc_attr( $this->unique_name ) );
+		
 		if ( $this->label ) {
 			$build .= '<p>' . esc_html( $this->label ) . '</p>';
 		}
@@ -140,7 +157,10 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 		$this->fm->data_type = 'zone_post';
 		$this->fm->data_id = $post->ID;
 		$nonce = wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false );
+		$name = $this->fm->name;
+		$this->fm->name = $this->unique_name;
 		$elements = $nonce . $this->fm->element_markup( $values );
+		$this->fm->name = $name;
 		
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'zone_post', 'zone_post' );
@@ -158,19 +178,21 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 		$data = null;
 		parse_str( $_POST['data'], $data );
 
-		if ( !array_key_exists( $this->fm->name, $data ) || !array_key_exists( 'fm-zone-post-id', $data ) ) {
+		if ( !array_key_exists( 'fm-unique-name', $data ) || !array_key_exists( 'fm-original-name', $data ) || !array_key_exists( 'fm-zone-post-id', $data ) ) {
 			return;
 		}
+
+		$this->unique_name = sanitize_text_field( $data['fm-unique-name'] );
 
 		if ( !wp_verify_nonce( $data['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 			return;
 		}
 
-		if ( is_array( $data[$this->fm->name] ) ) {
-			$value = $data[$this->fm->name];
+		if ( is_array( $data[$this->unique_name] ) ) {
+			$value = $data[$this->unique_name];
 			array_walk_recursive( $value, 'sanitize_text_field' );
 		} else {
-			$value = sanitize_text_field( $data[$this->fm->name] ); 
+			$value = sanitize_text_field( $data[$this->unique_name] ); 
 		}
 
 		$this->save_fields_for_zone_post( intval($data['fm-zone-post-id']), $value );
