@@ -124,7 +124,7 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 			$build .= '<p>' . esc_html( $this->label ) . '</p>';
 		}
 		$build .= $this->render_post_form_elements( $post );
-		$build .= sprintf( '</div><input type="submit" name="fm-submit" class="button-primary" value="%s" /><div class="fm-zone-post-fornm-message"></div></form>', esc_attr( $this->fm->submit_button_label ) ?: __( 'Update' ) );
+		$build .= sprintf( '</div><input type="submit" name="fm-submit" class="button-primary" value="%s" /><div class="fm-zone-post-form-message"></div></form>', esc_attr( $this->fm->submit_button_label ) ?: __( 'Update' ) );
 
 		echo $build;
 	}
