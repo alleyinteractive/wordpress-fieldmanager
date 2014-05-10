@@ -18,7 +18,6 @@
 		e.preventDefault();
 		var $button = $(form).find('.button-primary');
 		var $message = $(form).find('.fm-zone-post-form-message');
-		console.log(fm_zoninator_localization);
 		var label = $button.val();
 		$button.addClass('disabled').prop('disabled', true).val(fm_zoninator_localization['updating']);
 		$.post(ajaxurl, { action: 'fm_zoninator_post_form_process', data: $(form).serialize() }, function(data) {
