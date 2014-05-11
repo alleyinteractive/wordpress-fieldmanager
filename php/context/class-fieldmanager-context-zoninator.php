@@ -52,7 +52,7 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 
 		add_filter( 'zoninator_zone_post_columns', array( $this, 'modify_zone_post_info_callback' ) );
 		add_action( 'wp_ajax_fm_zoninator_post_form_process', array( $this, 'process_ajax_submit' ), 10, 2 );
-		fm_add_script( 'zoninator-js', 'js/fieldmanager-zoninator.js' );
+		fm_add_script( 'fm-zoninator-js', 'js/fieldmanager-zoninator.js' );
 		add_action( 'admin_enqueue_scripts', array( $this, 'localize_scripts' ) );
 	}
 
@@ -66,7 +66,7 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 			'updating' => __( 'Updating...' ),
 			'updated' => __( 'Post updated successfully.' ),
 		);
-		wp_localize_script( 'zoninator-js', 'fm_zoninator_localization', $localization ); 
+		wp_localize_script( 'fm-zoninator-js', 'fm_zoninator_localization', $localization ); 
 	}
 
 	/**
@@ -135,7 +135,7 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 
 		$build .= sprintf( '<input type="hidden" name="fm-original-name" value="%s" />', esc_attr( $this->fm->name ) );
 		$build .= sprintf( '<input type="hidden" name="fm-unique-name" value="%s" />', esc_attr( $this->unique_name ) );
-		
+
 		if ( $this->label ) {
 			$build .= '<p>' . esc_html( $this->label ) . '</p>';
 		}
