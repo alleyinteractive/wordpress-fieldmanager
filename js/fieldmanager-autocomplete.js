@@ -17,7 +17,7 @@ fm.autocomplete = {
 				ac_params.select = function( e, ui ) {
 					e.preventDefault();
 					$el.val( ui.item.label );
-					$hidden.val( ui.item.value );
+					$hidden.val( ui.item.value ).trigger('change');
 				};
 				ac_params.focus = function( e, ui ) {
 					e.preventDefault();
