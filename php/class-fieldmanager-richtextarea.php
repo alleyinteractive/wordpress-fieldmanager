@@ -62,7 +62,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 				wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tiny_mce.js' ) );
 				wp_enqueue_script( 'wp-langs-en.js', includes_url( 'js/tinymce/langs/wp-langs-en.js' ) );
 			} else {
-				wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tinymce.js' ) );
+				wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tinymce.min.js' ) );
 				wp_enqueue_style( 'editor-buttons' );
 			}
 
