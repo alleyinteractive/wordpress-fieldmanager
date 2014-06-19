@@ -208,7 +208,14 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     public function presave_status_transition( Fieldmanager_Field $field, $value ) {
         // if this child post is in a post (or quickedit) context on a published post, publish the child also
         if ( $this->publish_with_parent && 'post' === $field->data_type && ! empty( $field->data_id ) && 'publish' === get_post_status( $field->data_id ) ) {
+            /**
+             * We have to remove the parent's request context before updating the child to avoid having the parent's data
+             * get applied to the child during hooks that get triggered. The child should be published with no modification.
+             */
+            $temp_post = $_POST;
+            unset( $_POST );
             wp_publish_post( $value );
+            $_POST = $temp_post;
         }
     }
 
