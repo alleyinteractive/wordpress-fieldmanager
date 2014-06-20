@@ -28,6 +28,12 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	public $first_empty = False;
 
 	/**
+	 * @var boolean
+	 * Tell FM to save multiple values
+	 */
+	public $multiple = false;
+
+	/**
 	 * Override constructor to add chosen.js maybe
 	 * @param string $label
 	 * @param array $options
@@ -42,6 +48,15 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.1', false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
 
 		parent::__construct( $label, $options );
+
+		// You can make a select field multi-select either by setting the attribute
+		// or by setting `'multiple' => true`. If you opt for the latter, the
+		// attribute will be set for you.
+		if ( array_key_exists( 'multiple', $this->attributes ) ) {
+			$this->multiple = true;
+		} elseif ( $this->multiple ) {
+			$this->attributes['multiple'] = 'multiple';
+		}
 
 		// Add the chosen library for type-ahead capabilities
 		if ( $this->type_ahead ) {
@@ -62,7 +77,9 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// If this is a multiple select, need to handle differently
 		$do_multiple = '';
-		if ( array_key_exists( 'multiple', $this->attributes ) ) $do_multiple = "[]";
+		if ( $this->multiple ) {
+			$do_multiple = "[]";
+		}
 
 		// Handle type-ahead based fields using the chosen library
 		if ( $this->type_ahead ) {
