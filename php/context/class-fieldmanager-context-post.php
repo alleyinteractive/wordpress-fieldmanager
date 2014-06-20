@@ -159,23 +159,35 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 */
 	public function save_fields_for_post( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
-		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' )
+		if ( empty( $_POST['post_ID'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' ) {
 			return;
-
-		if ( get_post_type( $post_id ) == 'revision' ) return; // prevents saving the same post twice; FM does not yet use revisions.
-
-		$use_this_post_type = False;
-		foreach ( $this->post_types as $type ) {
-			if ( $type == $_POST['post_type'] ) {
-				$use_this_post_type = True;
-				break;
-			}
 		}
-		if ( !$use_this_post_type ) return;
 
-		if ( $_POST['action'] == 'inline-save' ) return; // no fieldmanager on quick edit yet
+		// Make sure this hook fired on the post being saved, not a side-effect post for which the $_POST context is invalid.
+		if ( $post_id !== absint( $_POST['post_ID'] ) ) {
+			return;
+		}
 
-		// Make sure the current user can save this post
+		// Prevent saving the same post twice; FM does not yet use revisions.
+		if ( get_post_type( $post_id ) == 'revision' ) {
+			return;
+		}
+
+		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
+			return;
+		}
+
+		// Make sure this post type is intended for handling by this FM context.
+		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) {
+			return;
+		}
+
+		// Do not handle quickedit in this context.
+		if ( $_POST['action'] == 'inline-save' ) {
+			return;
+		}
+
+		// Make sure the current user is authorized to save this post.
 		if( $_POST['post_type'] == 'post' ) {
 			if( !current_user_can( 'edit_post', $post_id ) ) {
 				$this->fm->_unauthorized_access( 'User cannot edit this post' );
@@ -183,7 +195,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 			}
 		}
 
-		// Make sure that our nonce field arrived intact
+		// Make sure that our nonce field arrived intact.
 		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 			$this->fm->_unauthorized_access( 'Nonce validation failed' );
 		}
