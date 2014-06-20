@@ -90,7 +90,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 	/**
 	 * Test multiple-select field with datasource
 	 */
-	public function test_save_mutiple_select_with_datasource() {
+	public function test_save_multiple_select_with_datasource() {
 		$test_data = array( $this->child_post_a->ID, $this->child_post_b->ID );
 
 		$children = new Fieldmanager_Select( array(
@@ -107,7 +107,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		$this->assertNotEquals( $test_data, $saved_value );
 
 		$children = new Fieldmanager_Select( array(
-			'name' => 'test_save_mutiple_select_with_datasource2',
+			'name' => 'test_save_multiple_select_with_datasource2',
 			'multiple' => true,
 			'datasource' => new Fieldmanager_Datasource_Post( array(
 				'query_args' => array(
@@ -115,12 +115,12 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 				),
 			) ),
 		) );
-		$children->add_meta_box( 'test_save_mutiple_select_with_datasource2', $this->parent_post->post_type )->save_to_post_meta( $this->parent_post->ID, $test_data );
-		$saved_value = get_post_meta( $this->parent_post->ID, 'test_save_mutiple_select_with_datasource2', true );
+		$children->add_meta_box( 'test_save_multiple_select_with_datasource2', $this->parent_post->post_type )->save_to_post_meta( $this->parent_post->ID, $test_data );
+		$saved_value = get_post_meta( $this->parent_post->ID, 'test_save_multiple_select_with_datasource2', true );
 		$this->assertEquals( $test_data, $saved_value );
 
 		$children = new Fieldmanager_Select( array(
-			'name' => 'test_save_mutiple_select_with_datasource3',
+			'name' => 'test_save_multiple_select_with_datasource3',
 			'attributes' => array( 'multiple' => 'multiple' ),
 			'datasource' => new Fieldmanager_Datasource_Post( array(
 				'query_args' => array(
@@ -128,8 +128,8 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 				),
 			) ),
 		) );
-		$children->add_meta_box( 'test_save_mutiple_select_with_datasource3', $this->parent_post->post_type )->save_to_post_meta( $this->parent_post->ID, $test_data );
-		$saved_value = get_post_meta( $this->parent_post->ID, 'test_save_mutiple_select_with_datasource3', true );
+		$children->add_meta_box( 'test_save_multiple_select_with_datasource3', $this->parent_post->post_type )->save_to_post_meta( $this->parent_post->ID, $test_data );
+		$saved_value = get_post_meta( $this->parent_post->ID, 'test_save_multiple_select_with_datasource3', true );
 		$this->assertEquals( $test_data, $saved_value );
 	}
 }
