@@ -17,6 +17,8 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// insert a post
 		$this->post_id = wp_insert_post( $this->post );
+		// reload as proper object
+		$this->post = get_post( $this->post_id );
 	}
 
 	/**
@@ -234,9 +236,6 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * @expectedException FM_Exception
 	 */
 	public function test_unexpected_non_numeric_key() {
-
-		$this->markTestSkipped( 'Error: Failed asserting that exception of type "FM_Exception" is thrown.' );
-
 		$elements = $this->_get_elements();
 		$base = new Fieldmanager_Group( array(
 			'name' => 'base_group',
@@ -273,9 +272,6 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * Test the form output
 	 */
 	public function test_form_output() {
-
-		$this->markTestSkipped( 'Error: Undefined index: callback' );
-
 		$elements = $this->_get_elements();
 		$base = new Fieldmanager_Group( array(
 			'name' => 'base_group',

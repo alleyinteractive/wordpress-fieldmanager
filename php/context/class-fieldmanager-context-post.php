@@ -37,7 +37,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @var Fieldmanager_Group
 	 * Base field
 	 */
-	public $fm = '';
+	public $fm = null;
 
 	/**
 	 * Add a context to a fieldmanager
@@ -92,11 +92,11 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * Helper to attach element_markup() to add_meta_box(). Prints markup for post editor.
 	 * @see http://codex.wordpress.org/Function_Reference/add_meta_box
 	 * @param $post the post object.
-	 * @param $form_struct the structure of the form itself (not very useful).
+	 * @param $form_struct the structure of the form itself. Unused.
 	 * @return void.
 	 */
-	public function render_meta_box( $post, $form_struct ) {
-		$key = $form_struct['callback'][0]->fm->name;
+	public function render_meta_box( $post, $form_struct = null ) {
+		$key = $this->fm->name;
 		$values = get_post_meta( $post->ID, $key );
 		$values = empty( $values ) ? Null : $values[0];
 		$this->fm->data_type = 'post';
@@ -213,7 +213,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) return;
 		// don't save values since we aren't provided with any; just trigger presave so that subclass handlers can process as necessary
 		$this->fm->skip_save = true;
-		$current = get_post_meta( $post_id, $this->fm->name, True );
+		$current = get_post_meta( $post_id, $this->fm->name, true );
 		$this->save_to_post_meta( $post_id, $current );
 	}
 
@@ -227,7 +227,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
-		$current = get_post_meta( $this->fm->data_id, $this->fm->name, True );
+		$current = get_post_meta( $this->fm->data_id, $this->fm->name, true );
 		$data = $this->fm->presave_all( $data, $current );
 		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );
 	}
