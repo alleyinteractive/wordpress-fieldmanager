@@ -91,6 +91,14 @@ class Fieldmanager_Util_Validation {
 	}
 
 	/**
+	 * Getter for rules
+	 * @return array rules
+	 */
+	public function get_rules() {
+		return $this->rules;
+	}
+
+	/**
 	 * Add scripts, initialize variables and add action hooks
 	 *
 	 * @access private
