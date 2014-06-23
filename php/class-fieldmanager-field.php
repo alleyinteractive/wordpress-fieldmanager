@@ -607,7 +607,15 @@ abstract class Fieldmanager_Field {
 			unset( $values['proto'] );
 		}
 
-		# Condense the array to account for middle items removed
+		// Check for non-numeric keys
+		$keys = array_keys( $values );
+		foreach ( $keys as $key ) {
+			if ( ! is_numeric( $key ) ) {
+				throw new FM_Exception( 'Use of a non-numeric key suggests that something is wrong with this group.' );
+			}
+		}
+
+		// Condense the array to account for middle items removed
 		$values = array_values( $values );
 
 		$values = $this->presave_alter_values( $values, $current_values );
