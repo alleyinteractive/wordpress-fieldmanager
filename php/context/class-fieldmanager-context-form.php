@@ -15,15 +15,35 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 */
 	public static $forms = array();
 
+	/**
+	 * @var array[]
+	 * Array of error tuples
+	 */
 	public $errors = array();
 
+	/**
+	 * @var array[]
+	 * Array of message tuples
+	 */
 	public $messages = array();
 
+	/**
+	 * @var array
+	 * Form values to render
+	 */
 	public $values = array();
 
-	private $wrapper_start = '<div class="fm-page-form-wrapper">';
+	/**
+	 * @var string
+	 * Form wrapper element
+	 */
+	public $wrapper_start = '<div class="fm-page-form-wrapper">';
 
-	private $wrapper_end = '</div>';
+	/**
+	 * @var string
+	 * Closing tag for form wrapper element
+	 */
+	public $wrapper_end = '</div>';
 
 	/**
 	 * Create page context handler.
