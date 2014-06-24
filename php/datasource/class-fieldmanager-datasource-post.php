@@ -163,7 +163,12 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      */
     public function title_like( $where, &$wp_query ) {
         global $wpdb;
-        $where .= ' AND ' . $wpdb->posts . '.post_title LIKE \'%' . esc_sql( like_escape( $this->_fragment ) ) . '%\'';
+        if ( method_exists( $wpdb, 'esc_like' ) ) {
+            $like = esc_sql( $wpdb->esc_like( $this->_fragment ) );
+        } else {
+            $like = esc_sql( like_escape( $this->_fragment ) );
+        }
+        $where .= " AND {$wpdb->posts}.post_title LIKE '%{$like}%'";
         return $where;
     }
 
@@ -208,7 +213,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     public function presave_status_transition( Fieldmanager_Field $field, $value ) {
         // if this child post is in a post (or quickedit) context on a published post, publish the child also
         if ( $this->publish_with_parent && 'post' === $field->data_type && ! empty( $field->data_id ) && 'publish' === get_post_status( $field->data_id ) ) {
-            wp_publish_post( $value );
+            // use wp_update_post so that post_name is generated if it's not been already
+            wp_update_post( array( 'ID' => $value, 'post_status' => 'publish' ) );
         }
     }
 

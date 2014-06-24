@@ -58,6 +58,13 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		$this->assertEquals( 'publish', get_post_status( $this->parent_post->ID ) );
 		$this->assertEquals( 'draft', get_post_status( $this->child_post_a->ID ) );
 		$this->assertEquals( 'draft', get_post_status( $this->child_post_b->ID ) );
+
+		// reload post from db
+		$this->child_post_a = get_post( $this->child_post_a->ID );
+		$this->child_post_b = get_post( $this->child_post_b->ID );
+
+		$this->assertEquals( null, $this->child_post_a->post_name );
+		$this->assertEquals( null, $this->child_post_b->post_name );
 	}
 
 	/**
@@ -85,6 +92,13 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		$this->assertEquals( 'publish', get_post_status( $this->parent_post->ID ) );
 		$this->assertEquals( 'publish', get_post_status( $this->child_post_a->ID ) );
 		$this->assertEquals( 'publish', get_post_status( $this->child_post_b->ID ) );
+
+		// reload post from db
+		$this->child_post_a = get_post( $this->child_post_a->ID );
+		$this->child_post_b = get_post( $this->child_post_b->ID );
+
+		$this->assertEquals( sanitize_title( $this->child_post_a->post_title ), $this->child_post_a->post_name );
+		$this->assertEquals( sanitize_title( $this->child_post_b->post_title ), $this->child_post_b->post_name );
 	}
 
 	/**
