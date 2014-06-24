@@ -644,19 +644,23 @@ abstract class Fieldmanager_Field {
 		// Must delete current values specifically, then add new ones, to support a scenario where the
 		// same field in repeating groups with limit = 1 is going to create more than one entry here, and
 		// if we called update_post_meta() we would overwrite the index with each new group.
-		foreach ( $current_values as $old_value ) {
-			if ( !is_array( $old_value ) ) $old_value = array( $old_value );
-			foreach ( $old_value as $value ) {
-				if ( empty( $value ) ) $value = 0; // false or null should be saved as 0 to prevent duplicates
-				delete_post_meta( $this->data_id, $this->index, $value );
+		if ( ! empty( $current_values ) && is_array( $current_values ) ) {
+			foreach ( $current_values as $old_value ) {
+				if ( !is_array( $old_value ) ) $old_value = array( $old_value );
+				foreach ( $old_value as $value ) {
+					if ( empty( $value ) ) $value = 0; // false or null should be saved as 0 to prevent duplicates
+					delete_post_meta( $this->data_id, $this->index, $value );
+				}
 			}
 		}
 		// add new values
-		foreach ( $values as $new_value ) {
-			if ( !is_array( $new_value ) ) $new_value = array( $new_value );
-			foreach ( $new_value as $value ) {
-				if ( empty( $value ) ) $value = 0; // false or null should be saved as 0 to prevent duplicates
-				add_post_meta( $this->data_id, $this->index, $value );
+		if ( ! empty( $values ) && is_array( $values ) ) {
+			foreach ( $values as $new_value ) {
+				if ( !is_array( $new_value ) ) $new_value = array( $new_value );
+				foreach ( $new_value as $value ) {
+					if ( empty( $value ) ) $value = 0; // false or null should be saved as 0 to prevent duplicates
+					add_post_meta( $this->data_id, $this->index, $value );
+				}
 			}
 		}
 	}
