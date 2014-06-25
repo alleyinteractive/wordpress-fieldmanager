@@ -30,6 +30,16 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	public $date_format = 'j M Y';
 
 	/**
+	 * @var boolean
+	 * By default in WordPress, strtotime() assumes GMT. If $store_local_time is true, FM will use the
+	 * site's timezone setting when generating the timestamp. Note that `date()` will return GMT times
+	 * for the stamp no matter what, so if you store the local time, `date( 'H:i', $time )` will return
+	 * the offset time. Use this option if the exact timestamp is important, e.g. to schedule a wp-cron
+	 * event.
+	 */
+	public $store_local_time = false;
+
+	/**
 	 * @var array
 	 * Options to pass to the jQueryUI Datepicker. If you change dateFormat, be sure that it returns
 	 * a valid unix timestamp. Also, it's best to change js_opts['dateFormat'] and date_format together
@@ -69,6 +79,29 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	}
 
 	/**
+	 * Generate HTML for the form element itself. Generally should be just one tag, no wrappers.
+	 *
+	 * @param mixed string[]|string the value of the element.
+	 * @return string HTML for the element.
+	 */
+	public function form_element( $value ) {
+		$value = absint( $value );
+		$old_value = $value;
+		// If we're storing the local time, in order to make the form work as expected, we have
+		// to alter the timestamp. This isn't ideal, but there currently isn't a good way around
+		// it in WordPress.
+		if ( $this->store_local_time ) {
+			$value += get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+		}
+		ob_start();
+		include fieldmanager_get_template( 'datepicker' );
+
+		// Reset the timestamp
+		$value = $old_value;
+		return ob_get_clean();
+	}
+
+	/**
 	 * Convert date to timestamp
 	 * @param $value
 	 * @param $current_value
@@ -83,7 +116,12 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 			$time_to_parse .= ':' . str_pad( intval( $value['minute'] ), 2, '0', STR_PAD_LEFT );
 			$time_to_parse .= ' ' . sanitize_text_field( $value['ampm'] );
 		}
-		return intval( strtotime( $time_to_parse ) );
+		$timestamp = intval( strtotime( $time_to_parse ) );
+		if ( $this->store_local_time ) {
+			return $timestamp - ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
+		} else {
+			return $timestamp;
+		}
 	}
 
 	/**
