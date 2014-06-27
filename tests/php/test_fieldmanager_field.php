@@ -57,7 +57,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 */
 	private function _get_elements() {
 		return array(
-			'test_textfield' => new Fieldmanager_Textfield( array(
+			'test_textfield' => new Fieldmanager_TextField( array(
 				'name' => 'test_textfield',
 				'validate' => array(
 					function( $value ) {
@@ -70,7 +70,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				'name' => 'test_htmlfield',
 				'sanitize' => 'wp_kses_post',
 			) ),
-			'test_numfield' => new Fieldmanager_Textfield( array(
+			'test_numfield' => new Fieldmanager_TextField( array(
 				'name' => 'test_numfield',
 				'validate' => array( 'is_numeric' ),
 			) ),
@@ -82,11 +82,11 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				'checked_value' => 'yes',
 				'unchecked_value' => 'no',
 			) ),
-			'test_extended' => new Fieldmanager_Group( array( 
+			'test_extended' => new Fieldmanager_Group( array(
 				'limit' => 4,
 				'name' => 'test_extended',
 				'children' => array(
-					'extext' => new Fieldmanager_Textfield( array( 
+					'extext' => new Fieldmanager_TextField( array(
 						'limit' => 0,
 						'name' => 'extext',
 						'one_label_per_item' => False,
@@ -286,6 +286,90 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_textfield]"', $str );
 		$this->assertContains( 'name="base_group[test_numfield]"', $str );
 		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
+	}
+
+	/**
+	 * Test the form output
+	 */
+	public function test_extra_elements() {
+		$base = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'children' => array(
+				'test_default_extra_elements' => new Fieldmanager_Group( array(
+					'limit' => 0,
+					'children' => array( 'text' => new Fieldmanager_TextField( false ) )
+				) ),
+				'test_zero_extra_elements' => new Fieldmanager_Group( array(
+					'limit' => 0,
+					'extra_elements' => 0,
+					'children' => array( 'text' => new Fieldmanager_TextField( false ) )
+				) ),
+				'test_adding_extra_elements' => new Fieldmanager_Group( array(
+					'limit' => 0,
+					'extra_elements' => 2,
+					'children' => array( 'text' => new Fieldmanager_TextField( false ) )
+				) ),
+			)
+		) );
+		ob_start();
+		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
+		$str = ob_get_clean();
+
+		$this->assertContains( 'name="base_group[test_default_extra_elements][proto][text]"', $str );
+		$this->assertContains( 'name="base_group[test_default_extra_elements][0][text]"', $str );
+		$this->assertNotContains( 'name="base_group[test_default_extra_elements][1][text]"', $str );
+
+		$this->assertContains( 'name="base_group[test_zero_extra_elements][proto][text]"', $str );
+		$this->assertNotContains( 'name="base_group[test_zero_extra_elements][0][text]"', $str );
+
+		$this->assertContains( 'name="base_group[test_adding_extra_elements][proto][text]"', $str );
+		$this->assertContains( 'name="base_group[test_adding_extra_elements][0][text]"', $str );
+		$this->assertContains( 'name="base_group[test_adding_extra_elements][1][text]"', $str );
+		$this->assertNotContains( 'name="base_group[test_adding_extra_elements][2][text]"', $str );
+
+		$test_data = array(
+			'test_default_extra_elements' => array(
+				array( 'text' => 'a' ),
+				array( 'text' => 'b' ),
+				array( 'text' => 'c' ),
+			),
+			'test_zero_extra_elements' => array(
+				array( 'text' => 'a' ),
+				array( 'text' => 'b' ),
+				array( 'text' => 'c' ),
+			),
+			'test_adding_extra_elements' => array(
+				array( 'text' => 'a' ),
+				array( 'text' => 'b' ),
+				array( 'text' => 'c' ),
+			),
+		);
+		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data );
+
+		ob_start();
+		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
+		$str = ob_get_clean();
+
+		$this->assertContains( 'name="base_group[test_default_extra_elements][proto][text]"', $str );
+		$this->assertContains( 'name="base_group[test_default_extra_elements][0][text]"', $str );
+		$this->assertContains( 'name="base_group[test_default_extra_elements][1][text]"', $str );
+		$this->assertContains( 'name="base_group[test_default_extra_elements][2][text]"', $str );
+		$this->assertContains( 'name="base_group[test_default_extra_elements][3][text]"', $str );
+		$this->assertNotContains( 'name="base_group[test_default_extra_elements][4][text]"', $str );
+
+		$this->assertContains( 'name="base_group[test_zero_extra_elements][proto][text]"', $str );
+		$this->assertContains( 'name="base_group[test_zero_extra_elements][0][text]"', $str );
+		$this->assertContains( 'name="base_group[test_zero_extra_elements][1][text]"', $str );
+		$this->assertContains( 'name="base_group[test_zero_extra_elements][2][text]"', $str );
+		$this->assertNotContains( 'name="base_group[test_zero_extra_elements][3][text]"', $str );
+
+		$this->assertContains( 'name="base_group[test_adding_extra_elements][proto][text]"', $str );
+		$this->assertContains( 'name="base_group[test_adding_extra_elements][0][text]"', $str );
+		$this->assertContains( 'name="base_group[test_adding_extra_elements][1][text]"', $str );
+		$this->assertContains( 'name="base_group[test_adding_extra_elements][2][text]"', $str );
+		$this->assertContains( 'name="base_group[test_adding_extra_elements][3][text]"', $str );
+		$this->assertContains( 'name="base_group[test_adding_extra_elements][4][text]"', $str );
+		$this->assertNotContains( 'name="base_group[test_adding_extra_elements][5][text]"', $str );
 	}
 
 }
