@@ -223,6 +223,12 @@ abstract class Fieldmanager_Field {
 	public $default_value = null;
 
 	/**
+	 * @var callable|null
+	 * Function that parses an index value and returns an optionally modified value.
+	 */
+	public $index_filter = null;
+
+	/**
 	 * @var int
 	 * If $this->limit > 1, which element in sequence are we currently rendering?
 	 */
@@ -586,6 +592,13 @@ abstract class Fieldmanager_Field {
 
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
 		if ( $this->limit != 1 && !is_array( $values ) ) {
+
+			// EXCEPT maybe this is a request to remove indices
+			if ( ! empty( $this->index ) && null === $values && ! empty( $current_values ) && is_array( $current_values ) ) {
+				$this->save_index( null, $current_values );
+				return;
+			}
+
 			// UNLESS doing cron, where we should just do nothing if there are no values to process
 			if ( defined( 'DOING_CRON' ) && DOING_CRON && empty( $values ) ) {
 				return;
@@ -620,6 +633,13 @@ abstract class Fieldmanager_Field {
 
 		$values = $this->presave_alter_values( $values, $current_values );
 
+		// If this update results in fewer children, trigger presave on empty children to make up the difference.
+		if ( ! empty( $current_values ) && is_array( $current_values ) ) {
+			foreach ( array_diff( array_keys( $current_values ), array_keys( $values ) ) as $i ) {
+				$values[ $i ] = array();
+			}
+		}
+
 		foreach ( $values as $i => $value ) {
 			$values[ $i ] = $this->presave( $value, empty( $current_values[ $i ] ) ? array() : $current_values[ $i ] );
 			if ( !$this->save_empty && empty( $values[ $i ] ) )
@@ -648,6 +668,7 @@ abstract class Fieldmanager_Field {
 			foreach ( $current_values as $old_value ) {
 				if ( !is_array( $old_value ) ) $old_value = array( $old_value );
 				foreach ( $old_value as $value ) {
+					$value = $this->process_index_value( $value );
 					if ( empty( $value ) ) $value = 0; // false or null should be saved as 0 to prevent duplicates
 					delete_post_meta( $this->data_id, $this->index, $value );
 				}
@@ -658,11 +679,27 @@ abstract class Fieldmanager_Field {
 			foreach ( $values as $new_value ) {
 				if ( !is_array( $new_value ) ) $new_value = array( $new_value );
 				foreach ( $new_value as $value ) {
-					if ( empty( $value ) ) $value = 0; // false or null should be saved as 0 to prevent duplicates
-					add_post_meta( $this->data_id, $this->index, $value );
+					$value = $this->process_index_value( $value );
+					if ( isset( $value ) ) {
+						if ( empty( $value ) ) $value = 0; // false or null should be saved as 0 to prevent duplicates
+						add_post_meta( $this->data_id, $this->index, $value );
+					}
 				}
 			}
 		}
+	}
+
+	/**
+	 * Hook to alter handling of an individual index value, which may make sense to change per field type.
+	 * @param mixed $value
+	 * @return mixed
+	 */
+	protected function process_index_value( $value ) {
+		if ( is_callable( $this->index_filter ) ) {
+			$value = call_user_func( $this->index_filter, $value );
+		}
+
+		return apply_filters( 'fm_process_index_value', $value, $this );
 	}
 
 	/**
