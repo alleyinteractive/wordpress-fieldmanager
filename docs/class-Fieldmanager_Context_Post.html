@@ -6,8 +6,8 @@
 
 	<title>Class Fieldmanager_Context_Post | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4143384459"></script>
-	<script type="text/javascript" src="elementlist.js?969459336"></script>
+	<script type="text/javascript" src="resources/combined.js?396521807"></script>
+	<script type="text/javascript" src="elementlist.js?1261831795"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822">
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609">
 
@@ -148,7 +148,7 @@
 		
 		<b>Package:</b> <a href="package-Fieldmanager.html">Fieldmanager</a>\<a href="package-Fieldmanager.Datasource.html">Datasource</a><br>
 
-		<b>Located at</b> <a href="source-class-Fieldmanager_Context_Post.html#6-197" title="Go to source code">context/class-fieldmanager-context-post.php</a><br>
+		<b>Located at</b> <a href="source-class-Fieldmanager_Context_Post.html#6-235" title="Go to source code">context/class-fieldmanager-context-post.php</a><br>
 	</div>
 
 
@@ -247,7 +247,7 @@ render_meta_box()</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_render_meta_box">#</a>
-			<code><a href="source-class-Fieldmanager_Context_Post.html#91-110" title="Go to source code">render_meta_box</a>( <span>mixed <var>$post</var></span>, <span>mixed <var>$form_struct</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Context_Post.html#91-110" title="Go to source code">render_meta_box</a>( <span>mixed <var>$post</var></span>, <span>mixed <var>$form_struct</var> = <span class="php-keyword1">null</span> </span> )</code>
 
 			<div class="description short">
 				
@@ -268,7 +268,7 @@ editor.</p>
 						<dt><var>$post</var></dt>
 						<dd><code>mixed</code><br>$post the post object.</dd>
 						<dt><var>$form_struct</var></dt>
-						<dd><code>mixed</code><br>$form_struct the structure of the form itself (not very useful).</dd>
+						<dd><code>mixed</code><br>$form_struct the structure of the form itself. Unused.</dd>
 					</dl></div>
 
 					<h4>Returns</h4>
@@ -368,6 +368,44 @@ attachment. Calls save_fields_for_post with the post ID.</p>
 			</div>
 			</div></td>
 		</tr>
+		<tr data-order="delegate_save_post" id="_delegate_save_post">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_delegate_save_post">#</a>
+			<code><a href="source-class-Fieldmanager_Context_Post.html#141-152" title="Go to source code">delegate_save_post</a>( <span>integer <var>$post_id</var></span> )</code>
+
+			<div class="description short">
+				
+<p>Action handler to delegate to appropriate methods when a post is saved.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Action handler to delegate to appropriate methods when a post is saved.</p>
+
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$post_id</var></dt>
+						<dd><code>integer</code><br>$post_id</dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
 		<tr data-order="save_fields_for_post" id="_save_fields_for_post">
 
 			<td class="attributes"><code>
@@ -379,7 +417,7 @@ attachment. Calls save_fields_for_post with the post ID.</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_save_fields_for_post">#</a>
-			<code><a href="source-class-Fieldmanager_Context_Post.html#141-180" title="Go to source code">save_fields_for_post</a>( <span>integer <var>$post_id</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Context_Post.html#154-205" title="Go to source code">save_fields_for_post</a>( <span>integer <var>$post_id</var></span> )</code>
 
 			<div class="description short">
 				
@@ -410,6 +448,46 @@ function directly, call save_to_post_meta()</p>
 			</div>
 			</div></td>
 		</tr>
+		<tr data-order="save_fields_for_cron" id="_save_fields_for_cron">
+
+			<td class="attributes"><code>
+				 public 
+				
+				
+				</code>
+			</td>
+
+			<td class="name"><div>
+			<a class="anchor" href="#_save_fields_for_cron">#</a>
+			<code><a href="source-class-Fieldmanager_Context_Post.html#207-218" title="Go to source code">save_fields_for_cron</a>( <span>integer <var>$post_id</var></span> )</code>
+
+			<div class="description short">
+				
+<p>Process fields during a cron request, without saving data since the data
+isn't changing.</p>
+
+			</div>
+
+			<div class="description detailed hidden">
+				
+<p>Process fields during a cron request, without saving data since the data
+isn't changing.</p>
+
+
+
+					<h4>Parameters</h4>
+					<div class="list"><dl>
+						<dt><var>$post_id</var></dt>
+						<dd><code>integer</code><br>$post_id</dd>
+					</dl></div>
+
+
+
+
+
+			</div>
+			</div></td>
+		</tr>
 		<tr data-order="save_to_post_meta" id="_save_to_post_meta">
 
 			<td class="attributes"><code>
@@ -421,7 +499,7 @@ function directly, call save_to_post_meta()</p>
 
 			<td class="name"><div>
 			<a class="anchor" href="#_save_to_post_meta">#</a>
-			<code><a href="source-class-Fieldmanager_Context_Post.html#182-195" title="Go to source code">save_to_post_meta</a>( <span>integer <var>$post_id</var></span>, <span>array <var>$data</var></span> )</code>
+			<code><a href="source-class-Fieldmanager_Context_Post.html#220-233" title="Go to source code">save_to_post_meta</a>( <span>integer <var>$post_id</var></span>, <span>array <var>$data</var></span> )</code>
 
 			<div class="description short">
 				
