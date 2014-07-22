@@ -7,8 +7,8 @@
 
 	<title>File util/class-fieldmanager-util-term-meta.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4143384459"></script>
-	<script type="text/javascript" src="elementlist.js?969459336"></script>
+	<script type="text/javascript" src="resources/combined.js?396521807"></script>
+	<script type="text/javascript" src="elementlist.js?1261831795"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822">
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609">
 
@@ -155,7 +155,7 @@
 </span></span><span id="44" class="l"><a class="l" href="#44"> 44 </a><span class="php-comment">     * @return void
 </span></span><span id="45" class="l"><a class="l" href="#45"> 45 </a><span class="php-comment">     */</span>
 </span><span id="46" class="l"><a class="l" href="#46"> 46 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_setup" href="#_setup">setup</a>() {
-</span><span id="47" class="l"><a class="l" href="#47"> 47 </a>        <span class="php-var">$this</span>-&gt;create_content_type();
+</span><span id="47" class="l"><a class="l" href="#47"> 47 </a>        add_action( <span class="php-quote">'init'</span>, <span class="php-keyword1">array</span>( <span class="php-var">$this</span>, <span class="php-quote">'create_content_type'</span> ) );
 </span><span id="48" class="l"><a class="l" href="#48"> 48 </a>    }
 </span><span id="49" class="l"><a class="l" href="#49"> 49 </a>
 </span><span id="50" class="l"><a class="l" href="#50"> 50 </a>    <span class="php-comment">/**

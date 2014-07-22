@@ -7,8 +7,8 @@
 
 	<title>File datasource/class-fieldmanager-datasource-term.php | Fieldmanager</title>
 
-	<script type="text/javascript" src="resources/combined.js?4143384459"></script>
-	<script type="text/javascript" src="elementlist.js?969459336"></script>
+	<script type="text/javascript" src="resources/combined.js?396521807"></script>
+	<script type="text/javascript" src="elementlist.js?1261831795"></script>
 	<link rel="stylesheet" type="text/css" media="all" href="resources/bootstrap.min.css?260161822">
 	<link rel="stylesheet" type="text/css" media="all" href="resources/style.css?2015443609">
 
@@ -475,10 +475,16 @@
 </span></span><span id="361" class="l"><a class="l" href="#361">361 </a><span class="php-comment">     * @return string
 </span></span><span id="362" class="l"><a class="l" href="#362">362 </a><span class="php-comment">     */</span>
 </span><span id="363" class="l"><a class="l" href="#363">363 </a>    <span class="php-keyword1">public</span> <span class="php-keyword1">function</span> <a id="_get_edit_link" href="#_get_edit_link">get_edit_link</a>( <span class="php-var">$value</span> ) {
-</span><span id="364" class="l"><a class="l" href="#364">364 </a>        <span class="php-keyword1">return</span> edit_term_link( __( <span class="php-quote">'Edit'</span> ), <span class="php-quote">''</span>, <span class="php-quote">''</span>, <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$value</span> ), <span class="php-keyword1">False</span> );
-</span><span id="365" class="l"><a class="l" href="#365">365 </a>    }
-</span><span id="366" class="l"><a class="l" href="#366">366 </a>
-</span><span id="367" class="l"><a class="l" href="#367">367 </a></span>}</code></pre>
+</span><span id="364" class="l"><a class="l" href="#364">364 </a>        <span class="php-var">$term</span> = <span class="php-var">$this</span>-&gt;get_term( <span class="php-var">$value</span> );
+</span><span id="365" class="l"><a class="l" href="#365">365 </a>        <span class="php-keyword1">return</span> <span class="php-keyword2">sprintf</span>(
+</span><span id="366" class="l"><a class="l" href="#366">366 </a>            <span class="php-quote">'&lt;a target=&quot;_new&quot; class=&quot;fm-autocomplete-edit-link %s&quot; href=&quot;%s&quot;&gt;%s&lt;/a&gt;'</span>,
+</span><span id="367" class="l"><a class="l" href="#367">367 </a>            <span class="php-keyword1">empty</span>( <span class="php-var">$value</span> ) ? <span class="php-quote">'fm-hidden'</span> : <span class="php-quote">''</span>,
+</span><span id="368" class="l"><a class="l" href="#368">368 </a>            <span class="php-keyword1">empty</span>( <span class="php-var">$value</span> ) ? <span class="php-quote">'#'</span> : get_edit_term_link( <span class="php-var">$term</span>-&gt;term_id, <span class="php-var">$term</span>-&gt;taxonomy ),
+</span><span id="369" class="l"><a class="l" href="#369">369 </a>            __( <span class="php-quote">'Edit'</span> )
+</span><span id="370" class="l"><a class="l" href="#370">370 </a>        );
+</span><span id="371" class="l"><a class="l" href="#371">371 </a>    }
+</span><span id="372" class="l"><a class="l" href="#372">372 </a>
+</span><span id="373" class="l"><a class="l" href="#373">373 </a></span>}</code></pre>
 	</div>
 
 	<div id="footer">
