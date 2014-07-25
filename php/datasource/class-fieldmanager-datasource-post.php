@@ -191,16 +191,22 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * @return string
      */
     public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-        if ( empty( $value ) ) return;
+        if ( empty( $value ) ) {
+            return;
+        }
         $value = intval( $value );
-        // There are no permissions in cron, but no changes are coming from a user either
-        if ( ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) && ! current_user_can( 'edit_post', $value ) ) {
-            die( 'Tried to refer to post ' . $value . ' which user cannot edit.' );
+
+        if ( ! empty( $this->publish_with_parent ) || ! empty( $this->reciprocal ) ) {
+            // There are no permissions in cron, but no changes are coming from a user either
+            if ( ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) && ! current_user_can( 'edit_post', $value ) ) {
+                die( 'Tried to refer to post ' . $value . ' which user cannot edit.' );
+            }
+            $this->presave_status_transition( $field, $value );
+            if ( $this->reciprocal ) {
+                add_post_meta( $value, $this->reciprocal, $field->data_id );
+            }
         }
-        $this->presave_status_transition( $field, $value );
-        if ( $this->reciprocal ) {
-            add_post_meta( $value, $this->reciprocal, $field->data_id );
-        }
+
         return $value;
     }
 
