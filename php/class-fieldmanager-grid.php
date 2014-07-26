@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * Fieldmanager plugin for Handsontable Grid view, packaged with main

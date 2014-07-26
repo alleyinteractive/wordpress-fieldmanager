@@ -1,8 +1,4 @@
 <?php
-/**
- * Class file for checkbox field
- * @package Fieldmanager
- */
 
 /**
  * Checkbox field
