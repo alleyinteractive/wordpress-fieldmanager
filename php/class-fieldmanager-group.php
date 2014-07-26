@@ -213,7 +213,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @return void
 	 */
 	public function add_child( Fieldmanager_Field $child ) {
-		$this->children[] = $child;
+		$this->children[ $child->name ] = $child;
 	}
 
 	/**
