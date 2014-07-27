@@ -109,25 +109,24 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function form_element( $value = array() ) {
 
 		$preview = '';
-
 		$values = is_array( $value ) ? $value : array( $value );
 
 		foreach( $values as $value ) {
 
 			if ( is_numeric( $value ) && $value > 0 ) {
+				$out = '';
 				$attachment = get_post( $value );
 				if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-					$preview = sprintf( '%s<br />', __( 'Uploaded image:' ) );
-					$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
+					$out .= sprintf( '%s<br />', __( 'Uploaded image:' ) );
+					$out .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 				} else {
-					$preview = sprintf( '%s', __( 'Uploaded file:' ) ) . '&nbsp;';
-					$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
+					$out .= sprintf( '%s', __( 'Uploaded file:' ) ) . '&nbsp;';
+					$out .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 				}
-				$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
+				$out .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
+				$preview .= apply_filters( 'fieldmanager_media_preview', $out, $values, $attachment );
 			}
 		}
-
-		$preview = apply_filters( 'fieldmanager_media_preview', $preview, $values, $attachment );
 
 		$input_value = implode( ',', $values );
 
