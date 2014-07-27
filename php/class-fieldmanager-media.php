@@ -95,10 +95,24 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * Presave; ensure that the value is an absolute integer
 	 */
 	public function presave( $value, $current_value = array() ) {
-		if ( $value == 0 || !is_numeric( $value ) ) {
-			return NULL;
+
+		if ( false !== stripos( $value, ',' ) ) {
+			$values = explode( ',', $value );
+			$clean_values = array();
+			foreach( $values as $dirty_value ) {
+				if ( is_numeric( $dirty_value ) && $dirty_value > 0 ) {
+					$clean_values[] = absint( $dirty_value );
+				}
+			}
+			return $clean_values;
+		} else {
+
+			if ( $value == 0 || !is_numeric( $value ) ) {
+				return NULL;
+			}
+
+			return absint( $value );
 		}
-		return absint( $value );
 	}
 
 	/**
