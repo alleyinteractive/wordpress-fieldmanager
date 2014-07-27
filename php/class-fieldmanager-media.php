@@ -107,20 +107,30 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @return string HTML
 	 */
 	public function form_element( $value = array() ) {
-		if ( is_numeric( $value ) && $value > 0 ) {
-			$attachment = get_post( $value );
-			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-				$preview = sprintf( '%s<br />', __( 'Uploaded image:' ) );
-				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
-			} else {
-				$preview = sprintf( '%s', __( 'Uploaded file:' ) ) . '&nbsp;';
-				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
+
+		$preview = '';
+
+		$values = is_array( $value ) ? $value : array( $value );
+
+		foreach( $values as $value ) {
+
+			if ( is_numeric( $value ) && $value > 0 ) {
+				$attachment = get_post( $value );
+				if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
+					$preview = sprintf( '%s<br />', __( 'Uploaded image:' ) );
+					$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
+				} else {
+					$preview = sprintf( '%s', __( 'Uploaded file:' ) ) . '&nbsp;';
+					$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
+				}
+				$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
 			}
-			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
-			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );
-		} else {
-			$preview = '';
 		}
+
+		$preview = apply_filters( 'fieldmanager_media_preview', $preview, $values, $attachment );
+
+		$input_value = implode( ',', $values );
+
 		return sprintf(
 			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" data-collection="%9$s" />
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
@@ -132,7 +142,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$this->get_element_id(),
 			$this->get_form_name(),
 			esc_attr( $this->button_label ),
-			esc_attr( $value ),
+			esc_attr( $input_value ),
 			$preview,
 			json_encode( $this->preview_size ),
 			esc_attr( $this->modal_title ),
