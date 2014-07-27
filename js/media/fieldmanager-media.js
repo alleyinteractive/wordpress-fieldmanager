@@ -20,8 +20,11 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		fm_media_frame[ $el.attr('id') ].open();
 		return;
 	}
-
-	var selectedImages = $el.parent().find('.fm-media-id').val().split(',');
+	var selectedImages = [],
+		inputVal = $el.parent().find('.fm-media-id').val();
+	if ( inputVal.length ) {
+		selectedImages = inputVal.split(',');
+	}
 
 	// Modification to gallery editing workflow
 	var mediaFrame = wp.media.view.MediaFrame.Post.extend({
