@@ -58,9 +58,30 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 
 	});
 
+	var query_args = {
+		'type': 'image',
+		'post__in': $el.parent().find('.fm-media-id').val().split(','),
+		'orderby': 'post__in',
+		'perPage': -1
+	};
+
+	var attachments = wp.media.query( query_args );
+	var selection = new wp.media.model.Selection( attachments.models, {
+		props:    attachments.props.toJSON(),
+		multiple: true
+	});
+
+	selection.more().done( function() {
+		// Break ties with the query.
+		selection.props.set({ query: false });
+		selection.unmirror();
+		selection.props.unset('orderby');
+	});
+
 	var media_args = {
 		// Set the title of the modal.
 		title: $el.data('choose'),
+		selection: selection,
 
 		// Customize the submit button.
 		button: {
@@ -70,7 +91,12 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 	};
 
 	if ( $el.data( 'collection' ) ) {
-		media_args.state = 'gallery';
+
+		if ( selection.length ) {
+			media_args.state = 'gallery-edit';
+		} else {
+			media_args.state = 'gallery';
+		}
 		fm_media_frame[ $el.attr('id') ] = new mediaFrame( media_args );
 	} else {
 		fm_media_frame[ $el.attr('id') ] = wp.media( media_args );
