@@ -3,8 +3,10 @@ var fm_media_frame = [];
 
 $( document ).on( 'click', '.fm-media-remove', function(e) {
 	e.preventDefault();
-	$(this).parents( '.fm-item.fm-media' ).find( '.fm-media-id' ).val( 0 );
-	$(this).parents( '.fm-item.fm-media' ).find( '.media-wrapper' ).html( '' );
+	var parent = $(this).parents( '.fm-item.fm-media' );
+	parent.find( '.fm-media-id' ).val('');
+	parent.find( '.media-wrapper' ).html( '' );
+	fm_media_frame[ parent.find( '.fm-media-button' ).attr('id') ] = false;
 });
 
 $( document ).on( 'click', '.media-wrapper a', function( event ){
