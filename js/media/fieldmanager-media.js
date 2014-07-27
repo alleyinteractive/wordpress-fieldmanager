@@ -33,8 +33,8 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 	};
 
 	if ( $el.data( 'collection' ) ) {
-		media_args.multiple = true;
-		media_args.sortable = true;
+		media_args.frame = 'post';
+		media_args.state = 'gallery';
 	}
 
 	fm_media_frame[ $el.attr('id') ] = wp.media( media_args );
@@ -63,6 +63,24 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 	});
 
 	fm_media_frame[ $el.attr('id') ].open();
+
+	if ( $el.data('collection') ) {
+
+		var hideNonGalleryMenus = function(){
+			_.defer(function(){
+				fm_media_frame[ $el.attr('id') ].states.each( function( state ){
+					if ( 'gallery' !== state.get( 'id' )
+						&& 'gallery-edit' !== state.get( 'id' )
+						&& 'gallery-cancel' !== state.get( 'id' ) ) {
+						fm_media_frame[ $el.attr('id') ].menuItemVisibility( state.get( 'id' ), 'hide' );
+					}
+				});
+			});
+		};
+		hideNonGalleryMenus();
+		fm_media_frame[ $el.attr('id') ].on( 'menu:render', hideNonGalleryMenus );
+	}
+
 } );
 
 } )( jQuery );
