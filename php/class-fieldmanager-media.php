@@ -40,6 +40,12 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public $thumbnail_class = 'thumbnail';
 
 	/**
+	 * @var bool
+	 * Whether or not to allow a collection of images
+	 */
+	public $collection = false;
+
+	/**
 	 * @var string
 	 * Which size a preview image should be.
 	 * Should be a string (e.g. "thumbnail", "large", or some size created with add_image_size)
@@ -59,9 +65,16 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @param array $options
 	 */
 	public function __construct( $label, $options = array() ) {
-		$this->button_label       = __( 'Attach a File', 'fieldmanager' );
-		$this->modal_button_label = __( 'Select Attachment', 'fieldmanager' );
-		$this->modal_title        = __( 'Choose an Attachment', 'fieldmanager' );
+
+		if ( ! empty( $options['collection'] ) ) {
+			$this->button_label       = __( 'Attach Files', 'fieldmanager' );
+			$this->modal_button_label = __( 'Select Attachments', 'fieldmanager' );
+			$this->modal_title        = __( 'Choose Attachments', 'fieldmanager' );
+		} else {
+			$this->button_label       = __( 'Attach a File', 'fieldmanager' );
+			$this->modal_button_label = __( 'Select Attachment', 'fieldmanager' );
+			$this->modal_title        = __( 'Choose an Attachment', 'fieldmanager' );
+		}
 
 		add_action( 'admin_print_scripts', function() {
 			$post = get_post();
@@ -109,7 +122,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$preview = '';
 		}
 		return sprintf(
-			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" />
+			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" data-collection="%9$s" />
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
 			<div class="media-wrapper">%5$s</div>
 			<script type="text/javascript">
@@ -123,7 +136,8 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$preview,
 			json_encode( $this->preview_size ),
 			esc_attr( $this->modal_title ),
-			esc_attr( $this->modal_button_label )
+			esc_attr( $this->modal_button_label ),
+			intval( $this->collection )
 		);
 	}
 

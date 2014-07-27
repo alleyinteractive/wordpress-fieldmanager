@@ -21,17 +21,23 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		return;
 	}
 
-	// Create the media frame.
-	fm_media_frame[ $el.attr('id') ] = wp.media({
+	var media_args = {
 		// Set the title of the modal.
 		title: $el.data('choose'),
 
 		// Customize the submit button.
 		button: {
 			// Set the text of the button.
-			text: $el.data('update'),
+			text: $el.data('update')
 		}
-	});
+	};
+
+	if ( $el.data( 'collection' ) ) {
+		media_args.multiple = true;
+		media_args.sortable = true;
+	}
+
+	fm_media_frame[ $el.attr('id') ] = wp.media( media_args );
 
 	// When an image is selected, run a callback.
 	fm_media_frame[ $el.attr('id') ].on( 'select', function() {
