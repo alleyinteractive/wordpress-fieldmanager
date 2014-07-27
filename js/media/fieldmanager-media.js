@@ -21,6 +21,8 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		return;
 	}
 
+	var selectedImages = $el.parent().find('.fm-media-id').val().split(',');
+
 	// Modification to gallery editing workflow
 	var mediaFrame = wp.media.view.MediaFrame.Post.extend({
 
@@ -60,7 +62,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 
 	var query_args = {
 		'type': 'image',
-		'post__in': $el.parent().find('.fm-media-id').val().split(','),
+		'post__in': selectedImages,
 		'orderby': 'post__in',
 		'perPage': -1
 	};
@@ -92,7 +94,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 
 	if ( $el.data( 'collection' ) ) {
 
-		if ( selection.length ) {
+		if ( selectedImages.length ) {
 			media_args.state = 'gallery-edit';
 		} else {
 			media_args.state = 'gallery';
