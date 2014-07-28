@@ -118,7 +118,7 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
 	if ( !$ver ) $ver = FM_GLOBAL_ASSET_VERSION;
 	if ( $plugin_dir == "" ) $plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
 	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
-		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver );
+		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver, $in_footer );
 		if ( !empty( $data_object ) && !empty( $data ) ) wp_localize_script( $handle, $data_object, $data );
 	};
 

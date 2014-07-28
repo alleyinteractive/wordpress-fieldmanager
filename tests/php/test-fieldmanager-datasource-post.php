@@ -258,4 +258,41 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 
 		$this->save_values( $children, $this->parent_post, $test_data );
 	}
+
+	/*
+	 * Test building and saving a nested group
+	 */
+	public function test_saving_nested_groups() {
+
+		$meta_group = new \Fieldmanager_Group( '', array(
+			'name'        => 'distribution',
+			'tabbed'      => true,
+			) );
+
+		$social_group = new \Fieldmanager_Group( 'Social', array(
+			'name'        => 'social',
+			) );
+		$social_group->add_child( new \Fieldmanager_Group( 'Twitter', array(
+			'name'                    => 'twitter',
+			'children'                => array(
+				'share_text'          => new \Fieldmanager_TextArea( 'Sharing Text', array(
+					'description'     => 'What text would you like the user to include in their tweet? (Defaults to title)',
+					'attributes'      => array(
+						'style'           => 'width:100%',
+						)
+					) )
+				),
+			) ) );
+
+		$meta_group->add_child( $social_group );
+		$meta_group->add_meta_box( 'Distribution', array( 'post' ) );
+
+		$meta_group->presave( array(
+				'social'         => array(
+					'twitter'    => array(
+						'share_text'      => 'This is my sample share text'
+						),
+					),
+			) );
+	}
 }
