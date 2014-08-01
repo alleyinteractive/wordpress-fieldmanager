@@ -8,13 +8,13 @@ var fm_select_tab = function( $element ) {
 }
 
 $( document ).ready( function () {
-	$( '.fm-tab-bar a' ).live( 'click', function( e ) {
+	$( '.fm-tab-bar a' ).on( 'click', function( e ) {
+		e.preventDefault();
 		fm_select_tab( $(this) );
-		return false;
 	} );
-	$( '.fm-tab-bar li' ).live( 'click', function( e ) {
+	$( '.fm-tab-bar li' ).on( 'click', function( e ) {
+		e.preventDefault();
 		fm_select_tab( $(this).children('a') );
-		return false;
 	} );
 } );
 
