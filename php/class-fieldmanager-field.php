@@ -599,12 +599,14 @@ abstract class Fieldmanager_Field {
 				return;
 			}
 
-			// UNLESS doing cron, where we should just do nothing if there are no values to process
-			if ( defined( 'DOING_CRON' ) && DOING_CRON && empty( $values ) ) {
+			// OR doing cron, where we should just do nothing if there are no values to process
+			// OR we've now accumulated some cases where a null value instead of an empty array is an acceptable case to
+			// just bail out instead of throwing an error. if it WAS an attack, bailing should prevent damage... right?
+			if ( null === $values || defined( 'DOING_CRON' ) && DOING_CRON && empty( $values ) ) {
 				return;
-			} else {
-				$this->_unauthorized_access( '$values should be an array because $limit is ' . $this->limit );
 			}
+
+			$this->_unauthorized_access( '$values should be an array because $limit is ' . $this->limit );
 		}
 
 		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
@@ -636,7 +638,7 @@ abstract class Fieldmanager_Field {
 		// If this update results in fewer children, trigger presave on empty children to make up the difference.
 		if ( ! empty( $current_values ) && is_array( $current_values ) ) {
 			foreach ( array_diff( array_keys( $current_values ), array_keys( $values ) ) as $i ) {
-				$values[ $i ] = array();
+				$values[ $i ] = null;
 			}
 		}
 
