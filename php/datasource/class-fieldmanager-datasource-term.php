@@ -192,7 +192,12 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			}
 			$this->save_taxonomy( $tax_values, $field->data_id );
 		}
-		if ( $this->only_save_to_taxonomy ) return array();
+		if ( $this->only_save_to_taxonomy ) { 
+			if ( empty( $values ) && ! ( $this->append_taxonomy ) ) {
+				$this->save_taxonomy( array(), $field->data_id );
+			}
+			return array();
+		}
 		return $values;
 	}
 
