@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * Base class for handling option fields, like checkboxes or radios

@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * Fieldmanager Group; allows associating multiple fields together

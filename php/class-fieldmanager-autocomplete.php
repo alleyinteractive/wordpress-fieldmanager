@@ -1,10 +1,6 @@
 <?php
 
 /**
- * @package Fieldmanager
- */
-
-/**
  * Post auto-complete field
  * @package Fieldmanager
  */
