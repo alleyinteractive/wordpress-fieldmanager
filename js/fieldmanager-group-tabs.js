@@ -10,6 +10,8 @@ var FieldmanagerGroupTabs;
 
 			this.bindEvents();
 
+			this.restoreSelectedTabs();
+
 		},
 
 		/**
@@ -25,6 +27,14 @@ var FieldmanagerGroupTabs;
 				e.preventDefault();
 				this.selectTab( $( e.currentTarget ).children('a') );
 			}, this ) );
+
+			if ( this.supportsLocalStorage() ) {
+				$('.fm-tab-bar .fm-tab a').on('click', function(){
+					var el = $(this);
+					var id = el.closest('.fm-tab-bar').attr('id');
+					localStorage[ id ] = el.attr('href');
+				});
+			}
 
 			$('.fm-has-submenu').hoverIntent({
 				over: function(e){
@@ -83,6 +93,39 @@ var FieldmanagerGroupTabs;
 			$( t ).siblings( 'div' ).hide();
 			$( t ).show().trigger( 'fm_activate_tab' );
 
+		},
+
+		/**
+		 * Restore selected tabs
+		 */
+		restoreSelectedTabs: function() {
+
+			// requires localStorage
+			if ( ! this.supportsLocalStorage() ) {
+				return;
+			}
+
+			$('.fm-tab-bar').each( function(){
+				var el = $(this);
+				var id = el.attr('id');
+				if ( localStorage[ id ] ) {
+					setTimeout( function(){
+						el.find('a[href="' + localStorage[ id ] + '"]').trigger('click');
+					}, 1 );
+				}
+			});
+
+		},
+
+		/**
+		 * Check whether the browser supports local storage
+		 */
+		supportsLocalStorage: function() {
+			try {
+				return 'localStorage' in window && window['localStorage'] !== null;
+			} catch (e) {
+				return false;
+			}
 		}
 
 	};
