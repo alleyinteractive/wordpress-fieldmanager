@@ -500,7 +500,7 @@ abstract class Fieldmanager_Field {
 	 * @param array $values
 	 */
 	public function preload_alter_values( $values ) {
-		return $values;
+		return apply_filters( 'fm_preload_alter_values', $values, $this );
 	}
 
 	/**
@@ -707,7 +707,7 @@ abstract class Fieldmanager_Field {
 	 * @return array
 	 */
 	protected function presave_alter_values( $values, $current_values = array() ) {
-		return $values;
+		return apply_filters( 'fm_presave_alter_values', $values, $this, $current_values );
 	}
 
 	/**
