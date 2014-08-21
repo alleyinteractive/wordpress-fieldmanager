@@ -97,6 +97,9 @@ function fieldmanager_get_baseurl() {
 }
 
 function fieldmanager_get_template( $tpl_slug ) {
+	if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php' ) ) {
+		$tpl_slug = 'textfield';
+	}
 	return plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php';
 }
 

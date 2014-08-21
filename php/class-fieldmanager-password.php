@@ -16,6 +16,12 @@ class Fieldmanager_Password extends Fieldmanager_Field {
 	public $field_class = 'password';
 
 	/**
+	 * Override the input type
+	 * @var string
+	 */
+	public $input_type = 'password';
+
+	/**
 	 * Override constructor to set default size.
 	 * @param string $label
 	 * @param array $options
