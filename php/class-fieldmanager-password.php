@@ -1,10 +1,7 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
- * Text field. A good basic implementation guide, too.
+ * Password field.
  * @package Fieldmanager
  */
 class Fieldmanager_Password extends Fieldmanager_Field {

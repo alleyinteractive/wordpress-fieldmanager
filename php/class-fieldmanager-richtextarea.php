@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * Use WordPress's TinyMCE control in Fieldmanager.
