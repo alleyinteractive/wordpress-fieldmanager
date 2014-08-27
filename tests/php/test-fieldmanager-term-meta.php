@@ -65,4 +65,32 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 		// checking that the post id is cached now to return false since it doesn't exist
 		$this->assertNotEquals( false, wp_cache_get( $cache_key ) );
 	}
+
+	public function test_garbage_collection() {
+		$term_option = new Fieldmanager_Textfield( array(
+			'name'  => 'term_option',
+		) );
+
+		// check normal save and fetch behavior
+		$text = rand_str();
+		$this->save_values( $term_option, $this->term, $text );
+
+		$data = fm_get_term_meta( $this->term->term_id, $this->term->taxonomy, 'term_option', true );
+		$this->assertEquals( $text, $data );
+
+		// Verify the FM term post exists
+		$post = get_page_by_path( "fm-term-meta-{$this->term->term_id}-category", OBJECT, 'fm-term-meta' );
+		$this->assertTrue( ! empty( $post->ID ) );
+		$this->assertEquals( 'fm-term-meta', $post->post_type );
+		$post_id = $post->ID;
+		$this->assertEquals( $text, get_post_meta( $post_id, 'term_option', true ) );
+
+		// Delete the term
+		wp_delete_term( $this->term->term_id, 'category' );
+
+		// The post and meta should be deleted
+		$post = get_page_by_path( "fm-term-meta-{$this->term->term_id}-category", OBJECT, 'fm-term-meta' );
+		$this->assertEmpty( $post );
+		$this->assertEquals( '', get_post_meta( $post_id, 'term_option', true ) );
+	}
 }
