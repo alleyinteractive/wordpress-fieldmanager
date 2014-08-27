@@ -186,33 +186,62 @@ class Fieldmanager_Util_Term_Meta {
 		if ( empty( $post_terms ) ) {
 			// If not, remove the post to store the metadata to free up space in wp_posts
 			$result = wp_delete_post( $term_meta_post_id, true );
+			$this->delete_term_meta_post_id_cache( $term_id, $taxonomy );
 		}
 
 		return $result;
 	}
 
 	/**
-	 * Handles checking if post exists and returning its ID to store taxonomy term meta data
+	 * Handles checking if post exists and returning its ID to store taxonomy term meta data.
 	 * @param int $term_id
-	 * @return bool
+	 * @param string $taxonomy
+	 * @return int|false post id or false
 	 */
 	public function get_term_meta_post_id( $term_id, $taxonomy ) {
+		$cache_key = $this->get_term_meta_post_id_cache_key( $term_id, $taxonomy );
 
-		// Check if a post exists for this term
-		$query = new WP_Query(
-			array(
-				'name' => $this->post_type . '-' . $term_id . '-' . $taxonomy,
-				'post_type' => $this->post_type
-			)
-		);
+		if ( false === ( $term_meta_post_id = wp_cache_get( $cache_key ) ) ) {
+			// Check if a post exists for this term
+			$query = new WP_Query(
+				array(
+					'name' => $this->post_type . '-' . $term_id . '-' . $taxonomy,
+					'post_type' => $this->post_type
+				)
+			);
 
-		// Return the post ID if it exists, otherwise false
-		if ( $query->have_posts() ) {
-			$query->next_post();
-			return $query->post->ID;
-		} else {
-			return false;
+			// Return the post ID if it exists, otherwise false
+			if ( $query->have_posts() ) {
+				$query->next_post();
+				$term_meta_post_id = $query->post->ID;
+			} else {
+				$term_meta_post_id = 'none';
+			}
+
+			wp_cache_set( $cache_key, $term_meta_post_id );
 		}
+
+		return 'none' === $term_meta_post_id ? false : $term_meta_post_id;
+	}
+
+	/**
+	 * Generates a standardized cache key for the term meta post id.
+	 * @param int $term_id
+	 * @param string $taxonomy
+	 * @return string cache key
+	 */
+	public function get_term_meta_post_id_cache_key( $term_id, $taxonomy ) {
+		return md5( "fm_term_meta_post_id_{$term_id}_{$taxonomy}" );
+	}
+
+	/**
+	 * Clears the cache for a term meta post id. @uses wp_cache_delete
+	 * @param int $term_id
+	 * @param string $taxonomy
+	 * @return void
+	 */
+	public function delete_term_meta_post_id_cache( $term_id, $taxonomy ) {
+		wp_cache_delete( $this->get_term_meta_post_id_cache_key( $term_id, $taxonomy ) );
 	}
 
 	/**
@@ -221,6 +250,7 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return bool
 	 */
 	public function add_term_meta_post( $term_id, $taxonomy ) {
+		$this->delete_term_meta_post_id_cache( $term_id, $taxonomy );
 
 		// Add the skeleton post to store meta data for this taxonomy term
 		$result = wp_insert_post(
@@ -257,13 +287,7 @@ Fieldmanager_Util_Term_Meta();
  */
 
 function fm_get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
-	$cache_key = md5( "$term_id$taxonomy$meta_key$single" );
-	$term_meta = wp_cache_get( $cache_key );
-	if ( false === $term_meta ){
-		$term_meta = Fieldmanager_Util_Term_Meta()->get_term_meta( $term_id, $taxonomy, $meta_key, $single );
-		wp_cache_set( $cache_key, $term_meta );
-	}
-	return $term_meta;
+	return Fieldmanager_Util_Term_Meta()->get_term_meta( $term_id, $taxonomy, $meta_key, $single );
 }
 
 function fm_add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {

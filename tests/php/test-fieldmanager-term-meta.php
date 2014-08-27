@@ -31,6 +31,7 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 			'name'  => 'term_option',
 		) );
 
+		// check normal save and fetch behavior
 		$text = rand_str();
 		$this->save_values( $term_option, $this->term, $text );
 
@@ -39,5 +40,29 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 
 		$data = fm_get_term_meta( $this->term->term_id, $this->term->taxonomy, 'term_option', false );
 		$this->assertEquals( array( $text ), $data );
+
+		// check update and fetch
+		$text_updated = rand_str();
+		$this->save_values( $term_option, $this->term, $text_updated );
+
+		$data = fm_get_term_meta( $this->term->term_id, $this->term->taxonomy, 'term_option', true );
+		$this->assertEquals( $text_updated, $data );
+
+		$this->assertInternalType( 'int', Fieldmanager_Util_Term_Meta()->get_term_meta_post_id( $this->term->term_id, $this->term->taxonomy ) );
+
+		$cache_key = Fieldmanager_Util_Term_Meta()->get_term_meta_post_id_cache_key( $this->term->term_id, $this->term->taxonomy );
+
+		$this->assertNotEquals( false, wp_cache_get( $cache_key ) );
+
+		fm_delete_term_meta( $this->term->term_id, $this->term->taxonomy, 'term_option' );
+
+		// post id not cached right after removal of only meta value, which results in deletion of the post
+		$this->assertEquals( false, wp_cache_get( $cache_key ) );
+
+		// checking that the post id is reported as false when it doesn't exist now
+		$this->assertEquals( false, Fieldmanager_Util_Term_Meta()->get_term_meta_post_id( $this->term->term_id, $this->term->taxonomy ) );
+
+		// checking that the post id is cached now to return false since it doesn't exist
+		$this->assertNotEquals( false, wp_cache_get( $cache_key ) );
 	}
 }
