@@ -45,6 +45,7 @@ class Fieldmanager_Util_Term_Meta {
 	 */
 	public function setup() {
 		add_action( 'init', array( $this, 'create_content_type' ) );
+		add_action( 'delete_term', array( $this, 'collect_garbage' ), 10, 3 );
 	}
 
 	/**
@@ -65,6 +66,17 @@ class Fieldmanager_Util_Term_Meta {
 			'has_archive' => false
 		);
 		register_post_type( $this->post_type, $args );
+	}
+
+	/**
+	 * Get the slug (post_name and post_title) for the fm_term_meta post.
+	 *
+	 * @param  int $term_id
+	 * @param  string $taxonomy
+	 * @return string
+	 */
+	protected function post_slug( $term_id, $taxonomy ) {
+		return $this->post_type . '-' . $term_id . '-' . $taxonomy;
 	}
 
 	/**
@@ -203,12 +215,10 @@ class Fieldmanager_Util_Term_Meta {
 
 		if ( false === ( $term_meta_post_id = wp_cache_get( $cache_key ) ) ) {
 			// Check if a post exists for this term
-			$query = new WP_Query(
-				array(
-					'name' => $this->post_type . '-' . $term_id . '-' . $taxonomy,
-					'post_type' => $this->post_type
-				)
-			);
+			$query = new WP_Query( array(
+				'name' => $this->post_slug( $term_id, $taxonomy ),
+				'post_type' => $this->post_type
+			) );
 
 			// Return the post ID if it exists, otherwise false
 			if ( $query->have_posts() ) {
@@ -255,8 +265,8 @@ class Fieldmanager_Util_Term_Meta {
 		// Add the skeleton post to store meta data for this taxonomy term
 		$result = wp_insert_post(
 			array(
-				'post_name' => 	$this->post_type . '-' . $term_id . '-' . $taxonomy,
-				'post_title' => $this->post_type . '-' . $term_id . '-' . $taxonomy,
+				'post_name' => 	$this->post_slug( $term_id, $taxonomy ),
+				'post_title' => $this->post_slug( $term_id, $taxonomy ),
 				'post_type' => $this->post_type,
 				'post_status' => 'publish'
 			)
@@ -267,6 +277,19 @@ class Fieldmanager_Util_Term_Meta {
 			return $result;
 		} else {
 			return false;
+		}
+	}
+
+	/**
+	 * When a term is deleted, delete its ghost post and related meta.
+	 *
+	 * @param int $term_id
+	 * @param int $tt_id
+	 * @param string $taxonomy
+	 */
+	public function collect_garbage( $term_id, $tt_id, $taxonomy ) {
+		if ( $post = get_page_by_path( $this->post_slug( $term_id, $taxonomy ), OBJECT, $this->post_type ) ) {
+			wp_delete_post( $post->ID, true );
 		}
 	}
 }
