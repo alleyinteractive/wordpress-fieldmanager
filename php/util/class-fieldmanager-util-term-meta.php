@@ -257,7 +257,7 @@ Fieldmanager_Util_Term_Meta();
  */
 
 function fm_get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
-	$cache_key = md5($term_id.$taxonomy.$meta_key );
+	$cache_key = md5( "$term_id$taxonomy$meta_key$single" );
 	$term_meta = wp_cache_get( $cache_key );
 	if ( false === $term_meta ){
 		$term_meta = Fieldmanager_Util_Term_Meta()->get_term_meta( $term_id, $taxonomy, $meta_key, $single );
