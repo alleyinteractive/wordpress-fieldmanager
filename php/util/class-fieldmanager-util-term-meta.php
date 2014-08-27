@@ -257,7 +257,13 @@ Fieldmanager_Util_Term_Meta();
  */
 
 function fm_get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
-	return Fieldmanager_Util_Term_Meta()->get_term_meta( $term_id, $taxonomy, $meta_key, $single );
+	$cache_key = md5($term_id.$taxonomy.$meta_key );
+	$term_meta = wp_cache_get( $cache_key );
+	if ( false === $term_meta ){
+		$term_meta = Fieldmanager_Util_Term_Meta()->get_term_meta( $term_id, $taxonomy, $meta_key, $single );
+		wp_cache_set( $cache_key, $term_meta );
+	}
+	return $term_meta;
 }
 
 function fm_add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {
