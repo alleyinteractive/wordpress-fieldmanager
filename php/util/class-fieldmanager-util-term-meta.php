@@ -241,7 +241,7 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return string cache key
 	 */
 	public function get_term_meta_post_id_cache_key( $term_id, $taxonomy ) {
-		return md5( "fm_term_meta_post_id_{$term_id}_{$taxonomy}" );
+		return "fm_tm_{$term_id}_{$taxonomy}";
 	}
 
 	/**
