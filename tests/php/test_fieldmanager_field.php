@@ -350,4 +350,52 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
 	}
 
+	public function test_prototype_element_is_always_output() {
+
+		// Always one item
+		$base = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'children' => array(
+				'base_item'    => new Fieldmanager_Group( array(
+					'name'            => 'base_item',
+					'limit'           => 0,
+					'extra_elements'  => 1,
+					'starting_count'  => 1,
+					'add_more_label'  => 'Add Another Item',
+					'children'        => array(
+						'text_field'  => new Fieldmanager_Textfield( array( 'name' => 'text_field' ) ),
+						),
+					) ),
+				),
+		) );
+
+		ob_start();
+		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
+		$str = ob_get_clean();
+		$this->assertContains( 'fmjs-proto', $str );
+
+		// Starts with zero items, but still needs prototype
+		$base = new Fieldmanager_Group( array(
+			'name' => 'base_group2',
+			'children' => array(
+				'base_item2'    => new Fieldmanager_Group( array(
+					'name'            => 'base_item2',
+					'limit'           => 0,
+					'extra_elements'  => 0,
+					'starting_count'  => 0,
+					'add_more_label'  => 'Add Another Item',
+					'children'        => array(
+						'text_field2'  => new Fieldmanager_Textfield( array( 'name' => 'text_field2' ) ),
+						),
+					) ),
+				),
+		) );
+
+		ob_start();
+		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
+		$str = ob_get_clean();
+		$this->assertContains( 'fmjs-proto', $str );
+
+	}
+
 }

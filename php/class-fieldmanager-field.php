@@ -408,6 +408,11 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
+		// No elements were output, but we still need the prototype
+		if ( 0 === $i ) {
+			$out .= $this->single_element_markup( Null, True );
+		}
+
 		if ( $this->limit == 0 ) {
 			$out .= $this->add_another();
 		}
