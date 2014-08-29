@@ -188,15 +188,7 @@ function fm_get_context() {
 
 		// context = submenu
 		if ( !empty( $_GET['page'] ) ) {
-			$submenus = _fieldmanager_registry( 'submenus' );
-			if ( $submenus ) {
-				foreach ( $submenus as $submenu ) {
-					if ( $script == $submenu[0] ) {
-						$calculated_context = array( 'submenu', sanitize_text_field( $_GET['page'] ) );
-						return $calculated_context;
-					}
-				}
-			}
+			return array( null, null );
 		}
 
 		switch ( $script ) {
@@ -234,7 +226,7 @@ function fm_get_context() {
 					}
 				// context = quickedit
 				} elseif ( !empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) {
-					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );	
+					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );
 				}
 				break;
 			// context = term
@@ -314,6 +306,9 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
  * Render a registered submenu page
  */
 function _fm_submenu_render() {
+	global $page_hook;
+	$group_name = _fieldmanager_registry( 'submenu_' . $page_hook );
+	do_action( 'fm_submenu_' . $group_name );
 	$context = _fieldmanager_registry( 'active_submenu' );
 	if ( !is_object( $context ) ) {
 		throw new FM_Submenu_Not_Initialized_Exception( 'The Fieldmanger context for this submenu was not initialized' );
@@ -327,8 +322,9 @@ function _fm_submenu_render() {
 function _fm_add_submenus() {
 	$submenus = _fieldmanager_registry( 'submenus' );
 	if ( !is_array( $submenus ) ) return;
-	foreach ( $submenus as $s ) {
-		call_user_func_array( 'add_submenu_page', $s );
+	foreach ( $submenus as $group_name => $s ) {
+		$hook_name = call_user_func_array( 'add_submenu_page', $s );
+		_fieldmanager_registry( 'submenu_' . $hook_name, $group_name );
 	}
 }
 add_action( 'admin_menu', '_fm_add_submenus' );
