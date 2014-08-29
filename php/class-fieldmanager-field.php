@@ -301,8 +301,16 @@ abstract class Fieldmanager_Field {
 	 * @throws FM_Developer_Exception if an option is set but not public.
 	 */
 	public function set_options( $label, $options ) {
-		if ( is_array( $label ) ) $options = $label;
-		else $options['label'] = $label;
+		if ( is_array( $label ) ) {
+			$options = $label;
+		} elseif ( is_string( $options ) ) {
+			$options = array(
+				'name' => $options,
+				'label' => $label
+			);
+		} else {
+			$options['label'] = $label;
+		}
 
 		foreach ( $options as $k => $v ) {
 			try {
