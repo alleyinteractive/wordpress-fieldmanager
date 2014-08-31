@@ -26,64 +26,18 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$context = $this->get_context( $name );
 		$html = $this->get_html( $context, $name );
 
-		// a basic input matcher.
-		// see http://phpunit.de/manual/3.7/en/writing-tests-for-phpunit.html#writing-tests-for-phpunit.assertions.assertTag
-		$h2_match = array(
-			'tag' => 'h2',
-			'content' => 'Tools Meta Fields',
-		);
-		$this->assertTag( $h2_match, $html );
+		$this->assertContains( '<h2>Tools Meta Fields</h2>', $html );
+		$this->assertRegExp( '/<input type="hidden"[^>]+name="fieldmanager-' . $name . '-nonce"/', $html );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[name\]"[^>]+value=""/', $html );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[email\]"[^>]+value=""/', $html );
 
-		$nonce_matcher = array(
-			'tag' => 'input',
-			'attributes' => array(
-				'type' => 'hidden',
-				'name' => "fieldmanager-{$name}-nonce",
-			),
-		);
-		$this->assertTag( $nonce_matcher, $html );
+		$remember = preg_match( '/<input[^>]+type="checkbox"[^>]+name="' . $name . '\[remember\]"[^>]+value="1"[^>]+>/', $html, $matches );
+		$this->assertEquals( 1, $remember );
+		$this->assertFalse( strpos( $matches[0], 'checked' ) );
 
-		$name_matcher = array(
-			'tag' => 'input',
-			'attributes' => array(
-				'type' => 'text',
-				'name' => $name . '[name]',
-				'value' => '',
-			),
-		);
-		$this->assertTag( $name_matcher, $html );
-
-		$email_matcher = array(
-			'tag' => 'input',
-			'attributes' => array(
-				'type' => 'text',
-				'name' => $name . '[email]',
-				'value' => '',
-			),
-		);
-		$this->assertTag( $email_matcher, $html );
-
-		$remember_matcher = array(
-			'tag' => 'input',
-			'attributes' => array(
-				'type' => 'checkbox',
-				'name' => $name . '[remember]',
-				'value' => '1',
-				'checked' => false,
-			),
-		);
-		$this->assertTag( $remember_matcher, $html );
-
-		$fruit_matcher = array(
-			'tag' => 'input',
-			'attributes' => array(
-				'type' => 'radio',
-				'name' => $name . '[group][preferences]',
-				'value' => 'Banana',
-				'checked' => false,
-			),
-		);
-		$this->assertTag( $fruit_matcher, $html );
+		$fruit = preg_match( '/<input[^>]+type="radio"[^>]+value="Banana"[^>]+name="' . $name . '\[group\]\[preferences\]"[^>]+>/', $html, $matches );
+		$this->assertEquals( 1, $fruit );
+		$this->assertFalse( strpos( $matches[0], 'checked' ) );
 
 		$this->build_post( $html, $name );
 		$this->assertTrue( $context->save_submenu_data() );
@@ -99,23 +53,19 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 		$processed_html = $this->get_html( $context, $name );
 
-		unset( $fruit_matcher['attributes']['checked'] );
-		$this->assertTag( $fruit_matcher, $processed_html );
+		$remember = preg_match( '/<input[^>]+type="checkbox"[^>]+name="' . $name . '\[remember\]"[^>]+value="1"[^>]+>/', $processed_html, $matches );
+		$this->assertEquals( 1, $remember );
+		$this->assertContains( 'checked', $matches[0] );
 
-		$remember_matcher['attributes']['checked'] = true;
-		$this->assertTag( $remember_matcher, $processed_html );
+		$banana = preg_match( '/<input[^>]+type="radio"[^>]+value="Banana"[^>]+name="' . $name . '\[group\]\[preferences\]"[^>]+>/', $processed_html, $matches );
+		$this->assertEquals( 1, $banana );
+		$this->assertFalse( strpos( $matches[0], 'checked' ) );
 
-		$fruit_matcher['attributes']['checked'] = true;
-		$fruit_matcher['attributes']['value'] = 'Apple';
-		$this->assertTag( $fruit_matcher, $processed_html );
+		$apple = preg_match( '/<input[^>]+type="radio"[^>]+value="Apple"[^>]+name="' . $name . '\[group\]\[preferences\]"[^>]+>/', $processed_html, $matches );
+		$this->assertEquals( 1, $apple );
+		$this->assertContains( 'checked', $matches[0] );
 
-		$success_match = array(
-			'tag' => 'div',
-			'attributes' => array(
-				'class' => 'updated success',
-			)
-		);
-		$this->assertTag( $success_match, $processed_html );
+		$this->assertContains( '<div class="updated success">', $processed_html );
 
 	}
 
