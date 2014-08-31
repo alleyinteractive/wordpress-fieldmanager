@@ -35,6 +35,16 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$this->assertEquals( 'en', $options['language'] );
 	}
 
+	public function test_default_value() {
+		$value = "<h1>Lorem Ipsum</h1>\n<p>Dolor sit <a href='#'>amet</a></p>";
+		$fm = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea', 'default_value' => $value ) );
+		ob_start();
+		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertRegExp( '/<textarea[^>]+>' . preg_quote( esc_textarea( $value ), '/' ) . '<\/textarea>/', $html );
+	}
+
 	public function test_add_code_plugin() {
 		$fm = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
 		ob_start();
