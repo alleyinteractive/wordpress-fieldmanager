@@ -466,7 +466,7 @@ abstract class Fieldmanager_Field {
 		$render_label_after = False;
 		// Hide the label if it is empty or if this is a tab since it would duplicate the title from the tab label
 		if ( !empty( $this->label ) && !$this->is_tab && $this->one_label_per_item ) {
-			if ( $this->limit == 0 && $this->one_label_per_item ) {
+			if ( $this->limit != 1 ) {
 				$out .= $this->wrap_with_multi_tools( $label, array( 'fmjs-removable-label' ) );
 			} elseif ( !$this->label_after_element ) {
 				$out .= $label;
@@ -480,7 +480,7 @@ abstract class Fieldmanager_Field {
 
 		$form_element = $this->form_element( $value );
 
-		if ( $this->limit == 0 && !$this->one_label_per_item ) {
+		if ( $this->limit != 1 && ( ! $this->one_label_per_item || empty( $this->label ) ) ) {
 			$out .= $this->wrap_with_multi_tools( $form_element );
 		} else {
 			$out .= $form_element;
