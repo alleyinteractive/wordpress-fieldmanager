@@ -41,7 +41,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $values );
 		echo '</div>';
-		
+
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'your-profile', 'user' );
 		$fm_validation->add_field( $this->fm );
@@ -53,7 +53,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function save_user_form( $user_id ) {
-		if ( ! empty( $_POST ) && current_user_can( 'edit_user', $user_id ) ) {
+		if ( ! empty( $_POST ) && ! empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) && current_user_can( 'edit_user', $user_id ) ) {
 			// Make sure that our nonce field arrived intact
 			if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 				$this->fm->_unauthorized_access( 'Nonce validation failed' );
