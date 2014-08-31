@@ -787,6 +787,9 @@ abstract class Fieldmanager_Field {
 	 */
 	public function add_another() {
 		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
+		if ( empty( $this->add_more_label ) ) {
+			$this->add_more_label = 'group' == $this->field_class ? __( 'Add another set of fields', 'fieldmanager' ) : __( 'Add another field', 'fieldmanager' );
+		}
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
 			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-limit="%d" />',
