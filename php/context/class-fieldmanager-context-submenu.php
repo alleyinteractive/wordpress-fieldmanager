@@ -116,25 +116,32 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 */
 	public function handle_submenu_save() {
 		if ( ! empty( $_POST ) && ! empty( $_GET['page'] ) && $_GET['page'] == $this->menu_slug && current_user_can( $this->capability ) ) {
-			// Make sure that our nonce field arrived intact
-			if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-				$this->fm->_unauthorized_access( 'Nonce validation failed' );
+			if ( $this->save_submenu_data() ) {
+				wp_redirect( add_query_arg( array( 'page' => $this->menu_slug, 'msg' => 'success' ), admin_url( $this->parent_slug ) ) );
+				exit;
 			}
-			$this->fm->data_id = $this->fm->name;
-			$this->fm->data_type = 'options';
-			$current = get_option( $this->fm->name, null );
-			$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-			$data = $this->fm->presave_all( $value, $current );
-			$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
-			if ( isset( $current ) ) {
-				update_option( $this->fm->name, $data );
-			} else {
-				add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
-			}
-
-			wp_redirect( add_query_arg( array( 'page' => $this->menu_slug, 'msg' => 'success' ), admin_url( $this->parent_slug ) ) );
-			exit;
 		}
 	}
 
+	public function save_submenu_data() {
+		// Make sure that our nonce field arrived intact
+		if( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
+			$this->fm->_unauthorized_access( 'Nonce validation failed' );
+		}
+
+		$this->fm->data_id = $this->fm->name;
+		$this->fm->data_type = 'options';
+		$current = get_option( $this->fm->name, null );
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+		$data = $this->fm->presave_all( $value, $current );
+		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
+
+		if ( isset( $current ) ) {
+			update_option( $this->fm->name, $data );
+		} else {
+			add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
+		}
+
+		return true;
+	}
 }
