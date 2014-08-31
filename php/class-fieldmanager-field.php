@@ -333,14 +333,8 @@ abstract class Fieldmanager_Field {
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
 		if ( $this->limit == 0 ) {
-			if ( count( $values ) + $this->extra_elements <= $this->starting_count ) {
-				$max = $this->starting_count;
-			}
-			else {
-				$max = count( $values ) + $this->extra_elements;
-			}
-		}
-		else {
+			$max = count( $values ) + $this->extra_elements;
+		} else {
 			$max = $this->limit;
 		}
 
@@ -399,6 +393,9 @@ abstract class Fieldmanager_Field {
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
 
+		if ( 0 == $this->limit ) {
+			$out .= $this->single_element_markup( null, true );
+		}
 		for ( $i = 0; $i < $max; $i++ ) {
 			$this->seq = $i;
 			if ( $this->limit == 1 ) {
@@ -408,7 +405,7 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		if ( $this->limit == 0 ) {
+		if ( 0 == $this->limit ) {
 			$out .= $this->add_another();
 		}
 
@@ -433,6 +430,9 @@ abstract class Fieldmanager_Field {
 	 * @return string HTML for a single form element.
 	 */
 	public function single_element_markup( $value = Null, $is_proto = False ) {
+		if ( $is_proto ) {
+			$this->is_proto = true;
+		}
 		$out = '';
 		$classes = array( 'fm-item', 'fm-' . $this->name );
 
@@ -448,15 +448,8 @@ abstract class Fieldmanager_Field {
 			$classes[] = 'form-required';
 		}
 
-		if ( $this->get_seq() == 0 && $this->limit == 0 ) {
-			// Generate a prototype element for DOM magic on the frontend.
-			if ( $is_proto ) {
-				$classes[] = 'fmjs-proto';
-			} else {
-				$this->is_proto = True;
-				$out .= $this->single_element_markup( Null, True );
-				$this->is_proto = False;
-			}
+		if ( $is_proto ) {
+			$classes[] = 'fmjs-proto';
 		}
 
 		$out .= sprintf( '<div class="%s">', implode( ' ', $classes ) );
@@ -492,6 +485,10 @@ abstract class Fieldmanager_Field {
 		}
 
 		$out .= '</div>';
+
+		if ( $is_proto ) {
+			$this->is_proto = false;
+		}
 		return $out;
 	}
 
