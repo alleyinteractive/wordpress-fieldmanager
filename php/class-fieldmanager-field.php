@@ -37,13 +37,13 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * @var int
-	 * How many of these fields to display initially, if $limit > 1
+	 * How many of these fields to display initially, if $limit != 1
 	 */
 	public $starting_count = 1;
 
 	/**
 	 * @var int
-	 * How many extra elements to display if there is already form data and $limit > 1
+	 * How many extra elements to display if there is already form data and $limit != 1
 	 */
 	public $extra_elements = 1;
 
@@ -339,7 +339,12 @@ abstract class Fieldmanager_Field {
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
 		if ( $this->limit != 1 ) {
-			$max = max( count( $values ) + $this->extra_elements, $this->starting_count );
+			if ( empty( $values ) ) {
+				$max = $this->starting_count;
+			} else {
+				$max = count( $values ) + $this->extra_elements;
+			}
+			// Ensure that we don't display more fields than we can save
 			if ( $this->limit > 1 && $max > $this->limit ) {
 				$max = $this->limit;
 			}
