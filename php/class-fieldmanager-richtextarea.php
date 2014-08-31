@@ -256,11 +256,11 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%s", suff
 		}
 		return sprintf(
 			'<textarea class="fm-element fm-richtext" name="%1$s" id="%2$s" %3$s data-mce-options="%5$s">%4$s</textarea>',
-			$this->get_form_name(),
-			$this->get_element_id(),
+			esc_attr( $this->get_form_name() ),
+			esc_attr( $this->get_element_id() ),
 			$this->get_element_attributes(),
-			$value,
-			htmlspecialchars( json_encode( $this->get_mce_options() ), ENT_QUOTES )
+			esc_textarea( $value ),
+			esc_attr( json_encode( $this->get_mce_options() ), ENT_QUOTES )
 		);
 	}
 
