@@ -72,8 +72,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 			) ),
 			'test_numfield' => new Fieldmanager_TextField( array(
 				'name' => 'test_numfield',
+				'input_type' => 'number',
 				'validate' => array( 'is_numeric' ),
 			) ),
+			'test_pwfield' => new Fieldmanager_Password,
 			'test_checkbox' => new Fieldmanager_Checkbox( array(
 				'name' => 'test_checkbox',
 			) ),
@@ -347,7 +349,11 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'name="fieldmanager-base_group-nonce"', $str );
 		$this->assertContains( 'name="base_group[test_textfield]"', $str );
 		$this->assertContains( 'name="base_group[test_numfield]"', $str );
+		$this->assertContains( 'name="base_group[test_pwfield]"', $str );
 		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
+		$this->assertContains( 'type="text"', $str );
+		$this->assertContains( 'type="number"', $str );
+		$this->assertContains( 'type="password"', $str );
 	}
 
 	/**

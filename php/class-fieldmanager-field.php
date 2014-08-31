@@ -226,6 +226,12 @@ abstract class Fieldmanager_Field {
 	public $index_filter = null;
 
 	/**
+	 * Input type, mainly to support HTML5 input types.
+	 * @var string
+	 */
+	public $input_type = 'text';
+
+	/**
 	 * @var int
 	 * If $this->limit > 1, which element in sequence are we currently rendering?
 	 */
@@ -739,7 +745,7 @@ abstract class Fieldmanager_Field {
 	public function get_element_attributes() {
 		$attr_str = array();
 		foreach ( $this->attributes as $attr => $val ) {
-			$attr_str[] = sprintf( '%s="%s"', $attr, str_replace( '"', '\"', $val ) );
+			$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
 		}
 		return implode( ' ', $attr_str );
 	}
