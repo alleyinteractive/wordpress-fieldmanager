@@ -152,8 +152,8 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-edit-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_edit_user_link( $value ),
-            __( 'Edit', 'fieldmanager' )
+            empty( $value ) ? '#' : esc_url( get_edit_user_link( $value ) ),
+            esc_html__( 'Edit', 'fieldmanager' )
         );
     }
 }

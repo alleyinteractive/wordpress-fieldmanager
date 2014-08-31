@@ -106,15 +106,15 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 
 		$element = sprintf(
 			'<input class="fm-autocomplete fm-element fm-incrementable" type="text" id="%s" value="%s" %s />',
-			$this->get_element_id(),
-			$this->datasource->get_value( $value ),
+			esc_attr( $this->get_element_id() ),
+			esc_attr( $this->datasource->get_value( $value ) ),
 			$this->get_element_attributes()
 		);
 
 		$element .= sprintf(
 			'<input class="fm-autocomplete-hidden fm-element" type="hidden" name="%s" value="%s" />',
-			$this->get_form_name(),
-			$value
+			esc_attr( $this->get_form_name() ),
+			esc_attr( $value )
 		);
 
 		if ( isset( $this->show_view_link ) && $this->show_view_link ) {

@@ -355,8 +355,11 @@ abstract class Fieldmanager_Field {
 
 		// If this element is part of tabbed output, there needs to be a wrapper to contain the tab content
 		if ( $this->is_tab ) {
-			$tab_display_style = ( $this->parent->child_count > 0 ) ? ' style="display: none"' : '';
-			$out .= '<div id="' . $this->get_element_id() . '-tab" class="wp-tabs-panel"' . $tab_display_style . '>';
+			$out .= sprintf(
+				'<div id="%s-tab" class="wp-tabs-panel"%s>',
+				esc_attr( $this->get_element_id() ),
+				( $this->parent->child_count > 0 ) ? ' style="display: none"' : ''
+			);
 		}
 
 		// For lists of items where $one_label_per_item = False, the label should go outside the wrapper.
@@ -388,11 +391,11 @@ abstract class Fieldmanager_Field {
 		}
 		$fm_wrapper_attr_string = '';
 		foreach ( $fm_wrapper_attrs as $attr => $val ) {
-			$fm_wrapper_attr_string .= sprintf( '%s="%s" ', $attr, htmlentities( $val ) );
+			$fm_wrapper_attr_string .= sprintf( '%s="%s" ', sanitize_key( $attr ), esc_attr( $val ) );
 		}
 		$out .= sprintf( '<div class="%s" data-fm-array-position="%d" %s>',
-			implode( ' ', $classes ),
-			$html_array_position,
+			esc_attr( implode( ' ', $classes ) ),
+			absint( $html_array_position ),
 			$fm_wrapper_attr_string
 		);
 
@@ -458,7 +461,7 @@ abstract class Fieldmanager_Field {
 			$classes[] = 'fmjs-proto';
 		}
 
-		$out .= sprintf( '<div class="%s">', implode( ' ', $classes ) );
+		$out .= sprintf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 
 		$label = $this->get_element_label( );
 		$render_label_after = False;
@@ -487,7 +490,7 @@ abstract class Fieldmanager_Field {
 		if ( $render_label_after ) $out .= $label;
 
 		if ( isset( $this->description ) && !empty( $this->description ) ) {
-			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->description );
+			$out .= sprintf( '<div class="fm-item-description">%s</div>', esc_html( $this->description ) );
 		}
 
 		$out .= '</div>';
@@ -767,11 +770,11 @@ abstract class Fieldmanager_Field {
 		}
 		return sprintf(
 			'<%s class="%s"><label for="%s">%s</label></%s>',
-			$this->label_element,
-			implode( ' ', $classes ),
-			$this->get_element_id( $this->get_seq() ),
-			$this->label,
-			$this->label_element
+			sanitize_key( $this->label_element ),
+			esc_attr( implode( ' ', $classes ) ),
+			esc_attr( $this->get_element_id( $this->get_seq() ) ),
+			esc_html( $this->label ),
+			sanitize_key( $this->label_element )
 		);
 	}
 

@@ -117,7 +117,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	public function add_quickedit_box( $column_name, $post_type, $values = array() ) {
 		if ( $column_name != $this->fm->name ) return;
 		?>
-		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo $column_name; ?>" data-fm-post-type="<?php echo $post_type; ?>">
+		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo esc_attr( $column_name ); ?>" data-fm-post-type="<?php echo esc_attr( $post_type ); ?>">
 			<div class="inline-edit-col">
 				<?php wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' ); ?>
 				<?php echo $this->fm->element_markup( $values ); ?>
