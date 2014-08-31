@@ -133,8 +133,8 @@ class Fieldmanager_Util_Validation {
 		if ( ! is_array( $fm->validation_rules ) ) {
 			// If a string, the only acceptable value is "required".
 			if ( ! is_string( $fm->validation_rules ) || $fm->validation_rules != 'required' )
-				$fm->_invalid_definition( 'The validation rule ' . $fm->validation_rules . ' does not exist.' );
-			
+				$fm->_invalid_definition( sprintf( __( 'The validation rule %s does not exist.', 'wordpress-fieldmanager' ), $fm->validation_rules ) );
+
 			// Convert the value to an array since we standardize the Javascript output on this format
 			$fm->validation_rules = array( 'required' => true );
 			
