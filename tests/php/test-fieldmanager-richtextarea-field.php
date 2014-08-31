@@ -74,10 +74,18 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$json = html_entity_decode( $matches[1] );
 		$options = json_decode( $json, true );
 
-		$this->assertEquals( 'bold,italic,bullist,numlist,link,unlink', $options['toolbar1'] );
-		$this->assertEmpty( $options['toolbar2'] );
-		$this->assertEmpty( $options['toolbar3'] );
-		$this->assertEmpty( $options['toolbar4'] );
+		if ( isset( $options['theme_advanced_buttons1'] ) ) {
+			// WP 3.8 uses an older version of tinymce, with different names for the toolbars
+			$this->assertEquals( 'bold,italic,bullist,numlist,link,unlink', $options['theme_advanced_buttons1'] );
+			$this->assertEmpty( $options['theme_advanced_buttons2'] );
+			$this->assertEmpty( $options['theme_advanced_buttons3'] );
+			$this->assertEmpty( $options['theme_advanced_buttons4'] );
+		} else {
+			$this->assertEquals( 'bold,italic,bullist,numlist,link,unlink', $options['toolbar1'] );
+			$this->assertEmpty( $options['toolbar2'] );
+			$this->assertEmpty( $options['toolbar3'] );
+			$this->assertEmpty( $options['toolbar4'] );
+		}
 	}
 
 	public function test_basic_save() {
