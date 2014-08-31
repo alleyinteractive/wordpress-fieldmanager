@@ -25,6 +25,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public $init_options = array();
 
+	public $add_code_plugin = false;
+
 	/**
 	 * @var string
 	 * Static variable so we only load tinymce once
@@ -198,6 +200,9 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%s", suff
 		}
 		if ( isset( $options['style_formats'] ) && !is_array( $options['style_formats'] ) ) {
 			$options['style_formats'] = json_decode( $options['style_formats'] );
+		}
+		if ( $this->add_code_plugin ) {
+			$options['external_plugins']['code'] = fieldmanager_get_baseurl() . '/js/tinymce.code.js';
 		}
 
 		unset( $options['elements'] );
