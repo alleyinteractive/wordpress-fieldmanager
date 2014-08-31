@@ -91,6 +91,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 						'name' => 'extext',
 						'one_label_per_item' => False,
 						'sortable' => True,
+						'index' => '_extext_index',
 					) ),
 				),
 			) ),
@@ -125,6 +126,67 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertEquals( $saved_value['test_extended'][1]['extext'], array( 'second1', 'second2', 'second3' ) );
 		$this->assertEquals( $saved_value['test_extended'][3]['extext'][0], 'fourth' );
 		$this->assertEquals( count( $saved_value ), count( $elements ) );
+	}
+
+	/**
+	 * Test that index functions work properly
+	 */
+	public function test_save_indices() {
+		$base = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'children' => $this->_get_elements(),
+		) );
+		$test_data = $this->_get_valid_test_data();
+		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
+		$saved_value = get_post_meta( $this->post_id, 'base_group', TRUE );
+
+		$saved_index = get_post_meta( $this->post_id, '_test_index', TRUE );
+		$this->assertEquals( $saved_value['test_textfield'], $saved_index );
+
+		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', FALSE );
+		$this->assertEquals( array( 'first', 'second1', 'second2', 'second3', 'third', 'fourth' ), $repeat_indices );
+
+		// Test updating the data.
+		$test_data['base_group']['test_textfield'] = rand_str();
+		$test_data['base_group']['test_extended'] = array( array( 'extext' => array( rand_str() ) ) );
+		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
+
+		$saved_value = get_post_meta( $this->post_id, 'base_group', TRUE );
+		$this->assertEquals( $test_data['base_group']['test_textfield'], $saved_value['test_textfield'] );
+
+		// Test single field index.
+		$saved_index = get_post_meta( $this->post_id, '_test_index', TRUE );
+		$this->assertEquals( $saved_value['test_textfield'], $saved_index );
+
+		$this->assertEquals( $test_data['base_group']['test_extended'][0]['extext'], $saved_value['test_extended'][0]['extext'] );
+
+		// Test repeated field index.
+		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', FALSE );
+		$this->assertEquals( $saved_value['test_extended'][0]['extext'], $repeat_indices );
+
+		// Test empty repeated field index.
+		$test_data['base_group']['test_extended'] = array( array( 'extext' => array() ) );
+		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
+
+		$saved_value = get_post_meta( $this->post_id, 'base_group', TRUE );
+		$this->assertEmpty( $saved_value['test_extended'] );
+
+		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', FALSE );
+		$this->assertEmpty( $repeat_indices );
+
+		// Test filtered field index.
+		$replace_me = rand_str();
+		$dont_replace_me = rand_str();
+		$filter_value = rand_str();
+		$base->children['test_extended']->children['extext']->index_filter = function( $value ) use ( $replace_me, $filter_value ) {
+			return $value == $replace_me ? $filter_value : $value;
+		};
+
+		$test_data['base_group']['test_extended'] = array( array( 'extext' => array( $replace_me, $dont_replace_me ) ) );
+		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
+
+		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', FALSE );
+		$this->assertEquals( array( $filter_value, $dont_replace_me ), $repeat_indices );
 	}
 
 	/**

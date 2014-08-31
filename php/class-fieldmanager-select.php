@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * Dropdown for options
@@ -160,7 +157,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		?>
 		<script type="text/javascript">
 		jQuery(function($){
-			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle",".fm-item",function(){
+			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
 				$(".chzn-select:visible",this).chosen({allow_single_deselect:true})
 			});
 			$(".chzn-select:visible").chosen({allow_single_deselect:true});

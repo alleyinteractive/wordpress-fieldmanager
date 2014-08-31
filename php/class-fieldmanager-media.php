@@ -1,10 +1,7 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
- * Textarea field
+ * Media field
  * @package Fieldmanager
  */
 class Fieldmanager_Media extends Fieldmanager_Field {

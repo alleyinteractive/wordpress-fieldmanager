@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * A Javascript date-picker which stores dates as unix timestamps.
