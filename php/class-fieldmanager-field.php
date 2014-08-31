@@ -340,8 +340,10 @@ abstract class Fieldmanager_Field {
 		$values = $this->preload_alter_values( $values );
 		if ( $this->limit == 0 ) {
 			$max = count( $values ) + $this->extra_elements;
+		} elseif ( $this->limit > 1 ) {
+			$max = max( count( $values ) + $this->extra_elements, $this->starting_count );
 		} else {
-			$max = $this->limit;
+			$max = 1;
 		}
 
 		$classes = array( 'fm-wrapper', 'fm-' . $this->name . '-wrapper' );
@@ -399,7 +401,7 @@ abstract class Fieldmanager_Field {
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
 
-		if ( 0 == $this->limit ) {
+		if ( 1 != $this->limit ) {
 			$out .= $this->single_element_markup( null, true );
 		}
 		for ( $i = 0; $i < $max; $i++ ) {
@@ -411,7 +413,7 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		if ( 0 == $this->limit ) {
+		if ( 1 != $this->limit ) {
 			$out .= $this->add_another();
 		}
 
@@ -783,11 +785,12 @@ abstract class Fieldmanager_Field {
 		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
-			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" />',
-			implode( ' ', $classes ),
-			$this->add_more_label,
-			'fm_add_another_' . $this->name,
-			$this->name
+			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-limit="%d" />',
+			esc_attr( implode( ' ', $classes ) ),
+			esc_attr( $this->add_more_label ),
+			esc_attr( 'fm_add_another_' . $this->name ),
+			esc_attr( $this->name ),
+			intval( $this->limit )
 		);
 		$out .= '</div>';
 		return $out;

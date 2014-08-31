@@ -113,8 +113,16 @@ var match_value = function( values, match_string ) {
 }
 
 fm_add_another = function( $element ) {
-	var el_name = $element.attr( 'data-related-element' );
-	$new_element = $( '.fmjs-proto.fm-' + el_name, $element.closest( '.fm-wrapper' ) ).first().clone();
+	var el_name = $element.data( 'related-element' )
+		, limit = $element.data( 'limit' ) - 0
+		, siblings = $element.parent().siblings().not( '.fmjs-proto' );
+
+	if ( limit > 0 && siblings.length >= limit ) {
+		return;
+	}
+
+	var $new_element = $( '.fmjs-proto.fm-' + el_name, $element.closest( '.fm-wrapper' ) ).first().clone();
+
 	$new_element.removeClass( 'fmjs-proto' );
 	$new_element = $new_element.insertBefore( $element.parent() );
 	fm_renumber( $element.parents( '.fm-wrapper' ) );
