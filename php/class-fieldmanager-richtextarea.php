@@ -25,6 +25,10 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public $init_options = array();
 
+	/**
+	 * Add the "code" plugin to tinymce.
+	 * @var boolean
+	 */
 	public $add_code_plugin = false;
 
 	/**
