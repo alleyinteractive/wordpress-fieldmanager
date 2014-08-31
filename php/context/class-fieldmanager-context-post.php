@@ -197,7 +197,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 
 		// Make sure that our nonce field arrived intact.
 		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( 'Nonce validation failed' );
+			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 
 		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";

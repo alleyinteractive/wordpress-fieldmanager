@@ -96,7 +96,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		// Convenient naming of child elements via their keys
 		foreach ( $this->children as $name => $element ) {
 			// if the array key is not an int, and the name attr is set, and they don't match, we got a problem.
-			if ( $element->name && !is_int( $name ) && $element->name != $name ) throw new FM_Developer_Exception( __( 'Group child name conflict: ' ) . $name . ' / ' . $element->name );
+			if ( $element->name && !is_int( $name ) && $element->name != $name ) {
+				throw new FM_Developer_Exception( __( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name );
+			}
 			else if ( !$element->name ) $element->name = $name;
 		}
 
@@ -153,7 +155,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 						$tab_group_submenu .=  sprintf( '<li class="fm-tab fm-has-submenu %s"><a href="#%s-tab">%s</a>',
 							$tab_class,
 							$element->get_element_id(),
-							__( 'More...' )
+							__( 'More...', 'fieldmanager' )
 						 );
 
 						 // Start the submenu
@@ -226,7 +228,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				if ( !isset( $this->children[$key] ) ) {
 					// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
 					// and thus one which we cannot sanitize and must not save. This might be an attack.
-					$this->_unauthorized_access( sprintf( 'Found "%1$s" in data but not in children', $key ) );
+					$this->_unauthorized_access( sprintf( __( 'Found "%1$s" in data but not in children', 'fieldmanager' ), $key ) );
 				}
 			}
 		}

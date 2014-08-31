@@ -195,13 +195,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Make sure the current user can save this post
 		$tax_obj = get_taxonomy( $taxonomy );
 		if( !current_user_can( $tax_obj->cap->manage_terms ) ) {
-			$this->fm->_unauthorized_access( 'User cannot edit this term' );
+			$this->fm->_unauthorized_access( __( 'User cannot edit this term', 'fieldmanager' ) );
 			return;
 		}
 
 		// Make sure that our nonce field arrived intact
 		if( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( 'Nonce validation failed' );
+			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 
 		// Save the data

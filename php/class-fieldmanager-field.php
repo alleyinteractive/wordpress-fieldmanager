@@ -317,10 +317,10 @@ abstract class Fieldmanager_Field {
 				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
-					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.' ),
+					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.', 'fieldmanager' ),
 					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
-				$title = __( 'Nonexistant or invalid option' );
+				$title = __( 'Nonexistant or invalid option', 'fieldmanager' );
 				if ( !self::$debug ) {
 					wp_die( $message, $title );
 				} else {
@@ -606,13 +606,13 @@ abstract class Fieldmanager_Field {
 				return;
 			}
 
-			$this->_unauthorized_access( '$values should be an array because $limit is ' . $this->limit );
+			$this->_unauthorized_access( sprintf( __( '$values should be an array because $limit is %d', 'fieldmanager' ), $this->limit ) );
 		}
 
 		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
 		if ( $this->limit > 1 && count( $values ) > $this->limit ) {
 			$this->_unauthorized_access(
-				sprintf( 'submitted %1$d values against a limit of %2$d', count( $values ), $this->limit )
+				sprintf( __( 'submitted %1$d values against a limit of %2$d', 'fieldmanager' ), count( $values ), $this->limit )
 			);
 		}
 
@@ -626,7 +626,7 @@ abstract class Fieldmanager_Field {
 		$keys = array_keys( $values );
 		foreach ( $keys as $key ) {
 			if ( ! is_numeric( $key ) ) {
-				throw new FM_Exception( 'Use of a non-numeric key suggests that something is wrong with this group.' );
+				throw new FM_Exception( __( 'Use of a non-numeric key suggests that something is wrong with this group.', 'fieldmanager' ) );
 			}
 		}
 
@@ -723,12 +723,12 @@ abstract class Fieldmanager_Field {
 		// this point, but those elements must override this function. Let's
 		// make sure we're dealing with one value here.
 		if ( is_array( $value ) ) {
-			$this->_unauthorized_access( 'presave() in the base class should not get arrays, but did.' );
+			$this->_unauthorized_access( __( 'presave() in the base class should not get arrays, but did.', 'fieldmanager' ) );
 		}
 		foreach ( $this->validate as $func ) {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
-					__( 'Input "%1$s" is not valid for field "%2$s" ' ),
+					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
 					(string) $value,
 					$this->label
 				) );
@@ -798,7 +798,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_sort_handle() {
-		return '<div class="fmjs-drag fmjs-drag-icon">Move</div>';
+		return sprintf( '<div class="fmjs-drag fmjs-drag-icon">%s</div>', esc_html__( 'Move', 'fieldmanager' ) );
 	}
 
 	/**
@@ -806,7 +806,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_remove_handle() {
-		return '<a href="#" class="fmjs-remove" title="Remove">Remove</a>';
+		return sprintf( '<a href="#" class="fmjs-remove" title="%1$s">%1$s</a>', esc_attr__( 'Remove', 'fieldmanager' ) );
 	}
 
 	/**
@@ -814,7 +814,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_collapse_handle() {
-		return '<div class="handlediv" title="Click to toggle"><br /></div>';
+		return sprintf( '<div class="handlediv" title="%s"><br /></div>', esc_attr__( 'Click to toggle', 'fieldmanager' ) );
 	}
 
 	/**
@@ -909,7 +909,7 @@ abstract class Fieldmanager_Field {
 
 	private function require_base() {
 		if ( !empty( $this->parent ) ) {
-			throw new FM_Developer_Exception( __( 'You cannot use this method on a subgroup' ) );
+			throw new FM_Developer_Exception( __( 'You cannot use this method on a subgroup', 'fieldmanager' ) );
 		}
 	}
 

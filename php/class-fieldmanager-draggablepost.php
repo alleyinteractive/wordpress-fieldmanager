@@ -15,8 +15,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 *		- 'order' (string) ASC or DESC
 	 *		- 'taxonomy_args' (array) arguments to pass to WP_Query to filter by category (see https://codex.wordpress.
 	 *			org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy filtering will be performed.
-	 *		- 'callback' (callable) a custom function to call in lieu of WP_Query to retrieve posts for this repository. The function 
-	 *			must have the signature callback($key, $data) and must return an array of post ids. If callback is set, all the above 
+	 *		- 'callback' (callable) a custom function to call in lieu of WP_Query to retrieve posts for this repository. The function
+	 *			must have the signature callback($key, $data) and must return an array of post ids. If callback is set, all the above
 	 *			options (except label) will be overridden.
 	 */
 	public $repositories = array();
@@ -29,7 +29,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 
 	/**
 	 * @var boolean
-	 * Provide "Use image?" checkbox for draggable divs? 
+	 * Provide "Use image?" checkbox for draggable divs?
 	 */
 	public $use_image_checkbox = False;
 
@@ -49,7 +49,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		wp_enqueue_script( 'jquery-ui-sortable' );
 		fm_add_script( 'fm_draggablepost_js', 'js/fieldmanager-draggablepost.js' );
 		fm_add_style( 'fm_draggablepost_css', 'css/fieldmanager-draggablepost.css' );
-	} 
+	}
 
 
 	/**
@@ -125,7 +125,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		$out .= '<div class="post-bin-wrapper">';
 		foreach ( $this->bins as $name => $bin ) {
 			$out .= sprintf( '<h2>%s</h2>', $bin );
-			$out .= sprintf( '<ul class="post-bin sortables" id="%s-bin"><em class="empty-message">drop posts here</em>', $name );
+			$out .= sprintf( '<ul class="post-bin sortables" id="%s-bin"><em class="empty-message">%s</em>', esc_attr( $name ), esc_attr__( 'drop posts here', 'fieldmanager' ) );
 			if ( isset( $value[$name] ) ) {
 				foreach ( $value[$name] as $id ) {
 					if ( !$id ) {
@@ -138,7 +138,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		}
 
 		foreach ( $this->bins as $bin => $label ) {
-			$out .= sprintf( '<input type="hidden" value="%s" name="%s" id="%s" />', 
+			$out .= sprintf( '<input type="hidden" value="%s" name="%s" id="%s" />',
 						empty( $value[$bin] ) ?  '' : implode( ',', $value[$bin] ),
 						$this->get_form_name() . '[' . $bin . ']',
 						$bin
@@ -163,7 +163,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 				$bylines[] = $author->display_name;
 			}
 			if ( empty( $bylines ) ) {
-				$authorstr = '(no authors)';
+				$authorstr = __( '(no authors)', 'fieldmanager' );
 			}
 			else {
 				$authorstr = implode(', ', $bylines);

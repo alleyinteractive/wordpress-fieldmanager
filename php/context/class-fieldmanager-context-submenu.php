@@ -95,7 +95,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $values );
 		echo '</div>';
-		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->submit_button_label ) ?: __( 'Save Options' ) );
+		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->submit_button_label ) ?: __( 'Save Options', 'fieldmanager' ) );
 		echo '</form>';
 		echo '</div>';
 
@@ -112,7 +112,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		if ( ! empty( $_POST ) && ! empty( $_GET['page'] ) && $_GET['page'] == $this->menu_slug && current_user_can( $this->capability ) ) {
 			// Make sure that our nonce field arrived intact
 			if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-				$this->fm->_unauthorized_access( 'Nonce validation failed' );
+				$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 			}
 			$this->fm->data_id = $this->fm->name;
 			$this->fm->data_type = 'options';

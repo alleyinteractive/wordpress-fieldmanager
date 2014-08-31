@@ -65,7 +65,7 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 			return $this->unchecked_value;
 		}
 		else {
-			$this->_unauthorized_access( 'Saved a checkbox with a value that was not one of the options' );
+			$this->_unauthorized_access( __( 'Saved a checkbox with a value that was not one of the options', 'fieldmanager' ) );
 		}
 	}
 }

@@ -302,7 +302,7 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
 	$submenus = _fieldmanager_registry( 'submenus' );
 	if ( !$submenus ) $submenus = array();
 	if ( isset( $submenus[ $group_name ] ) ) {
-		throw new FM_Duplicate_Submenu_Name_Exception( $group_name . ' is already in use as a submenu name' );
+		throw new FM_Duplicate_Submenu_Name_Exception( sprintf( __( '%s is already in use as a submenu name', 'fieldmanager' ), $group_name ) );
 	}
 
 	if ( !$menu_title ) $menu_title = $page_title;
@@ -319,7 +319,7 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
 function _fm_submenu_render() {
 	$context = _fieldmanager_registry( 'active_submenu' );
 	if ( !is_object( $context ) ) {
-		throw new FM_Submenu_Not_Initialized_Exception( 'The Fieldmanger context for this submenu was not initialized' );
+		throw new FM_Submenu_Not_Initialized_Exception( __( 'The Fieldmanger context for this submenu was not initialized', 'fieldmanager' ) );
 	}
 	$context->render_submenu_page();
 }

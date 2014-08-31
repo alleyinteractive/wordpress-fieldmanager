@@ -2,7 +2,7 @@
 /**
  * @package Fieldmanager_Context
  */
- 
+
 /**
  * Use fieldmanager on the public-facing theme.
  * @package Fieldmanager_Datasource
@@ -69,10 +69,10 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $current );
 		echo '</div>';
-		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->fm->submit_button_label ) ?: __( 'Save Options' ) );
+		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->fm->submit_button_label ) ?: __( 'Save Options', 'fieldmanager' ) );
 		echo '</form>';
 		echo '</div>';
-		
+
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( $this->uniqid, 'page' );
 		$fm_validation->add_field( $this->fm );

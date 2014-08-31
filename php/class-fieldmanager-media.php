@@ -94,13 +94,13 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
 			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-				$preview = sprintf( '%s<br />', __( 'Uploaded image:' ) );
+				$preview = sprintf( '%s<br />', __( 'Uploaded image:', 'fieldmanager' ) );
 				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 			} else {
-				$preview = sprintf( '%s', __( 'Uploaded file:' ) ) . '&nbsp;';
+				$preview = sprintf( '%s', __( 'Uploaded file:', 'fieldmanager' ) ) . '&nbsp;';
 				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 			}
-			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
+			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove', 'fieldmanager' ) );
 			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );
 		} else {
 			$preview = '';

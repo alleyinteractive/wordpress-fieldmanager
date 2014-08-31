@@ -70,8 +70,8 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 			$this->get_form_name(),
 			'hot-grid-id-' . uniqid(), // handsontable must have an ID, but we don't care what it is.
 			htmlspecialchars( json_encode( $value ) ),
-			__( 'Show Data Grid' ),
-			__( 'Hide Data Grid' ),
+			__( 'Show Data Grid', 'fieldmanager' ),
+			__( 'Hide Data Grid', 'fieldmanager' ),
 			$grid_activate_id
 		);
 		$out .= sprintf("
