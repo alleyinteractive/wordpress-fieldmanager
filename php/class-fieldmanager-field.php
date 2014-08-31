@@ -338,10 +338,11 @@ abstract class Fieldmanager_Field {
 	 */
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
-		if ( $this->limit == 0 ) {
-			$max = count( $values ) + $this->extra_elements;
-		} elseif ( $this->limit > 1 ) {
+		if ( $this->limit != 1 ) {
 			$max = max( count( $values ) + $this->extra_elements, $this->starting_count );
+			if ( $this->limit > 1 && $max > $this->limit ) {
+				$max = $this->limit;
+			}
 		} else {
 			$max = 1;
 		}
@@ -611,17 +612,20 @@ abstract class Fieldmanager_Field {
 			$this->_unauthorized_access( '$values should be an array because $limit is ' . $this->limit );
 		}
 
+		if ( empty( $values ) ) {
+			$values = array();
+		}
+
+		// Remove the proto
+		if ( isset( $values['proto'] ) ) {
+			unset( $values['proto'] );
+		}
+
 		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
 		if ( $this->limit > 1 && count( $values ) > $this->limit ) {
 			$this->_unauthorized_access(
 				sprintf( 'submitted %1$d values against a limit of %2$d', count( $values ), $this->limit )
 			);
-		}
-
-		if ( empty( $values ) ) $values = array();
-
-		if ( isset( $values['proto'] ) ) {
-			unset( $values['proto'] );
 		}
 
 		// Check for non-numeric keys
