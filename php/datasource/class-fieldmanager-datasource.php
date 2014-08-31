@@ -42,6 +42,12 @@ class Fieldmanager_Datasource {
 	public static $counter = 0;
 
 	/**
+	 * @var boolean
+	 * If true, group elements
+	 */
+	public $grouped = False;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct( $options = array() ) {

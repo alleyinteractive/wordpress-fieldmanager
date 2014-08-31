@@ -59,12 +59,6 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 	/**
 	 * @var boolean
-	 * If true, group taxonomies
-	 */
-	public $grouped = False;
-
-	/**
-	 * @var boolean
 	 * Build this datasource using AJAX
 	 */
 	public $use_ajax = True;

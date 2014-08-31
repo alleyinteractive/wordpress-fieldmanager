@@ -44,12 +44,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     public $show_date = False;
 
     /**
-     * @var boolean
-     * Show this as grouped?
-     */
-    public $grouped = False;
-
-    /**
      * @var string
      * If $show_date is true, the format to use for displaying the date.
      */
