@@ -31,12 +31,16 @@ function fieldmanager_load_class( $class ) {
 	$class_id = strtolower( substr( $class, strrpos( $class, '_' ) + 1 ) );
 
 	if ( strpos( $class, 'Fieldmanager_Context' ) === 0 ) {
-		if ( $class_id == 'context' ) return fieldmanager_load_file( 'context/class-fieldmanager-context.php' );	
+		if ( $class_id == 'context' ) {
+			return fieldmanager_load_file( 'context/class-fieldmanager-context.php' );
+		}
 		return fieldmanager_load_file( 'context/class-fieldmanager-context-' . $class_id . '.php' );
 	}
 
 	if ( strpos( $class, 'Fieldmanager_Datasource' ) === 0 ) {
-		if ( $class_id == 'datasource' ) return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource.php' );
+		if ( $class_id == 'datasource' ) {
+			return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource.php' );
+		}
 		return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource-' . $class_id . '.php' );
 	}
 	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );
@@ -117,12 +121,20 @@ function fieldmanager_get_template( $tpl_slug ) {
  * @return void
  */
 function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array(), $plugin_dir = "", $admin = true ) {
-	if ( !is_admin() ) return;
-	if ( !$ver ) $ver = FM_GLOBAL_ASSET_VERSION;
-	if ( $plugin_dir == "" ) $plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
+	if ( !is_admin() ) {
+		return;
+	}
+	if ( !$ver ) {
+		$ver = FM_GLOBAL_ASSET_VERSION;
+	}
+	if ( $plugin_dir == "" ) {
+		$plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
+	}
 	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
 		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver, $in_footer );
-		if ( !empty( $data_object ) && !empty( $data ) ) wp_localize_script( $handle, $data_object, $data );
+		if ( !empty( $data_object ) && !empty( $data ) ) {
+			wp_localize_script( $handle, $data_object, $data );
+		}
 	};
 
 	add_action( 'admin_enqueue_scripts', $add_script );
@@ -140,8 +152,12 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
  * @return void
  */
 function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
-	if( !is_admin() ) return;
-	if ( !$ver ) $ver = FM_GLOBAL_ASSET_VERSION;
+	if( !is_admin() ) {
+		return;
+	}
+	if ( !$ver ) {
+		$ver = FM_GLOBAL_ASSET_VERSION;
+	}
 	$add_script = function() use ( $handle, $path, $deps, $ver, $media ) {
 		wp_register_style( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver, $media );
         wp_enqueue_style( $handle );
@@ -159,7 +175,9 @@ function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = '
  */
 function _fieldmanager_registry( $var, $val = NULL ) {
 	static $registry;
-	if ( !is_array( $registry ) ) $registry = array();
+	if ( !is_array( $registry ) ) {
+		$registry = array();
+	}
 	if ( $val === NULL ) {
 		return isset( $registry[$var] ) ? $registry[$var] : False;
 	}
@@ -171,7 +189,7 @@ function _fieldmanager_registry( $var, $val = NULL ) {
  *
  * This function is crucial for performance. It prevents the unnecessary initialization of FM classes,
  * and the unnecessary loading of CSS and Javascript.
- * 
+ *
  * You can't use this function to determine whether or not a context 'Form' will be displayed, since
  * it can be used anywhere. We would love to use get_current_screen(), but it's not available in
  * some POST actions, and generally not available early enough in the init process.
@@ -183,7 +201,9 @@ function _fieldmanager_registry( $var, $val = NULL ) {
 function fm_get_context() {
 	static $calculated_context;
 
-	if ( $calculated_context ) return $calculated_context;
+	if ( $calculated_context ) {
+		return $calculated_context;
+	}
 
 	if ( is_admin() ) { // safe to use at any point in the load process, and better than URL matching.
 
@@ -237,7 +257,7 @@ function fm_get_context() {
 					}
 				// context = quickedit
 				} elseif ( !empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) {
-					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );	
+					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );
 				}
 				break;
 			// context = term
@@ -288,7 +308,9 @@ function fm_match_context( $context, $type = null ) {
 function fm_trigger_context_action() {
 	$calculated_context = fm_get_context();
 	$action = 'fm_' . $calculated_context[0];
-	if ( $calculated_context[1] ) $action .= '_' . $calculated_context[1];
+	if ( $calculated_context[1] ) {
+		$action .= '_' . $calculated_context[1];
+	}
 	do_action( $action );
 }
 
@@ -300,12 +322,16 @@ add_action( 'init', 'fm_trigger_context_action', 99 );
  */
 function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null ) {
 	$submenus = _fieldmanager_registry( 'submenus' );
-	if ( !$submenus ) $submenus = array();
+	if ( !$submenus ) {
+		$submenus = array();
+	}
 	if ( isset( $submenus[ $group_name ] ) ) {
 		throw new FM_Duplicate_Submenu_Name_Exception( sprintf( __( '%s is already in use as a submenu name', 'fieldmanager' ), $group_name ) );
 	}
 
-	if ( !$menu_title ) $menu_title = $page_title;
+	if ( !$menu_title ) {
+		$menu_title = $page_title;
+	}
 
 	// will be replaced by a Fieldmanager_Context_Submenu if this submenu page is active.
 	$submenus[ $group_name ] = array( $parent_slug, $page_title, $menu_title, $capability, $menu_slug ?: $group_name, '_fm_submenu_render' );
@@ -329,7 +355,9 @@ function _fm_submenu_render() {
  */
 function _fm_add_submenus() {
 	$submenus = _fieldmanager_registry( 'submenus' );
-	if ( !is_array( $submenus ) ) return;
+	if ( !is_array( $submenus ) ) {
+		return;
+	}
 	foreach ( $submenus as $s ) {
 		call_user_func_array( 'add_submenu_page', $s );
 	}
