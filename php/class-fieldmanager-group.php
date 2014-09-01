@@ -272,6 +272,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$wrapper_classes[] = 'fmjs-drag-header';
 		}
 
+		if ( $this->collapsible ) {
+			$wrapper_classes[] = 'fmjs-collapsible-handle';
+		}
+
 		$extra_attrs = '';
 		if ( $this->label_macro ) {
 			$this->label_format = $this->label_macro[0];

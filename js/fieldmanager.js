@@ -139,19 +139,19 @@ fm_remove = function( $element ) {
 }
 
 $( document ).ready( function () {
-	$( '.fm-add-another' ).live( 'click', function( e ) {
+	$( document ).on( 'click', '.fm-add-another', function( e ) {
 		e.preventDefault();
 		fm_add_another( $( this ) );
 	} );
 
 	// Handle remove events
-	$( '.fmjs-remove' ).live( 'click', function( e ) {
+	$( document ).on( 'click', '.fmjs-remove', function( e ) {
 		e.preventDefault();
 		fm_remove( $( this ) );
 	} );
 
 	// Handle collapse events
-	$( '.fm-collapsible .fm-group-label-wrapper' ).live( 'click', function() {
+	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).toggle();
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
