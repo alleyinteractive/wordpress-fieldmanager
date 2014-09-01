@@ -84,6 +84,12 @@ abstract class Fieldmanager_Field {
 	public $description = '';
 
 	/**
+	 * @var string
+	 * Like description, but shows above the element
+	 */
+	public $intro_text = '';
+
+	/**
 	 * @var string[]
 	 * Extra HTML attributes to apply to the form element
 	 */
@@ -460,6 +466,10 @@ abstract class Fieldmanager_Field {
 
 		$out .= sprintf( '<div class="%s">', implode( ' ', $classes ) );
 
+		if ( isset( $this->intro_text ) && !empty( $this->intro_text ) ) {
+			$out .= sprintf( '<div class="fm-item-intro-text">%s</div>', $this->intro_text );
+		}
+
 		$label = $this->get_element_label( );
 		$render_label_after = False;
 		// Hide the label if it is empty or if this is a tab since it would duplicate the title from the tab label
@@ -484,7 +494,9 @@ abstract class Fieldmanager_Field {
 			$out .= $form_element;
 		}
 
-		if ( $render_label_after ) $out .= $label;
+		if ( $render_label_after ) {
+			$out .= $label;
+		}
 
 		if ( isset( $this->description ) && !empty( $this->description ) ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->description );
