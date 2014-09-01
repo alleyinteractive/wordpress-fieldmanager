@@ -2,6 +2,8 @@
 
 /**
  * Tests the Fieldmanager Datepicker Field
+ *
+ * @group field
  */
 class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 

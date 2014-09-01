@@ -2,6 +2,8 @@
 
 /**
  * Tests the Fieldmanager Term Meta
+ *
+ * @group util
  */
 class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 
