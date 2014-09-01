@@ -436,10 +436,25 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'fmjs-drag', $html );
 		$this->assertContains( 'fm-collapsible', $html );
 
+		// Ensure everything still works without one_label_per_item
+		$field->one_label_per_item = false;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertContains( 'fm-collapsible', $html );
+
 		// Ensure customized button label
 		$field->add_more_label = $button;
 		$html = $this->_get_html_for( $field );
 		$this->assertContains( $button, $html );
+
+		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
+		// starting count of 5
+		$field->starting_count = 5;
+		$html = $this->_get_html_for( $field );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
 	public function test_multi_tools_in_group_with_label() {
@@ -487,11 +502,26 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'fmjs-drag', $html );
 		$this->assertContains( 'fm-collapsible', $html );
 
+		// Ensure everything still works without one_label_per_item
+		$field->one_label_per_item = false;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertContains( 'fm-collapsible', $html );
+
 		// Ensure customized button label
 		$field->add_more_label = $button;
 		$html = $this->_get_html_for( $field );
 		$this->assertContains( $label, $html );
 		$this->assertContains( $button, $html );
+
+		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
+		// starting count of 5
+		$field->starting_count = 5;
+		$html = $this->_get_html_for( $field );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
 	public function test_multi_tools_in_field_without_label() {
@@ -507,7 +537,6 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertNotContains( 'fmjs-drag', $html );
 		$this->assertNotContains( 'fmjs-remove', $html );
 		$this->assertNotContains( 'fm-collapsible', $html );
-		$this->assertNotContains( 'fm-add-another', $html );
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
@@ -515,7 +544,6 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertNotContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
@@ -523,12 +551,25 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
+
+		// Ensure everything still works without one_label_per_item
+		$field->one_label_per_item = false;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
 		$html = $this->_get_html_for( $field );
 		$this->assertContains( $button, $html );
+
+		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
+		// starting count of 5
+		$field->starting_count = 5;
+		$html = $this->_get_html_for( $field );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
 	public function test_multi_tools_in_field_with_label() {
@@ -546,7 +587,6 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertNotContains( 'fmjs-drag', $html );
 		$this->assertNotContains( 'fmjs-remove', $html );
 		$this->assertNotContains( 'fm-collapsible', $html );
-		$this->assertNotContains( 'fm-add-another', $html );
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
@@ -555,7 +595,6 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertNotContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
@@ -564,13 +603,26 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
 		$html = $this->_get_html_for( $field );
 		$this->assertContains( $label, $html );
 		$this->assertContains( $button, $html );
+
+		// Ensure everything still works without one_label_per_item
+		$field->one_label_per_item = false;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
+
+		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
+		// starting count of 5
+		$field->starting_count = 5;
+		$html = $this->_get_html_for( $field );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
 	/**

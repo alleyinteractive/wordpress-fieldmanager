@@ -294,7 +294,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			implode( ' ', $classes ),
 			$extra_attrs,
 			$this->label,
-			$this->limit == 0 ? $this->get_remove_handle() : ''
+			$this->limit != 1 && $this->one_label_per_item ? $this->get_remove_handle() : ''
 		);
 	}
 
@@ -304,7 +304,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @return string
 	 */
 	public function wrap_with_multi_tools( $html, $classes = array() ) {
-		if ( empty( $this->label ) ) {
+		if ( empty( $this->label ) || ! $this->one_label_per_item ) {
 			return parent::wrap_with_multi_tools( $html, $classes );
 		}
 		return $html;
