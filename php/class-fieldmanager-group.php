@@ -119,7 +119,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		$tab_group_submenu = '';
 
 		// We do not need the wrapper class for extra padding if no label is set for the group
-		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '<div class="fm-group-inner">';
+		if ( ! empty( $this->label ) ) {
+			$out .= '<div class="fm-group-inner">';
+		}
+
+		if ( ! $this->tabbed ) {
+			$out .= $this->get_intro_text();
+		}
 
 		// If the display output for this group is set to tabs, build the tab group for navigation
 		if ( $this->tabbed ) $tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar" id="%s-tabs">', $this->get_element_id() );
@@ -193,8 +199,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		}
 
+		if ( ! $this->tabbed ) {
+			$out .= $this->get_description();
+		}
+
 		// We do not need the wrapper class for extra padding if no label is set for the group
-		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '</div>';
+		if ( ! empty( $this->label ) ) {
+			$out .= '</div>';
+		}
 
 		// If the display output for this group is set to tabs, build the tab group for navigation
 		if ( $this->tab_limit != 0 && $this->child_count >= $this->tab_limit ) $tab_group_submenu .= '</ul></div></div></li>';
