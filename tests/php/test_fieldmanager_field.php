@@ -101,6 +101,45 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Helper to test limit, extra_elements, starting_count combinations.
+	 *
+	 * @param  array $args      Fieldmanager_Group args.
+	 * @param  array $test_data Optional. If present, data will be saved to post meta.
+	 * @return string Rendered meta box.
+	 */
+	private function _get_html_for_extra_element_args( $args, $test_data = null ) {
+		delete_post_meta( $this->post_id, 'base_group' );
+		$args = wp_parse_args( $args, array(
+			'children' => array( 'text' => new Fieldmanager_TextField( false ) )
+		) );
+		$field = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'children' => array(
+				'test_element' => new Fieldmanager_Group( $args )
+			)
+		) );
+
+		return $this->_get_html_for( $field, $test_data );
+	}
+
+	/**
+	 * Helper which returns the post meta box HTML for a given field;
+	 *
+	 * @param  object $field     Some Fieldmanager_Field object.
+	 * @param  array  $test_data Data to save (and use when rendering)
+	 * @return string            Rendered HTML
+	 */
+	private function _get_html_for( $field, $test_data = null ) {
+		ob_start();
+		$context = $field->add_meta_box( 'test meta box', $this->post );
+		if ( $test_data ) {
+			$context->save_to_post_meta( $this->post_id, $test_data );
+		}
+		$context->render_meta_box( $this->post, array() );
+		return ob_get_clean();
+	}
+
+	/**
 	 * Test that basic save functions work properly
 	 */
 	public function test_save_fields() {
@@ -356,8 +395,186 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'type="password"', $str );
 	}
 
+	public function test_multi_tools_in_group_without_label() {
+		$label = rand_str();
+		$button = rand_str();
+
+		$field = new Fieldmanager_Group( array(
+			'name' => 'multi_tools',
+			'children' => array( 'text' => new Fieldmanager_TextField ),
+		) );
+
+		// Ensure that, by default, no multitools are present
+		$html = $this->_get_html_for( $field );
+		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fmjs-remove', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertNotContains( 'fm-add-another', $html );
+
+		// Ensure limit != 1 tools are present
+		$field->limit = 0;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+
+		// Ensure sortable tools are present
+		$field->sortable = true;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+
+		// Ensure collapsible tools are present, even though this doesn't
+		// work (there's nothing to collapse to)
+		$field->collapsible = true;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertContains( 'fm-collapsible', $html );
+
+		// Ensure customized button label
+		$field->add_more_label = $button;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $button, $html );
+	}
+
+	public function test_multi_tools_in_group_with_label() {
+		$label = rand_str();
+		$button = rand_str();
+
+		$field = new Fieldmanager_Group( array(
+			'name' => 'multi_tools',
+			'label' => $label,
+			'children' => array( 'text' => new Fieldmanager_TextField ),
+		) );
+
+		// Ensure that, by default, no multitools are present
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label, $html );
+		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fmjs-remove', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertNotContains( 'fm-add-another', $html );
+
+		// Ensure limit != 1 tools are present
+		$field->limit = 0;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label, $html );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+
+		// Ensure sortable tools are present
+		$field->sortable = true;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label, $html );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+
+		// Ensure collapsible tools are present
+		$field->collapsible = true;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label, $html );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertContains( 'fm-collapsible', $html );
+
+		// Ensure customized button label
+		$field->add_more_label = $button;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label, $html );
+		$this->assertContains( $button, $html );
+	}
+
+	public function test_multi_tools_in_field_without_label() {
+		$label = rand_str();
+		$button = rand_str();
+
+		$field = new Fieldmanager_TextField( array(
+			'name' => 'multi_tools',
+		) );
+
+		// Ensure that, by default, no multitools are present
+		$html = $this->_get_html_for( $field );
+		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fmjs-remove', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertNotContains( 'fm-add-another', $html );
+
+		// Ensure limit != 1 tools are present
+		$field->limit = 0;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+
+		// Ensure sortable tools are present
+		$field->sortable = true;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+
+		// Ensure customized button label
+		$field->add_more_label = $button;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $button, $html );
+	}
+
+	public function test_multi_tools_in_field_with_label() {
+		$label = rand_str();
+		$button = rand_str();
+
+		$field = new Fieldmanager_TextField( array(
+			'name' => 'multi_tools',
+			'label' => $label,
+		) );
+
+		// Ensure that, by default, no multitools are present
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label, $html );
+		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fmjs-remove', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertNotContains( 'fm-add-another', $html );
+
+		// Ensure limit != 1 tools are present
+		$field->limit = 0;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label, $html );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+
+		// Ensure sortable tools are present
+		$field->sortable = true;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label, $html );
+		$this->assertContains( 'fmjs-remove', $html );
+		$this->assertContains( 'fm-add-another', $html );
+		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertNotContains( 'fm-collapsible', $html );
+
+		// Ensure customized button label
+		$field->add_more_label = $button;
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label, $html );
+		$this->assertContains( $button, $html );
+	}
+
 	/**
-	 * Test the form output
+	 * Test extra elements, limits, and starting count
 	 */
 	public function test_extra_elements() {
 		$test_data_single = array(
@@ -718,30 +935,4 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3 ), $test_data_too_many );
 	}
 
-	/**
-	 * Helper to test limit, extra_elements, starting_count combinations.
-	 *
-	 * @param  array $args      Fieldmanager_Group args.
-	 * @param  array $test_data Optional. If present, data will be saved to post meta.
-	 * @return string Rendered meta box.
-	 */
-	private function _get_html_for_extra_element_args( $args, $test_data = null ) {
-		delete_post_meta( $this->post_id, 'base_group' );
-		$args = wp_parse_args( $args, array(
-			'children' => array( 'text' => new Fieldmanager_TextField( false ) )
-		) );
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => array(
-				'test_element' => new Fieldmanager_Group( $args )
-			)
-		) );
-		ob_start();
-		$context = $base->add_meta_box( 'test meta box', $this->post );
-		if ( $test_data ) {
-			$context->save_to_post_meta( $this->post_id, $test_data );
-		}
-		$context->render_meta_box( $this->post, array() );
-		return ob_get_clean();
-	}
 }

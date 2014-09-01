@@ -304,6 +304,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @return string
 	 */
 	public function wrap_with_multi_tools( $html, $classes = array() ) {
+		if ( empty( $this->label ) ) {
+			return parent::wrap_with_multi_tools( $html, $classes );
+		}
 		return $html;
 	}
 
