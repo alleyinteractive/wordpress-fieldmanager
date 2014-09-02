@@ -42,6 +42,12 @@ class Fieldmanager_Datasource {
 	public static $counter = 0;
 
 	/**
+	 * @var boolean
+	 * If true, group elements
+	 */
+	public $grouped = False;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct( $options = array() ) {
@@ -53,24 +59,24 @@ class Fieldmanager_Datasource {
 				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
-					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.' ),
+					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
 					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
-				$title = __( 'Nonexistant or invalid option' );
+				$title = esc_html__( 'Nonexistant or invalid option' );
 				if ( !Fieldmanager_Field::$debug ) {
-					wp_die( $message, $title );
+					wp_die( esc_html( $message ), $title );
 				} else {
-					throw new FM_Developer_Exception( $message );
+					throw new FM_Developer_Exception( esc_html( $message ) );
 				}
 			}
 		}
 
 		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
-			$message = __( 'Invalid options for Datasource; must use the options parameter to supply an array.' );
+			$message = esc_html__( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' );
 			if ( Fieldmanager_Field::$debug ) {
 				throw new FM_Developer_Exception( $message );
 			} else {
-				wp_die( $message, __( 'Invalid Datasource Options' ) );
+				wp_die( $message, esc_html__( 'Invalid Datasource Options', 'fieldmanager' ) );
 			}
 		}
 

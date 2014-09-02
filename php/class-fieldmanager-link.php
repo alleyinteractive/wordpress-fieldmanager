@@ -13,9 +13,7 @@ class Fieldmanager_Link extends Fieldmanager_Textfield {
 	 * @param array $options
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		$this->sanitize = function( $value ) {
-			return esc_url_raw( $value );
-		};
+		$this->sanitize = 'esc_url_raw';
 		$this->template = fieldmanager_get_template( 'textfield' );
 		parent::__construct( $label, $options );
 	}
