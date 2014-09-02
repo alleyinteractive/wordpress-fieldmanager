@@ -440,4 +440,61 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertNotContains( 'name="base_group[test_adding_extra_elements][5][text]"', $str );
 	}
 
+	public function test_intro_text_group() {
+		$text = rand_str();
+		$base = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'intro_text' => $text,
+			'children' => $this->_get_elements()
+		) );
+
+		ob_start();
+		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertContains( "<div class=\"fm-item-intro-text\">{$text}</div>", $html );
+	}
+
+	public function test_intro_text_field() {
+		$text = rand_str();
+		$base = new Fieldmanager_TextField( array(
+			'name' => 'base_group',
+			'intro_text' => $text,
+		) );
+
+		ob_start();
+		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertContains( "<div class=\"fm-item-intro-text\">{$text}</div>", $html );
+	}
+
+	public function test_description_group() {
+		$text = rand_str();
+		$base = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'description' => $text,
+			'children' => $this->_get_elements()
+		) );
+
+		ob_start();
+		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertContains( "<div class=\"fm-item-description\">{$text}</div>", $html );
+	}
+
+	public function test_description_field() {
+		$text = rand_str();
+		$base = new Fieldmanager_TextField( array(
+			'name' => 'base_group',
+			'description' => $text,
+		) );
+
+		ob_start();
+		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertContains( "<div class=\"fm-item-description\">{$text}</div>", $html );
+	}
 }

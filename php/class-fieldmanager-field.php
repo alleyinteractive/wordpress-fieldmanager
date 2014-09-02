@@ -84,6 +84,12 @@ abstract class Fieldmanager_Field {
 	public $description = '';
 
 	/**
+	 * @var string
+	 * Like description, but shows above the element
+	 */
+	public $intro_text = '';
+
+	/**
 	 * @var string[]
 	 * Extra HTML attributes to apply to the form element
 	 */
@@ -458,6 +464,10 @@ abstract class Fieldmanager_Field {
 			$classes[] = 'fmjs-proto';
 		}
 
+		if ( 'group' != $this->field_class || $this->tabbed ) {
+			$out .= $this->get_intro_text();
+		}
+
 		$out .= sprintf( '<div class="%s">', implode( ' ', $classes ) );
 
 		$label = $this->get_element_label( );
@@ -484,13 +494,15 @@ abstract class Fieldmanager_Field {
 			$out .= $form_element;
 		}
 
-		if ( $render_label_after ) $out .= $label;
-
-		if ( isset( $this->description ) && !empty( $this->description ) ) {
-			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->description );
+		if ( $render_label_after ) {
+			$out .= $label;
 		}
 
 		$out .= '</div>';
+
+		if ( 'group' != $this->field_class || $this->tabbed ) {
+			$out .= $this->get_description();
+		}
 
 		if ( $is_proto ) {
 			$this->is_proto = false;
@@ -974,6 +986,30 @@ abstract class Fieldmanager_Field {
 		if ( $this->is_proto ) return True;
 		if ( $this->parent ) return $this->parent->has_proto();
 		return False;
+	}
+
+	/**
+	 * Get the intro_text for the field if set.
+	 *
+	 * @return string
+	 */
+	protected function get_intro_text() {
+		if ( ! empty( $this->intro_text ) ) {
+			return sprintf( '<div class="fm-item-intro-text">%s</div>', $this->intro_text );
+		}
+		return '';
+	}
+
+	/**
+	 * Get the description for the field if set.
+	 *
+	 * @return string
+	 */
+	protected function get_description() {
+		if ( ! empty( $this->description ) ) {
+			return sprintf( '<div class="fm-item-description">%s</div>', $this->description );
+		}
+		return '';
 	}
 
 	/**
