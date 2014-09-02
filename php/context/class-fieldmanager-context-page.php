@@ -43,7 +43,7 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 */
 	public function save_page_form() {
 		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( 'Nonce validation failed' );
+			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 		$this->fm->data_id = $user_id;
 		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
@@ -69,7 +69,7 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $current );
 		echo '</div>';
-		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->fm->submit_button_label ) ?: __( 'Save Options', 'fieldmanager' ) );
+		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->fm->submit_button_label ) ?: esc_attr__( 'Save Options', 'fieldmanager' ) );
 		echo '</form>';
 		echo '</div>';
 

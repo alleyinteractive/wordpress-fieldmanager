@@ -94,10 +94,10 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
 			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-				$preview = __( 'Uploaded image:', 'fieldmanager' ) . '<br />';
+				$preview = esc_html__( 'Uploaded image:', 'fieldmanager' ) . '<br />';
 				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 			} else {
-				$preview = __( 'Uploaded file:', 'fieldmanager' ) . '&nbsp;';
+				$preview = esc_html__( 'Uploaded file:', 'fieldmanager' ) . '&nbsp;';
 				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 			}
 			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', esc_html__( 'remove', 'fieldmanager' ) );

@@ -190,7 +190,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		// Make sure the current user is authorized to save this post.
 		if( $_POST['post_type'] == 'post' ) {
 			if( !current_user_can( 'edit_post', $post_id ) ) {
-				$this->fm->_unauthorized_access( 'User cannot edit this post' );
+				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
 				return;
 			}
 		}

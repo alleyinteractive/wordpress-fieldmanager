@@ -57,11 +57,11 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array(), '1.0.2', false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
 
 		if ( empty( $this->datasource ) ) {
-			$message = __( 'You must supply a datasource for the autocomplete field', 'fieldmanager' );
+			$message = esc_html__( 'You must supply a datasource for the autocomplete field', 'fieldmanager' );
 			if ( Fieldmanager_Field::$debug ) {
 				throw new FM_Developer_Exception( $message );
 			} else {
-				wp_die( $message, __( 'No Datasource', 'fieldmanager' ) );
+				wp_die( $message, esc_html__( 'No Datasource', 'fieldmanager' ) );
 			}
 		}
 		$this->datasource->allow_optgroups = False;

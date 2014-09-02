@@ -53,7 +53,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		if ( !fm_match_context( 'quickedit' ) ) return; // make sure we only load up our JS if we're in a quickedit form.
 
 		if ( FM_DEBUG && !is_callable( $column_display_callback ) ) {
-			throw new FM_Developer_Exception( __( 'You must set a valid column display callback.', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html__( 'You must set a valid column display callback.', 'fieldmanager' ) );
 		}
 
 		// Populate the list of post types for which to add this meta box with the given settings

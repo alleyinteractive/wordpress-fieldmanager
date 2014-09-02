@@ -125,7 +125,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         foreach ( $value as $i => $v ) {
             $value[$i] = intval( $v );
             if( !current_user_can( $this->capability, $v ) ) {
-                wp_die( sprintf( __( 'Tried to refer to user %s which current user cannot edit.', 'fieldmanager' ), $v ) );
+                wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
             }
             if ( $this->reciprocal ) {
                 add_user_meta( $v, $this->reciprocal, $field->data_id );

@@ -317,14 +317,14 @@ abstract class Fieldmanager_Field {
 				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
-					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.', 'fieldmanager' ),
+					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
 					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
-				$title = __( 'Nonexistant or invalid option', 'fieldmanager' );
+				$title = esc_html__( 'Nonexistant or invalid option', 'fieldmanager' );
 				if ( !self::$debug ) {
-					wp_die( $message, $title );
+					wp_die( esc_html( $message ), $title );
 				} else {
-					throw new FM_Developer_Exception( $message );
+					throw new FM_Developer_Exception( esc_html( $message ) );
 				}
 			}
 		}
@@ -629,7 +629,7 @@ abstract class Fieldmanager_Field {
 		$keys = array_keys( $values );
 		foreach ( $keys as $key ) {
 			if ( ! is_numeric( $key ) ) {
-				throw new FM_Exception( __( 'Use of a non-numeric key suggests that something is wrong with this group.', 'fieldmanager' ) );
+				throw new FM_Exception( esc_html__( 'Use of a non-numeric key suggests that something is wrong with this group.', 'fieldmanager' ) );
 			}
 		}
 
@@ -912,7 +912,7 @@ abstract class Fieldmanager_Field {
 
 	private function require_base() {
 		if ( !empty( $this->parent ) ) {
-			throw new FM_Developer_Exception( __( 'You cannot use this method on a subgroup', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use this method on a subgroup', 'fieldmanager' ) );
 		}
 	}
 
@@ -923,10 +923,10 @@ abstract class Fieldmanager_Field {
 	 */
 	public function _unauthorized_access( $debug_message = '' ) {
 		if ( self::$debug ) {
-			throw new FM_Exception( $debug_message );
+			throw new FM_Exception( esc_html( $debug_message ) );
 		}
 		else {
-			wp_die( __( 'Sorry, you\'re not supposed to do that...', 'fieldmanager' ) );
+			wp_die( esc_html__( 'Sorry, you\'re not supposed to do that...', 'fieldmanager' ) );
 		}
 	}
 
@@ -940,10 +940,10 @@ abstract class Fieldmanager_Field {
 			throw new FM_Validation_Exception( $debug_message );
 		}
 		else {
-			wp_die(
+			wp_die( esc_html(
 				$debug_message . "\n\n" .
-				__( 'You may be able to use your browser\'s back button to resolve this error. ', 'fieldmanager' )
-			);
+				__( "You may be able to use your browser's back button to resolve this error.", 'fieldmanager' )
+			) );
 		}
 	}
 
@@ -954,10 +954,9 @@ abstract class Fieldmanager_Field {
 	 */
 	public function _invalid_definition( $debug_message = '' ) {
 		if ( self::$debug ) {
-			throw new FM_Exception( $debug_message );
-		}
-		else {
-			wp_die( __( 'Sorry, you\'ve created an invalid field definition. Please check your code and try again.', 'fieldmanager' ) );
+			throw new FM_Exception( esc_html( $debug_message ) );
+		} else {
+			wp_die( esc_html__( "Sorry, you've created an invalid field definition. Please check your code and try again.", 'fieldmanager' ) );
 		}
 	}
 

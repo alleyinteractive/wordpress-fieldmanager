@@ -146,7 +146,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	public function term_fields( $html_template, $taxonomy, $term = null ) {
 		// Make sure the user hasn't specified a field name we can't use
 		if ( in_array( $this->fm->name, $this->reserved_fields ) )
-			$this->fm->_invalid_definition( 'The field name ' . $this->fm->name . ' is reserved for WordPress on the term form.' );
+			$this->fm->_invalid_definition( sprintf( __( 'The field name "%s" is reserved for WordPress on the term form.', 'fieldmanager' ), $this->fm->name ) );
 
 		// Check if there are any current values to retrieve
 		if ( isset( $term->term_id ) ) {

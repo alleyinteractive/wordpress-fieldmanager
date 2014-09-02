@@ -163,7 +163,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 				$bylines[] = $author->display_name;
 			}
 			if ( empty( $bylines ) ) {
-				$authorstr = __( '(no authors)', 'fieldmanager' );
+				$authorstr = esc_html__( '(no authors)', 'fieldmanager' );
 			}
 			else {
 				$authorstr = implode(', ', $bylines);
