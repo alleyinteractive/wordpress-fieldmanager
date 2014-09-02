@@ -42,6 +42,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		props.align = 'none';
 		props.link = 'custom';
 		props.linkUrl = '#';
+		props.caption = '';
 		$el.parent().find('.fm-media-id').val( attachment.id );
 		if ( attachment.type == 'image' ) {
 			props.url = props.src;
