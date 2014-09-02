@@ -36,10 +36,20 @@ abstract class Fieldmanager_Field {
 	public $limit = 1;
 
 	/**
+	 * DEPREATED: How many of these fields to display initially, if $limit != 1.
+	 * @deprecated This argument will have no impact. It only remains to avoid
+	 *             throwing exceptions in code that used it previously.
 	 * @var int
-	 * How many of these fields to display initially, if $limit != 1
 	 */
 	public $starting_count = 1;
+
+	/**
+	 * How many of these fields to display at a minimum, if $limit != 1. If
+	 * $limit == $minimum_count, the "add another" button and the remove tool
+	 * will be hidden.
+	 * @var int
+	 */
+	public $minimum_count = 0;
 
 	/**
 	 * @var int
@@ -339,11 +349,8 @@ abstract class Fieldmanager_Field {
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
 		if ( $this->limit != 1 ) {
-			if ( empty( $values ) ) {
-				$max = $this->starting_count;
-			} else {
-				$max = count( $values ) + $this->extra_elements;
-			}
+			$max = max( $this->minimum_count, count( $values ) + $this->extra_elements );
+
 			// Ensure that we don't display more fields than we can save
 			if ( $this->limit > 1 && $max > $this->limit ) {
 				$max = $this->limit;
@@ -419,7 +426,7 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		if ( 1 != $this->limit ) {
+		if ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) {
 			$out .= $this->add_another();
 		}
 
@@ -528,7 +535,11 @@ abstract class Fieldmanager_Field {
 		$out .= '<div class="fmjs-removable-element">';
 		$out .= $html;
 		$out .= '</div>';
-		$out .= $this->get_remove_handle();
+
+		if ( $this->limit == 0 || $this->limit > $this->minimum_count ) {
+			$out .= $this->get_remove_handle();
+		}
+
 		$out .= '</div>';
 		return $out;
 	}
@@ -793,7 +804,7 @@ abstract class Fieldmanager_Field {
 	public function add_another() {
 		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
 		if ( empty( $this->add_more_label ) ) {
-			$this->add_more_label = 'group' == $this->field_class ? __( 'Add another set of fields', 'fieldmanager' ) : __( 'Add another field', 'fieldmanager' );
+			$this->add_more_label = 'group' == $this->field_class ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
 		}
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(

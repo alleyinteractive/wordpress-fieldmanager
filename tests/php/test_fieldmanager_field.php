@@ -52,6 +52,32 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Get some simple test data for a single entry of a repeatable field
+	 * @return array
+	 */
+	private function _get_simple_test_data_single() {
+		return array(
+			'test_element' => array(
+				array( 'text' => 'a' ),
+			)
+		);
+	}
+
+	/**
+	 * Get some simple test data for three entries of a repeatable field
+	 * @return array
+	 */
+	private function _get_simple_test_data_multiple() {
+		return array(
+			'test_element' => array(
+				array( 'text' => 'a' ),
+				array( 'text' => 'b' ),
+				array( 'text' => 'c' ),
+			)
+		);
+	}
+
+	/**
 	 * Get a set of elements
 	 * @return Fieldmanager_Field[]
 	 */
@@ -101,7 +127,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Helper to test limit, extra_elements, starting_count combinations.
+	 * Helper to test limit, extra_elements, minimum_count combinations.
 	 *
 	 * @param  array $args      Fieldmanager_Group args.
 	 * @param  array $test_data Optional. If present, data will be saved to post meta.
@@ -450,8 +476,8 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( $button, $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
-		// starting count of 5
-		$field->starting_count = 5;
+		// minimum count of 5
+		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
 		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
@@ -517,8 +543,8 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( $button, $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
-		// starting count of 5
-		$field->starting_count = 5;
+		// minimum count of 5
+		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
 		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
@@ -565,8 +591,8 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( $button, $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
-		// starting count of 5
-		$field->starting_count = 5;
+		// minimum count of 5
+		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
 		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
@@ -618,357 +644,92 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( 'fmjs-drag', $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
-		// starting count of 5
-		$field->starting_count = 5;
+		// minimum count of 5
+		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
 		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
+
 	/**
-	 * Test extra elements, limits, and starting count
+	 * Thoroughly test the interaction of limits, extra elements, minimum
+	 * counts, and submitting data. This may appear unnecessarily complex, but
+	 * it's worth it to verify the interaction at each turn.
+	 *
+	 * The test considers the interaction of:
+	 *     no limit, limit of 3 fields
+	 *     (0, default, 2, 3, 5) extra_elements
+	 *     (default, 1, 2, 3, 5) minimum_count
+	 *     (0, 1, 3) submitted entries
+	 *
+	 * Since this is a test, the nested loops shouldn't be that big of a
+	 * concern.
 	 */
-	public function test_extra_elements() {
-		$test_data_single = array(
-			'test_element' => array(
-				array( 'text' => 'a' ),
-			)
-		);
-		$test_data_multiple = array(
-			'test_element' => array(
-				array( 'text' => 'a' ),
-				array( 'text' => 'b' ),
-				array( 'text' => 'c' ),
-			)
-		);
+	public function test_extra_elements_and_minimum_counts() {
+		foreach ( array( 0, 3 ) as $limit ) {
+			$args = array( 'limit' => $limit );
+			foreach ( array( 0, 1, 2, 3, 5 ) as $extra_elements ) {
+				unset( $args['extra_elements'] );
+				if ( 1 != $extra_elements ) {
+					$args['extra_elements'] = $extra_elements;
+				}
+				foreach ( array( 0, 1, 2, 3, 5) as $minimum_count ) {
+					unset( $args['minimum_count'] );
+					if ( $minimum_count > 0 ) {
+						$args['minimum_count'] = $minimum_count;
+					}
+					foreach ( array( 0, 1, 3 ) as $data ) {
+						if ( 1 == $data ) {
+							$test_data = $this->_get_simple_test_data_single();
+						} elseif ( 3 == $data ) {
+							$test_data = $this->_get_simple_test_data_multiple();
+						} else {
+							$test_data = null;
+						}
 
+						$test_conditions = json_encode( array_merge( $args, array( 'data' => $data ) ) );
+						$str = $this->_get_html_for_extra_element_args( $args, $test_data );
 
-		// Test no limit
-		///////////////////////////////////////////////////
+						// There should always be a prototype
+						$this->assertContains( 'name="base_group[test_element][proto][text]"', $str, "Attempted to assert that the prototype is present when: {$test_conditions}" );
 
-		// Defaults for extra elements and starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
+						if ( 0 === $extra_elements && 0 === $minimum_count && 0 === $data ) {
+							// We should have no fields beyond the prototype
+							$this->assertNotContains( 'name="base_group[test_element][0][text]"', $str, "Attempted to assert that field 0 is NOT present when: {$test_conditions}" );
+						} else {
+							// At the very least, we have 1 field
+							$this->assertContains( 'name="base_group[test_element][0][text]"', $str, "Attempted to assert that field 0 is present when: {$test_conditions}" );
 
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][1][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][2][text]"', $str );
+							$ceiling = max( $minimum_count, $data + $extra_elements );
+							if ( 3 == $limit ) {
+								$ceiling = min( $ceiling, $limit );
+							}
 
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][3][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][4][text]"', $str );
+							if ( $ceiling > 1 ) {
+								// Ensure that the absolute ceiling is present
+								$this->assertContains( 'name="base_group[test_element][' . ( $ceiling - 1 ) . '][text]"', $str, "Attempted to assert that field " . ( $ceiling - 1 ) . " is present when: {$test_conditions}" );
+							}
 
-		// 0 extra elements, default starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 0 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
+							// Ensure that the field after the ceiling is absent
+							$this->assertNotContains( 'name="base_group[test_element][' . $ceiling . '][text]"', $str, "Attempted to assert that field {$ceiling} is NOT present when: {$test_conditions}" );
+						}
 
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 0 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 0 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// default extra elements, 0 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'starting_count' => 0 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][0][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'starting_count' => 0 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][1][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][2][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'starting_count' => 0 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][3][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][4][text]"', $str );
-
-		// 0 extra elements, 0 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 0, 'starting_count' => 0 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][0][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 0, 'starting_count' => 0 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 0, 'starting_count' => 0 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// Default for extra elements, 5 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'starting_count' => 5 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][4][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][5][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'starting_count' => 5 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][1][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][2][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'starting_count' => 5 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][3][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][4][text]"', $str );
-
-		// 0 extra elements, 5 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 0, 'starting_count' => 5 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][4][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][5][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 0, 'starting_count' => 5 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 0, 'starting_count' => 5 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// 5 extra elements, 5 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 5, 'starting_count' => 5 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][4][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][5][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 5, 'starting_count' => 5 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][5][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][6][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 5, 'starting_count' => 5 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][7][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][8][text]"', $str );
-
-		// 5 extra elements, default starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 5 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 5 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][5][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][6][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 5 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][7][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][8][text]"', $str );
-
-		// 5 extra elements, 0 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 5, 'starting_count' => 0 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][0][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 5, 'starting_count' => 0 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][5][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][6][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 0, 'extra_elements' => 5, 'starting_count' => 0 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][7][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][8][text]"', $str );
-
-
-		// Test limit of 3
-		///////////////////////////////////////////////////
-
-		// Defaults for extra elements and starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][1][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][2][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// 0 extra elements, default starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 0 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 0 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 0 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// default extra elements, 0 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'starting_count' => 0 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][0][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'starting_count' => 0 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][1][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][2][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'starting_count' => 0 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// 0 extra elements, 0 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 0, 'starting_count' => 0 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][0][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 0, 'starting_count' => 0 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 0, 'starting_count' => 0 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// Default for extra elements, 5 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'starting_count' => 5 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'starting_count' => 5 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][1][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][2][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'starting_count' => 5 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// 0 extra elements, 5 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 0, 'starting_count' => 5 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 0, 'starting_count' => 5 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 0, 'starting_count' => 5 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// 5 extra elements, 5 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 5, 'starting_count' => 5 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 5, 'starting_count' => 5 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 5, 'starting_count' => 5 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// 5 extra elements, default starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 5 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][1][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 5 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 5 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		// 5 extra elements, 0 starting count
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 5, 'starting_count' => 0 ) );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][0][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 5, 'starting_count' => 0 ), $test_data_single );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3, 'extra_elements' => 5, 'starting_count' => 0 ), $test_data_multiple );
-		$this->assertContains( 'name="base_group[test_element][proto][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][0][text]"', $str );
-		$this->assertContains( 'name="base_group[test_element][2][text]"', $str );
-		$this->assertNotContains( 'name="base_group[test_element][3][text]"', $str );
-
+						if ( 3 == $limit && $minimum_count >= 3 ) {
+							// Ensure that the multi-field tools were removed
+							$this->assertNotContains( 'fmjs-remove', $str, "Attempted to assert that the remove button is NOT present when: {$test_conditions}" );
+							$this->assertNotContains( 'fm-add-another', $str, "Attempted to assert that the add another button is NOT present when: {$test_conditions}" );
+						} else {
+							// Ensure that the multi-field tools are present
+							$this->assertContains( 'fmjs-remove', $str, "Attempted to assert that the remove button is present when: {$test_conditions}" );
+							$this->assertContains( 'fm-add-another', $str, "Attempted to assert that the add another button is present when: {$test_conditions}" );
+						}
+					}
+				}
+			}
+		}
 	}
+
 
 	/**
 	 * @expectedException FM_Exception

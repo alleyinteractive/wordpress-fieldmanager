@@ -291,6 +291,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$classes[] = 'fm-label-with-macro';
 		}
 
+		$remove = '';
+		if ( $this->one_label_per_item && ( $this->limit == 0 || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) ) {
+			$remove = $this->get_remove_handle();
+		}
+
 		return sprintf(
 			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s</div>',
 			implode( ' ', $wrapper_classes ),
@@ -298,7 +303,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			implode( ' ', $classes ),
 			$extra_attrs,
 			$this->label,
-			$this->limit != 1 && $this->one_label_per_item ? $this->get_remove_handle() : ''
+			$remove
 		);
 	}
 
