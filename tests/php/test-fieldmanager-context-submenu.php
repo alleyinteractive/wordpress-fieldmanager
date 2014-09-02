@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Tests user-facing forms (e.g. not in the admin backend)
+ * Tests submenu forms/pages
  */
 class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
