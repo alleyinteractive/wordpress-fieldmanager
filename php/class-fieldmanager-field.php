@@ -926,7 +926,7 @@ abstract class Fieldmanager_Field {
 			throw new FM_Exception( esc_html( $debug_message ) );
 		}
 		else {
-			wp_die( esc_html__( 'Sorry, you\'re not supposed to do that...', 'fieldmanager' ) );
+			wp_die( esc_html__( "Sorry, you're not supposed to do that...", 'fieldmanager' ) );
 		}
 	}
 
