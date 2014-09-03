@@ -53,7 +53,8 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * @var int
-	 * How many extra elements to display if there is already form data and $limit != 1
+	 * How many empty fields to display if $limit != 1 when the total fields in
+	 * the loaded data + $extra_elements > $minimum_count.
 	 */
 	public $extra_elements = 1;
 
