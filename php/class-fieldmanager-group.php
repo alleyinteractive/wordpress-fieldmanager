@@ -277,6 +277,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$wrapper_classes[] = 'fmjs-drag-header';
 		}
 
+		if ( $this->collapsible ) {
+			$wrapper_classes[] = 'fmjs-collapsible-handle';
+		}
+
 		$extra_attrs = '';
 		if ( $this->label_macro ) {
 			$this->label_format = $this->label_macro[0];
@@ -292,6 +296,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$classes[] = 'fm-label-with-macro';
 		}
 
+		$remove = '';
+		if ( $this->one_label_per_item && ( $this->limit == 0 || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) ) {
+			$remove = $this->get_remove_handle();
+		}
+
 		return sprintf(
 			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s</div>',
 			esc_attr( implode( ' ', $wrapper_classes ) ),
@@ -299,7 +308,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			esc_attr( implode( ' ', $classes ) ),
 			$extra_attrs,
 			esc_html( $this->label ),
-			$this->limit == 0 ? $this->get_remove_handle() : '' // get_remove_handle() is sanitized html
+			$remove // get_remove_handle() is sanitized html
 		);
 	}
 
@@ -309,6 +318,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @return string
 	 */
 	public function wrap_with_multi_tools( $html, $classes = array() ) {
+		if ( empty( $this->label ) || ! $this->one_label_per_item ) {
+			return parent::wrap_with_multi_tools( $html, $classes );
+		}
 		return $html;
 	}
 

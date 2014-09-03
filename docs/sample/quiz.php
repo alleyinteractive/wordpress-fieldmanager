@@ -26,7 +26,7 @@ class ContentTypeQuiz {
 
 		$this->questions = new Fieldmanager_Group( array(
 			'limit' => 0,
-			'starting_count' => 2,
+			'minimum_count' => 2,
 			'add_more_label' => 'Add another question',
 			'name' => 'question',
 			'label' => 'Question',
@@ -46,7 +46,7 @@ class ContentTypeQuiz {
 				) ),
 				'answer' => new Fieldmanager_Textfield( array(
 					'limit' => 0,
-					'starting_count' => 4,
+					'minimum_count' => 4,
 					'add_more_label' => 'Add another answer',
 					'name' => 'answer',
 					'label' => 'Answers',
@@ -68,7 +68,7 @@ class ContentTypeQuiz {
 			'children' => array(
 				'post' => new Fieldmanager_Post( array(
 					'limit' => 0,
-					'starting_count' => 4,
+					'minimum_count' => 4,
 					'add_more_label' => 'Add another post',
 					'name' => 'post',
 					'label' => 'Posts',

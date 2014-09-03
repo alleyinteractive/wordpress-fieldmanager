@@ -36,14 +36,25 @@ abstract class Fieldmanager_Field {
 	public $limit = 1;
 
 	/**
+	 * DEPREATED: How many of these fields to display initially, if $limit != 1.
+	 * @deprecated This argument will have no impact. It only remains to avoid
+	 *             throwing exceptions in code that used it previously.
 	 * @var int
-	 * How many of these fields to display initially, if $limit > 1
 	 */
 	public $starting_count = 1;
 
 	/**
+	 * How many of these fields to display at a minimum, if $limit != 1. If
+	 * $limit == $minimum_count, the "add another" button and the remove tool
+	 * will be hidden.
 	 * @var int
-	 * How many extra elements to display if there is already form data and $limit > 1
+	 */
+	public $minimum_count = 0;
+
+	/**
+	 * @var int
+	 * How many empty fields to display if $limit != 1 when the total fields in
+	 * the loaded data + $extra_elements > $minimum_count.
 	 */
 	public $extra_elements = 1;
 
@@ -338,10 +349,15 @@ abstract class Fieldmanager_Field {
 	 */
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
-		if ( $this->limit == 0 ) {
-			$max = count( $values ) + $this->extra_elements;
+		if ( $this->limit != 1 ) {
+			$max = max( $this->minimum_count, count( $values ) + $this->extra_elements );
+
+			// Ensure that we don't display more fields than we can save
+			if ( $this->limit > 1 && $max > $this->limit ) {
+				$max = $this->limit;
+			}
 		} else {
-			$max = $this->limit;
+			$max = 1;
 		}
 
 		$classes = array( 'fm-wrapper', 'fm-' . $this->name . '-wrapper' );
@@ -402,7 +418,7 @@ abstract class Fieldmanager_Field {
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
 
-		if ( 0 == $this->limit ) {
+		if ( 1 != $this->limit ) {
 			$out .= $this->single_element_markup( null, true );
 		}
 		for ( $i = 0; $i < $max; $i++ ) {
@@ -414,7 +430,7 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		if ( 0 == $this->limit ) {
+		if ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) {
 			$out .= $this->add_another();
 		}
 
@@ -467,7 +483,7 @@ abstract class Fieldmanager_Field {
 		$render_label_after = False;
 		// Hide the label if it is empty or if this is a tab since it would duplicate the title from the tab label
 		if ( !empty( $this->label ) && !$this->is_tab && $this->one_label_per_item ) {
-			if ( $this->limit == 0 && $this->one_label_per_item ) {
+			if ( $this->limit != 1 ) {
 				$out .= $this->wrap_with_multi_tools( $label, array( 'fmjs-removable-label' ) );
 			} elseif ( !$this->label_after_element ) {
 				$out .= $label;
@@ -481,7 +497,7 @@ abstract class Fieldmanager_Field {
 
 		$form_element = $this->form_element( $value );
 
-		if ( $this->limit == 0 && !$this->one_label_per_item ) {
+		if ( $this->limit != 1 && ( ! $this->one_label_per_item || empty( $this->label ) ) ) {
 			$out .= $this->wrap_with_multi_tools( $form_element );
 		} else {
 			$out .= $form_element;
@@ -523,7 +539,11 @@ abstract class Fieldmanager_Field {
 		$out .= '<div class="fmjs-removable-element">';
 		$out .= $html;
 		$out .= '</div>';
-		$out .= $this->get_remove_handle();
+
+		if ( $this->limit == 0 || $this->limit > $this->minimum_count ) {
+			$out .= $this->get_remove_handle();
+		}
+
 		$out .= '</div>';
 		return $out;
 	}
@@ -612,17 +632,20 @@ abstract class Fieldmanager_Field {
 			$this->_unauthorized_access( sprintf( __( '$values should be an array because $limit is %d', 'fieldmanager' ), $this->limit ) );
 		}
 
+		if ( empty( $values ) ) {
+			$values = array();
+		}
+
+		// Remove the proto
+		if ( isset( $values['proto'] ) ) {
+			unset( $values['proto'] );
+		}
+
 		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
 		if ( $this->limit > 1 && count( $values ) > $this->limit ) {
 			$this->_unauthorized_access(
 				sprintf( __( 'submitted %1$d values against a limit of %2$d', 'fieldmanager' ), count( $values ), $this->limit )
 			);
-		}
-
-		if ( empty( $values ) ) $values = array();
-
-		if ( isset( $values['proto'] ) ) {
-			unset( $values['proto'] );
 		}
 
 		// Check for non-numeric keys
@@ -784,13 +807,17 @@ abstract class Fieldmanager_Field {
 	 */
 	public function add_another() {
 		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
+		if ( empty( $this->add_more_label ) ) {
+			$this->add_more_label = 'group' == $this->field_class ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
+		}
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
-			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" />',
-			implode( ' ', $classes ),
-			$this->add_more_label,
-			'fm_add_another_' . $this->name,
-			$this->name
+			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-limit="%d" />',
+			esc_attr( implode( ' ', $classes ) ),
+			esc_attr( $this->add_more_label ),
+			esc_attr( 'fm_add_another_' . $this->name ),
+			esc_attr( $this->name ),
+			intval( $this->limit )
 		);
 		$out .= '</div>';
 		return $out;
