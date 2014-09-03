@@ -44,12 +44,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     public $show_date = False;
 
     /**
-     * @var boolean
-     * Show this as grouped?
-     */
-    public $grouped = False;
-
-    /**
      * @var string
      * If $show_date is true, the format to use for displaying the date.
      */
@@ -238,8 +232,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_permalink( $value ),
-            __( 'View' )
+            empty( $value ) ? '#' : esc_url( get_permalink( $value ) ),
+            esc_html__( 'View', 'fieldmanager' )
         );
     }
 
@@ -252,8 +246,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-edit-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_edit_post_link( $value ),
-            __( 'Edit' )
+            empty( $value ) ? '#' : esc_url( get_edit_post_link( $value ) ),
+            esc_html__( 'Edit', 'fieldmanager' )
         );
     }
 

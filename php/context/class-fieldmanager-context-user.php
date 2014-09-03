@@ -56,7 +56,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 		if ( ! empty( $_POST ) && ! empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) && current_user_can( 'edit_user', $user_id ) ) {
 			// Make sure that our nonce field arrived intact
 			if ( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-				$this->fm->_unauthorized_access( 'Nonce validation failed' );
+				$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 			}
 
 			$this->save_to_user_meta( $user_id, ( isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "" ) );

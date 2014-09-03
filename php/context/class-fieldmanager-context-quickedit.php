@@ -53,7 +53,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		if ( !fm_match_context( 'quickedit' ) ) return; // make sure we only load up our JS if we're in a quickedit form.
 
 		if ( FM_DEBUG && !is_callable( $column_display_callback ) ) {
-			throw new FM_Developer_Exception( __( 'You must set a valid column display callback.', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html__( 'You must set a valid column display callback.', 'fieldmanager' ) );
 		}
 
 		// Populate the list of post types for which to add this meta box with the given settings
@@ -117,7 +117,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	public function add_quickedit_box( $column_name, $post_type, $values = array() ) {
 		if ( $column_name != $this->fm->name ) return;
 		?>
-		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo $column_name; ?>" data-fm-post-type="<?php echo $post_type; ?>">
+		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo esc_attr( $column_name ); ?>" data-fm-post-type="<?php echo esc_attr( $post_type ); ?>">
 			<div class="inline-edit-col">
 				<?php wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' ); ?>
 				<?php echo $this->fm->element_markup( $values ); ?>
@@ -176,14 +176,14 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		// Make sure the current user can save this post
 		if( $_POST['post_type'] == 'post' ) {
 			if( !current_user_can( 'edit_post', $post_id ) ) {
-				$this->fm->_unauthorized_access( 'User cannot edit this post' );
+				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
 				return;
 			}
 		}
 
 		// Make sure that our nonce field arrived intact
 		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( 'Nonce validation failed' );
+			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 
 		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
