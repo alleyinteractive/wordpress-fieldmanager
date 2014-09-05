@@ -52,6 +52,12 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	public $wp_option_autoload = False;
 
 	/**
+	 * @var bool
+	 * Whether this is a Network Admin submenu page.
+	 */
+	public $is_network_submenu = false;
+
+	/**
 	 * Create a submenu page out of a field
 	 * @param string $parent_slug
 	 * @param string $page_title
@@ -67,8 +73,9 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->parent_slug = $parent_slug;
 		$this->page_title = $page_title;
 		$this->capability = $capability;
+		$this->is_network_submenu = ( 'settings.php' == $this->parent_slug );
 		if ( ! $this->capability ) {
-			if ( 'settings.php' == $this->parent_slug ) {
+			if ( $this->is_network_submenu ) {
 				$this->capability = 'manage_network_options';
 			} else {
 				$this->capability = 'manage_options';
@@ -76,7 +83,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		}
 		$this->uniqid = $this->fm->get_element_id() . '_form';
 		if ( ! $already_registered ) {
-			if ( 'settings.php' == $this->parent_slug ) {
+			if ( $this->is_network_submenu ) {
 				add_action( 'network_admin_menu', array( $this, 'register_submenu_page' ) );
 			} else {
 				add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
@@ -98,7 +105,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 * @return void.
 	 */
 	public function render_submenu_page() {
-		if ( 'settings.php' == $this->parent_slug ) {
+		if ( $this->is_network_submenu ) {
 			$values = get_site_option( $this->fm->name, null );
 		} else {
 			$values = get_option( $this->fm->name, null );
@@ -147,7 +154,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 
 		$this->fm->data_id = $this->fm->name;
 		$this->fm->data_type = 'options';
-		if ( 'settings.php' == $this->parent_slug ) {
+		if ( $this->is_network_submenu ) {
 			$current = get_site_option( $this->fm->name, null );
 		} else {
 			$current = get_option( $this->fm->name, null );
@@ -157,13 +164,13 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 
 		if ( isset( $current ) ) {
-			if ( 'settings.php' == $this->parent_slug ) {
+			if ( $this->is_network_submenu ) {
 				update_site_option( $this->fm->name, $data );
 			} else {
 				update_option( $this->fm->name, $data );
 			}
 		} else {
-			if ( 'settings.php' == $this->parent_slug ) {
+			if ( $this->is_network_submenu ) {
 				add_site_option( $this->fm->name, $data );
 			} else {
 				add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
