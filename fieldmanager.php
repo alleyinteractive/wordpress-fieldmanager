@@ -363,6 +363,7 @@ function _fm_add_submenus() {
 	}
 }
 add_action( 'admin_menu', '_fm_add_submenus' );
+add_action( 'network_admin_menu', '_fm_add_submenus' );
 
 /**
  * Sanitize multi-line text
