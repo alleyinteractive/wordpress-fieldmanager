@@ -140,7 +140,8 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	public function handle_submenu_save() {
 		if ( ! empty( $_POST ) && ! empty( $_GET['page'] ) && $_GET['page'] == $this->menu_slug && current_user_can( $this->capability ) ) {
 			if ( $this->save_submenu_data() ) {
-				wp_redirect( add_query_arg( array( 'page' => $this->menu_slug, 'msg' => 'success' ), admin_url( $this->parent_slug ) ) );
+				$url = $this->is_network_submenu ? network_admin_url( $this->parent_slug ) : admin_url( $this->parent_slug );
+				wp_redirect( add_query_arg( array( 'page' => $this->menu_slug, 'msg' => 'success' ), esc_url_raw( $url ) ) );
 				exit;
 			}
 		}
