@@ -9,9 +9,13 @@ var init_sortable_container = function( el ) {
 		$( el ).sortable( {
 			handle: '.fmjs-drag',
 			items: '> .fm-item',
+			start: function( e, ui ) {
+				$( document ).trigger( 'fm_sortable_drag', el ) ;
+			},
 			stop: function( e, ui ) {
 				var $parent = ui.item.parents( '.fm-wrapper' ).first();
 				fm_renumber( $parent );
+				$( document ).trigger( 'fm_sortable_drop', el );
 			}
 		} );
 	}
@@ -109,8 +113,16 @@ var match_value = function( values, match_string ) {
 }
 
 fm_add_another = function( $element ) {
-	var el_name = $element.attr( 'data-related-element' );
-	$new_element = $( '.fmjs-proto.fm-' + el_name, $element.closest( '.fm-wrapper' ) ).first().clone();
+	var el_name = $element.data( 'related-element' )
+		, limit = $element.data( 'limit' ) - 0
+		, siblings = $element.parent().siblings().not( '.fmjs-proto' );
+
+	if ( limit > 0 && siblings.length >= limit ) {
+		return;
+	}
+
+	var $new_element = $( '.fmjs-proto.fm-' + el_name, $element.closest( '.fm-wrapper' ) ).first().clone();
+
 	$new_element.removeClass( 'fmjs-proto' );
 	$new_element = $new_element.insertBefore( $element.parent() );
 	fm_renumber( $element.parents( '.fm-wrapper' ) );
@@ -127,19 +139,19 @@ fm_remove = function( $element ) {
 }
 
 $( document ).ready( function () {
-	$( '.fm-add-another' ).live( 'click', function( e ) {
+	$( document ).on( 'click', '.fm-add-another', function( e ) {
 		e.preventDefault();
 		fm_add_another( $( this ) );
 	} );
 
 	// Handle remove events
-	$( '.fmjs-remove' ).live( 'click', function( e ) {
+	$( document ).on( 'click', '.fmjs-remove', function( e ) {
 		e.preventDefault();
 		fm_remove( $( this ) );
 	} );
 
 	// Handle collapse events
-	$( '.fm-collapsible .fm-group-label-wrapper' ).live( 'click', function() {
+	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).toggle();
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );

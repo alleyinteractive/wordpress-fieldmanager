@@ -17,7 +17,7 @@ fm.autocomplete = {
 				ac_params.select = function( e, ui ) {
 					e.preventDefault();
 					$el.val( ui.item.label );
-					$hidden.val( ui.item.value );
+					$hidden.val( ui.item.value ).trigger( 'change' );
 				};
 				ac_params.focus = function( e, ui ) {
 					e.preventDefault();
@@ -65,6 +65,6 @@ fm.autocomplete = {
 }
 
 $( document ).ready( fm.autocomplete.enable_autocomplete );
-$( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle', fm.autocomplete.enable_autocomplete );
+$( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle fm_activate_tab', fm.autocomplete.enable_autocomplete );
 
 } ) ( jQuery );

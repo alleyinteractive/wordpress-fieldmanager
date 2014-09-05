@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * Use WordPress's TinyMCE control in Fieldmanager.
@@ -29,6 +26,36 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public $init_options = array();
 
 	/**
+	 * Add the "code" plugin to tinymce.
+	 * @var boolean
+	 */
+	public $add_code_plugin = false;
+
+	/**
+	 * First row of buttons for the tinymce toolbar
+	 * @var array
+	 */
+	public $buttons_1 = array( 'bold', 'italic', 'strikethrough', 'bullist', 'numlist', 'blockquote', 'justifyleft', 'justifycenter', 'justifyright', 'add_media', 'link', 'unlink', 'wp_more', 'spellchecker', 'fullscreen', 'wp_adv' );
+
+	/**
+	 * Second row of buttons for the tinymce toolbar
+	 * @var array
+	 */
+	public $buttons_2 = array( 'formatselect', 'underline', 'justifyfull', 'forecolor', 'pastetext', 'pasteword', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help', 'code' );
+
+	/**
+	 * Third row of buttons for the tinymce toolbar
+	 * @var array
+	 */
+	public $buttons_3 = array();
+
+	/**
+	 * Fourth row of buttons for the tinymce toolbar
+	 * @var array
+	 */
+	public $buttons_4 = array();
+
+	/**
 	 * @var string
 	 * Static variable so we only load tinymce once
 	 */
@@ -46,6 +73,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public static $tinymce_major_version;
 
+
 	/**
 	 * Construct default attributes; 50x10 textarea
 	 * @param array $options
@@ -62,7 +90,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 				wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tiny_mce.js' ) );
 				wp_enqueue_script( 'wp-langs-en.js', includes_url( 'js/tinymce/langs/wp-langs-en.js' ) );
 			} else {
-				wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tinymce.js' ) );
+				wp_enqueue_script( 'tiny_mce.js', includes_url( 'js/tinymce/tinymce.min.js' ) );
 				wp_enqueue_style( 'editor-buttons' );
 			}
 
@@ -132,7 +160,7 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%s", suff
 	 * the link and fullscreen edit popups
 	 * @return void
 	 */
-	public function editor_js() {
+	public static function editor_js() {
 		if ( ! class_exists( '_WP_Editors' ) ) {
 			require( ABSPATH . WPINC . '/class-wp-editor.php' );
 
@@ -148,10 +176,10 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%s", suff
 	public function get_mce_options() {
 		$editor_id = $this->get_element_id();
 		$buttons = array(
-			implode( ',', apply_filters( 'mce_buttons', array( 'bold', 'italic', 'strikethrough', 'bullist', 'numlist', 'blockquote', 'justifyleft', 'justifycenter', 'justifyright', 'add_media', 'link', 'unlink', 'wp_more', 'spellchecker', 'fullscreen', 'wp_adv' ), $editor_id ) ),
-			implode( ',', apply_filters( 'mce_buttons_2', array( 'formatselect', 'underline', 'justifyfull', 'forecolor', 'pastetext', 'pasteword', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help', 'code' ), $editor_id ) ),
-			implode( ',', apply_filters( 'mce_buttons_3', array(), $editor_id ) ),
-			implode( ',', apply_filters( 'mce_buttons_4', array(), $editor_id ) ),
+			implode( ',', apply_filters( 'mce_buttons', $this->buttons_1, $editor_id ) ),
+			implode( ',', apply_filters( 'mce_buttons_2', $this->buttons_2, $editor_id ) ),
+			implode( ',', apply_filters( 'mce_buttons_3', $this->buttons_3, $editor_id ) ),
+			implode( ',', apply_filters( 'mce_buttons_4', $this->buttons_4, $editor_id ) ),
 		);
 
 		$plugins = array( 'tabfocus', 'paste', 'media', 'fullscreen', 'wordpress', 'wpeditimage', 'wpgallery', 'wplink', 'wpdialogs' );
@@ -202,6 +230,9 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%s", suff
 		if ( isset( $options['style_formats'] ) && !is_array( $options['style_formats'] ) ) {
 			$options['style_formats'] = json_decode( $options['style_formats'] );
 		}
+		if ( $this->add_code_plugin ) {
+			$options['external_plugins']['code'] = fieldmanager_get_baseurl() . '/js/tinymce.code.js';
+		}
 
 		unset( $options['elements'] );
 		return $options;
@@ -224,12 +255,12 @@ if ( "undefined" === typeof tinyMCEPreInit ) tinyMCEPreInit = { base: "%s", suff
 			self::$has_added_footer_scripts = True;
 		}
 		return sprintf(
-			'<textarea class="fm-element fm-richtext" name="%1$s" id="%2$s" %3$s data-mce-options="%5$s" />%4$s</textarea>',
-			$this->get_form_name(),
-			$this->get_element_id(),
+			'<textarea class="fm-element fm-richtext" name="%1$s" id="%2$s" %3$s data-mce-options="%5$s">%4$s</textarea>',
+			esc_attr( $this->get_form_name() ),
+			esc_attr( $this->get_element_id() ),
 			$this->get_element_attributes(),
-			$value,
-			htmlspecialchars( json_encode( $this->get_mce_options() ), ENT_QUOTES )
+			esc_textarea( $value ),
+			esc_attr( json_encode( $this->get_mce_options() ), ENT_QUOTES )
 		);
 	}
 

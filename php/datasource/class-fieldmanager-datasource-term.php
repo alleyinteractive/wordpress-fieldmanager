@@ -59,12 +59,6 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 	/**
 	 * @var boolean
-	 * If true, group taxonomies
-	 */
-	public $grouped = False;
-
-	/**
-	 * @var boolean
 	 * Build this datasource using AJAX
 	 */
 	public $use_ajax = True;
@@ -350,8 +344,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		return sprintf(
 			' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
 			empty( $value ) ? 'fm-hidden' : '',
-			empty( $value ) ? '#' : get_term_link( $this->get_term( $value ) ),
-			__( 'View' )
+			empty( $value ) ? '#' : esc_url( get_term_link( $this->get_term( $value ) ) ),
+			esc_html__( 'View', 'fieldmanager' )
 		);
 	}
 
@@ -361,7 +355,13 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @return string
 	 */
 	public function get_edit_link( $value ) {
-		return edit_term_link( __( 'Edit' ), '', '', $this->get_term( $value ), False );
+		$term = $this->get_term( $value );
+		return sprintf(
+			'<a target="_new" class="fm-autocomplete-edit-link %s" href="%s">%s</a>',
+			empty( $value ) ? 'fm-hidden' : '',
+			empty( $value ) ? '#' : esc_url( get_edit_term_link( $term->term_id, $term->taxonomy ) ),
+			esc_html__( 'Edit', 'fieldmanager' )
+		);
 	}
 
 }
