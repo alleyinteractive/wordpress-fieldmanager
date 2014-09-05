@@ -46,7 +46,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	public $submit_button_label = Null;
 
 	/**
-	 * @var string
+	 * @var bool
 	 * For submenu pages, set autoload to true or false
 	 */
 	public $wp_option_autoload = False;
