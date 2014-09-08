@@ -150,7 +150,7 @@ function fieldmanager_get_template( $tpl_slug ) {
  *
  * @see wp_enqueue_script() for detail about $handle, $deps, $ver, and $in_footer.
  * @see wp_localize_script() for detail about $data_object and $data.
- * @see FM_GLOBAL_ASSET_VERSION for detaul about the fallback value of $ver.
+ * @see FM_GLOBAL_ASSET_VERSION for detail about the fallback value of $ver.
  * @see fieldmanager_get_baseurl() for detail about the fallback value of $plugin_dir.
  *
  * @param string $handle Script name.
@@ -188,7 +188,7 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
  * Register and enqueue a style with a closure.
  *
  * @see wp_enqueue_script() for detail about $handle, $path, $deps, $ver, and $media.
- * @see FM_GLOBAL_ASSET_VERSION for detaul about the fallback value of $ver.
+ * @see FM_GLOBAL_ASSET_VERSION for detail about the fallback value of $ver.
  * @see fieldmanager_get_baseurl() for detail about base URL.
  *
  * @param string $handle Stylesheet name.
