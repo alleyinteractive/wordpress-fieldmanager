@@ -325,11 +325,17 @@ abstract class Fieldmanager_Field {
 		}
 
 		// Get all the public properties for this object
-		$keys = array_keys( call_user_func( 'get_object_vars', $this ) );
+		$properties = call_user_func( 'get_object_vars', $this );
 
-		foreach ( $keys as $key ) {
-			if ( isset( $options[ $key ] ) ) {
-				$this->$key = $options[ $key ];
+		foreach ( $options as $key => $value ) {
+			if ( array_key_exists( $key, $properties ) ) {
+				$this->$key = $value;
+			} elseif ( self::$debug ) {
+				$message = sprintf(
+					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
+					$key, get_class( $this ), !empty( $options['name'] ) ? $options['name'] : 'NULL'
+				);
+				throw new FM_Developer_Exception( esc_html( $message ) );
 			}
 		}
 	}

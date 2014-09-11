@@ -290,15 +290,33 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test that using an option not listed in the base or extended class will throw an exception.
+	 * Test that using an option not listed in the base or extended class will
+	 * fail silently when debug mode is disabled.
 	 */
 	public function test_invalid_option() {
+		Fieldmanager_Field::$debug = false;
 		$base = new Fieldmanager_Group( array(
 			'name' => 'base_group',
 			'fake' => 'field',
 			'meta_box_actions_added' => 'foobar',
 		) );
 		$this->assertFalse( isset( $base->fake ) );
+		Fieldmanager_Field::$debug = true;
+	}
+
+	/**
+	 * Test that using an option not listed in the base or extended class will
+	 * throw an exception when debug mode is enabled.
+	 *
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_invalid_option_debug() {
+		Fieldmanager_Field::$debug = true;
+		$base = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'fake' => 'field',
+			'meta_box_actions_added' => 'foobar',
+		) );
 	}
 
 	/**
