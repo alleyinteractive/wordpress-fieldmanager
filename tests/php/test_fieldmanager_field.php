@@ -753,7 +753,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$label_raw = rand_str();
 		$label_html = "<strong id='{$id}'>{$label_raw}</strong>";
 		$args = array(
-			'name' => 'label_testing',
+			'name' => 'label_escape_testing',
 			'label' => $label_html,
 		);
 
@@ -768,5 +768,27 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$field = new Fieldmanager_TextField( $args );
 		$html = $this->_get_html_for( $field );
 		$this->assertContains( $label_html, $html );
+	}
+
+	public function test_description_escaping() {
+		$id = rand_str();
+		$description_raw = rand_str();
+		$description_html = "<strong id='{$id}'>{$description_raw}</strong>";
+		$args = array(
+			'name' => 'description_escape_testing',
+			'description' => $description_html,
+		);
+
+		// Ensure that, by default, the description is present without the HTML
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $description_raw, $html );
+		$this->assertNotContains( $description_html, $html );
+
+		// Ensure that the description has HTML when we change the escaping
+		$args['escape'] = array( 'description' => 'wp_kses_post' );
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $description_html, $html );
 	}
 }

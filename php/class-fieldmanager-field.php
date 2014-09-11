@@ -512,7 +512,7 @@ abstract class Fieldmanager_Field {
 		if ( $render_label_after ) $out .= $label;
 
 		if ( isset( $this->description ) && !empty( $this->description ) ) {
-			$out .= sprintf( '<div class="fm-item-description">%s</div>', esc_html( $this->description ) );
+			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
 		}
 
 		$out .= '</div>';
