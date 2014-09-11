@@ -101,8 +101,13 @@ class Fieldmanager_Datasource {
 	 * @param int $id
 	 * @return string value
 	 */
-	public function get_value( $id ) {
-		return !empty( $this->options[$id] ) ? $this->options[$id] : '';
+	public function get_value( $id, $exact_match = true ) {
+		if ( ! empty( $this->options[ $id ] ) ) {
+			return $this->options[ $id ];
+		} elseif ( ! $exact_match ) {
+			return $id;
+		}
+		return '';
 	}
 
 	/**
