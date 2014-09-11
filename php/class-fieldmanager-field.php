@@ -243,6 +243,12 @@ abstract class Fieldmanager_Field {
 	public $input_type = 'text';
 
 	/**
+	 * Custom escaping for labels, descriptions, etc.
+	 * @var array
+	 */
+	public $escape = array();
+
+	/**
 	 * @var int
 	 * If $this->limit > 1, which element in sequence are we currently rendering?
 	 */
@@ -796,7 +802,7 @@ abstract class Fieldmanager_Field {
 			sanitize_key( $this->label_element ),
 			esc_attr( implode( ' ', $classes ) ),
 			esc_attr( $this->get_element_id( $this->get_seq() ) ),
-			esc_html( $this->label ),
+			$this->escape( 'label' ),
 			sanitize_key( $this->label_element )
 		);
 	}
@@ -1011,4 +1017,12 @@ abstract class Fieldmanager_Field {
 	 * @return void
 	 */
 	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {}
+
+	public function escape( $field, $default = 'esc_html' ) {
+		if ( isset( $this->escape[ $field ] ) ) {
+			return call_user_func( $this->escape[ $field ], $this->$field );
+		} else {
+			return call_user_func( $default, $this->$field );
+		}
+	}
 }

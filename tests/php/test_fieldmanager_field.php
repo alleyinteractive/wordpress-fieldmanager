@@ -748,4 +748,25 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3 ), $test_data_too_many );
 	}
 
+	public function test_label_escaping() {
+		$id = rand_str();
+		$label_raw = rand_str();
+		$label_html = "<strong id='{$id}'>{$label_raw}</strong>";
+		$args = array(
+			'name' => 'label_testing',
+			'label' => $label_html,
+		);
+
+		// Ensure that, by default, the label is present without the HTML
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label_raw, $html );
+		$this->assertNotContains( $label_html, $html );
+
+		// Ensure that the label has HTML when we change the escaping
+		$args['escape'] = array( 'label' => 'wp_kses_post' );
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label_html, $html );
+	}
 }

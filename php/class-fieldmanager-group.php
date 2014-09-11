@@ -147,7 +147,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 					$tab_group .=  sprintf( '<li class="%s"><a href="#%s-tab">%s</a></li>',
 						esc_attr( implode( " ", $tab_classes ) ),
 						esc_attr( $element->get_element_id() ),
-						esc_html( $element->label )
+						$element->escape( 'label' )
 					 );
 				} else if ( $this->tab_limit != 0 && $this->child_count >= $this->tab_limit ) {
 					$submenu_item_classes = array( 'fm-submenu-item' );
@@ -177,7 +177,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 						esc_attr( implode( ' ', $submenu_item_classes ) ),
 						esc_attr( $element->get_element_id() ),
 						$submenu_item_link_class,
-						esc_html( $element->label )
+						$element->escape( 'label' )
 					);
 				}
 
@@ -307,7 +307,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$this->label_element,
 			esc_attr( implode( ' ', $classes ) ),
 			$extra_attrs,
-			esc_html( $this->label ),
+			$this->escape( 'label' ),
 			$remove // get_remove_handle() is sanitized html
 		);
 	}
