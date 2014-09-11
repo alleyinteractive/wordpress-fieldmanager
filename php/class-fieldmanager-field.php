@@ -243,7 +243,11 @@ abstract class Fieldmanager_Field {
 	public $input_type = 'text';
 
 	/**
-	 * Custom escaping for labels, descriptions, etc.
+	 * Custom escaping for labels, descriptions, etc. Associative array of
+	 * $field => $callable arguments, for example:
+	 *
+	 *     'escape' => array( 'label' => 'wp_kses_post' )
+	 *
 	 * @var array
 	 */
 	public $escape = array();
@@ -1018,8 +1022,16 @@ abstract class Fieldmanager_Field {
 	 */
 	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {}
 
+	/**
+	 * Escape a field based on the function in the escape argument.
+	 *
+	 * @param  string $field   The field to escape.
+	 * @param  string $default The default function to use to escape the field.
+	 *                         Optional. Defaults to `esc_html()`
+	 * @return string          The escaped field.
+	 */
 	public function escape( $field, $default = 'esc_html' ) {
-		if ( isset( $this->escape[ $field ] ) ) {
+		if ( isset( $this->escape[ $field ] ) && is_callable( $this->escape[ $field ] ) ) {
 			return call_user_func( $this->escape[ $field ], $this->$field );
 		} else {
 			return call_user_func( $default, $this->$field );
