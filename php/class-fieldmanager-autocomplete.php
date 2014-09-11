@@ -104,10 +104,15 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 			$this->attributes['data-options'] = htmlspecialchars( json_encode( $this->datasource->get_items() ) );
 		}
 
+		$display_value = $this->datasource->get_value( $value );
+		if ( '' == $display_value && ! $this->exact_match && ! isset( $this->datasource->options[ $value ] ) ) {
+			$display_value = $value;
+		}
+
 		$element = sprintf(
 			'<input class="fm-autocomplete fm-element fm-incrementable" type="text" id="%s" value="%s" %s />',
 			esc_attr( $this->get_element_id() ),
-			esc_attr( $this->datasource->get_value( $value, $this->exact_match ) ),
+			esc_attr( $display_value ),
 			$this->get_element_attributes()
 		);
 
