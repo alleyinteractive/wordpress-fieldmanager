@@ -74,6 +74,12 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->page_title = $page_title;
 		$this->capability = $capability;
 		$this->is_network_submenu = ( 'settings.php' == $this->parent_slug );
+		$this->uniqid = $this->fm->get_element_id() . '_form';
+
+		if ( $this->is_network_submenu && ! is_multisite() && Fieldmanager_Field::$debug ) {
+			throw new FM_Developer_Exception( esc_html__( 'Multisite is inactive. You should check is_multisite() before registering a Network Settings submenu page.', 'fieldmanager' ) );
+		}
+
 		if ( ! $this->capability ) {
 			if ( $this->is_network_submenu ) {
 				$this->capability = 'manage_network_options';
@@ -81,7 +87,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 				$this->capability = 'manage_options';
 			}
 		}
-		$this->uniqid = $this->fm->get_element_id() . '_form';
+
 		if ( ! $already_registered ) {
 			if ( $this->is_network_submenu ) {
 				add_action( 'network_admin_menu', array( $this, 'register_submenu_page' ) );
