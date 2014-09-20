@@ -40,6 +40,17 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	public $fm = null;
 
 	/**
+	 * @var boolean
+	 */
+	public $postmeta_per_field = false;
+
+	/**
+	 * @var boolean
+	 * Set this globally immediately after you init FM if you want all your fields to go in as their own postmeta.
+	 */
+	public static $global_postmeta_per_field = false;
+
+	/**
 	 * Add a context to a fieldmanager
 	 * @param string $title
 	 * @param string|string[] $post_types
@@ -89,6 +100,14 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	}
 
 	/**
+	 * Should we save each field to its own postmeta?
+	 * @param boolean
+	 */
+	public function is_postmeta_per_field() {
+		return static::$global_postmeta_per_field || $this->postmeta_per_field;
+	}
+
+	/**
 	 * Helper to attach element_markup() to add_meta_box(). Prints markup for post editor.
 	 * @see http://codex.wordpress.org/Function_Reference/add_meta_box
 	 * @param $post the post object.
@@ -96,9 +115,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void.
 	 */
 	public function render_meta_box( $post, $form_struct = null ) {
-		$key = $this->fm->name;
-		$values = get_post_meta( $post->ID, $key );
-		$values = empty( $values ) ? Null : $values[0];
+		$values = $this->load_current_data( $post->ID );
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
@@ -201,6 +218,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		}
 
 		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+		// print_r( $_POST ); exit;
 		$this->save_to_post_meta( $post_id, $value );
 	}
 
@@ -213,8 +231,20 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) return;
 		// don't save values since we aren't provided with any; just trigger presave so that subclass handlers can process as necessary
 		$this->fm->skip_save = true;
-		$current = get_post_meta( $post_id, $this->fm->name, true );
+		$current = $this->load_current_data( $post_id );
 		$this->save_to_post_meta( $post_id, $current );
+	}
+
+	public function load_current_data( $post_id ) {
+		if ( $this->is_postmeta_per_field() ) {
+			$data = array();
+			foreach ( array_keys( $this->fm->children ) as $key ) {
+				$data[ $key ] = get_post_meta( $post_id, $key, true );
+			}
+			return $data;
+		} else {
+			return get_post_meta( $post_id, $this->fm->name, true );
+		}
 	}
 
 	/**
@@ -229,7 +259,16 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_type = 'post';
 		$current = get_post_meta( $this->fm->data_id, $this->fm->name, true );
 		$data = $this->fm->presave_all( $data, $current );
-		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );
+		// print_r( $data ); exit;
+		if ( !$this->fm->skip_save ) {
+			if ( $this->is_postmeta_per_field() ) {
+				foreach( $data as $k => $v ) {
+					update_post_meta( $post_id, $k, $v );
+				}
+			} else {
+				update_post_meta( $post_id, $this->fm->name, $data );
+			}
+		}
 	}
 
 }
