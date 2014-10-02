@@ -46,6 +46,12 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	public $submit_button_label = Null;
 
 	/**
+	 * @var string|Null
+	 * Only used for options pages
+	 */
+	public $updated_message = Null;
+
+	/**
 	 * @var string
 	 * For submenu pages, set autoload to true or false
 	 */
@@ -67,6 +73,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->parent_slug = $parent_slug;
 		$this->page_title = $page_title;
 		$this->capability = $capability;
+		$this->updated_message = esc_html__( 'Options updated', 'fieldmanager' );
 		$this->uniqid = $this->fm->get_element_id() . '_form';
 		if ( !$already_registered ) add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
@@ -89,7 +96,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		?>
 		<div class="wrap">
 			<?php if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) : ?>
-				<div class="updated success"><p><?php esc_html_e( 'Options updated', 'fieldmanager' ); ?></p></div>
+				<div class="updated success"><p><?php echo esc_html( $this->updated_message ); ?></p></div>
 			<?php endif ?>
 
 			<h2><?php echo esc_html( $this->page_title ) ?></h2>
