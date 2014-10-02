@@ -136,10 +136,14 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$data = $this->fm->presave_all( $value, $current );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 
-		if ( isset( $current ) ) {
-			update_option( $this->fm->name, $data );
-		} else {
-			add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
+		if ( ! $this->fm->skip_save ) {
+
+			if ( isset( $current ) ) {
+				update_option( $this->fm->name, $data );
+			} else {
+				add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
+			}
+
 		}
 
 		return true;
