@@ -87,8 +87,8 @@ abstract class Fieldmanager_Field {
 	public $description = '';
 
 	/**
-	 * @var string[]
-	 * Extra HTML attributes to apply to the form element
+	 * @var string|null[]
+	 * Extra HTML attributes to apply to the form element. Use null to apply a standalone attribute, e.g. 'required'
 	 */
 	public $attributes = array();
 
@@ -706,7 +706,11 @@ abstract class Fieldmanager_Field {
 	public function get_element_attributes() {
 		$attr_str = array();
 		foreach ( $this->attributes as $attr => $val ) {
-			$attr_str[] = sprintf( '%s="%s"', $attr, str_replace( '"', '\"', $val ) );
+			if ( $val === null ){
+				$attr_str[] = $attr;
+			} else {
+				$attr_str[] = sprintf( '%s="%s"', $attr, str_replace( '"', '\"', $val ) );
+			}
 		}
 		return implode( ' ', $attr_str );
 	}
