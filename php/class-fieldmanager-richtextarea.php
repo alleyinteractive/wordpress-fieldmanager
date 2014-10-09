@@ -80,14 +80,21 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * @param array $options
 	 * @todo dectect locale and apply correct language file
 	 */
-	public function __construct( $label, $options = array() ) {
-		$this->sanitize = function( $value ) {
-			return wp_filter_post_kses( wpautop( $value ) ); // run through wpautop first to preserve breaks.
-		};
+	public function __construct( $label = '', $options = array() ) {
+		$this->sanitize = array( $this, 'sanitize' );
 		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.3' );
 		parent::__construct( $label, $options );
 	}
 
+	/**
+	 * Default sanitization function for RichTextAreas.
+	 *
+	 * @param  string $value Raw content for this field.
+	 * @return string sanitized content.
+	 */
+	public function sanitize( $value ) {
+		return wp_filter_post_kses( wpautop( $value ) ); // run through wpautop first to preserve breaks.
+	}
 
 	/**
 	 * Render the form element, which is a textarea by default.
