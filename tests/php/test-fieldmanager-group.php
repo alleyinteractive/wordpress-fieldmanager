@@ -2,6 +2,8 @@
 
 /**
  * Tests the Fieldmanager Datasource Post
+ *
+ * @group field
  */
 class Test_Fieldmanager_Group extends WP_UnitTestCase {
 

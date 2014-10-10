@@ -3,6 +3,8 @@
 /**
  * Tests Fieldmanager_Field, which handles validation and
  * throws most core exceptions
+ *
+ * @group field
  */
 class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	public function setUp() {
