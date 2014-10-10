@@ -113,6 +113,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 		if ( $proto ) {
 			add_filter( 'the_editor', array( $this, 'add_proto_id' ) );
 			$settings['tinymce'] = array( 'wp_skip_init' => true );
+		} else {
+			$settings['editor_class'] .= ' fm-tinymce';
 		}
 		wp_editor( $value, $this->get_element_id(), $settings );
 		if ( $proto ) {
