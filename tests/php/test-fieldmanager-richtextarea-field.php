@@ -7,6 +7,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
+		add_filter( 'user_can_richedit', '__return_true' );
 		Fieldmanager_Field::$debug = TRUE;
 
 		$this->post = array(
@@ -20,19 +21,23 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$this->post = get_post( $this->post_id );
 	}
 
+	public function tearDown() {
+		remove_filter( 'user_can_richedit', '__return_true' );
+		parent::tearDown();
+	}
+
 	public function test_basic_render() {
 		$fm = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
+
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
+		$this->assertRegExp( '/<textarea class="fm-element fm-richtext fm-tinymce wp-editor-area"[^>]+name="test_richtextarea"/', $html );
 
-		$result = preg_match( '/<textarea class="fm-element fm-richtext" name="test_richtextarea"[^>]+data-mce-options="([^"]+)"/', $html, $matches );
-		$this->assertEquals( 1, $result );
-		$json = html_entity_decode( $matches[1] );
-		$options = json_decode( $json, true );
-		$this->assertNotEmpty( $options );
-		// Verify a random option
-		$this->assertEquals( 'en', $options['language'] );
+		ob_start();
+		_WP_Editors::editor_js();
+		$js = ob_get_clean();
+		$this->assertContains( $fm->get_element_id(), $js );
 	}
 
 	public function test_default_value() {
@@ -42,27 +47,13 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertRegExp( '/<textarea[^>]+>' . preg_quote( esc_textarea( $value ), '/' ) . '<\/textarea>/', $html );
-	}
-
-	public function test_add_code_plugin() {
-		$fm = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
-		ob_start();
-		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
-		$html = ob_get_clean();
-		$this->assertEquals( 0, preg_match( '/external_plugins[^"]+tinymce.code.js/', $html ) );
-
-		$fm = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea', 'add_code_plugin' => true ) );
-		ob_start();
-		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
-		$html = ob_get_clean();
-		$this->assertRegExp( '/external_plugins[^"]+tinymce.code.js/', $html );
+		$this->assertRegExp( '/<textarea[^>]+>' . preg_quote( apply_filters( 'the_editor_content', $value ), '/' ) . "<\/textarea>/", $html );
 	}
 
 	public function test_custom_buttons() {
 		$fm = new Fieldmanager_RichTextArea( array(
 			'name' => 'test_richtextarea',
-			'buttons_1' => array( 'bold', 'italic', 'bullist', 'numlist', 'link', 'unlink' ),
+			'buttons_1' => array( 'bold', 'italic', 'bullist', 'fieldmanager', 'numlist', 'link', 'unlink' ),
 			'buttons_2' => array(),
 		) );
 
@@ -70,21 +61,16 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$result = preg_match( '/<textarea[^>]+data-mce-options="([^"]+)"/', $html, $matches );
-		$json = html_entity_decode( $matches[1] );
-		$options = json_decode( $json, true );
+		ob_start();
+		_WP_Editors::editor_js();
+		$js = ob_get_clean();
 
-		if ( isset( $options['theme_advanced_buttons1'] ) ) {
+		$this->assertContains( 'bold,italic,bullist,fieldmanager,numlist,link,unlink', $js );
+		if ( strpos( $js, 'theme_advanced_buttons2' ) ) {
 			// WP 3.8 uses an older version of tinymce, with different names for the toolbars
-			$this->assertEquals( 'bold,italic,bullist,numlist,link,unlink', $options['theme_advanced_buttons1'] );
-			$this->assertEmpty( $options['theme_advanced_buttons2'] );
-			$this->assertEmpty( $options['theme_advanced_buttons3'] );
-			$this->assertEmpty( $options['theme_advanced_buttons4'] );
+			$this->assertContains( 'theme_advanced_buttons2:""', $js );
 		} else {
-			$this->assertEquals( 'bold,italic,bullist,numlist,link,unlink', $options['toolbar1'] );
-			$this->assertEmpty( $options['toolbar2'] );
-			$this->assertEmpty( $options['toolbar3'] );
-			$this->assertEmpty( $options['toolbar4'] );
+			$this->assertContains( 'toolbar2:""', $js );
 		}
 	}
 
