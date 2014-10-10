@@ -5,7 +5,7 @@
  *
  * @group field
  */
-class Test_Fieldmanager_Checkbox extends WP_UnitTestCase {
+class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
