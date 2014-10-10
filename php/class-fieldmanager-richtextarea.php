@@ -26,6 +26,13 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public $init_options = array();
 
 	/**
+	 * Arguments passed to wp_editor()'s `$settings` parameter.
+	 * @see http://codex.wordpress.org/Function_Reference/wp_editor#Arguments
+	 * @var array
+	 */
+	public $editor_settings = array();
+
+	/**
 	 * Add the "code" plugin to tinymce.
 	 * @var boolean
 	 */
@@ -105,21 +112,26 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public function form_element( $value = '' ) {
 		ob_start();
 		$proto = $this->has_proto();
-		$settings = array(
+
+		$settings = array_merge_recursive( $this->editor_settings, array(
 			'textarea_name' => $this->get_form_name(),
 			'editor_class' => 'fm-element fm-richtext',
 			'tinymce' => array( 'wp_skip_init' => false ),
-		);
+		) );
+
 		if ( $proto ) {
 			add_filter( 'the_editor', array( $this, 'add_proto_id' ) );
 			$settings['tinymce'] = array( 'wp_skip_init' => true );
 		} else {
 			$settings['editor_class'] .= ' fm-tinymce';
 		}
+
 		wp_editor( $value, $this->get_element_id(), $settings );
+
 		if ( $proto ) {
 			remove_filter( 'the_editor', array( $this, 'add_proto_id' ) );
 		}
+
 		return ob_get_clean();
 	}
 
