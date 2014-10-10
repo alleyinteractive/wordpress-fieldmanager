@@ -14,14 +14,13 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public $field_class = 'richtext';
 
 	/**
-	 * @var boolean
-	 * If true (default), apply default WordPress TinyMCE filters
+	 * @deprecated
 	 */
 	public $apply_mce_filters = true;
 
 	/**
-	 * @var array
-	 * Options to pass to TinyMCE init
+	 * @deprecated
+	 * @see Fieldmanager_RichTextArea::$editor_settings
 	 */
 	public $init_options = array();
 
@@ -33,8 +32,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public $editor_settings = array();
 
 	/**
-	 * Add the "code" plugin to tinymce.
-	 * @var boolean
+	 * @deprecated
 	 */
 	public $add_code_plugin = false;
 
@@ -42,54 +40,50 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * First row of buttons for the tinymce toolbar
 	 * @var array
 	 */
-	public $buttons_1 = array( 'bold', 'italic', 'strikethrough', 'bullist', 'numlist', 'blockquote', 'justifyleft', 'justifycenter', 'justifyright', 'add_media', 'link', 'unlink', 'wp_more', 'spellchecker', 'fullscreen', 'wp_adv' );
+	public $buttons_1;
 
 	/**
 	 * Second row of buttons for the tinymce toolbar
 	 * @var array
 	 */
-	public $buttons_2 = array( 'formatselect', 'underline', 'justifyfull', 'forecolor', 'pastetext', 'pasteword', 'removeformat', 'charmap', 'outdent', 'indent', 'undo', 'redo', 'wp_help', 'code' );
+	public $buttons_2;
 
 	/**
 	 * Third row of buttons for the tinymce toolbar
 	 * @var array
 	 */
-	public $buttons_3 = array();
+	public $buttons_3;
 
 	/**
 	 * Fourth row of buttons for the tinymce toolbar
 	 * @var array
 	 */
-	public $buttons_4 = array();
+	public $buttons_4;
 
 	/**
+	 * External stylesheet(s) to include in the editor. Multiple files can be included
+	 * delimited by commas.
 	 * @var string
-	 * Static variable so we only load tinymce once
 	 */
-	public static $has_registered_tinymce = false;
+	public $stylesheet;
 
 	/**
-	 * @var string
-	 * Static variable so we only load footer scripts once
-	 */
-	public static $has_added_footer_scripts = false;
-
-	/**
+	 * Indicates if we should be altering the tinymce config.
+	 * @access protected
 	 * @var boolean
-	 * Static variable so we only calculate the tinymce version once
 	 */
-	public static $tinymce_major_version;
-
+	protected $edit_config = false;
 
 	/**
-	 * Construct defaults for this field attributes.
+	 * Construct defaults for this field.
 	 *
-	 * @param array $options
-	 * @todo dectect locale and apply correct language file
+	 * @param string $label title of form field
+	 * @param array $options with keys matching vars of the field in use.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->sanitize = array( $this, 'sanitize' );
 		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.3' );
+
 		parent::__construct( $label, $options );
 	}
 
@@ -110,29 +104,59 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * @return string HTML
 	 */
 	public function form_element( $value = '' ) {
-		ob_start();
 		$proto = $this->has_proto();
+
+		$this->prep_editor_config();
 
 		$settings = array_merge_recursive( $this->editor_settings, array(
 			'textarea_name' => $this->get_form_name(),
-			'editor_class' => 'fm-element fm-richtext',
-			'tinymce' => array( 'wp_skip_init' => false ),
+			'editor_class'  => 'fm-element fm-richtext',
+			'tinymce'       => array( 'wp_skip_init' => false ),
 		) );
 
 		if ( $proto ) {
 			add_filter( 'the_editor', array( $this, 'add_proto_id' ) );
-			$settings['tinymce'] = array( 'wp_skip_init' => true );
+			// Tell WP not to initialize prototypes
+			$settings['tinymce']['wp_skip_init'] = true;
 		} else {
+			// This editor will be initialized on load; this tells FM as much.
 			$settings['editor_class'] .= ' fm-tinymce';
 		}
 
+		$this->add_editor_filters();
+
+		ob_start();
 		wp_editor( $value, $this->get_element_id(), $settings );
+		$content = ob_get_clean();
+
+		$this->remove_editor_filters();
 
 		if ( $proto ) {
 			remove_filter( 'the_editor', array( $this, 'add_proto_id' ) );
 		}
 
-		return ob_get_clean();
+		return $content;
+	}
+
+	/**
+	 * Before generating the editor, manipualte the settings as needed.
+	 */
+	protected function prep_editor_config() {
+		// Attempt to maintain some backwards compatibility for $init_options
+		if ( ! empty( $this->init_options ) ) {
+			if ( ! isset( $this->stylesheet ) && ! empty( $this->init_options['content_css'] ) ) {
+				$this->stylesheet = $this->init_options['content_css'];
+				unset( $this->init_options['content_css'] );
+			}
+			if ( empty( $this->editor_settings['tinymce'] ) ) {
+				$this->editor_settings['tinymce'] = array();
+			}
+			$this->editor_settings['tinymce'] = wp_parse_args( $this->editor_settings['tinymce'], $this->init_options );
+		}
+
+		if ( isset( $this->stylesheet ) ) {
+			$this->edit_config = true;
+		}
 	}
 
 	/**
@@ -143,5 +167,74 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public function add_proto_id( $editor ) {
 		return str_replace( '<textarea', '<textarea data-proto-id="' . $this->get_element_id() . '"', $editor );
+	}
+
+	/**
+	 * Filter the editor buttons.
+	 *
+	 * @param  array $buttons Buttons for the editor toolbar.
+	 * @return array Filtered buttons.
+	 */
+	public function customize_buttons( $buttons ) {
+		switch ( current_filter() ) {
+			case 'mce_buttons'   : return $this->buttons_1;
+			case 'mce_buttons_2' : return $this->buttons_2;
+			case 'mce_buttons_3' : return $this->buttons_3;
+			case 'mce_buttons_4' : return $this->buttons_4;
+		}
+		return $buttons;
+	}
+
+	/**
+	 * Make final tweaks to the editor config.
+	 *
+	 * @param  array $mceInit The raw settings passed to TinyMCE.
+	 * @return array The raw settings passed to TinyMCE.
+	 */
+	public function editor_config( $mceInit ) {
+		if ( isset( $this->stylesheet ) ) {
+			$this->stylesheet = explode( ',', $this->stylesheet );
+			$this->stylesheet = array_map( 'esc_url_raw', $this->stylesheet );
+			$mceInit['content_css'] = implode( ',', $this->stylesheet );
+		}
+		return $mceInit;
+	}
+
+	/**
+	 * Add necessary filters before generating the editor.
+	 */
+	protected function add_editor_filters() {
+		if ( isset( $this->buttons_1 ) ) {
+			add_filter( 'mce_buttons', array( $this, 'customize_buttons' ) );
+		}
+		if ( isset( $this->buttons_2 ) ) {
+			add_filter( 'mce_buttons_2', array( $this, 'customize_buttons' ) );
+		}
+		if ( isset( $this->buttons_3 ) ) {
+			add_filter( 'mce_buttons_3', array( $this, 'customize_buttons' ) );
+		}
+		if ( isset( $this->buttons_4 ) ) {
+			add_filter( 'mce_buttons_4', array( $this, 'customize_buttons' ) );
+		}
+		if ( $this->edit_config ) {
+			if ( ! empty( $this->editor_settings['teeny'] ) ) {
+				add_filter( 'teeny_mce_before_init', array( $this, 'editor_config' ) );
+			} else {
+				add_filter( 'tiny_mce_before_init', array( $this, 'editor_config' ) );
+			}
+		}
+	}
+
+	/**
+	 * Remove the filters we added before generating the editor so they don't
+	 * affect other editors.
+	 */
+	protected function remove_editor_filters() {
+		remove_filter( 'mce_buttons', array( $this, 'customize_buttons' ) );
+		remove_filter( 'mce_buttons_2', array( $this, 'customize_buttons' ) );
+		remove_filter( 'mce_buttons_3', array( $this, 'customize_buttons' ) );
+		remove_filter( 'mce_buttons_4', array( $this, 'customize_buttons' ) );
+		remove_filter( 'teeny_mce_before_init', array( $this, 'editor_config' ) );
+		remove_filter( 'tiny_mce_before_init', array( $this, 'editor_config' ) );
 	}
 }
