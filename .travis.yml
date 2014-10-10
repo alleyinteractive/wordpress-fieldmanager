@@ -16,16 +16,13 @@ env:
     - WP_VERSION=3.8 WP_MULTISITE=1
 
 before_script:
-    - export PLUGIN_SLUG=$(basename $(pwd))
+    - WP_TESTS_DIR=/tmp/wordpress/tests/phpunit/includes
+    - WP_CORE_DIR=/tmp/wordpress/src/
     - git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ /tmp/wordpress
-    - cd ..
-    - mv "$PLUGIN_SLUG" "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
-    - cd /tmp/wordpress
     - mysql -e "CREATE DATABASE wordpress_tests;" -uroot
-    - cp wp-tests-config-sample.php wp-tests-config.php
-    - sed -i "s/youremptytestdbnamehere/wordpress_tests/" wp-tests-config.php
-    - sed -i "s/yourusernamehere/travis/" wp-tests-config.php
-    - sed -i "s/yourpasswordhere//" wp-tests-config.php
-    - cd "/tmp/wordpress/src/wp-content/plugins/$PLUGIN_SLUG"
+    - cp /tmp/wordpress/wp-tests-config-sample.php /tmp/wordpress/wp-tests-config.php
+    - sed -i "s/youremptytestdbnamehere/wordpress_tests/" /tmp/wordpress/wp-tests-config.php
+    - sed -i "s/yourusernamehere/travis/" /tmp/wordpress/wp-tests-config.php
+    - sed -i "s/yourpasswordhere//" /tmp/wordpress/wp-tests-config.php
 
 script: phpunit
