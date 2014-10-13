@@ -102,6 +102,35 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test behavior when attempting to use the save_empty parameter
+	 */
+	public function test_save_no_empties() {
+		$checkbox = new Fieldmanager_Checkbox( array(
+			'name' => 'test_checkbox',
+			'save_empty' => false,
+		) );
+
+		$saved_value = metadata_exists( 'post', $this->post->ID, 'test_checkbox' );
+		$this->assertSame( false, $saved_value );
+
+		$this->save_values( $checkbox, $this->post, true );
+		$saved_value = metadata_exists( 'post', $this->post->ID, 'test_checkbox' );
+		$this->assertSame( true, $saved_value );
+
+		/**
+		 * This is obviously not what one would expect when setting this option,
+		 * but I think because of the way checkbox's presave override works this
+		 * is how it works right now (essentially, the option is disregarded).
+		 */
+		$this->save_values( $checkbox, $this->post, '' );
+		$saved_value = metadata_exists( 'post', $this->post->ID, 'test_checkbox' );
+		$this->assertSame( true, $saved_value );
+
+		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
+		$this->assertSame( '', $saved_value );
+	}
+
+	/**
 	 * Test behavior when using a checkbox with custom values
 	 */
 	public function test_save_custom_values() {
