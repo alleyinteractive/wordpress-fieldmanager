@@ -186,7 +186,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			}
 
 			// Get markup for the child element
-			$child_value = empty( $value[ $element->name ] ) ? Null : $value[ $element->name ];
+			$child_value = isset( $value[ $element->name ] ) ? $value[ $element->name ] : null;
 
 			// propagate editor state down the chain
 			if ( $this->data_type ) $element->data_type = $this->data_type;
