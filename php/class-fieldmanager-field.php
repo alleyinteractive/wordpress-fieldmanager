@@ -95,8 +95,8 @@ abstract class Fieldmanager_Field {
 	public $description = '';
 
 	/**
-	 * @var string[]
-	 * Extra HTML attributes to apply to the form element
+	 * @var string|boolean[]
+	 * Extra HTML attributes to apply to the form element. Use boolean true to apply a standalone attribute, e.g. 'required' => true
 	 */
 	public $attributes = array();
 
@@ -771,7 +771,11 @@ abstract class Fieldmanager_Field {
 	public function get_element_attributes() {
 		$attr_str = array();
 		foreach ( $this->attributes as $attr => $val ) {
-			$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
+			if ( $val === true ){
+				$attr_str[] = sanitize_key( $attr );
+			} else{
+				$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
+			}		
 		}
 		return implode( ' ', $attr_str );
 	}
