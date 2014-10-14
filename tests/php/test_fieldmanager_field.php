@@ -762,9 +762,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( ' required ', $html );
-		$this->assertContains( ' data-foo="bar" ', $html );
-		$this->assertContains( 'data-upper="lower" ', $html );
+		$this->assertRegExp( '/\srequired\s/', $html );
+		$this->assertRegExp( '/\sdata-foo="bar"\s/', $html );
+		$this->assertRegExp( '/\sdata-upper="lower"\s/', $html );
 	}
 
 }
