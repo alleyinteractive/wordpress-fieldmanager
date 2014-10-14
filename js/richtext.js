@@ -36,7 +36,7 @@
 							init = tinyMCEPreInit.mceInit[ ed_id ];
 
 							try {
-								if ( ! $( this ).closest( '.html-active' ) ) {
+								if ( 'html' !== fm.richtextarea.mode_enabled( this ) ) {
 									tinymce.init( init );
 								}
 							} catch(e){}
@@ -52,8 +52,13 @@
 			} );
 		},
 
-		drop_rte_enable_control: function( e, el ) {
+		reload_editors: function( e, el ) {
 			$( el ).find( '.fm-tinymce' ).each( function() {
+				html_mode = ( 'html' === fm.richtextarea.mode_enabled( this ) );
+				if ( html_mode ) {
+					$( '#' + this.id + '-tmce' ).click();
+				}
+
 				var cmd;
 				// Disable the editor
 				cmd = 'mceRemoveControl';
@@ -68,11 +73,19 @@
 					cmd = 'mceAddEditor';
 				}
 				tinymce.execCommand( cmd, false, $( this ).attr( 'id' ) );
+
+				if ( html_mode ) {
+					$( '#' + this.id + '-html' ).click();
+				}
 			});
+		},
+
+		mode_enabled: function( el ) {
+			return $( el ).closest( '.html-active' ).length ? 'html' : 'tinymce';
 		}
 	}
 	$( document ).on( 'fm_collapsible_toggle fm_added_element fm_activate_tab fm_displayif_toggle', fm.richtextarea.add_rte_to_visible_textareas );
-	$( document ).on( 'fm_sortable_drop', fm.richtextarea.drop_rte_enable_control );
+	$( document ).on( 'fm_sortable_drop', fm.richtextarea.reload_editors );
 
 	$( document ).on( 'click', '.fm-richtext .wp-switch-editor', function() {
 		var aid = this.id,
