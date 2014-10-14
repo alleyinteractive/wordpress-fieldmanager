@@ -17,7 +17,7 @@
 						if ( typeof tinyMCEPreInit.mceInit[ ed_id ] === 'undefined' ) {
 							// This needs to be initialized, so we need to get the options from the proto
 							if ( proto_id && typeof tinyMCEPreInit.mceInit[ proto_id ] !== 'undefined' ) {
-								mce_options = tinyMCEPreInit.mceInit[ proto_id ];
+								mce_options = $.extend( true, {}, tinyMCEPreInit.mceInit[ proto_id ] );
 								mce_options.body_class = mce_options.body_class.replace( proto_id, ed_id );
 								mce_options.selector = mce_options.selector.replace( proto_id, ed_id );
 								mce_options.wp_skip_init = false;
@@ -28,7 +28,7 @@
 							}
 
 							if ( proto_id && typeof tinyMCEPreInit.qtInit[ proto_id ] !== 'undefined' ) {
-								qt_options = tinyMCEPreInit.qtInit[ proto_id ];
+								qt_options = $.extend( true, {}, tinyMCEPreInit.qtInit[ proto_id ] );
 								qt_options.id = qt_options.id.replace( proto_id, ed_id );
 								tinyMCEPreInit.qtInit[ ed_id ] = qt_options;
 							}
