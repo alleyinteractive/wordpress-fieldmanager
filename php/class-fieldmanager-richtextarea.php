@@ -105,13 +105,14 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public function form_element( $value = '' ) {
 		$proto = $this->has_proto();
+		$wrapper_classes = array();
 
 		$this->prep_editor_config();
 
 		$settings = array_merge_recursive( $this->editor_settings, array(
-			'textarea_name' => $this->get_form_name(),
-			'editor_class'  => 'fm-element fm-richtext',
-			'tinymce'       => array( 'wp_skip_init' => false ),
+			'textarea_name'  => $this->get_form_name(),
+			'editor_class'   => 'fm-element fm-richtext',
+			'tinymce'        => array( 'wp_skip_init' => false ),
 		) );
 
 		if ( $proto ) {
@@ -121,6 +122,25 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 		} else {
 			// This editor will be initialized on load; this tells FM as much.
 			$settings['editor_class'] .= ' fm-tinymce';
+		}
+
+		if ( ! isset( $settings['default_editor'] ) ) {
+			$settings['default_editor'] = 'tinymce';
+		} elseif ( 'cookie' == $settings['default_editor'] ) {
+			if ( $proto ) {
+				$settings['default_editor'] = 'tinymce';
+			} else {
+				$cookie_value = '';
+				if ( $user = wp_get_current_user() ) { // look for cookie
+					$setting_key = str_replace( '-', '_', $this->get_element_id() );
+					$setting_key = preg_replace( '/[^a-z0-9_]/i', '', $setting_key );
+					$cookie_value = get_user_setting( 'editor_' . $setting_key, 'tinymce' );
+				}
+
+				$settings['default_editor'] = in_array( $cookie_value, array( 'tinymce', 'html' ) ) ? $cookie_value : 'tinymce';
+			}
+
+			$wrapper_classes[] = 'fm-richtext-remember-editor';
 		}
 
 		$this->add_editor_filters();
@@ -133,6 +153,11 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 
 		if ( $proto ) {
 			remove_filter( 'the_editor', array( $this, 'add_proto_id' ) );
+		}
+
+		// Add classes to the wrapper if needed
+		if ( ! empty( $wrapper_classes ) ) {
+			$content = str_replace( 'wp-core-ui wp-editor-wrap', 'wp-core-ui wp-editor-wrap ' . implode( ' ', $wrapper_classes ), $content );
 		}
 
 		return $content;
