@@ -109,7 +109,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 
 		$this->prep_editor_config();
 
-		$settings = array_merge_recursive( $this->editor_settings, array(
+		$settings = $this->array_merge_deep( $this->editor_settings, array(
 			'textarea_name'  => $this->get_form_name(),
 			'editor_class'   => 'fm-element fm-richtext',
 			'tinymce'        => array( 'wp_skip_init' => false ),
@@ -202,10 +202,11 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public function customize_buttons( $buttons ) {
 		switch ( current_filter() ) {
-			case 'mce_buttons'   : return $this->buttons_1;
-			case 'mce_buttons_2' : return $this->buttons_2;
-			case 'mce_buttons_3' : return $this->buttons_3;
-			case 'mce_buttons_4' : return $this->buttons_4;
+			case 'teeny_mce_buttons':
+			case 'mce_buttons'      : return $this->buttons_1;
+			case 'mce_buttons_2'    : return $this->buttons_2;
+			case 'mce_buttons_3'    : return $this->buttons_3;
+			case 'mce_buttons_4'    : return $this->buttons_4;
 		}
 		return $buttons;
 	}
@@ -231,6 +232,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	protected function add_editor_filters() {
 		if ( isset( $this->buttons_1 ) ) {
 			add_filter( 'mce_buttons', array( $this, 'customize_buttons' ) );
+			add_filter( 'teeny_mce_buttons', array( $this, 'customize_buttons' ) );
 		}
 		if ( isset( $this->buttons_2 ) ) {
 			add_filter( 'mce_buttons_2', array( $this, 'customize_buttons' ) );
@@ -262,4 +264,34 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 		remove_filter( 'teeny_mce_before_init', array( $this, 'editor_config' ) );
 		remove_filter( 'tiny_mce_before_init', array( $this, 'editor_config' ) );
 	}
+
+	/**
+	 * array_merge_recursive as it should have been done. Modeled on the
+	 * similarly named function in drupal. This differs from
+	 * array_merge_recursive in that if it sees two strings, it doesn't merge
+	 * them into an array of strings. That's dumb.
+	 *
+	 * @return array
+	 */
+	protected function array_merge_deep() {
+		$result = array();
+		foreach ( func_get_args() as $array ) {
+			foreach ( $array as $key => $value) {
+				if ( is_integer( $key ) ) {
+					// Renumber integer keys as array_merge_recursive() does. Note that PHP
+					// automatically converts array keys that are integer strings (e.g., '1')
+					// to integers.
+					$result[] = $value;
+				} elseif ( isset( $result[ $key ] ) && is_array( $result[ $key ] ) && is_array( $value ) ) {
+					// Recurse when both values are arrays.
+					$result[ $key ] = $this->array_merge_deep( $result[ $key ], $value );
+				} else {
+					// Otherwise, use the latter value, overriding any previous value.
+					$result[ $key ] = $value;
+				}
+			}
+		}
+		return $result;
+	}
+
 }
