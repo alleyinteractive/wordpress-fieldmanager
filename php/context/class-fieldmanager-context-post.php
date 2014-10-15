@@ -51,6 +51,11 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	public static $global_postmeta_per_field = false;
 
 	/**
+	 * @var boolean
+	 */
+	private static $doing_internal_update = false;
+
+	/**
 	 * Add a context to a fieldmanager
 	 * @param string $title
 	 * @param string|string[] $post_types
@@ -161,6 +166,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function delegate_save_post( $post_id ) {
+		if ( self::$doing_internal_update ) return;
 		if( defined( 'DOING_CRON' ) && DOING_CRON ) {
 			$this->save_fields_for_cron( $post_id );
 		} else {
@@ -259,16 +265,26 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_type = 'post';
 		$current = get_post_meta( $this->fm->data_id, $this->fm->name, true );
 		$data = $this->fm->presave_all( $data, $current );
-		// print_r( $data ); exit;
 		if ( !$this->fm->skip_save ) {
 			if ( $this->is_postmeta_per_field() ) {
 				foreach( $data as $k => $v ) {
+					if ( empty( $v ) && !$this->fm->children[ $k ]->save_empty ) continue;
 					update_post_meta( $post_id, $k, $v );
 				}
 			} else {
 				update_post_meta( $post_id, $this->fm->name, $data );
 			}
 		}
+	}
+
+	/**
+	 * Helper for fieldmanager internals to save a post without worrying about infinite loops
+	 */
+	public static function safe_update_post( $args ) {
+		self::$doing_internal_update = true;
+		$ret = wp_update_post( $args );
+		self::$doing_internal_update = false;
+		return $ret;
 	}
 
 }
