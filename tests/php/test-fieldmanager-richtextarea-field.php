@@ -49,6 +49,20 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		return wp_set_all_user_settings( $all_user_settings );
 	}
 
+	/**
+	 * Mark a test as skipped because of the current WP Version. Note that
+	 * skipping should happen in place of assertion, but any test parameters
+	 * should still happen (to ensure that a feature doesn't cause an error in
+	 * an old version of WordPress).
+	 *
+	 * @param  float $min_version The required version, e.g. 3.9.
+	 */
+	protected function _skip_tests_because_version( $min_version ) {
+		global $wp_version;
+		$this->markTestSkipped( "Test requires WordPress {$min_version} or greater, but we're currently testing against {$wp_version}" );
+	}
+
+
 	public function test_basic_render() {
 		$fm = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
 
@@ -162,8 +176,12 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( 'tmce-active', $html );
-		$this->assertNotContains( 'html-active', $html );
+		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( 'tmce-active', $html );
+			$this->assertNotContains( 'html-active', $html );
+		} else {
+			$this->_skip_tests_because_version( 3.9 );
+		}
 	}
 
 	public function test_tinymce_editor_mode() {
@@ -178,8 +196,12 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( 'tmce-active', $html );
-		$this->assertNotContains( 'html-active', $html );
+		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( 'tmce-active', $html );
+			$this->assertNotContains( 'html-active', $html );
+		} else {
+			$this->_skip_tests_because_version( 3.9 );
+		}
 	}
 
 	public function test_html_editor_mode() {
@@ -194,8 +216,12 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( 'html-active', $html );
-		$this->assertNotContains( 'tmce-active', $html );
+		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( 'html-active', $html );
+			$this->assertNotContains( 'tmce-active', $html );
+		} else {
+			$this->_skip_tests_because_version( 3.9 );
+		}
 	}
 
 	public function test_cookie_editor_mode() {
@@ -216,9 +242,12 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( 'fm-richtext-remember-editor', $html );
-		$this->assertContains( 'tmce-active', $html );
-		$this->assertNotContains( 'html-active', $html );
+		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( 'fm-richtext-remember-editor', $html );
+			$this->assertContains( 'tmce-active', $html );
+			$this->assertNotContains( 'html-active', $html );
+		}
+
 
 		// Test that it becomes html when we set the user setting to 'html'
 		$this->_set_user_setting( $setting_key, 'html' );
@@ -227,9 +256,11 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( 'fm-richtext-remember-editor', $html );
-		$this->assertContains( 'html-active', $html );
-		$this->assertNotContains( 'tmce-active', $html );
+		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( 'fm-richtext-remember-editor', $html );
+			$this->assertContains( 'html-active', $html );
+			$this->assertNotContains( 'tmce-active', $html );
+		}
 
 
 		// Test that it becomes tinymce again when we set the user setting to 'tinymce'
@@ -239,11 +270,17 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( 'fm-richtext-remember-editor', $html );
-		$this->assertContains( 'tmce-active', $html );
-		$this->assertNotContains( 'html-active', $html );
+		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( 'fm-richtext-remember-editor', $html );
+			$this->assertContains( 'tmce-active', $html );
+			$this->assertNotContains( 'html-active', $html );
+		}
 
 		wp_set_current_user( $current_user );
+
+		if ( ! _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->_skip_tests_because_version( 3.9 );
+		}
 	}
 
 	public function test_cookie_editor_mode_with_repeatables() {
@@ -265,9 +302,11 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( 'fm-richtext-remember-editor', $html );
-		$this->assertContains( 'tmce-active', $html );
-		$this->assertNotContains( 'html-active', $html );
+		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( 'fm-richtext-remember-editor', $html );
+			$this->assertContains( 'tmce-active', $html );
+			$this->assertNotContains( 'html-active', $html );
+		}
 
 		// Test that it becomes html when we set the user setting to 'html'
 		$this->_set_user_setting( $setting_key, 'html' );
@@ -276,13 +315,19 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( 'fm-richtext-remember-editor', $html );
-		// The one field should contain html-active
-		$this->assertContains( 'html-active', $html );
-		// The proto should still contain tmce-active
-		$this->assertContains( 'tmce-active', $html );
+		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( 'fm-richtext-remember-editor', $html );
+			// The one field should contain html-active
+			$this->assertContains( 'html-active', $html );
+			// The proto should still contain tmce-active
+			$this->assertContains( 'tmce-active', $html );
+		}
 
 		wp_set_current_user( $current_user );
+
+		if ( ! _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->_skip_tests_because_version( 3.9 );
+		}
 	}
 
 	public function test_css_override() {
