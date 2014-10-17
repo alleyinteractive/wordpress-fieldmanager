@@ -95,8 +95,8 @@ abstract class Fieldmanager_Field {
 	public $description = '';
 
 	/**
-	 * @var string[]
-	 * Extra HTML attributes to apply to the form element
+	 * @var string|boolean[]
+	 * Extra HTML attributes to apply to the form element. Use boolean true to apply a standalone attribute, e.g. 'required' => true
 	 */
 	public $attributes = array();
 
@@ -532,7 +532,7 @@ abstract class Fieldmanager_Field {
 	 * @param array $values
 	 */
 	public function preload_alter_values( $values ) {
-		return $values;
+		return apply_filters( 'fm_preload_alter_values', $values, $this );
 	}
 
 	/**
@@ -746,7 +746,7 @@ abstract class Fieldmanager_Field {
 	 * @return array
 	 */
 	protected function presave_alter_values( $values, $current_values = array() ) {
-		return $values;
+		return apply_filters( 'fm_presave_alter_values', $values, $this, $current_values );
 	}
 
 	/**
@@ -781,7 +781,11 @@ abstract class Fieldmanager_Field {
 	public function get_element_attributes() {
 		$attr_str = array();
 		foreach ( $this->attributes as $attr => $val ) {
-			$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
+			if ( $val === true ){
+				$attr_str[] = sanitize_key( $attr );
+			} else{
+				$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
+			}		
 		}
 		return implode( ' ', $attr_str );
 	}

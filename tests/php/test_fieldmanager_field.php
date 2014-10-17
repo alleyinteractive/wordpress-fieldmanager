@@ -750,6 +750,23 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3 ), $test_data_too_many );
 	}
 
+	public function test_attributes(){
+		$fm = new Fieldmanager_Textfield( array(
+			'name' => 'test_attributes',
+			'attributes' => array(
+				'required' => true,
+				'data-foo' => 'bar',
+				'data-UPPER' => 'lower'
+			)
+		) );
+		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertRegExp( '/\srequired[\/\s]/', $html );
+		$this->assertRegExp( '/\sdata-foo="bar"[\/\s]/', $html );
+		$this->assertRegExp( '/\sdata-upper="lower"[\/\s]/', $html );
+	}
+
 	public function test_label_escaping() {
 		$id = rand_str();
 		$label_raw = rand_str();
