@@ -102,7 +102,7 @@ class Fieldmanager_Datasource {
 	 * @return string value
 	 */
 	public function get_value( $id ) {
-		return !empty( $this->options[$id] ) ? $this->options[$id] : '';
+		return isset( $this->options[ $id ] ) ? $this->options[ $id ] : '';
 	}
 
 	/**
