@@ -73,7 +73,7 @@ define( 'FM_GLOBAL_ASSET_VERSION', 1 );
  * Add CSS and JS to admin area, hooked into admin_enqueue_scripts.
  */
 function fieldmanager_enqueue_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.2' );
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.3' );
 	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.0' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }

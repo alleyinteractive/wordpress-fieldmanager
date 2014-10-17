@@ -68,11 +68,13 @@ var init_label_macros = function() {
 
 var fm_renumber = function( $wrappers ) {
 	$wrappers.each( function() {
-		var level_pos = $( this ).data( 'fm-array-position' );
+		var level_pos = $( this ).data( 'fm-array-position' ) - 0;
 		var order = 0;
 		if ( level_pos > 0 ) {
 			$( this ).find( '> .fm-item' ).each( function() {
-				if ( $( this ).hasClass( 'fmjs-proto' ) ) return; // continue
+				if ( $( this ).hasClass( 'fmjs-proto' ) ) {
+					return; // continue
+				}
 				$( this ).find( '.fm-element, .fm-incrementable' ).each( function() {
 					var fname = $(this).attr( 'name' );
 					if ( fname ) {
@@ -82,7 +84,7 @@ var fm_renumber = function( $wrappers ) {
 							parts[ level_pos ] = order;
 							var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
 							$( this ).attr( 'name', new_fname );
-							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) ) {
+							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
 								$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
 								dynamic_seq++;
 								return; // continue;
