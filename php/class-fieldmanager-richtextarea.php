@@ -1,8 +1,8 @@
 <?php
 
 /**
- * Use WordPress's TinyMCE control in Fieldmanager.
- * With a hat tip to _WP_Editors, and a glare at its 'final' keyword.
+ * Use the WordPress Editor in Fieldmanager.
+ *
  * @package Fieldmanager
  */
 class Fieldmanager_RichTextArea extends Fieldmanager_Field {
