@@ -154,9 +154,6 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				 // could be a mix of valid term IDs and new terms.
 				if ( is_numeric( $value ) ) continue;
 
-				// the JS adds a '-' to the front if it's not a found term to prevent problems with new numeric terms.
-				$value = sanitize_text_field( substr( $value, 1 ) );
-
 				// an affordance for our friends at WordPress.com
 				$term_by = function_exists( 'wpcom_vip_get_term_by' ) ? 'wpcom_vip_get_term_by' : 'get_term_by';
 				$term = call_user_func( $term_by, 'name', $value, $this->taxonomy );
@@ -194,7 +191,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * Sanitize a value
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-		return intval( $value );
+		return empty( $value ) ? null : intval( $value );
 	}
 
 	/**
