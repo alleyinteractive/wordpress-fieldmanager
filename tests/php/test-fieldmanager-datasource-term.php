@@ -145,6 +145,29 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) );
 		$this->assertCount( 1, $post_terms );
 		$this->assertContains( $new_term, $post_terms );
+
+		// Numeric terms should be prefixed with an '=' from the JS handling.
+		$numeric_term = rand();
+
+		$this->save_values( $terms, $this->post, array( "={$numeric_term}" ) );
+
+		$saved_value = get_post_meta( $this->post->ID, 'test_terms', true );
+		$this->assertSame( array(), $saved_value );
+
+		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) );
+		$this->assertCount( 1, $post_terms );
+		$this->assertContains( $numeric_term, $post_terms );
+
+		$numeric_term = $this->term->term_id;
+
+		$this->save_values( $terms, $this->post, array( "={$numeric_term}" ) );
+
+		$saved_value = get_post_meta( $this->post->ID, 'test_terms', true );
+		$this->assertSame( array(), $saved_value );
+
+		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) );
+		$this->assertCount( 1, $post_terms );
+		$this->assertContains( $numeric_term, $post_terms );
 	}
 
 	/**
