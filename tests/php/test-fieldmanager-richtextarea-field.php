@@ -330,6 +330,51 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		}
 	}
 
+	public function test_editor_mode_conflicts() {
+		$args = array(
+			'name' => 'test_richtextarea_1',
+			'default_value' => '<p>some <strong>html</strong> content</p>',
+			'editor_settings' => array(
+				'default_editor' => 'html',
+			)
+		);
+
+		$fm = new Fieldmanager_RichTextArea( $args );
+		ob_start();
+		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
+		$html_1 = ob_get_clean();
+
+		$args['name'] = 'test_richtextarea_2';
+		$args['editor_settings']['default_editor'] = 'tinymce';
+		$fm = new Fieldmanager_RichTextArea( $args );
+		ob_start();
+		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
+		$html_2 = ob_get_clean();
+
+		$args['name'] = 'test_richtextarea_3';
+		$args['editor_settings']['default_editor'] = 'html';
+		$fm = new Fieldmanager_RichTextArea( $args );
+		ob_start();
+		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
+		$html_3 = ob_get_clean();
+
+		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( 'html-active', $html_1 );
+			$this->assertNotContains( 'tmce-active', $html_1 );
+			$this->assertContains( wp_htmledit_pre( $args['default_value'] ), $html_1 );
+
+			$this->assertContains( 'tmce-active', $html_2 );
+			$this->assertNotContains( 'html-active', $html_2 );
+			$this->assertContains( wp_richedit_pre( $args['default_value'] ), $html_2 );
+
+			$this->assertContains( 'html-active', $html_3 );
+			$this->assertNotContains( 'tmce-active', $html_3 );
+			$this->assertContains( wp_htmledit_pre( $args['default_value'] ), $html_3 );
+		} else {
+			$this->_skip_tests_because_version( 3.9 );
+		}
+	}
+
 	public function test_css_override() {
 		$css_url = 'http://example.org/' . rand_str() . '.css';
 		$fm = new Fieldmanager_RichTextArea( array(
