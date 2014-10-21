@@ -82,7 +82,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->sanitize = array( $this, 'sanitize' );
-		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.3' );
+		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.4' );
 
 		parent::__construct( $label, $options );
 	}
@@ -250,6 +250,13 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 				add_filter( 'tiny_mce_before_init', array( $this, 'editor_config' ) );
 			}
 		}
+
+		// WordPress assumes there's only one editor on any given page, so it
+		// adds a filter based on the visual vs. text state of that editor. It
+		// will re-add filters for each editor, so there's no harm in removing
+		// whatever it added.
+		remove_filter( 'the_editor_content', 'wp_htmledit_pre' );
+		remove_filter( 'the_editor_content', 'wp_richedit_pre' );
 	}
 
 	/**
