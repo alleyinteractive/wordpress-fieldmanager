@@ -82,6 +82,16 @@
 
 		mode_enabled: function( el ) {
 			return $( el ).closest( '.html-active' ).length ? 'html' : 'tinymce';
+		},
+
+
+		/**
+		 * Ensure that the main editor's state remains unaffected by any FM editors
+		 */
+		reset_core_editor_mode: function() {
+			if ( 'html' === core_editor_state || 'tinymce' === core_editor_state ) {
+				setUserSetting( 'editor', core_editor_state );
+			}
 		}
 	}
 	$( document ).on( 'fm_collapsible_toggle fm_added_element fm_activate_tab fm_displayif_toggle', fm.richtextarea.add_rte_to_visible_textareas );
@@ -97,5 +107,26 @@
 		if ( 'fm-edit-dynamic' !== id.substr( 0, 15 ) && $( this ).closest( '.fm-richtext-remember-editor' ).length ) {
 			setUserSetting( 'editor_' + id.replace( /-/g, '_' ).replace( /[^a-z0-9_]/ig, '' ), mode );
 		}
+
+		// Reset the core editor's state so it remains unaffected by this event.
+		// We delay by 50ms to ensure that this event has enough time to run.
+		// WordPress won't change the state of the editor until the end of the
+		// event delegation.
+		setTimeout( fm.richtextarea.reset_core_editor_mode, 50 );
 	} );
+
+	var core_editor_state = getUserSetting( 'editor' );
+
+	/**
+	 * If the main editor's state changes, note that change.
+	 */
+	$( document ).on( 'click', '#content-tmce,#content-html', function() {
+		var aid = this.id,
+			l = aid.length,
+			id = aid.substr( 0, l - 5 ),
+			mode = 'html' === aid.substr( l - 4 ) ? 'html' : 'tinymce';
+
+		core_editor_state = mode;
+	} );
+
 } ) ( jQuery );
