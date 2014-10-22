@@ -1,5 +1,15 @@
+.wp-tab-bar {
+	margin-bottom: 4px;
+}
+
+.fm-tab-bar .fm-tab {
+	border: 1px solid transparent;
+	border-bottom: none;
+}
+
 .fm-tab-bar .wp-tab-active {
-	background: #EDEDED;
+	background: #ededed;
+	border-color: #dfdfdf;
 }
 
 .fm-wrapper div.fm-submenu {
