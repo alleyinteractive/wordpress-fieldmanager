@@ -3,7 +3,7 @@ var fm_media_frame = [];
 
 $( document ).on( 'click', '.fm-media-remove', function(e) {
 	e.preventDefault();
-	$(this).parents( '.fm-item.fm-media' ).find( '.fm-media-id' ).val( 0 );
+	$(this).parents( '.fm-item.fm-media' ).find( '.fm-media-id' ).val( 0 ).change();
 	$(this).parents( '.fm-item.fm-media' ).find( '.media-wrapper' ).html( '' );
 });
 
@@ -43,7 +43,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		props.link = 'custom';
 		props.linkUrl = '#';
 		props.caption = '';
-		$el.parent().find('.fm-media-id').val( attachment.id );
+		$el.parent().find('.fm-media-id').val( attachment.id ).change();
 		if ( attachment.type == 'image' ) {
 			props.url = props.src;
 			var preview = 'Uploaded file:<br />';
