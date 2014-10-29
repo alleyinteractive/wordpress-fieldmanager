@@ -166,7 +166,7 @@ $( document ).ready( function () {
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
-		var values = $( this ).data( 'display-value' ).split( ',' );
+		var values = $( this ).data( 'display-value' ).toString().split( ',' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
 		trigger.addClass( 'display-trigger' );
 		if ( !match_value( values, trigger.val() ) ) {
@@ -181,7 +181,7 @@ $( document ).ready( function () {
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
 			if ( $( this ).hasClass( 'display-if' ) ) {
 				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
-					if ( match_value( $( this ).data( 'display-value' ).split( ',' ), val ) ) {
+					if ( match_value( $( this ).data( 'display-value' ).toString().split( ',' ), val ) ) {
 						$( this ).show();
 					} else {
 						$( this ).hide();
