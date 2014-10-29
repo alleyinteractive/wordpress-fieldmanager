@@ -207,6 +207,14 @@ abstract class Fieldmanager_Field {
 	public $display_if = array();
 
 	/**
+	* @var string
+	* Where the new item should to added ( top/bottom ) of the stack. Used by Add Another button
+	* $element->stack_order = 'LIFO' : Default, add at the bottom of stack
+	* $element->stack_order = 'FIFO' : Add at the top of stack
+	*/
+	public $stack_order = 'LIFO';
+
+	/**
 	 * @var boolean
 	 * If true, remove any default meta boxes that are overridden by Fieldmanager fields
 	 */
@@ -427,6 +435,9 @@ abstract class Fieldmanager_Field {
 
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'FIFO' == $this->stack_order ) {
+			$out .= $this->add_another();
+		}
 
 		if ( 1 != $this->limit ) {
 			$out .= $this->single_element_markup( null, true );
@@ -440,7 +451,7 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		if ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) {
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'LIFO' == $this->stack_order ) {
 			$out .= $this->add_another();
 		}
 
@@ -826,11 +837,12 @@ abstract class Fieldmanager_Field {
 		}
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
-			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-limit="%d" />',
+			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-stack-order="%s" data-limit="%d" />',
 			esc_attr( implode( ' ', $classes ) ),
 			esc_attr( $this->add_more_label ),
 			esc_attr( 'fm_add_another_' . $this->name ),
 			esc_attr( $this->name ),
+			esc_attr( $this->stack_order ),
 			intval( $this->limit )
 		);
 		$out .= '</div>';
