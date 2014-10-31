@@ -94,6 +94,11 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		fm_register_submenu_page( $name, 'edit.php?post_type=page', 'Testing URLs' );
 		$context = $this->get_context( $name );
 		$this->assertEquals( admin_url( 'edit.php?post_type=page&page=' . $name ), $context->url() );
+
+		$name = rand_str();
+		fm_register_submenu_page( $name, null, 'Testing URLs' );
+		$context = $this->get_context( $name );
+		$this->assertEquals( admin_url( 'admin.php?page=' . $name ), $context->url() );
 	}
 
 	/**
