@@ -113,11 +113,10 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 			$time_to_parse .= ':' . str_pad( intval( $value['minute'] ), 2, '0', STR_PAD_LEFT );
 			$time_to_parse .= ' ' . sanitize_text_field( $value['ampm'] );
 		}
-		$timestamp = intval( strtotime( $time_to_parse ) );
 		if ( $this->store_local_time ) {
-			return $timestamp - ( get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
+			return get_gmt_from_date( $time_to_parse, 'U' );
 		} else {
-			return $timestamp;
+			return intval( strtotime( $time_to_parse ) );
 		}
 	}
 
