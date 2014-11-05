@@ -82,7 +82,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->sanitize = array( $this, 'sanitize' );
-		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.5' );
+		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.6' );
 
 		parent::__construct( $label, $options );
 	}

@@ -4,6 +4,7 @@
 			$( 'textarea.fm-richtext:visible' ).each( function() {
 				if ( ! $( this ).hasClass( 'fm-tinymce' ) ) {
 					var init, ed_id, mce_options, qt_options, proto_id;
+					$( this ).addClass( 'fm-tinymce' );
 					ed_id = $( this ).attr( 'id' );
 
 					if ( typeof tinymce !== 'undefined' ) {
@@ -36,7 +37,6 @@
 						try {
 							if ( 'html' !== fm.richtextarea.mode_enabled( this ) ) {
 								tinymce.init( tinyMCEPreInit.mceInit[ ed_id ] );
-								$( this ).addClass( 'fm-tinymce' );
 								$( this ).closest( '.wp-editor-wrap' ).on( 'click.wp-editor', function() {
 									if ( this.id ) {
 										window.wpActiveEditor = this.id.slice( 3, -5 );
@@ -55,8 +55,8 @@
 			} );
 		},
 
-		reload_editors: function( e, el ) {
-			$( el ).find( '.fm-tinymce' ).each( function() {
+		reload_editors: function() {
+			$( '.fm-tinymce' ).each( function() {
 				html_mode = ( 'html' === fm.richtextarea.mode_enabled( this ) );
 				if ( html_mode ) {
 					$( '#' + this.id + '-tmce' ).click();
@@ -70,7 +70,7 @@
 				}
 				tinymce.execCommand( cmd, false, $( this ).attr( 'id' ) );
 
-				// Immediately reenable the editor
+				// Immediately re-enable the editor
 				cmd = 'mceAddControl';
 				if ( parseInt( tinymce.majorVersion ) >= 4 ) {
 					cmd = 'mceAddEditor';
@@ -87,7 +87,6 @@
 			return $( el ).closest( '.html-active' ).length ? 'html' : 'tinymce';
 		},
 
-
 		/**
 		 * Ensure that the main editor's state remains unaffected by any FM editors
 		 */
@@ -99,9 +98,6 @@
 	}
 	$( document ).on( 'fm_collapsible_toggle fm_added_element fm_activate_tab fm_displayif_toggle', fm.richtextarea.add_rte_to_visible_textareas );
 	$( document ).on( 'fm_sortable_drop', fm.richtextarea.reload_editors );
-
-	// doc.load
-	$( fm.richtextarea.add_rte_to_visible_textareas );
 
 	$( document ).on( 'click', '.fm-richtext .wp-switch-editor', function() {
 		var aid = this.id,
@@ -135,4 +131,12 @@
 		core_editor_state = mode;
 	} );
 
+	/**
+	 * On document.load, init the editors and make the global meta box drag-drop
+	 * event reload the editors.
+	 */
+	$( function() {
+		fm.richtextarea.add_rte_to_visible_textareas();
+		$( '.meta-box-sortables' ).on( 'sortstop', fm.richtextarea.reload_editors );
+	} );
 } ) ( jQuery );
