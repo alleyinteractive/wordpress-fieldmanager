@@ -14,7 +14,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 	/**
 	 * @var boolean
-	 * Should we support type-ahead? i.e. use chosen.js or not
+	 * Should we support type-ahead? i.e. use selec2.js or not
 	 */
 	public $type_ahead = False;
 
@@ -31,7 +31,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	public $multiple = false;
 
 	/**
-	 * Override constructor to add chosen.js maybe
+	 * Override constructor to add select2.js maybe
 	 * @param string $label
 	 * @param array $options
 	 */
@@ -55,10 +55,10 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			$this->attributes['multiple'] = 'multiple';
 		}
 
-		// Add the chosen library for type-ahead capabilities
+		// Add the Select2 library for type-ahead capabilities
 		if ( $this->type_ahead ) {
-			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
-			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+			fm_add_script( 'select2', 'js/select2/select2.js' );
+			fm_add_style( 'select2_css', 'js/select2/select2.css' );
 		}
 
 	}
@@ -78,12 +78,12 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			$do_multiple = "[]";
 		}
 
-		// Handle type-ahead based fields using the chosen library
+		// Handle type-ahead based fields using the select2 library
 		if ( $this->type_ahead ) {
-			$select_classes[] = 'chzn-select';
-			if ( !isset( $GLOBALS['fm_chosen_initialized'] ) ) {
-				add_action( 'admin_footer', array( $this, 'chosen_init' ) );
-				$GLOBALS['fm_chosen_initialized'] = true;
+			$select_classes[] = 'select2-select';
+			if ( !isset( $GLOBALS['fm_select2_initialized'] ) ) {
+				add_action( 'admin_footer', array( $this, 'select2_init' ) );
+				$GLOBALS['fm_select2_initialized'] = true;
 			}
 
 			if ( $this->grouped ) {
@@ -151,17 +151,19 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	}
 
 	/**
-	 * Init chosen.js
+	 * Init select2.js
 	 * @return string HTML
 	 */
-	public function chosen_init() {
+	public function select2_init() {
 		?>
 		<script type="text/javascript">
 		jQuery(function($){
+			var select2Opts = {};
+			select2Opts.allowClear = true;
 			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
-				$(".chzn-select:visible",this).chosen({allow_single_deselect:true})
+				$(".select2-select:visible",this).select2( select2Opts );
 			});
-			$(".chzn-select:visible").chosen({allow_single_deselect:true});
+			$(".select2-select:visible").select2( select2Opts );
 		});
 		</script>
 		<?php
