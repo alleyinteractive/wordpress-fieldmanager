@@ -54,7 +54,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// Add the Select2 library for type-ahead capabilities
 		if ( $this->type_ahead ) {
-			fm_add_script( 'select2', 'js/select2/select2.js' );
+			fm_add_script( 'select2', 'js/select2/select2.js', array( 'jquery' ), '3.5.2', false, 'fm_select2', array( 'searchPlaceholder' => esc_html__( 'Search for a term', 'fieldmanager' ), 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
 			fm_add_style( 'select2_css', 'js/select2/select2.css' );
 		}
 
@@ -85,6 +85,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 			if ( ! empty( $this->datasource ) && $this->datasource->use_ajax ) {
 				$select_classes[] = 'select2-ajax-datasource';
+				$this->attributes['fm-ajax-search-action'] = $this->datasource->get_ajax_action();
 			} else {
 				$select_classes[] = 'select2-static-datasource';
 			}
@@ -172,10 +173,31 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			/*
 			 * AJAX datasources
 			 */
+			select2Opts.placeholder = fm_select2.searchPlaceholder;
+			select2Opts.minimumInputLength = 2;
 			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
 				$(".select2-select.select2-ajax-datasource:visible",this).select2( select2Opts );
 			});
-			$(".select2-select.select2-ajax-datasource:visible").select2( select2Opts );
+			var fmSetUpSelect2Ajax = function() {
+				select2Opts.ajax = {
+					url: ajaxurl,
+					data: function( term, page ) {
+						return {
+							action: $(this).data('fm-ajax-search-action'),
+							fm_search_nonce: fm_select2.nonce,
+							fm_autocomplete_search: term
+						};
+					},
+					results: function( response, page ) {
+						console.log( response );
+					}
+				};
+				$(this).select2( select2Opts );
+			};
+			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
+				$(".select2-select.select2-ajax-datasource:visible",this).each(fmSetUpSelect2Ajax);
+			});
+			$(".select2-select.select2-ajax-datasource:visible").each(fmSetUpSelect2Ajax);
 		});
 		</script>
 		<?php
