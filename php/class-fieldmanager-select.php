@@ -83,6 +83,12 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 				$GLOBALS['fm_select2_initialized'] = true;
 			}
 
+			if ( ! empty( $this->datasource ) && $this->datasource->use_ajax ) {
+				$select_classes[] = 'select2-ajax-datasource';
+			} else {
+				$select_classes[] = 'select2-static-datasource';
+			}
+
 			if ( $this->grouped ) {
 				$select_classes[] = "fm-options-grouped";
 			} else {
@@ -155,10 +161,21 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		jQuery(function($){
 			var select2Opts = {};
 			select2Opts.allowClear = true;
+			/*
+			 * Static datasources
+			 */
 			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
-				$(".select2-select:visible",this).select2( select2Opts );
+				$(".select2-select.select2-static-datasource:visible",this).select2( select2Opts );
 			});
-			$(".select2-select:visible").select2( select2Opts );
+			$(".select2-select.select2-static-datasource:visible").select2( select2Opts );
+
+			/*
+			 * AJAX datasources
+			 */
+			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
+				$(".select2-select.select2-ajax-datasource:visible",this).select2( select2Opts );
+			});
+			$(".select2-select.select2-ajax-datasource:visible").select2( select2Opts );
 		});
 		</script>
 		<?php
