@@ -148,6 +148,8 @@
 	 */
 	$( function() {
 		fm.richtextarea.add_rte_to_visible_textareas();
-		$( '.meta-box-sortables' ).on( 'sortstop', fm.richtextarea.reload_editors );
+		$( '.meta-box-sortables' ).on( 'sortstop', function( e, obj ) {
+			fm.richtextarea.reload_editors( e, obj.item[0] );
+		} );
 	} );
 } ) ( jQuery );
