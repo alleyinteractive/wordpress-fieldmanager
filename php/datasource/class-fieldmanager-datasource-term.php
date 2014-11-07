@@ -230,6 +230,24 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	}
 
 	/**
+	 * Get the selected items for this data item
+	 *
+	 * @param int $data_id
+	 * @return array
+	 */
+	public function get_selected_items( $data_id ) {
+		$terms = wp_get_object_terms( $data_id, $this->get_taxonomies() );
+		// Put the taxonomy data into the proper data structure to be used for display
+		$stack = array();
+		foreach ( $terms as $term ) {
+			// Store the label for the taxonomy as the group since it will be used for display
+			$key = $this->store_term_taxonomy_id ? $term->term_taxonomy_id : $term->term_id;
+			$stack[ $key ] = $term->name;
+		}
+		return $stack;
+	}	
+
+	/**
 	 * Get taxonomy data per $this->taxonomy_args
 	 * @param $value The value(s) currently set for this field
 	 * @return array[] data entries for options
