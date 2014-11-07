@@ -55,27 +55,38 @@
 			} );
 		},
 
-		reload_editors: function() {
-			$( '.fm-tinymce' ).each( function() {
-				html_mode = ( 'html' === fm.richtextarea.mode_enabled( this ) );
+		reload_editors: function( e, wrap ) {
+			if ( ! wrap || 'undefined' === typeof wrap.nodeType ) {
+				return;
+			}
+
+			$( '.fm-tinymce', wrap ).each( function() {
+				var html_mode = ( 'html' === fm.richtextarea.mode_enabled( this ) )
+					, ed = tinymce.get( this.id )
+					, content = ed.getContent()
+					, cmd;
+
 				if ( html_mode ) {
 					$( '#' + this.id + '-tmce' ).click();
 				}
 
-				var cmd;
 				// Disable the editor
 				cmd = 'mceRemoveControl';
 				if ( parseInt( tinymce.majorVersion ) >= 4 ) {
 					cmd = 'mceRemoveEditor';
 				}
-				tinymce.execCommand( cmd, false, $( this ).attr( 'id' ) );
+				tinymce.execCommand( cmd, false, this.id );
 
 				// Immediately re-enable the editor
 				cmd = 'mceAddControl';
 				if ( parseInt( tinymce.majorVersion ) >= 4 ) {
 					cmd = 'mceAddEditor';
 				}
-				tinymce.execCommand( cmd, false, $( this ).attr( 'id' ) );
+				tinymce.execCommand( cmd, false, this.id );
+
+				// Replace the content with what it was to correct paragraphs
+				ed = tinymce.get( this.id );
+				ed.setContent( content );
 
 				if ( html_mode ) {
 					$( '#' + this.id + '-html' ).click();
