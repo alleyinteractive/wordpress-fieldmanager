@@ -42,7 +42,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		);
 
 		// Add the Fieldmanager Select javascript library
-		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.1', false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
+		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.1', false, 'fm_select', array( 'fm_search_nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
 
 		parent::__construct( $label, $options );
 
@@ -59,6 +59,10 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		if ( $this->type_ahead ) {
 			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
 			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+
+			if ( $this->datasource && $this->datasource->use_ajax ) {
+				$this->attributes['data-fm-ajax-search-action'] = $this->datasource->get_ajax_action();
+			}
 		}
 
 	}

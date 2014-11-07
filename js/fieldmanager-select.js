@@ -54,10 +54,9 @@ $( document ).ready( function() {
 		$fm_select_field = $(this).parents('.chzn-container').siblings('select');
 		$fm_text_field = $(this);
 
-		if( $fm_select_field.data("taxonomy") != "" && $fm_select_field.data("taxonomyPreload") == false ) {
+		if( $fm_select_field.data("fm-ajax-search-action").length ) {
 			fm_typeahead_term = $(this).val();
-			$.post( ajaxurl, { action: 'fm_search_terms', search_term: $fm_text_field.val(), taxonomy: $fm_select_field.data("taxonomy"), fm_search_terms_nonce: fm_select.nonce }, function ( result ) {
-
+			$.post( ajaxurl, { action: $fm_select_field.data("fm-ajax-search-action"), fm_autocomplete_search: $fm_text_field.val(), fm_search_nonce: fm_select.fm_search_nonce }, function ( result ) {
 				// Clear any non-selected terms before proceeding
 				fm_text_field_val = $fm_text_field.val();
 				fm_select_clear_terms( $fm_select_field, "", false );
@@ -65,10 +64,16 @@ $( document ).ready( function() {
 				fm_reset_chosen( $fm_text_field, fm_text_field_val );
 
 				if( result != "" ) {
-					$resultObj = $( result );
+					var items = $.parseJSON( result );
+					$resultObj = $( document.createElement('select') );
+					$.each( items, function( key, label ) {
+						var el = $( document.createElement( 'option' ) );
+						el.attr( 'value', key ).text( label );
+						$resultObj.append( el );
+					});
 
 					// If there are optgroups present, use special processing
-					$resultObj.filter("optgroup").each( function( index, element ) {
+					$resultObj.find("optgroup").each( function( index, element ) {
 						// See if the optgroup already exists
 						var optgroup_selector = "optgroup[label='" + $(this).attr("label") + "']";
 						if( $fm_select_field.find(optgroup_selector).length > 0 ) {
@@ -81,7 +86,7 @@ $( document ).ready( function() {
 					} );
 
 					// Append any options not in an optgroup
-					fm_append_options( $fm_select_field, $resultObj.filter("option") );
+					fm_append_options( $fm_select_field, $resultObj.find("option") );
 				}
 
 				// Inform chosen this field has been updated to populate these options in the typeahead dropdown
