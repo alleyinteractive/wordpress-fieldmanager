@@ -68,12 +68,10 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	 *
 	 * @param  int $user_id
 	 */
-	public function save_to_user_meta( $user_id, $value ) {
+	public function save_to_user_meta( $user_id, $data ) {
 		$this->fm->data_id = $user_id;
 		$this->fm->data_type = 'user';
-		$current = get_user_meta( $user_id, $this->fm->name, true );
-		$data = $this->fm->presave_all( $value, $current );
-		$data = apply_filters( 'fm_user_presave_data', $data, $this->fm );
-		update_user_meta( $user_id, $this->fm->name, $data );
+
+		$this->_save( $data );
 	}
 }

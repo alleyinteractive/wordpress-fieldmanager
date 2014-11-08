@@ -188,15 +188,15 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		}
 
 		// Make sure the current user is authorized to save this post.
-		if( $_POST['post_type'] == 'post' ) {
-			if( !current_user_can( 'edit_post', $post_id ) ) {
+		if ( $_POST['post_type'] == 'post' ) {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
 				return;
 			}
 		}
 
 		// Make sure that our nonce field arrived intact.
-		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
+		if ( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 
@@ -224,12 +224,14 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function save_to_post_meta( $post_id, $data ) {
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
-		$current = get_post_meta( $this->fm->data_id, $this->fm->name, true );
-		$data = $this->fm->presave_all( $data, $current );
-		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );
+
+		$this->_save( $data );
 	}
 
 }

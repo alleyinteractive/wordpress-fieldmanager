@@ -199,15 +199,8 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	public function save_to_post_meta( $post_id, $data ) {
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
-		$post = get_post( $post_id );
-		if ( $post->post_type = 'revision' && $post->post_parent != 0 ) {
-			$this->fm->data_id = $post->post_parent;
-		}
-		$current = get_post_meta( $this->fm->data_id, $this->fm->name, True );
-		$data = $this->fm->presave_all( $data, $current );
-		if ( !$this->fm->skip_save ) {
-			update_post_meta( $post_id, $this->fm->name, $data );
-		}
+
+		$this->_save( $data );
 	}
 
 }

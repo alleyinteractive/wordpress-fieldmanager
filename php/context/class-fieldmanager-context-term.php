@@ -51,6 +51,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	public $fm = '';
 
 	/**
+	 * The current taxonomy. Used when saving data.
+	 * @var string
+	 */
+	private $current_taxonomy;
+
+
+	/**
 	 * Add a context to a fieldmanager
 	 * @param string|string[] $taxonomies
 	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
@@ -225,17 +232,14 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Set the data ID and type
 		$this->fm->data_id = $term_id;
 		$this->fm->data_type = 'term';
+		$this->current_taxonomy = $taxonomy;
 
-		// Get an instance of the term meta class
-		$term_meta = Fieldmanager_Util_Term_Meta();
-
-		// Get the current data and run presave
-		$current = $term_meta->get_term_meta( $this->fm->data_id, $taxonomy, $this->fm->name, true );
-		$data = $this->fm->presave_all( $data, $current );
-
-		// Unless we are skipping the save, store the new value in term meta
-		if ( ! $this->fm->skip_save )
-			$term_meta->update_term_meta( $term_id, $taxonomy, $this->fm->name, $data );
+		$this->_save( $data, array(
+			'get'    => array( $this, '_get_meta' ),
+			'add'    => array( $this, '_add_meta' ),
+			'update' => array( $this, '_update_meta' ),
+			'delete' => array( $this, '_delete_meta' ),
+		) );
 	}
 
 	/**
@@ -255,4 +259,21 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Delete any instance of this field for the term that was deleted
 		$term_meta->delete_term_meta( $term_id, $taxonomy, $this->fm->name );
 	}
+
+	protected function _get_meta( $term_id, $meta_key, $single = false ) {
+		fm_get_term_meta( $term_id, $this->current_taxonomy, $meta_key, $single );
+	}
+
+	protected function _add_meta( $term_id, $meta_key, $meta_value, $unique = false ) {
+		fm_add_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $unique );
+	}
+
+	protected function _update_meta( $term_id, $meta_key, $meta_value, $meta_prev_value = '' ) {
+		fm_update_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $meta_prev_value );
+	}
+
+	protected function _delete_meta( $term_id, $meta_key, $meta_value = '' ) {
+		fm_delete_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value );
+	}
+
 }
