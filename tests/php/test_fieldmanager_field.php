@@ -747,7 +747,18 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				array( 'text' => 'e' ),
 			)
 		);
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3 ), $test_data_too_many );
+
+		$field = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'children' => array(
+				'test_element' => new Fieldmanager_Group( array(
+					'limit' => 3,
+					'children' => array( 'text' => new Fieldmanager_TextField( false ) ),
+				) )
+			)
+		) );
+		$context = $field->add_meta_box( 'test meta box', $this->post );
+		$context->save_to_post_meta( $this->post_id, $test_data_too_many );
 	}
 
 	public function test_attributes(){
@@ -759,6 +770,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				'data-UPPER' => 'lower'
 			)
 		) );
+		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
