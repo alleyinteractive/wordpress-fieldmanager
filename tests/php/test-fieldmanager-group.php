@@ -215,9 +215,6 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_basic]"', $html );
 		$this->assertContains( 'value="' . $data['test_basic'] . '"', $html );
 		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
-		foreach ( $data as $meta_key => $meta_value ) {
-			delete_post_meta( $this->post_id, $meta_key );
-		}
 	}
 
 	public function test_unserialize_data_group_save() {
@@ -235,19 +232,117 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 			'test_basic'     => rand_str(),
 			'test_htmlfield' => rand_str()
 		);
-		delete_post_meta( $this->post_id, 'base_group_test_basic' );
-		delete_post_meta( $this->post_id, 'base_group_test_htmlfield' );
 		$base = new Fieldmanager_Group( $args );
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data['test_basic'], get_post_meta( $this->post_id, 'base_group_test_basic', true ) );
 		$this->assertEquals( $data['test_htmlfield'], get_post_meta( $this->post_id, 'base_group_test_htmlfield', true ) );
 
-		delete_post_meta( $this->post_id, 'test_basic' );
-		delete_post_meta( $this->post_id, 'test_htmlfield' );
 		$base = new Fieldmanager_Group( array_merge( $args, array( 'add_to_prefix' => false ) ) );
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data['test_basic'], get_post_meta( $this->post_id, 'test_basic', true ) );
 		$this->assertEquals( $data['test_htmlfield'], get_post_meta( $this->post_id, 'test_htmlfield', true ) );
+	}
+
+	public function test_unserialize_data_deep_group_no_prefix() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'add_to_prefix' => false,
+			'children'       => array(
+				'level2' => new Fieldmanager_Group( array(
+					'serialize_data' => false,
+					'add_to_prefix' => false,
+					'children' => array(
+						'level3' => new Fieldmanager_Group( array(
+							'serialize_data' => false,
+							'add_to_prefix' => false,
+							'children' => array(
+								'level4' => new Fieldmanager_Group( array(
+									'serialize_data' => false,
+									'add_to_prefix' => false,
+									'children' => array(
+										'field' => new Fieldmanager_TextField
+									)
+								) ),
+							)
+						) ),
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'level2' => array(
+				'level3' => array(
+					'level4' => array(
+						'field' => rand_str()
+					)
+				)
+			)
+		);
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data['level2']['level3']['level4']['field'], get_post_meta( $this->post_id, 'field', true ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertContains( 'name="base_group[level2][level3][level4][field]"', $html );
+		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
+	}
+
+	public function test_unserialize_data_deep_group_no_prefix_repeatable_field() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'add_to_prefix' => false,
+			'children'       => array(
+				'level2' => new Fieldmanager_Group( array(
+					'serialize_data' => false,
+					'add_to_prefix' => false,
+					'children' => array(
+						'level3' => new Fieldmanager_Group( array(
+							'serialize_data' => false,
+							'add_to_prefix' => false,
+							'children' => array(
+								'level4' => new Fieldmanager_Group( array(
+									'serialize_data' => false,
+									'add_to_prefix' => false,
+									'children' => array(
+										'field_one' => new Fieldmanager_TextField( array(
+											'serialize_data' => false,
+											'limit' => 0,
+										) ),
+										'field_two' => new Fieldmanager_TextField( array(
+											'serialize_data' => false,
+											'limit' => 0,
+										) ),
+									)
+								) ),
+							)
+						) ),
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'level2' => array(
+				'level3' => array(
+					'level4' => array(
+						'field_one' => array( rand_str(), rand_str(), rand_str() ),
+						'field_two' => array( rand_str(), rand_str(), rand_str() ),
+					)
+				)
+			)
+		);
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data['level2']['level3']['level4']['field_one'], get_post_meta( $this->post_id, 'field_one' ) );
+		$this->assertEquals( $data['level2']['level3']['level4']['field_two'], get_post_meta( $this->post_id, 'field_two' ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertContains( 'name="base_group[level2][level3][level4][field_one][0]"', $html );
+		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_one'][0] . '"', $html );
+		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_one'][1] . '"', $html );
+		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_one'][2] . '"', $html );
+		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_two'][0] . '"', $html );
+		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_two'][1] . '"', $html );
+		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_two'][2] . '"', $html );
 	}
 
 	public function test_unserialize_data_mid_group_prefix() {
@@ -284,11 +379,93 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 				)
 			)
 		);
-		delete_post_meta( $this->post_id, 'base_group' );
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data['level2']['level3']['level4']['field'], get_post_meta( $this->post_id, 'base_group_level2_level4_field', true ) );
 		$html = $this->_get_html_for( $base );
 		$this->assertContains( 'name="base_group[level2][level3][level4][field]"', $html );
 		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
+	}
+
+	public function test_unserialize_data_mid_group_serialize() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'children'       => array(
+				'level2' => new Fieldmanager_Group( array(
+					'serialize_data' => false,
+					'children' => array(
+						'level3' => new Fieldmanager_Group( array(
+							'children' => array(
+								'level4' => new Fieldmanager_Group( array(
+									'children' => array(
+										'field' => new Fieldmanager_TextField
+									)
+								) ),
+							)
+						) ),
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'level2' => array(
+				'level3' => array(
+					'level4' => array(
+						'field' => rand_str()
+					)
+				)
+			)
+		);
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data['level2']['level3'], get_post_meta( $this->post_id, 'base_group_level2_level3', true ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertContains( 'name="base_group[level2][level3][level4][field]"', $html );
+		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
+	}
+
+	public function test_unserialize_data_tabbed() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'tabbed'         => true,
+			'serialize_data' => false,
+			'add_to_prefix'  => false,
+			'children'       => array(
+				'tab-1' => new Fieldmanager_Group( array(
+					'label'          => 'Tab One',
+					'serialize_data' => false,
+					'add_to_prefix'  => false,
+					'children'       => array(
+						'test_text' => new Fieldmanager_Textfield( 'Text Field' ),
+					)
+				) ),
+				'tab-2' => new Fieldmanager_Group( array(
+					'label'          => 'Tab Two',
+					'serialize_data' => false,
+					'add_to_prefix'  => false,
+					'children'       => array(
+						'test_textarea' => new Fieldmanager_TextArea( 'TextArea' ),
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'tab-1' => array(
+				'test_text' => rand_str()
+			),
+			'tab-2' => array(
+				'test_textarea' => rand_str()
+			),
+		);
+		delete_post_meta( $this->post_id, 'base_group' );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data['tab-1']['test_text'], get_post_meta( $this->post_id, 'test_text', true ) );
+		$this->assertEquals( $data['tab-2']['test_textarea'], get_post_meta( $this->post_id, 'test_textarea', true ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
+		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
+		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
+		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
 	}
 }
