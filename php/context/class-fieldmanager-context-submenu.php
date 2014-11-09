@@ -114,7 +114,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function handle_submenu_save() {
-		if ( empty( $_POST ) || empty( $_GET['page'] ) || $_GET['page'] != $this->menu_slug ) {
+		if ( empty( $_GET['page'] ) || $_GET['page'] != $this->menu_slug ) {
 			return;
 		}
 
@@ -124,6 +124,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		}
 
 		if ( ! current_user_can( $this->capability ) ) {
+			$this->fm->_unauthorized_access( __( 'Current user cannot edit this page', 'fieldmanager' ) );
 			return;
 		}
 

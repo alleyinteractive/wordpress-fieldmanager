@@ -67,10 +67,6 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	 * @param int $user_id
 	 */
 	public function save_user_form( $user_id ) {
-		if ( empty( $_POST ) ) {
-			return;
-		}
-
 		if ( ! $this->_is_valid_nonce() ) {
 			return;
 		}

@@ -223,9 +223,6 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function save_to_post_meta( $post_id, $data = null ) {
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
-			return;
-		}
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 
