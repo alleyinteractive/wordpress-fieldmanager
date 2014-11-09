@@ -97,8 +97,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 			<form method="POST" id="<?php echo esc_attr( $this->uniqid ) ?>">
 				<div class="fm-submenu-form-wrapper">
 					<input type="hidden" name="fm-options-action" value="<?php echo sanitize_title( $this->fm->name ) ?>" />
-					<?php wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' ); ?>
-					<?php echo $this->fm->element_markup( $values ); ?>
+					<?php $this->_render_field( $values ); ?>
 				</div>
 				<?php submit_button( $this->submit_button_label, 'submit', 'fm-submit' ) ?>
 			</form>
@@ -115,25 +114,30 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function handle_submenu_save() {
-		if ( ! empty( $_POST ) && ! empty( $_GET['page'] ) && $_GET['page'] == $this->menu_slug && current_user_can( $this->capability ) ) {
-			if ( $this->save_submenu_data() ) {
-				wp_redirect( esc_url_raw( add_query_arg( array( 'msg' => 'success' ), $this->url() ) ) );
-				exit;
-			}
+		if ( empty( $_POST ) || empty( $_GET['page'] ) || $_GET['page'] != $this->menu_slug ) {
+			return;
+		}
+
+		// Make sure that our nonce field arrived intact
+		if ( ! $this->_is_valid_nonce() ) {
+			return;
+		}
+
+		if ( ! current_user_can( $this->capability ) ) {
+			return;
+		}
+
+		if ( $this->save_submenu_data() ) {
+			wp_redirect( esc_url_raw( add_query_arg( array( 'msg' => 'success' ), $this->url() ) ) );
+			exit;
 		}
 	}
 
-	public function save_submenu_data() {
-		// Make sure that our nonce field arrived intact
-		if( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
-		}
-
+	public function save_submenu_data( $data = null ) {
 		$this->fm->data_id = $this->fm->name;
 		$this->fm->data_type = 'options';
 		$current = get_option( $this->fm->name, null );
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$data = $this->fm->presave_all( $value, $current );
+		$data = $this->_prepare_data( $current, $data );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 
 		if ( isset( $current ) ) {

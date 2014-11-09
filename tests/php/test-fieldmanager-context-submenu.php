@@ -80,8 +80,9 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$html = $this->get_html( $context, $name );
 
 		$this->build_post( $html, $name );
-		$_POST['fieldmanager-edit_meta_fields-nonce'] = '';
-		$context->save_submenu_data();
+		$_GET['page'] = $name;
+		$_POST["fieldmanager-{$name}-nonce"] = 'abc123';
+		$context->handle_submenu_save();
 	}
 
 	public function test_urls() {

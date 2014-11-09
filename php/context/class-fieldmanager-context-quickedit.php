@@ -119,8 +119,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		?>
 		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo esc_attr( $column_name ); ?>" data-fm-post-type="<?php echo esc_attr( $post_type ); ?>">
 			<div class="inline-edit-col">
-				<?php wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' ); ?>
-				<?php echo $this->fm->element_markup( $values ); ?>
+				<?php $this->_render_field( $values ); ?>
 			</div>
 		</fieldset>
 		<?php
@@ -168,8 +167,8 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 			return;
 		}
 
-		// Ensure that the nonce is set
-		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
+		// Ensure that the nonce is set and valid
+		if ( ! $this->_is_valid_nonce() ) {
 			return;
 		}
 
@@ -181,13 +180,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 			}
 		}
 
-		// Make sure that our nonce field arrived intact
-		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
-		}
-
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$this->save_to_post_meta( $post_id, $value );
+		$this->save_to_post_meta( $post_id );
 	}
 
 	/**
@@ -196,7 +189,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @param array $data
 	 * @return void
 	 */
-	public function save_to_post_meta( $post_id, $data ) {
+	public function save_to_post_meta( $post_id, $data = null ) {
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 

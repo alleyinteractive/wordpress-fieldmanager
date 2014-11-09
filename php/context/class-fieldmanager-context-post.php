@@ -101,8 +101,8 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$values = empty( $values ) ? Null : $values[0];
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
-		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
-		echo $this->fm->element_markup( $values );
+
+		$this->_render_field( $values );
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );
@@ -173,10 +173,6 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 			return;
 		}
 
-		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
-			return;
-		}
-
 		// Make sure this post type is intended for handling by this FM context.
 		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) {
 			return;
@@ -184,6 +180,13 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 
 		// Do not handle quickedit in this context.
 		if ( $_POST['action'] == 'inline-save' ) {
+			return;
+		}
+
+		// Verify nonce is present and valid. If present but not valid, this
+		// throws an exception, but if it's absent we can assume our data is
+		// not present.
+		if ( ! $this->_is_valid_nonce() ) {
 			return;
 		}
 
@@ -195,13 +198,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 			}
 		}
 
-		// Make sure that our nonce field arrived intact.
-		if ( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
-		}
-
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$this->save_to_post_meta( $post_id, $value );
+		$this->save_to_post_meta( $post_id );
 	}
 
 	/**
@@ -210,7 +207,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function save_fields_for_cron( $post_id ) {
-		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) return;
+		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) {
+			return;
+		}
 		// don't save values since we aren't provided with any; just trigger presave so that subclass handlers can process as necessary
 		$this->fm->skip_save = true;
 		$current = get_post_meta( $post_id, $this->fm->name, true );
@@ -223,11 +222,10 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @param array $data
 	 * @return void
 	 */
-	public function save_to_post_meta( $post_id, $data ) {
+	public function save_to_post_meta( $post_id, $data = null ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
-
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 

@@ -27,6 +27,19 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 		add_action( 'edit_user_profile', array( $this, 'render_user_form' ) );
 		add_action( 'personal_options_update', array( $this, 'save_user_form' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'save_user_form' ) );
+		add_filter( 'fm_context_after_presave_data', array( $this, 'legacy_presave_filter' ) );
+	}
+
+	/**
+	 * Maintain legacy support for custom filter.
+	 *
+	 * @deprecated
+	 *
+	 * @param  mixed $data Data being saved.
+	 * @return mixed
+	 */
+	public function legacy_presave_filter( $data ) {
+		return apply_filters( 'fm_user_presave_data', $data, $this->fm );
 	}
 
 	/**
@@ -36,10 +49,11 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	public function render_user_form( $user ) {
 		$values = get_user_meta( $user->ID, $this->fm->name );
 		$values = empty( $values ) ? null : $values[0];
-		if ( !empty( $this->title ) ) echo '<h3>' . $this->title . '</h3>';
+		if ( !empty( $this->title ) ) {
+			echo '<h3>' . $this->title . '</h3>';
+		}
 		echo '<div class="fm-user-form-wrapper">';
-		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
-		echo $this->fm->element_markup( $values );
+		$this->_render_field( $values );
 		echo '</div>';
 
 		// Check if any validation is required
@@ -53,14 +67,20 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	 * @param int $user_id
 	 */
 	public function save_user_form( $user_id ) {
-		if ( ! empty( $_POST ) && ! empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) && current_user_can( 'edit_user', $user_id ) ) {
-			// Make sure that our nonce field arrived intact
-			if ( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-				$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
-			}
-
-			$this->save_to_user_meta( $user_id, ( isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "" ) );
+		if ( empty( $_POST ) ) {
+			return;
 		}
+
+		if ( ! $this->_is_valid_nonce() ) {
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_user', $user_id ) ) {
+			$this->fm->_unauthorized_access( __( 'Current user cannot edit this user', 'fieldmanager' ) );
+			return;
+		}
+
+		$this->save_to_user_meta( $user_id );
 	}
 
 	/**
@@ -68,7 +88,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	 *
 	 * @param  int $user_id
 	 */
-	public function save_to_user_meta( $user_id, $data ) {
+	public function save_to_user_meta( $user_id, $data = null ) {
 		$this->fm->data_id = $user_id;
 		$this->fm->data_type = 'user';
 

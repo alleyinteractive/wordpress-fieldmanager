@@ -109,7 +109,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			return;
 
 		// Create the HTML template for output
-		$html_template = '<div class="form-field">%s%s%s</div>';
+		$html_template = '<div class="form-field">%s%s</div>';
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'addtag', 'term' );
@@ -132,7 +132,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			return;
 
 		// Create the HTML template for output
-		$html_template = '<tr class="form-field"><th scope="row" valign="top">%s</th><td>%s%s</td></tr>';
+		$html_template = '<tr class="form-field"><th scope="row" valign="top">%s</th><td>%s</td></tr>';
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'edittag', 'term' );
@@ -177,12 +177,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			$label = '';
 		}
 
+		$field = $this->_render_field( $values, false );
+
 		// Create the markup and return it
 		return sprintf(
 			$html_template,
 			$label,
-			wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false ),
-			$this->fm->element_markup( $values )
+			$field
 		);
 	}
 
@@ -196,14 +197,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function save_term_fields( $term_id, $tt_id, $taxonomy ) {
 		// Make sure this field is attached to the taxonomy being saved and this is the appropriate action
-		if ( ! in_array( $taxonomy, $this->taxonomies ) ) {
+		if ( ! in_array( $taxonomy, $this->taxonomies ) )
 			return;
-		}
-
-		// Ensure that the nonce is set
-		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
-			return;
-		}
 
 		// Make sure the current user can save this post
 		$tax_obj = get_taxonomy( $taxonomy );
@@ -213,13 +208,12 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		}
 
 		// Make sure that our nonce field arrived intact
-		if( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
+		if ( ! $this->_is_valid_nonce() ) {
+			return;
 		}
 
 		// Save the data
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$this->save_to_term_meta( $term_id, $taxonomy, $value );
+		$this->save_to_term_meta( $term_id, $taxonomy );
 	}
 
 	/**
@@ -228,7 +222,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 * @param array $data
 	 * @return void
 	 */
-	public function save_to_term_meta( $term_id, $taxonomy, $data ) {
+	public function save_to_term_meta( $term_id, $taxonomy, $data = null ) {
 		// Set the data ID and type
 		$this->fm->data_id = $term_id;
 		$this->fm->data_type = 'term';
