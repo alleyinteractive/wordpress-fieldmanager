@@ -101,13 +101,38 @@ abstract class Fieldmanager_Context {
 			);
 		}
 
-		$current = call_user_func( $callbacks['get'], $this->fm->data_id, $this->fm->name, true );
-
-		// if $data is null, this will get it from $_POST
-		$data = $this->_prepare_data( $current, $data );
-
-		if ( ! $this->fm->skip_save ) {
-			call_user_func( $callbacks['update'], $this->fm->data_id, $this->fm->name, $data );
+		if ( $this->fm->separate_keys ) {
+			$this->_save_multi( $this->fm, $data, $callbacks );
+		} else {
+			$this->_save_field( $this->fm, $data, $callbacks );
 		}
 	}
+
+	protected function _save_field( $field, $data, $callbacks ) {
+		$current = call_user_func( $callbacks['get'], $field->data_id, $field->get_element_key(), ( ! $field->separate_keys ) );
+		$data = $this->_prepare_data( $current, $data );
+		if ( ! $field->skip_save ) {
+			if ( $field->separate_keys ) {
+				call_user_func( $callbacks['delete'], $field->data_id, $field->get_element_key() );
+				foreach ( $data as $value ) {
+					call_user_func( $callbacks['add'], $field->data_id, $field->get_element_key(), $data );
+				}
+			} else {
+				call_user_func( $callbacks['update'], $field->data_id, $field->get_element_key(), $data );
+			}
+		}
+	}
+
+	protected function _walk_children( $field, $data, $callbacks ) {
+		if ( 'group' == $field->field_class ) {
+			foreach ( $field->children as $child ) {
+				if ( isset( $data[ $child->name ] ) ) {
+					$this->_save_multi( $child, $data[ $child->name ], $callbacks );
+				}
+			}
+		} else {
+			$this->_save_field( $field, $data, $callbacks );
+		}
+	}
+
 }

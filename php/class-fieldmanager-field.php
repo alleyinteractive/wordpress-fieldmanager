@@ -185,10 +185,17 @@ abstract class Fieldmanager_Field {
 	public $skip_save = False;
 
 	/**
-	 * @var string
 	 * Save this field additionally to an index
+	 * @var boolean
 	 */
 	public $index = False;
+
+	/**
+	 * Save the fields to their own keys (only works in some contexts). Default
+	 * is false.
+	 * @var boolean
+	 */
+	public $separate_keys = false;
 
 	/**
 	 * @var Fieldmanager_Datasource
@@ -608,6 +615,25 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Get the storage key for the form element.
+	 *
+	 * @return string
+	 */
+	public function get_element_key() {
+		$el = $this;
+		$key = $el->name;
+		while ( $el = $el->parent ) {
+			if ( $el->limit != 1 ) {
+				return false;
+			}
+			if ( $el->add_to_prefix ) {
+				$key = "{$el->name}_{$key}";
+			}
+		}
+		return $key;
+	}
+
+	/**
 	 * Presaves all elements in what could be a set of them, dispatches to $this->presave()
 	 * @input mixed[] $values
 	 * @return mixed[] sanitized values
@@ -785,7 +811,7 @@ abstract class Fieldmanager_Field {
 				$attr_str[] = sanitize_key( $attr );
 			} else{
 				$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
-			}		
+			}
 		}
 		return implode( ' ', $attr_str );
 	}

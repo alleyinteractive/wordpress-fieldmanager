@@ -79,6 +79,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $group_is_empty = Null;
 
 	/**
+	 * Should the group name be included in the meta key prefix for separate
+	 * fields? Default is true.
+	 * @var boolean
+	 */
+	public $add_to_prefix = true;
+
+	/**
 	 * @var boolean
 	 * Iterator value for how many children we have rendered.
 	 */
