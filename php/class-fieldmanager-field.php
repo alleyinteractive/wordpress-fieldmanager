@@ -324,7 +324,6 @@ abstract class Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->set_options( $label, $options );
-		add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
 	}
 
 	/**
