@@ -52,6 +52,17 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	public $wp_option_autoload = False;
 
 	/**
+	 * Callbacks for manipulating data.
+	 * @var array
+	 */
+	public $data_callbacks = array(
+		'get'    => "get_option",
+		'add'    => "add_option",
+		'update' => "update_option",
+		'delete' => "delete_option",
+	);
+
+	/**
 	 * Create a submenu page out of a field
 	 * @param string $parent_slug
 	 * @param string $page_title
@@ -97,7 +108,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 			<form method="POST" id="<?php echo esc_attr( $this->uniqid ) ?>">
 				<div class="fm-submenu-form-wrapper">
 					<input type="hidden" name="fm-options-action" value="<?php echo sanitize_title( $this->fm->name ) ?>" />
-					<?php $this->_render_field( $values ); ?>
+					<?php $this->_render_field( array( 'data' => $values ) ); ?>
 				</div>
 				<?php submit_button( $this->submit_button_label, 'submit', 'fm-submit' ) ?>
 			</form>

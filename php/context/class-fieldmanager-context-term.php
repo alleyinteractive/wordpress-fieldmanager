@@ -56,6 +56,12 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	private $current_taxonomy;
 
+	/**
+	 * Callbacks for manipulating data.
+	 * @var array
+	 */
+	public $data_callbacks = array();
+
 
 	/**
 	 * Add a context to a fieldmanager
@@ -93,8 +99,12 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			add_action( 'delete_term', array( $this, 'delete_term_fields'), 10, 4 );
 		}
 
-
-
+		$this->data_callbacks = array(
+			'get'    => array( $this, '_get_meta' ),
+			'add'    => array( $this, '_add_meta' ),
+			'update' => array( $this, '_update_meta' ),
+			'delete' => array( $this, '_delete_meta' ),
+		);
 	}
 
 	/**
@@ -177,7 +187,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			$label = '';
 		}
 
-		$field = $this->_render_field( $values, false );
+		$field = $this->_render_field( array( 'data' => $values, 'echo' => false ) );
 
 		// Create the markup and return it
 		return sprintf(
@@ -228,12 +238,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$this->fm->data_type = 'term';
 		$this->current_taxonomy = $taxonomy;
 
-		$this->_save( $data, array(
-			'get'    => array( $this, '_get_meta' ),
-			'add'    => array( $this, '_add_meta' ),
-			'update' => array( $this, '_update_meta' ),
-			'delete' => array( $this, '_delete_meta' ),
-		) );
+		$this->_save( $data );
 	}
 
 	/**

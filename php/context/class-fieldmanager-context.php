@@ -21,6 +21,17 @@ abstract class Fieldmanager_Context {
 	 */
 	public $uniqid;
 
+	/**
+	 * @var array {
+	 *     Callback functions for data storage manipulation.
+	 *
+	 *     @type string $get Callback to get data.
+	 *     @type string $add Callback to add data.
+	 *     @type string $update Callback to update data.
+	 *     @type string $delete Callback to delete data.
+	 * }
+	 */
+	public $data_callbacks;
 
 	/**
 	 * Check if the nonce is valid. Returns false if the nonce is missing and
@@ -67,9 +78,12 @@ abstract class Fieldmanager_Context {
 	 *                       to true (to output the data).
 	 * @return string if $echo = false.
 	 */
-	protected function _render_field( $values = null, $echo = true ) {
+	protected function _render_field( $args = array() ) {
+		$data = array_key_exists( 'data', $args ) ? $args['data'] : $this->_load();
+		$echo = array_key_exists( 'echo', $args ) ? $args['echo'] : true;
+
 		$nonce = wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false );
-		$field = $this->fm->element_markup( $values );
+		$field = $this->fm->element_markup( $data );
 		if ( $echo ) {
 			echo $nonce . $field;
 		} else {
@@ -82,56 +96,72 @@ abstract class Fieldmanager_Context {
 	 * Handle saving data for any context.
 	 *
 	 * @param mixed $data Data to save. Should be raw, e.g. POST data.
-	 * @param array $callbacks {
-	 *     Callback functions for data storage manipulation.
-	 *
-	 *     @type string $get Callback to get data.
-	 *     @type string $add Callback to add data.
-	 *     @type string $update Callback to update data.
-	 *     @type string $delete Callback to delete data.
-	 * }
 	 */
-	protected function _save( $data = null, $callbacks = null ) {
-		if ( ! $callbacks ) {
-			$callbacks = array(
-				'get'    => "get_{$this->fm->data_type}_meta",
-				'add'    => "add_{$this->fm->data_type}_meta",
-				'update' => "update_{$this->fm->data_type}_meta",
-				'delete' => "delete_{$this->fm->data_type}_meta",
-			);
-		}
-
-		if ( $this->fm->separate_keys ) {
-			$this->_save_multi( $this->fm, $data, $callbacks );
+	protected function _save( $data = null ) {
+		if ( $this->fm->serialize_data ) {
+			$this->_save_field( $this->fm, $data );
 		} else {
-			$this->_save_field( $this->fm, $data, $callbacks );
+			$this->_save_walk_children( $this->fm, $data );
 		}
 	}
 
-	protected function _save_field( $field, $data, $callbacks ) {
-		$current = call_user_func( $callbacks['get'], $field->data_id, $field->get_element_key(), ( ! $field->separate_keys ) );
+	protected function _save_field( $field, $data ) {
+		$current = call_user_func( $this->data_callbacks['get'], $field->data_id, $field->get_element_key(), $field->serialize_data );
 		$data = $this->_prepare_data( $current, $data );
 		if ( ! $field->skip_save ) {
-			if ( $field->separate_keys ) {
-				call_user_func( $callbacks['delete'], $field->data_id, $field->get_element_key() );
-				foreach ( $data as $value ) {
-					call_user_func( $callbacks['add'], $field->data_id, $field->get_element_key(), $data );
-				}
+			if ( $field->serialize_data ) {
+				call_user_func( $this->data_callbacks['update'], $field->data_id, $field->get_element_key(), $data );
 			} else {
-				call_user_func( $callbacks['update'], $field->data_id, $field->get_element_key(), $data );
+				call_user_func( $this->data_callbacks['delete'], $field->data_id, $field->get_element_key() );
+				foreach ( $data as $value ) {
+					call_user_func( $this->data_callbacks['add'], $field->data_id, $field->get_element_key(), $data );
+				}
 			}
 		}
 	}
 
-	protected function _walk_children( $field, $data, $callbacks ) {
-		if ( 'group' == $field->field_class ) {
+	protected function _save_walk_children( $field, $data ) {
+		if ( $field->serialize_data || 'group' != $field->field_class ) {
+			$this->_save_field( $field, $data );
+		} else {
 			foreach ( $field->children as $child ) {
 				if ( isset( $data[ $child->name ] ) ) {
-					$this->_save_multi( $child, $data[ $child->name ], $callbacks );
+					$this->_save_walk_children( $child, $data[ $child->name ] );
 				}
 			}
+		}
+	}
+
+
+	/**
+	 * Handle loading data for any context.
+	 */
+	protected function _load() {
+		if ( $this->fm->serialize_data ) {
+			return $this->_load_field( $this->fm );
 		} else {
-			$this->_save_field( $field, $data, $callbacks );
+			return $this->_load_walk_children( $this->fm );
+		}
+	}
+
+	protected function _load_field( $field ) {
+		$data = call_user_func( $this->data_callbacks['get'], $field->data_id, $field->get_element_key() );
+		if ( $field->serialize_data ) {
+			return empty( $data ) ? null : reset( $data );
+		} else {
+			return $data;
+		}
+	}
+
+	protected function _load_walk_children( $field ) {
+		if ( $field->serialize_data || 'group' != $field->field_class ) {
+			return $this->_load_field( $field );
+		} else {
+			$return = array();
+			foreach ( $field->children as $child ) {
+				$return[ $child->name ] = $this->_load_walk_children( $child );
+			}
+			return $return;
 		}
 	}
 

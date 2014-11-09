@@ -41,6 +41,17 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	public $fm = '';
 
 	/**
+	 * Callbacks for manipulating data.
+	 * @var array
+	 */
+	public $data_callbacks = array(
+		'get'    => "get_post_meta",
+		'add'    => "add_post_meta",
+		'update' => "update_post_meta",
+		'delete' => "delete_post_meta",
+	);
+
+	/**
 	 * Add a context to a fieldmanager
 	 * @param string $title
 	 * @param string|string[] $post_types
@@ -119,7 +130,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		?>
 		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo esc_attr( $column_name ); ?>" data-fm-post-type="<?php echo esc_attr( $post_type ); ?>">
 			<div class="inline-edit-col">
-				<?php $this->_render_field( $values ); ?>
+				<?php $this->_render_field( array( 'data' => $values ) ); ?>
 			</div>
 		</fieldset>
 		<?php

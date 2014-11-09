@@ -192,10 +192,10 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Save the fields to their own keys (only works in some contexts). Default
-	 * is false.
+	 * is true.
 	 * @var boolean
 	 */
-	public $separate_keys = false;
+	public $serialize_data = true;
 
 	/**
 	 * @var Fieldmanager_Datasource

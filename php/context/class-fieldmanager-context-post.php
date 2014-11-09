@@ -40,6 +40,17 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	public $fm = null;
 
 	/**
+	 * Callbacks for manipulating data.
+	 * @var array
+	 */
+	public $data_callbacks = array(
+		'get'    => "get_post_meta",
+		'add'    => "add_post_meta",
+		'update' => "update_post_meta",
+		'delete' => "delete_post_meta",
+	);
+
+	/**
 	 * Add a context to a fieldmanager
 	 * @param string $title
 	 * @param string|string[] $post_types
@@ -96,13 +107,10 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void.
 	 */
 	public function render_meta_box( $post, $form_struct = null ) {
-		$key = $this->fm->name;
-		$values = get_post_meta( $post->ID, $key );
-		$values = empty( $values ) ? Null : $values[0];
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
 
-		$this->_render_field( $values );
+		$this->_render_field();
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );

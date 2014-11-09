@@ -10,10 +10,21 @@
 class Fieldmanager_Context_User extends Fieldmanager_Context {
 
 	/**
-	 * @var string
 	 * Group Title
+	 * @var string
 	 */
 	public $title;
+
+	/**
+	 * Callbacks for manipulating data.
+	 * @var array
+	 */
+	public $data_callbacks = array(
+		'get'    => "get_user_meta",
+		'add'    => "add_user_meta",
+		'update' => "update_user_meta",
+		'delete' => "delete_user_meta",
+	);
 
 	/**
 	 * Add fieldmanager to user form
@@ -47,13 +58,14 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function render_user_form( $user ) {
-		$values = get_user_meta( $user->ID, $this->fm->name );
-		$values = empty( $values ) ? null : $values[0];
+		$this->fm->data_id = $user->ID;
+		$this->fm->data_type = 'user';
+
 		if ( !empty( $this->title ) ) {
 			echo '<h3>' . $this->title . '</h3>';
 		}
 		echo '<div class="fm-user-form-wrapper">';
-		$this->_render_field( $values );
+		$this->_render_field();
 		echo '</div>';
 
 		// Check if any validation is required
