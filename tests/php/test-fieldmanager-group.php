@@ -16,6 +16,31 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 			'post_content' => rand_str(),
 			'post_title' => rand_str(),
 		) );
+		$this->post_id = $this->post->ID;
+	}
+
+	public function tearDown() {
+		$meta = get_post_meta( $this->post_id );
+		foreach ( $meta as $key => $value ) {
+			delete_post_meta( $this->post_id, $key );
+		}
+	}
+
+	/**
+	 * Helper which returns the post meta box HTML for a given field;
+	 *
+	 * @param  object $field     Some Fieldmanager_Field object.
+	 * @param  array  $test_data Data to save (and use when rendering)
+	 * @return string            Rendered HTML
+	 */
+	private function _get_html_for( $field, $test_data = null ) {
+		ob_start();
+		$context = $field->add_meta_box( 'test meta box', $this->post );
+		if ( $test_data ) {
+			$context->save_to_post_meta( $this->post_id, $test_data );
+		}
+		$context->render_meta_box( $this->post, array() );
+		return ob_get_clean();
 	}
 
 	/**
@@ -112,5 +137,158 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 						),
 					),
 			) );
+	}
+
+	public function test_unserialize_data_group_render() {
+		$args = array(
+			'name'           => 'base_group',
+			'children'       => array(
+				'test_basic' => new Fieldmanager_TextField(),
+				'test_htmlfield' => new Fieldmanager_Textarea( array(
+					'sanitize' => 'wp_kses_post',
+				) ),
+			)
+		);
+
+		$base = new Fieldmanager_Group( $args );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertContains( 'name="base_group[test_basic]"', $html );
+		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
+
+		// Using serialize_data => false shouldn't change anything
+		$base = new Fieldmanager_Group( array_merge( $args, array( 'serialize_data' => false ) ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertContains( 'name="base_group[test_basic]"', $html );
+		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
+	}
+
+	public function test_unserialize_data_group_render_with_data() {
+		$args = array(
+			'name'           => 'base_group',
+			'children'       => array(
+				'test_basic' => new Fieldmanager_TextField(),
+				'test_htmlfield' => new Fieldmanager_Textarea( array(
+					'sanitize' => 'wp_kses_post',
+				) ),
+			)
+		);
+		$data = array(
+			'test_basic'     => rand_str(),
+			'test_htmlfield' => rand_str()
+		);
+
+		update_post_meta( $this->post_id, 'base_group', $data );
+		$base = new Fieldmanager_Group( $args );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertContains( 'name="base_group[test_basic]"', $html );
+		$this->assertContains( 'value="' . $data['test_basic'] . '"', $html );
+		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
+		$this->assertContains( ">{$data['test_htmlfield']}</textarea>", $html );
+		delete_post_meta( $this->post_id, 'base_group' );
+
+		// Using serialize_data => false requires a different data storage
+		foreach ( $data as $meta_key => $meta_value ) {
+			add_post_meta( $this->post_id, "base_group_{$meta_key}", $meta_value );
+		}
+		$base = new Fieldmanager_Group( array_merge( $args, array( 'serialize_data' => false ) ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertContains( 'name="base_group[test_basic]"', $html );
+		$this->assertContains( 'value="' . $data['test_basic'] . '"', $html );
+		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
+		$this->assertContains( ">{$data['test_htmlfield']}</textarea>", $html );
+		foreach ( $data as $meta_key => $meta_value ) {
+			delete_post_meta( $this->post_id, "base_group_{$meta_key}" );
+		}
+
+		// Here, we'll set 'add_to_prefix' => false so the group name is not
+		// included in the meta keys.
+		foreach ( $data as $meta_key => $meta_value ) {
+			add_post_meta( $this->post_id, $meta_key, $meta_value );
+		}
+		$base = new Fieldmanager_Group( array_merge( $args, array( 'serialize_data' => false, 'add_to_prefix' => false ) ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertContains( 'name="base_group[test_basic]"', $html );
+		$this->assertContains( 'value="' . $data['test_basic'] . '"', $html );
+		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
+		foreach ( $data as $meta_key => $meta_value ) {
+			delete_post_meta( $this->post_id, $meta_key );
+		}
+	}
+
+	public function test_unserialize_data_group_save() {
+		$args = array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'children'       => array(
+				'test_basic' => new Fieldmanager_TextField(),
+				'test_htmlfield' => new Fieldmanager_Textarea( array(
+					'sanitize' => 'wp_kses_post',
+				) ),
+			)
+		);
+		$data = array(
+			'test_basic'     => rand_str(),
+			'test_htmlfield' => rand_str()
+		);
+		delete_post_meta( $this->post_id, 'base_group_test_basic' );
+		delete_post_meta( $this->post_id, 'base_group_test_htmlfield' );
+		$base = new Fieldmanager_Group( $args );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data['test_basic'], get_post_meta( $this->post_id, 'base_group_test_basic', true ) );
+		$this->assertEquals( $data['test_htmlfield'], get_post_meta( $this->post_id, 'base_group_test_htmlfield', true ) );
+
+		delete_post_meta( $this->post_id, 'test_basic' );
+		delete_post_meta( $this->post_id, 'test_htmlfield' );
+		$base = new Fieldmanager_Group( array_merge( $args, array( 'add_to_prefix' => false ) ) );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data['test_basic'], get_post_meta( $this->post_id, 'test_basic', true ) );
+		$this->assertEquals( $data['test_htmlfield'], get_post_meta( $this->post_id, 'test_htmlfield', true ) );
+	}
+
+	public function test_unserialize_data_mid_group_prefix() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'children'       => array(
+				'level2' => new Fieldmanager_Group( array(
+					'serialize_data' => false,
+					'children' => array(
+						'level3' => new Fieldmanager_Group( array(
+							'serialize_data' => false,
+							'add_to_prefix' => false,
+							'children' => array(
+								'level4' => new Fieldmanager_Group( array(
+									'serialize_data' => false,
+									'children' => array(
+										'field' => new Fieldmanager_TextField
+									)
+								) ),
+							)
+						) ),
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'level2' => array(
+				'level3' => array(
+					'level4' => array(
+						'field' => rand_str()
+					)
+				)
+			)
+		);
+		delete_post_meta( $this->post_id, 'base_group' );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data['level2']['level3']['level4']['field'], get_post_meta( $this->post_id, 'base_group_level2_level4_field', true ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertContains( 'name="base_group[level2][level3][level4][field]"', $html );
+		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
 	}
 }

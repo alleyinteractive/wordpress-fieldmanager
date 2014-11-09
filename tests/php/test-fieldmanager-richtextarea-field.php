@@ -3,7 +3,7 @@
 /**
  * Tests the Fieldmanager RichTextArea Field
  *
- * @group richtextarea
+ * @group field
  */
 class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
