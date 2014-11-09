@@ -624,7 +624,7 @@ abstract class Fieldmanager_Field {
 		$key = $el->name;
 		while ( $el = $el->parent ) {
 			if ( $el->limit != 1 ) {
-				return false;
+				throw new FM_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with repeating parent elements', 'fieldmanager' ) );
 			}
 			if ( $el->add_to_prefix ) {
 				$key = "{$el->name}_{$key}";
@@ -641,11 +641,14 @@ abstract class Fieldmanager_Field {
 	public function presave_all( $values, $current_values ) {
 		if ( $this->limit == 1 && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
-			if ( ! empty( $values ) )
+			if ( ! empty( $values ) ) {
 				$value = $this->presave( $values[0], $current_values );
-			else
+			} else {
 				$value = $values;
-			if ( !empty( $this->index ) ) $this->save_index( array( $value ), array( $current_values ) );
+			}
+			if ( !empty( $this->index ) ) {
+				$this->save_index( array( $value ), array( $current_values ) );
+			}
 			return $value;
 		}
 

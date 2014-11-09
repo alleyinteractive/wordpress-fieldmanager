@@ -59,12 +59,15 @@ abstract class Fieldmanager_Context {
 	 * @param  mixed $new_value Optional. The new value for the field.
 	 * @return mixed The filtered and sanitized value, safe to save.
 	 */
-	protected function _prepare_data( $old_value = null, $new_value = null ) {
+	protected function _prepare_data( $old_value = null, $new_value = null, $fm = null ) {
 		if ( null === $new_value ) {
 			$new_value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
 		}
+		if ( null === $fm ) {
+			$fm = $this->fm;
+		}
 		$new_value = apply_filters( "fm_context_before_presave_data", $new_value, $old_value, $this );
-		$data = $this->fm->presave_all( $new_value, $old_value );
+		$data = $fm->presave_all( $new_value, $old_value );
 		return apply_filters( "fm_context_after_presave_data", $data, $old_value, $this );
 	}
 
@@ -99,34 +102,34 @@ abstract class Fieldmanager_Context {
 	 */
 	protected function _save( $data = null ) {
 		if ( $this->fm->serialize_data ) {
-			$this->_save_field( $this->fm, $data );
+			$this->_save_field( $this->fm, $data, $this->fm->data_id );
 		} else {
-			$this->_save_walk_children( $this->fm, $data );
+			$this->_save_walk_children( $this->fm, $data, $this->fm->data_id );
 		}
 	}
 
-	protected function _save_field( $field, $data ) {
-		$current = call_user_func( $this->data_callbacks['get'], $field->data_id, $field->get_element_key(), $field->serialize_data );
-		$data = $this->_prepare_data( $current, $data );
+	protected function _save_field( $field, $data, $object_id ) {
+		$current = call_user_func( $this->data_callbacks['get'], $object_id, $field->get_element_key(), $field->serialize_data );
+		$data = $this->_prepare_data( $current, $data, $field );
 		if ( ! $field->skip_save ) {
 			if ( $field->serialize_data ) {
-				call_user_func( $this->data_callbacks['update'], $field->data_id, $field->get_element_key(), $data );
+				call_user_func( $this->data_callbacks['update'], $object_id, $field->get_element_key(), $data );
 			} else {
-				call_user_func( $this->data_callbacks['delete'], $field->data_id, $field->get_element_key() );
+				call_user_func( $this->data_callbacks['delete'], $object_id, $field->get_element_key() );
 				foreach ( $data as $value ) {
-					call_user_func( $this->data_callbacks['add'], $field->data_id, $field->get_element_key(), $value );
+					call_user_func( $this->data_callbacks['add'], $object_id, $field->get_element_key(), $value );
 				}
 			}
 		}
 	}
 
-	protected function _save_walk_children( $field, $data ) {
+	protected function _save_walk_children( $field, $data, $object_id ) {
 		if ( $field->serialize_data || 'group' != $field->field_class ) {
-			$this->_save_field( $field, $data );
+			$this->_save_field( $field, $data, $object_id );
 		} else {
 			foreach ( $field->children as $child ) {
 				if ( isset( $data[ $child->name ] ) ) {
-					$this->_save_walk_children( $child, $data[ $child->name ] );
+					$this->_save_walk_children( $child, $data[ $child->name ], $object_id );
 				}
 			}
 		}
@@ -138,14 +141,14 @@ abstract class Fieldmanager_Context {
 	 */
 	protected function _load() {
 		if ( $this->fm->serialize_data ) {
-			return $this->_load_field( $this->fm );
+			return $this->_load_field( $this->fm, $this->fm->data_id );
 		} else {
-			return $this->_load_walk_children( $this->fm );
+			return $this->_load_walk_children( $this->fm, $this->fm->data_id );
 		}
 	}
 
-	protected function _load_field( $field ) {
-		$data = call_user_func( $this->data_callbacks['get'], $field->data_id, $field->get_element_key() );
+	protected function _load_field( $field, $object_id ) {
+		$data = call_user_func( $this->data_callbacks['get'], $object_id, $field->get_element_key() );
 		if ( $field->serialize_data ) {
 			return empty( $data ) ? null : reset( $data );
 		} else {
@@ -153,13 +156,13 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
-	protected function _load_walk_children( $field ) {
+	protected function _load_walk_children( $field, $object_id ) {
 		if ( $field->serialize_data || 'group' != $field->field_class ) {
-			return $this->_load_field( $field );
+			return $this->_load_field( $field, $object_id );
 		} else {
 			$return = array();
 			foreach ( $field->children as $child ) {
-				$return[ $child->name ] = $this->_load_walk_children( $child );
+				$return[ $child->name ] = $this->_load_walk_children( $child, $object_id );
 			}
 			return $return;
 		}
