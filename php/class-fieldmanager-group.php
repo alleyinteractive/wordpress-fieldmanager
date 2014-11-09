@@ -107,6 +107,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				throw new FM_Developer_Exception( esc_html__( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name );
 			}
 			else if ( !$element->name ) $element->name = $name;
+
+			// Form a child-parent bond
+			$element->parent = $this;
 		}
 
 		// Add the tab JS and CSS if it is needed
@@ -223,6 +226,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @return void
 	 */
 	public function add_child( Fieldmanager_Field $child ) {
+		$child->parent = $this;
 		$this->children[ $child->name ] = $child;
 	}
 
