@@ -61,7 +61,7 @@ abstract class Fieldmanager_Context {
 	 */
 	protected function _prepare_data( $old_value = null, $new_value = null, $fm = null ) {
 		if ( null === $new_value ) {
-			$new_value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+			$new_value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
 		}
 		if ( null === $fm ) {
 			$fm = $this->fm;
@@ -104,6 +104,9 @@ abstract class Fieldmanager_Context {
 		if ( $this->fm->serialize_data ) {
 			$this->_save_field( $this->fm, $data, $this->fm->data_id );
 		} else {
+			if ( null === $data ) {
+				$data = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
+			}
 			$this->_save_walk_children( $this->fm, $data, $this->fm->data_id );
 		}
 	}
