@@ -114,7 +114,7 @@ abstract class Fieldmanager_Context {
 			} else {
 				call_user_func( $this->data_callbacks['delete'], $field->data_id, $field->get_element_key() );
 				foreach ( $data as $value ) {
-					call_user_func( $this->data_callbacks['add'], $field->data_id, $field->get_element_key(), $data );
+					call_user_func( $this->data_callbacks['add'], $field->data_id, $field->get_element_key(), $value );
 				}
 			}
 		}
