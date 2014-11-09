@@ -893,4 +893,43 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
 	}
 
+	public function test_unserialize_data_single_field_sorting() {
+		$item_1 = rand_str();
+		$item_2 = rand_str();
+		$item_3 = rand_str();
+		$base = new Fieldmanager_TextField( array(
+			'name'           => 'base_field',
+			'limit'          => 0,
+			'serialize_data' => false,
+		) );
+		$context = $base->add_meta_box( 'test meta box', 'post' );
+
+		// Test as 1, 2, 3
+		$data = array( $item_1, $item_2, $item_3 );
+		$context->save_to_post_meta( $this->post_id, $data );
+		$html = $this->_get_html_for( $base );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_3 . '"/', $html );
+
+		// Reorder and test as 3, 1, 2
+		$data = array( $item_3, $item_1, $item_2 );
+		$context->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
+
+		// Reorder and test as 2, 3, 1
+		$data = array( $item_2, $item_3, $item_1 );
+		$context->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_1 . '"/', $html );
+	}
+
 }
