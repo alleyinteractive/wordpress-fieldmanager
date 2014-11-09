@@ -212,7 +212,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 
 		// Make sure the current user can save this post
 		$tax_obj = get_taxonomy( $taxonomy );
-		if( !current_user_can( $tax_obj->cap->manage_terms ) ) {
+		if( ! current_user_can( $tax_obj->cap->manage_terms ) ) {
 			$this->fm->_unauthorized_access( __( 'User cannot edit this term', 'fieldmanager' ) );
 			return;
 		}

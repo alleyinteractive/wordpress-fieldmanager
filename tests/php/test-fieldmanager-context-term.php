@@ -6,9 +6,14 @@
  * @group context
  */
 class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
+	public $current_user;
+
 	public function setUp() {
 		parent::setUp();
 		Fieldmanager_Field::$debug = TRUE;
+
+		$this->current_user = get_current_user_id();
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
 		$this->taxonomy = 'category';
 		$term = wp_insert_term( 'test', $this->taxonomy );
@@ -17,6 +22,13 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 
 		// reload as proper object
 		$this->term = get_term( $this->term_id, $this->taxonomy );
+	}
+
+	public function tearDown() {
+		if ( get_current_user_id() != $this->current_user ) {
+			wp_delete_user( get_current_user_id() );
+		}
+		wp_set_current_user( $this->current_user );
 	}
 
 	/**
@@ -130,9 +142,6 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	}
 
 	public function test_programmatic_save_terms() {
-		$current_user = get_current_user_id();
-		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
-
 		$base = $this->_get_elements();
 		$base->add_term_form( 'test meta box', $this->taxonomy );
 
@@ -143,7 +152,5 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		wp_update_term( $term['term_id'], $this->taxonomy, array( 'name' => 'Alley' ) );
 		$updated_term = get_term( $term['term_id'], $this->taxonomy );
 		$this->assertEquals( 'Alley', $updated_term->name );
-
-		wp_set_current_user( $current_user );
 	}
 }
