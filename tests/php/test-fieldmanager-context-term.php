@@ -4,6 +4,7 @@
  * Tests the Post context
  *
  * @group context
+ * @group term
  */
 class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	public $current_user;

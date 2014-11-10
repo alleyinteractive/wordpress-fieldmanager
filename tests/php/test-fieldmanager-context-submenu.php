@@ -2,6 +2,9 @@
 
 /**
  * Tests submenu forms/pages
+ *
+ * @group context
+ * @group submenu
  */
 class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 

@@ -4,6 +4,7 @@
  * Tests the Fieldmanager Datasource Term
  *
  * @group datasource
+ * @group term
  */
 class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 

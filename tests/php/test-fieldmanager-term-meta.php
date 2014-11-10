@@ -4,6 +4,7 @@
  * Tests the Fieldmanager Term Meta
  *
  * @group util
+ * @group term
  */
 class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 	public $current_user;

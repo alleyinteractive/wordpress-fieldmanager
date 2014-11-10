@@ -4,6 +4,7 @@
  * Tests the User context
  *
  * @group context
+ * @group user
  */
 class Test_Fieldmanager_Context_User extends WP_UnitTestCase {
 	public function setUp() {

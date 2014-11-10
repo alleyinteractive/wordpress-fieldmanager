@@ -4,6 +4,7 @@
  * Tests the Quickedit context
  *
  * @group context
+ * @group quickedit
  */
 class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 	public function setUp() {

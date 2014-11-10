@@ -4,6 +4,7 @@
  * Tests the Fieldmanager RichTextArea Field
  *
  * @group field
+ * @group richtextarea
  */
 class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
