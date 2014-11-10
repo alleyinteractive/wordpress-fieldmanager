@@ -162,19 +162,14 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function term_fields( $html_template, $taxonomy, $term = null ) {
 		// Make sure the user hasn't specified a field name we can't use
-		if ( in_array( $this->fm->name, $this->reserved_fields ) )
+		if ( in_array( $this->fm->name, $this->reserved_fields ) ) {
 			$this->fm->_invalid_definition( sprintf( __( 'The field name "%s" is reserved for WordPress on the term form.', 'fieldmanager' ), $this->fm->name ) );
-
-		// Check if there are any current values to retrieve
-		if ( isset( $term->term_id ) ) {
-			$term_meta = Fieldmanager_Util_Term_Meta();
-			$values = $term_meta->get_term_meta( $term->term_id, $taxonomy, $this->fm->name, true );
 		}
-		$values = empty( $values ) ? null : $values;
 
 		// Set the data type and ID
 		$this->fm->data_type = 'term';
 		$this->fm->data_id = is_object( $term ) ? $term->term_id : null;
+		$this->current_taxonomy = $taxonomy;
 
 		// Create the display label if one is set
 		if ( ! empty( $this->title ) ) {
@@ -187,7 +182,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			$label = '';
 		}
 
-		$field = $this->_render_field( array( 'data' => $values, 'echo' => false ) );
+		$field = $this->_render_field( array( 'echo' => false ) );
 
 		// Create the markup and return it
 		return sprintf(
@@ -260,19 +255,19 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	}
 
 	protected function _get_meta( $term_id, $meta_key, $single = false ) {
-		fm_get_term_meta( $term_id, $this->current_taxonomy, $meta_key, $single );
+		return fm_get_term_meta( $term_id, $this->current_taxonomy, $meta_key, $single );
 	}
 
 	protected function _add_meta( $term_id, $meta_key, $meta_value, $unique = false ) {
-		fm_add_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $unique );
+		return fm_add_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $unique );
 	}
 
 	protected function _update_meta( $term_id, $meta_key, $meta_value, $meta_prev_value = '' ) {
-		fm_update_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $meta_prev_value );
+		return fm_update_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $meta_prev_value );
 	}
 
 	protected function _delete_meta( $term_id, $meta_key, $meta_value = '' ) {
-		fm_delete_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value );
+		return fm_delete_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value );
 	}
 
 }
