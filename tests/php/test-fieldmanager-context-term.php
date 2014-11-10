@@ -217,4 +217,78 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
 		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
 	}
+
+	public function test_unserialize_data_tabbed() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'tabbed'         => true,
+			'serialize_data' => false,
+			'add_to_prefix'  => false,
+			'children'       => array(
+				'tab-1' => new Fieldmanager_Group( array(
+					'label'          => 'Tab One',
+					'serialize_data' => false,
+					'add_to_prefix'  => false,
+					'children'       => array(
+						'test_text' => new Fieldmanager_TextField( 'Text Field' ),
+					)
+				) ),
+				'tab-2' => new Fieldmanager_Group( array(
+					'label'          => 'Tab Two',
+					'serialize_data' => false,
+					'add_to_prefix'  => false,
+					'children'       => array(
+						'test_textarea' => new Fieldmanager_TextArea( 'TextArea' ),
+					)
+				) ),
+			)
+		) );
+		$data = array(
+			'tab-1' => array(
+				'test_text' => rand_str()
+			),
+			'tab-2' => array(
+				'test_textarea' => rand_str()
+			),
+		);
+
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data['tab-1']['test_text'], fm_get_term_meta( $this->term_id, $this->taxonomy, 'test_text', true ) );
+		$this->assertEquals( $data['tab-2']['test_textarea'], fm_get_term_meta( $this->term_id, $this->taxonomy, 'test_textarea', true ) );
+		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
+		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
+		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
+		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
+	}
+
+	public function test_unserialize_data_mixed_depth() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'children'       => array(
+				'test_text' => new Fieldmanager_TextField,
+				'test_group' => new Fieldmanager_Group( array(
+					'serialize_data' => false,
+					'children'       => array(
+						'deep_text' => new Fieldmanager_TextArea,
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'test_text' => rand_str(),
+			'test_group' => array(
+				'deep_text' => rand_str()
+			),
+		);
+
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data['test_text'], fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_group_test_text', true ) );
+		$this->assertEquals( $data['test_group']['deep_text'], fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_group_test_group_deep_text', true ) );
+		$this->assertContains( 'name="base_group[test_text]"', $html );
+		$this->assertContains( 'value="' . $data['test_text'] . '"', $html );
+		$this->assertContains( 'name="base_group[test_group][deep_text]"', $html );
+		$this->assertContains( '>' . $data['test_group']['deep_text'] . '</textarea>', $html );
+	}
 }
