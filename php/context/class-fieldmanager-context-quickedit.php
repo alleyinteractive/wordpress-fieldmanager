@@ -111,7 +111,9 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function manage_custom_columns( $column_name, $post_id ) {
-		if ( $column_name != $this->fm->name ) return;
+		if ( $column_name != $this->fm->name ) {
+			return;
+		}
 		$data = get_post_meta( $post_id, $this->fm->name, true );
 		$column_text = call_user_func( $this->column_display_callback, $post_id, $data );
 		echo $column_text;
@@ -126,7 +128,9 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function add_quickedit_box( $column_name, $post_type, $values = array() ) {
-		if ( $column_name != $this->fm->name ) return;
+		if ( $column_name != $this->fm->name ) {
+			return;
+		}
 		?>
 		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo esc_attr( $column_name ); ?>" data-fm-post-type="<?php echo esc_attr( $post_type ); ?>">
 			<div class="inline-edit-col">
@@ -142,17 +146,26 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return string
 	 */
 	public function render_ajax_form() {
+		if ( ! isset( $_GET['action'], $_GET['post_id'], $_GET['column_name'] ) ) {
+			return;
+		}
+
 		if ( $_GET['action'] != 'fm_quickedit_render' ) {
 			return;
 		}
+
 		$column_name = sanitize_text_field( $_GET['column_name'] );
 		$post_id = intval( $_GET['post_id'] );
-		if ( $column_name != $this->fm->name ) return;
-		$values = get_post_meta( $post_id, $this->fm->name );
-		$values = empty( $values ) ? array() : $values[0];
+
+		if ( ! $post_id || $column_name != $this->fm->name ) {
+			return;
+		}
+
+		$this->fm->data_type = 'post';
+		$this->fm->data_id = $post_id;
 		$post_type = get_post_type( $post_id );
-		$markup = $this->add_quickedit_box( $column_name, $post_type, $values );
-		return $markup;
+
+		return $this->add_quickedit_box( $column_name, $post_type, $this->_load() );
 	}
 
 	/**
