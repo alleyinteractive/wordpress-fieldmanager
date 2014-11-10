@@ -72,7 +72,9 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function __construct( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '', $fm = null ) {
 		// Populate the list of taxonomies for which to add this meta box with the given settings
-		if ( !is_array( $taxonomies ) ) $taxonomies = array( $taxonomies );
+		if ( ! is_array( $taxonomies ) ) {
+			$taxonomies = array( $taxonomies );
+		}
 
 		// Set the class variables
 		$this->title = $title;
@@ -115,8 +117,9 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function add_term_fields( $taxonomy ) {
 		// If the parent is set, do nothing because we don't know what the parent term is yet
-		if ( ! empty( $this->parent ) )
+		if ( ! empty( $this->parent ) ) {
 			return;
+		}
 
 		// Create the HTML template for output
 		$html_template = '<div class="form-field">%s%s</div>';
@@ -138,8 +141,9 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function edit_term_fields( $term, $taxonomy ) {
 		// Check if this term's parent matches the specified term if it is set
-		if ( ! empty( $this->parent ) && $this->parent != $term->parent )
+		if ( ! empty( $this->parent ) && $this->parent != $term->parent ) {
 			return;
+		}
 
 		// Create the HTML template for output
 		$html_template = '<tr class="form-field"><th scope="row" valign="top">%s</th><td>%s</td></tr>';
@@ -202,8 +206,9 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function save_term_fields( $term_id, $tt_id, $taxonomy ) {
 		// Make sure this field is attached to the taxonomy being saved and this is the appropriate action
-		if ( ! in_array( $taxonomy, $this->taxonomies ) )
+		if ( ! in_array( $taxonomy, $this->taxonomies ) ) {
 			return;
+		}
 
 		// Make sure that our nonce field arrived intact
 		if ( ! $this->_is_valid_nonce() ) {
@@ -212,7 +217,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 
 		// Make sure the current user can save this post
 		$tax_obj = get_taxonomy( $taxonomy );
-		if( ! current_user_can( $tax_obj->cap->manage_terms ) ) {
+		if ( ! current_user_can( $tax_obj->cap->manage_terms ) ) {
 			$this->fm->_unauthorized_access( __( 'User cannot edit this term', 'fieldmanager' ) );
 			return;
 		}
