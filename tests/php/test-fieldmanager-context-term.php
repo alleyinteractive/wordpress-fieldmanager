@@ -25,6 +25,11 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	}
 
 	public function tearDown() {
+		$meta = fm_get_term_meta( $this->term_id, $this->taxonomy );
+		foreach ( $meta as $key => $value ) {
+			fm_delete_term_meta( $this->term_id, $this->taxonomy, $key );
+		}
+
 		if ( get_current_user_id() != $this->current_user ) {
 			wp_delete_user( get_current_user_id() );
 		}
@@ -91,6 +96,18 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		) );
 	}
 
+	private function _get_html_for( $field, $test_data = null ) {
+		ob_start();
+		$context = $field->add_term_form( 'test meta box', $this->taxonomy );
+		if ( $test_data ) {
+			$context->save_to_term_meta( $this->term_id, $this->taxonomy, $test_data );
+			$context->edit_term_fields( $this->term, $this->taxonomy );
+		} else {
+			$context->add_term_fields( $this->taxonomy );
+		}
+		return ob_get_clean();
+	}
+
 	public function test_context_render_add_form() {
 		$base = $this->_get_elements();
 		ob_start();
@@ -152,5 +169,52 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		wp_update_term( $term['term_id'], $this->taxonomy, array( 'name' => 'Alley' ) );
 		$updated_term = get_term( $term['term_id'], $this->taxonomy );
 		$this->assertEquals( 'Alley', $updated_term->name );
+	}
+
+	public function test_unserialize_data_single_field() {
+		$base = new Fieldmanager_TextField( array(
+			'name'           => 'base_field',
+			'limit'          => 0,
+			'serialize_data' => false,
+		) );
+		$html = $this->_get_html_for( $base );
+		$this->assertContains( 'name="base_field[0]"', $html );
+		$this->assertNotContains( 'name="base_field[3]"', $html );
+
+		$data = array( rand_str(), rand_str(), rand_str() );
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data, fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_field' ) );
+		$this->assertContains( 'name="base_field[3]"', $html );
+		$this->assertContains( 'value="' . $data[0] . '"', $html );
+		$this->assertContains( 'value="' . $data[1] . '"', $html );
+		$this->assertContains( 'value="' . $data[2] . '"', $html );
+		$this->assertNotContains( 'name="base_field[4]"', $html );
+	}
+
+	public function test_unserialize_data_single_field_sorting() {
+		$item_1 = rand_str();
+		$item_2 = rand_str();
+		$item_3 = rand_str();
+		$base = new Fieldmanager_TextField( array(
+			'name'           => 'base_field',
+			'limit'          => 0,
+			'serialize_data' => false,
+		) );
+
+		// Test as 1, 2, 3
+		$data = array( $item_1, $item_2, $item_3 );
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data, fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_field' ) );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_3 . '"/', $html );
+
+		// Reorder and test as 3, 1, 2
+		$data = array( $item_3, $item_1, $item_2 );
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data, fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_field' ) );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
 	}
 }
