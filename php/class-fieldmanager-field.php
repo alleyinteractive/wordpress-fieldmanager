@@ -207,12 +207,11 @@ abstract class Fieldmanager_Field {
 	public $display_if = array();
 
 	/**
-	* @var boolean
+	* @var string
 	* Where the new item should to added ( top/bottom ) of the stack. Used by Add Another button
-	* $element->add_more_at_top = true : Default, add at the bottom of stack
-	* $element->add_more_at_top = false : Add at the top of stack
+	* "top|bottom"
 	*/
-	public $add_more_at_top = True;
+	public $add_more_position = "bottom";
 
 	/**
 	 * @var boolean
@@ -435,7 +434,7 @@ abstract class Fieldmanager_Field {
 
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
-		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && !$this->add_more_at_top ) {
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && "top" == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
 
@@ -451,7 +450,7 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && $this->add_more_at_top ) {
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && "bottom" == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
 
@@ -835,20 +834,15 @@ abstract class Fieldmanager_Field {
 		if ( empty( $this->add_more_label ) ) {
 			$this->add_more_label = 'group' == $this->field_class ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
 		}
-		if( $this->add_more_at_top ) {
-			$add_more_attr = "add_more_at_top";
-		} else {
-			$add_more_attr = "add_more_at_bottom";
-		}
 
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
-			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-add-more-at-top="%s" data-limit="%d" />',
+			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-add-more-position="%s" data-limit="%d" />',
 			esc_attr( implode( ' ', $classes ) ),
 			esc_attr( $this->add_more_label ),
 			esc_attr( 'fm_add_another_' . $this->name ),
 			esc_attr( $this->name ),
-			esc_attr( $add_more_attr ),
+			esc_attr( $this->add_more_position ),
 			intval( $this->limit )
 		);
 		$out .= '</div>';
