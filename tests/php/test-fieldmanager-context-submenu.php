@@ -84,6 +84,42 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$context->save_submenu_data();
 	}
 
+	public function test_urls() {
+		$current_user = get_current_user_id();
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+
+		// Test URL generation with a normal parent, tools.php
+		$name_1 = rand_str();
+		fm_register_submenu_page( $name_1, 'tools.php', 'Testing URLs' );
+		$context_1 = $this->get_context( $name_1 );
+
+		// Test with a parent with an additional query arg
+		$name_2 = rand_str();
+		fm_register_submenu_page( $name_2, 'edit.php?post_type=page', 'Testing URLs' );
+		$context_2 = $this->get_context( $name_2 );
+
+		// Test with a null parent
+		$name_3 = rand_str();
+		fm_register_submenu_page( $name_3, null, 'Testing URLs' );
+		$context_3 = $this->get_context( $name_3 );
+
+		// Test with a parent slug
+		$name_4 = rand_str();
+		$parent = rand_str();
+		add_submenu_page( null, 'Test parent', 'Test parent', 'manage_options', $parent );
+		fm_register_submenu_page( $name_4, $parent, 'Testing URLs' );
+		$context_4 = $this->get_context( $name_4 );
+
+		wp_set_current_user( $current_user );
+
+		// We're running the assertions at the end so we can be guaranteed that
+		// we set the current user back.
+		$this->assertEquals( admin_url( 'tools.php?page=' . $name_1 ), $context_1->url() );
+		$this->assertEquals( admin_url( 'edit.php?post_type=page&page=' . $name_2 ), $context_2->url() );
+		$this->assertEquals( admin_url( 'admin.php?page=' . $name_3 ), $context_3->url() );
+		$this->assertEquals( admin_url( 'admin.php?page=' . $name_4 ), $context_4->url() );
+	}
+
 	/**
 	 * Build a html from the default context and fields.
 	 *
