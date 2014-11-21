@@ -684,7 +684,7 @@ abstract class Fieldmanager_Field {
 
 		if ( ! $this->save_empty ) {
 			// reindex the array after removing empty values
-			$values = array_values( array_filter( $values, function( $v ) { return ! empty( $v ); } ) );
+			$values = array_values( array_filter( $values ) );
 		}
 
 		if ( ! empty( $this->index ) ) {
