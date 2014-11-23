@@ -128,13 +128,7 @@ class Fieldmanager_Util_Term_Meta {
 		}
 
 		// Add this key/value pair as post meta data
-		$result = add_post_meta( $term_meta_post_id, $meta_key, $meta_value, $unique );
-
-		if ( $result === false ) {
-			return false;
-		} else {
-			return true;
-		}
+		return add_post_meta( $term_meta_post_id, $meta_key, $meta_value, $unique );
 	}
 
 	/**
@@ -161,13 +155,7 @@ class Fieldmanager_Util_Term_Meta {
 		}
 
 		// Add this key/value pair as post meta data
-		$result = update_post_meta( $term_meta_post_id, $meta_key, $meta_value, $meta_prev_value );
-
-		if ( $result === false ) {
-			return false;
-		} else {
-			return true;
-		}
+		return update_post_meta( $term_meta_post_id, $meta_key, $meta_value, $meta_prev_value );
 	}
 
 	/**
@@ -195,7 +183,7 @@ class Fieldmanager_Util_Term_Meta {
 		$post_terms = get_post_meta( $term_meta_post_id );
 		if ( empty( $post_terms ) ) {
 			// If not, remove the post to store the metadata to free up space in wp_posts
-			$result = wp_delete_post( $term_meta_post_id, true );
+			wp_delete_post( $term_meta_post_id, true );
 			$this->delete_term_meta_post_id_cache( $term_id, $taxonomy );
 		}
 
