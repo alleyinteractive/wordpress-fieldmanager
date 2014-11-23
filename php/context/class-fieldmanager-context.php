@@ -127,7 +127,7 @@ abstract class Fieldmanager_Context {
 	}
 
 	protected function _save_walk_children( $field, $data, $object_id ) {
-		if ( $field->serialize_data || 'group' != $field->field_class ) {
+		if ( $field->serialize_data || $field->is_group() ) {
 			$this->_save_field( $field, $data, $object_id );
 		} else {
 			foreach ( $field->children as $child ) {
@@ -160,7 +160,7 @@ abstract class Fieldmanager_Context {
 	}
 
 	protected function _load_walk_children( $field, $object_id ) {
-		if ( $field->serialize_data || 'group' != $field->field_class ) {
+		if ( $field->serialize_data || $field->is_group() ) {
 			return $this->_load_field( $field, $object_id );
 		} else {
 			$return = array();

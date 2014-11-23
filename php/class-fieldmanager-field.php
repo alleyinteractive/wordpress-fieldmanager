@@ -480,7 +480,7 @@ abstract class Fieldmanager_Field {
 		self::$global_seq++;
 
 		// Drop the fm-group class to hide inner box display if no label is set
-		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
+		if ( !( $this->is_group() && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
 			$classes[] = 'fm-' . $this->field_class;
 		}
 
@@ -630,6 +630,15 @@ abstract class Fieldmanager_Field {
 			}
 		}
 		return $key;
+	}
+
+	/**
+	 * Is the current field a group?
+	 *
+	 * @return boolean True if yes, false if no.
+	 */
+	public function is_group() {
+		return 'group' == $this->field_class;
 	}
 
 	/**
@@ -850,7 +859,7 @@ abstract class Fieldmanager_Field {
 	public function add_another() {
 		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
 		if ( empty( $this->add_more_label ) ) {
-			$this->add_more_label = 'group' == $this->field_class ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
+			$this->add_more_label = $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
 		}
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
