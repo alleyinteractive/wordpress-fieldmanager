@@ -102,10 +102,10 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		}
 
 		$this->data_callbacks = array(
-			'get'    => array( $this, '_get_meta' ),
-			'add'    => array( $this, '_add_meta' ),
-			'update' => array( $this, '_update_meta' ),
-			'delete' => array( $this, '_delete_meta' ),
+			'get'    => array( $this, 'get_meta' ),
+			'add'    => array( $this, 'add_meta' ),
+			'update' => array( $this, 'update_meta' ),
+			'delete' => array( $this, 'delete_meta' ),
 		);
 	}
 
@@ -259,19 +259,39 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$term_meta->delete_term_meta( $term_id, $taxonomy, $this->fm->name );
 	}
 
-	protected function _get_meta( $term_id, $meta_key, $single = false ) {
+	/**
+	 * Callback to get term meta for the given term ID and current taxonomy.
+	 *
+	 * @see Fieldmanager_Util_Term_Meta::get_term_meta()
+	 */
+	protected function get_meta( $term_id, $meta_key, $single = false ) {
 		return fm_get_term_meta( $term_id, $this->current_taxonomy, $meta_key, $single );
 	}
 
-	protected function _add_meta( $term_id, $meta_key, $meta_value, $unique = false ) {
+	/**
+	 * Callback to add term meta for the given term ID and current taxonomy.
+	 *
+	 * @see Fieldmanager_Util_Term_Meta::add_term_meta()
+	 */
+	protected function add_meta( $term_id, $meta_key, $meta_value, $unique = false ) {
 		return fm_add_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $unique );
 	}
 
-	protected function _update_meta( $term_id, $meta_key, $meta_value, $meta_prev_value = '' ) {
+	/**
+	 * Callback to update term meta for the given term ID and current taxonomy.
+	 *
+	 * @see Fieldmanager_Util_Term_Meta::update_term_meta()
+	 */
+	protected function update_meta( $term_id, $meta_key, $meta_value, $meta_prev_value = '' ) {
 		return fm_update_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $meta_prev_value );
 	}
 
-	protected function _delete_meta( $term_id, $meta_key, $meta_value = '' ) {
+	/**
+	 * Callback to delete term meta for the given term ID and current taxonomy.
+	 *
+	 * @see Fieldmanager_Util_Term_Meta::delete_term_meta()
+	 */
+	protected function delete_meta( $term_id, $meta_key, $meta_value = '' ) {
 		return fm_delete_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value );
 	}
 
