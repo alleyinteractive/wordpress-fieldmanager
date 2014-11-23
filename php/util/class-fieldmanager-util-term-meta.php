@@ -87,17 +87,15 @@ class Fieldmanager_Util_Term_Meta {
 	 * @param string $meta_value optional
 	 * @return bool
 	 */
-	public function get_term_meta( $term_id, $taxonomy, $meta_key='', $single=false ) {
+	public function get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
 
 		// Check if this term has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 
 			// If not, exit. There is no meta data for this term at all.
 			// Mimic the normal return behavior of get_post_meta
-			if ( $single ) return '';
-			else return array();
-
+			return $single ? '' : array();
 		}
 
 		// Get the meta data
@@ -114,17 +112,17 @@ class Fieldmanager_Util_Term_Meta {
 	 * @param bool $unique optional
 	 * @return bool
 	 */
-	public function add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique=false ) {
+	public function add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {
 
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 
 			// If not, create the post to store the metadata
 			$term_meta_post_id = $this->add_term_meta_post( $term_id, $taxonomy );
 
 			// Check for errors
-			if ( $term_meta_post_id === false ) {
+			if ( false === $term_meta_post_id ) {
 				return false;
 			}
 		}
@@ -151,13 +149,13 @@ class Fieldmanager_Util_Term_Meta {
 
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 
 			// If not, create the post to store the metadata
 			$term_meta_post_id = $this->add_term_meta_post( $term_id, $taxonomy );
 
 			// Check for errors
-			if ( $term_meta_post_id === false ) {
+			if ( false === $term_meta_post_id ) {
 				return false;
 			}
 		}
@@ -186,7 +184,7 @@ class Fieldmanager_Util_Term_Meta {
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
 
 		// If no post exist, there is nothing further to do here. This is not necessarily an error.
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 			return false;
 		}
 
