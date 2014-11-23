@@ -80,12 +80,14 @@ class Fieldmanager_Util_Term_Meta {
 	}
 
 	/**
-	 * Handles getting metadata for taxonomy terms
-	 * @param int $term_id
-	 * @param string $taxonomy
-	 * @param string $meta_key
-	 * @param string $meta_value optional
-	 * @return bool
+	 * Get metadata matching the specified key for the given term ID/taxonomy
+	 * pair.
+	 *
+	 * @param int $term_id Term ID.
+	 * @param string $taxonomy Taxonomy name that $term_id is part of.
+	 * @param string $meta_key Metadata name.
+	 * @param boolean $single Optional. Get a single result or multiple.
+	 * @return string|array @see get_post_meta().
 	 */
 	public function get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
 
@@ -100,17 +102,22 @@ class Fieldmanager_Util_Term_Meta {
 
 		// Get the meta data
 		return get_post_meta( $term_meta_post_id, $meta_key, $single );
-
 	}
 
 	/**
-	 * Handles adding metadata for taxonomy terms
-	 * @param int $term_id
-	 * @param string $taxonomy
-	 * @param string $meta_key
-	 * @param string $meta_value
-	 * @param bool $unique optional
-	 * @return bool
+	 * Add metadata to a term ID/taxonomy pair.
+	 *
+	 * @param int $term_id Term ID.
+	 * @param string $taxonomy Taxonomy name that $term_id is part of.
+	 * @param string $meta_key Metadata name.
+	 * @param mixed $meta_value The value of the custom field which should be
+	 *                          added. If an array is given, it will be
+	 *                          serialized into a string.
+	 * @param boolean $unique Optional. Whether or not you want the key to stay
+	 *                        unique. When set to true, the custom field will
+	 *                        not be added if the given key already exists among
+	 *                        custom fields of the specified post.
+	 * @return boolean|integer @see add_post_meta().
 	 */
 	public function add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {
 
@@ -132,12 +139,25 @@ class Fieldmanager_Util_Term_Meta {
 	}
 
 	/**
-	 * Handles updating metadata for taxonomy terms
-	 * @param int $term_id
-	 * @param string $taxonomy
-	 * @param string $meta_key
-	 * @param string $meta_value optional
-	 * @return bool
+	 * Update metadata for a term ID/taxonomy pair.
+	 *
+	 * Use the $prev_value parameter to differentiate between meta fields with
+	 * the same key and post ID.
+	 *
+	 * If the meta field for the term does not exist, it will be added.
+	 *
+	 * @param int $term_id Term ID.
+	 * @param string $taxonomy Taxonomy name that $term_id is part of.
+	 * @param string $meta_key Metadata name.
+	 * @param mixed $meta_value The new value of the custom field. A passed
+	 *                          array will be serialized into a string.
+	 * @param mixed $meta_prev_value Optional. The old value of the custom field
+	 *                               you wish to change. This is to
+	 *                               differentiate between several fields with
+	 *                               the same key. If omitted, and there are
+	 *                               multiple rows for this post and meta key,
+	 *                               all meta values will be updated.
+	 * @return mixed @see update_post_meta().
 	 */
 	public function update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value='' ) {
 
@@ -159,12 +179,20 @@ class Fieldmanager_Util_Term_Meta {
 	}
 
 	/**
-	 * Handles deleting metadata for taxonomy terms
-	 * @param int $term_id
-	 * @param string $taxonomy
-	 * @param string $meta_key
-	 * @param string $meta_value
-	 * @return bool
+	 * Remove metadata matching criteria from a term ID/taxonomy pair.
+	 *
+	 * You can match based on the key, or key and value. Removing based on key
+	 * and value, will keep from removing duplicate metadata with the same key.
+	 * It also allows removing all metadata matching key, if needed.
+	 *
+	 * @param int $term_id Term ID.
+	 * @param string $taxonomy Taxonomy name that $term_id is part of.
+	 * @param string $meta_key Metadata name.
+	 * @param mixed $meta_value Optional. The value of the field you will
+	 *                          delete. This is used to differentiate between
+	 *                          several fields with the same key. If left blank,
+	 *                          all fields with the given key will be deleted.
+	 * @return boolean False for failure. True for success.
 	 */
 	public function delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value='' ) {
 
@@ -291,22 +319,38 @@ function Fieldmanager_Util_Term_Meta() {
 Fieldmanager_Util_Term_Meta();
 
 
-/*
- * Helper Functions to simplify the process
+/**
+ * Shortcut helper for Fieldmanager_Util_Term_Meta::get_term_meta().
+ *
+ * @see Fieldmanager_Util_Term_Meta::get_term_meta()
  */
-
 function fm_get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
 	return Fieldmanager_Util_Term_Meta()->get_term_meta( $term_id, $taxonomy, $meta_key, $single );
 }
 
+/**
+ * Shortcut helper for Fieldmanager_Util_Term_Meta::add_term_meta().
+ *
+ * @see Fieldmanager_Util_Term_Meta::add_term_meta()
+ */
 function fm_add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {
 	return Fieldmanager_Util_Term_Meta()->add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique );
 }
 
+/**
+ * Shortcut helper for Fieldmanager_Util_Term_Meta::update_term_meta().
+ *
+ * @see Fieldmanager_Util_Term_Meta::update_term_meta()
+ */
 function fm_update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value = '' ) {
 	return Fieldmanager_Util_Term_Meta()->update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value );
 }
 
+/**
+ * Shortcut helper for Fieldmanager_Util_Term_Meta::delete_term_meta().
+ *
+ * @see Fieldmanager_Util_Term_Meta::delete_term_meta()
+ */
 function fm_delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value = '' ) {
 	return Fieldmanager_Util_Term_Meta()->delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value );
 }
