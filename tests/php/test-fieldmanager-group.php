@@ -531,4 +531,81 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_group][deep_text]"', $html );
 		$this->assertContains( '>' . $data['test_group']['deep_text'] . '</textarea>', $html );
 	}
+
+	/**
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_unserialize_data_repeatable_group() {
+		new Fieldmanager_Group( array(
+			'name'           => 'parent',
+			'serialize_data' => false,
+			'limit'          => 0,
+			'children'       => array(
+				'child_1' => new Fieldmanager_TextField,
+				'child_2' => new Fieldmanager_Textarea,
+			),
+		) );
+	}
+
+	/**
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_unserialize_data_repeatable_parent() {
+		new Fieldmanager_Group( array(
+			'name'     => 'grandparent',
+			'limit'    => 0,
+			'children' => array(
+				'parent' => new Fieldmanager_Group( array(
+					'serialize_data' => false,
+					'children'       => array(
+						'child_1' => new Fieldmanager_TextField,
+						'child_2' => new Fieldmanager_Textarea,
+					),
+				) ),
+			),
+		) );
+	}
+
+	/**
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_unserialize_data_repeatable_distant_ancestor() {
+		new Fieldmanager_Group( array(
+			'name'     => 'gggp',
+			'limit'    => 0,
+			'children' => array(
+				'ggp' => new Fieldmanager_Group( array(
+					'children' => array(
+						'grandparent' => new Fieldmanager_Group( array(
+							'children' => array(
+								'parent' => new Fieldmanager_Group( array(
+									'serialize_data' => false,
+									'children'       => array(
+										'child_1' => new Fieldmanager_TextField,
+										'child_2' => new Fieldmanager_Textarea,
+									),
+								) ),
+							),
+						) ),
+					),
+				) ),
+			),
+		) );
+	}
+
+	/**
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_unserialize_data_indexed_field() {
+		new Fieldmanager_Group( array(
+			'name'           => 'parent',
+			'serialize_data' => false,
+			'children'       => array(
+				'child_1' => new Fieldmanager_TextField,
+				'child_2' => new Fieldmanager_Textarea( array(
+					'index' => true,
+				) ),
+			),
+		) );
+	}
 }

@@ -355,6 +355,16 @@ abstract class Fieldmanager_Field {
 				}
 			}
 		}
+
+		// If this is a single field with a limit of 1, serialize_data has no impact
+		if ( ! $this->serialize_data && ! $this->is_group() && 1 == $this->limit ) {
+			$this->serialize_data = true;
+		}
+
+		// Cannot use serialize_data => false with index => true
+		if ( ! $this->serialize_data && $this->index ) {
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with `"index" => true`', 'fieldmanager' ) );
+		}
 	}
 
 	/**
@@ -622,14 +632,25 @@ abstract class Fieldmanager_Field {
 		$el = $this;
 		$key = $el->name;
 		while ( $el = $el->parent ) {
-			if ( $el->limit != 1 ) {
-				throw new FM_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with repeating parent elements', 'fieldmanager' ) );
-			}
 			if ( $el->add_to_prefix ) {
 				$key = "{$el->name}_{$key}";
 			}
 		}
 		return $key;
+	}
+
+	/**
+	 * Is this element repeatable or does it have a repeatable ancestor?
+	 *
+	 * @return boolean True if yes, false if no.
+	 */
+	public function is_repeatable() {
+		if ( 1 != $this->limit ) {
+			return true;
+		} elseif ( $this->parent ) {
+			return $this->parent->is_repeatable();
+		}
+		return false;
 	}
 
 	/**

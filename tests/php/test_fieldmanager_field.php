@@ -932,4 +932,26 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_1 . '"/', $html );
 	}
 
+	public function test_unserialize_data_limit_1_no_impact() {
+		$base = new Fieldmanager_TextField( array(
+			'name'           => 'base_field',
+			'serialize_data' => false,
+		) );
+		$data = rand_str();
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field', true ) );
+	}
+
+	/**
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_unserialize_data_single_field_index() {
+		new Fieldmanager_TextField( array(
+			'name'           => 'test',
+			'limit'          => 0,
+			'serialize_data' => false,
+			'index'          => true,
+		) );
+	}
 }

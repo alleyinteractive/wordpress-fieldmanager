@@ -91,6 +91,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 */
 	protected $child_count = 0;
 
+	public $has_unserialized_descendants = false;
+
 	/**
 	 * Constructor; add CSS if we're looking at a tabbed view
 	 */
@@ -98,18 +100,43 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		parent::__construct( $label, $options );
 
-		if ( $this->collapsed ) $this->collapsible = True;
+		// Repeatable groups cannot used unserialized data
+		$is_repeatable = ( 1 != $this->limit );
+		if ( ! $this->serialize_data && $is_repeatable ) {
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with repeating groups', 'fieldmanager' ) );
+		}
+
+		// If this is collapsed, collapsibility is implied
+		if ( $this->collapsed ) {
+			$this->collapsible = True;
+		}
 
 		// Convenient naming of child elements via their keys
 		foreach ( $this->children as $name => $element ) {
 			// if the array key is not an int, and the name attr is set, and they don't match, we got a problem.
 			if ( $element->name && !is_int( $name ) && $element->name != $name ) {
 				throw new FM_Developer_Exception( esc_html__( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name );
+			} elseif ( ! $element->name ) {
+				$element->name = $name;
 			}
-			else if ( !$element->name ) $element->name = $name;
+
+			// Catch errors when using serialize_data => false and index-> true
+			if ( ! $this->serialize_data && $element->index ) {
+				throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
+			}
+
+			// Flag this group as having unserialized descendants to check invalid use of repeatables
+			if ( ! $element->serialize_data || ( $element->is_group() && $element->has_unserialized_descendants ) ) {
+				$this->has_unserialized_descendants = true;
+			}
 
 			// Form a child-parent bond
 			$element->parent = $this;
+		}
+
+		// Check for invalid usage of repeatables and serialize_data
+		if ( $is_repeatable && $this->has_unserialized_descendants ) {
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with repeating groups', 'fieldmanager' ) );
 		}
 
 		// Add the tab JS and CSS if it is needed
@@ -118,7 +145,6 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.1' );
 			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.1' );
 		}
-
 	}
 
 	/**
