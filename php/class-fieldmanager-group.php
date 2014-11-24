@@ -91,6 +91,16 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 */
 	protected $child_count = 0;
 
+	/**
+	 * Flag that this field has some descendant with $serialize_data => false.
+	 *
+	 * This field is set based its descendants, but you can deliberately set it
+	 * yourself if your situation is one where this cannot be determined
+	 * automatically (for instance, where descendants are added after the group
+	 * has been constructed).
+	 *
+	 * @var boolean
+	 */
 	public $has_unserialized_descendants = false;
 
 	/**
@@ -126,7 +136,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			}
 
 			// Flag this group as having unserialized descendants to check invalid use of repeatables
-			if ( ! $element->serialize_data || ( $element->is_group() && $element->has_unserialized_descendants ) ) {
+			if ( ! $this->has_unserialized_descendants && ( ! $element->serialize_data || ( $element->is_group() && $element->has_unserialized_descendants ) ) ) {
 				$this->has_unserialized_descendants = true;
 			}
 
@@ -254,6 +264,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public function add_child( Fieldmanager_Field $child ) {
 		$child->parent = $this;
 		$this->children[ $child->name ] = $child;
+
+		// Catch errors when using serialize_data => false and index-> true
+		if ( ! $this->serialize_data && $child->index ) {
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
+		}
 	}
 
 	/**
