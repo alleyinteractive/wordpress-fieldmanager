@@ -34,6 +34,12 @@ abstract class Fieldmanager_Context {
 	public $data_callbacks;
 
 	/**
+	 * Store the meta keys this field saves to, to catch naming conflicts.
+	 * @var array
+	 */
+	public $save_keys = array();
+
+	/**
 	 * Check if the nonce is valid. Returns false if the nonce is missing and
 	 * throws an exception if it's invalid. If all goes well, returns true.
 	 *
@@ -101,6 +107,9 @@ abstract class Fieldmanager_Context {
 	 * @param mixed $data Data to save. Should be raw, e.g. POST data.
 	 */
 	protected function _save( $data = null ) {
+		// Reset the save keys in the event this context instance is saved twice
+		$this->save_keys = array();
+
 		if ( $this->fm->serialize_data ) {
 			$this->_save_field( $this->fm, $data, $this->fm->data_id );
 		} else {
@@ -112,6 +121,12 @@ abstract class Fieldmanager_Context {
 	}
 
 	protected function _save_field( $field, $data, $object_id ) {
+		if ( isset( $this->save_keys[ $field->get_element_key() ] ) ) {
+			throw new FM_Developer_Exception( sprintf( esc_html__( 'You have two fields in this group saving to the same key: %s', 'fieldmanager' ), $field->get_element_key() ) );
+		} else {
+			$this->save_keys[ $field->get_element_key() ] = true;
+		}
+
 		$current = call_user_func( $this->data_callbacks['get'], $object_id, $field->get_element_key(), $field->serialize_data );
 		$data = $this->_prepare_data( $current, $data, $field );
 		if ( ! $field->skip_save ) {

@@ -608,4 +608,62 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 			),
 		) );
 	}
+
+	public function test_unserialize_data_no_name_conflict() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'add_to_prefix'  => false,
+			'children'       => array(
+				'test_text' => new Fieldmanager_TextField,
+				'test_group' => new Fieldmanager_Group( array(
+					'serialize_data' => false,
+					'children'       => array(
+						'test_text' => new Fieldmanager_TextArea,
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'test_text' => rand_str(),
+			'test_group' => array(
+				'test_text' => rand_str()
+			),
+		);
+
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data['test_text'], get_post_meta( $this->post_id, 'test_text', true ) );
+		$this->assertEquals( $data['test_group']['test_text'], get_post_meta( $this->post_id, 'test_group_test_text', true ) );
+	}
+
+	/**
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_unserialize_data_name_conflict() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'add_to_prefix'  => false,
+			'children'       => array(
+				'test_text' => new Fieldmanager_TextField,
+				'test_group' => new Fieldmanager_Group( array(
+					'serialize_data' => false,
+					'add_to_prefix'  => false,
+					'children'       => array(
+						'test_text' => new Fieldmanager_TextArea,
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'test_text' => rand_str(),
+			'test_group' => array(
+				'test_text' => rand_str()
+			),
+		);
+
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+	}
 }
