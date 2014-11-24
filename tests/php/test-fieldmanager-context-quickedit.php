@@ -160,6 +160,9 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		return ! empty( $data['text'] ) ? $data['text'] : 'not set';
 	}
 
+	/**
+	 * @group serialize_data
+	 */
 	public function test_unserialize_data_single_field() {
 		$base = new Fieldmanager_TextField( array(
 			'name'           => 'base_field',
@@ -180,6 +183,9 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$this->assertNotContains( 'name="base_field[4]"', $html );
 	}
 
+	/**
+	 * @group serialize_data
+	 */
 	public function test_unserialize_data_single_field_sorting() {
 		$item_1 = rand_str();
 		$item_2 = rand_str();
@@ -207,6 +213,9 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
 	}
 
+	/**
+	 * @group serialize_data
+	 */
 	public function test_unserialize_data_tabbed() {
 		$base = new Fieldmanager_Group( array(
 			'name'           => 'base_group',
@@ -250,6 +259,9 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
 	}
 
+	/**
+	 * @group serialize_data
+	 */
 	public function test_unserialize_data_mixed_depth() {
 		$base = new Fieldmanager_Group( array(
 			'name'           => 'base_group',

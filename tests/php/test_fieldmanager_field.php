@@ -830,6 +830,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( $description_html, $html );
 	}
 
+	/**
+	 * @group serialize_data
+	 */
 	public function test_unserialize_data_single_field_render() {
 		$args = array(
 			'name'  => 'base_field',
@@ -852,6 +855,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertNotContains( 'name="base_field[1]"', $html );
 	}
 
+	/**
+	 * @group serialize_data
+	 */
 	public function test_unserialize_data_single_field_render_with_data() {
 		$args = array(
 			'name'  => 'base_field',
@@ -881,6 +887,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertNotContains( 'name="base_field[4]"', $html );
 	}
 
+	/**
+	 * @group serialize_data
+	 */
 	public function test_unserialize_data_single_field_save() {
 		$base = new Fieldmanager_TextField( array(
 			'name'           => 'base_field',
@@ -893,6 +902,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
 	}
 
+	/**
+	 * @group serialize_data
+	 */
 	public function test_unserialize_data_single_field_sorting() {
 		$item_1 = rand_str();
 		$item_2 = rand_str();
@@ -932,6 +944,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_1 . '"/', $html );
 	}
 
+	/**
+	 * @group serialize_data
+	 */
 	public function test_unserialize_data_limit_1_no_impact() {
 		$base = new Fieldmanager_TextField( array(
 			'name'           => 'base_field',
@@ -944,6 +959,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	/**
+	 * @group serialize_data
 	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_unserialize_data_single_field_index() {
