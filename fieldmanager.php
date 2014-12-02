@@ -362,7 +362,7 @@ function _fm_add_submenus() {
 		call_user_func_array( 'add_submenu_page', $s );
 	}
 }
-add_action( 'admin_menu', '_fm_add_submenus' );
+add_action( 'admin_menu', '_fm_add_submenus', 15 );
 
 /**
  * Sanitize multi-line text
