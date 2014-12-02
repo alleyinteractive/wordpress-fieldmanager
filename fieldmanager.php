@@ -209,14 +209,23 @@ function fm_get_context() {
 
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
-		// context = submenu
-		if ( !empty( $_GET['page'] ) ) {
+		/**
+		 * Calculate a submenu context.
+		 *
+		 * For submenus of the default WordPress menus, the submenu's parent
+		 * slug should match the requested script. For submenus of custom menu
+		 * pages, where "admin.php" is the requested script but not the parent
+		 * slug, the submenu's slug should match the GET request.
+		 *
+		 * @see fm_register_submenu_page() for detail about $submenu array values.
+		 */
+		if ( ! empty( $_GET['page'] ) ) {
+			$page = sanitize_text_field( $_GET['page'] );
 			$submenus = _fieldmanager_registry( 'submenus' );
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
-					if ( $script == $submenu[0] ) {
-						$calculated_context = array( 'submenu', sanitize_text_field( $_GET['page'] ) );
-						return $calculated_context;
+					if ( $script == $submenu[0] || ( 'admin.php' == $script && $page == $submenu[4] ) ) {
+						return array( 'submenu', sanitize_text_field( $page ) );
 					}
 				}
 			}
