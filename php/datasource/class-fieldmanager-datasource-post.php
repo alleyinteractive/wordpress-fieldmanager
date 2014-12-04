@@ -218,7 +218,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             }
         }
 
-        if ( $this->save_to_post_parent && $field->limit == 1 ) {
+        if ( $this->save_to_post_parent && $field->limit == 1 && $field->data_type == 'post' ) {
             if ( ! wp_is_post_revision( $field->data_id ) ) {
                 Fieldmanager_Context_Post::safe_update_post(
                     array(
