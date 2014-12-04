@@ -253,7 +253,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		) );
 		$this->save_values( $children, $this->parent_post, $test_data );
 		$parent = get_post( $this->parent_post->ID );
-		$this->assertEquals( $this->parent_post->post_parent, $this->child_post_a->ID );
+		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
 		$this->assertEquals( get_post_meta( $this->parent_post->ID, 'test_parent', true ), $this->child_post_a->ID );
 	}
 
@@ -269,13 +269,13 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 					'post_type' => 'post'
 				),
 				'save_to_post_parent' => true,
-				'save_to_post_parent_only' => true,
+				'only_save_to_post_parent' => true,
 			) ),
 		) );
 		$this->save_values( $children, $this->parent_post, $test_data );
 		$parent = get_post( $this->parent_post->ID );
-		$this->assertEquals( $this->parent_post->post_parent, $this->child_post_a->ID );
-		$this->assertEquals( get_post_meta( $this->parent_post->ID, 'test_parent', true ), false );
+		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
+		$this->assertEmpty( get_post_meta( $this->parent_post->ID, 'test_parent', true ) );
 	}
 
 	/**
