@@ -149,7 +149,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function delegate_save_post( $post_id ) {
-		if ( self::$doing_internal_update ) return;
+		if ( self::$doing_internal_update ) {
+			return;
+		}
 		if( defined( 'DOING_CRON' ) && DOING_CRON ) {
 			$this->save_fields_for_cron( $post_id );
 		} else {
@@ -216,7 +218,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function save_fields_for_cron( $post_id ) {
-		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) return;
+		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) {
+			return;
+		}
 		// don't save values since we aren't provided with any; just trigger presave so that subclass handlers can process as necessary
 		$this->fm->skip_save = true;
 		$current = get_post_meta( $post_id, $this->fm->name, true );
@@ -230,7 +234,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function save_to_post_meta( $post_id, $data ) {
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 		$current = get_post_meta( $this->fm->data_id, $this->fm->name, true );
