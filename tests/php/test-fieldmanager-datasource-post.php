@@ -260,7 +260,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 	/**
 	 * Test save_to_post_parent_only logic
 	 */
-	public function test_post_parent() {
+	public function test_post_parent_only() {
 		$test_data = $this->child_post_a->ID;
 		$children = new Fieldmanager_Autocomplete( array(
 			'name' => 'test_parent',
