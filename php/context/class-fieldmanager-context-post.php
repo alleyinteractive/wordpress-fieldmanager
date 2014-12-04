@@ -50,6 +50,11 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		'delete' => "delete_post_meta",
 	);
 
+	/*
+	 * @var boolean
+	 */
+	private static $doing_internal_update = false;
+
 	/**
 	 * Add a context to a fieldmanager
 	 * @param string $title
@@ -152,6 +157,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function delegate_save_post( $post_id ) {
+		if ( self::$doing_internal_update ) {
+			return;
+		}
 		if( defined( 'DOING_CRON' ) && DOING_CRON ) {
 			$this->save_fields_for_cron( $post_id );
 		} else {
@@ -230,11 +238,28 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @param array $data
 	 * @return void
 	 */
+<<<<<<< HEAD
 	public function save_to_post_meta( $post_id, $data = null ) {
+=======
+	public function save_to_post_meta( $post_id, $data ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
+>>>>>>> master
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 
 		$this->_save( $data );
+	}
+
+	/**
+	 * Helper for fieldmanager internals to save a post without worrying about infinite loops
+	 */
+	public static function safe_update_post( $args ) {
+		self::$doing_internal_update = true;
+		$ret = wp_update_post( $args );
+		self::$doing_internal_update = false;
+		return $ret;
 	}
 
 }
