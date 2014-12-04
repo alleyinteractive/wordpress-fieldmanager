@@ -969,6 +969,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 			'serialize_data' => false,
 			'index'          => true,
 		) );
+	}
 
 	public function test_removing_item_from_repeatable() {
 		$field = new Fieldmanager_Textfield( array(
