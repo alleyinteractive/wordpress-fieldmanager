@@ -690,11 +690,16 @@ abstract class Fieldmanager_Field {
 
 		foreach ( $values as $i => $value ) {
 			$values[ $i ] = $this->presave( $value, empty( $current_values[ $i ] ) ? array() : $current_values[ $i ] );
-			if ( !$this->save_empty && empty( $values[ $i ] ) )
-				unset( $values[ $i ] );
 		}
-		if ( !empty( $this->index ) )
+
+		if ( ! $this->save_empty ) {
+			// reindex the array after removing empty values
+			$values = array_values( array_filter( $values ) );
+		}
+
+		if ( ! empty( $this->index ) ) {
 			$this->save_index( $values, $current_values );
+		}
 
 		return $values;
 	}
@@ -795,7 +800,7 @@ abstract class Fieldmanager_Field {
 				$attr_str[] = sanitize_key( $attr );
 			} else{
 				$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
-			}		
+			}
 		}
 		return implode( ' ', $attr_str );
 	}
