@@ -190,4 +190,51 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) );
 		$this->assertCount( 0, $post_terms );
 	}
+
+	/**
+	 * Test behavior when only saving to taxonomy within a group set to not use
+	 * serialized meta.
+	 *
+	 * @group serialize_data
+	 */
+	public function test_datasource_term_save_only_tax_with_unseriaized_data() {
+		$this->assertCount( 0, wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) ) );
+
+		$args = array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'children'       => array(
+				'test_basic' => new Fieldmanager_TextField(),
+				'test_datasource' => new Fieldmanager_Autocomplete( array(
+					'datasource' => new Fieldmanager_Datasource_Term( array(
+						'taxonomy' => $this->term->taxonomy,
+						'only_save_to_taxonomy' => true,
+					) ),
+				) ),
+			)
+		);
+		$data = array(
+			'test_basic'     => rand_str(),
+			'test_datasource' => $this->term->term_id,
+		);
+		$base = new Fieldmanager_Group( $args );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, $data );
+		$this->assertSame( $data['test_basic'], get_post_meta( $this->post->ID, 'base_group_test_basic', true ) );
+		$this->assertSame( array(), get_post_meta( $this->post->ID, 'base_group_test_datasource', true ) );
+		$this->assertSame(
+			array( $this->term->term_id ),
+			wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) )
+		);
+
+		wp_set_object_terms( $this->post->ID, null, 'post_tag' );
+
+		$base = new Fieldmanager_Group( array_merge( $args, array( 'add_to_prefix' => false ) ) );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, $data );
+		$this->assertSame( $data['test_basic'], get_post_meta( $this->post->ID, 'test_basic', true ) );
+		$this->assertSame( array(), get_post_meta( $this->post->ID, 'test_datasource', true ) );
+		$this->assertSame(
+			array( $this->term->term_id ),
+			wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) )
+		);
+	}
 }

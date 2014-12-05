@@ -120,34 +120,37 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
-	protected function _save_field( $field, $data, $object_id ) {
+	protected function _save_field( $field, $data ) {
+		$field->data_id = $this->fm->data_id;
+		$field->data_type = $this->fm->data_type;
+
 		if ( isset( $this->save_keys[ $field->get_element_key() ] ) ) {
 			throw new FM_Developer_Exception( sprintf( esc_html__( 'You have two fields in this group saving to the same key: %s', 'fieldmanager' ), $field->get_element_key() ) );
 		} else {
 			$this->save_keys[ $field->get_element_key() ] = true;
 		}
 
-		$current = call_user_func( $this->data_callbacks['get'], $object_id, $field->get_element_key(), $field->serialize_data );
+		$current = call_user_func( $this->data_callbacks['get'], $this->fm->data_id, $field->get_element_key(), $field->serialize_data );
 		$data = $this->_prepare_data( $current, $data, $field );
 		if ( ! $field->skip_save ) {
 			if ( $field->serialize_data ) {
-				call_user_func( $this->data_callbacks['update'], $object_id, $field->get_element_key(), $data );
+				call_user_func( $this->data_callbacks['update'], $this->fm->data_id, $field->get_element_key(), $data );
 			} else {
-				call_user_func( $this->data_callbacks['delete'], $object_id, $field->get_element_key() );
+				call_user_func( $this->data_callbacks['delete'], $this->fm->data_id, $field->get_element_key() );
 				foreach ( $data as $value ) {
-					call_user_func( $this->data_callbacks['add'], $object_id, $field->get_element_key(), $value );
+					call_user_func( $this->data_callbacks['add'], $this->fm->data_id, $field->get_element_key(), $value );
 				}
 			}
 		}
 	}
 
-	protected function _save_walk_children( $field, $data, $object_id ) {
+	protected function _save_walk_children( $field, $data ) {
 		if ( $field->serialize_data || ! $field->is_group() ) {
-			$this->_save_field( $field, $data, $object_id );
+			$this->_save_field( $field, $data );
 		} else {
 			foreach ( $field->children as $child ) {
 				if ( isset( $data[ $child->name ] ) ) {
-					$this->_save_walk_children( $child, $data[ $child->name ], $object_id );
+					$this->_save_walk_children( $child, $data[ $child->name ] );
 				}
 			}
 		}
@@ -165,8 +168,8 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
-	protected function _load_field( $field, $object_id ) {
-		$data = call_user_func( $this->data_callbacks['get'], $object_id, $field->get_element_key() );
+	protected function _load_field( $field ) {
+		$data = call_user_func( $this->data_callbacks['get'], $this->fm->data_id, $field->get_element_key() );
 		if ( $field->serialize_data ) {
 			return empty( $data ) ? null : reset( $data );
 		} else {
@@ -174,13 +177,13 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
-	protected function _load_walk_children( $field, $object_id ) {
+	protected function _load_walk_children( $field ) {
 		if ( $field->serialize_data || ! $field->is_group() ) {
-			return $this->_load_field( $field, $object_id );
+			return $this->_load_field( $field );
 		} else {
 			$return = array();
 			foreach ( $field->children as $child ) {
-				$return[ $child->name ] = $this->_load_walk_children( $child, $object_id );
+				$return[ $child->name ] = $this->_load_walk_children( $child );
 			}
 			return $return;
 		}
