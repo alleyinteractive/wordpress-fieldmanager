@@ -334,18 +334,38 @@ function fm_match_context( $context, $type = null ) {
 }
 
 /**
- * Trigger the action for a given context
- * @uses fm_get_context()
+ * Fire an action for the current Fieldmanager context, if it exists.
+ *
+ * @see fm_calculate_context() for detail about the values that determine the
+ *     name of the action. Two actions are defined, but only one at most fires.
  */
 function fm_trigger_context_action() {
 	$calculated_context = fm_get_context();
-	$action = 'fm_' . $calculated_context[0];
-	if ( $calculated_context[1] ) {
-		$action .= '_' . $calculated_context[1];
+	if ( empty( $calculated_context ) ) {
+		return;
 	}
-	do_action( $action );
-}
 
+	$context = $calculated_context[0];
+	if ( $type = $calculated_context[1] ) {
+		/**
+		 * Fires when a specific Fieldmanager context and type load.
+		 *
+		 * The dynamic portions of the hook name, $context and $type, refer to
+		 * the values returned by fm_calculate_context(). For example, the Edit
+		 * screen for the Page post type would fire "fm_post_page".
+		 */
+		do_action( "fm_{$context}_{$type}" );
+	} else {
+		/**
+		 * Fires when a specific Fieldmanager context, but not type, loads.
+		 *
+		 * The dynamic portion of the hook name, $context, refers to the first
+		 * value returned by fm_calculate_context(). For example, the Edit User
+		 * screen would fire "fm_user".
+		 */
+		do_action( "fm_{$context}" );
+	}
+}
 add_action( 'init', 'fm_trigger_context_action', 99 );
 
 /**
