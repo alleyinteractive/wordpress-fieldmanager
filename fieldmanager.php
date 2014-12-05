@@ -187,26 +187,48 @@ function _fieldmanager_registry( $var, $val = NULL ) {
 /**
  * Get the context for triggers and pattern matching.
  *
- * This function is crucial for performance. It prevents the unnecessary initialization of FM classes,
- * and the unnecessary loading of CSS and Javascript.
+ * This function is crucial for performance. It prevents the unnecessary
+ * initialization of FM classes, and the unnecessary loading of CSS and
+ * JavaScript.
  *
- * You can't use this function to determine whether or not a context 'Form' will be displayed, since
- * it can be used anywhere. We would love to use get_current_screen(), but it's not available in
- * some POST actions, and generally not available early enough in the init process.
+ * @see fm_calculate_context() for detail about the returned array values.
  *
- * This is a function to watch closely as WordPress changes, since it relies on paths and variables.
- *
- * @return string[] [$context, $type]
+ * @return array Contextual information for the current request.
  */
 function fm_get_context() {
 	static $calculated_context;
 
 	if ( $calculated_context ) {
 		return $calculated_context;
+	} else {
+		return fm_calculate_context();
 	}
+}
 
-	if ( is_admin() ) { // safe to use at any point in the load process, and better than URL matching.
-
+/**
+ * Calculate contextual information for the current request.
+ *
+ * You can't use this function to determine whether or not a context "form" will
+ * be displayed, since it can be used anywhere. We would love to use
+ * get_current_screen(), but it's not available in some POST actions, and
+ * generally not available early enough in the init process.
+ *
+ * This is a function to watch closely as WordPress changes, since it relies on
+ * paths and variables.
+ *
+ * @return array {
+ *     Array of context information.
+ *
+ *     @type  string|null A Fieldmanager context of "post", "quickedit", "term",
+ *                        "submenu", or "user", or null if one isn't found.
+ *     @type  string|null A "type" dependent on the context. For "post" and
+ *                        "quickedit", the post type. For "term", the taxonomy.
+ *                        For "submenu", the group name. For all others, null.
+ * }
+ */
+function fm_calculate_context() {
+	// Safe to use at any point in the load process, and better than URL matching.
+	if ( is_admin() ) {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
 		/**
@@ -283,6 +305,7 @@ function fm_get_context() {
 	if ( empty( $calculated_context ) ) {
 		$calculated_context = array( null, null );
 	}
+
 	return $calculated_context;
 }
 
