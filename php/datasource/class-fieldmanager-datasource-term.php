@@ -190,7 +190,10 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			}
 			$this->save_taxonomy( $tax_values, $field->data_id );
 		}
-		if ( $this->only_save_to_taxonomy ) return array();
+		if ( $this->only_save_to_taxonomy ) {
+			$field->skip_save = true;
+			return array();
+		}
 		return $values;
 	}
 
