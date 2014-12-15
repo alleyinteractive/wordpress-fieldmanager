@@ -165,4 +165,28 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->assertContains( "value=\"{$group_data[2]['a']}\"", $html );
 		$this->assertContains( "value=\"{$group_data[2]['b']}\"", $html );
 	}
+
+	public function test_add_another_box_position() {
+		$field = new Fieldmanager_Group( array(
+			'name' => 'add_another_box_position',
+			'limit'            => 0,
+			'extra_elements'   => 0,
+			'sortable'         => true,
+			'add_more_label'   => 'Add Another',
+			'add_more_position'=> 'top',
+			'children' => array(
+				'title'        => new Fieldmanager_TextField( 'Carousel Title', array(
+					'name'     => 'title',
+					) ),
+			),
+		) );
+
+		$context = $field->add_meta_box( 'add_another_box_position', $this->post );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertContains( "value=\"Add Another\"", $html );
+	}
 }
