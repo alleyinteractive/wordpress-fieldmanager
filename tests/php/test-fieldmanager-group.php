@@ -169,24 +169,29 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 	public function test_add_another_box_position() {
 		$field = new Fieldmanager_Group( array(
 			'name' => 'add_another_box_position',
-			'limit'            => 0,
-			'extra_elements'   => 0,
-			'sortable'         => true,
-			'add_more_label'   => 'Add Another',
-			'add_more_position'=> 'top',
+			'limit' => 10,
+			'add_more_label' => 'Add Another',
+			'add_more_position' => 'top',
 			'children' => array(
-				'title'        => new Fieldmanager_TextField( 'Carousel Title', array(
-					'name'     => 'title',
-					) ),
+				'a' => new Fieldmanager_Textfield(),
 			),
 		) );
 
+		$group_data = array(
+			array( 'a' => rand_str() ),
+			array( 'a' => rand_str() ),
+		);
+
 		$context = $field->add_meta_box( 'add_another_box_position', $this->post );
+
+		$context->save_to_post_meta( $this->post->ID, $group_data );
 
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
 		$this->assertContains( "value=\"Add Another\"", $html );
+		$this->assertContains( "data-add-more-position=\"top\"", $html );
+
 	}
 }
