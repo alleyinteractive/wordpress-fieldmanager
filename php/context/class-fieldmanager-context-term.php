@@ -45,6 +45,12 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	public $reserved_fields = array( 'name', 'slug', 'description' );
 
 	/**
+	 * @var boolean
+	 * Whether the Zoninator class exists
+	 */
+	public $zoninator_exists = false;
+
+	/**
 	 * @var Fieldmanager_Group
 	 * Base field
 	 */
@@ -67,7 +73,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$this->show_on_add = $show_on_add;
 		$this->show_on_edit = $show_on_edit;
 		$this->parent = $parent;
+		$this->zoninator_exists = class_exists( 'Zoninator' );
 		$this->fm = $fm;
+
+		// Set up the $zoninator global if the class exists
+		if ( $this->zoninator_exists ) {
+			global $zoninator;
+		}
 
 		// Iterate through the taxonomies and add the fields to the requested forms
 		// Also add handlers for saving the fields and which forms to validate (if enabled)
@@ -80,6 +92,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			if ( $this->show_on_edit ) {
 				add_action( $taxonomy . '_edit_form_fields', array( $this, 'edit_term_fields' ), 10, 2 );
 				add_action( 'edited_term', array( $this, 'save_term_fields'), 10, 3 );
+			}
+
+			// Ensure fields display when editing zones
+			if ( $this->zoninator_exists && $taxonomy == $zoninator->zone_taxonomy ) {
+				if ( $this->show_on_add || $this->show_on_edit ) {
+					add_action( 'zoninator_post_zone_fields', array( $this, 'add_term_fields_to_zone' ), 10 );
+				}
 			}
 
 			// Also handle removing data when a term is deleted
@@ -255,4 +274,19 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Delete any instance of this field for the term that was deleted
 		$term_meta->delete_term_meta( $term_id, $taxonomy, $this->fm->name );
 	}
+
+	/**
+	 * Helper method for integrating edit_term_fields() with Zoninator.
+	 *
+	 * Allows edit_term_fields() to be used with the zoninator_post_zone_fields
+	 * action, which passes only one argument.
+	 *
+	 * @access public
+	 * @param  WP_Term $zone The term object for the zone
+	 * @return void
+	 */
+	public function add_term_fields_to_zone( $zone ) {
+		$this->edit_term_fields( $zone, $zone->taxonomy );
+	}
+
 }
