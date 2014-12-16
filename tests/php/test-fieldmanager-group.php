@@ -216,8 +216,8 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$add_another_occurrence = strpos( $default_html, 'value="Add Another' );
-		$text_field_occurrence = strpos( $default_html, 'class="fm-wrapper fm-a-wrapper"' );
+		$add_another_occurrence = strpos( $html, 'value="Add Another' );
+		$text_field_occurrence = strpos( $html, 'class="fm-wrapper fm-a-wrapper"' );
 
 		$this->assertContains( 'value="Add Another"', $html );
 		$this->assertContains( 'data-add-more-position="top"', $html );
