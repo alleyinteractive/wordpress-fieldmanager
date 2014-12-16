@@ -43,7 +43,8 @@ fm.autocomplete = {
 					ac_params.source = fm.autocomplete.prepare_options( $el.data( 'options' ) );
 				}
 
-				if ( $el.data( 'exact-match' ) ) {
+				// data-exact-match is a minimized attribute (see Fieldmanager_Field::get_element_attributes)
+				if ( typeof $el.data( 'exact-match' ) !== 'undefined' ) {
 					ac_params.change = function( e, ui ) {
 						if ( !ui.item ) {
 							$hidden.val( '' );
