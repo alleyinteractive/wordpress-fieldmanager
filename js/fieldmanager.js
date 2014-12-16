@@ -117,7 +117,7 @@ var match_value = function( values, match_string ) {
 fm_add_another = function( $element ) {
 	var el_name = $element.data( 'related-element' )
 		, limit = $element.data( 'limit' ) - 0
-		, siblings = $element.parent().siblings().not( '.fmjs-proto' )
+		, siblings = $element.parent().siblings( '.fm-item' ).not( '.fmjs-proto' )
 		, add_more_position = $element.data( 'add-more-position' ) || "bottom";
 
 	if ( limit > 0 && siblings.length >= limit ) {
