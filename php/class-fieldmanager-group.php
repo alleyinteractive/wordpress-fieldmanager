@@ -94,8 +94,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	/**
 	 * Flag that this field has some descendant with $serialize_data => false.
 	 *
-	 * This field is set based its descendants, but you can deliberately set it
-	 * yourself if your situation is one where this cannot be determined
+	 * This field is set based on its descendants, but you can deliberately set
+	 * it yourself if your situation is one where this cannot be determined
 	 * automatically (for instance, where descendants are added after the group
 	 * has been constructed).
 	 *
@@ -130,7 +130,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				$element->name = $name;
 			}
 
-			// Catch errors when using serialize_data => false and index-> true
+			// Catch errors when using serialize_data => false and index => true
 			if ( ! $this->serialize_data && $element->index ) {
 				throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
 			}

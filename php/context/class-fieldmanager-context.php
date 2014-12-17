@@ -63,14 +63,15 @@ abstract class Fieldmanager_Context {
 	 *
 	 * @param  mixed $old_value Optional. The previous value.
 	 * @param  mixed $new_value Optional. The new value for the field.
+	 * @param  object $fm Optional. The Fieldmanager field to prepare.
 	 * @return mixed The filtered and sanitized value, safe to save.
 	 */
 	protected function _prepare_data( $old_value = null, $new_value = null, $fm = null ) {
-		if ( null === $new_value ) {
-			$new_value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
-		}
 		if ( null === $fm ) {
 			$fm = $this->fm;
+		}
+		if ( null === $new_value ) {
+			$new_value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
 		}
 		$new_value = apply_filters( "fm_context_before_presave_data", $new_value, $old_value, $this );
 		$data = $fm->presave_all( $new_value, $old_value );
@@ -120,6 +121,12 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
+	/**
+	 * Save a single field.
+	 *
+	 * @param  object $field Fieldmanager field.
+	 * @param  mixed $data Data to save.
+	 */
 	protected function _save_field( $field, $data ) {
 		$field->data_id = $this->fm->data_id;
 		$field->data_type = $this->fm->data_type;
@@ -144,6 +151,12 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
+	/**
+	 * Walk group children to save when serialize_data => false.
+	 *
+	 * @param  object $field Fieldmanager field.
+	 * @param  mixed $data Data to save.
+	 */
 	protected function _save_walk_children( $field, $data ) {
 		if ( $field->serialize_data || ! $field->is_group() ) {
 			$this->_save_field( $field, $data );
@@ -159,6 +172,8 @@ abstract class Fieldmanager_Context {
 
 	/**
 	 * Handle loading data for any context.
+	 *
+	 * @return mixed The loaded data.
 	 */
 	protected function _load() {
 		if ( $this->fm->serialize_data ) {
@@ -168,6 +183,12 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
+	/**
+	 * Load a single field.
+	 *
+	 * @param  object $field The Fieldmanager field for which to load data.
+	 * @return mixed Data stored for that field in this context.
+	 */
 	protected function _load_field( $field ) {
 		$data = call_user_func( $this->data_callbacks['get'], $this->fm->data_id, $field->get_element_key() );
 		if ( $field->serialize_data ) {
@@ -177,6 +198,13 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
+	/**
+	 * Walk group children to load when serialize_data => false.
+	 *
+	 * @param  object $field Fieldmanager field for which to load data.
+	 * @return mixed Data stored for a singular field with serialized data, or
+	 *               array of data for a groups's children.
+	 */
 	protected function _load_walk_children( $field ) {
 		if ( $field->serialize_data || ! $field->is_group() ) {
 			return $this->_load_field( $field );

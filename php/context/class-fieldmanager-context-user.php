@@ -62,7 +62,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 		$this->fm->data_type = 'user';
 
 		if ( !empty( $this->title ) ) {
-			echo '<h3>' . $this->title . '</h3>';
+			echo '<h3>' . esc_html( $this->title ) . '</h3>';
 		}
 		echo '<div class="fm-user-form-wrapper">';
 		$this->_render_field();

@@ -659,7 +659,7 @@ abstract class Fieldmanager_Field {
 	 * @return boolean True if yes, false if no.
 	 */
 	public function is_group() {
-		return 'group' == $this->field_class;
+		return $this instanceof Fieldmanager_Group;
 	}
 
 	/**
