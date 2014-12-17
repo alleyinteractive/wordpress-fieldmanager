@@ -32,11 +32,7 @@ fm.autocomplete = {
 							fm_autocomplete_search: request.term,
 							fm_search_nonce: fm_search.nonce
 						}, function( result ) {
-							var results = JSON.parse( result );
-							if ( $.type( results ) == 'object' ) {
-								response( fm.autocomplete.prepare_options( results ) );
-							}
-							else response( [] );
+							response( result );
 						} );
 					};
 				} else if ( $el.data( 'options' ) ) {
