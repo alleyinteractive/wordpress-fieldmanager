@@ -128,7 +128,7 @@ abstract class Fieldmanager_Field {
 	 * @var string
 	 * HTML element to use for label
 	 */
-	public $label_element = 'label';
+	public $label_element = 'div';
 
 	/**
 	 * @var callback
