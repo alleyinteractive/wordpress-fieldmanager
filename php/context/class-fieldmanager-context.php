@@ -82,15 +82,19 @@ abstract class Fieldmanager_Context {
 	/**
 	 * Render the field.
 	 *
-	 * @param  mixed $values Optional. The existing data to display with the
-	 *                       field.
-	 * @param  boolean $echo Optional. Output the data or return it. Defaults
-	 *                       to true (to output the data).
-	 * @return string if $echo = false.
+	 * @param array $args {
+	 *     Optional. Arguments to adjust the rendering behavior.
+	 *
+	 *     @type mixed $data The existing data to display with the field. If
+	 *                       absent, data will be loaded using
+	 *                       Fieldmanager_Context::_load().
+	 *     @type boolean $echo Output if true, return if false. Default is true.
+	 * }
+	 * @return string if $args['echo'] == false.
 	 */
 	protected function _render_field( $args = array() ) {
 		$data = array_key_exists( 'data', $args ) ? $args['data'] : $this->_load();
-		$echo = array_key_exists( 'echo', $args ) ? $args['echo'] : true;
+		$echo = isset( $args['echo'] ) ? $args['echo'] : true;
 
 		$nonce = wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false );
 		$field = $this->fm->element_markup( $data );
