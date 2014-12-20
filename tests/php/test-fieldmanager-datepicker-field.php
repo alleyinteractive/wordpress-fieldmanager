@@ -2,6 +2,8 @@
 
 /**
  * Tests the Fieldmanager Datepicker Field
+ *
+ * @group field
  */
 class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
@@ -21,7 +23,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
 	/**
 	 * Test behavior when using the time support for datepicker
-	 * 
+	 *
 	 * @group 1111
 	 */
 	public function test_time_feature() {
@@ -97,4 +99,28 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
 	}
 
+	public function test_local_time() {
+		update_option( 'timezone_string', 'America/New_York' );
+
+		$gmt_base = new Fieldmanager_Datepicker( array( 'name' => 'test_gmt_time', 'use_time' => true ) );
+		$local_base = new Fieldmanager_Datepicker( array( 'name' => 'test_local_time', 'use_time' => true, 'store_local_time' => true ) );
+
+		$test_data = array(
+			'date'   => '13 Mar 2014',
+			'hour'   => '2',
+			'minute' => '37',
+			'ampm'   => 'am',
+		);
+
+		$gmt_base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data );
+		$gmt_stamp = get_post_meta( $this->post_id, 'test_gmt_time', true );
+		$this->assertEquals( strtotime( '2014-03-13 02:37:00' ), intval( $gmt_stamp ) );
+
+		$local_base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data );
+		$local_stamp = get_post_meta( $this->post_id, 'test_local_time', true );
+		$this->assertEquals( get_gmt_from_date( '2014-03-13 02:37:00', 'U' ), intval( $local_stamp ) );
+		$this->assertEquals( strtotime( '2014-03-13 02:37:00 America/New_York' ), intval( $local_stamp ) );
+
+		$this->assertEquals( $gmt_stamp - $local_stamp, -4 * HOUR_IN_SECONDS );
+	}
 }
