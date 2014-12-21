@@ -1,0 +1,28 @@
+language: php
+
+php:
+    - 5.3
+    - 5.4
+    - 5.5
+
+env:
+    - WP_VERSION=master WP_MULTISITE=0
+    - WP_VERSION=master WP_MULTISITE=1
+    - WP_VERSION=4.0 WP_MULTISITE=0
+    - WP_VERSION=4.0 WP_MULTISITE=1
+    - WP_VERSION=3.9 WP_MULTISITE=0
+    - WP_VERSION=3.9 WP_MULTISITE=1
+    - WP_VERSION=3.8 WP_MULTISITE=0
+    - WP_VERSION=3.8 WP_MULTISITE=1
+
+before_script:
+    - export WP_TESTS_DIR=/tmp/wordpress/tests/phpunit
+    - export WP_CORE_DIR=/tmp/wordpress/src/
+    - git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ /tmp/wordpress
+    - mysql -e "CREATE DATABASE wordpress_tests;" -uroot
+    - cp /tmp/wordpress/wp-tests-config-sample.php /tmp/wordpress/wp-tests-config.php
+    - sed -i "s/youremptytestdbnamehere/wordpress_tests/" /tmp/wordpress/wp-tests-config.php
+    - sed -i "s/yourusernamehere/travis/" /tmp/wordpress/wp-tests-config.php
+    - sed -i "s/yourpasswordhere//" /tmp/wordpress/wp-tests-config.php
+
+script: phpunit

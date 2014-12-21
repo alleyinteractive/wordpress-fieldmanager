@@ -1,10 +1,7 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
- * Textarea field
+ * Media field
  * @package Fieldmanager
  */
 class Fieldmanager_Media extends Fieldmanager_Field {
@@ -97,26 +94,27 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
 			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-				$preview = sprintf( '%s<br />', __( 'Uploaded image:' ) );
+				$preview = esc_html__( 'Uploaded image:', 'fieldmanager' ) . '<br />';
 				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 			} else {
-				$preview = sprintf( '%s', __( 'Uploaded file:' ) ) . '&nbsp;';
+				$preview = esc_html__( 'Uploaded file:', 'fieldmanager' ) . '&nbsp;';
 				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 			}
-			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
+			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', esc_html__( 'remove', 'fieldmanager' ) );
+			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );
 		} else {
 			$preview = '';
 		}
 		return sprintf(
-			'<input type="button" class="fm-media-button button-secondary" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" />
+			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" />
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
 			<div class="media-wrapper">%5$s</div>
 			<script type="text/javascript">
 			var fm_preview_size = fm_preview_size || [];
 			fm_preview_size["%1$s"]=%6$s;
 			</script>',
-			$this->get_element_id(),
-			$this->get_form_name(),
+			esc_attr( $this->get_element_id() ),
+			esc_attr( $this->get_form_name() ),
 			esc_attr( $this->button_label ),
 			esc_attr( $value ),
 			$preview,

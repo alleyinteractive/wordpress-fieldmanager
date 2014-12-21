@@ -17,7 +17,7 @@ fm.autocomplete = {
 				ac_params.select = function( e, ui ) {
 					e.preventDefault();
 					$el.val( ui.item.label );
-					$hidden.val( ui.item.value );
+					$hidden.val( ui.item.value ).trigger( 'change' );
 				};
 				ac_params.focus = function( e, ui ) {
 					e.preventDefault();
@@ -25,19 +25,22 @@ fm.autocomplete = {
 				}
 				if ( $el.data( 'action' ) ) {
 					ac_params.source = function( request, response ) {
-						$.post( ajaxurl, { action: $el.data( 'action' ), fm_autocomplete_search: request.term, fm_search_nonce: fm_search.nonce }, function( result ) {
-							var results = JSON.parse( result );
-							if ( $.type( results ) == 'object' ) {
-								response( fm.autocomplete.prepare_options( results ) );
-							}
-							else response( [] );
+						$.post( ajaxurl, {
+							action: $el.data( 'action' ),
+							fm_context: $el.data( 'context' ),
+							fm_subcontext: $el.data( 'subcontext' ),
+							fm_autocomplete_search: request.term,
+							fm_search_nonce: fm_search.nonce
+						}, function( result ) {
+							response( result );
 						} );
 					};
 				} else if ( $el.data( 'options' ) ) {
 					ac_params.source = fm.autocomplete.prepare_options( $el.data( 'options' ) );
 				}
 
-				if ( $el.data( 'exact-match' ) ) {
+				// data-exact-match is a minimized attribute (see Fieldmanager_Field::get_element_attributes)
+				if ( typeof $el.data( 'exact-match' ) !== 'undefined' ) {
 					ac_params.change = function( e, ui ) {
 						if ( !ui.item ) {
 							$hidden.val( '' );
@@ -46,7 +49,10 @@ fm.autocomplete = {
 					}
 				} else {
 					$( this ).on( 'keyup', function( e ) {
-						if ( e.keyCode == 27 || e.keyCode == 13 ) return;
+						if ( e.keyCode == 27 || e.keyCode == 13 ) {
+							return;
+						}
+
 						$hidden.val( '=' + $el.val() );
 					} );
 				}
@@ -59,6 +65,6 @@ fm.autocomplete = {
 }
 
 $( document ).ready( fm.autocomplete.enable_autocomplete );
-$( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle', fm.autocomplete.enable_autocomplete );
+$( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle fm_activate_tab', fm.autocomplete.enable_autocomplete );
 
 } ) ( jQuery );

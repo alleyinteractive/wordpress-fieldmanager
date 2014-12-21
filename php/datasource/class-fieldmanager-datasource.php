@@ -11,7 +11,7 @@
 class Fieldmanager_Datasource {
 
 	/**
-	 * @var boolean
+	 * @var array
 	 */
 	public $options = array();
 
@@ -42,6 +42,12 @@ class Fieldmanager_Datasource {
 	public static $counter = 0;
 
 	/**
+	 * @var boolean
+	 * If true, group elements
+	 */
+	public $grouped = False;
+
+	/**
 	 * Constructor
 	 */
 	public function __construct( $options = array() ) {
@@ -53,33 +59,34 @@ class Fieldmanager_Datasource {
 				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
-					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.' ),
+					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
 					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
-				$title = __( 'Nonexistant or invalid option' );
+				$title = esc_html__( 'Nonexistant or invalid option' );
 				if ( !Fieldmanager_Field::$debug ) {
-					wp_die( $message, $title );
+					wp_die( esc_html( $message ), $title );
 				} else {
-					throw new FM_Developer_Exception( $message );
+					throw new FM_Developer_Exception( esc_html( $message ) );
 				}
 			}
 		}
 
 		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
-			$message = __( 'Invalid options for Datasource; must use the options parameter to supply an array.' );
+			$message = esc_html__( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' );
 			if ( Fieldmanager_Field::$debug ) {
 				throw new FM_Developer_Exception( $message );
 			} else {
-				wp_die( $message, __( 'Invalid Datasource Options' ) );
+				wp_die( $message, esc_html__( 'Invalid Datasource Options', 'fieldmanager' ) );
 			}
 		}
 
 		if ( !empty( $this->options ) ) {
 			$keys = array_keys( $this->options );
-			$use_name_as_value = ( array_keys( $keys ) === $keys );
-			foreach ( $this->options as $k => $v ) {
-				$this->options[$v] = $v;
-				unset( $this->options[$k] );
+			if ( ( array_keys( $keys ) === $keys ) ) {
+				foreach ( $this->options as $k => $v ) {
+					$this->options[$v] = $v;
+					unset( $this->options[$k] );
+				}
 			}
 		}
 
@@ -95,7 +102,7 @@ class Fieldmanager_Datasource {
 	 * @return string value
 	 */
 	public function get_value( $id ) {
-		return $this->options[$id] ?: '';
+		return isset( $this->options[ $id ] ) ? $this->options[ $id ] : '';
 	}
 
 	/**
@@ -125,22 +132,36 @@ class Fieldmanager_Datasource {
 	}
 
 	/**
+	 * Format items for use in AJAX.
+	 *
+	 * @param string|null $fragment to search
+	 */
+	public function get_items_for_ajax( $fragment = null ) {
+		$items = $this->get_items( $fragment );
+		$return = array();
+
+		foreach ( $items as $id => $label ) {
+			$return[] = array( 'label' => $label, 'value' => $id );
+		}
+
+		return $return;
+	}
+
+	/**
 	 * AJAX callback to find posts
 	 * @return void, causes process to exit.
 	 */
 	public function autocomplete_search() {
 		// Check the nonce before we do anything
 		check_ajax_referer( 'fm_search_nonce', 'fm_search_nonce' );
-		$items = $this->get_items( sanitize_text_field( $_POST['fm_autocomplete_search'] ) );
+		$items = $this->get_items_for_ajax( sanitize_text_field( $_POST['fm_autocomplete_search'] ) );
 
 		// See if any results were returned and return them as an array
-		if ( !empty( $items ) ) {
-			echo json_encode( $items ); exit;
+		if ( ! empty( $items ) ) {
+			wp_send_json( $items );
 		} else {
-			echo "0";
+			wp_send_json( 0 );
 		}
-
-		die();
 	}
 
 	/**

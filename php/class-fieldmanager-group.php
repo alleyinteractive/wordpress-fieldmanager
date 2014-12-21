@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * Fieldmanager Group; allows associating multiple fields together
@@ -96,15 +93,20 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		if ( $this->collapsed ) $this->collapsible = True;
 
+		// Convenient naming of child elements via their keys
 		foreach ( $this->children as $name => $element ) {
-			if ( !$element->name ) $element->name = $name;
-			// Propagate data type and ID info down the chain
+			// if the array key is not an int, and the name attr is set, and they don't match, we got a problem.
+			if ( $element->name && !is_int( $name ) && $element->name != $name ) {
+				throw new FM_Developer_Exception( esc_html__( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name );
+			}
+			else if ( !$element->name ) $element->name = $name;
 		}
 
 		// Add the tab JS and CSS if it is needed
 		if ( $this->tabbed ) {
-			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery' ), '1.0.1' );
-			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css' );
+			fm_add_script( 'jquery-hoverintent', 'js/jquery.hoverIntent.js', array( 'jquery' ), '1.8.0' );
+			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.1' );
+			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.1' );
 		}
 
 	}
@@ -119,10 +121,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		$tab_group_submenu = '';
 
 		// We do not need the wrapper class for extra padding if no label is set for the group
-		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '<div class="fm-group-inner">';
+		if ( isset( $this->label ) && !empty( $this->label ) ) {
+			$out .= '<div class="fm-group-inner">';
+		}
 
 		// If the display output for this group is set to tabs, build the tab group for navigation
-		if ( $this->tabbed ) $tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar" id="%s-tabs">', $this->get_element_id() );
+		if ( $this->tabbed ) {
+			$tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar" id="%s-tabs">', esc_attr( $this->get_element_id() ) );
+		}
 
 		// Produce HTML for each of the children
 		foreach ( $this->children as $element ) {
@@ -139,9 +145,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				// Generate output for the tab. Depends on whether or not there is a tab limit in place.
 				if ( $this->tab_limit == 0 || $this->child_count < $this->tab_limit ) {
 					$tab_group .=  sprintf( '<li class="%s"><a href="#%s-tab">%s</a></li>',
-						implode( " ", $tab_classes ),
-						$element->get_element_id(),
-						$element->label
+						esc_attr( implode( " ", $tab_classes ) ),
+						esc_attr( $element->get_element_id() ),
+						$element->escape( 'label' )
 					 );
 				} else if ( $this->tab_limit != 0 && $this->child_count >= $this->tab_limit ) {
 					$submenu_item_classes = array( 'fm-submenu-item' );
@@ -150,16 +156,15 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 					// Create the More tab when first hitting the tab limit
 					if ( $this->child_count == $this->tab_limit ) {
 						// Create the tab
-						$tab_group_submenu .=  sprintf( '<li class="fm-tab fm-has-submenu %s"><a href="#%s-tab">%s</a>',
-							$tab_class,
-							$element->get_element_id(),
-							__( 'More...' )
+						$tab_group_submenu .=  sprintf( '<li class="fm-tab fm-has-submenu"><a href="#%s-tab">%s</a>',
+							esc_attr( $element->get_element_id() ),
+							esc_html__( 'More...', 'fieldmanager' )
 						 );
 
 						 // Start the submenu
 						 $tab_group_submenu .= sprintf(
 						 	'<div class="fm-submenu" id="%s-submenu"><div class="fm-submenu-wrap fm-submenu-wrap"><ul>',
-						 	$this->get_element_id()
+						 	esc_attr( $this->get_element_id() )
 						 );
 
 						 // Make sure the first submenu item is designated
@@ -169,10 +174,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 					// Add this element to the More menu
 					$tab_group_submenu .=  sprintf( '<li class="%s"><a href="#%s-tab" %s>%s</a></li>',
-						implode( ' ', $submenu_item_classes ),
-						$element->get_element_id(),
+						esc_attr( implode( ' ', $submenu_item_classes ) ),
+						esc_attr( $element->get_element_id() ),
 						$submenu_item_link_class,
-						$element->label
+						$element->escape( 'label' )
 					);
 				}
 
@@ -181,7 +186,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			}
 
 			// Get markup for the child element
-			$child_value = empty( $value[ $element->name ] ) ? Null : $value[ $element->name ];
+			$child_value = isset( $value[ $element->name ] ) ? $value[ $element->name ] : null;
 
 			// propagate editor state down the chain
 			if ( $this->data_type ) $element->data_type = $this->data_type;
@@ -211,7 +216,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @return void
 	 */
 	public function add_child( Fieldmanager_Field $child ) {
-		$this->children[] = $child;
+		$this->children[ $child->name ] = $child;
 	}
 
 	/**
@@ -226,7 +231,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				if ( !isset( $this->children[$key] ) ) {
 					// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
 					// and thus one which we cannot sanitize and must not save. This might be an attack.
-					$this->_unauthorized_access( sprintf( 'Found "%1$s" in data but not in children', $key ) );
+					$this->_unauthorized_access( sprintf( __( 'Found "%1$s" in data but not in children', 'fieldmanager' ), $key ) );
 				}
 			}
 		}
@@ -239,7 +244,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				$values[ $element->name ] = NULL;
 			}
 			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
-			$current_child_value = empty( $current_values[$element->name ]) ? array() : $current_values[$element->name];
+			$current_child_value = !isset( $current_values[$element->name ]) ? array() : $current_values[$element->name];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
 			if ( !$this->save_empty && $this->limit != 1 ) {
 				if ( is_array( $values[$element->name] ) && empty( $values[$element->name] ) ) unset( $values[$element->name] );
@@ -272,6 +277,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$wrapper_classes[] = 'fmjs-drag-header';
 		}
 
+		if ( $this->collapsible ) {
+			$wrapper_classes[] = 'fmjs-collapsible-handle';
+		}
+
 		$extra_attrs = '';
 		if ( $this->label_macro ) {
 			$this->label_format = $this->label_macro[0];
@@ -281,20 +290,25 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		if ( $this->label_format && $this->label_token ) {
 			$extra_attrs = sprintf(
 				'data-label-format="%1$s" data-label-token="%2$s"',
-				htmlentities( $this->label_format ),
-				htmlentities( $this->label_token )
+				esc_attr( $this->label_format ),
+				esc_attr( $this->label_token )
 			);
 			$classes[] = 'fm-label-with-macro';
 		}
 
+		$remove = '';
+		if ( $this->one_label_per_item && ( $this->limit == 0 || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) ) {
+			$remove = $this->get_remove_handle();
+		}
+
 		return sprintf(
 			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s</div>',
-			implode( ' ', $wrapper_classes ),
+			esc_attr( implode( ' ', $wrapper_classes ) ),
 			$this->label_element,
-			implode( ' ', $classes ),
+			esc_attr( implode( ' ', $classes ) ),
 			$extra_attrs,
-			$this->label,
-			$this->limit == 0 ? $this->get_remove_handle() : ''
+			$this->escape( 'label' ),
+			$remove // get_remove_handle() is sanitized html
 		);
 	}
 
@@ -303,7 +317,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @param string $html
 	 * @return string
 	 */
-	public function wrap_with_multi_tools( $html ) {
+	public function wrap_with_multi_tools( $html, $classes = array() ) {
+		if ( empty( $this->label ) || ! $this->one_label_per_item ) {
+			return parent::wrap_with_multi_tools( $html, $classes );
+		}
 		return $html;
 	}
 
