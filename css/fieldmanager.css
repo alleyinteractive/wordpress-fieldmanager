@@ -1,3 +1,36 @@
+/* Fields */
+.fm-wrapper select,
+.fm-wrapper textarea,
+.fm-wrapper input[type="text"],
+.fm-wrapper input[type="password"],
+.fm-wrapper input[type="datetime"],
+.fm-wrapper input[type="datetime-local"],
+.fm-wrapper input[type="date"],
+.fm-wrapper input[type="month"],
+.fm-wrapper input[type="time"],
+.fm-wrapper input[type="week"],
+.fm-wrapper input[type="number"],
+.fm-wrapper input[type="email"],
+.fm-wrapper input[type="url"],
+.fm-wrapper input[type="search"],
+.fm-wrapper input[type="tel"],
+.fm-wrapper input[type="color"] {
+	max-width: 100%;
+}
+
+.fm-hidden {
+	display: none;
+}
+
+.fm-label-inline {
+	margin: 0 5px 0 0;
+}
+
+.fm-label-inline.fm-label-after {
+	margin: 0 0 0 5px;
+}
+
+/* Groups */
 .fm-group {
 	border: solid 1px #DDD;
 	-webkit-border-radius: 3px;
@@ -24,20 +57,8 @@
 	background-image: linear-gradient(bottom,#DDD,#EEE);
 }
 
-.fm-hidden {
-	display: none;
-}
-
 div.fm-group-label-wrapper {
 	overflow: auto;
-}
-
-.fm-label-inline {
-	margin: 0 5px 0 0;
-}
-
-.fm-label-inline.fm-label-after {
-	margin: 0 0 0 5px;
 }
 
 .fm-group div.fm-group-label-wrapper h4 {
@@ -49,6 +70,7 @@ div.fm-group-label-wrapper {
 	float: left;
 }
 
+/* Sortables and repeatables */
 .fm-item, .fm-add-another {
 	margin-bottom: 5px;
 }
