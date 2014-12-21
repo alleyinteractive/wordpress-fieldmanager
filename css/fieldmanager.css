@@ -87,6 +87,15 @@ div.fm-group-label-wrapper {
 	float: left;
 }
 
+.fmjs-removable:before,
+.fmjs-removable:after {
+  content: " ";
+  display: table;
+}
+.fmjs-removable:after {
+  clear: both;
+}
+
 .fmjs-remove, .fmjs-clear {
 	margin: 7px 0 0 3px;
 	display: block;
