@@ -153,16 +153,25 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 */
 	public function save_fields_for_quickedit( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
-		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'inline-save' )
+		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'inline-save' ) {
 			return;
-		$use_this_post_type = False;
+		}
+
+		$use_this_post_type = false;
 		foreach ( $this->post_types as $type ) {
 			if ( $type == $_POST['post_type'] ) {
-				$use_this_post_type = True;
+				$use_this_post_type = true;
 				break;
 			}
 		}
-		if ( !$use_this_post_type ) return;
+		if ( !$use_this_post_type )  {
+			return;
+		}
+
+		// Ensure that the nonce is set
+		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
+			return;
+		}
 
 		// Make sure the current user can save this post
 		if( $_POST['post_type'] == 'post' ) {
@@ -188,7 +197,6 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function save_to_post_meta( $post_id, $data ) {
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 		$post = get_post( $post_id );
@@ -197,7 +205,9 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		}
 		$current = get_post_meta( $this->fm->data_id, $this->fm->name, True );
 		$data = $this->fm->presave_all( $data, $current );
-		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );
+		if ( !$this->fm->skip_save ) {
+			update_post_meta( $post_id, $this->fm->name, $data );
+		}
 	}
 
 }

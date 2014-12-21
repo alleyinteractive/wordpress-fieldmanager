@@ -189,8 +189,14 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function save_term_fields( $term_id, $tt_id, $taxonomy ) {
 		// Make sure this field is attached to the taxonomy being saved and this is the appropriate action
-		if ( ! in_array( $taxonomy, $this->taxonomies ) )
+		if ( ! in_array( $taxonomy, $this->taxonomies ) ) {
 			return;
+		}
+
+		// Ensure that the nonce is set
+		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
+			return;
+		}
 
 		// Make sure the current user can save this post
 		$tax_obj = get_taxonomy( $taxonomy );

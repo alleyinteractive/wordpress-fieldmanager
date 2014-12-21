@@ -106,7 +106,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		if ( $this->tabbed ) {
 			fm_add_script( 'jquery-hoverintent', 'js/jquery.hoverIntent.js', array( 'jquery' ), '1.8.0' );
 			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.1' );
-			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css' );
+			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.1' );
 		}
 
 	}
@@ -147,7 +147,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 					$tab_group .=  sprintf( '<li class="%s"><a href="#%s-tab">%s</a></li>',
 						esc_attr( implode( " ", $tab_classes ) ),
 						esc_attr( $element->get_element_id() ),
-						esc_html( $element->label )
+						$element->escape( 'label' )
 					 );
 				} else if ( $this->tab_limit != 0 && $this->child_count >= $this->tab_limit ) {
 					$submenu_item_classes = array( 'fm-submenu-item' );
@@ -177,7 +177,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 						esc_attr( implode( ' ', $submenu_item_classes ) ),
 						esc_attr( $element->get_element_id() ),
 						$submenu_item_link_class,
-						esc_html( $element->label )
+						$element->escape( 'label' )
 					);
 				}
 
@@ -186,7 +186,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			}
 
 			// Get markup for the child element
-			$child_value = empty( $value[ $element->name ] ) ? Null : $value[ $element->name ];
+			$child_value = isset( $value[ $element->name ] ) ? $value[ $element->name ] : null;
 
 			// propagate editor state down the chain
 			if ( $this->data_type ) $element->data_type = $this->data_type;
@@ -307,7 +307,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$this->label_element,
 			esc_attr( implode( ' ', $classes ) ),
 			$extra_attrs,
-			esc_html( $this->label ),
+			$this->escape( 'label' ),
 			$remove // get_remove_handle() is sanitized html
 		);
 	}

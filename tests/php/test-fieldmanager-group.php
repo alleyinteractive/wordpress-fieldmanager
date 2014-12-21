@@ -2,6 +2,8 @@
 
 /**
  * Tests the Fieldmanager Datasource Post
+ *
+ * @group field
  */
 class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
@@ -110,5 +112,117 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 						),
 					),
 			) );
+	}
+
+	public function test_removing_item_from_repeatable_group() {
+		$field = new Fieldmanager_Group( array(
+			'name' => 'removing_items_testing',
+			'children' => array(
+				'group' => new Fieldmanager_Group( array(
+					'limit' => 10,
+					'extra_elements' => 0,
+					'group_is_empty' => function( $values ) { return empty( $values['a'] ); },
+					'children' => array(
+						'a' => new Fieldmanager_Textfield(),
+						'b' => new Fieldmanager_Textfield(),
+					),
+				) )
+			),
+		) );
+
+		$group_data = array(
+			array( 'a' => rand_str(), 'b' => rand_str() ),
+			array( 'a' => rand_str(), 'b' => rand_str() ),
+			array( 'a' => rand_str(), 'b' => rand_str() ),
+		);
+
+		$to_save = array( 'group' => $group_data );
+
+		$context = $field->add_meta_box( 'removing_items_testing', $this->post );
+
+		$context->save_to_post_meta( $this->post->ID, $to_save );
+
+		$data = get_post_meta( $this->post->ID, 'removing_items_testing', true );
+
+		$this->assertEquals( 3, count( $data['group'] ) );
+
+		$to_save['group'][0]['a'] = '';
+
+		$context->save_to_post_meta( $this->post->ID, $to_save );
+
+		$data = get_post_meta( $this->post->ID, 'removing_items_testing', true );
+
+		$this->assertEquals( 2, count( $data['group'] ) );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertNotContains( "value=\"{$group_data[0]['a']}\"", $html );
+		$this->assertNotContains( "value=\"{$group_data[0]['b']}\"", $html );
+		$this->assertContains( "value=\"{$group_data[1]['a']}\"", $html );
+		$this->assertContains( "value=\"{$group_data[1]['b']}\"", $html );
+		$this->assertContains( "value=\"{$group_data[2]['a']}\"", $html );
+		$this->assertContains( "value=\"{$group_data[2]['b']}\"", $html );
+	}
+
+	public function test_add_another_box_position() {
+		$default_field = new Fieldmanager_Group( array(
+			'name' => 'default_group',
+			'limit' => 10,
+			'add_more_label' => 'Add Another',
+			'children' => array(
+				'a' => new Fieldmanager_Textfield(),
+			),
+		) );
+
+		$group_data = array(
+			array( 'a' => rand_str() ),
+			array( 'a' => rand_str() ),
+		);
+
+		$default_context = $default_field->add_meta_box( 'default_group', $this->post );
+
+		$default_context->save_to_post_meta( $this->post->ID, $group_data );
+
+		ob_start();
+		$default_context->render_meta_box( $this->post, array() );
+		$default_html = ob_get_clean();
+
+		$add_another_occurrence = strpos( $default_html, 'value="Add Another' );
+		$text_field_occurrence = strpos( $default_html, 'class="fm-wrapper fm-a-wrapper"' );
+
+		$this->assertContains( 'value="Add Another"', $default_html );
+		$this->assertContains( 'data-add-more-position="bottom"', $default_html );
+		//indicates add another button is at the bottom (default behavior). 
+		$this->assertTrue( $add_another_occurrence > $text_field_occurrence );
+
+
+
+		$field = new Fieldmanager_Group( array(
+			'name' => 'add_another_box_position',
+			'limit' => 10,
+			'add_more_label' => 'Add Another',
+			'add_more_position' => 'top',
+			'children' => array(
+				'a' => new Fieldmanager_Textfield(),
+			),
+		) );
+
+		$context = $field->add_meta_box( 'add_another_box_position', $this->post );
+
+		$context->save_to_post_meta( $this->post->ID, $group_data );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$add_another_occurrence = strpos( $html, 'value="Add Another' );
+		$text_field_occurrence = strpos( $html, 'class="fm-wrapper fm-a-wrapper"' );
+
+		$this->assertContains( 'value="Add Another"', $html );
+		$this->assertContains( 'data-add-more-position="top"', $html );
+		//indicates add another button is at the top (add_another_position = top). 
+		$this->assertTrue( $add_another_occurrence < $text_field_occurrence );
+
 	}
 }

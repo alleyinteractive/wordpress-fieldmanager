@@ -3,6 +3,8 @@
 /**
  * Tests Fieldmanager_Field, which handles validation and
  * throws most core exceptions
+ *
+ * @group field
  */
 class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	public function setUp() {
@@ -748,4 +750,100 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3 ), $test_data_too_many );
 	}
 
+	public function test_attributes(){
+		$fm = new Fieldmanager_Textfield( array(
+			'name' => 'test_attributes',
+			'attributes' => array(
+				'required' => true,
+				'data-foo' => 'bar',
+				'data-UPPER' => 'lower'
+			)
+		) );
+		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertRegExp( '/\srequired[\/\s]/', $html );
+		$this->assertRegExp( '/\sdata-foo="bar"[\/\s]/', $html );
+		$this->assertRegExp( '/\sdata-upper="lower"[\/\s]/', $html );
+	}
+
+	public function test_label_escaping() {
+		$id = rand_str();
+		$label_raw = rand_str();
+		$label_html = "<strong id='{$id}'>{$label_raw}</strong>";
+		$args = array(
+			'name' => 'label_escape_testing',
+			'label' => $label_html,
+		);
+
+		// Ensure that, by default, the label is present without the HTML
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label_raw, $html );
+		$this->assertNotContains( $label_html, $html );
+
+		// Ensure that the label has HTML when we change the escaping
+		$args['escape'] = array( 'label' => 'wp_kses_post' );
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label_html, $html );
+	}
+
+	public function test_description_escaping() {
+		$id = rand_str();
+		$description_raw = rand_str();
+		$description_html = "<strong id='{$id}'>{$description_raw}</strong>";
+		$args = array(
+			'name' => 'description_escape_testing',
+			'description' => $description_html,
+		);
+
+		// Ensure that, by default, the description is present without the HTML
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $description_raw, $html );
+		$this->assertNotContains( $description_html, $html );
+
+		// Ensure that the description has HTML when we change the escaping
+		$args['escape'] = array( 'description' => 'wp_kses_post' );
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $description_html, $html );
+	}
+
+	public function test_removing_item_from_repeatable() {
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'removing_items_testing',
+			'sortable' => true,
+			'extra_elements' => 0,
+			'limit' => 0,
+		) );
+
+		$context = $field->add_meta_box( 'removing_items_testing', $this->post );
+
+		$to_remove = rand_str();
+		$to_save = array( $to_remove, rand_str(), rand_str() );
+
+		$context->save_to_post_meta( $this->post_id, $to_save );
+
+		$data = get_post_meta( $this->post_id, 'removing_items_testing', true );
+
+		$this->assertEquals( 3, count( $data ) );
+
+		$to_save[0] = '';
+
+		$context->save_to_post_meta( $this->post_id, $to_save );
+
+		$data = get_post_meta( $this->post_id, 'removing_items_testing', true );
+
+		$this->assertEquals( 2, count( $data ) );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertNotContains( "value=\"{$to_remove}\"", $html );
+		$this->assertContains( "value=\"{$to_save[1]}\"", $html );
+		$this->assertContains( "value=\"{$to_save[2]}\"", $html );
+	}
 }
