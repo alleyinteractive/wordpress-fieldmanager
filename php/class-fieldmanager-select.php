@@ -57,8 +57,8 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// Add the chosen library for type-ahead capabilities
 		if ( $this->type_ahead ) {
-			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
-			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+			fm_add_script( 'fm-chosen', 'js/chosen/chosen.jquery.min.js', array( 'jquery' ), '1.3.0' );
+			fm_add_style( 'fm-chosen-css', 'js/chosen/chosen.min.css', array(), '1.3.0' );
 
 			if ( $this->datasource && $this->datasource->use_ajax ) {
 				$this->attributes['data-fm-ajax-search-action'] = $this->datasource->get_ajax_action();
@@ -87,7 +87,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// Handle type-ahead based fields using the chosen library
 		if ( $this->type_ahead ) {
-			$select_classes[] = 'chzn-select';
+			$select_classes[] = 'chosen-select';
 			if ( !isset( $GLOBALS['fm_chosen_initialized'] ) ) {
 				add_action( 'admin_footer', array( $this, 'chosen_init' ) );
 				$GLOBALS['fm_chosen_initialized'] = true;
@@ -166,9 +166,9 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		<script type="text/javascript">
 		jQuery(function($){
 			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
-				$(".chzn-select:visible",this).chosen({allow_single_deselect:true})
+				$(".chosen-select:visible",this).chosen({allow_single_deselect:true,disable_search_threshold:-1,width:'350px'})
 			});
-			$(".chzn-select:visible").chosen({allow_single_deselect:true});
+			$(".chosen-select:visible").chosen({allow_single_deselect:true,disable_search_threshold:-1,width:'350px'});
 		});
 		</script>
 		<?php
