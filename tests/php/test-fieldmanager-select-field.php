@@ -157,14 +157,14 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		) );
 
 		$html = $this->_get_html_for( $fm );
-		$this->assertEquals( 2, preg_match_all( '#<select[^>]+>.*?</select>#si', $html ) );
+		$this->assertEquals( 2, preg_match_all( '#<select[^>]+>.*?</select>#si', $html, $matches ) );
 		$this->assertEquals( 2, substr_count( $html, '<option value="one" >one</option>' ) );
 
 		// @see https://github.com/alleyinteractive/wordpress-fieldmanager/issues/150
 		$this->assertContains( '<option value="">&nbsp;</option>', $html );
 
 		$html = $this->_get_html_for( $fm, array( 'three', 'one' ) );
-		$this->assertEquals( 4, preg_match_all( '#<select[^>]+>.*?</select>#si', $html ) );
+		$this->assertEquals( 4, preg_match_all( '#<select[^>]+>.*?</select>#si', $html, $matches ) );
 		$this->assertEquals( 3, substr_count( $html, '<option value="one" >one</option>' ) );
 		$this->assertEquals( 1, substr_count( $html, '<option value="one" selected>one</option>' ) );
 		$this->assertEquals( 4, substr_count( $html, '<option value="two" >two</option>' ) );
@@ -195,7 +195,8 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 			. '\s*<option\s*value="two"\s*>two</option>'
 			. '\s*<option\s*value="three"\s*>three</option>'
 			. '\s*</select>#si',
-			$html
+			$html,
+			$matches
 		) );
 	}
 
