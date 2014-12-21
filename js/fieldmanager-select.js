@@ -56,7 +56,13 @@ $( document ).ready( function() {
 
 		if( $fm_select_field.data("fm-ajax-search-action").length ) {
 			fm_typeahead_term = $(this).val();
-			$.post( ajaxurl, { action: $fm_select_field.data("fm-ajax-search-action"), fm_autocomplete_search: $fm_text_field.val(), fm_search_nonce: fm_select.fm_search_nonce }, function ( result ) {
+			$.post( ajaxurl, {
+				action: $fm_select_field.data("fm-ajax-search-action"),
+				fm_autocomplete_search: $fm_text_field.val(),
+				fm_search_nonce: fm_select.fm_search_nonce,
+				fm_context: $fm_select_field.data( 'context' ),
+				fm_subcontext: $fm_select_field.data( 'subcontext' )
+			}, function ( result ) {
 				// Clear any non-selected terms before proceeding
 				fm_text_field_val = $fm_text_field.val();
 				fm_select_clear_terms( $fm_select_field, "", false );
