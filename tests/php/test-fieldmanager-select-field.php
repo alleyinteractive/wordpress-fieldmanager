@@ -172,6 +172,33 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		$this->assertEquals( 1, substr_count( $html, '<option value="three" selected>three</option>' ) );
 	}
 
+	public function test_repeatable_child_first_empty() {
+		$fm = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'limit' => 0,
+			'children' => array(
+				'subgroup' => new Fieldmanager_Group( array(
+					'children' => array(
+						'select' => new Fieldmanager_Select( array(
+							'options' => array( 'one', 'two', 'three' ),
+						) )
+					)
+				) ),
+			),
+		) );
+
+		$html = $this->_get_html_for( $fm );
+		$this->assertEquals( 2, preg_match_all(
+			'#<select[^>]+>'
+			. '\s*<option value="">&nbsp;</option>'
+			. '\s*<option\s*value="one"\s*>one</option>'
+			. '\s*<option\s*value="two"\s*>two</option>'
+			. '\s*<option\s*value="three"\s*>three</option>'
+			. '\s*</select>#si',
+			$html
+		) );
+	}
+
 	public function test_first_empty() {
 		$fm = new Fieldmanager_Select( array(
 			'name' => 'base_field',
