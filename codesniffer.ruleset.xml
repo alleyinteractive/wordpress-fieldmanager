@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<ruleset name="WordPress Theme Coding Standards Configuration">
+	<!-- Set a description for this ruleset. -->
+	<description>Code standard rules to check against a WordPress Theme.</description>
+
+	<exclude-pattern>tests/*</exclude-pattern>
+
+	<!-- Include the WordPress ruleset, with exclusions. -->
+	<rule ref="WordPress-VIP">
+		<!-- These may need to be excluded if they throw too many false positives -->
+		<!-- <exclude name="Generic.WhiteSpace.ScopeIndent.Incorrect" /> -->
+		<!-- <exclude name="Generic.WhiteSpace.ScopeIndent.IncorrectExact" /> -->
+		<!-- <exclude name="PEAR.Functions.FunctionCallSignature.Indent" /> -->
+	</rule>
+
+	<rule ref="Generic.WhiteSpace.ScopeIndent.IncorrectExact">
+		<type>warning</type>
+	</rule>
+
+	<!-- Tweak the VIP rules -->
+	<rule ref="WordPress.XSS.EscapeOutput.">
+		<type>warning</type>
+	</rule>
+	<rule ref="WordPress.XSS.EscapeOutput">
+		<type>warning</type>
+	</rule>
+
+</ruleset>
