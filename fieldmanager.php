@@ -201,7 +201,8 @@ function fm_get_context() {
 	if ( $calculated_context ) {
 		return $calculated_context;
 	} else {
-		return fm_calculate_context();
+		$context_context = fm_calculate_context();
+		return $calculated_context;
 	}
 }
 
