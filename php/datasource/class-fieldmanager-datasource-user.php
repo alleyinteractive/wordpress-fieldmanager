@@ -34,6 +34,13 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * or 'user_nicename'
      */
     public $display_property = 'display_name';
+    
+    /**
+     * @var string
+     * Store property. Defaults to ID, but can also be 'user_login', 'user_email',
+     * or 'user_nicename'.
+     */
+    public $store_property = 'ID';
 
     /**
      * @var string
@@ -49,8 +56,17 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      */
     public $reciprocal = Null;
 
-    // constructor not required for this datasource; options are just set to keys,
-    // which Fieldmanager_Datasource does.
+    /**
+	 * Constructor. Used for validation.
+	 */
+	public function __construct( $options = array() ) {
+		parent::__construct( $options );
+		
+		// Validate
+		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
+			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID', 'fieldmanager' ) );
+		}
+	}
 
     /**
      * Get a post title by post ID
@@ -58,8 +74,23 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * @return string post title
      */
     public function get_value( $value ) {
-        $id = intval( $value );
-        $user = get_userdata( $id );
+    	switch ( $this->store_property ) {
+    		case 'ID':
+    			$field = 'ID';
+    			$value = intval( $value );
+    			break;
+    		case 'user_nicename':
+    			$field = 'slug';
+    			break;
+    		case 'user_email':
+    			$field = 'email';
+    			break;
+    		case 'user_login':
+    			$field = 'login';
+    			break;
+    	}
+        
+        $user = get_user_by( $field, $value );
         return $user ? $user->{$this->display_property} : '';
     }
 
@@ -79,7 +110,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         if ( $fragment ) $user_args['search'] = $fragment;
         $users = get_users( $user_args );
         foreach ( $users as $u ) {
-            $ret[$u->ID] = $u->{$this->display_property};
+            $ret[ $u->{$this->store_property} ] = $u->{$this->display_property};
         }
         return $ret;
     }
@@ -98,12 +129,13 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     }
 
     /**
-     * For post relationships, delete reciprocal post metadata prior to saving (presave will re-add)
+     * For post relationships, delete reciprocal post metadata prior to saving (presave will re-add).
+     * Reciprocal relationships are not possible if we are not storing by ID.
      * @param array $values new post values
      * @param array $current_values existing post values
      */
     public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
-        if ( $field->data_type != 'post' || !$this->reciprocal ) return $values;
+        if ( $field->data_type != 'post' || ! $this->reciprocal || 'ID' != $this->store_property ) return $values;
         foreach ( $current_values as $user_id ) {
             delete_user_meta( $user_id, $this->reciprocal, $field->data_id );
         }
@@ -111,7 +143,8 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     }
 
     /**
-     * Handle reciprocal postmeta
+     * Handle reciprocal postmeta.
+     * Reciprocal relationships are not possible if we are not storing by ID.
      * @param int $value
      * @return string
      */
@@ -123,11 +156,11 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
             $value = array( $value );
         }
         foreach ( $value as $i => $v ) {
-            $value[$i] = intval( $v );
-            if( !current_user_can( $this->capability, $v ) ) {
+            $value[$i] = call_user_func( ( 'ID' == $this->store_property ) ? 'intval' : 'sanitize_text_field', $v );
+            if( ! current_user_can( $this->capability, $v ) ) {
                 wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
             }
-            if ( $this->reciprocal ) {
+            if ( $this->reciprocal && 'ID' == $this->store_property ) {
                 add_user_meta( $v, $this->reciprocal, $field->data_id );
             }
         }
