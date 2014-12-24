@@ -82,6 +82,7 @@
 /* Vertical Tabs */
 .fm-tabbed-vertical {
 	margin: -6px -12px -12px;
+	background: url(../images/vertical-tab-bg.png) 0 0 repeat-y;
 }
 .fm-tabbed-vertical:before,
 .fm-tabbed-vertical:after {
@@ -95,6 +96,9 @@
 	width: 175px;
 	float: left;
 	margin: 0;
+	-moz-box-shadow: 0 1px 0px #dfdfdf;
+	-webkit-box-shadow: 0 1px 0px #dfdfdf;
+	box-shadow: 0 1px 0px #dfdfdf;
 }
 .fm-tabbed-vertical .fm-tab-bar li {
 	display: block;
