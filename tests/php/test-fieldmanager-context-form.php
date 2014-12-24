@@ -26,49 +26,10 @@ class Test_Fieldmanager_Context_Form extends WP_UnitTestCase {
 		$this->assertInstanceOf( 'Fieldmanager_Util_Validation', $v );
 		$this->assertTrue( count( $v->get_rules() ) == 1 );
 
-		// a basic input matcher.
-		// see http://phpunit.de/manual/3.7/en/writing-tests-for-phpunit.html#writing-tests-for-phpunit.assertions.assertTag
-		$name_matcher = array(
-			'tag' => 'input',
-			'attributes' => array(
-				'type' => 'text',
-				'name' => 'userform[name]',
-				'value' => 'placeholder name',
-			),
-		);
-		$this->assertTag( $name_matcher, $html );
-
-		$email_matcher = array(
-			'tag' => 'input',
-			'attributes' => array(
-				'type' => 'text',
-				'name' => 'userform[email]',
-				'value' => 'placeholder email',
-			),
-		);
-		$this->assertTag( $email_matcher, $html );
-
-		$remember_matcher = array(
-			'tag' => 'input',
-			'attributes' => array(
-				'type' => 'checkbox',
-				'name' => 'userform[remember]',
-				'value' => '1',
-				'checked' => false,
-			),
-		);
-		$this->assertTag( $remember_matcher, $html );
-
-		$fruit_matcher = array(
-			'tag' => 'input',
-			'attributes' => array(
-				'type' => 'radio',
-				'name' => 'userform[group][preferences]',
-				'value' => 'Banana',
-				'checked' => true,
-			),
-		);
-		$this->assertTag( $fruit_matcher, $html );
+		$this->assertContains( 'name="userform[name]', $html );
+		$this->assertContains( 'name="userform[email]', $html );
+		$this->assertContains( 'name="userform[remember]', $html );
+		$this->assertContains( 'name="userform[group][preferences]', $html );
 
 		$this->build_post( $html );
 
@@ -90,27 +51,11 @@ class Test_Fieldmanager_Context_Form extends WP_UnitTestCase {
 		$this->assertTrue( $context->has_errors() );
 
 		$processed_html = $context->page_form_html(); // should have errors and messages
-		$message_matcher = array(
-			'tag' => 'div',
-			'attributes' => array(
-				'class' => 'fm-messages',
-			),
-			'child' => array( 'tag' => 'p' ),
-		);
-		$this->assertTag( $message_matcher, $processed_html );
-
-		$message_matcher['attributes']['class'] = 'fm-errors';
-		$this->assertTag( $message_matcher, $processed_html );
-
-		unset( $fruit_matcher['attributes']['checked'] );
-		$this->assertTag( $fruit_matcher, $processed_html );
-
-		$remember_matcher['attributes']['checked'] = true;
-		$this->assertTag( $remember_matcher, $processed_html );
-
-		$fruit_matcher['attributes']['checked'] = true;
-		$fruit_matcher['attributes']['value'] = 'Apple';
-		$this->assertTag( $fruit_matcher, $processed_html );
+		$this->assertContains( 'class="fm-messages"', $processed_html );
+		$this->assertContains( 'name="userform[name]', $processed_html );
+		$this->assertContains( 'name="userform[email]', $processed_html );
+		$this->assertContains( 'name="userform[remember]', $processed_html );
+		$this->assertContains( 'name="userform[group][preferences]', $processed_html );
 	}
 
 	/**

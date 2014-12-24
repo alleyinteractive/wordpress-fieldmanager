@@ -388,6 +388,22 @@ function fm_get_form( $uniqid ) {
 }
 
 /**
+ * Enqueue default scripts for a frontend form
+ * @param string $uniqid
+ */
+function fm_enqueue_form_scripts( $uniqid ) {
+	_fm_form_init_once( $uniqid );
+}
+
+/**
+ * Enqueue default styles for a frontend form
+ * @param string $uniqid
+ */
+function fm_enqueue_form_styles( $uniqid ) {
+	_fm_form_init_once( $uniqid );
+}
+
+/**
  * Load up a form
  */
 function _fm_form_init_once( $uniqid ) {
