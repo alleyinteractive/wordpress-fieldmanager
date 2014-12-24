@@ -38,8 +38,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $collapsed = FALSE;
 
 	/**
-	 * @var boolean
-	 * If true, render children in tabs.
+	 * If true, render children in horizontal tabs. If 'vertical', the tabs will
+	 * be rendered vertically.
+	 *
+	 * @var boolean|string
 	 */
 	public $tabbed = FALSE;
 
@@ -153,7 +155,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		if ( $this->tabbed ) {
 			fm_add_script( 'jquery-hoverintent', 'js/jquery.hoverIntent.js', array( 'jquery' ), '1.8.0' );
 			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.1' );
-			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.1' );
+			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.2' );
 		}
 	}
 
