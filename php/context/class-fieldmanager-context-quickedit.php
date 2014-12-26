@@ -134,7 +134,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		?>
 		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo esc_attr( $column_name ); ?>" data-fm-post-type="<?php echo esc_attr( $post_type ); ?>">
 			<div class="inline-edit-col">
-				<?php $this->_render_field( array( 'data' => $values ) ); ?>
+				<?php $this->render_field( array( 'data' => $values ) ); ?>
 			</div>
 		</fieldset>
 		<?php
@@ -165,7 +165,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		$this->fm->data_id = $post_id;
 		$post_type = get_post_type( $post_id );
 
-		return $this->add_quickedit_box( $column_name, $post_type, $this->_load() );
+		return $this->add_quickedit_box( $column_name, $post_type, $this->load() );
 	}
 
 	/**
@@ -192,7 +192,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		}
 
 		// Ensure that the nonce is set and valid
-		if ( ! $this->_is_valid_nonce() ) {
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
@@ -217,7 +217,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 
-		$this->_save( $data );
+		$this->save( $data );
 	}
 
 }

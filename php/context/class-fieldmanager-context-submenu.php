@@ -111,7 +111,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 			<form method="POST" id="<?php echo esc_attr( $this->uniqid ) ?>">
 				<div class="fm-submenu-form-wrapper">
 					<input type="hidden" name="fm-options-action" value="<?php echo sanitize_title( $this->fm->name ) ?>" />
-					<?php $this->_render_field( array( 'data' => $values ) ); ?>
+					<?php $this->render_field( array( 'data' => $values ) ); ?>
 				</div>
 				<?php submit_button( $this->submit_button_label, 'submit', 'fm-submit' ) ?>
 			</form>
@@ -133,7 +133,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		}
 
 		// Make sure that our nonce field arrived intact
-		if ( ! $this->_is_valid_nonce() ) {
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
@@ -152,7 +152,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->fm->data_id = $this->fm->name;
 		$this->fm->data_type = 'options';
 		$current = get_option( $this->fm->name, null );
-		$data = $this->_prepare_data( $current, $data );
+		$data = $this->prepare_data( $current, $data );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 
 		if ( isset( $current ) ) {

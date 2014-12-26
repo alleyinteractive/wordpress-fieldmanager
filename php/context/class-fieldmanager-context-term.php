@@ -186,7 +186,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			$label = '';
 		}
 
-		$field = $this->_render_field( array( 'echo' => false ) );
+		$field = $this->render_field( array( 'echo' => false ) );
 
 		// Create the markup and return it
 		return sprintf(
@@ -211,7 +211,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		}
 
 		// Make sure that our nonce field arrived intact
-		if ( ! $this->_is_valid_nonce() ) {
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
@@ -238,7 +238,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		$this->fm->data_type = 'term';
 		$this->current_taxonomy = $taxonomy;
 
-		$this->_save( $data );
+		$this->save( $data );
 	}
 
 	/**

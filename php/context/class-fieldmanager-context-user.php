@@ -65,7 +65,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 			echo '<h3>' . esc_html( $this->title ) . '</h3>';
 		}
 		echo '<div class="fm-user-form-wrapper">';
-		$this->_render_field();
+		$this->render_field();
 		echo '</div>';
 
 		// Check if any validation is required
@@ -79,7 +79,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	 * @param int $user_id
 	 */
 	public function save_user_form( $user_id ) {
-		if ( ! $this->_is_valid_nonce() ) {
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
@@ -100,6 +100,6 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 		$this->fm->data_id = $user_id;
 		$this->fm->data_type = 'user';
 
-		$this->_save( $data );
+		$this->save( $data );
 	}
 }

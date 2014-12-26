@@ -115,7 +115,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
 
-		$this->_render_field();
+		$this->render_field();
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );
@@ -202,7 +202,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		// Verify nonce is present and valid. If present but not valid, this
 		// throws an exception, but if it's absent we can assume our data is
 		// not present.
-		if ( ! $this->_is_valid_nonce() ) {
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
@@ -245,7 +245,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 
-		$this->_save( $data );
+		$this->save( $data );
 	}
 
 	/**
