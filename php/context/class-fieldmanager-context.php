@@ -22,18 +22,6 @@ abstract class Fieldmanager_Context {
 	public $uniqid;
 
 	/**
-	 * @var array {
-	 *     Callback functions for data storage manipulation.
-	 *
-	 *     @type string $get Callback to get data.
-	 *     @type string $add Callback to add data.
-	 *     @type string $update Callback to update data.
-	 *     @type string $delete Callback to delete data.
-	 * }
-	 */
-	public $data_callbacks;
-
-	/**
 	 * Store the meta keys this field saves to, to catch naming conflicts.
 	 * @var array
 	 */
@@ -141,15 +129,15 @@ abstract class Fieldmanager_Context {
 			$this->save_keys[ $field->get_element_key() ] = true;
 		}
 
-		$current = call_user_func( $this->data_callbacks['get'], $this->fm->data_id, $field->get_element_key(), $field->serialize_data );
+		$current = $this->get_data( $this->fm->data_id, $field->get_element_key(), $field->serialize_data );
 		$data = $this->prepare_data( $current, $data, $field );
 		if ( ! $field->skip_save ) {
 			if ( $field->serialize_data ) {
-				call_user_func( $this->data_callbacks['update'], $this->fm->data_id, $field->get_element_key(), $data );
+				$this->update_data( $this->fm->data_id, $field->get_element_key(), $data );
 			} else {
-				call_user_func( $this->data_callbacks['delete'], $this->fm->data_id, $field->get_element_key() );
+				$this->delete_data( $this->fm->data_id, $field->get_element_key() );
 				foreach ( $data as $value ) {
-					call_user_func( $this->data_callbacks['add'], $this->fm->data_id, $field->get_element_key(), $value );
+					$this->add_data( $this->fm->data_id, $field->get_element_key(), $value );
 				}
 			}
 		}
@@ -194,7 +182,7 @@ abstract class Fieldmanager_Context {
 	 * @return mixed Data stored for that field in this context.
 	 */
 	protected function load_field( $field ) {
-		$data = call_user_func( $this->data_callbacks['get'], $this->fm->data_id, $field->get_element_key() );
+		$data = $this->get_data( $this->fm->data_id, $field->get_element_key() );
 		if ( $field->serialize_data ) {
 			return empty( $data ) ? null : reset( $data );
 		} else {
@@ -221,4 +209,64 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
+	/**
+	 * Method to get data from the context's storage engine.
+	 *
+	 * @param int $data_id The ID of the object holding the data, e.g. Post ID.
+	 * @param string $data_key The key for the data, e.g. a meta_key.
+	 * @param boolean $single Optional. If true, only returns the first value
+	 *                        found for the given data_key. This won't apply to
+	 *                        every context. Default is false.
+	 * @return string|array The stored data. If no data is found, should return
+	 *                      an empty string (""). @see get_post_meta().
+	 */
+	abstract protected function get_data( $data_id, $data_key, $single = false );
+
+	/**
+	 * Method to add data to the context's storage engine.
+	 *
+	 * @param int $data_id The ID of the object holding the data, e.g. Post ID.
+	 * @param string $data_key The key for the data, e.g. a meta_key.
+	 * @param mixed $data_value The value to store.
+	 * @param boolean $unique Optional. If true, data will only be added if the
+	 *                        object with the given $data_id doesn't already
+	 *                        contain data for the given $data_key. This may not
+	 *                        apply to every context. Default is false.
+	 * @return boolean|integer On success, should return the ID of the stored
+	 *                         data (an integer, which will evaluate as true).
+	 *                         If the $unique argument is set to true and data
+	 *                         with the given key already exists, this should
+	 *                         return false.  @see add_post_meta().
+	 */
+	abstract protected function add_data( $data_id, $data_key, $data_value, $unique = false );
+
+	/**
+	 * Method to update the data in the context's storage engine.
+	 *
+	 * @param int $data_id The ID of the object holding the data, e.g. Post ID.
+	 * @param string $data_key The key for the data, e.g. a meta_key.
+	 * @param mixed $data_value The value to store.
+	 * @param mixed $data_prev_value Optional. Only update data if the previous
+	 *                               value matches the data provided. This may
+	 *                               not apply to every context.
+	 * @return mixed Should return data id if the data doesn't exist, otherwise
+	 *               should return true on success and false on failure. If the
+	 *               value passed to this method is the same as the stored
+	 *               value, this method should return false.
+	 *               @see update_post_meta().
+	 */
+	abstract protected function update_data( $data_id, $data_key, $data_value, $data_prev_value = '' );
+
+	/**
+	 * Method to delete data from the context's storage engine.
+	 *
+	 * @param int $data_id The ID of the object holding the data, e.g. Post ID.
+	 * @param string $data_key The key for the data, e.g. a meta_key.
+	 * @param mixed $data_value Only delete the data if the stored value matches
+	 *                          $data_value. This may not apply to every
+	 *                          context.
+	 * @return boolean False for failure. True for success.
+	 *                  @see delete_post_meta().
+	 */
+	abstract protected function delete_data( $data_id, $data_key, $data_value = '' );
 }

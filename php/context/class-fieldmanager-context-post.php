@@ -39,17 +39,6 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 */
 	public $fm = null;
 
-	/**
-	 * Callbacks for manipulating data.
-	 * @var array
-	 */
-	public $data_callbacks = array(
-		'get'    => "get_post_meta",
-		'add'    => "add_post_meta",
-		'update' => "update_post_meta",
-		'delete' => "delete_post_meta",
-	);
-
 	/*
 	 * @var boolean
 	 */
@@ -256,6 +245,42 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$ret = wp_update_post( $args );
 		self::$doing_internal_update = false;
 		return $ret;
+	}
+
+	/**
+	 * Get post meta.
+	 *
+	 * @see get_post_meta().
+	 */
+	protected function get_data( $post_id, $meta_key, $single = false ) {
+		return get_post_meta( $post_id, $meta_key, $single );
+	}
+
+	/**
+	 * Add post meta.
+	 *
+	 * @see add_post_meta().
+	 */
+	protected function add_data( $post_id, $meta_key, $meta_value, $unique = false ) {
+		return add_post_meta( $post_id, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Update post meta.
+	 *
+	 * @see update_post_meta().
+	 */
+	protected function update_data( $post_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		return update_post_meta( $post_id, $meta_key, $meta_value, $data_prev_value );
+	}
+
+	/**
+	 * Delete post meta.
+	 *
+	 * @see delete_post_meta().
+	 */
+	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
+		return delete_post_meta( $post_id, $meta_key, $meta_value );
 	}
 
 }

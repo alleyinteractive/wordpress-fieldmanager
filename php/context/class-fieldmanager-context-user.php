@@ -16,17 +16,6 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	public $title;
 
 	/**
-	 * Callbacks for manipulating data.
-	 * @var array
-	 */
-	public $data_callbacks = array(
-		'get'    => "get_user_meta",
-		'add'    => "add_user_meta",
-		'update' => "update_user_meta",
-		'delete' => "delete_user_meta",
-	);
-
-	/**
 	 * Add fieldmanager to user form
 	 * @param string $title
 	 * @param Fieldmanager_Field $fm
@@ -101,5 +90,41 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 		$this->fm->data_type = 'user';
 
 		$this->save( $data );
+	}
+
+	/**
+	 * Get user meta.
+	 *
+	 * @see get_user_meta().
+	 */
+	protected function get_data( $user_id, $meta_key, $single = false ) {
+		return get_user_meta( $user_id, $meta_key, $single );
+	}
+
+	/**
+	 * Add user meta.
+	 *
+	 * @see add_user_meta().
+	 */
+	protected function add_data( $user_id, $meta_key, $meta_value, $unique = false ) {
+		return add_user_meta( $user_id, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Update user meta.
+	 *
+	 * @see update_user_meta().
+	 */
+	protected function update_data( $user_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		return update_user_meta( $user_id, $meta_key, $meta_value, $data_prev_value );
+	}
+
+	/**
+	 * Delete user meta.
+	 *
+	 * @see delete_user_meta().
+	 */
+	protected function delete_data( $user_id, $meta_key, $meta_value = '' ) {
+		return delete_user_meta( $user_id, $meta_key, $meta_value );
 	}
 }
