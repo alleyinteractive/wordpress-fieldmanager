@@ -251,7 +251,7 @@ function fm_get_context() {
 	if ( $calculated_context ) {
 		return $calculated_context;
 	} else {
-		$context_context = fm_calculate_context();
+		$calculated_context = fm_calculate_context();
 		return $calculated_context;
 	}
 }
