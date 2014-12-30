@@ -282,7 +282,7 @@ function fm_calculate_context() {
 	if ( is_admin() ) {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
-		/**
+		/*
 		 * Calculate a submenu context.
 		 *
 		 * For submenus of the default WordPress menus, the submenu's parent
