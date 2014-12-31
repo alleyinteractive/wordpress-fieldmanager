@@ -38,12 +38,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $collapsed = FALSE;
 
 	/**
-	 * If true, render children in horizontal tabs. If 'vertical', the tabs will
-	 * be rendered vertically.
+	 * Use tabbed groups. Currently supports "horizontal" or "vertical".
 	 *
 	 * @var boolean|string
 	 */
-	public $tabbed = FALSE;
+	public $tabbed = false;
 
 	/**
 	 * @var int
