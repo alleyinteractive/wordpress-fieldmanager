@@ -513,6 +513,12 @@ abstract class Fieldmanager_Field {
 			$classes[] = 'fmjs-proto';
 		}
 
+		if ( $this->is_group() && 'vertical' === $this->tabbed ) {
+			$classes[] = 'fm-tabbed-vertical';
+		}
+
+		$classes = apply_filters( 'fm_element_classes', $classes, $this->name, $this );
+
 		$out .= sprintf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 
 		$label = $this->get_element_label( );

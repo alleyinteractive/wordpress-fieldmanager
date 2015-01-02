@@ -140,6 +140,84 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 			) );
 	}
 
+	public function test_tabbed_group() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'tabbed'         => true,
+			'children'       => array(
+				'tab-1' => new Fieldmanager_Group( array(
+					'label'          => 'Tab One',
+					'children'       => array(
+						'test_text' => new Fieldmanager_TextField( 'Text Field' ),
+					)
+				) ),
+				'tab-2' => new Fieldmanager_Group( array(
+					'label'          => 'Tab Two',
+					'children'       => array(
+						'test_textarea' => new Fieldmanager_TextArea( 'TextArea' ),
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'tab-1' => array(
+				'test_text' => rand_str()
+			),
+			'tab-2' => array(
+				'test_textarea' => rand_str()
+			),
+		);
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_group', true ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertContains( 'fm-tab-bar', $html );
+		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
+		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
+		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
+		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
+		$this->assertNotContains( 'fm-tabbed-vertical', $html );
+	}
+
+	public function test_vertical_tabbed_group() {
+		$base = new Fieldmanager_Group( array(
+			'name'     => 'base_group',
+			'tabbed'   => 'vertical',
+			'children' => array(
+				'tab-1' => new Fieldmanager_Group( array(
+					'label'    => 'Tab One',
+					'children' => array(
+						'test_text' => new Fieldmanager_TextField( 'Text Field' ),
+					)
+				) ),
+				'tab-2' => new Fieldmanager_Group( array(
+					'label'    => 'Tab Two',
+					'children' => array(
+						'test_textarea' => new Fieldmanager_TextArea( 'TextArea' ),
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'tab-1' => array(
+				'test_text' => rand_str()
+			),
+			'tab-2' => array(
+				'test_textarea' => rand_str()
+			),
+		);
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_group', true ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertContains( 'fm-tab-bar', $html );
+		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
+		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
+		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
+		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
+		$this->assertContains( 'fm-tabbed-vertical', $html );
+	}
+
 	/**
 	 * @group serialize_data
 	 */
@@ -785,7 +863,7 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 		$this->assertContains( 'value="Add Another"', $default_html );
 		$this->assertContains( 'data-add-more-position="bottom"', $default_html );
-		//indicates add another button is at the bottom (default behavior). 
+		//indicates add another button is at the bottom (default behavior).
 		$this->assertTrue( $add_another_occurrence > $text_field_occurrence );
 
 
@@ -812,7 +890,7 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 		$this->assertContains( 'value="Add Another"', $html );
 		$this->assertContains( 'data-add-more-position="top"', $html );
-		//indicates add another button is at the top (add_another_position = top). 
+		//indicates add another button is at the top (add_another_position = top).
 		$this->assertTrue( $add_another_occurrence < $text_field_occurrence );
 
 	}
