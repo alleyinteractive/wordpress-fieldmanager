@@ -4,6 +4,7 @@
  * Tests the Post context
  *
  * @group context
+ * @group post
  */
 class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
 	public function setUp() {
