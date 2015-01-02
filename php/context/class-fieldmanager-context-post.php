@@ -39,17 +39,6 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 */
 	public $fm = null;
 
-	/**
-	 * Callbacks for manipulating data.
-	 * @var array
-	 */
-	public $data_callbacks = array(
-		'get'    => "get_post_meta",
-		'add'    => "add_post_meta",
-		'update' => "update_post_meta",
-		'delete' => "delete_post_meta",
-	);
-
 	/*
 	 * @var boolean
 	 */
@@ -115,7 +104,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
 
-		$this->_render_field();
+		$this->render_field();
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );
@@ -202,7 +191,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		// Verify nonce is present and valid. If present but not valid, this
 		// throws an exception, but if it's absent we can assume our data is
 		// not present.
-		if ( ! $this->_is_valid_nonce() ) {
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
@@ -245,7 +234,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 
-		$this->_save( $data );
+		$this->save( $data );
 	}
 
 	/**
@@ -256,6 +245,42 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$ret = wp_update_post( $args );
 		self::$doing_internal_update = false;
 		return $ret;
+	}
+
+	/**
+	 * Get post meta.
+	 *
+	 * @see get_post_meta().
+	 */
+	protected function get_data( $post_id, $meta_key, $single = false ) {
+		return get_post_meta( $post_id, $meta_key, $single );
+	}
+
+	/**
+	 * Add post meta.
+	 *
+	 * @see add_post_meta().
+	 */
+	protected function add_data( $post_id, $meta_key, $meta_value, $unique = false ) {
+		return add_post_meta( $post_id, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Update post meta.
+	 *
+	 * @see update_post_meta().
+	 */
+	protected function update_data( $post_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		return update_post_meta( $post_id, $meta_key, $meta_value, $data_prev_value );
+	}
+
+	/**
+	 * Delete post meta.
+	 *
+	 * @see delete_post_meta().
+	 */
+	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
+		return delete_post_meta( $post_id, $meta_key, $meta_value );
 	}
 
 }
