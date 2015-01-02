@@ -38,7 +38,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $collapsed = FALSE;
 
 	/**
-	 * Use tabbed groups. Currently supports "horizontal" or "vertical".
+	 * Use tabbed groups. Currently supports "horizontal" or "vertical". Default
+	 * is false, which means that the group will not be tabbed.
 	 *
 	 * @var boolean|string
 	 */
