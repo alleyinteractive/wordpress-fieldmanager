@@ -81,6 +81,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	/**
 	 * Should the group name be included in the meta key prefix for separate
 	 * fields? Default is true.
+	 *
+	 * If false, Fieldmanager will not check for collisions among the meta keys
+	 * created for this group's fields and other registered fields.
+	 *
 	 * @var boolean
 	 */
 	public $add_to_prefix = true;
