@@ -146,3 +146,7 @@
 	border: none;
 	background: none;
 }
+.fm-tabbed-vertical .wp-tabs-panel .fm-group .fm-group {
+	border: 1px solid #ddd;
+	background: #ededed;
+}
