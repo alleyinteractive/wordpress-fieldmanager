@@ -52,17 +52,6 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	public $wp_option_autoload = False;
 
 	/**
-	 * Callbacks for manipulating data.
-	 * @var array
-	 */
-	public $data_callbacks = array(
-		'get'    => "get_option",
-		'add'    => "add_option",
-		'update' => "update_option",
-		'delete' => "delete_option",
-	);
-
-	/**
 	 * Create a submenu page out of a field
 	 * @param string $parent_slug
 	 * @param string $page_title
@@ -111,7 +100,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 			<form method="POST" id="<?php echo esc_attr( $this->uniqid ) ?>">
 				<div class="fm-submenu-form-wrapper">
 					<input type="hidden" name="fm-options-action" value="<?php echo sanitize_title( $this->fm->name ) ?>" />
-					<?php $this->_render_field( array( 'data' => $values ) ); ?>
+					<?php $this->render_field( array( 'data' => $values ) ); ?>
 				</div>
 				<?php submit_button( $this->submit_button_label, 'submit', 'fm-submit' ) ?>
 			</form>
@@ -133,7 +122,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		}
 
 		// Make sure that our nonce field arrived intact
-		if ( ! $this->_is_valid_nonce() ) {
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
@@ -152,7 +141,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->fm->data_id = $this->fm->name;
 		$this->fm->data_type = 'options';
 		$current = get_option( $this->fm->name, null );
-		$data = $this->_prepare_data( $current, $data );
+		$data = $this->prepare_data( $current, $data );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 
 		if ( isset( $current ) ) {
@@ -176,5 +165,41 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		} else {
 			return admin_url( 'admin.php?page=' . $this->menu_slug );
 		}
+	}
+
+	/**
+	 * Get option.
+	 *
+	 * @see get_option().
+	 */
+	protected function get_data( $data_id, $option_name, $single = false ) {
+		return get_option( $option_name, null );
+	}
+
+	/**
+	 * Add option.
+	 *
+	 * @see add_option().
+	 */
+	protected function add_data( $data_id, $option_name, $option_value, $unique = false ) {
+		return add_option( $option_name, $option_value, '', $this->wp_option_autoload ? 'yes' : 'no' );
+	}
+
+	/**
+	 * Update option.
+	 *
+	 * @see update_option().
+	 */
+	protected function update_data( $data_id, $option_name, $option_value, $option_prev_value = '' ) {
+		return update_option( $option_name, $option_value );
+	}
+
+	/**
+	 * Delete option.
+	 *
+	 * @see delete_option().
+	 */
+	protected function delete_data( $data_id, $option_name, $option_value = '' ) {
+		return delete_option( $option_name, $option_value );
 	}
 }

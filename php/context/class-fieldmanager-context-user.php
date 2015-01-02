@@ -16,17 +16,6 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	public $title;
 
 	/**
-	 * Callbacks for manipulating data.
-	 * @var array
-	 */
-	public $data_callbacks = array(
-		'get'    => "get_user_meta",
-		'add'    => "add_user_meta",
-		'update' => "update_user_meta",
-		'delete' => "delete_user_meta",
-	);
-
-	/**
 	 * Add fieldmanager to user form
 	 * @param string $title
 	 * @param Fieldmanager_Field $fm
@@ -65,7 +54,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 			echo '<h3>' . esc_html( $this->title ) . '</h3>';
 		}
 		echo '<div class="fm-user-form-wrapper">';
-		$this->_render_field();
+		$this->render_field();
 		echo '</div>';
 
 		// Check if any validation is required
@@ -79,7 +68,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	 * @param int $user_id
 	 */
 	public function save_user_form( $user_id ) {
-		if ( ! $this->_is_valid_nonce() ) {
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
@@ -100,6 +89,42 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 		$this->fm->data_id = $user_id;
 		$this->fm->data_type = 'user';
 
-		$this->_save( $data );
+		$this->save( $data );
+	}
+
+	/**
+	 * Get user meta.
+	 *
+	 * @see get_user_meta().
+	 */
+	protected function get_data( $user_id, $meta_key, $single = false ) {
+		return get_user_meta( $user_id, $meta_key, $single );
+	}
+
+	/**
+	 * Add user meta.
+	 *
+	 * @see add_user_meta().
+	 */
+	protected function add_data( $user_id, $meta_key, $meta_value, $unique = false ) {
+		return add_user_meta( $user_id, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Update user meta.
+	 *
+	 * @see update_user_meta().
+	 */
+	protected function update_data( $user_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		return update_user_meta( $user_id, $meta_key, $meta_value, $data_prev_value );
+	}
+
+	/**
+	 * Delete user meta.
+	 *
+	 * @see delete_user_meta().
+	 */
+	protected function delete_data( $user_id, $meta_key, $meta_value = '' ) {
+		return delete_user_meta( $user_id, $meta_key, $meta_value );
 	}
 }
