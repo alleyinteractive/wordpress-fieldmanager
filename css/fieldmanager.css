@@ -1,3 +1,36 @@
+/* Fields */
+.fm-wrapper select,
+.fm-wrapper textarea,
+.fm-wrapper input[type="text"],
+.fm-wrapper input[type="password"],
+.fm-wrapper input[type="datetime"],
+.fm-wrapper input[type="datetime-local"],
+.fm-wrapper input[type="date"],
+.fm-wrapper input[type="month"],
+.fm-wrapper input[type="time"],
+.fm-wrapper input[type="week"],
+.fm-wrapper input[type="number"],
+.fm-wrapper input[type="email"],
+.fm-wrapper input[type="url"],
+.fm-wrapper input[type="search"],
+.fm-wrapper input[type="tel"],
+.fm-wrapper input[type="color"] {
+	max-width: 100%;
+}
+
+.fm-hidden {
+	display: none;
+}
+
+.fm-label-inline {
+	margin: 0 5px 0 0;
+}
+
+.fm-label-inline.fm-label-after {
+	margin: 0 0 0 5px;
+}
+
+/* Groups */
 .fm-group {
 	border: solid 1px #DDD;
 	-webkit-border-radius: 3px;
@@ -24,20 +57,8 @@
 	background-image: linear-gradient(bottom,#DDD,#EEE);
 }
 
-.fm-hidden {
-	display: none;
-}
-
 div.fm-group-label-wrapper {
 	overflow: auto;
-}
-
-.fm-label-inline {
-	margin: 0 5px 0 0;
-}
-
-.fm-label-inline.fm-label-after {
-	margin: 0 0 0 5px;
 }
 
 .fm-group div.fm-group-label-wrapper h4 {
@@ -49,6 +70,7 @@ div.fm-group-label-wrapper {
 	float: left;
 }
 
+/* Sortables and repeatables */
 .fm-item, .fm-add-another {
 	margin-bottom: 5px;
 }
@@ -61,12 +83,17 @@ div.fm-group-label-wrapper {
 	display: none;
 }
 
-.fmjs-removable {
-	overflow: auto;
-}
-
 .fmjs-removable-element, .fmjs-clearable-element {
 	float: left;
+}
+
+.fmjs-removable:before,
+.fmjs-removable:after {
+  content: " ";
+  display: table;
+}
+.fmjs-removable:after {
+  clear: both;
 }
 
 .fmjs-remove, .fmjs-clear {
@@ -87,7 +114,7 @@ div.fm-group-label-wrapper {
 	background: transparent url(../images/draggable.png) no-repeat 0px 0px;
 	height: 15px;
 	width: 15px;
-	margin: 5px 3px 0 0;
+	margin: 3px 3px 0 0;
 	text-indent: -9999px;
 	float: left;
 }
@@ -269,10 +296,13 @@ a.fm-delete:hover {
 	width: 25px;
 }
 
-.edit-tags-php input[type="checkbox"] {
-	width: 16px;
+.form-field input[type="checkbox"],
+.form-field input[type="radio"],
+.form-field input.fm-add-another,
+.form-field .fm-media-button {
+	width: auto;
 }
-
-.edit-tags-php .fm-media-button {
-	width: 200px;
+.form-field .fm-option label,
+.form-field .fm-checkbox label {
+	display: inline;
 }
