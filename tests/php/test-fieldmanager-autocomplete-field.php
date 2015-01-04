@@ -2,7 +2,9 @@
 
 /**
  * Tests the Fieldmanager Autocomplete Field
- * @group fields
+ *
+ * @group field
+ * @group autocomplete
  */
 class Test_Fieldmanager_Autocomplete_Field extends WP_UnitTestCase {
 
