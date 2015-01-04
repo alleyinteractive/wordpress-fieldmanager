@@ -220,7 +220,9 @@ abstract class Fieldmanager_Context {
 	 * @return string|array The stored data. If no data is found, should return
 	 *                      an empty string (""). @see get_post_meta().
 	 */
-	abstract protected function get_data( $data_id, $data_key, $single = false );
+	protected function get_data( $data_id, $data_key, $single = false ) {
+		return '';
+	}
 
 	/**
 	 * Method to add data to the context's storage engine.
@@ -238,7 +240,9 @@ abstract class Fieldmanager_Context {
 	 *                         with the given key already exists, this should
 	 *                         return false.  @see add_post_meta().
 	 */
-	abstract protected function add_data( $data_id, $data_key, $data_value, $unique = false );
+	protected function add_data( $data_id, $data_key, $data_value, $unique = false ) {
+		return false;
+	}
 
 	/**
 	 * Method to update the data in the context's storage engine.
@@ -255,7 +259,9 @@ abstract class Fieldmanager_Context {
 	 *               value, this method should return false.
 	 *               @see update_post_meta().
 	 */
-	abstract protected function update_data( $data_id, $data_key, $data_value, $data_prev_value = '' );
+	protected function update_data( $data_id, $data_key, $data_value, $data_prev_value = '' ) {
+		return false;
+	}
 
 	/**
 	 * Method to delete data from the context's storage engine.
@@ -268,5 +274,7 @@ abstract class Fieldmanager_Context {
 	 * @return boolean False for failure. True for success.
 	 *                  @see delete_post_meta().
 	 */
-	abstract protected function delete_data( $data_id, $data_key, $data_value = '' );
+	protected function delete_data( $data_id, $data_key, $data_value = '' ) {
+		return false;
+	}
 }
