@@ -7,7 +7,7 @@
  * Use fieldmanager to create meta boxes on
  * @package Fieldmanager_Context
  */
-class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
+class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 
 	/**
 	 * @var string
