@@ -72,12 +72,12 @@ define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 /**
  * Add CSS and JS to admin area, hooked into admin_enqueue_scripts.
  */
-function fieldmanager_enqueue_scripts() {
+function fieldmanager_enqueue_admin_scripts() {
 	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.4' );
 	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.0' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
-add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_admin_scripts' );
 
 /**
  * Tell fieldmanager that it lives somewhere other than wp-content/plugins
@@ -121,10 +121,10 @@ function fieldmanager_get_template( $tpl_slug ) {
  * @return void
  */
 function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array(), $plugin_dir = "", $admin = true ) {
-	if ( !is_admin() ) {
+	if ( ! is_admin() && ! _fieldmanager_registry( 'allow_scripts' ) ) {
 		return;
 	}
-	if ( !$ver ) {
+	if ( ! $ver ) {
 		$ver = FM_GLOBAL_ASSET_VERSION;
 	}
 	if ( $plugin_dir == "" ) {
@@ -132,7 +132,7 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
 	}
 	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
 		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver, $in_footer );
-		if ( !empty( $data_object ) && !empty( $data ) ) {
+		if ( ! empty( $data_object ) && !empty( $data ) ) {
 			wp_localize_script( $handle, $data_object, $data );
 		}
 	};
@@ -152,7 +152,7 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
  * @return void
  */
 function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
-	if( !is_admin() ) {
+	if ( !is_admin() && !_fieldmanager_registry( 'allow_styles' ) ) {
 		return;
 	}
 	if ( !$ver ) {
@@ -390,16 +390,25 @@ function fm_get_form( $uniqid ) {
 /**
  * Enqueue default scripts for a frontend form
  * @param string $uniqid
+ * @return void
  */
 function fm_enqueue_form_scripts( $uniqid ) {
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.4' );
+	wp_enqueue_script( 'jquery-ui-sortable' );
+	_fieldmanager_registry( 'allow_scripts', true );
+	// Field constructors enqueue CSS and JS as needed
 	_fm_form_init_once( $uniqid );
 }
 
 /**
  * Enqueue default styles for a frontend form
  * @param string $uniqid
+ * @return void
  */
 function fm_enqueue_form_styles( $uniqid ) {
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.0' );
+	_fieldmanager_registry( 'allow_styles', true );
+	// Field constructors enqueue CSS and JS as needed
 	_fm_form_init_once( $uniqid );
 }
 

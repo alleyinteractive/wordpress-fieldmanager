@@ -637,10 +637,11 @@ abstract class Fieldmanager_Field {
 	public function presave_all( $values, $current_values ) {
 		if ( $this->limit == 1 && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
-			if ( ! empty( $values ) )
+			if ( ! empty( $values ) ) {
 				$value = $this->presave( $values[0], $current_values );
-			else
-				$value = $values;
+			} else {
+				$value = null;
+			}
 			if ( !empty( $this->index ) ) $this->save_index( array( $value ), array( $current_values ) );
 			return $value;
 		}

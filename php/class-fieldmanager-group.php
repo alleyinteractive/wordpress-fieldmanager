@@ -250,9 +250,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
 			if ( empty( $values[$element->name] ) ) {
-				$values[ $element->name ] = NULL;
+				$values[ $element->name ] = null;
 			}
-			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
+			$child_value = empty( $values[ $element->name ] ) ? null : $values[ $element->name ];
 			$current_child_value = !isset( $current_values[$element->name ]) ? array() : $current_values[$element->name];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
 			if ( !$this->save_empty && $this->limit != 1 ) {
