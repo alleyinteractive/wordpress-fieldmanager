@@ -7,7 +7,7 @@
  * Use fieldmanager on user management forms
  * @package Fieldmanager_Datasource
  */
-class Fieldmanager_Context_User extends Fieldmanager_Context {
+class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 
 	/**
 	 * Group Title
