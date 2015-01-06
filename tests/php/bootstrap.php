@@ -24,3 +24,15 @@ function _manually_load_plugin() {
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
 require $_tests_dir . '/includes/bootstrap.php';
+
+
+/**
+ * Is the current version of WordPress at least ... ?
+ *
+ * @param  float $min_version Minimum version required, e.g. 3.9.
+ * @return bool True if it is, false if it isn't.
+ */
+function _fm_phpunit_is_wp_at_least( $min_version ) {
+	global $wp_version;
+	return floatval( $wp_version ) >= $min_version;
+}

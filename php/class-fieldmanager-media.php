@@ -1,10 +1,7 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
- * Textarea field
+ * Media field
  * @package Fieldmanager
  */
 class Fieldmanager_Media extends Fieldmanager_Field {
@@ -71,9 +68,9 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$this->modal_button_label = __( 'Select Attachments', 'fieldmanager' );
 			$this->modal_title        = __( 'Choose Attachments', 'fieldmanager' );
 		} else {
-			$this->button_label       = __( 'Attach a File', 'fieldmanager' );
-			$this->modal_button_label = __( 'Select Attachment', 'fieldmanager' );
-			$this->modal_title        = __( 'Choose an Attachment', 'fieldmanager' );
+		$this->button_label       = __( 'Attach a File', 'fieldmanager' );
+		$this->modal_button_label = __( 'Select Attachment', 'fieldmanager' );
+		$this->modal_title        = __( 'Choose an Attachment', 'fieldmanager' );
 		}
 
 		add_action( 'admin_print_scripts', function() {
@@ -127,14 +124,14 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 
 		foreach( $values as $value ) {
 
-			if ( is_numeric( $value ) && $value > 0 ) {
+		if ( is_numeric( $value ) && $value > 0 ) {
 				$out = '';
-				$attachment = get_post( $value );
-				if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-					$out .= sprintf( '%s<br />', __( 'Uploaded image:' ) );
+			$attachment = get_post( $value );
+			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
+					$out .= sprintf( '%s<br />', __( 'Uploaded image:', 'fieldmanager' ) );
 					$out .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
-				} else {
-					$out .= sprintf( '%s', __( 'Uploaded file:' ) ) . '&nbsp;';
+			} else {
+					$out .= sprintf( '%s', __( 'Uploaded file:', 'fieldmanager' ) ) . '&nbsp;';
 					$out .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 				}
 				$out .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
@@ -152,8 +149,8 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			var fm_preview_size = fm_preview_size || [];
 			fm_preview_size["%1$s"]=%6$s;
 			</script>',
-			$this->get_element_id(),
-			$this->get_form_name(),
+			esc_attr( $this->get_element_id() ),
+			esc_attr( $this->get_form_name() ),
 			esc_attr( $this->button_label ),
 			esc_attr( $input_value ),
 			$preview,

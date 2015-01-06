@@ -126,19 +126,19 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 			attributes = attachment.attributes;
 			ids.push( attachment.id );
 
-			props = { size: fm_preview_size[ $el.attr('id') ] || 'thumbnail' };
+		props = { size: fm_preview_size[ $el.attr('id') ] || 'thumbnail' };
 			props = wp.media.string.props( props, attributes );
-			props.align = 'none';
-			props.link = 'custom';
-			props.linkUrl = '#';
+		props.align = 'none';
+		props.link = 'custom';
+		props.linkUrl = '#';
 			if ( attributes.type == 'image' ) {
-				props.url = props.src;
+			props.url = props.src;
 				preview += 'Uploaded file:<br />';
-				preview += wp.media.string.image( props );
-			} else {
+			preview += wp.media.string.image( props );
+		} else {
 				preview += 'Uploaded file:&nbsp;';
-				preview += wp.media.string.link( props );
-			}
+			preview += wp.media.string.link( props );
+		}
 			preview += '<br /><a class="fm-media-remove fm-delete" href="#">remove</a><br />';
 
 		});
