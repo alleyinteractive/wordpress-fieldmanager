@@ -64,13 +64,13 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function __construct( $label, $options = array() ) {
 
 		if ( ! empty( $options['collection'] ) ) {
-			$this->button_label       = __( 'Attach Files', 'fieldmanager' );
+			$this->button_label       = __( 'Attach Gallery', 'fieldmanager' );
 			$this->modal_button_label = __( 'Select Attachments', 'fieldmanager' );
 			$this->modal_title        = __( 'Choose Attachments', 'fieldmanager' );
 		} else {
-		$this->button_label       = __( 'Attach a File', 'fieldmanager' );
-		$this->modal_button_label = __( 'Select Attachment', 'fieldmanager' );
-		$this->modal_title        = __( 'Choose an Attachment', 'fieldmanager' );
+			$this->button_label       = __( 'Attach a File', 'fieldmanager' );
+			$this->modal_button_label = __( 'Select Attachment', 'fieldmanager' );
+			$this->modal_title        = __( 'Choose an Attachment', 'fieldmanager' );
 		}
 
 		add_action( 'admin_print_scripts', function() {
@@ -122,21 +122,31 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		$preview = '';
 		$values = is_array( $value ) ? $value : array( $value );
 
-		foreach( $values as $value ) {
+		foreach ( $values as $value ) {
 
-		if ( is_numeric( $value ) && $value > 0 ) {
-				$out = '';
-			$attachment = get_post( $value );
-			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-					$out .= sprintf( '%s<br />', __( 'Uploaded image:', 'fieldmanager' ) );
-					$out .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
-			} else {
+			if ( is_numeric( $value ) && $value > 0 ) {
+					$out = '';
+				$attachment = get_post( $value );
+
+
+
+				if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
+					if ( ! $this->collection ) {
+						$out .= sprintf( '%s<br />', __( 'Uploaded image:', 'fieldmanager' ) );
+					}
+					$out .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a><br/>';
+				} else {
 					$out .= sprintf( '%s', __( 'Uploaded file:', 'fieldmanager' ) ) . '&nbsp;';
 					$out .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 				}
-				$out .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
+
+				if ( ! $this->collection ) {
+					$out .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', __( 'remove' ) );
+				}
+
 				$preview .= apply_filters( 'fieldmanager_media_preview', $out, $values, $attachment );
 			}
+
 		}
 
 		$input_value = implode( ',', $values );

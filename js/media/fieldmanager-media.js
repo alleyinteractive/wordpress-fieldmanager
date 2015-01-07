@@ -36,7 +36,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 
 			this.states.add([
 
-				new media.controller.Library({
+				new wp.media.controller.Library({
 					id:         'gallery',
 					title:      options.title,
 					priority:   40,
@@ -45,18 +45,18 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 					multiple:   'add',
 					editable:   false,
 
-					library:  media.query( _.defaults({
+					library:  wp.media.query( _.defaults({
 						type: 'image'
 					}, options.library ) )
 				}),
 
-				new media.controller.GalleryEdit({
+				new wp.media.controller.GalleryEdit({
 					library: options.selection,
 					editing: options.editing,
 					menu:    'gallery'
 				}),
 
-				new media.controller.GalleryAdd({
+				new wp.media.controller.GalleryAdd({
 				})
 
 			]);
@@ -122,24 +122,36 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		var ids = [],
 			preview = '';
 
-		attachments.each( function( attachment ){
+		attachments.each( function( attachment ) {
+
 			attributes = attachment.attributes;
 			ids.push( attachment.id );
 
-		props = { size: fm_preview_size[ $el.attr('id') ] || 'thumbnail' };
+			props = { size: fm_preview_size[ $el.attr('id') ] || 'thumbnail' };
 			props = wp.media.string.props( props, attributes );
-		props.align = 'none';
-		props.link = 'custom';
-		props.linkUrl = '#';
+			props.align = 'none';
+			props.link = 'custom';
+			props.linkUrl = '#';
 			if ( attributes.type == 'image' ) {
-			props.url = props.src;
-				preview += 'Uploaded file:<br />';
-			preview += wp.media.string.image( props );
-		} else {
+
+				props.url = props.src;
+
+				if ( ! $el.data('collection') ) {
+					preview += 'Uploaded file:<br />';
+					preview += wp.media.string.image( props );
+				} else {
+					preview += wp.media.string.image( props );
+					preview += '<br/>';
+				}
+
+			} else {
 				preview += 'Uploaded file:&nbsp;';
-			preview += wp.media.string.link( props );
-		}
-			preview += '<br /><a class="fm-media-remove fm-delete" href="#">remove</a><br />';
+				preview += wp.media.string.link( props );
+			}
+
+			if ( ! $el.data('collection') ) {
+				preview += '<br /><a class="fm-media-remove fm-delete" href="#">remove</a><br />';
+			}
 
 		});
 
