@@ -257,6 +257,16 @@ a.fm-delete:hover {
 	border-left: solid 1px #ccc;
 }
 
+.media-wrapper {
+	max-width: 300px;
+}
+
+.media-wrapper img {
+	max-width: 100%;
+	height: auto;
+}
+
+
 .fm-submenu-form-wrapper {
 	padding: 20px 0;
 }
