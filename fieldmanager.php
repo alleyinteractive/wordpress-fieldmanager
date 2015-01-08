@@ -3,7 +3,7 @@
  * Fieldmanager Base Plugin File.
  *
  * @package Fieldmanager
- * @version 1.0-alpha
+ * @version 1.0.0-beta.2
  */
 
 /*
@@ -11,14 +11,14 @@ Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to content types programatically.
 Author: Austin Smith
-Version: 1.0-alpha
+Version: 1.0.0-beta.2
 Author URI: http://www.alleyinteractive.com/
 */
 
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.0-alpha' );
+define( 'FM_VERSION', '1.0.0-beta.2' );
 
 /**
  * Filesystem path to Fieldmanager.
@@ -100,7 +100,7 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
  * Enqueue CSS and JS in the Dashboard.
  */
 function fieldmanager_enqueue_admin_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.4' );
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.5' );
 	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.1' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }

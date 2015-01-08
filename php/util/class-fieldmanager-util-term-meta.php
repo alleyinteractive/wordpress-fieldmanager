@@ -54,18 +54,18 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return void
 	 */
 	public function create_content_type() {
-		$args = array(
-			'public' => false,
-			'publicly_queryable' => false,
+		register_post_type( $this->post_type, array(
+			'public'              => false,
+			'publicly_queryable'  => false,
 			'exclude_from_search' => false,
-			'query_var' => $this->post_type,
-			'rewrite' => false,
-			'show_ui' => false,
-			'capability_type' => 'post',
-			'hierarchical' => true,
-			'has_archive' => false
-		);
-		register_post_type( $this->post_type, $args );
+			'query_var'           => $this->post_type,
+			'rewrite'             => false,
+			'show_ui'             => false,
+			'capability_type'     => 'post',
+			'hierarchical'        => true,
+			'has_archive'         => false,
+			'label'               => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
+		) );
 	}
 
 	/**

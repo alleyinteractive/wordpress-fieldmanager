@@ -7,7 +7,7 @@
  * Use fieldmanager to create meta boxes on
  * @package Fieldmanager_Datasource
  */
-class Fieldmanager_Context_Term extends Fieldmanager_Context {
+class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	/**
 	 * @var string
 	 * Title of field to display in standard term form field location
