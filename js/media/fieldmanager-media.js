@@ -175,6 +175,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 			props.align = 'none';
 			props.link = 'custom';
 			props.linkUrl = '#';
+			props.caption = '';
 
 			preview += '<div class="media-item" data-id="' + attachment.id + '">';
 
@@ -207,7 +208,6 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 
 		var $wrapper = $el.parent().find( '.media-wrapper' );
 		$wrapper.html( preview ).trigger( 'fieldmanager_media_preview', [ $wrapper, attachments, wp ] );
-
 	};
 
 	// When an image is selected, run a callback.

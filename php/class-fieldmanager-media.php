@@ -110,6 +110,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 
 			return absint( $value );
 		}
+		return absint( $value );
 	}
 
 	/**
@@ -132,13 +133,13 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 				if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
 
 					if ( ! $this->collection ) {
-						$out .= sprintf( '%s<br />', __( 'Uploaded image:', 'fieldmanager' ) );
+						$out .= sprintf( '%s<br />', esc_html__( 'Uploaded image:', 'fieldmanager' ) );
 					}
 
 					$out .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 
 				} else {
-					$out .= sprintf( '%s', __( 'Uploaded file:', 'fieldmanager' ) ) . '&nbsp;';
+					$out .= sprintf( '%s', esc_html__( 'Uploaded file:', 'fieldmanager' ) ) . '&nbsp;';
 					$out .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 				}
 
