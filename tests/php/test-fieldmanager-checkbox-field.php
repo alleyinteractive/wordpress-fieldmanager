@@ -4,6 +4,7 @@
  * Tests the Fieldmanager Checkbox
  *
  * @group field
+ * @group checkbox
  */
 class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 
