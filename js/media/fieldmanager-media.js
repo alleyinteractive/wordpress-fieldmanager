@@ -1,6 +1,47 @@
 var fm_media_frame = [];
 ( function( $ ) {
 
+var sortableCollection = function() {
+
+	$('.fm-media-button[data-collection=1]').each( function() {
+
+		var $button, $wrapper, $input;
+
+		$button = $(this);
+		$wrapper = $button.siblings( '.media-wrapper' );
+		$input   = $button.siblings( 'input.fm-media-id' );
+
+		$wrapper.sortable({
+
+			items: '> .media-item',
+
+			// Update hidden input value after sort.
+			stop: function( event, ui ) {
+
+				var val = [];
+
+				$wrapper.children('.media-item').each( function() {
+					val.push( $(this).data('id') );
+				} );
+
+				$input.val( val.join(',') );
+
+				// Remove frame
+				// forces regen next time its opened - ensures correct selection.
+				delete fm_media_frame[ $button.attr('id') ];
+
+			}
+
+		});
+
+
+	} );
+
+}
+
+$( document ).ready( sortableCollection );
+$( document ).on( 'fieldmanager_media_preview', sortableCollection );
+
 $( document ).on( 'click', '.fm-media-remove', function(e) {
 	e.preventDefault();
 	var parent = $(this).parents( '.fm-item.fm-media' );
@@ -13,6 +54,7 @@ $( document ).on( 'click', '.media-wrapper a', function( event ){
 	event.preventDefault();
 	$(this).closest('.media-wrapper').siblings('.fm-media-button').click();
 } );
+
 $( document ).on( 'click', '.fm-media-button', function( event ) {
 	var $el = $(this);
 	event.preventDefault();
@@ -24,6 +66,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 	}
 	var selectedImages = [],
 		inputVal = $el.parent().find('.fm-media-id').val();
+
 	if ( inputVal.length ) {
 		selectedImages = inputVal.split(',');
 	}
