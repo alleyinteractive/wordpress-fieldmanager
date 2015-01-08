@@ -161,7 +161,7 @@ $( document ).ready( function () {
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
 	} );
 
-	$( '.fm-collapsed > .fm-group > .fm-group-inner' ).hide();
+	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
 
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
