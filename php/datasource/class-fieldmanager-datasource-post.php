@@ -44,12 +44,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     public $show_date = False;
 
     /**
-     * @var boolean
-     * Show this as grouped?
-     */
-    public $grouped = False;
-
-    /**
      * @var string
      * If $show_date is true, the format to use for displaying the date.
      */
@@ -178,10 +172,12 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * @param array $current_values existing post values
      */
     public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
-        if ( $field->data_type != 'post' || !$this->reciprocal ) return $values;
-        foreach ( $current_values as $reciprocal_post_id ) {
-            delete_post_meta( $reciprocal_post_id, $this->reciprocal, $field->data_id );
+        if ( 'post' == $field->data_type && ! empty( $this->reciprocal ) && ! empty( $current_values ) && is_array( $current_values ) ) {
+            foreach ( $current_values as $reciprocal_post_id ) {
+                delete_post_meta( $reciprocal_post_id, $this->reciprocal, $field->data_id );
+            }
         }
+
         return $values;
     }
 
@@ -191,16 +187,25 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * @return string
      */
     public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-        if ( empty( $value ) ) return;
+        if ( empty( $value ) ) {
+            return;
+        }
         $value = intval( $value );
-        // There are no permissions in cron, but no changes are coming from a user either
-        if ( ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) && ! current_user_can( 'edit_post', $value ) ) {
-            die( 'Tried to refer to post ' . $value . ' which user cannot edit.' );
+
+        if ( ! empty( $this->publish_with_parent ) || ! empty( $this->reciprocal ) ) {
+            // There are no permissions in cron, but no changes are coming from a user either
+            if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
+                $post_type_obj = get_post_type_object( get_post_type( $value ) );
+                if ( empty( $post_type_obj->cap->edit_post ) || ! current_user_can( $post_type_obj->cap->edit_post, $value ) ) {
+                    wp_die( esc_html( sprintf( __( 'Tried to alter %s %d through field "%s", which user is not permitted edit.', 'fieldmanager' ), $post_type_obj->name, $value, $field->name ) ) );
+                }
+            }
+            $this->presave_status_transition( $field, $value );
+            if ( $this->reciprocal ) {
+                add_post_meta( $value, $this->reciprocal, $field->data_id );
+            }
         }
-        $this->presave_status_transition( $field, $value );
-        if ( $this->reciprocal ) {
-            add_post_meta( $value, $this->reciprocal, $field->data_id );
-        }
+
         return $value;
     }
 
@@ -227,8 +232,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_permalink( $value ),
-            __( 'View' )
+            empty( $value ) ? '#' : esc_url( get_permalink( $value ) ),
+            esc_html__( 'View', 'fieldmanager' )
         );
     }
 
@@ -241,8 +246,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-edit-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_edit_post_link( $value ),
-            __( 'Edit' )
+            empty( $value ) ? '#' : esc_url( get_edit_post_link( $value ) ),
+            esc_html__( 'Edit', 'fieldmanager' )
         );
     }
 

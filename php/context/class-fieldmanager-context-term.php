@@ -146,7 +146,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	public function term_fields( $html_template, $taxonomy, $term = null ) {
 		// Make sure the user hasn't specified a field name we can't use
 		if ( in_array( $this->fm->name, $this->reserved_fields ) )
-			$this->fm->_invalid_definition( 'The field name ' . $this->fm->name . ' is reserved for WordPress on the term form.' );
+			$this->fm->_invalid_definition( sprintf( __( 'The field name "%s" is reserved for WordPress on the term form.', 'fieldmanager' ), $this->fm->name ) );
 
 		// Check if there are any current values to retrieve
 		if ( isset( $term->term_id ) ) {
@@ -189,19 +189,25 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function save_term_fields( $term_id, $tt_id, $taxonomy ) {
 		// Make sure this field is attached to the taxonomy being saved and this is the appropriate action
-		if ( ! in_array( $taxonomy, $this->taxonomies ) )
+		if ( ! in_array( $taxonomy, $this->taxonomies ) ) {
 			return;
+		}
+
+		// Ensure that the nonce is set
+		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
+			return;
+		}
 
 		// Make sure the current user can save this post
 		$tax_obj = get_taxonomy( $taxonomy );
 		if( !current_user_can( $tax_obj->cap->manage_terms ) ) {
-			$this->fm->_unauthorized_access( 'User cannot edit this term' );
+			$this->fm->_unauthorized_access( __( 'User cannot edit this term', 'fieldmanager' ) );
 			return;
 		}
 
 		// Make sure that our nonce field arrived intact
 		if( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( 'Nonce validation failed' );
+			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 
 		// Save the data

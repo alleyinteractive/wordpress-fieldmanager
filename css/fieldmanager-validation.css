@@ -3,3 +3,7 @@
 	color: red;
 	display: block;
 }
+
+.fm-label-inline + .fm-element.fm-js-error {
+	display: inline;
+}

@@ -52,7 +52,10 @@ fm.autocomplete = {
 					}
 				} else {
 					$( this ).on( 'keyup', function( e ) {
-						if ( e.keyCode == 27 || e.keyCode == 13 ) return;
+						if ( e.keyCode == 27 || e.keyCode == 13 ) {
+							return;
+						}
+
 						$hidden.val( '=' + $el.val() );
 					} );
 				}
