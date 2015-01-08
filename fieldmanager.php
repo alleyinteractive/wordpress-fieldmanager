@@ -3,7 +3,7 @@
  * Fieldmanager Base Plugin File.
  *
  * @package Fieldmanager
- * @version 1.0-alpha
+ * @version 1.0.0-beta
  */
 
 /*
@@ -11,14 +11,14 @@ Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to content types programatically.
 Author: Austin Smith
-Version: 1.0-alpha
+Version: 1.0.0-beta
 Author URI: http://www.alleyinteractive.com/
 */
 
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.0-alpha' );
+define( 'FM_VERSION', '1.0.0-beta' );
 
 /**
  * Filesystem path to Fieldmanager.
