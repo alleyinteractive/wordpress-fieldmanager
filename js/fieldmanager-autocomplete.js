@@ -32,18 +32,15 @@ fm.autocomplete = {
 							fm_autocomplete_search: request.term,
 							fm_search_nonce: fm_search.nonce
 						}, function( result ) {
-							var results = JSON.parse( result );
-							if ( $.type( results ) == 'object' ) {
-								response( fm.autocomplete.prepare_options( results ) );
-							}
-							else response( [] );
+							response( result );
 						} );
 					};
 				} else if ( $el.data( 'options' ) ) {
 					ac_params.source = fm.autocomplete.prepare_options( $el.data( 'options' ) );
 				}
 
-				if ( $el.data( 'exact-match' ) ) {
+				// data-exact-match is a minimized attribute (see Fieldmanager_Field::get_element_attributes)
+				if ( typeof $el.data( 'exact-match' ) !== 'undefined' ) {
 					ac_params.change = function( e, ui ) {
 						if ( !ui.item ) {
 							$hidden.val( '' );

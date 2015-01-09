@@ -4,6 +4,7 @@
  * Tests the Fieldmanager Datepicker Field
  *
  * @group field
+ * @group datepicker
  */
 class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
@@ -121,6 +122,6 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$this->assertEquals( get_gmt_from_date( '2014-03-13 02:37:00', 'U' ), intval( $local_stamp ) );
 		$this->assertEquals( strtotime( '2014-03-13 02:37:00 America/New_York' ), intval( $local_stamp ) );
 
-		$this->assertEquals( $gmt_stamp - $local_stamp, get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
+		$this->assertEquals( $gmt_stamp - $local_stamp, -4 * HOUR_IN_SECONDS );
 	}
 }

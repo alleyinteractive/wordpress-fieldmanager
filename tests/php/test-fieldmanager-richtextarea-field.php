@@ -3,6 +3,7 @@
 /**
  * Tests the Fieldmanager RichTextArea Field
  *
+ * @group field
  * @group richtextarea
  */
 class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
@@ -69,14 +70,14 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( '/<textarea class="fm-element fm-richtext fm-tinymce wp-editor-area"[^>]+name="test_richtextarea"/', $html );
+		$this->assertRegExp( '/<textarea class="fm-element fm-richtext wp-editor-area"[^>]+name="test_richtextarea"/', $html );
 		$this->assertNotContains( 'fm-richtext-remember-editor', $html );
 
 		ob_start();
 		_WP_Editors::editor_js();
 		$js = ob_get_clean();
 		$this->assertContains( $fm->get_element_id(), $js );
-		$this->assertNotContains( 'wp_skip_init:true', $js );
+		$this->assertContains( 'wp_skip_init:true', $js );
 	}
 
 	public function test_repeatable_render() {
@@ -88,7 +89,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( '/<textarea class="fm-element fm-richtext fm-tinymce wp-editor-area"[^>]+name="test_richtextarea\[0\]"/', $html );
+		$this->assertRegExp( '/<textarea class="fm-element fm-richtext wp-editor-area"[^>]+name="test_richtextarea\[0\]"/', $html );
 		$this->assertRegExp( '/<textarea data-proto-id="fm-test_richtextarea-proto" class="fm-element fm-richtext wp-editor-area"[^>]+name="test_richtextarea\[proto\]"/', $html );
 
 		ob_start();

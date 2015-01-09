@@ -132,22 +132,36 @@ class Fieldmanager_Datasource {
 	}
 
 	/**
+	 * Format items for use in AJAX.
+	 *
+	 * @param string|null $fragment to search
+	 */
+	public function get_items_for_ajax( $fragment = null ) {
+		$items = $this->get_items( $fragment );
+		$return = array();
+
+		foreach ( $items as $id => $label ) {
+			$return[] = array( 'label' => $label, 'value' => $id );
+		}
+
+		return $return;
+	}
+
+	/**
 	 * AJAX callback to find posts
 	 * @return void, causes process to exit.
 	 */
 	public function autocomplete_search() {
 		// Check the nonce before we do anything
 		check_ajax_referer( 'fm_search_nonce', 'fm_search_nonce' );
-		$items = $this->get_items( sanitize_text_field( $_POST['fm_autocomplete_search'] ) );
+		$items = $this->get_items_for_ajax( sanitize_text_field( $_POST['fm_autocomplete_search'] ) );
 
 		// See if any results were returned and return them as an array
-		if ( !empty( $items ) ) {
-			echo json_encode( $items ); exit;
+		if ( ! empty( $items ) ) {
+			wp_send_json( $items );
 		} else {
-			echo "0";
+			wp_send_json( 0 );
 		}
-
-		die();
 	}
 
 	/**

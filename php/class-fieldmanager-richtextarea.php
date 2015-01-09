@@ -82,7 +82,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->sanitize = array( $this, 'sanitize' );
-		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.4' );
+		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.7' );
 
 		parent::__construct( $label, $options );
 	}
@@ -112,16 +112,11 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 		$settings = $this->array_merge_deep( $this->editor_settings, array(
 			'textarea_name'  => $this->get_form_name(),
 			'editor_class'   => 'fm-element fm-richtext',
-			'tinymce'        => array( 'wp_skip_init' => false ),
+			'tinymce'        => array( 'wp_skip_init' => true ),
 		) );
 
 		if ( $proto ) {
 			add_filter( 'the_editor', array( $this, 'add_proto_id' ) );
-			// Tell WP not to initialize prototypes
-			$settings['tinymce']['wp_skip_init'] = true;
-		} else {
-			// This editor will be initialized on load; this tells FM as much.
-			$settings['editor_class'] .= ' fm-tinymce';
 		}
 
 		if ( ! isset( $settings['default_editor'] ) ) {

@@ -117,7 +117,8 @@ var match_value = function( values, match_string ) {
 fm_add_another = function( $element ) {
 	var el_name = $element.data( 'related-element' )
 		, limit = $element.data( 'limit' ) - 0
-		, siblings = $element.parent().siblings().not( '.fmjs-proto' );
+		, siblings = $element.parent().siblings( '.fm-item' ).not( '.fmjs-proto' )
+		, add_more_position = $element.data( 'add-more-position' ) || "bottom";
 
 	if ( limit > 0 && siblings.length >= limit ) {
 		return;
@@ -126,7 +127,8 @@ fm_add_another = function( $element ) {
 	var $new_element = $( '.fmjs-proto.fm-' + el_name, $element.closest( '.fm-wrapper' ) ).first().clone();
 
 	$new_element.removeClass( 'fmjs-proto' );
-	$new_element = $new_element.insertBefore( $element.parent() );
+	$new_element = add_more_position == "bottom" ? $new_element.insertBefore( $element.parent() ) :
+						$new_element.insertAfter( $element.parent() )	;
 	fm_renumber( $element.parents( '.fm-wrapper' ) );
 	// Trigger for subclasses to do any post-add event handling for the new element
 	$element.parent().siblings().last().trigger( 'fm_added_element' );
@@ -159,9 +161,7 @@ $( document ).ready( function () {
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
 	} );
 
-	$( '.fm-collapsed' ).each( function() {
-		$( this ).find( '.fm-group-inner' ).hide();
-	} );
+	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
 
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
