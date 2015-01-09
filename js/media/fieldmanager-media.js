@@ -131,6 +131,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 			props.align = 'none';
 			props.link = 'custom';
 			props.linkUrl = '#';
+			props.caption = '';
 			if ( attributes.type == 'image' ) {
 				props.url = props.src;
 				preview += 'Uploaded file:<br />';
