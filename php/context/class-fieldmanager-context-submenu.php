@@ -7,7 +7,7 @@
  * Use fieldmanager to create meta boxes on
  * @package Fieldmanager_Context
  */
-class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
+class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 
 	/**
 	 * @var string
@@ -68,7 +68,10 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->page_title = $page_title;
 		$this->capability = $capability;
 		$this->uniqid = $this->fm->get_element_id() . '_form';
-		if ( !$already_registered ) add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+		if ( !$already_registered )  {
+			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+			add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
+		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
 	}
 
@@ -97,8 +100,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 			<form method="POST" id="<?php echo esc_attr( $this->uniqid ) ?>">
 				<div class="fm-submenu-form-wrapper">
 					<input type="hidden" name="fm-options-action" value="<?php echo sanitize_title( $this->fm->name ) ?>" />
-					<?php wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' ); ?>
-					<?php echo $this->fm->element_markup( $values ); ?>
+					<?php $this->render_field( array( 'data' => $values ) ); ?>
 				</div>
 				<?php submit_button( $this->submit_button_label, 'submit', 'fm-submit' ) ?>
 			</form>
@@ -115,25 +117,31 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function handle_submenu_save() {
-		if ( ! empty( $_POST ) && ! empty( $_GET['page'] ) && $_GET['page'] == $this->menu_slug && current_user_can( $this->capability ) ) {
-			if ( $this->save_submenu_data() ) {
-				wp_redirect( esc_url_raw( add_query_arg( array( 'page' => $this->menu_slug, 'msg' => 'success' ), menu_page_url( $this->parent_slug, false ) ) ) );
-				exit;
-			}
+		if ( empty( $_GET['page'] ) || $_GET['page'] != $this->menu_slug ) {
+			return;
+		}
+
+		// Make sure that our nonce field arrived intact
+		if ( ! $this->is_valid_nonce() ) {
+			return;
+		}
+
+		if ( ! current_user_can( $this->capability ) ) {
+			$this->fm->_unauthorized_access( __( 'Current user cannot edit this page', 'fieldmanager' ) );
+			return;
+		}
+
+		if ( $this->save_submenu_data() ) {
+			wp_redirect( esc_url_raw( add_query_arg( array( 'msg' => 'success' ), $this->url() ) ) );
+			exit;
 		}
 	}
 
-	public function save_submenu_data() {
-		// Make sure that our nonce field arrived intact
-		if( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
-		}
-
+	public function save_submenu_data( $data = null ) {
 		$this->fm->data_id = $this->fm->name;
 		$this->fm->data_type = 'options';
 		$current = get_option( $this->fm->name, null );
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$data = $this->fm->presave_all( $value, $current );
+		$data = $this->prepare_data( $current, $data );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 
 		if ( isset( $current ) ) {
@@ -143,5 +151,55 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		}
 
 		return true;
+	}
+
+	/**
+	 * Get the URL for this context's admin page. Mainly pulled from
+	 * menu_page_url().
+	 *
+	 * @return string
+	 */
+	public function url() {
+		if ( $this->parent_slug && ! isset( $GLOBALS['_parent_pages'][ $this->parent_slug ] ) ) {
+			return admin_url( add_query_arg( 'page', $this->menu_slug, $this->parent_slug ) );
+		} else {
+			return admin_url( 'admin.php?page=' . $this->menu_slug );
+		}
+	}
+
+	/**
+	 * Get option.
+	 *
+	 * @see get_option().
+	 */
+	protected function get_data( $data_id, $option_name, $single = false ) {
+		return get_option( $option_name, null );
+	}
+
+	/**
+	 * Add option.
+	 *
+	 * @see add_option().
+	 */
+	protected function add_data( $data_id, $option_name, $option_value, $unique = false ) {
+		return add_option( $option_name, $option_value, '', $this->wp_option_autoload ? 'yes' : 'no' );
+	}
+
+	/**
+	 * Update option.
+	 *
+	 * @see update_option().
+	 */
+	protected function update_data( $data_id, $option_name, $option_value, $option_prev_value = '' ) {
+		return update_option( $option_name, $option_value );
+	}
+
+	/**
+	 * Delete option.
+	 *
+	 * @see delete_option().
+	 */
+	protected function delete_data( $data_id, $option_name, $option_value = '' ) {
+		return delete_option( $option_name, $option_value );
 	}
 }

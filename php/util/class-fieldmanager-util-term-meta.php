@@ -54,18 +54,18 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return void
 	 */
 	public function create_content_type() {
-		$args = array(
-			'public' => false,
-			'publicly_queryable' => false,
+		register_post_type( $this->post_type, array(
+			'public'              => false,
+			'publicly_queryable'  => false,
 			'exclude_from_search' => false,
-			'query_var' => $this->post_type,
-			'rewrite' => false,
-			'show_ui' => false,
-			'capability_type' => 'post',
-			'hierarchical' => true,
-			'has_archive' => false
-		);
-		register_post_type( $this->post_type, $args );
+			'query_var'           => $this->post_type,
+			'rewrite'             => false,
+			'show_ui'             => false,
+			'capability_type'     => 'post',
+			'hierarchical'        => true,
+			'has_archive'         => false,
+			'label'               => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
+		) );
 	}
 
 	/**
@@ -80,105 +80,119 @@ class Fieldmanager_Util_Term_Meta {
 	}
 
 	/**
-	 * Handles getting metadata for taxonomy terms
-	 * @param int $term_id
-	 * @param string $taxonomy
-	 * @param string $meta_key
-	 * @param string $meta_value optional
-	 * @return bool
+	 * Get metadata matching the specified key for the given term ID/taxonomy
+	 * pair.
+	 *
+	 * @param int $term_id Term ID.
+	 * @param string $taxonomy Taxonomy name that $term_id is part of.
+	 * @param string $meta_key Metadata name.
+	 * @param boolean $single Optional. Get a single result or multiple.
+	 * @return string|array @see get_post_meta().
 	 */
-	public function get_term_meta( $term_id, $taxonomy, $meta_key='', $single=false ) {
+	public function get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
 
 		// Check if this term has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 
 			// If not, exit. There is no meta data for this term at all.
 			// Mimic the normal return behavior of get_post_meta
-			if ( $single ) return '';
-			else return array();
-
+			return $single ? '' : array();
 		}
 
 		// Get the meta data
 		return get_post_meta( $term_meta_post_id, $meta_key, $single );
-
 	}
 
 	/**
-	 * Handles adding metadata for taxonomy terms
-	 * @param int $term_id
-	 * @param string $taxonomy
-	 * @param string $meta_key
-	 * @param string $meta_value
-	 * @param bool $unique optional
-	 * @return bool
+	 * Add metadata to a term ID/taxonomy pair.
+	 *
+	 * @param int $term_id Term ID.
+	 * @param string $taxonomy Taxonomy name that $term_id is part of.
+	 * @param string $meta_key Metadata name.
+	 * @param mixed $meta_value The value of the custom field which should be
+	 *                          added. If an array is given, it will be
+	 *                          serialized into a string.
+	 * @param boolean $unique Optional. Whether or not you want the key to stay
+	 *                        unique. When set to true, the custom field will
+	 *                        not be added if the given key already exists among
+	 *                        custom fields of the specified post.
+	 * @return boolean|integer @see add_post_meta().
 	 */
-	public function add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique=false ) {
+	public function add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {
 
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 
 			// If not, create the post to store the metadata
 			$term_meta_post_id = $this->add_term_meta_post( $term_id, $taxonomy );
 
 			// Check for errors
-			if ( $term_meta_post_id === false ) {
+			if ( false === $term_meta_post_id ) {
 				return false;
 			}
 		}
 
 		// Add this key/value pair as post meta data
-		$result = add_post_meta( $term_meta_post_id, $meta_key, $meta_value, $unique );
-
-		if ( $result === false ) {
-			return false;
-		} else {
-			return true;
-		}
+		return add_post_meta( $term_meta_post_id, $meta_key, $meta_value, $unique );
 	}
 
 	/**
-	 * Handles updating metadata for taxonomy terms
-	 * @param int $term_id
-	 * @param string $taxonomy
-	 * @param string $meta_key
-	 * @param string $meta_value optional
-	 * @return bool
+	 * Update metadata for a term ID/taxonomy pair.
+	 *
+	 * Use the $prev_value parameter to differentiate between meta fields with
+	 * the same key and post ID.
+	 *
+	 * If the meta field for the term does not exist, it will be added.
+	 *
+	 * @param int $term_id Term ID.
+	 * @param string $taxonomy Taxonomy name that $term_id is part of.
+	 * @param string $meta_key Metadata name.
+	 * @param mixed $meta_value The new value of the custom field. A passed
+	 *                          array will be serialized into a string.
+	 * @param mixed $meta_prev_value Optional. The old value of the custom field
+	 *                               you wish to change. This is to
+	 *                               differentiate between several fields with
+	 *                               the same key. If omitted, and there are
+	 *                               multiple rows for this post and meta key,
+	 *                               all meta values will be updated.
+	 * @return mixed @see update_post_meta().
 	 */
 	public function update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value='' ) {
 
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 
 			// If not, create the post to store the metadata
 			$term_meta_post_id = $this->add_term_meta_post( $term_id, $taxonomy );
 
 			// Check for errors
-			if ( $term_meta_post_id === false ) {
+			if ( false === $term_meta_post_id ) {
 				return false;
 			}
 		}
 
 		// Add this key/value pair as post meta data
-		$result = update_post_meta( $term_meta_post_id, $meta_key, $meta_value, $meta_prev_value );
-
-		if ( $result === false ) {
-			return false;
-		} else {
-			return true;
-		}
+		return update_post_meta( $term_meta_post_id, $meta_key, $meta_value, $meta_prev_value );
 	}
 
 	/**
-	 * Handles deleting metadata for taxonomy terms
-	 * @param int $term_id
-	 * @param string $taxonomy
-	 * @param string $meta_key
-	 * @param string $meta_value
-	 * @return bool
+	 * Remove metadata matching criteria from a term ID/taxonomy pair.
+	 *
+	 * You can match based on the key, or key and value. Removing based on key
+	 * and value, will keep from removing duplicate metadata with the same key.
+	 * It also allows removing all metadata matching key, if needed.
+	 *
+	 * @param int $term_id Term ID.
+	 * @param string $taxonomy Taxonomy name that $term_id is part of.
+	 * @param string $meta_key Metadata name.
+	 * @param mixed $meta_value Optional. The value of the field you will
+	 *                          delete. This is used to differentiate between
+	 *                          several fields with the same key. If left blank,
+	 *                          all fields with the given key will be deleted.
+	 * @return boolean False for failure. True for success.
 	 */
 	public function delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value='' ) {
 
@@ -186,7 +200,7 @@ class Fieldmanager_Util_Term_Meta {
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
 
 		// If no post exist, there is nothing further to do here. This is not necessarily an error.
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 			return false;
 		}
 
@@ -197,7 +211,7 @@ class Fieldmanager_Util_Term_Meta {
 		$post_terms = get_post_meta( $term_meta_post_id );
 		if ( empty( $post_terms ) ) {
 			// If not, remove the post to store the metadata to free up space in wp_posts
-			$result = wp_delete_post( $term_meta_post_id, true );
+			wp_delete_post( $term_meta_post_id, true );
 			$this->delete_term_meta_post_id_cache( $term_id, $taxonomy );
 		}
 
@@ -305,22 +319,38 @@ function Fieldmanager_Util_Term_Meta() {
 Fieldmanager_Util_Term_Meta();
 
 
-/*
- * Helper Functions to simplify the process
+/**
+ * Shortcut helper for Fieldmanager_Util_Term_Meta::get_term_meta().
+ *
+ * @see Fieldmanager_Util_Term_Meta::get_term_meta()
  */
-
 function fm_get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
 	return Fieldmanager_Util_Term_Meta()->get_term_meta( $term_id, $taxonomy, $meta_key, $single );
 }
 
+/**
+ * Shortcut helper for Fieldmanager_Util_Term_Meta::add_term_meta().
+ *
+ * @see Fieldmanager_Util_Term_Meta::add_term_meta()
+ */
 function fm_add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {
 	return Fieldmanager_Util_Term_Meta()->add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique );
 }
 
+/**
+ * Shortcut helper for Fieldmanager_Util_Term_Meta::update_term_meta().
+ *
+ * @see Fieldmanager_Util_Term_Meta::update_term_meta()
+ */
 function fm_update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value = '' ) {
 	return Fieldmanager_Util_Term_Meta()->update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value );
 }
 
+/**
+ * Shortcut helper for Fieldmanager_Util_Term_Meta::delete_term_meta().
+ *
+ * @see Fieldmanager_Util_Term_Meta::delete_term_meta()
+ */
 function fm_delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value = '' ) {
 	return Fieldmanager_Util_Term_Meta()->delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value );
 }

@@ -4,17 +4,17 @@
 			$( 'textarea.fm-richtext:visible' ).each( function() {
 				if ( ! $( this ).hasClass( 'fm-tinymce' ) ) {
 					var init, ed_id, mce_options, qt_options, proto_id;
-					ed_id = $( this ).attr( 'id' );
-					proto_id = $( this ).data( 'proto-id' );
-
 					$( this ).addClass( 'fm-tinymce' );
-
-					// Clean up the proto id which appears in some of the wp_editor generated HTML
-					$( this ).closest( '.fm-wrapper' ).html( $( this ).closest( '.fm-wrapper' ).html().replace( new RegExp( proto_id, 'g' ), ed_id ) );
+					ed_id = $( this ).attr( 'id' );
 
 					if ( typeof tinymce !== 'undefined' ) {
 
 						if ( typeof tinyMCEPreInit.mceInit[ ed_id ] === 'undefined' ) {
+							proto_id = $( this ).data( 'proto-id' );
+
+							// Clean up the proto id which appears in some of the wp_editor generated HTML
+							$( this ).closest( '.fm-wrapper' ).html( $( this ).closest( '.fm-wrapper' ).html().replace( new RegExp( proto_id, 'g' ), ed_id ) );
+
 							// This needs to be initialized, so we need to get the options from the proto
 							if ( proto_id && typeof tinyMCEPreInit.mceInit[ proto_id ] !== 'undefined' ) {
 								mce_options = $.extend( true, {}, tinyMCEPreInit.mceInit[ proto_id ] );
@@ -32,47 +32,61 @@
 								qt_options.id = qt_options.id.replace( proto_id, ed_id );
 								tinyMCEPreInit.qtInit[ ed_id ] = qt_options;
 							}
-
-							init = tinyMCEPreInit.mceInit[ ed_id ];
-
-							try {
-								if ( 'html' !== fm.richtextarea.mode_enabled( this ) ) {
-									tinymce.init( init );
-								}
-							} catch(e){}
-
-							try {
-								if ( typeof tinyMCEPreInit.qtInit[ ed_id ] !== 'undefined' ) {
-									quicktags( tinyMCEPreInit.qtInit[ ed_id ] );
-								}
-							} catch(e){};
 						}
+
+						try {
+							if ( 'html' !== fm.richtextarea.mode_enabled( this ) ) {
+								tinymce.init( tinyMCEPreInit.mceInit[ ed_id ] );
+								$( this ).closest( '.wp-editor-wrap' ).on( 'click.wp-editor', function() {
+									if ( this.id ) {
+										window.wpActiveEditor = this.id.slice( 3, -5 );
+									}
+								} );
+							}
+						} catch(e){}
+
+						try {
+							if ( typeof tinyMCEPreInit.qtInit[ ed_id ] !== 'undefined' ) {
+								quicktags( tinyMCEPreInit.qtInit[ ed_id ] );
+							}
+						} catch(e){};
 					}
 				}
 			} );
 		},
 
-		reload_editors: function( e, el ) {
-			$( el ).find( '.fm-tinymce' ).each( function() {
-				html_mode = ( 'html' === fm.richtextarea.mode_enabled( this ) );
+		reload_editors: function( e, wrap ) {
+			if ( ! wrap || 'undefined' === typeof wrap.nodeType ) {
+				return;
+			}
+
+			$( '.fm-tinymce', wrap ).each( function() {
+				var html_mode = ( 'html' === fm.richtextarea.mode_enabled( this ) )
+					, ed = tinymce.get( this.id )
+					, content = ed.getContent()
+					, cmd;
+
 				if ( html_mode ) {
 					$( '#' + this.id + '-tmce' ).click();
 				}
 
-				var cmd;
 				// Disable the editor
 				cmd = 'mceRemoveControl';
 				if ( parseInt( tinymce.majorVersion ) >= 4 ) {
 					cmd = 'mceRemoveEditor';
 				}
-				tinymce.execCommand( cmd, false, $( this ).attr( 'id' ) );
+				tinymce.execCommand( cmd, false, this.id );
 
-				// Immediately reenable the editor
+				// Immediately re-enable the editor
 				cmd = 'mceAddControl';
 				if ( parseInt( tinymce.majorVersion ) >= 4 ) {
 					cmd = 'mceAddEditor';
 				}
-				tinymce.execCommand( cmd, false, $( this ).attr( 'id' ) );
+				tinymce.execCommand( cmd, false, this.id );
+
+				// Replace the content with what it was to correct paragraphs
+				ed = tinymce.get( this.id );
+				ed.setContent( content );
 
 				if ( html_mode ) {
 					$( '#' + this.id + '-html' ).click();
@@ -83,7 +97,6 @@
 		mode_enabled: function( el ) {
 			return $( el ).closest( '.html-active' ).length ? 'html' : 'tinymce';
 		},
-
 
 		/**
 		 * Ensure that the main editor's state remains unaffected by any FM editors
@@ -129,4 +142,14 @@
 		core_editor_state = mode;
 	} );
 
+	/**
+	 * On document.load, init the editors and make the global meta box drag-drop
+	 * event reload the editors.
+	 */
+	$( function() {
+		fm.richtextarea.add_rte_to_visible_textareas();
+		$( '.meta-box-sortables' ).on( 'sortstop', function( e, obj ) {
+			fm.richtextarea.reload_editors( e, obj.item[0] );
+		} );
+	} );
 } ) ( jQuery );

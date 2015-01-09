@@ -265,6 +265,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		}
 
 		// Put the taxonomy data into the proper data structure to be used for display
+		$stack = array();
 		foreach ( $terms as $term ) {
 			// Store the label for the taxonomy as the group since it will be used for display
 			$key = $this->store_term_taxonomy_id ? $term->term_taxonomy_id : $term->term_id;
