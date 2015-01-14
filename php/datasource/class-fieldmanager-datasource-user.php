@@ -119,14 +119,17 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         if ( is_callable( $this->query_callback ) ) {
             return call_user_func( $this->query_callback, $fragment );
         }
+        
         $default_args = array();
         $user_args = array_merge( $default_args, $this->query_args );
         $ret = array();
+        
         if ( $fragment ) $user_args['search'] = $fragment;
         $users = get_users( $user_args );
         foreach ( $users as $u ) {
             $ret[ $u->{$this->store_property} ] = $u->{$this->display_property};
         }
+        
         return $ret;
     }
 
@@ -150,10 +153,14 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * @param array $current_values existing post values
      */
     public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
-        if ( $field->data_type != 'post' || ! $this->reciprocal || 'ID' != $this->store_property ) return $values;
+        if ( $field->data_type != 'post' || ! $this->reciprocal || 'ID' != $this->store_property ) {
+        	return $values;
+        }
+        
         foreach ( $current_values as $user_id ) {
             delete_user_meta( $user_id, $this->reciprocal, $field->data_id );
         }
+        
         return $values;
     }
 
@@ -164,12 +171,16 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * @return string
      */
     public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-        if ( empty( $value ) ) return;
+        if ( empty( $value ) ) {
+        	return;
+        }
+        
         $return_single = False;
         if ( !is_array( $value ) ) {
             $return_single = True;
             $value = array( $value );
         }
+        
         foreach ( $value as $i => $v ) {
             $value[$i] = call_user_func( ( 'ID' == $this->store_property ) ? 'intval' : 'sanitize_text_field', $v );
             if( ! current_user_can( $this->capability, $v ) ) {
@@ -179,6 +190,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
                 add_user_meta( $v, $this->reciprocal, $field->data_id );
             }
         }
+        
         return $return_single ? $value[0] : $value;
     }
 
