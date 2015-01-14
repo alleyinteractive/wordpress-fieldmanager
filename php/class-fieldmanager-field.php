@@ -95,8 +95,8 @@ abstract class Fieldmanager_Field {
 	public $description = '';
 
 	/**
-	 * @var string[]
-	 * Extra HTML attributes to apply to the form element
+	 * @var string|boolean[]
+	 * Extra HTML attributes to apply to the form element. Use boolean true to apply a standalone attribute, e.g. 'required' => true
 	 */
 	public $attributes = array();
 
@@ -185,10 +185,17 @@ abstract class Fieldmanager_Field {
 	public $skip_save = False;
 
 	/**
-	 * @var string
 	 * Save this field additionally to an index
+	 * @var boolean
 	 */
 	public $index = False;
+
+	/**
+	 * Save the fields to their own keys (only works in some contexts). Default
+	 * is true.
+	 * @var boolean
+	 */
+	public $serialize_data = true;
 
 	/**
 	 * @var Fieldmanager_Datasource
@@ -205,6 +212,13 @@ abstract class Fieldmanager_Field {
 	 * );
 	 */
 	public $display_if = array();
+
+	/**
+	* @var string
+	* Where the new item should to added ( top/bottom ) of the stack. Used by Add Another button
+	* "top|bottom"
+	*/
+	public $add_more_position = "bottom";
 
 	/**
 	 * @var boolean
@@ -241,6 +255,16 @@ abstract class Fieldmanager_Field {
 	 * @var string
 	 */
 	public $input_type = 'text';
+
+	/**
+	 * Custom escaping for labels, descriptions, etc. Associative array of
+	 * $field => $callable arguments, for example:
+	 *
+	 *     'escape' => array( 'label' => 'wp_kses_post' )
+	 *
+	 * @var array
+	 */
+	public $escape = array();
 
 	/**
 	 * @var int
@@ -307,7 +331,6 @@ abstract class Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->set_options( $label, $options );
-		add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
 	}
 
 	/**
@@ -338,6 +361,16 @@ abstract class Fieldmanager_Field {
 					throw new FM_Developer_Exception( esc_html( $message ) );
 				}
 			}
+		}
+
+		// If this is a single field with a limit of 1, serialize_data has no impact
+		if ( ! $this->serialize_data && ! $this->is_group() && 1 == $this->limit ) {
+			$this->serialize_data = true;
+		}
+
+		// Cannot use serialize_data => false with index => true
+		if ( ! $this->serialize_data && $this->index ) {
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with `"index" => true`', 'fieldmanager' ) );
 		}
 	}
 
@@ -417,6 +450,9 @@ abstract class Fieldmanager_Field {
 
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && "top" == $this->add_more_position ) {
+			$out .= $this->add_another();
+		}
 
 		if ( 1 != $this->limit ) {
 			$out .= $this->single_element_markup( null, true );
@@ -430,7 +466,7 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		if ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) {
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && "bottom" == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
 
@@ -464,7 +500,7 @@ abstract class Fieldmanager_Field {
 		self::$global_seq++;
 
 		// Drop the fm-group class to hide inner box display if no label is set
-		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
+		if ( !( $this->is_group() && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
 			$classes[] = 'fm-' . $this->field_class;
 		}
 
@@ -476,6 +512,12 @@ abstract class Fieldmanager_Field {
 		if ( $is_proto ) {
 			$classes[] = 'fmjs-proto';
 		}
+
+		if ( $this->is_group() && 'vertical' === $this->tabbed ) {
+			$classes[] = 'fm-tabbed-vertical';
+		}
+
+		$classes = apply_filters( 'fm_element_classes', $classes, $this->name, $this );
 
 		$out .= sprintf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 
@@ -506,7 +548,7 @@ abstract class Fieldmanager_Field {
 		if ( $render_label_after ) $out .= $label;
 
 		if ( isset( $this->description ) && !empty( $this->description ) ) {
-			$out .= sprintf( '<div class="fm-item-description">%s</div>', esc_html( $this->description ) );
+			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
 		}
 
 		$out .= '</div>';
@@ -522,7 +564,7 @@ abstract class Fieldmanager_Field {
 	 * @param array $values
 	 */
 	public function preload_alter_values( $values ) {
-		return $values;
+		return apply_filters( 'fm_preload_alter_values', $values, $this );
 	}
 
 	/**
@@ -598,6 +640,45 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Get the storage key for the form element.
+	 *
+	 * @return string
+	 */
+	public function get_element_key() {
+		$el = $this;
+		$key = $el->name;
+		while ( $el = $el->parent ) {
+			if ( $el->add_to_prefix ) {
+				$key = "{$el->name}_{$key}";
+			}
+		}
+		return $key;
+	}
+
+	/**
+	 * Is this element repeatable or does it have a repeatable ancestor?
+	 *
+	 * @return boolean True if yes, false if no.
+	 */
+	public function is_repeatable() {
+		if ( 1 != $this->limit ) {
+			return true;
+		} elseif ( $this->parent ) {
+			return $this->parent->is_repeatable();
+		}
+		return false;
+	}
+
+	/**
+	 * Is the current field a group?
+	 *
+	 * @return boolean True if yes, false if no.
+	 */
+	public function is_group() {
+		return $this instanceof Fieldmanager_Group;
+	}
+
+	/**
 	 * Presaves all elements in what could be a set of them, dispatches to $this->presave()
 	 * @input mixed[] $values
 	 * @return mixed[] sanitized values
@@ -605,11 +686,14 @@ abstract class Fieldmanager_Field {
 	public function presave_all( $values, $current_values ) {
 		if ( $this->limit == 1 && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
-			if ( ! empty( $values ) )
+			if ( ! empty( $values ) ) {
 				$value = $this->presave( $values[0], $current_values );
-			else
+			} else {
 				$value = $values;
-			if ( !empty( $this->index ) ) $this->save_index( array( $value ), array( $current_values ) );
+			}
+			if ( !empty( $this->index ) ) {
+				$this->save_index( array( $value ), array( $current_values ) );
+			}
 			return $value;
 		}
 
@@ -670,11 +754,16 @@ abstract class Fieldmanager_Field {
 
 		foreach ( $values as $i => $value ) {
 			$values[ $i ] = $this->presave( $value, empty( $current_values[ $i ] ) ? array() : $current_values[ $i ] );
-			if ( !$this->save_empty && empty( $values[ $i ] ) )
-				unset( $values[ $i ] );
 		}
-		if ( !empty( $this->index ) )
+
+		if ( ! $this->save_empty ) {
+			// reindex the array after removing empty values
+			$values = array_values( array_filter( $values ) );
+		}
+
+		if ( ! empty( $this->index ) ) {
 			$this->save_index( $values, $current_values );
+		}
 
 		return $values;
 	}
@@ -736,7 +825,7 @@ abstract class Fieldmanager_Field {
 	 * @return array
 	 */
 	protected function presave_alter_values( $values, $current_values = array() ) {
-		return $values;
+		return apply_filters( 'fm_presave_alter_values', $values, $this, $current_values );
 	}
 
 	/**
@@ -771,7 +860,11 @@ abstract class Fieldmanager_Field {
 	public function get_element_attributes() {
 		$attr_str = array();
 		foreach ( $this->attributes as $attr => $val ) {
-			$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
+			if ( $val === true ){
+				$attr_str[] = sanitize_key( $attr );
+			} else{
+				$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
+			}
 		}
 		return implode( ' ', $attr_str );
 	}
@@ -796,7 +889,7 @@ abstract class Fieldmanager_Field {
 			sanitize_key( $this->label_element ),
 			esc_attr( implode( ' ', $classes ) ),
 			esc_attr( $this->get_element_id( $this->get_seq() ) ),
-			esc_html( $this->label ),
+			$this->escape( 'label' ),
 			sanitize_key( $this->label_element )
 		);
 	}
@@ -808,15 +901,17 @@ abstract class Fieldmanager_Field {
 	public function add_another() {
 		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
 		if ( empty( $this->add_more_label ) ) {
-			$this->add_more_label = 'group' == $this->field_class ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
+			$this->add_more_label = $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
 		}
+
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
-			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-limit="%d" />',
+			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-add-more-position="%s" data-limit="%d" />',
 			esc_attr( implode( ' ', $classes ) ),
 			esc_attr( $this->add_more_label ),
 			esc_attr( 'fm_add_another_' . $this->name ),
 			esc_attr( $this->name ),
+			esc_attr( $this->add_more_position ),
 			intval( $this->limit )
 		);
 		$out .= '</div>';
@@ -1011,4 +1106,20 @@ abstract class Fieldmanager_Field {
 	 * @return void
 	 */
 	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {}
+
+	/**
+	 * Escape a field based on the function in the escape argument.
+	 *
+	 * @param  string $field   The field to escape.
+	 * @param  string $default The default function to use to escape the field.
+	 *                         Optional. Defaults to `esc_html()`
+	 * @return string          The escaped field.
+	 */
+	public function escape( $field, $default = 'esc_html' ) {
+		if ( isset( $this->escape[ $field ] ) && is_callable( $this->escape[ $field ] ) ) {
+			return call_user_func( $this->escape[ $field ], $this->$field );
+		} else {
+			return call_user_func( $default, $this->$field );
+		}
+	}
 }

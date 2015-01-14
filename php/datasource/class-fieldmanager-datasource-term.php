@@ -152,10 +152,14 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		if ( get_class( $field ) == 'Fieldmanager_Autocomplete' && !$field->exact_match && isset( $this->taxonomy ) ) {
 			foreach( $values as $i => $value ) {
 				 // could be a mix of valid term IDs and new terms.
-				if ( is_numeric( $value ) ) continue;
+				if ( is_numeric( $value ) ) {
+					continue;
+				}
 
-				// the JS adds a '-' to the front if it's not a found term to prevent problems with new numeric terms.
-				$value = sanitize_text_field( substr( $value, 1 ) );
+				// the JS adds an '=' to the front of numeric values if it's not a found term to prevent problems with new numeric terms.
+				if ( '=' === substr( $value, 0, 1 ) ) {
+					$value = sanitize_text_field( substr( $value, 1 ) );
+				}
 
 				// an affordance for our friends at WordPress.com
 				$term_by = function_exists( 'wpcom_vip_get_term_by' ) ? 'wpcom_vip_get_term_by' : 'get_term_by';
@@ -194,7 +198,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * Sanitize a value
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-		return intval( $value );
+		return empty( $value ) ? null : intval( $value );
 	}
 
 	/**
@@ -261,6 +265,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		}
 
 		// Put the taxonomy data into the proper data structure to be used for display
+		$stack = array();
 		foreach ( $terms as $term ) {
 			// Store the label for the taxonomy as the group since it will be used for display
 			$key = $this->store_term_taxonomy_id ? $term->term_taxonomy_id : $term->term_id;
