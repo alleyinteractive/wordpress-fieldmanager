@@ -7,7 +7,7 @@
  * Use fieldmanager to create meta boxes on
  * @package Fieldmanager_Datasource
  */
-class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
+class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 
 	/**
 	 * @var string
@@ -100,7 +100,9 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function manage_custom_columns( $column_name, $post_id ) {
-		if ( $column_name != $this->fm->name ) return;
+		if ( $column_name != $this->fm->name ) {
+			return;
+		}
 		$data = get_post_meta( $post_id, $this->fm->name, true );
 		$column_text = call_user_func( $this->column_display_callback, $post_id, $data );
 		echo $column_text;
@@ -115,12 +117,13 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function add_quickedit_box( $column_name, $post_type, $values = array() ) {
-		if ( $column_name != $this->fm->name ) return;
+		if ( $column_name != $this->fm->name ) {
+			return;
+		}
 		?>
 		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo esc_attr( $column_name ); ?>" data-fm-post-type="<?php echo esc_attr( $post_type ); ?>">
 			<div class="inline-edit-col">
-				<?php wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' ); ?>
-				<?php echo $this->fm->element_markup( $values ); ?>
+				<?php $this->render_field( array( 'data' => $values ) ); ?>
 			</div>
 		</fieldset>
 		<?php
@@ -132,17 +135,26 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return string
 	 */
 	public function render_ajax_form() {
+		if ( ! isset( $_GET['action'], $_GET['post_id'], $_GET['column_name'] ) ) {
+			return;
+		}
+
 		if ( $_GET['action'] != 'fm_quickedit_render' ) {
 			return;
 		}
+
 		$column_name = sanitize_text_field( $_GET['column_name'] );
 		$post_id = intval( $_GET['post_id'] );
-		if ( $column_name != $this->fm->name ) return;
-		$values = get_post_meta( $post_id, $this->fm->name );
-		$values = empty( $values ) ? array() : $values[0];
+
+		if ( ! $post_id || $column_name != $this->fm->name ) {
+			return;
+		}
+
+		$this->fm->data_type = 'post';
+		$this->fm->data_id = $post_id;
 		$post_type = get_post_type( $post_id );
-		$markup = $this->add_quickedit_box( $column_name, $post_type, $values );
-		return $markup;
+
+		return $this->add_quickedit_box( $column_name, $post_type, $this->load() );
 	}
 
 	/**
@@ -168,8 +180,8 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 			return;
 		}
 
-		// Ensure that the nonce is set
-		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
+		// Ensure that the nonce is set and valid
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
@@ -181,13 +193,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 			}
 		}
 
-		// Make sure that our nonce field arrived intact
-		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
-		}
-
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$this->save_to_post_meta( $post_id, $value );
+		$this->save_to_post_meta( $post_id );
 	}
 
 	/**
@@ -196,18 +202,47 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @param array $data
 	 * @return void
 	 */
-	public function save_to_post_meta( $post_id, $data ) {
+	public function save_to_post_meta( $post_id, $data = null ) {
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
-		$post = get_post( $post_id );
-		if ( $post->post_type = 'revision' && $post->post_parent != 0 ) {
-			$this->fm->data_id = $post->post_parent;
-		}
-		$current = get_post_meta( $this->fm->data_id, $this->fm->name, True );
-		$data = $this->fm->presave_all( $data, $current );
-		if ( !$this->fm->skip_save ) {
-			update_post_meta( $post_id, $this->fm->name, $data );
-		}
+
+		$this->save( $data );
+	}
+
+	/**
+	 * Get post meta.
+	 *
+	 * @see get_post_meta().
+	 */
+	protected function get_data( $post_id, $meta_key, $single = false ) {
+		return get_post_meta( $post_id, $meta_key, $single );
+	}
+
+	/**
+	 * Add post meta.
+	 *
+	 * @see add_post_meta().
+	 */
+	protected function add_data( $post_id, $meta_key, $meta_value, $unique = false ) {
+		return add_post_meta( $post_id, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Update post meta.
+	 *
+	 * @see update_post_meta().
+	 */
+	protected function update_data( $post_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		return update_post_meta( $post_id, $meta_key, $meta_value, $data_prev_value );
+	}
+
+	/**
+	 * Delete post meta.
+	 *
+	 * @see delete_post_meta().
+	 */
+	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
+		return delete_post_meta( $post_id, $meta_key, $meta_value );
 	}
 
 }

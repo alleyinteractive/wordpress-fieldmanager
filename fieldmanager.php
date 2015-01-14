@@ -3,7 +3,7 @@
  * Fieldmanager Base Plugin File.
  *
  * @package Fieldmanager
- * @version 1.0-alpha
+ * @version 1.0.0-beta.2
  */
 
 /*
@@ -11,14 +11,14 @@ Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to content types programatically.
 Author: Austin Smith
-Version: 1.0-alpha
+Version: 1.0.0-beta.2
 Author URI: http://www.alleyinteractive.com/
 */
 
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.0-alpha' );
+define( 'FM_VERSION', '1.0.0-beta.2' );
 
 /**
  * Filesystem path to Fieldmanager.
@@ -100,8 +100,8 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
  * Enqueue CSS and JS in the Dashboard.
  */
 function fieldmanager_enqueue_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.4' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.0' );
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.5' );
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.1' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
 add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
@@ -239,7 +239,25 @@ function _fieldmanager_registry( $var, $val = null ) {
  *
  * This function is crucial for performance. It prevents the unnecessary
  * initialization of FM classes, and the unnecessary loading of CSS and
- * Javascript.
+ * JavaScript.
+ *
+ * @see fm_calculate_context() for detail about the returned array values.
+ *
+ * @return array Contextual information for the current request.
+ */
+function fm_get_context() {
+	static $calculated_context;
+
+	if ( $calculated_context ) {
+		return $calculated_context;
+	} else {
+		$calculated_context = fm_calculate_context();
+		return $calculated_context;
+	}
+}
+
+/**
+ * Calculate contextual information for the current request.
  *
  * You can't use this function to determine whether or not a context "form" will
  * be displayed, since it can be used anywhere. We would love to use
@@ -250,34 +268,37 @@ function _fieldmanager_registry( $var, $val = null ) {
  * paths and variables.
  *
  * @return array {
- *     Numeric array of context information.
+ *     Array of context information.
  *
  *     @type  string|null A Fieldmanager context of "post", "quickedit", "term",
- *         "submenu", or "user", or null if one isn't found.
+ *                        "submenu", or "user", or null if one isn't found.
  *     @type  string|null A "type" dependent on the context. For "post" and
- *         "quickedit", the post type. For "term", the taxonomy. For "submenu",
- *         the page name. For all others, null.
+ *                        "quickedit", the post type. For "term", the taxonomy.
+ *                        For "submenu", the group name. For all others, null.
  * }
  */
-function fm_get_context() {
-	static $calculated_context;
-
-	if ( $calculated_context ) {
-		return $calculated_context;
-	}
-
-	// Safe to use at any point in the load process and better than URL matching.
+function fm_calculate_context() {
+	// Safe to use at any point in the load process, and better than URL matching.
 	if ( is_admin() ) {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
-		// $context = "submenu".
-		if ( !empty( $_GET['page'] ) ) {
+		/*
+		 * Calculate a submenu context.
+		 *
+		 * For submenus of the default WordPress menus, the submenu's parent
+		 * slug should match the requested script. For submenus of custom menu
+		 * pages, where "admin.php" is the requested script but not the parent
+		 * slug, the submenu's slug should match the GET request.
+		 *
+		 * @see fm_register_submenu_page() for detail about $submenu array values.
+		 */
+		if ( ! empty( $_GET['page'] ) ) {
+			$page = sanitize_text_field( $_GET['page'] );
 			$submenus = _fieldmanager_registry( 'submenus' );
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
-					if ( $script == $submenu[0] ) {
-						$calculated_context = array( 'submenu', sanitize_text_field( $_GET['page'] ) );
-						return $calculated_context;
+					if ( $script == $submenu[0] || ( 'admin.php' == $script && $page == $submenu[4] ) ) {
+						return array( 'submenu', sanitize_text_field( $page ) );
 					}
 				}
 			}
@@ -335,6 +356,7 @@ function fm_get_context() {
 	if ( empty( $calculated_context ) ) {
 		$calculated_context = array( null, null );
 	}
+
 	return $calculated_context;
 }
 
@@ -371,10 +393,10 @@ function fm_match_context( $context, $type = null ) {
 }
 
 /**
- * Calculate and fire an action for the current context.
+ * Fire an action for the current Fieldmanager context, if it exists.
  *
- * @see fm_get_context() for detail about the values that determine the name of
- *     action. Two are defined here, but only one fires at most.
+ * @see fm_calculate_context() for detail about the values that determine the
+ *     name of the action. Two actions are defined, but only one at most fires.
  */
 function fm_trigger_context_action() {
 	$calculated_context = fm_get_context();
@@ -388,8 +410,8 @@ function fm_trigger_context_action() {
 		 * Fires when a specific Fieldmanager context and type load.
 		 *
 		 * The dynamic portions of the hook name, $context and $type, refer to
-		 * the values returned by fm_get_context(). For example, the Edit screen
-		 * for the Page post type would fire "fm_post_page".
+		 * the values returned by fm_calculate_context(). For example, the Edit
+		 * screen for the Page post type would fire "fm_post_page".
 		 */
 		do_action( "fm_{$context}_{$type}" );
 	} else {
@@ -397,8 +419,8 @@ function fm_trigger_context_action() {
 		 * Fires when a specific Fieldmanager context, but not type, loads.
 		 *
 		 * The dynamic portion of the hook name, $context, refers to the first
-		 * value returned by fm_get_context(). For example, an Edit User screen
-		 * would fire "fm_user".
+		 * value returned by fm_calculate_context(). For example, the Edit User
+		 * screen would fire "fm_user".
 		 */
 		do_action( "fm_{$context}" );
 	}
@@ -472,13 +494,13 @@ function _fm_add_submenus() {
 		call_user_func_array( 'add_submenu_page', $s );
 	}
 }
-add_action( 'admin_menu', '_fm_add_submenus' );
+add_action( 'admin_menu', '_fm_add_submenus', 15 );
 
 /**
  * Sanitize multi-line text.
  *
  * @param string $value Unsanitized text.
- * @return string Text with each line of $value through sanitize_text_field().
+ * @return string Text with each line of $value passed through sanitize_text_field().
  */
 function fm_sanitize_textarea( $value ) {
 	return implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $value ) ) );
