@@ -34,20 +34,20 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * or 'user_nicename'
      */
     public $display_property = 'display_name';
-    
+
     /**
      * @var array
      * Allowed display properties for validation.
      */
     protected $allowed_display_properties = array( 'display_name', 'user_login', 'user_email', 'user_nicename' );
-    
+
     /**
      * @var string
      * Store property. Defaults to ID, but can also be 'user_login', 'user_email',
      * or 'user_nicename'.
      */
     public $store_property = 'ID';
-    
+
     /**
      * @var array
      * Allowed store properties for validation.
@@ -73,23 +73,23 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	 */
 	public function __construct( $options = array() ) {
 		parent::__construct( $options );
-		
+
 		// Validate improper usage of store property
 		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
-			throw new FM_Developer_Exception( sprintf( 
+			throw new FM_Developer_Exception( sprintf(
 				__( 'Store property %s is invalid. Must be one of %s.', 'fieldmanager' ),
 				$this->store_property,
 				implode( ', ', $this->allowed_store_properties )
 			) );
 		}
-		
+
 		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
 			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID.', 'fieldmanager' ) );
 		}
-		
+
 		// Validate improper usage of display property
 		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
-			throw new FM_Developer_Exception( sprintf( 
+			throw new FM_Developer_Exception( sprintf(
 				__( 'Display property %s is invalid. Must be one of %s.', 'fieldmanager' ),
 				$this->display_property,
 				implode( ', ', $this->allowed_display_properties )
@@ -105,7 +105,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     public function get_value( $value ) {
     	switch ( $this->store_property ) {
 			case 'ID':
-				$field = 'ID';
+				$field = 'id';
 				break;
 			case 'user_nicename':
 				$field = 'slug';
@@ -117,7 +117,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 				$field = 'login';
 				break;
     	}
-    	
+
 		// Sanitize the value
 		$value = $this->sanitize_value( $value );
 
@@ -135,20 +135,20 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         if ( is_callable( $this->query_callback ) ) {
             return call_user_func( $this->query_callback, $fragment );
         }
-        
+
         $default_args = array();
         $user_args = array_merge( $default_args, $this->query_args );
         $ret = array();
-        
+
         if ( $fragment ) {
         	$user_args['search'] = $fragment;
         }
-        
+
         $users = get_users( $user_args );
         foreach ( $users as $u ) {
             $ret[ $u->{$this->store_property} ] = $u->{$this->display_property};
         }
-        
+
         return $ret;
     }
 
@@ -181,7 +181,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 				delete_user_meta( $user_id, $this->reciprocal, $field->data_id );
 			}
 		}
-        
+
         return $values;
     }
 
@@ -195,13 +195,13 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         if ( empty( $value ) ) {
         	return;
         }
-        
+
         $return_single = False;
         if ( !is_array( $value ) ) {
             $return_single = True;
             $value = array( $value );
         }
-        
+
         foreach ( $value as $i => $v ) {
             $value[$i] = $this->sanitize_value( $v );
             if( ! current_user_can( $this->capability, $v ) ) {
@@ -211,7 +211,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
                 add_user_meta( $v, $this->reciprocal, $field->data_id );
             }
         }
-        
+
         return $return_single ? $value[0] : $value;
     }
 
@@ -237,7 +237,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
             esc_html__( 'Edit', 'fieldmanager' )
         );
     }
-    
+
     /**
      * Sanitize the value based on store_property.
      * @param int|string $value
@@ -255,7 +255,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 			$value = sanitize_text_field( $value );
 			break;
     	}
-    	
+
     	return $value;
     }
 }
