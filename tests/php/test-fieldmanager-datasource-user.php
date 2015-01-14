@@ -238,6 +238,7 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
 		$test_users_id = $test_id->datasource->get_items( $user->user_login );
 		$this->assertEquals( $user->display_name, $test_users_id[ $user->ID ] );
+		$this->assertEquals( $user->display_name, $test_id->datasource->get_value( $user->ID ) );
 		
 		$test_user_login = new Fieldmanager_Autocomplete( array(
 			'name' => 'test_user_login',
@@ -248,6 +249,7 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
 		$test_users_user_login = $test_user_login->datasource->get_items( $user->user_login );
 		$this->assertEquals( $user->display_name, $test_users_user_login[ $user->user_login ] );
+		$this->assertEquals( $user->display_name, $test_user_login->datasource->get_value( $user->user_login ) );
 		
 		$test_user_email = new Fieldmanager_Autocomplete( array(
 			'name' => 'test_user_email',
@@ -258,6 +260,7 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
 		$test_users_user_email = $test_user_email->datasource->get_items( $user->user_login );
 		$this->assertEquals( $user->display_name, $test_users_user_email[ $user->user_email ] );
+		$this->assertEquals( $user->display_name, $test_user_email->datasource->get_value( $user->user_email ) );
 		
 		$test_user_nicename = new Fieldmanager_Autocomplete( array(
 			'name' => 'test_user_nicename',
@@ -268,5 +271,6 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
 		$test_users_user_nicename = $test_user_nicename->datasource->get_items( $user->user_login );
 		$this->assertEquals( $user->display_name, $test_users_user_nicename[ $user->user_nicename ] );
+		$this->assertEquals( $user->display_name, $test_user_nicename->datasource->get_value( $user->user_nicename ) );
 	}
 }
