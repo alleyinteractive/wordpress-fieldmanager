@@ -41,6 +41,12 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * or 'user_nicename'.
      */
     public $store_property = 'ID';
+    
+    /**
+     * @var array
+     * Allowed store properties for validation.
+     */
+    private $allowed_store_properties = array( 'ID', 'user_login', 'user_email', 'user_nicename' );
 
     /**
      * @var string
@@ -62,9 +68,17 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	public function __construct( $options = array() ) {
 		parent::__construct( $options );
 		
-		// Validate
+		// Validate improper usage of store property
+		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
+			throw new FM_Developer_Exception( sprintf( 
+				__( 'Store property %s is invalid. Must be one of %s.', 'fieldmanager' ),
+				$this->store_property,
+				implode( ', ', $this->allowed_store_properties )
+			) );
+		}
+		
 		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
-			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID.', 'fieldmanager' ) );
 		}
 	}
 
