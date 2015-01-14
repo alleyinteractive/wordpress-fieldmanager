@@ -98,6 +98,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     			break;
     		case 'user_email':
     			$field = 'email';
+    			$value = sanitize_email( $value );
     			break;
     		case 'user_login':
     			$field = 'login';
