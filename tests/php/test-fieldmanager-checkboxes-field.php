@@ -148,7 +148,7 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 			'datasource' => $this->custom_datasource,
 		) );
 
-		$html = $this->_get_html_for( $fm, 'February' );
+		$html = $this->_get_html_for( $fm, array( 'February' ) );
 
 		foreach ( $this->months as $month ) {
 			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month, ( 'February' === $month ) ), $html );
