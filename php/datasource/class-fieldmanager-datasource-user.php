@@ -225,7 +225,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * @param int|string $value
      * @return int|string
      */
-    private function sanitize_value( $value ) {
+    protected function sanitize_value( $value ) {
     	switch ( $this->store_property ) {
     		case 'ID':
     			$value = intval( $value );
