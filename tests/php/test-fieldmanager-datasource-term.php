@@ -196,6 +196,39 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) );
 		$this->assertCount( 0, $post_terms );
 	}
+	
+	/**
+	 * Test behavior when set to save only to taxonomy and not append.
+	 * Ensure that all terms are removed in this case.
+	 * This has a specific use case for Fieldmanager_Checkboxes so testing there.
+	 * However, this applies to all field types that can create this scenario.
+	 */
+	public function test_datasource_term_save_to_taxonomy_empty() {
+		$term_taxonomy = new Fieldmanager_Checkboxes( array(
+			'name' => 'test_terms',
+			'limit' => 0,
+			'datasource' => new Fieldmanager_Datasource_Term( array(
+				'taxonomy' => $this->term->taxonomy,
+				'only_save_to_taxonomy' => true,
+				'append_taxonomy' => false,
+			) ),
+		) );
+
+		$term = $this->factory->tag->create_and_get( array( 'name' => rand_str() ) );
+		$terms = array( $this->term->term_id, $term->term_id );
+		
+		$this->save_values( $term_taxonomy, $this->post, $terms );
+
+		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) );
+		$this->assertSame( $terms, $post_terms );
+		
+		$terms = array();
+		$this->save_values( $term_taxonomy, $this->post, $terms );
+
+		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) );
+		$this->assertSame( $terms, $post_terms );
+		
+	}
 
 	/**
 	 * Test behavior when only saving to taxonomy within a single repeating
