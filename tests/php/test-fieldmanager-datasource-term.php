@@ -220,7 +220,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->save_values( $term_taxonomy, $this->post, $terms );
 
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) );
-		$this->assertSame( $terms, $post_terms );
+		$this->assertSame( sort( $terms ), sort( $post_terms ) );
 		
 		$terms = array();
 		$this->save_values( $term_taxonomy, $this->post, $terms );
