@@ -222,4 +222,51 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 		$test_users_user_nicename = $test_user_nicename->datasource->get_items( $user->user_login );
 		$this->assertEquals( $user->user_nicename, $test_users_user_nicename[ $user->ID ] );
 	}
+	
+	/**
+	 * Test that store property returns the correct display value in all reasonable cases.
+	 */
+	public function test_store_property_display() {
+		$user = get_userdata( $this->author );
+	
+		$test_id = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_display_name',
+			'datasource' => new Fieldmanager_Datasource_User( array(
+				'store_property' => 'ID',
+			) ),
+		) );
+
+		$test_users_id = $test_id->datasource->get_items( $user->user_login );
+		$this->assertEquals( $user->display_name, $test_users_id[ $user->ID ] );
+		
+		$test_user_login = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_user_login',
+			'datasource' => new Fieldmanager_Datasource_User( array(
+				'store_property' => 'user_login',
+			) ),
+		) );
+
+		$test_users_user_login = $test_user_login->datasource->get_items( $user->user_login );
+		$this->assertEquals( $user->display_name, $test_users_user_login[ $user->user_login ] );
+		
+		$test_user_email = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_user_email',
+			'datasource' => new Fieldmanager_Datasource_User( array(
+				'store_property' => 'user_email',
+			) ),
+		) );
+
+		$test_users_user_email = $test_user_email->datasource->get_items( $user->user_login );
+		$this->assertEquals( $user->display_name, $test_users_user_email[ $user->user_email ] );
+		
+		$test_user_nicename = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_user_nicename',
+			'datasource' => new Fieldmanager_Datasource_User( array(
+				'store_property' => 'user_nicename',
+			) ),
+		) );
+
+		$test_users_user_nicename = $test_user_nicename->datasource->get_items( $user->user_login );
+		$this->assertEquals( $user->display_name, $test_users_user_nicename[ $user->user_nicename ] );
+	}
 }
