@@ -36,6 +36,12 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     public $display_property = 'display_name';
     
     /**
+     * @var array
+     * Allowed display properties for validation.
+     */
+    protected $allowed_display_properties = array( 'display_name', 'user_login', 'user_email', 'user_nicename' );
+    
+    /**
      * @var string
      * Store property. Defaults to ID, but can also be 'user_login', 'user_email',
      * or 'user_nicename'.
@@ -79,6 +85,15 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		
 		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
 			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID.', 'fieldmanager' ) );
+		}
+		
+		// Validate improper usage of display property
+		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
+			throw new FM_Developer_Exception( sprintf( 
+				__( 'Display property %s is invalid. Must be one of %s.', 'fieldmanager' ),
+				$this->display_property,
+				implode( ', ', $this->allowed_display_properties )
+			) );
 		}
 	}
 
@@ -125,7 +140,10 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         $user_args = array_merge( $default_args, $this->query_args );
         $ret = array();
         
-        if ( $fragment ) $user_args['search'] = $fragment;
+        if ( $fragment ) {
+        	$user_args['search'] = $fragment;
+        }
+        
         $users = get_users( $user_args );
         foreach ( $users as $u ) {
             $ret[ $u->{$this->store_property} ] = $u->{$this->display_property};

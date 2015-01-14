@@ -12,7 +12,7 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
-		$this->author = $this->factory->user->create( array( 'role' => 'author', 'user_login' => 'author' ) );
+		$this->author = $this->factory->user->create( array( 'role' => 'author', 'user_login' => 'author', 'user_email' => 'test@test.com' ) );
 		$this->editor = $this->factory->user->create( array( 'role' => 'editor', 'user_login' => 'editor' ) );
 		$this->administrator = $this->factory->user->create( array( 'role' => 'administrator', 'user_login' => 'administrator' ) );
 
@@ -127,6 +127,21 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 	}
 	
 	/**
+	 * Test creating a field with an invalid display property.
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_save_invalid_display_property() {
+		$test_invalid = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_invalid',
+			'datasource' => new Fieldmanager_Datasource_User( array(
+				'display_property' => 'invalid',
+			) ),
+		) );
+
+		$this->save_values( $test_invalid, $this->post, $this->author );
+	}
+	
+	/**
 	 * Test that we fail when trying to use reciprocals with something other than ID as a store property.
 	 * @expectedException FM_Developer_Exception
 	 */
@@ -159,5 +174,52 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 		wp_set_current_user( $this->author );
 
 		$this->save_values( $test_invalid, $this->post, $this->editor );
+	}
+	
+	/**
+	 * Test that display property returns the correct value in all reasonable cases.
+	 */
+	public function test_display_properties() {
+		$user = get_userdata( $this->author );
+	
+		$test_display_name = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_display_name',
+			'datasource' => new Fieldmanager_Datasource_User( array(
+				'display_property' => 'display_name',
+			) ),
+		) );
+
+		$test_users_display_name = $test_display_name->datasource->get_items( $user->user_login );
+		$this->assertEquals( $user->display_name, $test_users_display_name[ $user->ID ] );
+		
+		$test_user_login = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_user_login',
+			'datasource' => new Fieldmanager_Datasource_User( array(
+				'display_property' => 'user_login',
+			) ),
+		) );
+
+		$test_users_user_login = $test_user_login->datasource->get_items( $user->user_login );
+		$this->assertEquals( $user->user_login, $test_users_user_login[ $user->ID ] );
+		
+		$test_user_email = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_user_email',
+			'datasource' => new Fieldmanager_Datasource_User( array(
+				'display_property' => 'user_email',
+			) ),
+		) );
+
+		$test_users_user_email = $test_user_email->datasource->get_items( $user->user_login );
+		$this->assertEquals( $user->user_email, $test_users_user_email[ $user->ID ] );
+		
+		$test_user_nicename = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_user_nicename',
+			'datasource' => new Fieldmanager_Datasource_User( array(
+				'display_property' => 'user_nicename',
+			) ),
+		) );
+
+		$test_users_user_nicename = $test_user_nicename->datasource->get_items( $user->user_login );
+		$this->assertEquals( $user->user_nicename, $test_users_user_nicename[ $user->ID ] );
 	}
 }
