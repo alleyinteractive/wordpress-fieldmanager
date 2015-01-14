@@ -2,25 +2,25 @@
 /**
  * @package Fieldmanager_Datasource
  */
- 
+
 /**
  * Data source for WordPress Posts, for autocomplete and option types.
  * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
- 
+
     /**
      * Supply a function which returns a list of users; takes one argument,
      * a possible fragement
      */
     public $query_callback = Null;
- 
+
     /**
      * Arguments to get_users(), which uses WP's defaults.
      * @see http://codex.wordpress.org/Template_Tags/get_users
      */
     public $query_args = array();
- 
+
     /**
      * @var boolean
      * Allow AJAX. If set to false, Autocomplete will pre-load get_items() with no fragment,
@@ -41,17 +41,17 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * @see http://codex.wordpress.org/Roles_and_Capabilities
      */
     public $capability = 'list_users';
- 
+
     /**
      * @var string|Null
      * If not empty, set this post's ID as a value on the user. This is used to
      * establish two-way relationships.
      */
     public $reciprocal = Null;
- 
+
     // constructor not required for this datasource; options are just set to keys,
     // which Fieldmanager_Datasource does.
- 
+
     /**
      * Get a post title by post ID
      * @param int $value post_id
@@ -62,9 +62,9 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         $user = get_userdata( $id );
         return $user ? $user->{$this->display_property} : '';
     }
- 
+
     /**
-     * Get users which match this datasource, optionally filtered by 
+     * Get users which match this datasource, optionally filtered by
      * a search fragment, e.g. for Autocomplete.
      * @param string $fragment
      * @return array post_id => post_title for display or AJAX
@@ -83,7 +83,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         }
         return $ret;
     }
- 
+
     /**
      * Get an action to register by hashing (non cryptographically for speed)
      * the options that make this datasource unique.
@@ -96,7 +96,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         $unique_key .= (string) $this->query_callback;
         return 'fm_datasource_post' . crc32( $unique_key );
     }
- 
+
     /**
      * For post relationships, delete reciprocal post metadata prior to saving (presave will re-add)
      * @param array $values new post values
@@ -109,7 +109,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         }
         return $values;
     }
- 
+
     /**
      * Handle reciprocal postmeta
      * @param int $value
@@ -125,7 +125,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         foreach ( $value as $i => $v ) {
             $value[$i] = intval( $v );
             if( !current_user_can( $this->capability, $v ) ) {
-                die( 'Tried to refer to user ' . $v . ' which current user cannot edit.' );  
+                wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
             }
             if ( $this->reciprocal ) {
                 add_user_meta( $v, $this->reciprocal, $field->data_id );
@@ -133,7 +133,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         }
         return $return_single ? $value[0] : $value;
     }
- 
+
     /**
      * Get view link for a user
      * @param int $value
@@ -142,7 +142,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     public function get_view_link( $value ) {
         return '';
     }
- 
+
     /**
      * Get edit link for a user
      * @param int $value
@@ -152,8 +152,8 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-edit-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_edit_user_link( $value ),
-            __( 'Edit' )
+            empty( $value ) ? '#' : esc_url( get_edit_user_link( $value ) ),
+            esc_html__( 'Edit', 'fieldmanager' )
         );
     }
 }
