@@ -4,7 +4,7 @@
  * Tests the Fieldmanager Datasource User
  *
  * @group datasource
- * @group post
+ * @group user
  */
 class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
