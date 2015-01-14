@@ -8,6 +8,14 @@ tests/php/wp-unit-test
 # ignore files in the WPcom plugin directory
 wpcom-helper.php
 VERSION
+tests/php/tests
+todo.txt
 
 # Created by Apigen for logs
 /build
+
+/docs
+
+/report/
+
+.svn

@@ -2,6 +2,9 @@
 
 /**
  * Tests the Fieldmanager Datasource Post
+ *
+ * @group datasource
+ * @group post
  */
 class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 
@@ -236,6 +239,71 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test save_to_post_parent logic
+	 */
+	public function test_post_parent() {
+		$test_data = $this->child_post_a->ID;
+		$children = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_parent',
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'query_args' => array(
+					'post_type' => 'post'
+				),
+				'save_to_post_parent' => true,
+			) ),
+		) );
+		$this->save_values( $children, $this->parent_post, $test_data );
+		$parent = get_post( $this->parent_post->ID );
+		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
+		$this->assertEquals( get_post_meta( $this->parent_post->ID, 'test_parent', true ), $this->child_post_a->ID );
+	}
+
+	/**
+	 * Test save_to_post_parent logic
+	 */
+	public function test_post_parent_nested() {
+		$test_data = array( 'parent' => $this->child_post_a->ID );
+		$children = new Fieldmanager_Group( array(
+			'name' => 'test_parent',
+			'children' => array(
+				'parent' => new Fieldmanager_Autocomplete( 'Post Parent', array(
+					'datasource' => new Fieldmanager_Datasource_Post( array(
+						'query_args' => array(
+							'post_type' => 'post'
+						),
+						'save_to_post_parent' => true,
+						'only_save_to_post_parent' => true,
+					) ),
+				) ),
+			),
+		) );
+		$this->save_values( $children, $this->parent_post, $test_data );
+		$parent = get_post( $this->parent_post->ID );
+		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
+	}
+
+	/**
+	 * Test save_to_post_parent_only logic
+	 */
+	public function test_post_parent_only() {
+		$test_data = $this->child_post_a->ID;
+		$children = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_parent',
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'query_args' => array(
+					'post_type' => 'post'
+				),
+				'save_to_post_parent' => true,
+				'only_save_to_post_parent' => true,
+			) ),
+		) );
+		$this->save_values( $children, $this->parent_post, $test_data );
+		$parent = get_post( $this->parent_post->ID );
+		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
+		$this->assertEmpty( get_post_meta( $this->parent_post->ID, 'test_parent', true ) );
+	}
+
+	/**
 	 * Test that a user lacking permission can not add meta to a child post.
 	 *
 	 * @expectedException WPDieException
@@ -257,42 +325,5 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		wp_set_current_user( $this->author );
 
 		$this->save_values( $children, $this->parent_post, $test_data );
-	}
-
-	/*
-	 * Test building and saving a nested group
-	 */
-	public function test_saving_nested_groups() {
-
-		$meta_group = new \Fieldmanager_Group( '', array(
-			'name'        => 'distribution',
-			'tabbed'      => true,
-			) );
-
-		$social_group = new \Fieldmanager_Group( 'Social', array(
-			'name'        => 'social',
-			) );
-		$social_group->add_child( new \Fieldmanager_Group( 'Twitter', array(
-			'name'                    => 'twitter',
-			'children'                => array(
-				'share_text'          => new \Fieldmanager_TextArea( 'Sharing Text', array(
-					'description'     => 'What text would you like the user to include in their tweet? (Defaults to title)',
-					'attributes'      => array(
-						'style'           => 'width:100%',
-						)
-					) )
-				),
-			) ) );
-
-		$meta_group->add_child( $social_group );
-		$meta_group->add_meta_box( 'Distribution', array( 'post' ) );
-
-		$meta_group->presave( array(
-				'social'         => array(
-					'twitter'    => array(
-						'share_text'      => 'This is my sample share text'
-						),
-					),
-			) );
 	}
 }

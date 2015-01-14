@@ -44,12 +44,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     public $show_date = False;
 
     /**
-     * @var boolean
-     * Show this as grouped?
-     */
-    public $grouped = False;
-
-    /**
      * @var string
      * If $show_date is true, the format to use for displaying the date.
      */
@@ -60,6 +54,18 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * Publish the child post when/if the parent is published.
      */
     public $publish_with_parent = False;
+
+    /**
+     * @var boolean
+     * Save to post parent
+     */
+    public $save_to_post_parent = False;
+
+    /**
+     * @var boolean
+     * Only save to post parent
+     */
+    public $only_save_to_post_parent = False;
 
     // constructor not required for this datasource; options are just set to keys,
     // which Fieldmanager_Datasource does.
@@ -188,7 +194,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     }
 
     /**
-     * Handle reciprocal postmeta
+     * Handle reciprocal postmeta and post parents
      * @param int $value
      * @return string
      */
@@ -212,6 +218,20 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             }
         }
 
+        if ( $this->save_to_post_parent && 1 == $field->limit && 'post' == $field->data_type ) {
+            if ( ! wp_is_post_revision( $field->data_id ) ) {
+                Fieldmanager_Context_Post::safe_update_post(
+                    array(
+                        'ID' => $field->data_id,
+                        'post_parent' => $value,
+                    )
+                );
+            }
+            if ( $this->only_save_to_post_parent ) {
+                return array();
+            }
+        }
+
         return $value;
     }
 
@@ -230,6 +250,21 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     }
 
     /**
+     * Preload alter values for post parent
+     * The post datasource can store data outside FM's array.
+     * This is how we add it back into the array for editing.
+     * @param Fieldmanager_Field $field
+     * @param array $values
+     * @return array $values loaded up, if applicable.
+     */
+    public function preload_alter_values( Fieldmanager_Field $field, $values ) {
+        if ( $this->only_save_to_post_parent ) {
+            return array( wp_get_post_parent_id( $field->data_id ) );
+        }
+        return $values;
+    }
+
+    /**
      * Get edit link for a post
      * @param int $value
      * @return string
@@ -238,8 +273,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_permalink( $value ),
-            __( 'View' )
+            empty( $value ) ? '#' : esc_url( get_permalink( $value ) ),
+            esc_html__( 'View', 'fieldmanager' )
         );
     }
 
@@ -252,8 +287,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-edit-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_edit_post_link( $value ),
-            __( 'Edit' )
+            empty( $value ) ? '#' : esc_url( get_edit_post_link( $value ) ),
+            esc_html__( 'Edit', 'fieldmanager' )
         );
     }
 
