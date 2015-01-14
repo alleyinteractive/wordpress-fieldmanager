@@ -46,7 +46,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * @var array
      * Allowed store properties for validation.
      */
-    private $allowed_store_properties = array( 'ID', 'user_login', 'user_email', 'user_nicename' );
+    protected $allowed_store_properties = array( 'ID', 'user_login', 'user_email', 'user_nicename' );
 
     /**
      * @var string
