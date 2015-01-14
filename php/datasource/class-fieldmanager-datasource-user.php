@@ -4,7 +4,7 @@
  */
 
 /**
- * Data source for WordPress Posts, for autocomplete and option types.
+ * Data source for WordPress Users, for autocomplete and option types.
  * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
@@ -57,7 +57,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 
     /**
      * @var string|Null
-     * If not empty, set this post's ID as a value on the user. This is used to
+     * If not empty, set this object's ID as a value on the user. This is used to
      * establish two-way relationships.
      */
     public $reciprocal = Null;
@@ -83,27 +83,28 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	}
 
     /**
-     * Get a post title by post ID
+     * Get a user by the specified field.
      * @param int $value post_id
-     * @return string post title
+     * @return WP_User
      */
     public function get_value( $value ) {
     	switch ( $this->store_property ) {
     		case 'ID':
     			$field = 'ID';
-    			$value = intval( $value );
     			break;
     		case 'user_nicename':
     			$field = 'slug';
     			break;
     		case 'user_email':
     			$field = 'email';
-    			$value = sanitize_email( $value );
     			break;
     		case 'user_login':
     			$field = 'login';
     			break;
     	}
+    	
+    	// Sanitize the value
+    	$value = $this->sanitize_value( $value );
         
         $user = get_user_by( $field, $value );
         return $user ? $user->{$this->display_property} : '';
@@ -147,7 +148,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     }
 
     /**
-     * For post relationships, delete reciprocal post metadata prior to saving (presave will re-add).
+     * Delete reciprocal user metadata prior to saving (presave will re-add).
      * Reciprocal relationships are not possible if we are not storing by ID.
      * @param array $values new post values
      * @param array $current_values existing post values
@@ -165,7 +166,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     }
 
     /**
-     * Handle reciprocal postmeta.
+     * Handle reciprocal usermeta.
      * Reciprocal relationships are not possible if we are not storing by ID.
      * @param int $value
      * @return string
@@ -182,7 +183,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         }
         
         foreach ( $value as $i => $v ) {
-            $value[$i] = call_user_func( ( 'ID' == $this->store_property ) ? 'intval' : 'sanitize_text_field', $v );
+            $value[$i] = $this->sanitize_value( $v );
             if( ! current_user_can( $this->capability, $v ) ) {
                 wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
             }
@@ -195,7 +196,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     }
 
     /**
-     * Get view link for a user
+     * Get view link for a user.
      * @param int $value
      * @return string
      */
@@ -204,7 +205,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     }
 
     /**
-     * Get edit link for a user
+     * Get edit link for a user.
      * @param int $value
      * @return string
      */
@@ -215,5 +216,26 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
             empty( $value ) ? '#' : esc_url( get_edit_user_link( $value ) ),
             esc_html__( 'Edit', 'fieldmanager' )
         );
+    }
+    
+    /**
+     * Sanitize the value based on store_property.
+     * @param int|string $value
+     * @return int|string
+     */
+    private function sanitize_value( $value ) {
+    	switch ( $this->store_property ) {
+    		case 'ID':
+    			$value = intval( $value );
+    			break;
+    		case 'user_email':
+    			$value = sanitize_email( $value );
+    			break;
+    		default:
+    			$value = sanitize_text_field( $value );
+    			break;
+    	}
+    	
+    	return $value;
     }
 }
