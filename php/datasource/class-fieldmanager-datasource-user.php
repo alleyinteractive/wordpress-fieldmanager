@@ -85,7 +85,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     /**
      * Get a user by the specified field.
      * @param int $value post_id
-     * @return WP_User
+     * @return int|string
      */
     public function get_value( $value ) {
     	switch ( $this->store_property ) {
