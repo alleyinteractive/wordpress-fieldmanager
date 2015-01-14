@@ -46,7 +46,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * @var array
      * Allowed store properties for validation.
      */
-    protected $allowed_store_properties = array( 'ID', 'user_login', 'user_email', 'user_nicename' );
+    private $allowed_store_properties = array( 'ID', 'user_login', 'user_email', 'user_nicename' );
 
     /**
      * @var string
@@ -89,25 +89,25 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      */
     public function get_value( $value ) {
     	switch ( $this->store_property ) {
-    		case 'ID':
-    			$field = 'ID';
-    			break;
-    		case 'user_nicename':
-    			$field = 'slug';
-    			break;
-    		case 'user_email':
-    			$field = 'email';
-    			break;
-    		case 'user_login':
-    			$field = 'login';
-    			break;
+			case 'ID':
+				$field = 'ID';
+				break;
+			case 'user_nicename':
+				$field = 'slug';
+				break;
+			case 'user_email':
+				$field = 'email';
+				break;
+			case 'user_login':
+				$field = 'login';
+				break;
     	}
     	
-    	// Sanitize the value
-    	$value = $this->sanitize_value( $value );
-        
-        $user = get_user_by( $field, $value );
-        return $user ? $user->{$this->display_property} : '';
+		// Sanitize the value
+		$value = $this->sanitize_value( $value );
+
+		$user = get_user_by( $field, $value );
+		return $user ? $user->{$this->display_property} : '';
     }
 
     /**
@@ -154,15 +154,15 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      * @param array $current_values existing post values
      */
     public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
-        if ( $field->data_type != 'post' || ! $this->reciprocal || 'ID' != $this->store_property ) {
-        	return $values;
-        }
-        
-        if ( ! empty( $current_values ) ) {
-	        foreach ( $current_values as $user_id ) {
-    	        delete_user_meta( $user_id, $this->reciprocal, $field->data_id );
-        	}
-        }
+		if ( $field->data_type != 'post' || ! $this->reciprocal || 'ID' != $this->store_property ) {
+			return $values;
+		}
+
+		if ( ! empty( $current_values ) ) {
+			foreach ( $current_values as $user_id ) {
+				delete_user_meta( $user_id, $this->reciprocal, $field->data_id );
+			}
+		}
         
         return $values;
     }
@@ -227,15 +227,15 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
      */
     protected function sanitize_value( $value ) {
     	switch ( $this->store_property ) {
-    		case 'ID':
-    			$value = intval( $value );
-    			break;
-    		case 'user_email':
-    			$value = sanitize_email( $value );
-    			break;
-    		default:
-    			$value = sanitize_text_field( $value );
-    			break;
+		case 'ID':
+			$value = intval( $value );
+			break;
+		case 'user_email':
+			$value = sanitize_email( $value );
+			break;
+		default:
+			$value = sanitize_text_field( $value );
+			break;
     	}
     	
     	return $value;
