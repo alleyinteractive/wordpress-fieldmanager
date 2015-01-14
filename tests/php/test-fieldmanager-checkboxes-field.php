@@ -18,9 +18,9 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 		$this->post_id = $this->factory->post->create( array( 'post_title' => rand_str(), 'post_date' => '2009-07-01 00:00:00' ) );
 		$this->post = get_post( $this->post_id );
 
-		$this->custom_datasource = new Fieldmanager_Datasource( array(
-			'options' => array( 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' )
-		) );
+		$this->months = array( 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' );
+
+		$this->custom_datasource = new Fieldmanager_Datasource( array( 'options' => $this->months ) );
 	}
 
 	/**
@@ -123,9 +123,9 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 
 		$html = $this->_get_html_for( $fm );
 
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'January' ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'February' ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'December' ), $html );
+		foreach ( $this->months as $month ) {
+			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month ), $html );
+		}
 	}
 
 	public function test_datasource_default_value() {
@@ -137,9 +137,9 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 
 		$html = $this->_get_html_for( $fm );
 
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'January' ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'February', true ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'December' ), $html );
+		foreach ( $this->months as $month ) {
+			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month, ( 'February' === $month ) ), $html );
+		}
 	}
 
 	public function test_datasource_save() {
@@ -150,9 +150,9 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 
 		$html = $this->_get_html_for( $fm, 'February' );
 
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'January' ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'February', true ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'December' ), $html );
+		foreach ( $this->months as $month ) {
+			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month, ( 'February' === $month ) ), $html );
+		}
 	}
 
 	public function test_datasource_default_value_all() {
@@ -164,9 +164,9 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 
 		$html = $this->_get_html_for( $fm );
 
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'January', true ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'February', true ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'December', true ), $html );
+		foreach ( $this->months as $month ) {
+			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month, true ), $html );
+		}
 	}
 
 }
