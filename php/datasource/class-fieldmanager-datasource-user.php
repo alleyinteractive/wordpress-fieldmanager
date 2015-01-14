@@ -158,8 +158,10 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         	return $values;
         }
         
-        foreach ( $current_values as $user_id ) {
-            delete_user_meta( $user_id, $this->reciprocal, $field->data_id );
+        if ( ! empty( $current_values ) ) {
+	        foreach ( $current_values as $user_id ) {
+    	        delete_user_meta( $user_id, $this->reciprocal, $field->data_id );
+        	}
         }
         
         return $values;
