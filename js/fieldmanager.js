@@ -194,6 +194,8 @@ $( document ).ready( function () {
 
 	init_label_macros();
 	init_sortable();
+
+	$( document ).on( 'fm_activate_tab', init_sortable );
 } );
 
 } )( jQuery );
