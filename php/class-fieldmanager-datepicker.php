@@ -130,7 +130,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Get hour for rendering in field
+	 * Get minute for rendering in field
 	 * @param int $value unix timestamp
 	 * @return string value of hour
 	 */
