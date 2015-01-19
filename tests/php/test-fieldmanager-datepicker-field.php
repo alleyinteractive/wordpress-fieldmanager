@@ -83,7 +83,6 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
 
 		// Date and time set
-		// Time set, but no date
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
