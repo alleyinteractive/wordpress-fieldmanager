@@ -7,7 +7,7 @@
 		name="<?php echo esc_attr( $this->get_form_name( '[]' ) ); ?>"
 		id="<?php echo esc_attr( $cb_id ); ?>"
 		<?php echo $this->get_element_attributes(); ?>
-		<?php echo $this->option_selected( $data_row['value'], $value, "checked" ); ?>
+		<?php echo $this->option_selected( $data_row['value'], $value, 'checked' ); ?>
 	/>
 	<label for="<?php echo esc_attr( $cb_id ); ?>" class="fm-option-label">
 		<?php echo esc_html( $data_row['name'] ); ?>

@@ -48,7 +48,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @var string
 	 * Static variable so we only load media JS once
 	 */
-	public static $has_registered_media = False;
+	public static $has_registered_media = false;
 
 	/**
 	 * Construct default attributes
@@ -68,9 +68,9 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			}
 			wp_enqueue_media( $args ); // generally on post pages this will not have an impact.
 		} );
-		if ( !self::$has_registered_media ) {
+		if ( ! self::$has_registered_media ) {
 			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), '1.0.1' );
-			self::$has_registered_media = True;
+			self::$has_registered_media = true;
 		}
 		parent::__construct( $label, $options );
 	}
@@ -79,8 +79,8 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * Presave; ensure that the value is an absolute integer
 	 */
 	public function presave( $value, $current_value = array() ) {
-		if ( $value == 0 || !is_numeric( $value ) ) {
-			return NULL;
+		if ( 0 == $value || ! is_numeric( $value ) ) {
+			return null;
 		}
 		return absint( $value );
 	}
@@ -93,12 +93,12 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function form_element( $value = array() ) {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
-			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
+			if ( strpos( 0 === $attachment->post_mime_type, 'image/' ) ) {
 				$preview = esc_html__( 'Uploaded image:', 'fieldmanager' ) . '<br />';
 				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 			} else {
 				$preview = esc_html__( 'Uploaded file:', 'fieldmanager' ) . '&nbsp;';
-				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
+				$preview .= wp_get_attachment_link( $value, $this->preview_size, true, true, $attachment->post_title );
 			}
 			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', esc_html__( 'remove', 'fieldmanager' ) );
 			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );

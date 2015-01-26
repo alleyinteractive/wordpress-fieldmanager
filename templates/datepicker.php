@@ -4,7 +4,7 @@
 	data-datepicker-opts="<?php echo esc_attr( json_encode( $this->js_opts ) ); ?>"
 	name="<?php echo esc_attr( $this->get_form_name( '[date]' ) ); ?>"
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
-	<?php if ( !empty( $value ) ): ?>
+	<?php if ( ! empty( $value ) ): ?>
 		value="<?php echo esc_attr( date( $this->date_format, intval( $value ) ) ); ?>"
 	<?php endif; ?>
 	<?php echo $this->get_element_attributes(); ?>

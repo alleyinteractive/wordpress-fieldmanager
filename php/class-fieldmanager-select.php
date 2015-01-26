@@ -16,13 +16,13 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 * @var boolean
 	 * Should we support type-ahead? i.e. use chosen.js or not
 	 */
-	public $type_ahead = False;
+	public $type_ahead = false;
 
 	/**
 	 * @var boolean
 	 * Send an empty element first
 	 */
-	public $first_empty = False;
+	public $first_empty = false;
 
 	/**
 	 * @var boolean
@@ -38,7 +38,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	public function __construct( $label = '', $options = array() ) {
 
 		$this->attributes = array(
-			'size' => '1'
+			'size' => '1',
 		);
 
 		// Add the Fieldmanager Select javascript library
@@ -75,21 +75,21 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		// If this is a multiple select, need to handle differently
 		$do_multiple = '';
 		if ( $this->multiple ) {
-			$do_multiple = "[]";
+			$do_multiple = '[]';
 		}
 
 		// Handle type-ahead based fields using the chosen library
 		if ( $this->type_ahead ) {
 			$select_classes[] = 'chzn-select';
-			if ( !isset( $GLOBALS['fm_chosen_initialized'] ) ) {
+			if ( ! isset( $GLOBALS['fm_chosen_initialized'] ) ) {
 				add_action( 'admin_footer', array( $this, 'chosen_init' ) );
 				$GLOBALS['fm_chosen_initialized'] = true;
 			}
 
 			if ( $this->grouped ) {
-				$select_classes[] = "fm-options-grouped";
+				$select_classes[] = 'fm-options-grouped';
 			} else {
-				$select_classes[] = "fm-options";
+				$select_classes[] = 'fm-options';
 			}
 		}
 
@@ -101,7 +101,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		return sprintf(
 			'<select class="%s" name="%s" id="%s" %s>%s</select>',
-			esc_attr( implode( " ", $select_classes ) ),
+			esc_attr( implode( ' ', $select_classes ) ),
 			esc_attr( $this->get_form_name( $do_multiple ) ),
 			esc_attr( $this->get_element_id() ),
 			$this->get_element_attributes(),
@@ -119,7 +119,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// For taxonomy-based selects, only return selected options if taxonomy preload is disabled
 		// Additional terms will be provided by AJAX for typeahead to avoid overpopulating the select for large taxonomies
-		$option_selected = $this->option_selected( $data_row['value'], $value, "selected" );
+		$option_selected = $this->option_selected( $data_row['value'], $value, 'selected' );
 
 		return sprintf(
 			'<option value="%s" %s>%s</option>',

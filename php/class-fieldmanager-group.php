@@ -29,19 +29,19 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @var boolean
 	 * If true, this group can be collapsed by clicking its header.
 	 */
-	public $collapsible = FALSE;
+	public $collapsible = false;
 
 	/**
 	 * @var boolean
 	 * If true, this group is collapsed by default.
 	 */
-	public $collapsed = FALSE;
+	public $collapsed = false;
 
 	/**
 	 * @var boolean
 	 * If true, render children in tabs.
 	 */
-	public $tabbed = FALSE;
+	public $tabbed = false;
 
 	/**
 	 * @var int
@@ -57,26 +57,26 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 *
 	 * array( 'Section: %s', 'section_title' )
 	 */
-	public $label_macro = Null;
+	public $label_macro = null;
 
 	/**
 	 * @var string
 	 * If specified, $label_format combined with $label_token will override $label, but only if
 	 * $(label).find(label_token).val() is not null.
 	 */
-	public $label_format = Null;
+	public $label_format = null;
 
 	/**
 	 * @var string
 	 * CSS selector to an element to get the token for the label format
 	 */
-	public $label_token = Null;
+	public $label_token = null;
 
 	/**
 	 * @var callable|null
 	 * Function that tells whether the group is empty or not. Gets an array of form values.
 	 */
-	public $group_is_empty = Null;
+	public $group_is_empty = null;
 
 	/**
 	 * @var boolean
@@ -91,15 +91,18 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		parent::__construct( $label, $options );
 
-		if ( $this->collapsed ) $this->collapsible = True;
+		if ( $this->collapsed ) {
+			$this->collapsible = true;
+		}
 
 		// Convenient naming of child elements via their keys
 		foreach ( $this->children as $name => $element ) {
 			// if the array key is not an int, and the name attr is set, and they don't match, we got a problem.
-			if ( $element->name && !is_int( $name ) && $element->name != $name ) {
+			if ( $element->name && ! is_int( $name ) && $element->name != $name ) {
 				throw new FM_Developer_Exception( esc_html__( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name );
+			} elseif ( ! $element->name ) {
+				$element->name = $name;
 			}
-			else if ( !$element->name ) $element->name = $name;
 		}
 
 		// Add the tab JS and CSS if it is needed
@@ -115,13 +118,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * Render the element, iterating over children and calling their form_element() functions.
 	 * @param mixed $value
 	 */
-	public function form_element( $value = NULL ) {
+	public function form_element( $value = null ) {
 		$out = '';
 		$tab_group = '';
 		$tab_group_submenu = '';
 
 		// We do not need the wrapper class for extra padding if no label is set for the group
-		if ( isset( $this->label ) && !empty( $this->label ) ) {
+		if ( isset( $this->label ) && ! empty( $this->label ) ) {
 			$out .= '<div class="fm-group-inner">';
 		}
 
@@ -140,40 +143,40 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 				// Set default classes to display the first tab content and hide others
 				$tab_classes = array( 'fm-tab' );
-			    $tab_classes[] = ( $this->child_count == 0 ) ? "wp-tab-active" : "hide-if-no-js";
+			    $tab_classes[] = ( 0 == $this->child_count ) ? 'wp-tab-active' : 'hide-if-no-js';
 
 				// Generate output for the tab. Depends on whether or not there is a tab limit in place.
-				if ( $this->tab_limit == 0 || $this->child_count < $this->tab_limit ) {
-					$tab_group .=  sprintf( '<li class="%s"><a href="#%s-tab">%s</a></li>',
-						esc_attr( implode( " ", $tab_classes ) ),
+				if ( 0 == $this->tab_limit || $this->child_count < $this->tab_limit ) {
+					$tab_group .= sprintf( '<li class="%s"><a href="#%s-tab">%s</a></li>',
+						esc_attr( implode( ' ', $tab_classes ) ),
 						esc_attr( $element->get_element_id() ),
 						$element->escape( 'label' )
-					 );
-				} else if ( $this->tab_limit != 0 && $this->child_count >= $this->tab_limit ) {
+					);
+				} else if ( 0 != $this->tab_limit && $this->child_count >= $this->tab_limit ) {
 					$submenu_item_classes = array( 'fm-submenu-item' );
-					$submenu_item_link_class = "";
+					$submenu_item_link_class = '';
 
 					// Create the More tab when first hitting the tab limit
 					if ( $this->child_count == $this->tab_limit ) {
 						// Create the tab
-						$tab_group_submenu .=  sprintf( '<li class="fm-tab fm-has-submenu"><a href="#%s-tab">%s</a>',
+						$tab_group_submenu .= sprintf( '<li class="fm-tab fm-has-submenu"><a href="#%s-tab">%s</a>',
 							esc_attr( $element->get_element_id() ),
 							esc_html__( 'More...', 'fieldmanager' )
-						 );
+						);
 
-						 // Start the submenu
-						 $tab_group_submenu .= sprintf(
-						 	'<div class="fm-submenu" id="%s-submenu"><div class="fm-submenu-wrap fm-submenu-wrap"><ul>',
-						 	esc_attr( $this->get_element_id() )
-						 );
+						// Start the submenu
+						$tab_group_submenu .= sprintf(
+							'<div class="fm-submenu" id="%s-submenu"><div class="fm-submenu-wrap fm-submenu-wrap"><ul>',
+							esc_attr( $this->get_element_id() )
+						);
 
-						 // Make sure the first submenu item is designated
-						 $submenu_item_classes[] = 'fm-first-item';
-						 $submenu_item_link_class = 'class="fm-first-item"';
+						// Make sure the first submenu item is designated
+						$submenu_item_classes[] = 'fm-first-item';
+						$submenu_item_link_class = 'class="fm-first-item"';
 					}
 
 					// Add this element to the More menu
-					$tab_group_submenu .=  sprintf( '<li class="%s"><a href="#%s-tab" %s>%s</a></li>',
+					$tab_group_submenu .= sprintf( '<li class="%s"><a href="#%s-tab" %s>%s</a></li>',
 						esc_attr( implode( ' ', $submenu_item_classes ) ),
 						esc_attr( $element->get_element_id() ),
 						$submenu_item_link_class,
@@ -182,15 +185,19 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				}
 
 				// Ensure the child is aware it is tab content
-				$element->is_tab = TRUE;
+				$element->is_tab = true;
 			}
 
 			// Get markup for the child element
 			$child_value = isset( $value[ $element->name ] ) ? $value[ $element->name ] : null;
 
 			// propagate editor state down the chain
-			if ( $this->data_type ) $element->data_type = $this->data_type;
-			if ( $this->data_id ) $element->data_id = $this->data_id;
+			if ( $this->data_type ) {
+				$element->data_type = $this->data_type;
+			}
+			if ( $this->data_id ) {
+				$element->data_id = $this->data_id;
+			}
 
 			$out .= $element->element_markup( $child_value );
 
@@ -199,12 +206,17 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		// We do not need the wrapper class for extra padding if no label is set for the group
-		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '</div>';
+		if ( isset( $this->label ) && ! empty( $this->label ) ) {
+			$out .= '</div>';
+		}
 
 		// If the display output for this group is set to tabs, build the tab group for navigation
-		if ( $this->tab_limit != 0 && $this->child_count >= $this->tab_limit ) $tab_group_submenu .= '</ul></div></div></li>';
-		if ( $this->tabbed ) $tab_group .= $tab_group_submenu . '</ul>';
-
+		if ( 0 != $this->tab_limit && $this->child_count >= $this->tab_limit ){
+			$tab_group_submenu .= '</ul></div></div></li>';
+		}
+		if ( $this->tabbed ) {
+			$tab_group .= $tab_group_submenu . '</ul>';
+		}
 
 		// Return the complete HTML
 		return $tab_group . $out;
@@ -226,9 +238,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 */
 	public function presave( $values, $current_values = array() ) {
 		// @SECURITY@ First, make sure all the values we're given are legal.
-		if( isset( $values ) && !empty( $values ) ) {
+		if ( isset( $values ) && ! empty( $values ) ) {
 			foreach ( array_keys( $values ) as $key ) {
-				if ( !isset( $this->children[$key] ) ) {
+				if ( ! isset( $this->children[ $key ] ) ) {
 					// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
 					// and thus one which we cannot sanitize and must not save. This might be an attack.
 					$this->_unauthorized_access( sprintf( __( 'Found "%1$s" in data but not in children', 'fieldmanager' ), $key ) );
@@ -240,15 +252,20 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
-			if ( empty( $values[$element->name] ) ) {
-				$values[ $element->name ] = NULL;
+			if ( empty( $values[ $element->name ] ) ) {
+				$values[ $element->name ] = null;
 			}
-			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
-			$current_child_value = !isset( $current_values[$element->name ]) ? array() : $current_values[$element->name];
+			$child_value = empty( $values[ $element->name ] ) ? null : $values[ $element->name ];
+			$current_child_value = ! isset( $current_values[ $element->name ] ) ? array() : $current_values[ $element->name ];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
-			if ( !$this->save_empty && $this->limit != 1 ) {
-				if ( is_array( $values[$element->name] ) && empty( $values[$element->name] ) ) unset( $values[$element->name] );
-				elseif ( empty( $values[$element->name] ) ) unset( $values[$element->name] );
+			if ( ! $this->save_empty && 1 != $this->limit ) {
+				if ( is_array( $values[$element->name] ) && empty( $values[$element->name] ) ) {
+					unset( $values[$element->name] );
+				} elseif ( empty( $values[$element->name] ) ) {
+					unset( $values[$element->name] );
+				} else {
+					//empty fallback
+				}
 			}
 		}
 
@@ -297,7 +314,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		$remove = '';
-		if ( $this->one_label_per_item && ( $this->limit == 0 || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) ) {
+		if ( $this->one_label_per_item && ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) ) {
 			$remove = $this->get_remove_handle();
 		}
 
@@ -347,7 +364,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @return array list of meta boxes to remove
 	 */
 	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {
-		foreach( $this->children as $child ) {
+		foreach ( $this->children as $child ) {
 			// If remove default meta boxes was true for the group, set it for all children
 			if ( $this->remove_default_meta_boxes ) {
 				$child->remove_default_meta_boxes = true;

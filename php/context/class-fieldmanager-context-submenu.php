@@ -43,13 +43,13 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 * @var string|Null
 	 * Only used for options pages
 	 */
-	public $submit_button_label = Null;
+	public $submit_button_label = null;
 
 	/**
 	 * @var string
 	 * For submenu pages, set autoload to true or false
 	 */
-	public $wp_option_autoload = False;
+	public $wp_option_autoload = false;
 
 	/**
 	 * Create a submenu page out of a field
@@ -60,7 +60,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 	 * @param string $menu_slug
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function __construct( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null, $fm = Null, $already_registered = False ) {
+	public function __construct( $parent_slug, $page_title, $menu_title = null, $capability = 'manage_options', $menu_slug = null, $fm = null, $already_registered = false ) {
 		$this->fm = $fm;
 		$this->menu_slug = $menu_slug ?: $this->fm->name;
 		$this->menu_title = $menu_title ?: $page_title;
@@ -68,7 +68,9 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 		$this->page_title = $page_title;
 		$this->capability = $capability;
 		$this->uniqid = $this->fm->get_element_id() . '_form';
-		if ( !$already_registered ) add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+		if ( ! $already_registered ) {
+			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
 	}
 
@@ -125,14 +127,14 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context {
 
 	public function save_submenu_data() {
 		// Make sure that our nonce field arrived intact
-		if( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
+		if ( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 
 		$this->fm->data_id = $this->fm->name;
 		$this->fm->data_type = 'options';
 		$current = get_option( $this->fm->name, null );
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
 		$data = $this->fm->presave_all( $value, $current );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 

@@ -19,7 +19,7 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 * @var boolean
 	 * Was the form saved?
 	 */
-	public $did_save = False;
+	public $did_save = false;
 
 	/**
 	 * Create page context handler.
@@ -28,11 +28,11 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 */
 	public function __construct( $uniqid, $fm ) {
 		$this->fm = $fm;
-		self::$forms[$uniqid] = $this;
+		self::$forms[ $uniqid ] = $this;
 		$this->uniqid = $uniqid;
 
 		// since this should be set up in init, check for submit now
-		if ( !empty( $_POST ) && ! empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) {
+		if ( ! empty( $_POST ) && ! empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) {
 			$this->save_page_form();
 		}
 	}
@@ -42,19 +42,23 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function save_page_form() {
-		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
+		if ( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 		$this->fm->data_id = $user_id;
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		if ( empty( $this->fm->data_type ) ) $this->fm->data_type = 'page';
-		if ( empty( $this->fm->data_id ) ) $this->fm->data_id = $this->uniqid;
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
+		if ( empty( $this->fm->data_type ) ) {
+			$this->fm->data_type = 'page';
+		}
+		if ( empty( $this->fm->data_id ) ) {
+			$this->fm->data_id = $this->uniqid;
+		}
 		$current = apply_filters( 'fm_' . $this->uniqid . '_load', array(), $this->fm );
 		$data = apply_filters( 'fm_' . $this->uniqid . '_presave', $value, $this->fm );
 		$data = $this->fm->presave_all( $data, $current );
 		$data = apply_filters( 'fm_presave_data', $data, $this->fm );
 		do_action( 'fm_' . $this->uniqid . '_save', $data, $current, $this->fm );
-		$this->did_save = True;
+		$this->did_save = true;
 	}
 
 	/**
@@ -84,7 +88,7 @@ class Fieldmanager_Context_Form extends Fieldmanager_Context {
 	 * @return Fieldmanager_Context_Page
 	 */
 	public static function get_form( $uniqid ) {
-		return self::$forms[$uniqid];
+		return self::$forms[ $uniqid ];
 	}
 
 }

@@ -52,10 +52,12 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @param string $priority (high, core, default, or low)
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function __construct( $title, $post_types, $context = 'normal', $priority = 'default', $fm = Null ) {
+	public function __construct( $title, $post_types, $context = 'normal', $priority = 'default', $fm = null ) {
 
 		// Populate the list of post types for which to add this meta box with the given settings
-		if ( !is_array( $post_types ) ) $post_types = array( $post_types );
+		if ( ! is_array( $post_types ) ) {
+			$post_types = array( $post_types );
+		}
 
 		$this->post_types = $post_types;
 		$this->title = $title;
@@ -70,7 +72,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		}
 		add_action( 'save_post', array( $this, 'delegate_save_post' ) );
 		// Check if any meta boxes need to be removed
-		if ( $this->fm && !empty( $this->fm->meta_boxes_to_remove ) ) {
+		if ( $this->fm && ! empty( $this->fm->meta_boxes_to_remove ) ) {
 			add_action( 'admin_init', array( $this, 'remove_meta_boxes' ) );
 		}
 	}
@@ -103,7 +105,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	public function render_meta_box( $post, $form_struct = null ) {
 		$key = $this->fm->name;
 		$values = get_post_meta( $post->ID, $key );
-		$values = empty( $values ) ? Null : $values[0];
+		$values = empty( $values ) ? null : $values[0];
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
@@ -121,8 +123,8 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void.
 	 */
 	public function remove_meta_boxes() {
-		foreach( $this->post_types as $type ) {
-			foreach( $this->fm->meta_boxes_to_remove as $meta_box ) {
+		foreach ( $this->post_types as $type ) {
+			foreach ( $this->fm->meta_boxes_to_remove as $meta_box ) {
 				remove_meta_box( $meta_box['id'], $type, $meta_box['context'] );
 			}
 		}
@@ -152,7 +154,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		if ( self::$doing_internal_update ) {
 			return;
 		}
-		if( defined( 'DOING_CRON' ) && DOING_CRON ) {
+		if ( defined( 'DOING_CRON' ) && DOING_CRON ) {
 			$this->save_fields_for_cron( $post_id );
 		} else {
 			$this->save_fields_for_post( $post_id );
@@ -167,7 +169,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 */
 	public function save_fields_for_post( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
-		if ( empty( $_POST['post_ID'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' ) {
+		if ( empty( $_POST['post_ID'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || 'editpost' != $_POST['action'] ) {
 			return;
 		}
 
@@ -177,7 +179,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		}
 
 		// Prevent saving the same post twice; FM does not yet use revisions.
-		if ( get_post_type( $post_id ) == 'revision' ) {
+		if ( 'revision' == get_post_type( $post_id ) ) {
 			return;
 		}
 
@@ -191,24 +193,24 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		}
 
 		// Do not handle quickedit in this context.
-		if ( $_POST['action'] == 'inline-save' ) {
+		if ( 'inline-save' == $_POST['action'] ) {
 			return;
 		}
 
 		// Make sure the current user is authorized to save this post.
-		if( $_POST['post_type'] == 'post' ) {
-			if( !current_user_can( 'edit_post', $post_id ) ) {
+		if ( 'post' == $_POST['post_type'] ) {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
 				return;
 			}
 		}
 
 		// Make sure that our nonce field arrived intact.
-		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
+		if ( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
 		$this->save_to_post_meta( $post_id, $value );
 	}
 
@@ -241,7 +243,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$this->fm->data_type = 'post';
 		$current = get_post_meta( $this->fm->data_id, $this->fm->name, true );
 		$data = $this->fm->presave_all( $data, $current );
-		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );
+		if ( ! $this->fm->skip_save ) {
+			update_post_meta( $post_id, $this->fm->name, $data );
+		}
 	}
 
 	/**

@@ -37,31 +37,31 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @var boolean
 	 * Pass $append = true to wp_set_object_terms?
 	 */
-	public $append_taxonomy = False;
+	public $append_taxonomy = false;
 
 	/**
 	 * @var string
 	 * If true, additionally save taxonomy terms to WP's terms tables.
 	 */
-	public $taxonomy_save_to_terms = True;
+	public $taxonomy_save_to_terms = true;
 
 	/**
 	 * @var string
 	 * If true, only save this field to the taxonomy tables, and do not serialize in the FM array.
 	 */
-	public $only_save_to_taxonomy = False;
+	public $only_save_to_taxonomy = false;
 
 	/**
 	 * @var boolean
 	 * If true, store the term_taxonomy_id instead of the term_id
 	 */
-	public $store_term_taxonomy_id = False;
+	public $store_term_taxonomy_id = false;
 
 	/**
 	 * @var boolean
 	 * Build this datasource using AJAX
 	 */
-	public $use_ajax = True;
+	public $use_ajax = true;
 
 	/**
 	 * Constructor
@@ -71,20 +71,22 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 		// default to showing empty tags, which generally makes more sense for the types of fields
 		// that fieldmanager supports
-		if ( !isset( $options['taxonomy_args']['hide_empty'] ) ) {
-			$options['taxonomy_args']['hide_empty'] = False;
+		if ( ! isset( $options['taxonomy_args']['hide_empty'] ) ) {
+			$options['taxonomy_args']['hide_empty'] = false;
 		}
 
 		parent::__construct( $options );
-		if ( $this->only_save_to_taxonomy ) $this->taxonomy_save_to_terms = True;
+		if ( $this->only_save_to_taxonomy ) {
+			$this->taxonomy_save_to_terms = true;
+		}
 
 		// make post_tag and category sortable via term_order, if they're set as taxonomies, and if
 		// we're not using Fieldmanager storage
 		if ( $this->only_save_to_taxonomy && in_array( 'post_tag', $this->get_taxonomies() ) ) {
-			$wp_taxonomies['post_tag']->sort = True;
+			$wp_taxonomies['post_tag']->sort = true;
 		}
 		if ( $this->only_save_to_taxonomy && in_array( 'category', $this->get_taxonomies() ) ) {
-			$wp_taxonomies['category']->sort = True;
+			$wp_taxonomies['category']->sort = true;
 		}
 	}
 
@@ -102,7 +104,9 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @return string ajax action
 	 */
 	public function get_ajax_action() {
-		if ( !empty( $this->ajax_action ) ) return $this->ajax_action;
+		if ( ! empty( $this->ajax_action ) ) {
+			return $this->ajax_action;
+		}
 		$unique_key = json_encode( $this->taxonomy_args );
 		$unique_key .= json_encode( $this->get_taxonomies() );
 		$unique_key .= (string) $this->taxonomy_hierarchical;
@@ -123,7 +127,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$terms = wp_get_object_terms( $field->data_id, $taxonomies[0], array( 'orderby' => 'term_order' ) );
 
 			if ( count( $terms ) > 0 ) {
-				if ( $field->limit == 1 && empty( $field->multiple ) ) {
+				if ( 1 == $field->limit && empty( $field->multiple ) ) {
 					return $terms[0]->term_id;
 				} else {
 					$ret = array();
@@ -144,13 +148,13 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @return int[] $values
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
-		if ( !is_array( $values ) ) {
+		if ( ! is_array( $values ) ) {
 			$values = array( $values );
 		}
 
 		// maybe we can create terms here.
-		if ( get_class( $field ) == 'Fieldmanager_Autocomplete' && !$field->exact_match && isset( $this->taxonomy ) ) {
-			foreach( $values as $i => $value ) {
+		if ( 'Fieldmanager_Autocomplete' == get_class( $field )  && ! $field->exact_match && isset( $this->taxonomy ) ) {
+			foreach ( $values as $i => $value ) {
 				 // could be a mix of valid term IDs and new terms.
 				if ( is_numeric( $value ) ) {
 					continue;
@@ -165,7 +169,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				$term_by = function_exists( 'wpcom_vip_get_term_by' ) ? 'wpcom_vip_get_term_by' : 'get_term_by';
 				$term = call_user_func( $term_by, 'name', $value, $this->taxonomy );
 
-				if ( !$term ) {
+				if ( ! $term ) {
 					$term = wp_insert_term( $value, $this->taxonomy );
 					if ( is_wp_error( $term ) ) {
 						unset( $value );
@@ -173,24 +177,29 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 					}
 					$term = (object) $term;
 				}
-				$values[$i] = $term->term_id;
+				$values[ $i ] = $term->term_id;
 			}
 		}
 
 		// If this is a taxonomy-based field, must also save the value(s) as an object term
-		if ( $this->taxonomy_save_to_terms && isset( $this->taxonomy ) && !empty( $values ) ) {
+		if ( $this->taxonomy_save_to_terms && isset( $this->taxonomy ) && ! empty( $values ) ) {
 			$tax_values = array();
 			foreach ( $values as $value ) {
-				if ( !empty( $value ) ) {
-					if( is_numeric( $value ) )
+				if ( ! empty( $value ) ) {
+					if ( is_numeric( $value ) ) {
 						$tax_values[] = $value;
-					else if( is_array( $value ) )
-						$tax_values = $value;
+					} else {
+						if ( is_array( $value ) ) {
+							$tax_values = $value;
+						}
+					}
 				}
 			}
 			$this->save_taxonomy( $tax_values, $field->data_id );
 		}
-		if ( $this->only_save_to_taxonomy ) return array();
+		if ( $this->only_save_to_taxonomy ) {
+			return array();
+		}
 		return $values;
 	}
 
@@ -218,7 +227,9 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$taxonomies_to_save = array();
 			foreach ( $tax_values as $term_id ) {
 				$term = $this->get_term( $term_id );
-				if ( empty( $taxonomies_to_save[ $term->taxonomy ] ) ) $taxonomies_to_save[ $term->taxonomy ] = array();
+				if ( empty( $taxonomies_to_save[ $term->taxonomy ] ) ) {
+					$taxonomies_to_save[ $term->taxonomy ] = array();
+				}
 				$taxonomies_to_save[ $term->taxonomy ][] = $term_id;
 			}
 			foreach ( $taxonomies_to_save as $taxonomy => $terms ) {
@@ -234,7 +245,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @param $value The value(s) currently set for this field
 	 * @return array[] data entries for options
 	 */
-	public function get_items( $fragment = Null ) {
+	public function get_items( $fragment = null ) {
 
 		// If taxonomy_hierarchical is set, assemble recursive term list, then bail out.
 		if ( $this->taxonomy_hierarchical ) {
@@ -245,7 +256,9 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		}
 
 		$tax_args = $this->taxonomy_args;
-		if ( !empty( $fragment ) ) $tax_args['search'] = $fragment;
+		if ( ! empty( $fragment ) ) {
+			$tax_args['search'] = $fragment;
+		}
 		$terms = get_terms( $this->get_taxonomies(), $tax_args );
 
 		// If the taxonomy list was an array and group display is set, ensure all terms are grouped by taxonomy
@@ -256,10 +269,10 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			// Group the data
 			$term_groups = array();
 			foreach ( $this->get_taxonomies() as $tax ) {
-				$term_groups[$tax] = array();
+				$term_groups[ $tax ] = array();
 			}
 			foreach ( $terms as $term ) {
-				$term_groups[$term->taxonomy][ $term->term_id ] = $term->name;
+				$term_groups[ $term->taxonomy ][ $term->term_id ] = $term->name;
 			}
 			return $term_groups;
 		}
@@ -299,10 +312,12 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 			// Find child terms of this. If any, recurse on this function.
 			$tax_args['parent'] = $term->term_id;
-			if ( !empty( $pattern ) ) $tax_args['search'] = $fragment;
+			if ( ! empty( $pattern ) ) {
+				$tax_args['search'] = $fragment;
+			}
 			$child_terms = get_terms( $this->get_taxonomies(), $tax_args );
-			if ( $this->taxonomy_hierarchical_depth == 0 || $depth + 1 < $this->taxonomy_hierarchical_depth ) {
-				if ( !empty( $child_terms ) ) {
+			if ( 0 == $this->taxonomy_hierarchical_depth || $depth + 1 < $this->taxonomy_hierarchical_depth ) {
+				if ( ! empty( $child_terms ) ) {
 					$stack = $this->build_hierarchical_term_data( $child_terms, $this->taxonomy_args, $depth + 1, $stack );
 				}
 			}
@@ -317,8 +332,9 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 */
 	public function get_value( $value ) {
 		$id = intval( $value );
-		if ( ! $id )
+		if ( ! $id ) {
 			return null;
+		}
 
 		$term = $this->get_term( $id );
 		$value = is_object( $term ) ? $term->name : '';
@@ -336,7 +352,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			return $wpdb->get_row( $wpdb->prepare( "SELECT t.*, tt.* FROM $wpdb->terms AS t INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id WHERE tt.term_taxonomy_id = %d LIMIT 1", $term_id ) );
 		} else {
 			$terms = get_terms( $this->get_taxonomies(), array( 'hide_empty' => false, 'include' => array( $term_id ), 'number' => 1 ) );
-			return !empty( $terms[0] ) ? $terms[0] : Null;
+			return ! empty( $terms[0] ) ? $terms[0] : null;
 		}
 	}
 
