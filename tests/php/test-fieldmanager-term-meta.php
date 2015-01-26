@@ -4,14 +4,26 @@
  * Tests the Fieldmanager Term Meta
  *
  * @group util
+ * @group term
  */
 class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
+	public $current_user;
 
 	public function setUp() {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
+		$this->current_user = get_current_user_id();
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+
 		$this->term = $this->factory->category->create_and_get( array( 'name' => rand_str() ) );
+	}
+
+	public function tearDown() {
+		if ( get_current_user_id() != $this->current_user ) {
+			wp_delete_user( get_current_user_id() );
+		}
+		wp_set_current_user( $this->current_user );
 	}
 
 	/**

@@ -161,9 +161,7 @@ $( document ).ready( function () {
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
 	} );
 
-	$( '.fm-collapsed' ).each( function() {
-		$( this ).find( '.fm-group-inner' ).hide();
-	} );
+	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
 
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
@@ -196,6 +194,8 @@ $( document ).ready( function () {
 
 	init_label_macros();
 	init_sortable();
+
+	$( document ).on( 'fm_activate_tab', init_sortable );
 } );
 
 } )( jQuery );
