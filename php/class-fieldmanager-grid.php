@@ -18,7 +18,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 * @var callable
 	 * Sort a grid before rendering (takes entire grid as a parameter)
 	 */
-	public $grid_sort = Null;
+	public $grid_sort = null;
 
 	/**
 	 * @var string[]
@@ -38,7 +38,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 		parent::__construct( $label, $options );
 		$this->sanitize = function( $row, $col, $values ) {
 			foreach ( $values as $k => $val ) {
-				$values[$k] = sanitize_text_field( $val );
+				$values[ $k ] = sanitize_text_field( $val );
 			}
 			return $values;
 		};
@@ -58,7 +58,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 */
 	public function form_element( $value = '' ) {
 		$grid_activate_id = 'grid-activate-' . uniqid();
-		if ( !empty( $value ) && is_callable( $this->grid_sort ) ) {
+		if ( ! empty( $value ) && is_callable( $this->grid_sort ) ) {
 			$value = call_user_func( $this->grid_sort, $value );
 		}
 		$out = sprintf(
@@ -96,8 +96,10 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 * @return array sanitized row/col matrix
 	 */
 	public function presave( $value, $current_value = array() ) {
-		$rows = json_decode( stripslashes( $value ), TRUE );
-		if ( !is_array( $rows ) ) return array();
+		$rows = json_decode( stripslashes( $value ), true );
+		if ( ! is_array( $rows ) ) {
+			return array();
+		}
 		foreach ( $rows as $i => $cells ) {
 			foreach ( $cells as $k => $cell ) {
 				$cell = call_user_func( $this->sanitize, $i, $k, $cell );

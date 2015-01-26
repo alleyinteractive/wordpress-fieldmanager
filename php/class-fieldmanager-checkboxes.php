@@ -12,7 +12,7 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	 */
 	public $field_class = 'checkboxes';
 
-	public $multiple = True;
+	public $multiple = true;
 
 	/**
 	 * Render form element

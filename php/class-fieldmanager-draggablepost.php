@@ -31,7 +31,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @var boolean
 	 * Provide "Use image?" checkbox for draggable divs?
 	 */
-	public $use_image_checkbox = False;
+	public $use_image_checkbox = false;
 
 
 	/**
@@ -60,8 +60,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	public function presave( $value, $current_values = array() ) {
 
 		foreach ( $this->bins as $bin => $name ) {
-			if ( isset( $value[$bin] ) ) {
-				$value[$bin] = explode(',', $value[$bin]);
+			if ( isset( $value[ $bin ] ) ) {
+				$value[ $bin ] = explode( ',', $value[ $bin ] );
 			}
 		}
 
@@ -91,10 +91,10 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 			$out .= sprintf( '<h2>%s</h2><ul class="post-repository sortables">', $repo['label'] );
 			if ( isset( $repo['callback'] ) ) {
 				$ids = call_user_func( $repo['callback'], $name, $repo );
-				if ( !empty( $ids ) ) {
+				if ( ! empty( $ids ) ) {
 					// Return value here should be all numeric post ids, but we'll tolerate non-numerics if they show up.
 					foreach ( $ids as $id ) {
-						if ( !is_numeric( $id ) || in_array( $id, $all ) ) {
+						if ( ! is_numeric( $id ) || in_array( $id, $all ) ) {
 							continue;
 						}
 						$out .= $this->draggable_item_html( $id );
@@ -119,30 +119,30 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 					$out .= $this->draggable_item_html( get_the_ID() );
 				}
 			}
-			$out .= "</ul>";
+			$out .= '</ul>';
 		}
-		$out .= "</div>";
+		$out .= '</div>';
 		$out .= '<div class="post-bin-wrapper">';
 		foreach ( $this->bins as $name => $bin ) {
 			$out .= sprintf( '<h2>%s</h2>', $bin );
 			$out .= sprintf( '<ul class="post-bin sortables" id="%s-bin"><em class="empty-message">%s</em>', esc_attr( $name ), esc_attr__( 'drop posts here', 'fieldmanager' ) );
 			if ( isset( $value[$name] ) ) {
 				foreach ( $value[$name] as $id ) {
-					if ( !$id ) {
+					if ( ! $id ) {
 						continue;
 					}
 					$out .= $this->draggable_item_html( $id, in_array( $id, $value['_image_flags'] ) );
 				}
 			}
-		    $out .= "</ul>";
+		    $out .= '</ul>';
 		}
 
 		foreach ( $this->bins as $bin => $label ) {
 			$out .= sprintf( '<input type="hidden" value="%s" name="%s" id="%s" />',
-						empty( $value[$bin] ) ?  '' : implode( ',', $value[$bin] ),
-						$this->get_form_name() . '[' . $bin . ']',
-						$bin
-					);
+				empty( $value[ $bin ] ) ?  '' : implode( ',', $value[ $bin ] ),
+				$this->get_form_name() . '[' . $bin . ']',
+				$bin
+			);
 		}
 		$out .= '</div></div>';
 		return $out;
@@ -159,14 +159,14 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		$bylines = array();
 		if ( is_plugin_active( 'co-authors-plus/co-authors-plus.php' ) ) {
 			$authors = get_coauthors( $post_id );
-			foreach ($authors as $author) {
+			foreach ( $authors as $author ) {
 				$bylines[] = $author->display_name;
 			}
 			if ( empty( $bylines ) ) {
 				$authorstr = esc_html__( '(no authors)', 'fieldmanager' );
 			}
 			else {
-				$authorstr = implode(', ', $bylines);
+				$authorstr = implode( ', ', $bylines );
 			}
 		}
 		else {
@@ -179,9 +179,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		$permalink = get_permalink( $post_id );
 
 		if ( isset( $image_meta[0] ) ) {
-			$image = wp_get_attachment_image( $image_meta[0], array(32,32) );
-		}
-		else{
+			$image = wp_get_attachment_image( $image_meta[0], array( 32, 32 ) );
+		} else {
 			$image = '';
 		}
 
@@ -217,7 +216,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		}
 		$result = array();
 		foreach ( $value as $key => $array ) {
-			if ( $key == '_image_flags' ) {
+			if ( '_image_flags' == $key ) {
 				continue;
 			}
 			$result = array_merge( $result, $value[$key] );
