@@ -36,7 +36,9 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 	public function render_user_form( $user ) {
 		$values = get_user_meta( $user->ID, $this->fm->name );
 		$values = empty( $values ) ? null : $values[0];
-		if ( !empty( $this->title ) ) echo '<h3>' . $this->title . '</h3>';
+		if ( ! empty( $this->title ) ) {
+			echo '<h3>' . $this->title . '</h3>';
+		}
 		echo '<div class="fm-user-form-wrapper">';
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
 		echo $this->fm->element_markup( $values );
@@ -59,7 +61,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context {
 				$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 			}
 
-			$this->save_to_user_meta( $user_id, ( isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "" ) );
+			$this->save_to_user_meta( $user_id, ( isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '' ) );
 		}
 	}
 

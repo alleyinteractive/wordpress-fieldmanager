@@ -35,7 +35,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @var boolean
 	 * Allow multiple selections?
 	 */
-	public $multiple = False;
+	public $multiple = false;
 
 	/**
 	 * @var string
@@ -47,7 +47,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @var boolean
 	 * Ensure that the datasource only runs once.
 	 */
-	private $has_built_data = False;
+	private $has_built_data = false;
 
 	/**
 	 * Add CSS, construct parent
@@ -57,7 +57,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	public function __construct( $label = '', $options = array() ) {
 		parent::__construct( $label, $options );
 
-		if ( !empty( $this->options ) ) {
+		if ( ! empty( $this->options ) ) {
 			$this->add_options( $this->options );
 		}
 
@@ -66,7 +66,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 		// Sanitization
 		$this->sanitize = function( $value ) {
-			if ( isset( $value ) && is_array( $value ) && !empty( $value ) ) {
+			if ( isset( $value ) && is_array( $value ) && ! empty( $value ) ) {
 				return array_map( 'sanitize_text_field', $value );
 			} else {
 				return sanitize_text_field( $value );
@@ -103,36 +103,40 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function form_data_elements( $value ) {
 
-		if ( !$this->has_built_data ) {
+		if ( ! $this->has_built_data ) {
 			if ( $this->datasource ) {
 				$this->add_options( $this->datasource->get_items() );
 			}
 
 			// Add the first element to the data array. This is useful for database-based data sets that require a first element.
-			if ( !empty( $this->first_element ) ) array_unshift( $this->data, $this->first_element );
-			$this->has_built_data = True;
+			if ( ! empty( $this->first_element ) ) {
+				array_unshift( $this->data, $this->first_element );
+			}
+			$this->has_built_data = true;
 		}
 
 		// If the value is not in an array, put it in one since sometimes there will be multiple selects
-		if ( !is_array( $value ) && isset( $value ) ) {
+		if ( ! is_array( $value ) && isset( $value ) ) {
 			$value = array( $value );
 		}
 
 		// Output the data for the form. Child classes will handle the output format appropriate for them.
 		$form_data_elements_html = '';
 
-		if ( !empty( $this->data ) ) {
+		if ( ! empty( $this->data ) ) {
 
 			$current_group = '';
 
-			foreach( $this->data as $data_element ) {
+			foreach ( $this->data as $data_element ) {
 
 				// If grouped display is desired, check where to add the start and end points
 				// Note we are assuming the data has come pre-sorted into groups
-				if( $this->grouped && ( $current_group != $data_element['group'] ) ) {
+				if ( $this->grouped && ( $current_group != $data_element['group'] ) ) {
 
 					// Append the end for the previous group unless this is the first group
-					if ( $current_group != '' ) $form_data_elements_html .= $this->form_data_end_group();
+					if ( '' != $current_group ) {
+						$form_data_elements_html .= $this->form_data_end_group();
+					}
 
 					// Append the start of the group
 					$form_data_elements_html .= $this->form_data_start_group( $data_element['group'] );
@@ -146,7 +150,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			}
 
 			// If this was grouped display, close the final group
-			if( $this->grouped || ( isset( $this->datasource ) && $this->datasource->grouped ) ) $form_data_elements_html .= $this->form_data_end_group();
+			if ( $this->grouped || ( isset( $this->datasource ) && $this->datasource->grouped ) ) {
+				$form_data_elements_html .= $this->form_data_end_group();
+			}
 		}
 
 		return $form_data_elements_html;
@@ -158,8 +164,8 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param mixed $value
 	 */
 	public function form_data_element( $data_row, $value ) {
-		if ( !$this->options_template ) {
-			$tpl_slug = 'options-' . strtolower( str_replace( 'Fieldmanager_', '', get_class( $this ) ));
+		if ( ! $this->options_template ) {
+			$tpl_slug = 'options-' . strtolower( str_replace( 'Fieldmanager_', '', get_class( $this ) ) );
 			$this->options_template = fieldmanager_get_template( $tpl_slug );
 		}
 		ob_start();
@@ -175,8 +181,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return string $attribute on match, empty on failure.
 	 */
 	public function option_selected( $current_option, $options, $attribute ) {
-		if ( ( $options != null && !empty( $options ) ) && in_array( $current_option, $options ) ) return $attribute;
-		else return '';
+		if ( ( null != $options && ! empty( $options ) ) && in_array( $current_option, $options ) ) {
+			return $attribute;
+		} else {
+			return '';
+		}
 	}
 
 	/**
@@ -185,11 +194,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return sanitized values.
 	 */
 	public function presave( $value, $current_value = array() ) {
-		if ( !empty( $this->datasource ) ) {
+		if ( ! empty( $this->datasource ) ) {
 			return $this->datasource->presave( $this, $value, $current_value );
 		}
 		foreach ( $this->validate as $func ) {
-			if ( !call_user_func( $func, $value ) ) {
+			if ( ! call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
 					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
 					(string) $value,
@@ -205,7 +214,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param array $values
 	 */
 	public function preload_alter_values( $values ) {
-		if ( $this->datasource ) return $this->datasource->preload_alter_values( $this, $values );
+		if ( $this->datasource ) {
+			return $this->datasource->preload_alter_values( $this, $values );
+		}
 		return $values;
 	}
 
@@ -216,7 +227,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return int[] $values
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
-		if ( !empty( $this->datasource ) ) {
+		if ( ! empty( $this->datasource ) ) {
 			return $this->datasource->presave_alter_values( $this, $values, $current_values );
 		}
 		return $values;
@@ -231,13 +242,13 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param string|int $group_id
 	 * @return void
 	 */
-	protected function add_option_data( $name, $value, $group=null, $group_id=null ) {
+	protected function add_option_data( $name, $value, $group = null, $group_id = null ) {
 		$data = array(
 			'name' => $name,
-			'value' => $value
+			'value' => $value,
 		);
-		if( isset( $group ) ) $data['group'] = $group;
-		if( isset( $group_id ) ) $data['group_id'] = $group_id;
+		$data['group'] = isset( $group ) ? $group : '';
+		$data['group_id'] = isset( $group_id ) ? $group_id : '';
 
 		$this->data[] = $data;
 	}
@@ -252,21 +263,22 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return array list of meta boxes to remove
 	 */
 	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {
-		if ( $this->remove_default_meta_boxes && get_class( $this->datasource ) == 'Fieldmanager_Datasource_Term' ) {
+		if ( $this->remove_default_meta_boxes && 'Fieldmanager_Datasource_Term' == get_class( $this->datasource ) ) {
 			// Iterate over the list and build the list of meta boxes
 			$meta_boxes = array();
-			foreach( $this->datasource->get_taxonomies() as $taxonomy ) {
+			foreach ( $this->datasource->get_taxonomies() as $taxonomy ) {
 				// The ID differs if this is a hierarchical taxonomy or not. Get the taxonomy object.
 				$taxonomy_obj = get_taxonomy( $taxonomy );
 				if ( false !== $taxonomy_obj ) {
-					if ( $taxonomy_obj->hierarchical )
-						$id = $taxonomy . "div";
-					else
+					if ( $taxonomy_obj->hierarchical ) {
+						$id = $taxonomy . 'div';
+					} else {
 						$id = 'tagsdiv-' . $taxonomy;
+					}
 
-					$meta_boxes[$id] = array(
+					$meta_boxes[ $id ] = array(
 						'id' => $id,
-						'context' => 'side'
+						'context' => 'side',
 					);
 				}
 			}

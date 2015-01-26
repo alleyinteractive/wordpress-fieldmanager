@@ -278,7 +278,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	protected function array_merge_deep() {
 		$result = array();
 		foreach ( func_get_args() as $array ) {
-			foreach ( $array as $key => $value) {
+			foreach ( $array as $key => $value ) {
 				if ( is_integer( $key ) ) {
 					// Renumber integer keys as array_merge_recursive() does. Note that PHP
 					// automatically converts array keys that are integer strings (e.g., '1')

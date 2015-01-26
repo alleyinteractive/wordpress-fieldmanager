@@ -10,18 +10,18 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 * @var boolean
 	 * Require an exact match; e.g. prevent the user from entering free text
 	 */
-	public $exact_match = True;
+	public $exact_match = true;
 
 	/**
 	 * @var boolean
 	 */
-	public $show_edit_link = False;
+	public $show_edit_link = false;
 
 	/**
 	 * @var string
 	 * Key for reciprocal relationship; if defined will add an entry to postmeta on the mirrored post.
 	 */
-	public $reciprocal = Null;
+	public $reciprocal = null;
 
 	/**
 	 * @var callable
@@ -31,13 +31,13 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 *
 	 * The function signature should be query_callback( $match, $args );
 	 */
-	public $query_callback = Null;
+	public $query_callback = null;
 
 	/**
 	 * @var boolean
 	 * Override save_empty for this element type
 	 */
-	public $save_empty = False;
+	public $save_empty = false;
 
 	/**
 	 * Add libraries for autocomplete
@@ -64,7 +64,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 				wp_die( $message, esc_html__( 'No Datasource', 'fieldmanager' ) );
 			}
 		}
-		$this->datasource->allow_optgroups = False;
+		$this->datasource->allow_optgroups = false;
 	}
 
 	/**
@@ -80,7 +80,9 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 * @param array $values
 	 */
 	public function preload_alter_values( $values ) {
-		if ( $this->datasource ) return $this->datasource->preload_alter_values( $this, $values );
+		if ( $this->datasource ) {
+			return $this->datasource->preload_alter_values( $this, $values );
+		}
 		return $values;
 	}
 
@@ -89,10 +91,10 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 * @param mixed $value
 	 * @return string HTML
 	 */
-	public function form_element( $value = Null ) {
+	public function form_element( $value = null ) {
 
 		if ( $this->exact_match ) {
-			$this->attributes['data-exact-match'] = True;
+			$this->attributes['data-exact-match'] = true;
 		}
 
 		if ( $this->datasource->use_ajax ) {
@@ -140,7 +142,9 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
 		// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.
-		if ( empty( $this->data_id ) || $this->data_type !== 'post' ) return $values;
+		if ( empty( $this->data_id ) || 'post' !== $this->data_type ) {
+			return $values;
+		}
 		return $this->datasource->presave_alter_values( $this, $values, $current_values );
 	}
 
@@ -163,21 +167,22 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 * @return array list of meta boxes to remove
 	 */
 	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {
-		if ( $this->remove_default_meta_boxes && get_class( $this->datasource ) == 'Fieldmanager_Datasource_Term' ) {
+		if ( $this->remove_default_meta_boxes && 'Fieldmanager_Datasource_Term' == get_class( $this->datasource ) ) {
 			// Iterate over the list and build the list of meta boxes
 			$meta_boxes = array();
-			foreach( $this->datasource->get_taxonomies() as $taxonomy ) {
+			foreach ( $this->datasource->get_taxonomies() as $taxonomy ) {
 				// The ID differs if this is a hierarchical taxonomy or not. Get the taxonomy object.
 				$taxonomy_obj = get_taxonomy( $taxonomy );
 				if ( false !== $taxonomy_obj ) {
-					if ( $taxonomy_obj->hierarchical )
-						$id = $taxonomy . "div";
-					else
+					if ( $taxonomy_obj->hierarchical ) {
+						$id = $taxonomy . 'div';
+					} else  {
 						$id = 'tagsdiv-' . $taxonomy;
+					}
 
-					$meta_boxes[$id] = array(
+					$meta_boxes[ $id ] = array(
 						'id' => $id,
-						'context' => 'side'
+						'context' => 'side',
 					);
 				}
 			}

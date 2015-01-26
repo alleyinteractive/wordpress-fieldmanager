@@ -63,7 +63,7 @@ class Fieldmanager_Util_Term_Meta {
 			'show_ui' => false,
 			'capability_type' => 'post',
 			'hierarchical' => true,
-			'has_archive' => false
+			'has_archive' => false,
 		);
 		register_post_type( $this->post_type, $args );
 	}
@@ -87,17 +87,19 @@ class Fieldmanager_Util_Term_Meta {
 	 * @param string $meta_value optional
 	 * @return bool
 	 */
-	public function get_term_meta( $term_id, $taxonomy, $meta_key='', $single=false ) {
+	public function get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
 
 		// Check if this term has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 
 			// If not, exit. There is no meta data for this term at all.
 			// Mimic the normal return behavior of get_post_meta
-			if ( $single ) return '';
-			else return array();
-
+			if ( $single ) {
+				return '';
+			} else {
+				return array();
+			}
 		}
 
 		// Get the meta data
@@ -114,17 +116,17 @@ class Fieldmanager_Util_Term_Meta {
 	 * @param bool $unique optional
 	 * @return bool
 	 */
-	public function add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique=false ) {
+	public function add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {
 
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 
 			// If not, create the post to store the metadata
 			$term_meta_post_id = $this->add_term_meta_post( $term_id, $taxonomy );
 
 			// Check for errors
-			if ( $term_meta_post_id === false ) {
+			if ( false === $term_meta_post_id ) {
 				return false;
 			}
 		}
@@ -132,7 +134,7 @@ class Fieldmanager_Util_Term_Meta {
 		// Add this key/value pair as post meta data
 		$result = add_post_meta( $term_meta_post_id, $meta_key, $meta_value, $unique );
 
-		if ( $result === false ) {
+		if ( false === $result ) {
 			return false;
 		} else {
 			return true;
@@ -147,17 +149,17 @@ class Fieldmanager_Util_Term_Meta {
 	 * @param string $meta_value optional
 	 * @return bool
 	 */
-	public function update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value='' ) {
+	public function update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value = '' ) {
 
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 
 			// If not, create the post to store the metadata
 			$term_meta_post_id = $this->add_term_meta_post( $term_id, $taxonomy );
 
 			// Check for errors
-			if ( $term_meta_post_id === false ) {
+			if ( false === $term_meta_post_id ) {
 				return false;
 			}
 		}
@@ -165,7 +167,7 @@ class Fieldmanager_Util_Term_Meta {
 		// Add this key/value pair as post meta data
 		$result = update_post_meta( $term_meta_post_id, $meta_key, $meta_value, $meta_prev_value );
 
-		if ( $result === false ) {
+		if ( false === $result ) {
 			return false;
 		} else {
 			return true;
@@ -180,13 +182,13 @@ class Fieldmanager_Util_Term_Meta {
 	 * @param string $meta_value
 	 * @return bool
 	 */
-	public function delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value='' ) {
+	public function delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value = '' ) {
 
 		// Get the post used for this term
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
 
 		// If no post exist, there is nothing further to do here. This is not necessarily an error.
-		if ( $term_meta_post_id === false ) {
+		if ( false === $term_meta_post_id ) {
 			return false;
 		}
 
@@ -217,7 +219,7 @@ class Fieldmanager_Util_Term_Meta {
 			// Check if a post exists for this term
 			$query = new WP_Query( array(
 				'name' => $this->post_slug( $term_id, $taxonomy ),
-				'post_type' => $this->post_type
+				'post_type' => $this->post_type,
 			) );
 
 			// Return the post ID if it exists, otherwise false
@@ -265,15 +267,15 @@ class Fieldmanager_Util_Term_Meta {
 		// Add the skeleton post to store meta data for this taxonomy term
 		$result = wp_insert_post(
 			array(
-				'post_name' => 	$this->post_slug( $term_id, $taxonomy ),
+				'post_name' => $this->post_slug( $term_id, $taxonomy ),
 				'post_title' => $this->post_slug( $term_id, $taxonomy ),
 				'post_type' => $this->post_type,
-				'post_status' => 'publish'
+				'post_status' => 'publish',
 			)
 		);
 
 		// Check the result
-		if ( $result != 0 ) {
+		if ( 0 != $result ) {
 			return $result;
 		} else {
 			return false;

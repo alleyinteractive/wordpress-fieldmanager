@@ -10,13 +10,13 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @var boolean
 	 * Collect time info or just date info? Defaults to just date info.
 	 */
-	public $use_time = False;
+	public $use_time = false;
 
 	/**
 	 * @var boolean
 	 * If true, and $use_time == true, and $date_element = 'dropdown', will render an 'AM' and 'PM' dropdown
 	 */
-	public $use_am_pm = True;
+	public $use_am_pm = true;
 
 	/**
 	 * @var string
@@ -67,9 +67,9 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 
 		if ( empty( $this->js_opts ) ) {
 			$this->js_opts = array(
-				'showButtonPanel' => True,
-				'showOtherMonths' => True,
-				'selectOtherMonths' => True,
+				'showButtonPanel' => true,
+				'showOtherMonths' => true,
+				'selectOtherMonths' => true,
 				'dateFormat' => 'd M yy',
 			);
 		}
@@ -108,7 +108,9 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 		$time_to_parse = sanitize_text_field( $value['date'] );
 		if ( isset( $value['hour'] ) && is_numeric( $value['hour'] ) && isset( $value['minute'] ) && is_numeric( $value['minute'] ) && $this->use_time ) {
 			$hour = intval( $value['hour'] );
-			if ( $hour == 0 && $this->use_am_pm ) $hour = 12;
+			if ( 0 == $hour && $this->use_am_pm ) {
+				$hour = 12;
+			}
 			$time_to_parse .= ' ' . $hour;
 			$time_to_parse .= ':' . str_pad( intval( $value['minute'] ), 2, '0', STR_PAD_LEFT );
 			$time_to_parse .= ' ' . sanitize_text_field( $value['ampm'] );
@@ -126,7 +128,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @return string value of hour
 	 */
 	public function get_hour( $value ) {
-		return !empty( $value ) ? date( $this->use_am_pm ? 'g' : 'G', $value ) : '';
+		return ! empty( $value ) ? date( $this->use_am_pm ? 'g' : 'G', $value ) : '';
 	}
 
 	/**
@@ -135,7 +137,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @return string value of hour
 	 */
 	public function get_minute( $value ) {
-		return !empty( $value ) ? date( 'i', $value ) : '';
+		return ! empty( $value ) ? date( 'i', $value ) : '';
 	}
 
 	/**

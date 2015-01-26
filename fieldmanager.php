@@ -33,7 +33,7 @@ define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 /**
  * Whether to display debugging information. Default is value of WP_DEBUG.
  */
-if ( !defined( 'FM_DEBUG' ) ) {
+if ( ! defined( 'FM_DEBUG' ) ) {
 	define( 'FM_DEBUG', WP_DEBUG );
 }
 
@@ -86,7 +86,7 @@ if ( function_exists( 'spl_autoload_register' ) ) {
  */
 function fieldmanager_load_file( $file ) {
 	$file = FM_BASE_DIR . '/php/' . $file;
-	if ( !file_exists( $file ) ) {
+	if ( ! file_exists( $file ) ) {
 		throw new FM_Class_Not_Found_Exception( $file );
 	}
 	require_once( $file );
@@ -163,10 +163,10 @@ function fieldmanager_get_template( $tpl_slug ) {
  * @param bool $admin Unused.
  */
 function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
-	if ( !is_admin() ) {
+	if ( ! is_admin() ) {
 		return;
 	}
-	if ( !$ver ) {
+	if ( ! $ver ) {
 		$ver = FM_GLOBAL_ASSET_VERSION;
 	}
 	if ( '' == $plugin_dir ) {
@@ -174,7 +174,7 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
 	}
 	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
 		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver, $in_footer );
-		if ( !empty( $data_object ) && !empty( $data ) ) {
+		if ( ! empty( $data_object ) && ! empty( $data ) ) {
 			wp_localize_script( $handle, $data_object, $data );
 		}
 	};
@@ -198,15 +198,15 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
  * @param bool $admin Unused.
  */
 function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
-	if( !is_admin() ) {
+	if ( ! is_admin() ) {
 		return;
 	}
-	if ( !$ver ) {
+	if ( ! $ver ) {
 		$ver = FM_GLOBAL_ASSET_VERSION;
 	}
 	$add_script = function() use ( $handle, $path, $deps, $ver, $media ) {
 		wp_register_style( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver, $media );
-        wp_enqueue_style( $handle );
+		wp_enqueue_style( $handle );
 	};
 
 	add_action( 'admin_enqueue_scripts', $add_script );
@@ -225,7 +225,7 @@ function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = '
  */
 function _fieldmanager_registry( $var, $val = null ) {
 	static $registry;
-	if ( !is_array( $registry ) ) {
+	if ( ! is_array( $registry ) ) {
 		$registry = array();
 	}
 	if ( null === $val ) {
@@ -271,7 +271,7 @@ function fm_get_context() {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
 		// $context = "submenu".
-		if ( !empty( $_GET['page'] ) ) {
+		if ( ! empty( $_GET['page'] ) ) {
 			$submenus = _fieldmanager_registry( 'submenus' );
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
@@ -286,14 +286,14 @@ function fm_get_context() {
 		switch ( $script ) {
 			// Context = "post".
 			case 'post.php':
-				if ( !empty( $_POST['action'] ) && ( 'editpost' === $_POST['action'] || 'newpost' === $_POST['action'] ) ) {
+				if ( ! empty( $_POST['action'] ) && ( 'editpost' === $_POST['action'] || 'newpost' === $_POST['action'] ) ) {
 					$calculated_context = array( 'post', sanitize_text_field( $_POST['post_type'] ) );
-				} elseif ( !empty( $_GET['post'] ) ) {
+				} elseif ( ! empty( $_GET['post'] ) ) {
 					$calculated_context = array( 'post', get_post_type( intval( $_GET['post'] ) ) );
 				}
 				break;
 			case 'post-new.php':
-				$calculated_context = array( 'post', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
+				$calculated_context = array( 'post', ! empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
 				break;
 			// Context = "user".
 			case 'profile.php':
@@ -302,30 +302,30 @@ function fm_get_context() {
 				break;
 			// Context = "quickedit".
 			case 'edit.php':
-				$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
+				$calculated_context = array( 'quickedit', ! empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
 				break;
 			case 'admin-ajax.php':
 				// Passed in via an Ajax form.
-				if ( !empty( $_POST['fm_context'] ) ) {
-					$subcontext = !empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( $_POST['fm_subcontext'] ) : null;
+				if ( ! empty( $_POST['fm_context'] ) ) {
+					$subcontext = ! empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( $_POST['fm_subcontext'] ) : null;
 					$calculated_context = array( sanitize_text_field( $_POST['fm_context'] ), $subcontext );
-				} elseif ( !empty( $_POST['screen'] ) && !empty( $_POST['action'] ) ) {
+				} elseif ( ! empty( $_POST['screen'] ) && ! empty( $_POST['action'] ) ) {
 					if ( 'edit-post' === $_POST['screen'] && 'inline-save' === $_POST['action'] ) {
 						$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
-					// Context = "term".
-					} elseif ( 'add-tag' === $_POST['action'] && !empty( $_POST['taxonomy'] ) ) {
+					} elseif ( 'add-tag' === $_POST['action'] && ! empty( $_POST['taxonomy'] ) ) {
+						// Context = "term".
 						$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
 					}
-				// Context = "quickedit".
-				} elseif ( !empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) {
+				} elseif ( ! empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) {
+					// Context = "quickedit".
 					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );
 				}
 				break;
-			// Context = "term".
 			case 'edit-tags.php':
-				if ( !empty( $_POST['taxonomy'] ) ) {
+				// Context = "term".
+				if ( ! empty( $_POST['taxonomy'] ) ) {
 					$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
-				} elseif ( !empty( $_GET['taxonomy'] ) ) {
+				} elseif ( ! empty( $_GET['taxonomy'] ) ) {
 					$calculated_context = array( 'term', sanitize_text_field( $_GET['taxonomy'] ) );
 				}
 				break;
@@ -423,14 +423,14 @@ add_action( 'init', 'fm_trigger_context_action', 99 );
  */
 function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu_title = null, $capability = 'manage_options', $menu_slug = null ) {
 	$submenus = _fieldmanager_registry( 'submenus' );
-	if ( !$submenus ) {
+	if ( ! $submenus ) {
 		$submenus = array();
 	}
 	if ( isset( $submenus[ $group_name ] ) ) {
 		throw new FM_Duplicate_Submenu_Name_Exception( sprintf( esc_html__( '%s is already in use as a submenu name', 'fieldmanager' ), $group_name ) );
 	}
 
-	if ( !$menu_title ) {
+	if ( ! $menu_title ) {
 		$menu_title = $page_title;
 	}
 
@@ -454,7 +454,7 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
  */
 function _fm_submenu_render() {
 	$context = _fieldmanager_registry( 'active_submenu' );
-	if ( !is_object( $context ) ) {
+	if ( ! is_object( $context ) ) {
 		throw new FM_Submenu_Not_Initialized_Exception( esc_html__( 'The Fieldmanger context for this submenu was not initialized', 'fieldmanager' ) );
 	}
 	$context->render_submenu_page();
@@ -465,7 +465,7 @@ function _fm_submenu_render() {
  */
 function _fm_add_submenus() {
 	$submenus = _fieldmanager_registry( 'submenus' );
-	if ( !is_array( $submenus ) ) {
+	if ( ! is_array( $submenus ) ) {
 		return;
 	}
 	foreach ( $submenus as $s ) {

@@ -70,12 +70,12 @@ class Fieldmanager_Util_Validation {
 		// Check if this global is set.
 		// If yes, return it.
 		// If not, initialize the singleton instance, set it to the global and return it.
-		if ( isset( $GLOBALS[$global_id] ) ) {
-			return $GLOBALS[$global_id];
+		if ( isset( $GLOBALS[ $global_id ] ) ) {
+			return $GLOBALS[ $global_id ];
 		} else {
 			self::$instance = new Fieldmanager_Util_Validation;
 			self::$instance->setup( $form_id, $context );
-			$GLOBALS[$global_id] = self::$instance;
+			$GLOBALS[ $global_id ] = self::$instance;
 			return self::$instance;
 		}
 	}
@@ -95,7 +95,7 @@ class Fieldmanager_Util_Validation {
 
 		// Add the appropriate action hook to finalize and output validation JS
 		// Also determine where the jQuery validation script needs to be added
-		if ( $context == 'page' ) {
+		if ( 'page' == $context ) {
 			// Currently only the page context outputs to the frontend
 			$action = 'wp_footer';
 			$admin = false;
@@ -117,31 +117,33 @@ class Fieldmanager_Util_Validation {
 	 */
 	public function add_field( &$fm ) {
 		// If this field is a Fieldmanager_Group, iterate over the children
-		if ( get_class( $fm ) == "Fieldmanager_Group" ) {
+		if ( 'Fieldmanager_Group' == get_class( $fm ) ) {
 			foreach ( $fm->children as $child ) {
 				$this->add_field( $child );
 			}
 		}
 
 		// Check if this field has validation enabled. If not, return.
-		if ( empty( $fm->validation_rules ) )
+		if ( empty( $fm->validation_rules ) ) {
 			return;
+		}
 
 		// Determine if the rules are a string or an array and ensure they are valid.
 		// Also aggregate any messages that were set for the rules, ignoring any messages that don't match a rule.
-		$messages = "";
+		$messages = '';
 		if ( ! is_array( $fm->validation_rules ) ) {
 			// If a string, the only acceptable value is "required".
-			if ( ! is_string( $fm->validation_rules ) || $fm->validation_rules != 'required' )
+			if ( ! is_string( $fm->validation_rules ) || 'required' != $fm->validation_rules ) {
 				$fm->_invalid_definition( sprintf( __( 'The validation rule "%s" does not exist.', 'wordpress-fieldmanager' ), $fm->validation_rules ) );
+			}
 
 			// Convert the value to an array since we standardize the Javascript output on this format
 			$fm->validation_rules = array( 'required' => true );
 
 			// In this instance, messages must either be a string or empty. If valid and defined, store this.
-			if ( ! empty( $fm->validation_messages ) && is_string( $fm->validation_messages ) )
+			if ( ! empty( $fm->validation_messages ) && is_string( $fm->validation_messages ) ) {
 				$messages['required'] = $fm->validation_messages;
-
+			}
 		} else {
 			// Verify each rule defined in the array is valid and also check for any messages that were defined for each.
 			foreach ( $fm->validation_rules as $validation_key => $validation_rule ) {
@@ -150,8 +152,9 @@ class Fieldmanager_Util_Validation {
 					$fm->_invalid_definition( sprintf( __( 'The validation rule "%s" does not exist.', 'wordpress-fieldmanager' ), $validation_key ) );
 				} else {
 					// This rule is valid so check for any messages
-					if ( isset( $fm->validation_messages[$validation_key] ) )
-						$messages[$validation_key] = $fm->validation_messages[$validation_key];
+					if ( isset( $fm->validation_messages[ $validation_key ] ) ) {
+						$messages[ $validation_key ] = $fm->validation_messages[ $validation_key ];
+					}
 				}
 			}
 		}
@@ -159,14 +162,15 @@ class Fieldmanager_Util_Validation {
 		// If this is the term context and the field is required, modify the original element to have the required property.
 		// This is necessary because it is the only way validation is supported on the term add form.
 		// Other validation methods won't work and will just fail gracefully.
-		if ( $this->context == 'term' && isset( $fm->validation_rules['required'] ) && $fm->validation_rules['required'] )
+		if ( 'term' == $this->context && isset( $fm->validation_rules['required'] ) && $fm->validation_rules['required'] ) {
 			$fm->required = true;
+		}
 
 		// If we have reached this point, there were no errors so store the field and the corresponding rules and messages
 		$name = $fm->get_form_name();
 		$this->fields[] = $name;
-		$this->rules[$name] = $fm->validation_rules;
-		$this->messages[$name] = $messages;
+		$this->rules[ $name ] = $fm->validation_rules;
+		$this->messages[ $name ] = $messages;
 	}
 
 	/**
@@ -186,15 +190,16 @@ class Fieldmanager_Util_Validation {
 
 				// Add the message to an array, if it exists
 				$message = $this->value_to_js( $field, $this->messages );
-				if ( ! empty( $message ) )
+				if ( ! empty( $message ) ) {
 					$messages[] = $message;
+				}
 			}
 		}
 
 		// Create final rule string
 		if ( ! empty( $rules ) ) {
-			$rules_js = $this->array_to_js( $rules, "rules" );
-			$messages_js = $this->array_to_js( $messages, "messages" );
+			$rules_js = $this->array_to_js( $rules, 'rules' );
+			$messages_js = $this->array_to_js( $messages, 'messages' );
 
 			// Add a comma and newline if messages is not empty
 			if ( ! empty( $messages_js ) ) {
@@ -202,19 +207,19 @@ class Fieldmanager_Util_Validation {
 			}
 
 			// Fields that should always be ignored
-			$ignore[] = ".fm-autocomplete";
+			$ignore[] = '.fm-autocomplete';
 			$ignore[] = "input[type='button']";
-			$ignore[] = ":hidden";
+			$ignore[] = ':hidden';
 
 			// Certain fields need to be ignored depending on the context
 			switch ( $this->context ) {
-				case "post":
-					$ignore[] = "#active_post_lock";
+				case 'post':
+					$ignore[] = '#active_post_lock';
 					break;
 			}
 
 			// Add JS for fields to ignore
-			$ignore_js = implode( ", ", $ignore );
+			$ignore_js = implode( ', ', $ignore );
 
 			// Add the Fieldmanager validation script and CSS
 			// This is not done via the normal enqueue process since there is no way to know at that point if any fields will require validation
@@ -246,15 +251,16 @@ class Fieldmanager_Util_Validation {
 	 */
 	private function value_to_js( $field, $data ) {
 		// Check the array for the corresponding value. If it doesn't exist, return an empty string.
-		if ( empty( $data[$field] ) )
-			return "";
+		if ( empty( $data[ $field ] ) ) {
+			return '';
+		}
 
 		// Format the field name
 		$name = $this->quote_field_name( $field );
 
 		// Iterate over the values convert them into a single string
 		$values = array();
-		foreach ( $data[$field] as $k => $v ) {
+		foreach ( $data[ $field ] as $k => $v ) {
 			$values[] = sprintf(
 				"\t\t\t\t\t\t%s: %s",
 				esc_js( $k ),
@@ -303,7 +309,7 @@ class Fieldmanager_Util_Validation {
 		// Determine the data type and return the value formatted appropriately
 		if ( is_bool( $value ) ) {
 			// Convert the value to a string
-			return ( $value ) ? "true" : "false";
+			return ( $value ) ? 'true' : 'false';
 		} else if ( is_numeric( $value ) ) {
 			// Return as-is
 			return $value;
@@ -322,10 +328,11 @@ class Fieldmanager_Util_Validation {
 	 */
 	private function quote_field_name( $field ) {
 		// Check if the field name is alphanumeric (underscores and dashes are allowed)
-		if ( ctype_alnum( str_replace( array( '_', '-'), '', $field ) ) )
+		if ( ctype_alnum( str_replace( array( '_', '-'), '', $field ) ) ) {
 			return $field;
-		else
+		} else {
 			return '"' . esc_js( $field ) . '"';
+		}
 	}
 }
 

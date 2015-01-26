@@ -20,7 +20,7 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 	public function __construct( $label = '', $options = array() ) {
 		$this->attributes = array(
 			'cols' => '50',
-			'rows' => '10'
+			'rows' => '10',
 		);
 
 		// Sanitize the textarea to preserve newlines. Could be overriden.

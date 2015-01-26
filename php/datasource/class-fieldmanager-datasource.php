@@ -18,17 +18,17 @@ class Fieldmanager_Datasource {
 	/**
 	 * @var boolean
 	 */
-	public $options_callback = Null;
+	public $options_callback = null;
 
 	/**
 	 * @var boolean
 	 */
-	public $use_ajax = False;
+	public $use_ajax = false;
 
 	/**
 	 * @var boolean
 	 */
-	public $allow_optgroups = True;
+	public $allow_optgroups = true;
 
 	/**
 	 * @var string
@@ -45,7 +45,7 @@ class Fieldmanager_Datasource {
 	 * @var boolean
 	 * If true, group elements
 	 */
-	public $grouped = False;
+	public $grouped = false;
 
 	/**
 	 * Constructor
@@ -55,15 +55,18 @@ class Fieldmanager_Datasource {
 		foreach ( $options as $k => $v ) {
 			try {
 				$reflection = new ReflectionProperty( $this, $k ); // Would throw a ReflectionException if item doesn't exist (developer error)
-				if ( $reflection->isPublic() ) $this->$k = $v;
-				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
+				if ( $reflection->isPublic() ) {
+					$this->$k = $v;
+				} else {
+					throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
+				}
 			} catch ( Exception $e ) {
 				$message = sprintf(
 					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
-					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
+					$k, __CLASS__, ! empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
 				$title = esc_html__( 'Nonexistant or invalid option' );
-				if ( !Fieldmanager_Field::$debug ) {
+				if ( ! Fieldmanager_Field::$debug ) {
 					wp_die( esc_html( $message ), $title );
 				} else {
 					throw new FM_Developer_Exception( esc_html( $message ) );
@@ -80,12 +83,12 @@ class Fieldmanager_Datasource {
 			}
 		}
 
-		if ( !empty( $this->options ) ) {
+		if ( ! empty( $this->options ) ) {
 			$keys = array_keys( $this->options );
 			if ( ( array_keys( $keys ) === $keys ) ) {
 				foreach ( $this->options as $k => $v ) {
-					$this->options[$v] = $v;
-					unset( $this->options[$k] );
+					$this->options[ $v ] = $v;
+					unset( $this->options[ $k ] );
 				}
 			}
 		}
@@ -110,13 +113,15 @@ class Fieldmanager_Datasource {
 	 * @param string $fragment optional fragment to filter by
 	 * @return array, key => value of available options
 	 */
-	public function get_items( $fragment = Null ) {
-		if ( !$fragment ) {
+	public function get_items( $fragment = null ) {
+		if ( ! $fragment ) {
 			return $this->options;
 		}
 		$ret = array();
 		foreach ( $this->options as $k => $v ) {
-			if ( strpos( $v, $fragment ) !== False ) $ret[$k] = $v;
+			if ( false !== strpos( $v, $fragment ) ) {
+				$ret[ $k ] = $v;
+			}
 		}
 		return $ret;
 	}
@@ -127,7 +132,9 @@ class Fieldmanager_Datasource {
 	 * @return string ajax action
 	 */
 	public function get_ajax_action() {
-		if ( !empty( $this->ajax_action ) ) return $this->ajax_action;
+		if ( ! empty( $this->ajax_action ) ) {
+			return $this->ajax_action;
+		}
 		return 'fm_datasource_' . crc32( 'base' . json_encode( $this->options ) . $this->options_callback );
 	}
 
@@ -154,8 +161,9 @@ class Fieldmanager_Datasource {
 	public function autocomplete_search() {
 		// Check the nonce before we do anything
 		check_ajax_referer( 'fm_search_nonce', 'fm_search_nonce' );
-		$items = $this->get_items_for_ajax( sanitize_text_field( $_POST['fm_autocomplete_search'] ) );
-
+		if ( isset( $_POST['fm_autocomplete_search'] ) ) {
+			$items = $this->get_items_for_ajax( sanitize_text_field( $_POST['fm_autocomplete_search'] ) );
+		}
 		// See if any results were returned and return them as an array
 		if ( ! empty( $items ) ) {
 			wp_send_json( $items );

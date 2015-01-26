@@ -48,20 +48,24 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @param callback $column_empty_callback
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function __construct( $title, $post_types, $column_display_callback, $column_title = '', $fm = Null ) {
+	public function __construct( $title, $post_types, $column_display_callback, $column_title = '', $fm = null ) {
 
-		if ( !fm_match_context( 'quickedit' ) ) return; // make sure we only load up our JS if we're in a quickedit form.
+		if ( ! fm_match_context( 'quickedit' ) ) {
+			return; // make sure we only load up our JS if we're in a quickedit form.
+		}
 
-		if ( FM_DEBUG && !is_callable( $column_display_callback ) ) {
+		if ( FM_DEBUG && ! is_callable( $column_display_callback ) ) {
 			throw new FM_Developer_Exception( esc_html__( 'You must set a valid column display callback.', 'fieldmanager' ) );
 		}
 
 		// Populate the list of post types for which to add this meta box with the given settings
-		if ( !is_array( $post_types ) ) $post_types = array( $post_types );
+		if ( ! is_array( $post_types ) ) {
+			$post_types = array( $post_types );
+		}
 
 		$this->post_types = $post_types;
 		$this->title = $title;
-		$this->column_title = !empty( $column_title ) ? $column_title : $title;
+		$this->column_title = ! empty( $column_title ) ? $column_title : $title;
 		$this->column_display_callback = $column_display_callback;
 		$this->fm = $fm;
 
@@ -76,7 +80,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		add_action( 'save_post', array( $this, 'save_fields_for_quickedit' ) );
 		add_action( 'wp_ajax_fm_quickedit_render', array( $this, 'render_ajax_form' ), 10, 2 );
 
-		$post_type = !isset( $_GET['post_type'] ) ? 'post' : sanitize_text_field( $_GET['post_type'] );
+		$post_type = ! isset( $_GET['post_type'] ) ? 'post' : sanitize_text_field( $_GET['post_type'] );
 
 		if ( in_array( $post_type, $this->post_types ) ) {
 			fm_add_script( 'quickedit-js', 'js/fieldmanager-quickedit.js' );
@@ -89,7 +93,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	function add_custom_columns( $columns ) {
-		$columns[$this->fm->name] = $this->column_title;
+		$columns[ $this->fm->name ] = $this->column_title;
 		return $columns;
 	}
 
@@ -100,7 +104,9 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function manage_custom_columns( $column_name, $post_id ) {
-		if ( $column_name != $this->fm->name ) return;
+		if ( $column_name != $this->fm->name ) {
+			return;
+		}
 		$data = get_post_meta( $post_id, $this->fm->name, true );
 		$column_text = call_user_func( $this->column_display_callback, $post_id, $data );
 		echo $column_text;
@@ -115,8 +121,9 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function add_quickedit_box( $column_name, $post_type, $values = array() ) {
-		if ( $column_name != $this->fm->name ) return;
-		?>
+		if ( $column_name != $this->fm->name ) {
+			return;
+		} ?>
 		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo esc_attr( $column_name ); ?>" data-fm-post-type="<?php echo esc_attr( $post_type ); ?>">
 			<div class="inline-edit-col">
 				<?php wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' ); ?>
@@ -132,12 +139,14 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 * @return string
 	 */
 	public function render_ajax_form() {
-		if ( $_GET['action'] != 'fm_quickedit_render' ) {
+		if ( 'fm_quickedit_render' != $_GET['action'] ) {
 			return;
 		}
 		$column_name = sanitize_text_field( $_GET['column_name'] );
 		$post_id = intval( $_GET['post_id'] );
-		if ( $column_name != $this->fm->name ) return;
+		if ( $column_name != $this->fm->name ) {
+			return;
+		}
 		$values = get_post_meta( $post_id, $this->fm->name );
 		$values = empty( $values ) ? array() : $values[0];
 		$post_type = get_post_type( $post_id );
@@ -153,7 +162,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 	 */
 	public function save_fields_for_quickedit( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
-		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'inline-save' ) {
+		if ( ! isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || 'inline-save' != $_POST['action'] ) {
 			return;
 		}
 
@@ -164,7 +173,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 				break;
 			}
 		}
-		if ( !$use_this_post_type )  {
+		if ( ! $use_this_post_type )  {
 			return;
 		}
 
@@ -174,19 +183,19 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		}
 
 		// Make sure the current user can save this post
-		if( $_POST['post_type'] == 'post' ) {
-			if( !current_user_can( 'edit_post', $post_id ) ) {
+		if ( 'post' == $_POST['post_type'] ) {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
 				return;
 			}
 		}
 
 		// Make sure that our nonce field arrived intact
-		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
+		if ( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
 			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
+		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
 		$this->save_to_post_meta( $post_id, $value );
 	}
 
@@ -200,12 +209,12 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context {
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
 		$post = get_post( $post_id );
-		if ( $post->post_type = 'revision' && $post->post_parent != 0 ) {
+		if ( 'revision' == $post->post_type && 0 != $post->post_parent ) {
 			$this->fm->data_id = $post->post_parent;
 		}
-		$current = get_post_meta( $this->fm->data_id, $this->fm->name, True );
+		$current = get_post_meta( $this->fm->data_id, $this->fm->name, true );
 		$data = $this->fm->presave_all( $data, $current );
-		if ( !$this->fm->skip_save ) {
+		if ( ! $this->fm->skip_save ) {
 			update_post_meta( $post_id, $this->fm->name, $data );
 		}
 	}
