@@ -298,7 +298,7 @@ function fm_calculate_context() {
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
 					if ( $script == $submenu[0] || ( 'admin.php' == $script && $page == $submenu[4] ) ) {
-						return array( 'submenu', sanitize_text_field( $page ) );
+						return array( 'submenu', $page );
 					}
 				}
 			}
