@@ -228,7 +228,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
                 );
             }
             if ( $this->only_save_to_post_parent ) {
-                return '';
+                return null;
             }
         }
 
