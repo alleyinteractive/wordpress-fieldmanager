@@ -59,7 +59,7 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	 * @return mixed proper value
 	 */
 	public function presave( $value = NULL, $current_value = array() ) {
-		if ( $value == $this->checked_value || $value == $this->unchecked_value ) {
+		if ( $value == $this->checked_value || $value === $this->unchecked_value ) {
 			return $value;
 		} elseif ( empty( $value ) ) {
 			return $this->unchecked_value;
