@@ -105,11 +105,15 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             if ( preg_match( '/^https?\:/i', $fragment ) ) {
                 $url = esc_url( $fragment );
                 $url_parts = parse_url( $url );
-                $get_vars = array();
-                parse_str( $url_parts['query'], $get_vars );
-                if ( !empty( $get_vars['post'] )  ) {
+
+                if ( ! empty( $url_parts['query'] ) )  {
+                    $get_vars = array();
+                    parse_str( $url_parts['query'], $get_vars );
+                }
+
+                if ( ! empty( $get_vars['post'] )  ) {
                     $post_id = intval( $get_vars['post'] );
-                } elseif ( !empty( $get_vars['p'] ) ) {
+                } elseif ( ! empty( $get_vars['p'] ) ) {
                     $post_id = intval( $get_vars['p'] );
                 } else {
                     $post_id = fm_url_to_post_id( $fragment );
