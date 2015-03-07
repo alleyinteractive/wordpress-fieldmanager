@@ -50,7 +50,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertEquals( $_POST[ $name ]['email'], $processed_values['email'] );
 		$this->assertEquals( $_POST[ $name ]['remember'], $processed_values['remember'] );
 		$this->assertNotEquals( $_POST[ $name ]['name'], $processed_values['name'] );
-		$this->assertEquals( $processed_values['name'], 'Austin Smith' );
+		$this->assertEquals( $processed_values['name'], 'Austin "Smith"' );
 		$this->assertEquals( $_POST[ $name ]['group']['preferences'], $processed_values['group']['preferences'] );
 		$this->assertEquals( $processed_values['number'], 11 ); // changed in presave hook and sanitized.
 
@@ -190,7 +190,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 			'fm-form-context' => 'test_form',
 			$name => array(
 				'email' => 'test@example.com',
-				'name' => 'Austin Smith<script type="text/javascript">alert("HACKED")</script>', // should get auto-stripped
+				'name' => 'Austin \\"Smith\\"<script type="text/javascript">alert(/HACKED/)</script>', // both the script and slashes should get auto-stripped
 				'remember' => 1,
 				'number' => '7even', // will become 7 due to above sanitizer
 				'group' => array(

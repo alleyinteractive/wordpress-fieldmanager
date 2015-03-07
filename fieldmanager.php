@@ -507,6 +507,11 @@ function fm_sanitize_textarea( $value ) {
 }
 
 /**
+ * Stripslashes_deep for submenu data.
+ */
+add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
+
+/**
  * Exception class for Fieldmanager's fatal errors.
  *
  * Used mostly to differentiate in unit tests.
