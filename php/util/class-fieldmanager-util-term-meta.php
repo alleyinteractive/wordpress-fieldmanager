@@ -57,7 +57,7 @@ class Fieldmanager_Util_Term_Meta {
 		register_post_type( $this->post_type, array(
 			'public'              => false,
 			'publicly_queryable'  => false,
-			'exclude_from_search' => false,
+			'exclude_from_search' => true,
 			'query_var'           => $this->post_type,
 			'rewrite'             => false,
 			'show_ui'             => false,
