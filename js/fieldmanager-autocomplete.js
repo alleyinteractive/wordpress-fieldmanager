@@ -25,13 +25,23 @@ fm.autocomplete = {
 				}
 				if ( $el.data( 'action' ) ) {
 					ac_params.source = function( request, response ) {
+						// Check for custom args
+						var custom_args = $el.data( 'customArgs' );
+						var custom_data = '';
+						if ( 'undefined' !== typeof custom_args && null !== custom_args ) {
+							var custom_result = $el.triggerHandler( $el.data( 'customArgs' ) );
+							if ( 'undefined' !== typeof custom_result && null !== custom_result ) {
+								custom_data = custom_result;
+							}
+						}
+						
 						$.post( ajaxurl, {
 							action: $el.data( 'action' ),
 							fm_context: $el.data( 'context' ),
 							fm_subcontext: $el.data( 'subcontext' ),
 							fm_autocomplete_search: request.term,
 							fm_search_nonce: fm_search.nonce,
-							fm_custom_args: $el.triggerHandler( $el.data( 'customArgs' ) )
+							fm_custom_args: custom_data
 						}, function( result ) {
 							response( result );
 						} );
