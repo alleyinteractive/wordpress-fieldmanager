@@ -37,7 +37,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 * @var string
 	 * Javascript trigger to handle adding custom args
 	 */
-	public $custom_args = Null;
+	public $custom_args_js_event = Null;
 
 	/**
 	 * @var boolean
@@ -119,7 +119,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 			'<input class="fm-autocomplete fm-element fm-incrementable" type="text" id="%s" value="%s"%s %s />',
 			esc_attr( $this->get_element_id() ),
 			esc_attr( $display_value ),
-			( ! empty( $this->custom_args ) ) ? ' data-custom-args="' . esc_attr( $this->custom_args ) . '"' : '',
+			( ! empty( $this->custom_args_js_event ) ) ? ' data-custom-args-js-event="' . esc_attr( $this->custom_args_js_event ) . '"' : '',
 			$this->get_element_attributes()
 		);
 
