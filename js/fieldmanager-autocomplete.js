@@ -25,16 +25,14 @@ fm.autocomplete = {
 				}
 				if ( $el.data( 'action' ) ) {
 					ac_params.source = function( request, response ) {
-						var args = {
+						$.post( ajaxurl, {
 							action: $el.data( 'action' ),
 							fm_context: $el.data( 'context' ),
 							fm_subcontext: $el.data( 'subcontext' ),
 							fm_autocomplete_search: request.term,
 							fm_search_nonce: fm_search.nonce,
 							fm_custom_args: $el.triggerHandler( $el.data( 'customArgs' ) )
-						};
-						console.log( args );
-						$.post( ajaxurl, args, function( result ) {
+						}, function( result ) {
 							response( result );
 						} );
 					};
