@@ -29,7 +29,7 @@ fm.autocomplete = {
 						var custom_args = $el.data( 'customArgs' );
 						var custom_data = '';
 						if ( 'undefined' !== typeof custom_args && null !== custom_args ) {
-							var custom_result = $el.triggerHandler( $el.data( 'customArgs' ) );
+							var custom_result = $el.triggerHandler( custom_args );
 							if ( 'undefined' !== typeof custom_result && null !== custom_result ) {
 								custom_data = custom_result;
 							}
