@@ -30,7 +30,8 @@ fm.autocomplete = {
 							fm_context: $el.data( 'context' ),
 							fm_subcontext: $el.data( 'subcontext' ),
 							fm_autocomplete_search: request.term,
-							fm_search_nonce: fm_search.nonce
+							fm_search_nonce: fm_search.nonce,
+							fm_custom_args: $el.triggerHandler( $el.data( 'customArgs' ) )
 						}, function( result ) {
 							response( result );
 						} );

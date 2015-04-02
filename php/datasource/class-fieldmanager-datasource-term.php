@@ -10,6 +10,12 @@
 class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 	/**
+     * Supply a function which returns a list of terms; takes one argument,
+     * a possible fragment
+     */
+    public $query_callback = Null;
+
+	/**
 	 * @var string|array
 	 * Taxonomy name or array of taxonomy names
 	 */
@@ -107,6 +113,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		$unique_key .= json_encode( $this->get_taxonomies() );
 		$unique_key .= (string) $this->taxonomy_hierarchical;
 		$unique_key .= (string) $this->taxonomy_hierarchical_depth;
+		$unique_key .= (string) $this->query_callback;
 		return 'fm_datasource_term_' . crc32( $unique_key );
 	}
 
@@ -240,6 +247,9 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @return array[] data entries for options
 	 */
 	public function get_items( $fragment = Null ) {
+		if ( is_callable( $this->query_callback ) ) {
+            return call_user_func( $this->query_callback, $fragment );
+        }
 
 		// If taxonomy_hierarchical is set, assemble recursive term list, then bail out.
 		if ( $this->taxonomy_hierarchical ) {
