@@ -166,25 +166,42 @@ $( document ).ready( function () {
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
-		var values = $( this ).data( 'display-value' ).split( ',' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
 		trigger.addClass( 'display-trigger' );
-		if ( !match_value( values, trigger.val() ) ) {
-			$( this ).hide();
-		}
+		var inputType = trigger.attr( "type" );
+		if ( inputType && inputType.toLowerCase() == "checkbox" ) { 
+			if ( !trigger.is( ":checked" ) ) {
+				$( this ).hide();
+			}
+		} else {
+			var values = $( this ).data( 'display-value' ).toString().split( ',' );
+			if ( !match_value( values, trigger.val() ) ) {
+				$( this ).hide();
+			}
+		} 
 	} );
 
 	// Controls the trigger to show or hide fields
 	$( document ).on( 'change', '.display-trigger', function() {
-		var val = $( this ).val().split(',');
+		var val = $( this ).val().toString().split(',');
 		var name = $( this ).attr('name');
+		var input = $( this );
+		var inputType = input.attr('type');
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
 			if ( $( this ).hasClass( 'display-if' ) ) {
 				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
-					if ( match_value( $( this ).data( 'display-value' ).split( ',' ), val ) ) {
-						$( this ).show();
-					} else {
-						$( this ).hide();
+						if ( inputType && inputType.toLowerCase() == "checkbox" ) {
+							if ( input.is( ":checked" ) ) {
+								$( this ).show();
+							} else {
+								$( this ).hide();
+							}
+						} else {
+						if ( match_value( $( this ).data( 'display-value' ).toString().split( ',' ), val ) ) {
+							$( this ).show();
+						} else {
+							$( this ).hide();
+						}
 					}
 					$( this ).trigger( 'fm_displayif_toggle' );
 				}
