@@ -55,16 +55,7 @@ class Fieldmanager_Util_Term_Meta {
 	 */
 	public function create_content_type() {
 		register_post_type( $this->post_type, array(
-			'public'              => false,
-			'publicly_queryable'  => false,
-			'exclude_from_search' => false,
-			'query_var'           => $this->post_type,
-			'rewrite'             => false,
-			'show_ui'             => false,
-			'capability_type'     => 'post',
-			'hierarchical'        => true,
-			'has_archive'         => false,
-			'label'               => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
+			'label' => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
 		) );
 	}
 
