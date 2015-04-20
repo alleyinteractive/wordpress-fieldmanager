@@ -132,7 +132,7 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 		$t2 = wp_insert_term( 'Second Joined Term', 'fm_test_tax' );
 
 		// Manually modify the second term to setup the term splitting
-		// condition. Split terms don't naturally occur any longer.
+		// condition. Shared terms don't naturally occur any longer.
 		$wpdb->update(
 			$wpdb->term_taxonomy,
 			array( 'term_id' => $term_id_1 ),

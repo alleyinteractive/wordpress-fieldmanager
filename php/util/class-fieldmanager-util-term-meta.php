@@ -299,6 +299,16 @@ class Fieldmanager_Util_Term_Meta {
 		}
 	}
 
+	/**
+	 * Update term meta when a shared term gets split (as of WordPress 4.2).
+	 *
+	 * @param  int $old_term_id The pre-split (previously shared) term ID.
+	 * @param  int $new_term_id The post-split term ID.
+	 * @param  int $term_taxonomy_id The term_taxonomy_id for this term. Note
+	 *                               that this doesn't change when a shared term
+	 *                               is split (since it's already unique).
+	 * @param  string $taxonomy The taxonomy of the *split* term.
+	 */
 	public function split_shared_term( $old_term_id, $new_term_id, $term_taxonomy_id, $taxonomy ) {
 		if ( false != ( $post_id = $this->get_term_meta_post_id( $old_term_id, $taxonomy ) ) ) {
 			wp_update_post( array(
