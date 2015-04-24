@@ -46,6 +46,7 @@ class Fieldmanager_Util_Term_Meta {
 	public function setup() {
 		add_action( 'init', array( $this, 'create_content_type' ) );
 		add_action( 'delete_term', array( $this, 'collect_garbage' ), 10, 3 );
+		add_action( 'split_shared_term', array( $this, 'split_shared_term' ), 10, 4 );
 	}
 
 	/**
@@ -222,7 +223,7 @@ class Fieldmanager_Util_Term_Meta {
 			// Check if a post exists for this term
 			$query = new WP_Query( array(
 				'name' => $this->post_slug( $term_id, $taxonomy ),
-				'post_type' => $this->post_type
+				'post_type' => $this->post_type,
 			) );
 
 			// Return the post ID if it exists, otherwise false
@@ -295,6 +296,27 @@ class Fieldmanager_Util_Term_Meta {
 	public function collect_garbage( $term_id, $tt_id, $taxonomy ) {
 		if ( $post = get_page_by_path( $this->post_slug( $term_id, $taxonomy ), OBJECT, $this->post_type ) ) {
 			wp_delete_post( $post->ID, true );
+		}
+	}
+
+	/**
+	 * Update term meta when a shared term gets split (as of WordPress 4.2).
+	 *
+	 * @param  int $old_term_id The pre-split (previously shared) term ID.
+	 * @param  int $new_term_id The post-split term ID.
+	 * @param  int $term_taxonomy_id The term_taxonomy_id for this term. Note
+	 *                               that this doesn't change when a shared term
+	 *                               is split (since it's already unique).
+	 * @param  string $taxonomy The taxonomy of the *split* term.
+	 */
+	public function split_shared_term( $old_term_id, $new_term_id, $term_taxonomy_id, $taxonomy ) {
+		if ( false != ( $post_id = $this->get_term_meta_post_id( $old_term_id, $taxonomy ) ) ) {
+			wp_update_post( array(
+				'ID' => $post_id,
+				'post_name' => 	$this->post_slug( $new_term_id, $taxonomy ),
+				'post_title' => $this->post_slug( $new_term_id, $taxonomy ),
+			) );
+			$this->delete_term_meta_post_id_cache( $old_term_id, $taxonomy );
 		}
 	}
 }
