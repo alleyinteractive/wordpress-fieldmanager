@@ -56,7 +56,8 @@ class Fieldmanager_Util_Term_Meta {
 	 */
 	public function create_content_type() {
 		register_post_type( $this->post_type, array(
-			'label' => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
+			'rewrite' => false,
+			'label'   => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
 		) );
 	}
 
