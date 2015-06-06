@@ -100,8 +100,8 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
  * Enqueue CSS and JS in the Dashboard.
  */
 function fieldmanager_enqueue_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.5' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.2' );
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.3' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
 add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
@@ -298,7 +298,7 @@ function fm_calculate_context() {
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
 					if ( $script == $submenu[0] || ( 'admin.php' == $script && $page == $submenu[4] ) ) {
-						return array( 'submenu', sanitize_text_field( $page ) );
+						return array( 'submenu', $page );
 					}
 				}
 			}
@@ -505,6 +505,11 @@ add_action( 'admin_menu', '_fm_add_submenus', 15 );
 function fm_sanitize_textarea( $value ) {
 	return implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $value ) ) );
 }
+
+/**
+ * Stripslashes_deep for submenu data.
+ */
+add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
 
 /**
  * Exception class for Fieldmanager's fatal errors.

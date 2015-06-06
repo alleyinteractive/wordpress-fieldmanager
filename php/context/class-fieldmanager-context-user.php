@@ -98,7 +98,25 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @see get_user_meta().
 	 */
 	protected function get_data( $user_id, $meta_key, $single = false ) {
-		return get_user_meta( $user_id, $meta_key, $single );
+		return call_user_func(
+			/**
+			 * Allow control over retrieving from the user data storage.
+			 * This improves compatibility with WordPress.com.
+			 *
+			 * @see get_user_meta() for more details about each param.
+			 *
+			 * @param string $function_name The function to call to get user
+			 *                              data. Default is 'get_user_meta'.
+			 * @param int $user_id User ID.
+			 * @param string $meta_key Meta key to retrieve.
+			 * @param boolean $single Get single value (true) or array of values
+			 *                        (false). Default is false.
+			 */
+			apply_filters( 'fm_user_context_get_data', 'get_user_meta' ),
+			$user_id,
+			$meta_key,
+			$single
+		);
 	}
 
 	/**
@@ -107,7 +125,27 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @see add_user_meta().
 	 */
 	protected function add_data( $user_id, $meta_key, $meta_value, $unique = false ) {
-		return add_user_meta( $user_id, $meta_key, $meta_value, $unique );
+		return call_user_func(
+			/**
+			 * Allow control over adding to the user data storage.
+			 * This improves compatibility with WordPress.com.
+			 *
+			 * @see add_user_meta() for more details about each param.
+			 *
+			 * @param string $function_name The function to call to get user
+			 *                              data. Default is 'add_user_meta'.
+			 * @param int $user_id User ID.
+			 * @param string $meta_key Meta key to add.
+			 * @param mixed $meta_value The meta value to store.
+			 * @param boolean $unique If true, only add if key is unique.
+			 *                        Default is false.
+			 */
+			apply_filters( 'fm_user_context_add_data', 'add_user_meta' ),
+			$user_id,
+			$meta_key,
+			$meta_value,
+			$unique
+		);
 	}
 
 	/**
@@ -116,7 +154,27 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @see update_user_meta().
 	 */
 	protected function update_data( $user_id, $meta_key, $meta_value, $data_prev_value = '' ) {
-		return update_user_meta( $user_id, $meta_key, $meta_value, $data_prev_value );
+		return call_user_func(
+			/**
+			 * Allow control over updating the user data storage.
+			 * This improves compatibility with WordPress.com.
+			 *
+			 * @see update_user_meta() for more details about each param.
+			 *
+			 * @param string $function_name The function to call to get user
+			 *                              data. Default is 'update_user_meta'.
+			 * @param int $user_id User ID.
+			 * @param string $meta_key Meta key to update.
+			 * @param mixed $meta_value The meta value to store.
+			 * @param mixed $data_prev_value Only update if the previous value
+			 *                               matches $data_prev_value.
+			 */
+			apply_filters( 'fm_user_context_update_data', 'update_user_meta' ),
+			$user_id,
+			$meta_key,
+			$meta_value,
+			$data_prev_value
+		);
 	}
 
 	/**
@@ -125,6 +183,23 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @see delete_user_meta().
 	 */
 	protected function delete_data( $user_id, $meta_key, $meta_value = '' ) {
-		return delete_user_meta( $user_id, $meta_key, $meta_value );
+		return call_user_func(
+			/**
+			 * Allow control over deleting from the user data storage.
+			 * This improves compatibility with WordPress.com.
+			 *
+			 * @see delete_user_meta() for more details about each param.
+			 *
+			 * @param string $function_name The function to call to get user
+			 *                              data. Default is 'delete_user_meta'.
+			 * @param int $user_id User ID.
+			 * @param string $meta_key Meta key to retrieve.
+			 * @param mixed $meta_value Only delete if the current value matches.
+			 */
+			apply_filters( 'fm_user_context_delete_data', 'delete_user_meta' ),
+			$user_id,
+			$meta_key,
+			$meta_value
+		);
 	}
 }
