@@ -128,7 +128,7 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 		// Clear the registry for the next post.
 		_fieldmanager_registry( 'fm_zoninator_funcs_' . $post->post_type, array() );
 
-		$build .= '<form method="POST" class="fm-zoninator-post-form" id="fm-zone-post-' . intval( $post->ID ) . '-' . esc_attr( $this->fm->name ) . '"><div class="fm-zone-post-form-wrapper">';
+		$build = '<form method="POST" class="fm-zoninator-post-form" id="fm-zone-post-' . intval( $post->ID ) . '-' . esc_attr( $this->fm->name ) . '"><div class="fm-zone-post-form-wrapper">';
 		$build .= sprintf( '<input type="hidden" name="fm-zone-post-id" value="%s" />', esc_attr( $post->ID ) );
 
 		$this->unique_name = $this->fm->name . '-zone-post-' . intval( $post->ID );
@@ -140,7 +140,7 @@ class Fieldmanager_Context_Zoninator extends Fieldmanager_Context {
 			$build .= '<p>' . esc_html( $this->label ) . '</p>';
 		}
 		$build .= $this->render_post_form_elements( $post );
-		$build .= sprintf( '</div><input type="submit" name="fm-submit" class="button-primary" value="%s" /><div class="fm-zone-post-form-message"></div></form>', esc_attr( $this->fm->submit_button_label ) ?: __( 'Update' ) );
+		$build .= sprintf( '</div><input type="submit" name="fm-submit" class="button-primary" value="%s" /><div class="fm-zone-post-form-message"></div></form>', ! empty( $this->fm->submit_button_label ) ? esc_attr( $this->fm->submit_button_label ) : __( 'Update' ) );
 
 		echo $build;
 	}
