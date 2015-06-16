@@ -18,12 +18,6 @@ class Test_Fieldmanager_Context_Zoninator extends WP_UnitTestCase {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
-		$z_plugin = plugin_dir_path( __FILE__ ) . '../../../zoninator/zoninator.php';
-
-		if ( file_exists( $z_plugin ) ) {
-			require_once $z_plugin;
-		}
-
 		$this->z = new Zoninator();
 		$this->z->init();
 
