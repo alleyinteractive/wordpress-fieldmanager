@@ -33,7 +33,10 @@ class Test_Fieldmanager_Context_Zoninator extends WP_UnitTestCase {
 			'post_title' => rand_str(),
 		) );
 
-		$this->zone = $this->factory->term->create_and_get( array( 'name' => rand_str(), 'taxonomy' => $this->z->zone_taxonomy ) );
+		$this->zone = $this->factory->term->create_and_get( array( 
+			'name' => rand_str(), 
+			'taxonomy' => $this->z->zone_taxonomy 
+		) );
 
 		$this->z->add_zone_posts( $this->zone, $this->post );
 	}
