@@ -11,7 +11,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 
     /**
      * Supply a function which returns a list of posts; takes one argument,
-     * a possible fragement
+     * a possible fragment
      */
     public $query_callback = Null;
 
@@ -44,12 +44,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     public $show_date = False;
 
     /**
-     * @var boolean
-     * Show this as grouped?
-     */
-    public $grouped = False;
-
-    /**
      * @var string
      * If $show_date is true, the format to use for displaying the date.
      */
@@ -60,6 +54,18 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * Publish the child post when/if the parent is published.
      */
     public $publish_with_parent = False;
+
+    /**
+     * @var boolean
+     * Save to post parent
+     */
+    public $save_to_post_parent = False;
+
+    /**
+     * @var boolean
+     * Only save to post parent
+     */
+    public $only_save_to_post_parent = False;
 
     // constructor not required for this datasource; options are just set to keys,
     // which Fieldmanager_Datasource does.
@@ -99,11 +105,15 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             if ( preg_match( '/^https?\:/i', $fragment ) ) {
                 $url = esc_url( $fragment );
                 $url_parts = parse_url( $url );
-                $get_vars = array();
-                parse_str( $url_parts['query'], $get_vars );
-                if ( !empty( $get_vars['post'] )  ) {
+
+                if ( ! empty( $url_parts['query'] ) )  {
+                    $get_vars = array();
+                    parse_str( $url_parts['query'], $get_vars );
+                }
+
+                if ( ! empty( $get_vars['post'] )  ) {
                     $post_id = intval( $get_vars['post'] );
-                } elseif ( !empty( $get_vars['p'] ) ) {
+                } elseif ( ! empty( $get_vars['p'] ) ) {
                     $post_id = intval( $get_vars['p'] );
                 } else {
                     $post_id = fm_url_to_post_id( $fragment );
@@ -163,7 +173,12 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      */
     public function title_like( $where, &$wp_query ) {
         global $wpdb;
-        $where .= ' AND ' . $wpdb->posts . '.post_title LIKE \'%' . esc_sql( like_escape( $this->_fragment ) ) . '%\'';
+        if ( method_exists( $wpdb, 'esc_like' ) ) {
+            $like = esc_sql( $wpdb->esc_like( $this->_fragment ) );
+        } else {
+            $like = esc_sql( like_escape( $this->_fragment ) );
+        }
+        $where .= " AND {$wpdb->posts}.post_title LIKE '%{$like}%'";
         return $where;
     }
 
@@ -173,29 +188,54 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * @param array $current_values existing post values
      */
     public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
-        if ( $field->data_type != 'post' || !$this->reciprocal ) return $values;
-        foreach ( $current_values as $reciprocal_post_id ) {
-            delete_post_meta( $reciprocal_post_id, $this->reciprocal, $field->data_id );
+        if ( 'post' == $field->data_type && ! empty( $this->reciprocal ) && ! empty( $current_values ) && is_array( $current_values ) ) {
+            foreach ( $current_values as $reciprocal_post_id ) {
+                delete_post_meta( $reciprocal_post_id, $this->reciprocal, $field->data_id );
+            }
         }
+
         return $values;
     }
 
     /**
-     * Handle reciprocal postmeta
+     * Handle reciprocal postmeta and post parents
      * @param int $value
      * @return string
      */
     public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-        if ( empty( $value ) ) return;
+        if ( empty( $value ) ) {
+            return;
+        }
         $value = intval( $value );
-        // There are no permissions in cron, but no changes are coming from a user either
-        if ( ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) && ! current_user_can( 'edit_post', $value ) ) {
-            die( 'Tried to refer to post ' . $value . ' which user cannot edit.' );
+
+        if ( ! empty( $this->publish_with_parent ) || ! empty( $this->reciprocal ) ) {
+            // There are no permissions in cron, but no changes are coming from a user either
+            if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
+                $post_type_obj = get_post_type_object( get_post_type( $value ) );
+                if ( empty( $post_type_obj->cap->edit_post ) || ! current_user_can( $post_type_obj->cap->edit_post, $value ) ) {
+                    wp_die( esc_html( sprintf( __( 'Tried to alter %s %d through field "%s", which user is not permitted to edit.', 'fieldmanager' ), $post_type_obj->name, $value, $field->name ) ) );
+                }
+            }
+            $this->presave_status_transition( $field, $value );
+            if ( $this->reciprocal ) {
+                add_post_meta( $value, $this->reciprocal, $field->data_id );
+            }
         }
-        $this->presave_status_transition( $field, $value );
-        if ( $this->reciprocal ) {
-            add_post_meta( $value, $this->reciprocal, $field->data_id );
+
+        if ( $this->save_to_post_parent && 1 == $field->limit && 'post' == $field->data_type ) {
+            if ( ! wp_is_post_revision( $field->data_id ) ) {
+                Fieldmanager_Context_Post::safe_update_post(
+                    array(
+                        'ID' => $field->data_id,
+                        'post_parent' => $value,
+                    )
+                );
+            }
+            if ( $this->only_save_to_post_parent ) {
+                return array();
+            }
         }
+
         return $value;
     }
 
@@ -208,8 +248,24 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     public function presave_status_transition( Fieldmanager_Field $field, $value ) {
         // if this child post is in a post (or quickedit) context on a published post, publish the child also
         if ( $this->publish_with_parent && 'post' === $field->data_type && ! empty( $field->data_id ) && 'publish' === get_post_status( $field->data_id ) ) {
-            wp_publish_post( $value );
+            // use wp_update_post so that post_name is generated if it's not been already
+            wp_update_post( array( 'ID' => $value, 'post_status' => 'publish' ) );
         }
+    }
+
+    /**
+     * Preload alter values for post parent
+     * The post datasource can store data outside FM's array.
+     * This is how we add it back into the array for editing.
+     * @param Fieldmanager_Field $field
+     * @param array $values
+     * @return array $values loaded up, if applicable.
+     */
+    public function preload_alter_values( Fieldmanager_Field $field, $values ) {
+        if ( $this->only_save_to_post_parent ) {
+            return array( wp_get_post_parent_id( $field->data_id ) );
+        }
+        return $values;
     }
 
     /**
@@ -221,8 +277,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_permalink( $value ),
-            __( 'View' )
+            empty( $value ) ? '#' : esc_url( get_permalink( $value ) ),
+            esc_html__( 'View', 'fieldmanager' )
         );
     }
 
@@ -235,8 +291,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
         return sprintf(
             ' <a target="_new" class="fm-autocomplete-edit-link %s" href="%s">%s</a>',
             empty( $value ) ? 'fm-hidden' : '',
-            empty( $value ) ? '#' : get_edit_post_link( $value ),
-            __( 'Edit' )
+            empty( $value ) ? '#' : esc_url( get_edit_post_link( $value ) ),
+            esc_html__( 'Edit', 'fieldmanager' )
         );
     }
 

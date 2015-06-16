@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * A Javascript date-picker which stores dates as unix timestamps.
@@ -28,6 +25,16 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * friendly to international users.
 	 */
 	public $date_format = 'j M Y';
+
+	/**
+	 * @var boolean
+	 * By default in WordPress, strtotime() assumes GMT. If $store_local_time is true, FM will use the
+	 * site's timezone setting when generating the timestamp. Note that `date()` will return GMT times
+	 * for the stamp no matter what, so if you store the local time, `date( 'H:i', $time )` will return
+	 * the offset time. Use this option if the exact timestamp is important, e.g. to schedule a wp-cron
+	 * event.
+	 */
+	public $store_local_time = false;
 
 	/**
 	 * @var array
@@ -69,6 +76,29 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	}
 
 	/**
+	 * Generate HTML for the form element itself. Generally should be just one tag, no wrappers.
+	 *
+	 * @param mixed string[]|string the value of the element.
+	 * @return string HTML for the element.
+	 */
+	public function form_element( $value ) {
+		$value = absint( $value );
+		$old_value = $value;
+		// If we're storing the local time, in order to make the form work as expected, we have
+		// to alter the timestamp. This isn't ideal, but there currently isn't a good way around
+		// it in WordPress.
+		if ( $this->store_local_time ) {
+			$value += get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+		}
+		ob_start();
+		include fieldmanager_get_template( 'datepicker' );
+
+		// Reset the timestamp
+		$value = $old_value;
+		return ob_get_clean();
+	}
+
+	/**
 	 * Convert date to timestamp
 	 * @param $value
 	 * @param $current_value
@@ -76,14 +106,18 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 */
 	public function presave( $value, $current_value = array() ) {
 		$time_to_parse = sanitize_text_field( $value['date'] );
-		if ( is_numeric( $value['hour'] ) && is_numeric( $value['minute'] ) && $this->use_time ) {
+		if ( isset( $value['hour'] ) && is_numeric( $value['hour'] ) && isset( $value['minute'] ) && is_numeric( $value['minute'] ) && $this->use_time ) {
 			$hour = intval( $value['hour'] );
 			if ( $hour == 0 && $this->use_am_pm ) $hour = 12;
 			$time_to_parse .= ' ' . $hour;
 			$time_to_parse .= ':' . str_pad( intval( $value['minute'] ), 2, '0', STR_PAD_LEFT );
 			$time_to_parse .= ' ' . sanitize_text_field( $value['ampm'] );
 		}
-		return intval( strtotime( $time_to_parse ) );
+		if ( $this->store_local_time ) {
+			return get_gmt_from_date( $time_to_parse, 'U' );
+		} else {
+			return intval( strtotime( $time_to_parse ) );
+		}
 	}
 
 	/**

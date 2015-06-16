@@ -1,7 +1,4 @@
 <?php
-/**
- * @package Fieldmanager
- */
 
 /**
  * Dropdown for options
@@ -28,6 +25,12 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	public $first_empty = False;
 
 	/**
+	 * @var boolean
+	 * Tell FM to save multiple values
+	 */
+	public $multiple = false;
+
+	/**
 	 * Override constructor to add chosen.js maybe
 	 * @param string $label
 	 * @param array $options
@@ -42,6 +45,15 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.1', false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
 
 		parent::__construct( $label, $options );
+
+		// You can make a select field multi-select either by setting the attribute
+		// or by setting `'multiple' => true`. If you opt for the latter, the
+		// attribute will be set for you.
+		if ( array_key_exists( 'multiple', $this->attributes ) ) {
+			$this->multiple = true;
+		} elseif ( $this->multiple ) {
+			$this->attributes['multiple'] = 'multiple';
+		}
 
 		// Add the chosen library for type-ahead capabilities
 		if ( $this->type_ahead ) {
@@ -62,7 +74,9 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// If this is a multiple select, need to handle differently
 		$do_multiple = '';
-		if ( array_key_exists( 'multiple', $this->attributes ) ) $do_multiple = "[]";
+		if ( $this->multiple ) {
+			$do_multiple = "[]";
+		}
 
 		// Handle type-ahead based fields using the chosen library
 		if ( $this->type_ahead ) {
@@ -80,15 +94,16 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		}
 
 		$opts = '';
-		if ( $this->first_empty ) {
+		if ( $this->is_repeatable() || $this->first_empty ) {
 			$opts .= '<option value="">&nbsp;</option>';
 		}
 		$opts .= $this->form_data_elements( $value );
 
 		return sprintf(
-			'<select class="' . implode( " ", $select_classes ) . '" name="%s" id="%s" %s>%s</select>',
-			$this->get_form_name( $do_multiple ),
-			$this->get_element_id(),
+			'<select class="%s" name="%s" id="%s" %s>%s</select>',
+			esc_attr( implode( " ", $select_classes ) ),
+			esc_attr( $this->get_form_name( $do_multiple ) ),
+			esc_attr( $this->get_element_id() ),
 			$this->get_element_attributes(),
 			$opts
 		);
@@ -108,9 +123,9 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		return sprintf(
 			'<option value="%s" %s>%s</option>',
-			$data_row['value'],
+			esc_attr( $data_row['value'] ),
 			$option_selected,
-			$data_row['name']
+			esc_html( $data_row['name'] )
 		);
 
 	}
@@ -123,7 +138,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	public function form_data_start_group( $label ) {
 		return sprintf(
 			'<optgroup label="%s">',
-			$label
+			esc_attr( $label )
 		);
 	}
 
@@ -143,7 +158,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		?>
 		<script type="text/javascript">
 		jQuery(function($){
-			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle",".fm-item",function(){
+			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
 				$(".chzn-select:visible",this).chosen({allow_single_deselect:true})
 			});
 			$(".chzn-select:visible").chosen({allow_single_deselect:true});

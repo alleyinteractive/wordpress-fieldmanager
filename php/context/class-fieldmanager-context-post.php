@@ -7,7 +7,7 @@
  * Use fieldmanager to create meta boxes on
  * @package Fieldmanager_Datasource
  */
-class Fieldmanager_Context_Post extends Fieldmanager_Context {
+class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 
 	/**
 	 * @var string
@@ -37,7 +37,12 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @var Fieldmanager_Group
 	 * Base field
 	 */
-	public $fm = '';
+	public $fm = null;
+
+	/*
+	 * @var boolean
+	 */
+	private static $doing_internal_update = false;
 
 	/**
 	 * Add a context to a fieldmanager
@@ -92,17 +97,14 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * Helper to attach element_markup() to add_meta_box(). Prints markup for post editor.
 	 * @see http://codex.wordpress.org/Function_Reference/add_meta_box
 	 * @param $post the post object.
-	 * @param $form_struct the structure of the form itself (not very useful).
+	 * @param $form_struct the structure of the form itself. Unused.
 	 * @return void.
 	 */
-	public function render_meta_box( $post, $form_struct ) {
-		$key = $form_struct['callback'][0]->fm->name;
-		$values = get_post_meta( $post->ID, $key );
-		$values = empty( $values ) ? Null : $values[0];
+	public function render_meta_box( $post, $form_struct = null ) {
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
-		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
-		echo $this->fm->element_markup( $values );
+
+		$this->render_field();
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );
@@ -144,6 +146,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function delegate_save_post( $post_id ) {
+		if ( self::$doing_internal_update ) {
+			return;
+		}
 		if( defined( 'DOING_CRON' ) && DOING_CRON ) {
 			$this->save_fields_for_cron( $post_id );
 		} else {
@@ -159,37 +164,46 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 */
 	public function save_fields_for_post( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
-		if ( !isset( $_POST['post_type'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' )
+		if ( empty( $_POST['post_ID'] ) || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) || $_POST['action'] != 'editpost' ) {
 			return;
-
-		if ( get_post_type( $post_id ) == 'revision' ) return; // prevents saving the same post twice; FM does not yet use revisions.
-
-		$use_this_post_type = False;
-		foreach ( $this->post_types as $type ) {
-			if ( $type == $_POST['post_type'] ) {
-				$use_this_post_type = True;
-				break;
-			}
 		}
-		if ( !$use_this_post_type ) return;
 
-		if ( $_POST['action'] == 'inline-save' ) return; // no fieldmanager on quick edit yet
+		// Make sure this hook fired on the post being saved, not a side-effect post for which the $_POST context is invalid.
+		if ( $post_id !== absint( $_POST['post_ID'] ) ) {
+			return;
+		}
 
-		// Make sure the current user can save this post
-		if( $_POST['post_type'] == 'post' ) {
-			if( !current_user_can( 'edit_post', $post_id ) ) {
-				$this->fm->_unauthorized_access( 'User cannot edit this post' );
+		// Prevent saving the same post twice; FM does not yet use revisions.
+		if ( get_post_type( $post_id ) == 'revision' ) {
+			return;
+		}
+
+		// Make sure this post type is intended for handling by this FM context.
+		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) {
+			return;
+		}
+
+		// Do not handle quickedit in this context.
+		if ( $_POST['action'] == 'inline-save' ) {
+			return;
+		}
+
+		// Verify nonce is present and valid. If present but not valid, this
+		// throws an exception, but if it's absent we can assume our data is
+		// not present.
+		if ( ! $this->is_valid_nonce() ) {
+			return;
+		}
+
+		// Make sure the current user is authorized to save this post.
+		if ( $_POST['post_type'] == 'post' ) {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
+				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
 				return;
 			}
 		}
 
-		// Make sure that our nonce field arrived intact
-		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( 'Nonce validation failed' );
-		}
-
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$this->save_to_post_meta( $post_id, $value );
+		$this->save_to_post_meta( $post_id );
 	}
 
 	/**
@@ -198,10 +212,12 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void
 	 */
 	public function save_fields_for_cron( $post_id ) {
-		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) return;
+		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) {
+			return;
+		}
 		// don't save values since we aren't provided with any; just trigger presave so that subclass handlers can process as necessary
 		$this->fm->skip_save = true;
-		$current = get_post_meta( $post_id, $this->fm->name, True );
+		$current = get_post_meta( $post_id, $this->fm->name, true );
 		$this->save_to_post_meta( $post_id, $current );
 	}
 
@@ -211,13 +227,60 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @param array $data
 	 * @return void
 	 */
-	public function save_to_post_meta( $post_id, $data ) {
-		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) return;
+	public function save_to_post_meta( $post_id, $data = null ) {
+		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
+			return;
+		}
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
-		$current = get_post_meta( $this->fm->data_id, $this->fm->name, True );
-		$data = $this->fm->presave_all( $data, $current );
-		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );
+
+		$this->save( $data );
+	}
+
+	/**
+	 * Helper for fieldmanager internals to save a post without worrying about infinite loops
+	 */
+	public static function safe_update_post( $args ) {
+		self::$doing_internal_update = true;
+		$ret = wp_update_post( $args );
+		self::$doing_internal_update = false;
+		return $ret;
+	}
+
+	/**
+	 * Get post meta.
+	 *
+	 * @see get_post_meta().
+	 */
+	protected function get_data( $post_id, $meta_key, $single = false ) {
+		return get_post_meta( $post_id, $meta_key, $single );
+	}
+
+	/**
+	 * Add post meta.
+	 *
+	 * @see add_post_meta().
+	 */
+	protected function add_data( $post_id, $meta_key, $meta_value, $unique = false ) {
+		return add_post_meta( $post_id, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Update post meta.
+	 *
+	 * @see update_post_meta().
+	 */
+	protected function update_data( $post_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		return update_post_meta( $post_id, $meta_key, $meta_value, $data_prev_value );
+	}
+
+	/**
+	 * Delete post meta.
+	 *
+	 * @see delete_post_meta().
+	 */
+	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
+		return delete_post_meta( $post_id, $meta_key, $meta_value );
 	}
 
 }
