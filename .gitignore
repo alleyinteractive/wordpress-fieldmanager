@@ -13,3 +13,9 @@ todo.txt
 
 # Created by Apigen for logs
 /build
+
+/docs
+
+/report/
+
+.svn
