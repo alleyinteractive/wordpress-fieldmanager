@@ -81,9 +81,22 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '2:37 am' ), $saved_data['test_datetime_field'] );
 
+		// Date set, time set, but no minutes
+		$test_data = array(
+			'test_datetime_group' => array(
+				'test_datetime_field' => array(
+					'date'      => '13 Mar 2014',
+					'hour'      => '2',
+					'minute'    => '',
+					'ampm'      => 'am',
+					),
+				),
+			);
+		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
+		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
+		$this->assertEquals( strtotime( '13 Mar 2014 2:00am' ), $saved_data['test_datetime_field'] );
 
 		// Date and time set
-		// Time set, but no date
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
