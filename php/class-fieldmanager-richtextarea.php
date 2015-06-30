@@ -246,10 +246,10 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 			}
 		}
 
-		// WordPress assumes there's only one editor on any given page, so it
-		// adds a filter based on the visual vs. text state of that editor. It
-		// will re-add filters for each editor, so there's no harm in removing
-		// whatever it added.
+		// WordPress < 4.3 assumes there's only one editor on any given page, so
+		// it adds a filter based on the visual vs. text state of that editor.
+		// It will re-add filters for each editor, so there's no harm in
+		// removing whatever it added.
 		remove_filter( 'the_editor_content', 'wp_htmledit_pre' );
 		remove_filter( 'the_editor_content', 'wp_richedit_pre' );
 	}
