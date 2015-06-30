@@ -155,7 +155,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		$post_type = get_post_type( $post_id );
 
 		$this->add_quickedit_box( $column_name, $post_type, $this->load() );
-        exit;
+		exit;
 	}
 
 	/**
