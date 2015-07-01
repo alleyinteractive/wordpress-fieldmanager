@@ -33,7 +33,7 @@
 	function populateHiddenElements() {
 		$('.post-bin').each(function(i) {
 			var post_ids = [];
-			var input_name = $(this).attr('id').replace('-bin', '');
+			var input_name = $(this).attr('id').replace(/-bin$/g, '');
 			$(this).find('.draggable-post').each(function(i) {
 				post_ids.push($(this).attr('post_id'));
 			});
