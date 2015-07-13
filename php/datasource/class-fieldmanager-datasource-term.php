@@ -148,6 +148,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$values = array( $values );
 		}
 
+		$values = apply_filters( 'fm_datasource_term_presave_alter_values', $values, $field, $current_values, $this );
+
 		// maybe we can create terms here.
 		if ( get_class( $field ) == 'Fieldmanager_Autocomplete' && !$field->exact_match && isset( $this->taxonomy ) ) {
 			foreach( $values as $i => $value ) {
@@ -190,7 +192,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			}
 			$this->save_taxonomy( $tax_values, $field->data_id );
 		}
-		if ( $this->only_save_to_taxonomy ) { 
+		if ( $this->only_save_to_taxonomy ) {
 			if ( empty( $values ) && ! ( $this->append_taxonomy ) ) {
 				$this->save_taxonomy( array(), $field->data_id );
 			}
