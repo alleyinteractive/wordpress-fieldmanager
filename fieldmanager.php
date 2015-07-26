@@ -297,7 +297,8 @@ function fm_calculate_context() {
 		if ( ! empty( $_GET['page'] ) ) {
 			$page = sanitize_text_field( $_GET['page'] );
 
-			if ( isset( $plugin_page, $pagenow ) ) {
+			// Attempt to use the core page hooks to calculate the current context
+			if ( isset( $plugin_page, $pagenow ) && function_exists( 'get_plugin_page_hook' ) ) {
 				if ( ! empty( $typenow ) ) {
 					$fm_the_parent = $pagenow . '?post_type=' . $typenow;
 				} else {
