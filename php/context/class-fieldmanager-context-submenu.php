@@ -101,7 +101,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 					<input type="hidden" name="fm-options-action" value="<?php echo sanitize_title( $this->fm->name ) ?>" />
 					<?php $this->render_field( array( 'data' => $values ) ); ?>
 				</div>
-				<?php submit_button( $this->submit_button_label, 'submit', 'fm-submit' ) ?>
+				<?php submit_button( $this->submit_button_label, 'primary', 'fm-submit' ) ?>
 			</form>
 		</div>
 		<?php
