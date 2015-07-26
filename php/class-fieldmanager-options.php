@@ -81,7 +81,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function add_options( $options ) {
 		$values = array_values( $options );
-		if ( is_array( $values[0] ) ) {
+		if ( isset( $values[0] ) && is_array( $values[0] ) ) {
 			foreach ( $options as $group => $data ) {
 				foreach ( $data as $value => $label ) {
 					$this->add_option_data( $value, $label, $group, $group );
@@ -191,7 +191,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		foreach ( $this->validate as $func ) {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
-					__( 'Input "%1$s" is not valid for field "%2$s" ' ),
+					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
 					(string) $value,
 					$this->label
 				) );

@@ -36,14 +36,25 @@ abstract class Fieldmanager_Field {
 	public $limit = 1;
 
 	/**
+	 * DEPREATED: How many of these fields to display initially, if $limit != 1.
+	 * @deprecated This argument will have no impact. It only remains to avoid
+	 *             throwing exceptions in code that used it previously.
 	 * @var int
-	 * How many of these fields to display initially, if $limit > 1
 	 */
 	public $starting_count = 1;
 
 	/**
+	 * How many of these fields to display at a minimum, if $limit != 1. If
+	 * $limit == $minimum_count, the "add another" button and the remove tool
+	 * will be hidden.
 	 * @var int
-	 * How many extra elements to display if there is already form data and $limit > 1
+	 */
+	public $minimum_count = 0;
+
+	/**
+	 * @var int
+	 * How many empty fields to display if $limit != 1 when the total fields in
+	 * the loaded data + $extra_elements > $minimum_count.
 	 */
 	public $extra_elements = 1;
 
@@ -84,8 +95,8 @@ abstract class Fieldmanager_Field {
 	public $description = '';
 
 	/**
-	 * @var string[]
-	 * Extra HTML attributes to apply to the form element
+	 * @var string|boolean[]
+	 * Extra HTML attributes to apply to the form element. Use boolean true to apply a standalone attribute, e.g. 'required' => true
 	 */
 	public $attributes = array();
 
@@ -174,10 +185,17 @@ abstract class Fieldmanager_Field {
 	public $skip_save = False;
 
 	/**
-	 * @var string
 	 * Save this field additionally to an index
+	 * @var boolean
 	 */
 	public $index = False;
+
+	/**
+	 * Save the fields to their own keys (only works in some contexts). Default
+	 * is true.
+	 * @var boolean
+	 */
+	public $serialize_data = true;
 
 	/**
 	 * @var Fieldmanager_Datasource
@@ -194,6 +212,13 @@ abstract class Fieldmanager_Field {
 	 * );
 	 */
 	public $display_if = array();
+
+	/**
+	* @var string
+	* Where the new item should to added ( top/bottom ) of the stack. Used by Add Another button
+	* "top|bottom"
+	*/
+	public $add_more_position = "bottom";
 
 	/**
 	 * @var boolean
@@ -230,6 +255,16 @@ abstract class Fieldmanager_Field {
 	 * @var string
 	 */
 	public $input_type = 'text';
+
+	/**
+	 * Custom escaping for labels, descriptions, etc. Associative array of
+	 * $field => $callable arguments, for example:
+	 *
+	 *     'escape' => array( 'label' => 'wp_kses_post' )
+	 *
+	 * @var array
+	 */
+	public $escape = array();
 
 	/**
 	 * @var int
@@ -296,7 +331,6 @@ abstract class Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->set_options( $label, $options );
-		add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
 	}
 
 	/**
@@ -317,16 +351,26 @@ abstract class Fieldmanager_Field {
 				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
-					__( 'You attempted to set a property <em>%1$s</em> that is nonexistant or invalid for an instance of <em>%2$s</em> named <em>%3$s</em>.' ),
+					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
 					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
-				$title = __( 'Nonexistant or invalid option' );
+				$title = esc_html__( 'Nonexistant or invalid option', 'fieldmanager' );
 				if ( !self::$debug ) {
-					wp_die( $message, $title );
+					wp_die( esc_html( $message ), $title );
 				} else {
-					throw new FM_Developer_Exception( $message );
+					throw new FM_Developer_Exception( esc_html( $message ) );
 				}
 			}
+		}
+
+		// If this is a single field with a limit of 1, serialize_data has no impact
+		if ( ! $this->serialize_data && ! $this->is_group() && 1 == $this->limit ) {
+			$this->serialize_data = true;
+		}
+
+		// Cannot use serialize_data => false with index => true
+		if ( ! $this->serialize_data && $this->index ) {
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with `"index" => true`', 'fieldmanager' ) );
 		}
 	}
 
@@ -338,10 +382,15 @@ abstract class Fieldmanager_Field {
 	 */
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
-		if ( $this->limit == 0 ) {
-			$max = count( $values ) + $this->extra_elements;
+		if ( $this->limit != 1 ) {
+			$max = max( $this->minimum_count, count( $values ) + $this->extra_elements );
+
+			// Ensure that we don't display more fields than we can save
+			if ( $this->limit > 1 && $max > $this->limit ) {
+				$max = $this->limit;
+			}
 		} else {
-			$max = $this->limit;
+			$max = 1;
 		}
 
 		$classes = array( 'fm-wrapper', 'fm-' . $this->name . '-wrapper' );
@@ -355,8 +404,11 @@ abstract class Fieldmanager_Field {
 
 		// If this element is part of tabbed output, there needs to be a wrapper to contain the tab content
 		if ( $this->is_tab ) {
-			$tab_display_style = ( $this->parent->child_count > 0 ) ? ' style="display: none"' : '';
-			$out .= '<div id="' . $this->get_element_id() . '-tab" class="wp-tabs-panel"' . $tab_display_style . '>';
+			$out .= sprintf(
+				'<div id="%s-tab" class="wp-tabs-panel"%s>',
+				esc_attr( $this->get_element_id() ),
+				( $this->parent->child_count > 0 ) ? ' style="display: none"' : ''
+			);
 		}
 
 		// For lists of items where $one_label_per_item = False, the label should go outside the wrapper.
@@ -388,18 +440,21 @@ abstract class Fieldmanager_Field {
 		}
 		$fm_wrapper_attr_string = '';
 		foreach ( $fm_wrapper_attrs as $attr => $val ) {
-			$fm_wrapper_attr_string .= sprintf( '%s="%s" ', $attr, htmlentities( $val ) );
+			$fm_wrapper_attr_string .= sprintf( '%s="%s" ', sanitize_key( $attr ), esc_attr( $val ) );
 		}
 		$out .= sprintf( '<div class="%s" data-fm-array-position="%d" %s>',
-			implode( ' ', $classes ),
-			$html_array_position,
+			esc_attr( implode( ' ', $classes ) ),
+			absint( $html_array_position ),
 			$fm_wrapper_attr_string
 		);
 
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this );
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && "top" == $this->add_more_position ) {
+			$out .= $this->add_another();
+		}
 
-		if ( 0 == $this->limit ) {
+		if ( 1 != $this->limit ) {
 			$out .= $this->single_element_markup( null, true );
 		}
 		for ( $i = 0; $i < $max; $i++ ) {
@@ -411,7 +466,7 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		if ( 0 == $this->limit ) {
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && "bottom" == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
 
@@ -445,7 +500,7 @@ abstract class Fieldmanager_Field {
 		self::$global_seq++;
 
 		// Drop the fm-group class to hide inner box display if no label is set
-		if ( !( $this->field_class == 'group' && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
+		if ( !( $this->is_group() && ( !isset( $this->label ) || empty( $this->label ) ) ) ) {
 			$classes[] = 'fm-' . $this->field_class;
 		}
 
@@ -458,13 +513,19 @@ abstract class Fieldmanager_Field {
 			$classes[] = 'fmjs-proto';
 		}
 
-		$out .= sprintf( '<div class="%s">', implode( ' ', $classes ) );
+		if ( $this->is_group() && 'vertical' === $this->tabbed ) {
+			$classes[] = 'fm-tabbed-vertical';
+		}
+
+		$classes = apply_filters( 'fm_element_classes', $classes, $this->name, $this );
+
+		$out .= sprintf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 
 		$label = $this->get_element_label( );
 		$render_label_after = False;
 		// Hide the label if it is empty or if this is a tab since it would duplicate the title from the tab label
 		if ( !empty( $this->label ) && !$this->is_tab && $this->one_label_per_item ) {
-			if ( $this->limit == 0 && $this->one_label_per_item ) {
+			if ( $this->limit != 1 ) {
 				$out .= $this->wrap_with_multi_tools( $label, array( 'fmjs-removable-label' ) );
 			} elseif ( !$this->label_after_element ) {
 				$out .= $label;
@@ -478,7 +539,7 @@ abstract class Fieldmanager_Field {
 
 		$form_element = $this->form_element( $value );
 
-		if ( $this->limit == 0 && !$this->one_label_per_item ) {
+		if ( $this->limit != 1 && ( ! $this->one_label_per_item || empty( $this->label ) ) ) {
 			$out .= $this->wrap_with_multi_tools( $form_element );
 		} else {
 			$out .= $form_element;
@@ -487,7 +548,7 @@ abstract class Fieldmanager_Field {
 		if ( $render_label_after ) $out .= $label;
 
 		if ( isset( $this->description ) && !empty( $this->description ) ) {
-			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->description );
+			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
 		}
 
 		$out .= '</div>';
@@ -503,7 +564,7 @@ abstract class Fieldmanager_Field {
 	 * @param array $values
 	 */
 	public function preload_alter_values( $values ) {
-		return $values;
+		return apply_filters( 'fm_preload_alter_values', $values, $this );
 	}
 
 	/**
@@ -520,7 +581,11 @@ abstract class Fieldmanager_Field {
 		$out .= '<div class="fmjs-removable-element">';
 		$out .= $html;
 		$out .= '</div>';
-		$out .= $this->get_remove_handle();
+
+		if ( $this->limit == 0 || $this->limit > $this->minimum_count ) {
+			$out .= $this->get_remove_handle();
+		}
+
 		$out .= '</div>';
 		return $out;
 	}
@@ -575,6 +640,45 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Get the storage key for the form element.
+	 *
+	 * @return string
+	 */
+	public function get_element_key() {
+		$el = $this;
+		$key = $el->name;
+		while ( $el = $el->parent ) {
+			if ( $el->add_to_prefix ) {
+				$key = "{$el->name}_{$key}";
+			}
+		}
+		return $key;
+	}
+
+	/**
+	 * Is this element repeatable or does it have a repeatable ancestor?
+	 *
+	 * @return boolean True if yes, false if no.
+	 */
+	public function is_repeatable() {
+		if ( 1 != $this->limit ) {
+			return true;
+		} elseif ( $this->parent ) {
+			return $this->parent->is_repeatable();
+		}
+		return false;
+	}
+
+	/**
+	 * Is the current field a group?
+	 *
+	 * @return boolean True if yes, false if no.
+	 */
+	public function is_group() {
+		return $this instanceof Fieldmanager_Group;
+	}
+
+	/**
 	 * Presaves all elements in what could be a set of them, dispatches to $this->presave()
 	 * @input mixed[] $values
 	 * @return mixed[] sanitized values
@@ -582,11 +686,14 @@ abstract class Fieldmanager_Field {
 	public function presave_all( $values, $current_values ) {
 		if ( $this->limit == 1 && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
-			if ( ! empty( $values ) )
+			if ( ! empty( $values ) ) {
 				$value = $this->presave( $values[0], $current_values );
-			else
+			} else {
 				$value = $values;
-			if ( !empty( $this->index ) ) $this->save_index( array( $value ), array( $current_values ) );
+			}
+			if ( !empty( $this->index ) ) {
+				$this->save_index( array( $value ), array( $current_values ) );
+			}
 			return $value;
 		}
 
@@ -606,27 +713,30 @@ abstract class Fieldmanager_Field {
 				return;
 			}
 
-			$this->_unauthorized_access( '$values should be an array because $limit is ' . $this->limit );
+			$this->_unauthorized_access( sprintf( __( '$values should be an array because $limit is %d', 'fieldmanager' ), $this->limit ) );
+		}
+
+		if ( empty( $values ) ) {
+			$values = array();
+		}
+
+		// Remove the proto
+		if ( isset( $values['proto'] ) ) {
+			unset( $values['proto'] );
 		}
 
 		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
 		if ( $this->limit > 1 && count( $values ) > $this->limit ) {
 			$this->_unauthorized_access(
-				sprintf( 'submitted %1$d values against a limit of %2$d', count( $values ), $this->limit )
+				sprintf( __( 'submitted %1$d values against a limit of %2$d', 'fieldmanager' ), count( $values ), $this->limit )
 			);
-		}
-
-		if ( empty( $values ) ) $values = array();
-
-		if ( isset( $values['proto'] ) ) {
-			unset( $values['proto'] );
 		}
 
 		// Check for non-numeric keys
 		$keys = array_keys( $values );
 		foreach ( $keys as $key ) {
 			if ( ! is_numeric( $key ) ) {
-				throw new FM_Exception( 'Use of a non-numeric key suggests that something is wrong with this group.' );
+				throw new FM_Exception( esc_html__( 'Use of a non-numeric key suggests that something is wrong with this group.', 'fieldmanager' ) );
 			}
 		}
 
@@ -644,11 +754,16 @@ abstract class Fieldmanager_Field {
 
 		foreach ( $values as $i => $value ) {
 			$values[ $i ] = $this->presave( $value, empty( $current_values[ $i ] ) ? array() : $current_values[ $i ] );
-			if ( !$this->save_empty && empty( $values[ $i ] ) )
-				unset( $values[ $i ] );
 		}
-		if ( !empty( $this->index ) )
+
+		if ( ! $this->save_empty ) {
+			// reindex the array after removing empty values
+			$values = array_values( array_filter( $values ) );
+		}
+
+		if ( ! empty( $this->index ) ) {
 			$this->save_index( $values, $current_values );
+		}
 
 		return $values;
 	}
@@ -710,7 +825,7 @@ abstract class Fieldmanager_Field {
 	 * @return array
 	 */
 	protected function presave_alter_values( $values, $current_values = array() ) {
-		return $values;
+		return apply_filters( 'fm_presave_alter_values', $values, $this, $current_values );
 	}
 
 	/**
@@ -723,12 +838,12 @@ abstract class Fieldmanager_Field {
 		// this point, but those elements must override this function. Let's
 		// make sure we're dealing with one value here.
 		if ( is_array( $value ) ) {
-			$this->_unauthorized_access( 'presave() in the base class should not get arrays, but did.' );
+			$this->_unauthorized_access( __( 'presave() in the base class should not get arrays, but did.', 'fieldmanager' ) );
 		}
 		foreach ( $this->validate as $func ) {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
-					__( 'Input "%1$s" is not valid for field "%2$s" ' ),
+					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
 					(string) $value,
 					$this->label
 				) );
@@ -745,7 +860,11 @@ abstract class Fieldmanager_Field {
 	public function get_element_attributes() {
 		$attr_str = array();
 		foreach ( $this->attributes as $attr => $val ) {
-			$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
+			if ( $val === true ){
+				$attr_str[] = sanitize_key( $attr );
+			} else{
+				$attr_str[] = sprintf( '%s="%s"', sanitize_key( $attr ), esc_attr( $val ) );
+			}
 		}
 		return implode( ' ', $attr_str );
 	}
@@ -767,11 +886,11 @@ abstract class Fieldmanager_Field {
 		}
 		return sprintf(
 			'<%s class="%s"><label for="%s">%s</label></%s>',
-			$this->label_element,
-			implode( ' ', $classes ),
-			$this->get_element_id( $this->get_seq() ),
-			$this->label,
-			$this->label_element
+			sanitize_key( $this->label_element ),
+			esc_attr( implode( ' ', $classes ) ),
+			esc_attr( $this->get_element_id( $this->get_seq() ) ),
+			$this->escape( 'label' ),
+			sanitize_key( $this->label_element )
 		);
 	}
 
@@ -781,13 +900,19 @@ abstract class Fieldmanager_Field {
 	 */
 	public function add_another() {
 		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
+		if ( empty( $this->add_more_label ) ) {
+			$this->add_more_label = $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
+		}
+
 		$out = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
-			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" />',
-			implode( ' ', $classes ),
-			$this->add_more_label,
-			'fm_add_another_' . $this->name,
-			$this->name
+			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-add-more-position="%s" data-limit="%d" />',
+			esc_attr( implode( ' ', $classes ) ),
+			esc_attr( $this->add_more_label ),
+			esc_attr( 'fm_add_another_' . $this->name ),
+			esc_attr( $this->name ),
+			esc_attr( $this->add_more_position ),
+			intval( $this->limit )
 		);
 		$out .= '</div>';
 		return $out;
@@ -798,7 +923,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_sort_handle() {
-		return '<div class="fmjs-drag fmjs-drag-icon">Move</div>';
+		return sprintf( '<div class="fmjs-drag fmjs-drag-icon">%s</div>', esc_html__( 'Move', 'fieldmanager' ) );
 	}
 
 	/**
@@ -806,7 +931,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_remove_handle() {
-		return '<a href="#" class="fmjs-remove" title="Remove">Remove</a>';
+		return sprintf( '<a href="#" class="fmjs-remove" title="%1$s">%1$s</a>', esc_attr__( 'Remove', 'fieldmanager' ) );
 	}
 
 	/**
@@ -814,7 +939,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_collapse_handle() {
-		return '<div class="handlediv" title="Click to toggle"><br /></div>';
+		return sprintf( '<div class="handlediv" title="%s"><br /></div>', esc_attr__( 'Click to toggle', 'fieldmanager' ) );
 	}
 
 	/**
@@ -909,7 +1034,7 @@ abstract class Fieldmanager_Field {
 
 	private function require_base() {
 		if ( !empty( $this->parent ) ) {
-			throw new FM_Developer_Exception( __( 'You cannot use this method on a subgroup' ) );
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use this method on a subgroup', 'fieldmanager' ) );
 		}
 	}
 
@@ -920,10 +1045,10 @@ abstract class Fieldmanager_Field {
 	 */
 	public function _unauthorized_access( $debug_message = '' ) {
 		if ( self::$debug ) {
-			throw new FM_Exception( $debug_message );
+			throw new FM_Exception( esc_html( $debug_message ) );
 		}
 		else {
-			wp_die( __( 'Sorry, you\'re not supposed to do that...', 'fieldmanager' ) );
+			wp_die( esc_html__( "Sorry, you're not supposed to do that...", 'fieldmanager' ) );
 		}
 	}
 
@@ -937,10 +1062,10 @@ abstract class Fieldmanager_Field {
 			throw new FM_Validation_Exception( $debug_message );
 		}
 		else {
-			wp_die(
+			wp_die( esc_html(
 				$debug_message . "\n\n" .
-				__( 'You may be able to use your browser\'s back button to resolve this error. ', 'fieldmanager' )
-			);
+				__( "You may be able to use your browser's back button to resolve this error.", 'fieldmanager' )
+			) );
 		}
 	}
 
@@ -951,10 +1076,9 @@ abstract class Fieldmanager_Field {
 	 */
 	public function _invalid_definition( $debug_message = '' ) {
 		if ( self::$debug ) {
-			throw new FM_Exception( $debug_message );
-		}
-		else {
-			wp_die( __( 'Sorry, you\'ve created an invalid field definition. Please check your code and try again.', 'fieldmanager' ) );
+			throw new FM_Exception( esc_html( $debug_message ) );
+		} else {
+			wp_die( esc_html__( "Sorry, you've created an invalid field definition. Please check your code and try again.", 'fieldmanager' ) );
 		}
 	}
 
@@ -982,4 +1106,20 @@ abstract class Fieldmanager_Field {
 	 * @return void
 	 */
 	protected function add_meta_boxes_to_remove( &$meta_boxes_to_remove ) {}
+
+	/**
+	 * Escape a field based on the function in the escape argument.
+	 *
+	 * @param  string $field   The field to escape.
+	 * @param  string $default The default function to use to escape the field.
+	 *                         Optional. Defaults to `esc_html()`
+	 * @return string          The escaped field.
+	 */
+	public function escape( $field, $default = 'esc_html' ) {
+		if ( isset( $this->escape[ $field ] ) && is_callable( $this->escape[ $field ] ) ) {
+			return call_user_func( $this->escape[ $field ], $this->$field );
+		} else {
+			return call_user_func( $default, $this->$field );
+		}
+	}
 }

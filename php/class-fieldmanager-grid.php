@@ -67,12 +67,12 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 				<input name="%1$s" class="fm-element" type="hidden" value="%3$s" />
 				<p><a href="#" class="grid-activate" id="%6$s" data-with-grid-title="%5$s">%4$s</a></p>
 			</div>',
-			$this->get_form_name(),
-			'hot-grid-id-' . uniqid(), // handsontable must have an ID, but we don't care what it is.
-			htmlspecialchars( json_encode( $value ) ),
-			__( 'Show Data Grid' ),
-			__( 'Hide Data Grid' ),
-			$grid_activate_id
+			esc_attr( $this->get_form_name() ),
+			esc_attr( 'hot-grid-id-' . uniqid() ), // handsontable must have an ID, but we don't care what it is.
+			esc_attr( json_encode( $value ) ),
+			esc_attr__( 'Show Data Grid', 'fieldmanager' ),
+			esc_attr__( 'Hide Data Grid', 'fieldmanager' ),
+			esc_attr( $grid_activate_id )
 		);
 		$out .= sprintf("
 			<script type=\"text/javascript\">
@@ -84,7 +84,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 					} );
 				} );
 			</script>",
-			$grid_activate_id,
+			esc_attr( $grid_activate_id ),
 			json_encode( $this->js_options )
 		);
 		return $out;
