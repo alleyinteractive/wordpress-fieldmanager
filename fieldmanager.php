@@ -278,6 +278,8 @@ function fm_get_context() {
  * }
  */
 function fm_calculate_context() {
+	global $plugin_page, $typenow, $pagenow;
+
 	// Safe to use at any point in the load process, and better than URL matching.
 	if ( is_admin() ) {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
@@ -294,6 +296,24 @@ function fm_calculate_context() {
 		 */
 		if ( ! empty( $_GET['page'] ) ) {
 			$page = sanitize_text_field( $_GET['page'] );
+
+			if ( isset( $plugin_page, $pagenow ) ) {
+				if ( ! empty( $typenow ) ) {
+					$fm_the_parent = $pagenow . '?post_type=' . $typenow;
+				} else {
+					$fm_the_parent = $pagenow;
+				}
+
+				if ( ! $fm_page_hook = get_plugin_page_hook( $plugin_page, $fm_the_parent ) ) {
+					$fm_page_hook = get_plugin_page_hook( $plugin_page, $plugin_page );
+				}
+
+				$hooked = _fieldmanager_registry( 'submenu_' . $fm_page_hook );
+				if ( ! empty( $hooked[4] ) ) {
+					return array( 'submenu', $hooked[4] );
+				}
+			}
+
 			$submenus = _fieldmanager_registry( 'submenus' );
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
@@ -425,7 +445,13 @@ function fm_trigger_context_action() {
 		do_action( "fm_{$context}" );
 	}
 }
-add_action( 'init', 'fm_trigger_context_action', 99 );
+if ( is_admin() ) {
+	// This is hooked early so that other admin_init actions can fire after it
+	add_action( 'admin_init', 'fm_trigger_context_action', 5 );
+} else {
+	// This is hooked late so that other init actions will fire before it
+	add_action( 'init', 'fm_trigger_context_action', 99 );
+}
 
 /**
  * Add data about a submenu page to the Fieldmanager registry under a slug.
@@ -490,8 +516,11 @@ function _fm_add_submenus() {
 	if ( !is_array( $submenus ) ) {
 		return;
 	}
-	foreach ( $submenus as $s ) {
-		call_user_func_array( 'add_submenu_page', $s );
+	foreach ( $submenus as $group_name => $s ) {
+		$hook_name = call_user_func_array( 'add_submenu_page', $s );
+		if ( $hook_name ) {
+			_fieldmanager_registry( 'submenu_' . $hook_name, $s );
+		}
 	}
 }
 add_action( 'admin_menu', '_fm_add_submenus', 15 );
