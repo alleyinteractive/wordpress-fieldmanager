@@ -46,10 +46,16 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	public $submit_button_label = Null;
 
 	/**
-	 * @var string
+	 * @var bool
 	 * For submenu pages, set autoload to true or false
 	 */
 	public $wp_option_autoload = False;
+
+	/**
+	 * @var bool
+	 * Whether this is a Network Admin submenu page.
+	 */
+	public $is_network_submenu = false;
 
 	/**
 	 * Create a submenu page out of a field
@@ -60,16 +66,34 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @param string $menu_slug
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function __construct( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null, $fm = Null, $already_registered = False ) {
+	public function __construct( $parent_slug, $page_title, $menu_title = Null, $capability = '', $menu_slug = Null, $fm = Null, $already_registered = False ) {
 		$this->fm = $fm;
 		$this->menu_slug = $menu_slug ?: $this->fm->name;
 		$this->menu_title = $menu_title ?: $page_title;
 		$this->parent_slug = $parent_slug;
 		$this->page_title = $page_title;
 		$this->capability = $capability;
+		$this->is_network_submenu = ( 'settings.php' == $this->parent_slug );
 		$this->uniqid = $this->fm->get_element_id() . '_form';
-		if ( ! $already_registered )  {
-			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+
+		if ( $this->is_network_submenu && ! is_multisite() && Fieldmanager_Field::$debug ) {
+			throw new FM_Developer_Exception( esc_html__( 'Multisite is inactive. You should check is_multisite() before registering a Network Settings submenu page.', 'fieldmanager' ) );
+		}
+
+		if ( ! $this->capability ) {
+			if ( $this->is_network_submenu ) {
+				$this->capability = 'manage_network_options';
+			} else {
+				$this->capability = 'manage_options';
+			}
+		}
+
+		if ( ! $already_registered ) {
+			if ( $this->is_network_submenu ) {
+				add_action( 'network_admin_menu', array( $this, 'register_submenu_page' ) );
+			} else {
+				add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+			}
 		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
 	}
@@ -87,7 +111,11 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @return void.
 	 */
 	public function render_submenu_page() {
-		$values = get_option( $this->fm->name, null );
+		if ( $this->is_network_submenu ) {
+			$values = get_site_option( $this->fm->name, null );
+		} else {
+			$values = get_option( $this->fm->name, null );
+		}
 		?>
 		<div class="wrap">
 			<?php if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) : ?>
@@ -105,7 +133,6 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 			</form>
 		</div>
 		<?php
-
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( $this->uniqid, 'submenu' );
 		$fm_validation->add_field( $this->fm );
@@ -139,14 +166,26 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	public function save_submenu_data( $data = null ) {
 		$this->fm->data_id = $this->fm->name;
 		$this->fm->data_type = 'options';
-		$current = get_option( $this->fm->name, null );
+		if ( $this->is_network_submenu ) {
+			$current = get_site_option( $this->fm->name, null );
+		} else {
+			$current = get_option( $this->fm->name, null );
+		}
 		$data = $this->prepare_data( $current, $data );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 
 		if ( isset( $current ) ) {
-			update_option( $this->fm->name, $data );
+			if ( $this->is_network_submenu ) {
+				update_site_option( $this->fm->name, $data );
+			} else {
+				update_option( $this->fm->name, $data );
+			}
 		} else {
-			add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
+			if ( $this->is_network_submenu ) {
+				add_site_option( $this->fm->name, $data );
+			} else {
+				add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
+			}
 		}
 
 		return true;
@@ -159,7 +198,9 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @return string
 	 */
 	public function url() {
-		if ( $this->parent_slug && ! isset( $GLOBALS['_parent_pages'][ $this->parent_slug ] ) ) {
+		if ( $this->is_network_submenu ) {
+			return network_admin_url( $this->parent_slug );
+		} elseif ( $this->parent_slug && ! isset( $GLOBALS['_parent_pages'][ $this->parent_slug ] ) ) {
 			return admin_url( add_query_arg( 'page', $this->menu_slug, $this->parent_slug ) );
 		} else {
 			return admin_url( 'admin.php?page=' . $this->menu_slug );

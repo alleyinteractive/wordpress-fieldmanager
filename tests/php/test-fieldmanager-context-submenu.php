@@ -29,6 +29,8 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$context = $this->get_context( $name );
 		$html = $this->get_html( $context, $name );
 
+		$this->assertFalse( $context->is_network_submenu );
+
 		$this->assertContains( '<h2>Tools Meta Fields</h2>', $html );
 		$this->assertRegExp( '/<input type="hidden"[^>]+name="fieldmanager-' . $name . '-nonce"/', $html );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[name\]"[^>]+value=""/', $html );
@@ -46,13 +48,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertTrue( $context->save_submenu_data() );
 
 		$processed_values = get_option( $name );
-
-		$this->assertEquals( $_POST[ $name ]['email'], $processed_values['email'] );
-		$this->assertEquals( $_POST[ $name ]['remember'], $processed_values['remember'] );
-		$this->assertNotEquals( $_POST[ $name ]['name'], $processed_values['name'] );
-		$this->assertEquals( $processed_values['name'], 'Austin "Smith"' );
-		$this->assertEquals( $_POST[ $name ]['group']['preferences'], $processed_values['group']['preferences'] );
-		$this->assertEquals( $processed_values['number'], 11 ); // changed in presave hook and sanitized.
+		$this->assert_processed_values( $processed_values, $name );
 
 		$processed_html = $this->get_html( $context, $name );
 
@@ -70,6 +66,32 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 		$this->assertContains( '<div class="updated success">', $processed_html );
 
+	}
+
+	/**
+	 * Test a Network Settings submenu.
+	 *
+	 * Similar to Test_Fieldmanager_Context_Submenu::test_submenu_context(), but
+	 * skips verifying the HTML and checks that a non-site option was not set.
+	 */
+	public function test_network_submenu() {
+		$name = 'network_meta_fields';
+		fm_register_submenu_page( $name, 'settings.php', 'Network Submenu Meta Fields' );
+
+		if ( ! is_multisite() ) {
+			// We should be stopped after instantiating the Fieldmanager_Context_Submenu.
+			$this->setExpectedException( 'FM_Developer_Exception' );
+		}
+		$context = $this->get_context( $name );
+
+		$this->assertTrue( $context->is_network_submenu );
+
+		$html = $this->get_html( $context, $name );
+		$this->build_post( $html, $name );
+		$this->assertTrue( $context->save_submenu_data() );
+
+		$this->assert_processed_values( get_site_option( $name ), $name );
+		$this->assertFalse( get_option( $name ) );
 	}
 
 	/**
@@ -198,6 +220,23 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 				),
 			),
 		);
+	}
+
+	/**
+	 * Assert that the processed-and-saved option values match those in the POST.
+	 *
+	 * @see Test_Fieldmanager_Context_Submenu::build_post().
+	 *
+	 * @param array $value The option saved by Fieldmanager_Context_Submenu::save_submenu_data().
+	 * @param string $name The Fieldmanager name
+	 */
+	private function assert_processed_values( $values, $name ) {
+		$this->assertEquals( $_POST[ $name ]['email'], $values['email'] );
+		$this->assertEquals( $_POST[ $name ]['remember'], $values['remember'] );
+		$this->assertNotEquals( $_POST[ $name ]['name'], $values['name'] );
+		$this->assertEquals( $values['name'], 'Austin "Smith"' );
+		$this->assertEquals( $_POST[ $name ]['group']['preferences'], $values['group']['preferences'] );
+		$this->assertEquals( $values['number'], 11 ); // changed in presave hook and sanitized.
 	}
 
 	/**

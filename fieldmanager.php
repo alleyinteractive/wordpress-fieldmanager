@@ -500,6 +500,7 @@ function _fm_add_submenus() {
 	}
 }
 add_action( 'admin_menu', '_fm_add_submenus', 15 );
+add_action( 'network_admin_menu', '_fm_add_submenus', 15 );
 
 /**
  * Sanitize multi-line text.
