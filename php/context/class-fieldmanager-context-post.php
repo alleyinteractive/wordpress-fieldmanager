@@ -71,7 +71,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		add_action( 'save_post', array( $this, 'delegate_save_post' ) );
 		// Check if any meta boxes need to be removed
 		if ( $this->fm && !empty( $this->fm->meta_boxes_to_remove ) ) {
-			add_action( 'admin_init', array( $this, 'remove_meta_boxes' ) );
+			add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ) );
 		}
 	}
 
