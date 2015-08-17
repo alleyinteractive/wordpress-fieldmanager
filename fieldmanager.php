@@ -418,17 +418,17 @@ function fm_trigger_context_action() {
 		 * the values returned by fm_calculate_context(). For example, the Edit
 		 * screen for the Page post type would fire "fm_post_page".
 		 */
-		do_action( "fm_{$context}_{$type}" );
-	} else {
-		/**
-		 * Fires when a specific Fieldmanager context, but not type, loads.
-		 *
-		 * The dynamic portion of the hook name, $context, refers to the first
-		 * value returned by fm_calculate_context(). For example, the Edit User
-		 * screen would fire "fm_user".
-		 */
-		do_action( "fm_{$context}" );
+		do_action( "fm_{$context}_{$type}", $type );
 	}
+
+	/**
+	 * Fires when a specific Fieldmanager context loads.
+	 *
+	 * The dynamic portion of the hook name, $context, refers to the first
+	 * value returned by fm_calculate_context(). For example, the Edit User
+	 * screen would fire "fm_user".
+	 */
+	do_action( "fm_{$context}", $type );
 }
 add_action( 'init', 'fm_trigger_context_action', 99 );
 
