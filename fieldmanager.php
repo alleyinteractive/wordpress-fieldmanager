@@ -419,7 +419,8 @@ function fm_trigger_context_action() {
 		 * the values returned by fm_calculate_context(). For example, the Edit
 		 * screen for the Page post type would fire "fm_post_page".
 		 *
-		 * @param string $type The context type, e.g. post, term, submenu.
+		 * @param string $type The context subtype, e.g. the post type, taxonomy
+		 *                     name, submenu option name.
 		 */
 		do_action( "fm_{$context}_{$type}", $type );
 	}
@@ -431,8 +432,9 @@ function fm_trigger_context_action() {
 	 * value returned by fm_calculate_context(). For example, the Edit User
 	 * screen would fire "fm_user".
 	 *
-	 * @param string|null $type The context type, e.g. post, term, submenu. null
-	 *                          if this context does not have a type.
+	 * @param string|null $type The context subtype, e.g. the post type,
+	 *                          taxonomy name, submenu option name. null if this
+	 *                          context does not have a subtype.
 	 */
 	do_action( "fm_{$context}", $type );
 }
