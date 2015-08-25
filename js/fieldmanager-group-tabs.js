@@ -29,7 +29,7 @@ var FieldmanagerGroupTabs;
 			}, this ) );
 
 			if ( this.supportsLocalStorage() ) {
-				$('.fm-tab-bar .fm-tab a').on('click', function(){
+				$('.fm-tab-bar.fm-persist-active-tab .fm-tab a').on('click', function(){
 					var el = $(this);
 					var id = el.closest('.fm-tab-bar').attr('id');
 					localStorage[ id ] = el.attr('href');
@@ -105,7 +105,7 @@ var FieldmanagerGroupTabs;
 				return;
 			}
 
-			$('.fm-tab-bar').each( function(){
+			$('.fm-tab-bar.fm-persist-active-tab').each( function(){
 				var el = $(this);
 				var id = el.attr('id');
 				if ( localStorage[ id ] ) {
