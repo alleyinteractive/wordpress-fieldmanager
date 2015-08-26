@@ -433,7 +433,7 @@ function fm_trigger_context_action() {
 add_action( 'init', 'fm_trigger_context_action', 99 );
 
 // To be worked into the usual context action workflow.
-add_action( 'sidebar_admin_setup', function() {
+add_action( 'admin_init', function() {
 	do_action( 'fm_widget' );
 } );
 
