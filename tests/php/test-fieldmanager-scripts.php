@@ -23,6 +23,7 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 
 		// Instantiate FM classes that register scripts.
 		new Fieldmanager_Autocomplete( 'Test', array( 'datasource' => new Fieldmanager_Datasource_Post ) );
+		new Fieldmanager_Datepicker( 'Test' );
 
 		do_action( 'wp_enqueue_scripts' );
 		do_action( 'admin_enqueue_scripts' );
@@ -38,16 +39,32 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 	}
 
 	/**
-	 * [test_script_depencencies description]
+	 * Provide data for test_script_depencencies.
 	 *
-	 * @return [type] [description]
+	 * @return array
 	 */
-	function test_script_depencencies() {
-		$scripts = wp_scripts();
+	public function script_handles() {
+		return array(
+			array( 'fm_autocomplete_js' ),
+			array( 'fm_datepicker' ),
+		);
+	}
 
-		$autocomplete = $scripts->query( 'fm_autocomplete_js' );
-		$this->assertInstanceOf( '_WP_Dependency', $autocomplete );
-		$this->assertContains( 'fieldmanager_script', $autocomplete->deps );
+	/**
+	 * @dataProvider script_handles
+	 */
+	function test_script_registration( $handle ) {
+		$scripts = wp_scripts();
+		$this->assertInstanceOf( '_WP_Dependency', $scripts->query( $handle ) );
+
+	}
+
+	/**
+	 * @dataProvider script_handles
+	 */
+	function test_script_depencencies( $handle ) {
+		$scripts = wp_scripts();
+		$this->assertContains( 'fieldmanager_script', $scripts->query( $handle )->deps );
 	}
 
 }

@@ -104,7 +104,7 @@ function fieldmanager_enqueue_scripts() {
 	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.1' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
-add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
+add_action( 'admin_footer', 'fieldmanager_enqueue_scripts' );
 
 /**
  * Tell Fieldmanager that it has a base URL somewhere other than the plugins URL.
