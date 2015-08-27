@@ -27,6 +27,7 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 		new Fieldmanager_DraggablePost( 'Test' );
 		new Fieldmanager_Grid( 'Test' );
 		new Fieldmanager_Group( 'Test', array( 'tabbed' => 'horizontal' ) );
+		new Fieldmanager_Media( 'Test' );
 		new Fieldmanager_RichTextArea( 'Test' );
 
 		do_action( 'wp_enqueue_scripts' );
@@ -56,6 +57,7 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 			array( 'fm_datepicker', true ),
 			array( 'fm_draggablepost_js', false ),
 			array( 'fm_group_tabs_js', false ),
+			array( 'fm_media', false ),
 			array( 'fm_richtext', true ),
 			array( 'grid', false ),
 		);
