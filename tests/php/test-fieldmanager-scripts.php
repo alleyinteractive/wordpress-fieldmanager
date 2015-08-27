@@ -21,7 +21,7 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 		$GLOBALS['wp_scripts'] = new WP_Scripts();
 		$GLOBALS['wp_scripts']->default_version = get_bloginfo( 'version' );
 
-		// Instantiate FM classes that register scripts.
+		// Instantiate field classes that register scripts.
 		new Fieldmanager_Autocomplete( 'Test', array( 'datasource' => new Fieldmanager_Datasource_Post ) );
 		new Fieldmanager_Datepicker( 'Test' );
 		new Fieldmanager_DraggablePost( 'Test' );
@@ -45,46 +45,41 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Provide data for test_script_depencencies.
+	 * Provide test data.
 	 *
 	 * @return array {
 	 *     @type string $handle Script handle.
-	 *     @type bool $deps Whether $handle depends on 'fieldmanager_script'.
+	 *     @type array $deps Other scripts that $handle should depend on.
 	 * }
 	 */
-	public function script_handles() {
+	public function script_data() {
 		return array(
-			array( 'fm_autocomplete_js', true ),
-			array( 'fm_datepicker', true ),
-			array( 'fm_draggablepost_js', false ),
-			array( 'fm_group_tabs_js', false ),
-			array( 'fm_media', false ),
-			array( 'fm_richtext', true ),
-			array( 'fm_select_js', false ),
-			array( 'grid', false ),
+			array( 'fm_autocomplete_js', array( 'fieldmanager_script' ) ),
+			array( 'fm_datepicker', array( 'fieldmanager_script' ) ),
+			array( 'fm_draggablepost_js', array() ),
+			array( 'fm_group_tabs_js', array( 'jquery', 'jquery-hoverintent' ) ),
+			array( 'fm_media', array( 'jquery' ) ),
+			array( 'fm_richtext', array( 'jquery', 'fieldmanager_script' ) ),
+			array( 'fm_select_js', array() ),
+			array( 'grid', array() ),
 		);
 	}
 
 	/**
-	 * @dataProvider script_handles
+	 * @dataProvider script_data
 	 */
-	function test_script_registration( $handle ) {
+	function test_script_is_registered( $handle ) {
 		$scripts = wp_scripts();
 		$this->assertInstanceOf( '_WP_Dependency', $scripts->query( $handle ) );
 
 	}
 
 	/**
-	 * @dataProvider script_handles
+	 * @dataProvider script_data
 	 */
-	function test_script_depencencies( $handle, $deps ) {
+	function test_script_dependencies( $handle, $deps ) {
 		$scripts = wp_scripts();
-
-		if ( $deps ) {
-			$this->assertContains( 'fieldmanager_script', $scripts->query( $handle )->deps );
-		} else {
-			$this->assertNotContains( 'fieldmanager_script', $scripts->query( $handle )->deps );
-		}
+		$this->assertEquals( $deps, $scripts->query( $handle )->deps );
 	}
 
 }
