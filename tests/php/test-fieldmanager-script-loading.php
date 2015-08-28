@@ -69,8 +69,8 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 	 * @dataProvider script_data
 	 */
 	function test_script_is_registered( $handle ) {
-		$scripts = wp_scripts();
-		$this->assertInstanceOf( '_WP_Dependency', $scripts->query( $handle ) );
+		global $wp_scripts;
+		$this->assertInstanceOf( '_WP_Dependency', $wp_scripts->query( $handle ) );
 
 	}
 
@@ -78,8 +78,8 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 	 * @dataProvider script_data
 	 */
 	function test_script_dependencies( $handle, $deps ) {
-		$scripts = wp_scripts();
-		$this->assertEquals( $deps, $scripts->query( $handle )->deps );
+		global $wp_scripts;
+		$this->assertEquals( $deps, $wp_scripts->query( $handle )->deps );
 	}
 
 }
