@@ -8,14 +8,15 @@ php:
 env:
     - WP_VERSION=master WP_MULTISITE=0
     - WP_VERSION=master WP_MULTISITE=1
+    - WP_VERSION=4.1 WP_MULTISITE=0
+    - WP_VERSION=4.1 WP_MULTISITE=1
     - WP_VERSION=4.0 WP_MULTISITE=0
     - WP_VERSION=4.0 WP_MULTISITE=1
     - WP_VERSION=3.9 WP_MULTISITE=0
     - WP_VERSION=3.9 WP_MULTISITE=1
-    - WP_VERSION=3.8 WP_MULTISITE=0
-    - WP_VERSION=3.8 WP_MULTISITE=1
 
 before_script:
+    # Set up WordPress installation.
     - export WP_TESTS_DIR=/tmp/wordpress/tests/phpunit
     - export WP_CORE_DIR=/tmp/wordpress/src/
     - git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ /tmp/wordpress
@@ -24,5 +25,20 @@ before_script:
     - sed -i "s/youremptytestdbnamehere/wordpress_tests/" /tmp/wordpress/wp-tests-config.php
     - sed -i "s/yourusernamehere/travis/" /tmp/wordpress/wp-tests-config.php
     - sed -i "s/yourpasswordhere//" /tmp/wordpress/wp-tests-config.php
+    - if [[ "$WP_VERSION" == "master" && "$WP_MULTISITE" == "0" ]]; then ./ci/setup_codesniffer.sh; fi;
 
-script: phpunit
+script:
+    # Search for PHP syntax errors.
+    - if [[ "$WP_VERSION" == "master" && "$WP_MULTISITE" == "0" ]]; then find . -name "*.php" -exec php -lf {} \;; fi;
+    # Check against WordPress Coding Standards
+    # @link https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards
+    # @link http://pear.php.net/package/PHP_CodeSniffer/
+    # -p flag: Show progress of the run.
+    # -s flag: Show sniff codes in all reports.
+    # -v flag: Print verbose output.
+    # -n flag: Do not print warnings (shortcut for --warning-severity=0)
+    # --standard: Use WordPress as the standard.
+    # --extensions: Only sniff PHP files.
+    - if [[ "$WP_VERSION" == "master" && "$WP_MULTISITE" == "0" ]]; then /tmp/wordpress/php-codesniffer/scripts/phpcs -p -s -v -n . --standard=./codesniffer.ruleset.xml --extensions=php; fi;
+    # Run unit tests
+    - phpunit
