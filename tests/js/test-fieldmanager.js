@@ -85,9 +85,9 @@
 			$( this ).trigger( 'click' );
 		});
 
-		assert.equal( $( '[name="mytest[0]' ).text(), 'Third', "Corresponding name attributes and text values in the reordered simple group" );
-		assert.equal( $( '[name="mytest[1]' ).text(), 'First', "Corresponding name attributes and text values in the reordered simple group" );
-		assert.equal( $( '[name="mytest[2]' ).text(), 'Second', "Corresponding name attributes and text values in the reordered simple group" );
+		assert.equal( $( '[name="mytest[0]"]' ).text(), 'Third', "Corresponding name attributes and text values in the reordered simple group" );
+		assert.equal( $( '[name="mytest[1]"]' ).text(), 'First', "Corresponding name attributes and text values in the reordered simple group" );
+		assert.equal( $( '[name="mytest[2]"]' ).text(), 'Second', "Corresponding name attributes and text values in the reordered simple group" );
 
 		assert.equal( $( '[name="mytest[0][mysubtest][0]"]' ).text(), 'Epsilon', "Corresponding name attributes and text values in the reordered top-level group" );
 		assert.equal( $( '[name="mytest[1][mysubtest][0]"]' ).text(), 'Charlie', "Corresponding name attributes and text values in the reordered subgroup" );
