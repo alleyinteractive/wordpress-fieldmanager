@@ -11,7 +11,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 
     /**
      * Supply a function which returns a list of posts; takes one argument,
-     * a possible fragement
+     * a possible fragment
      */
     public $query_callback = Null;
 
@@ -111,11 +111,15 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             if ( preg_match( '/^https?\:/i', $fragment ) ) {
                 $url = esc_url( $fragment );
                 $url_parts = parse_url( $url );
-                $get_vars = array();
-                parse_str( $url_parts['query'], $get_vars );
-                if ( !empty( $get_vars['post'] )  ) {
+
+                if ( ! empty( $url_parts['query'] ) )  {
+                    $get_vars = array();
+                    parse_str( $url_parts['query'], $get_vars );
+                }
+
+                if ( ! empty( $get_vars['post'] )  ) {
                     $post_id = intval( $get_vars['post'] );
-                } elseif ( !empty( $get_vars['p'] ) ) {
+                } elseif ( ! empty( $get_vars['p'] ) ) {
                     $post_id = intval( $get_vars['p'] );
                 } else {
                     $post_id = fm_url_to_post_id( $fragment );
@@ -215,7 +219,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
                 $post_type_obj = get_post_type_object( get_post_type( $value ) );
                 if ( empty( $post_type_obj->cap->edit_post ) || ! current_user_can( $post_type_obj->cap->edit_post, $value ) ) {
-                    wp_die( esc_html( sprintf( __( 'Tried to alter %s %d through field "%s", which user is not permitted edit.', 'fieldmanager' ), $post_type_obj->name, $value, $field->name ) ) );
+                    wp_die( esc_html( sprintf( __( 'Tried to alter %s %d through field "%s", which user is not permitted to edit.', 'fieldmanager' ), $post_type_obj->name, $value, $field->name ) ) );
                 }
             }
             $this->presave_status_transition( $field, $value );

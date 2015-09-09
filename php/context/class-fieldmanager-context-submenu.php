@@ -68,9 +68,8 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		$this->page_title = $page_title;
 		$this->capability = $capability;
 		$this->uniqid = $this->fm->get_element_id() . '_form';
-		if ( !$already_registered )  {
+		if ( ! $already_registered )  {
 			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
-			add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
 		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
 	}
@@ -102,7 +101,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 					<input type="hidden" name="fm-options-action" value="<?php echo sanitize_title( $this->fm->name ) ?>" />
 					<?php $this->render_field( array( 'data' => $values ) ); ?>
 				</div>
-				<?php submit_button( $this->submit_button_label, 'submit', 'fm-submit' ) ?>
+				<?php submit_button( $this->submit_button_label, 'primary', 'fm-submit' ) ?>
 			</form>
 		</div>
 		<?php

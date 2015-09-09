@@ -62,7 +62,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	public function __construct( $label, $options = array() ) {
 		wp_enqueue_script( 'jquery-ui-datepicker' );
 		fm_add_style( 'fm-jquery-ui', 'css/jquery-ui/jquery-ui-1.10.2.custom.min.css' );
-		fm_add_script( 'fm_datepicker', 'js/fieldmanager-datepicker.js' );
+		fm_add_script( 'fm_datepicker', 'js/fieldmanager-datepicker.js', array( 'fieldmanager_script' ) );
 		parent::__construct( $label, $options );
 
 		if ( empty( $this->js_opts ) ) {
@@ -106,11 +106,12 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 */
 	public function presave( $value, $current_value = array() ) {
 		$time_to_parse = sanitize_text_field( $value['date'] );
-		if ( isset( $value['hour'] ) && is_numeric( $value['hour'] ) && isset( $value['minute'] ) && is_numeric( $value['minute'] ) && $this->use_time ) {
+		if ( isset( $value['hour'] ) && is_numeric( $value['hour'] ) && $this->use_time ) {
 			$hour = intval( $value['hour'] );
+			$minute = ( isset( $value['minute'] ) && is_numeric( $value['minute'] ) ) ? intval( $value['minute'] ) : 0;
 			if ( $hour == 0 && $this->use_am_pm ) $hour = 12;
 			$time_to_parse .= ' ' . $hour;
-			$time_to_parse .= ':' . str_pad( intval( $value['minute'] ), 2, '0', STR_PAD_LEFT );
+			$time_to_parse .= ':' . str_pad( $minute, 2, '0', STR_PAD_LEFT );
 			$time_to_parse .= ' ' . sanitize_text_field( $value['ampm'] );
 		}
 		if ( $this->store_local_time ) {
@@ -130,7 +131,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Get hour for rendering in field
+	 * Get minute for rendering in field
 	 * @param int $value unix timestamp
 	 * @return string value of hour
 	 */

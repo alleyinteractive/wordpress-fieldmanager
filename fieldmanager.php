@@ -299,10 +299,15 @@ function fm_calculate_context() {
 		if ( ! empty( $_GET['page'] ) ) {
 			$page = sanitize_text_field( $_GET['page'] );
 			$submenus = _fieldmanager_registry( 'submenus' );
+
+			if ( isset( $_GET['post_type'] ) && post_type_exists( $_GET['post_type'] ) ) {
+				$script .= '?post_type=' . $_GET['post_type'];
+			}
+
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
 					if ( $script == $submenu[0] || ( 'admin.php' == $script && $page == $submenu[4] ) ) {
-						return array( 'submenu', sanitize_text_field( $page ) );
+						return array( 'submenu', $page );
 					}
 				}
 			}
@@ -545,6 +550,11 @@ function _fm_form_init_once( $uniqid ) {
 function fm_sanitize_textarea( $value ) {
 	return implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $value ) ) );
 }
+
+/**
+ * Stripslashes_deep for submenu data.
+ */
+add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
 
 /**
  * Exception class for Fieldmanager's fatal errors.
