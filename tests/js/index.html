@@ -4,22 +4,44 @@
 	<meta charset="utf-8">
 	<title>Fieldmanager QUnit Test Suite</title>
 
-	<!-- Dependencies -->
-	<script src="http://develop.svn.wordpress.org/trunk/src/wp-includes/js/jquery/jquery.js"></script>
-	<script src='http://develop.svn.wordpress.org/trunk/src/wp-includes/js/jquery/ui/core.js'></script>
-	<script src='http://develop.svn.wordpress.org/trunk/src/wp-includes/js/jquery/ui/widget.js'></script>
-	<script src='http://develop.svn.wordpress.org/trunk/src/wp-includes/js/jquery/ui/mouse.js'></script>
-	<script src='http://develop.svn.wordpress.org/trunk/src/wp-includes/js/jquery/ui/sortable.js'></script>
-	<script src='http://develop.svn.wordpress.org/trunk/src/wp-includes/js/jquery/ui/draggable.js'></script>
-	<script src='http://develop.svn.wordpress.org/trunk/src/wp-includes/js/jquery/ui/droppable.js'></script>
-	<script src="../../js/fieldmanager.js"></script>
-
 	<!-- QUnit -->
 	<link rel="stylesheet" href="vendor/qunit-1.19.0.css">
 	<script src="vendor/qunit-1.19.0.js"></script>
 
-	<!-- Tests -->
-	<script src="test-fieldmanager.js"></script>
+	<script>
+		var scripts = [];
+		var svn = 'http://develop.svn.wordpress.org/trunk';
+
+		var versionMatch = /wp=(\d\.\d)/.exec( window.location.href );
+		if ( versionMatch && versionMatch[1] ) {
+			svn = 'http://develop.svn.wordpress.org/tags/' + versionMatch[1];
+		}
+
+		scripts = [
+			svn + '/src/wp-includes/js/jquery/jquery.js',
+			svn + '/src/wp-includes/js/jquery/ui/core.js',
+			svn + '/src/wp-includes/js/jquery/ui/widget.js',
+			svn + '/src/wp-includes/js/jquery/ui/mouse.js',
+			svn + '/src/wp-includes/js/jquery/ui/sortable.js',
+			svn + '/src/wp-includes/js/jquery/ui/draggable.js',
+			svn + '/src/wp-includes/js/jquery/ui/droppable.js',
+		];
+
+		// Fieldmanager.
+		scripts.push( '../../js/fieldmanager.js' );
+
+		// Tests.
+		scripts.push( 'test-fieldmanager.js' );
+
+		scripts.forEach(function( src ) {
+			var script = document.createElement( 'script' );
+			script.src = src;
+			script.async = false;
+
+			var node = document.getElementsByTagName( 'script' )[0];
+			node.parentNode.insertBefore( script, null );
+		});
+	</script>
 </head>
 <body>
 	<div id="qunit"></div>
