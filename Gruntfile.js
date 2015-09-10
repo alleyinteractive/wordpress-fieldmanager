@@ -8,6 +8,9 @@ module.exports = function( grunt ) {
 			}
 		},
 		qunit: {
+			options: {
+				timeout: 7000
+			},
 			latest: {
 				options: {
 					urls: ['http://localhost:8000/tests/js/index.html']
