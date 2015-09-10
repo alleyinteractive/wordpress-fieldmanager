@@ -12,6 +12,10 @@
 		var scripts = [];
 		var svn = 'http://develop.svn.wordpress.org/trunk';
 
+		/*
+		Test against trunk by default; include '?wp=X.Y' in the URL to test
+		against the scripts in WordPress X.Y.
+		 */
 		var versionMatch = /wp=(\d\.\d)/.exec( window.location.href );
 		if ( versionMatch && versionMatch[1] ) {
 			svn = 'http://develop.svn.wordpress.org/tags/' + versionMatch[1];
