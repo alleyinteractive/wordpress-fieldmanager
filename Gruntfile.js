@@ -1,4 +1,8 @@
 module.exports = function( grunt ) {
+	if ( ! grunt.option( 'wp' ) ) {
+		grunt.option( 'wp', 'master' );
+	}
+
 	grunt.initConfig({
 		connect: {
 			server: {
@@ -24,6 +28,11 @@ module.exports = function( grunt ) {
 						'http://localhost:8000/tests/js/index.html?wp=4.2',
 						'http://localhost:8000/tests/js/index.html?wp=4.1'
 					]
+				}
+			},
+			specific: {
+				options: {
+					urls: [ 'http://localhost:8000/tests/js/index.html?wp=' + grunt.option( 'wp' ) ]
 				}
 			}
 		}

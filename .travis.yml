@@ -39,5 +39,5 @@ before_script:
 
 script:
     - phpunit
-    - grunt qunit:recent
+    - grunt qunit:specific --wp=WP_VERSION
 
