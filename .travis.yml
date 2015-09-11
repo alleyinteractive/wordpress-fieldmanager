@@ -6,6 +6,7 @@ php:
     - 5.3
     - 5.4
     - 5.5
+    - 5.6
 
 env:
     - WP_VERSION=master WP_MULTISITE=0
@@ -17,12 +18,9 @@ env:
 
 matrix:
     include:
-        - php: 5.6
-          env: WP_VERSION=master
         - php: 7.0
           env: WP_VERSION=master
     allow_failures:
-        - php: 5.6
         - php: 7.0
     fast_finish: true
 
