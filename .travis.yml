@@ -1,3 +1,5 @@
+sudo: false
+
 language: php
 
 php:
@@ -8,12 +10,23 @@ php:
 env:
     - WP_VERSION=master WP_MULTISITE=0
     - WP_VERSION=master WP_MULTISITE=1
-    - WP_VERSION=4.0 WP_MULTISITE=0
-    - WP_VERSION=4.0 WP_MULTISITE=1
-    - WP_VERSION=3.9 WP_MULTISITE=0
-    - WP_VERSION=3.9 WP_MULTISITE=1
-    - WP_VERSION=3.8 WP_MULTISITE=0
-    - WP_VERSION=3.8 WP_MULTISITE=1
+    - WP_VERSION=4.3 WP_MULTISITE=0
+    - WP_VERSION=4.3 WP_MULTISITE=1
+    - WP_VERSION=4.2 WP_MULTISITE=0
+    - WP_VERSION=4.2 WP_MULTISITE=1
+    - WP_VERSION=4.1 WP_MULTISITE=0
+    - WP_VERSION=4.1 WP_MULTISITE=1
+
+matrix:
+    include:
+        - php: 5.6
+          env: WP_VERSION=master
+        - php: 7.0
+          env: WP_VERSION=master
+    allow_failures:
+        - php: 5.6
+        - php: 7.0
+    fast_finish: true
 
 before_script:
     - export WP_TESTS_DIR=/tmp/wordpress/tests/phpunit
