@@ -57,6 +57,22 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		$wrapper.html( preview ).trigger( 'fieldmanager_media_preview', [ $wrapper, attachment, wp ] );
 	});
 
+	// Select the attachment when the frame opens
+	fm_media_frame[ $el.attr('id') ].on( 'open', function() {
+		// Select the current attachment inside the frame
+		var selection = fm_media_frame[ $el.attr('id') ].state().get('selection'),
+			id = $el.parent().find('.fm-media-id').val(),
+			attachment;
+
+		// If there is a saved attachment, use it
+		if ( '' !== id && -1 !== id && typeof wp.media.attachment !== "undefined" ) {
+			attachment = wp.media.attachment( id );
+			attachment.fetch();
+		}
+
+		selection.reset( attachment ? [ attachment ] : [] );
+	} );
+
 	fm_media_frame[ $el.attr('id') ].open();
 } );
 
