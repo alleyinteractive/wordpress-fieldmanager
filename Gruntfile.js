@@ -25,8 +25,7 @@ module.exports = function( grunt ) {
 					urls: [
 						'http://localhost:8000/tests/js/index.html',
 						'http://localhost:8000/tests/js/index.html?wp=4.3',
-						'http://localhost:8000/tests/js/index.html?wp=4.2',
-						'http://localhost:8000/tests/js/index.html?wp=4.1'
+						'http://localhost:8000/tests/js/index.html?wp=4.2'
 					]
 				}
 			},
