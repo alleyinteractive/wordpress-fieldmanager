@@ -62,7 +62,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 
 		add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
 		if ( !self::$has_registered_media ) {
-			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), '1.0.1' );
+			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), '1.0.2' );
 			self::$has_registered_media = True;
 		}
 		parent::__construct( $label, $options );
