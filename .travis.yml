@@ -33,5 +33,11 @@ before_script:
     - sed -i "s/youremptytestdbnamehere/wordpress_tests/" /tmp/wordpress/wp-tests-config.php
     - sed -i "s/yourusernamehere/travis/" /tmp/wordpress/wp-tests-config.php
     - sed -i "s/yourpasswordhere//" /tmp/wordpress/wp-tests-config.php
+    - npm install -g npm
+    - npm install -g grunt-cli
+    - npm install
 
-script: phpunit
+script:
+    - phpunit
+    - grunt qunit:specific --wp=$WP_VERSION
+
