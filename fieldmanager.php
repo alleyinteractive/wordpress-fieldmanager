@@ -296,8 +296,11 @@ function fm_calculate_context() {
 			$page = sanitize_text_field( $_GET['page'] );
 			$submenus = _fieldmanager_registry( 'submenus' );
 
-			if ( isset( $_GET['post_type'] ) && post_type_exists( $_GET['post_type'] ) ) {
-				$script .= '?post_type=' . $_GET['post_type'];
+			if ( isset( $_GET['post_type'] ) ) {
+				$post_type = sanitize_text_field( $_GET['post_type'] );
+				if ( post_type_exists( $post_type ) ) {
+					$script .= "?post_type={$post_type}";
+				}
 			}
 
 			if ( $submenus ) {
