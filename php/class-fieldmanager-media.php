@@ -116,7 +116,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
 			<div class="media-wrapper">%5$s</div>
 			<script type="text/javascript">
-			var fm_preview_size = fm_preview_size || [];
+			var fm_preview_size = fm_preview_size || {};
 			fm_preview_size["%1$s"]=%6$s;
 			</script>',
 			esc_attr( $this->get_element_id() ),
