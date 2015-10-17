@@ -65,6 +65,17 @@
 		// assert.ok( $( '#di-456' ).is( ':visible' ), "hide display-if value of '456'" );
 	});
 
+	QUnit.test( 'Autocomplete', function( assert ) {
+		assert.ok( $( '#ac-visible' ).hasClass( 'fm-autocomplete-enabled' ) );
+
+		var $invisible = $( '#ac-invisible' );
+		assert.notOk( $invisible.hasClass( 'fm-autocomplete-enabled' ) );
+
+		// Simulate activating autocomplete by focusing an element.
+		$invisible.show().focus();
+		assert.ok( $invisible.hasClass( 'fm-autocomplete-enabled' ) );
+	});
+
 	QUnit.test( 'Renumber', function( assert ) {
 		// Reorganize the items in the simple group.
 		var $fieldLast = $( '#renumbered .fm-item' ).last();

@@ -29,10 +29,13 @@
 			svn + '/src/wp-includes/js/jquery/ui/sortable.js',
 			svn + '/src/wp-includes/js/jquery/ui/draggable.js',
 			svn + '/src/wp-includes/js/jquery/ui/droppable.js',
+			svn + '/src/wp-includes/js/jquery/ui/menu.js',
+			svn + '/src/wp-includes/js/jquery/ui/autocomplete.js',
 		];
 
 		// Fieldmanager.
 		scripts.push( '../../js/fieldmanager.js' );
+		scripts.push( '../../js/fieldmanager-autocomplete.js' );
 
 		// Tests.
 		scripts.push( 'test-fieldmanager.js' );
@@ -98,6 +101,11 @@
 			<div id="di-789" class="display-if" data-display-src="test-displayif" data-display-value="789">789</div>
 		</div>
 		-->
+
+		<div id="autocomplete">
+			<input type="text" id="ac-visible" class="fm-autocomplete">
+			<input type="text" id="ac-invisible" class="fm-autocomplete" style="display: none;">
+		</div>
 
 		<div id="renumbered" class="fm-wrapper" data-fm-array-position="1">
 			<div class="fm-item">
