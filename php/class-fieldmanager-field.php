@@ -995,6 +995,9 @@ abstract class Fieldmanager_Field {
 		$this->require_base();
 		// Check if any default meta boxes need to be removed for this field
 		$this->add_meta_boxes_to_remove( $this->meta_boxes_to_remove );
+		if ( in_array( 'attachment', (array) $post_types ) ) {
+			$this->is_attachment = true;
+		}
 		return new Fieldmanager_Context_Post( $title, $post_types, $context, $priority, $this );
 	}
 
