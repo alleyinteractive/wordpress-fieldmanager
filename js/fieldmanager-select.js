@@ -42,7 +42,18 @@ fm_reset_chosen = function( $fm_text_field, fm_text_field_val ) {
 	} );
 }
 
+
+
 $( document ).ready( function() {
+
+	// Trigger form submit clicks 
+	// in order to properly validate select elements, as the js in core 
+	// that listens for the submits is set as a simple .click function
+	// instead of .on('click'), so this allows the clicks to do what core js is trying to do
+	$('input[type=submit]').on('click', function(e){
+		$('this').trigger('click');
+		e.stopImmediatePropagation();
+	});
 
 	// Track changes to the chosen text field linked to the select in order to update options via AJAX
 	// Used for taxonomy-based fields where preload is disabled
