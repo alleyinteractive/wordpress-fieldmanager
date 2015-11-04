@@ -17,7 +17,13 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 * Should we support type-ahead? i.e. use chosen.js or not
 	 */
 	public $type_ahead = False;
-
+	
+	/**
+	 * @var boolean
+	 * Should the field be required (no empty values)?
+	 */
+	public $required = False;
+	
 	/**
 	 * @var boolean
 	 * Send an empty element first
@@ -59,6 +65,13 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		if ( $this->type_ahead ) {
 			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
 			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+		}
+		
+		// Make the Select reqiured
+		if ( $this->required ) {
+			$this->attributes['aria-required'] 		= "true";
+			$this->attributes['data-rule-required'] = "true";
+			$this->attributes['required'] 			= "required";
 		}
 
 	}
