@@ -1032,6 +1032,17 @@ abstract class Fieldmanager_Field {
 		_fieldmanager_registry( 'active_submenu', $active_submenu );
 	}
 
+	/**
+	 * Add this field to the Customizer.
+	 *
+	 * @param string|array $args Customizer section title or arguments for the
+	 *     section and setting. @see Fieldmanager_Context_Customizer.
+	 */
+	public function add_customizer_section( $args ) {
+		$this->require_base();
+		return new Fieldmanager_Context_Customizer( $args, $this );
+	}
+
 	private function require_base() {
 		if ( !empty( $this->parent ) ) {
 			throw new FM_Developer_Exception( esc_html__( 'You cannot use this method on a subgroup', 'fieldmanager' ) );

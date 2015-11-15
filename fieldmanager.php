@@ -69,6 +69,11 @@ function fieldmanager_load_class( $class ) {
 		}
 		return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource-' . $class_id . '.php' );
 	}
+
+	if ( 'Fieldmanager_Customize_Control' === $class ) {
+		return fieldmanager_load_file( 'class-fieldmanager-customize-control.php' );
+	}
+
 	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );
 }
 
@@ -181,6 +186,12 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
 
 	add_action( 'admin_enqueue_scripts', $add_script );
 	add_action( 'wp_enqueue_scripts', $add_script );
+	/*
+	 * Use a later priority because 'customize_controls_enqueue_scripts' will be
+	 * in the middle of firing at the default priority when
+	 * Fieldmanager_Customize_Control::enqueue() calls this.
+	 */
+	add_action( 'customize_controls_enqueue_scripts', $add_script, 20 );
 }
 
 /**
@@ -278,6 +289,11 @@ function fm_get_context() {
  * }
  */
 function fm_calculate_context() {
+	// Consider the Customizer preview authoritative.
+	if ( is_customize_preview() ) {
+		return array( 'customizer', null );
+	}
+
 	// Safe to use at any point in the load process, and better than URL matching.
 	if ( is_admin() ) {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
@@ -310,6 +326,10 @@ function fm_calculate_context() {
 					}
 				}
 			}
+		}
+
+		if ( 'customize.php' === $script || is_customize_preview() ) {
+			return array( 'customizer', null );
 		}
 
 		switch ( $script ) {

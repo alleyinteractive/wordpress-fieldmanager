@@ -306,3 +306,18 @@ a.fm-delete:hover {
 .form-field .fm-checkbox label {
 	display: inline;
 }
+
+.wp-customizer .ui-autocomplete {
+	/* Hoist the autocomplete popup over who-knows-what in the Customizer. */
+	z-index: 500000;
+}
+
+.wp-customizer .fmjs-removable .fmjs-drag-icon {
+	/* Nudge for the Customizer. */
+	margin-top: 7px;
+}
+
+.wp-customizer .fmjs-removable .fmjs-drag-icon + .fmjs-removable-element {
+	/* Nudge for the Customizer. */
+	max-width: 90%;
+}
