@@ -200,6 +200,8 @@ $( document ).ready( function () {
 	init_sortable();
 
 	$( document ).on( 'fm_activate_tab', init_sortable );
+	$( document ).on( 'fm_init_sortable', init_sortable );
+	$( document ).on( 'fm_init_label_macros', init_label_macros );
 } );
 
 } )( jQuery );
