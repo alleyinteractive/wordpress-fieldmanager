@@ -26,9 +26,11 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	}
 
 	public function tearDown() {
-		$meta = get_term_meta( $this->term_id );
-		foreach ( $meta as $key => $value ) {
-			delete_term_meta( $this->term_id, $key );
+		if ( _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			$meta = get_term_meta( $this->term_id );
+			foreach ( $meta as $key => $value ) {
+				delete_term_meta( $this->term_id, $key );
+			}
 		}
 
 		if ( get_current_user_id() != $this->current_user ) {
