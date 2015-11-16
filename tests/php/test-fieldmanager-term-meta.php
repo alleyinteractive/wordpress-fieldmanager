@@ -39,6 +39,11 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 
 	/**
 	 * Test behavior when using the term meta fields.
+	 *
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::update_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::delete_term_meta
 	 */
 	public function test_save_term_meta() {
 		$term_option = new Fieldmanager_Textfield( array(
@@ -80,6 +85,12 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 		$this->assertNotEquals( false, wp_cache_get( $cache_key ) );
 	}
 
+	/**
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::update_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::delete_term_meta
+	 */
 	public function test_garbage_collection() {
 		$term_option = new Fieldmanager_Textfield( array(
 			'name'  => 'term_option',
@@ -110,6 +121,8 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 
 	/**
 	 * @group term_splitting
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::add_term_meta
 	 */
 	public function test_term_splitting() {
 		// Ensure that term splitting exists

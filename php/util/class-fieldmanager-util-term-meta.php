@@ -1,10 +1,15 @@
 <?php
 /**
+ * Use fieldmanager to store meta data for taxonomy terms.
+ *
+ * This is deprecated as of WordPress 4.4, which introduces Term Meta into core.
+ * If you were using this feature prior to 4.4, it will continue to operate
+ * until probably WordPress 4.8, however it is in your best interest to migrate
+ * your data ASAP, as core's term meta is significantly more efficient.
+ *
+ * @deprecated 1.0.0-beta.3
+ *
  * @package Fieldmanager_Util
- */
-
-/**
- * Use fieldmanager to store meta data for taxonomy terms
  */
 class Fieldmanager_Util_Term_Meta {
 
@@ -83,6 +88,7 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return string|array @see get_post_meta().
 	 */
 	public function get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
+		_deprecated_function( __METHOD__, 'Fieldmanager-1.0.0-beta.3' );
 
 		// Check if this term has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
@@ -113,6 +119,7 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return boolean|integer @see add_post_meta().
 	 */
 	public function add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {
+		_deprecated_function( __METHOD__, 'Fieldmanager-1.0.0-beta.3' );
 
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
@@ -153,6 +160,7 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return mixed @see update_post_meta().
 	 */
 	public function update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value='' ) {
+		_deprecated_function( __METHOD__, 'Fieldmanager-1.0.0-beta.3' );
 
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
@@ -188,6 +196,7 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return boolean False for failure. True for success.
 	 */
 	public function delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value='' ) {
+		_deprecated_function( __METHOD__, 'Fieldmanager-1.0.0-beta.3' );
 
 		// Get the post used for this term
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );

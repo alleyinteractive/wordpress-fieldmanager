@@ -109,6 +109,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		return ob_get_clean();
 	}
 
+	/**
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 */
 	public function test_context_render_add_form() {
 		$base = $this->_get_elements();
 		ob_start();
@@ -123,6 +127,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
 	}
 
+	/**
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 */
 	public function test_context_render_edit_form() {
 		$base = $this->_get_elements();
 		ob_start();
@@ -137,6 +145,11 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
 	}
 
+	/**
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::update_term_meta
+	 */
 	public function test_context_save() {
 		$base = $this->_get_elements();
 		$test_data = $this->_get_valid_test_data();
@@ -159,6 +172,9 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$this->assertEquals( $saved_value['test_extended'][3]['extext'][0], 'fourth' );
 	}
 
+	/**
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 */
 	public function test_programmatic_save_terms() {
 		$base = $this->_get_elements();
 		$base->add_term_form( 'test meta box', $this->taxonomy );
@@ -174,6 +190,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::delete_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::add_term_meta
 	 */
 	public function test_unserialize_data_single_field() {
 		$base = new Fieldmanager_TextField( array(
@@ -197,6 +217,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::delete_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::add_term_meta
 	 */
 	public function test_unserialize_data_single_field_sorting() {
 		$item_1 = rand_str();
@@ -227,6 +251,9 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::update_term_meta
 	 */
 	public function test_unserialize_data_tabbed() {
 		$base = new Fieldmanager_Group( array(
@@ -273,6 +300,9 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
+	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::update_term_meta
 	 */
 	public function test_unserialize_data_mixed_depth() {
 		$base = new Fieldmanager_Group( array(
