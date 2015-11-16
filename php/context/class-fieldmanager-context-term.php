@@ -291,16 +291,21 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	}
 
 	/**
-	 * Saves custom fields for the sport taxonomy
+	 * Saves custom fields for the sport taxonomy.
+	 *
+	 * @deprecated Fieldmanager-1.0.0-beta.3 This is not necessary if you're
+	 *                                       using core's term meta.
 	 *
 	 * @access public
+	 *
 	 * @param int $term_id
 	 * @param int $tt_id
 	 * @param string $taxonomy
 	 * @param WP_term $deleted_term
-	 * @return void
 	 */
 	public function delete_term_fields( $term_id, $tt_id, $taxonomy, $deleted_term ) {
+		_deprecated_function( __METHOD__, 'Fieldmanager-1.0.0-beta.3' );
+
 		// Get an instance of the term meta class
 		$term_meta = Fieldmanager_Util_Term_Meta();
 
@@ -311,37 +316,57 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	/**
 	 * Callback to get term meta for the given term ID and current taxonomy.
 	 *
-	 * @see Fieldmanager_Util_Term_Meta::get_term_meta()
+	 * @see get_term_meta().
+	 * @see Fieldmanager_Util_Term_Meta::get_term_meta() (Deprecated).
 	 */
-	protected function get_data( $term_id, $meta_key, $single = false ) {
-		return fm_get_term_meta( $term_id, $this->current_taxonomy, $meta_key, $single );
+	protected function get_data( $term_id, $meta_key = '', $single = false ) {
+		if ( $this->use_fm_meta ) {
+			return fm_get_term_meta( $term_id, $this->current_taxonomy, $meta_key, $single );
+		} else {
+			return get_term_meta( $term_id, $meta_key, $single );
+		}
 	}
 
 	/**
 	 * Callback to add term meta for the given term ID and current taxonomy.
 	 *
-	 * @see Fieldmanager_Util_Term_Meta::add_term_meta()
+	 * @see add_term_meta().
+	 * @see Fieldmanager_Util_Term_Meta::add_term_meta() (Deprecated).
 	 */
 	protected function add_data( $term_id, $meta_key, $meta_value, $unique = false ) {
-		return fm_add_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $unique );
+		if ( $this->use_fm_meta ) {
+			return fm_add_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $unique );
+		} else {
+			return add_term_meta( $term_id, $meta_key, $meta_value, $unique );
+		}
 	}
 
 	/**
 	 * Callback to update term meta for the given term ID and current taxonomy.
 	 *
-	 * @see Fieldmanager_Util_Term_Meta::update_term_meta()
+	 * @see update_term_meta().
+	 * @see Fieldmanager_Util_Term_Meta::update_term_meta() (Deprecated).
 	 */
 	protected function update_data( $term_id, $meta_key, $meta_value, $meta_prev_value = '' ) {
-		return fm_update_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $meta_prev_value );
+		if ( $this->use_fm_meta ) {
+			return fm_update_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $meta_prev_value );
+		} else {
+			return update_term_meta( $term_id, $meta_key, $meta_value, $meta_prev_value );
+		}
 	}
 
 	/**
 	 * Callback to delete term meta for the given term ID and current taxonomy.
 	 *
-	 * @see Fieldmanager_Util_Term_Meta::delete_term_meta()
+	 * @see delete_term_meta().
+	 * @see Fieldmanager_Util_Term_Meta::delete_term_meta() (Deprecated).
 	 */
 	protected function delete_data( $term_id, $meta_key, $meta_value = '' ) {
-		return fm_delete_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value );
+		if ( $this->use_fm_meta ) {
+			return fm_delete_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value );
+		} else {
+			return delete_term_meta( $term_id, $meta_key, $meta_value );
+		}
 	}
 
 }
