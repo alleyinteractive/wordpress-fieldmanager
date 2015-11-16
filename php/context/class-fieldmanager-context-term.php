@@ -319,7 +319,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @see get_term_meta().
 	 * @see Fieldmanager_Util_Term_Meta::get_term_meta() (Deprecated).
 	 */
-	protected function get_data( $term_id, $meta_key = '', $single = false ) {
+	protected function get_data( $term_id, $meta_key, $single = false ) {
 		if ( $this->use_fm_meta ) {
 			return fm_get_term_meta( $term_id, $this->current_taxonomy, $meta_key, $single );
 		} else {
