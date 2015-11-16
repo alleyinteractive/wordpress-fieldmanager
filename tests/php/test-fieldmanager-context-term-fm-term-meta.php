@@ -1,12 +1,14 @@
 <?php
 
 /**
- * Tests the Post context
+ * Tests the Term context using the deprecated Fieldmanager Term Meta. This will
+ * help ensure backwards compatibility.
  *
  * @group context
  * @group term
+ * @group fm_term_meta
  */
-class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
+class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 	public $current_user;
 
 	public function setUp() {
