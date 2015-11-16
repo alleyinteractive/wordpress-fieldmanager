@@ -330,10 +330,8 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		// Create a custom taxonomy
 		register_taxonomy( $taxonomy, 'post' );
 
-		// Verify that tags, categories, and our custom tax are not sortable
+		// Verify that our custom taxonomy is not sortable
 		$this->assertTrue( empty( $wp_taxonomies[ $taxonomy ]->sort ) );
-		$this->assertTrue( empty( $wp_taxonomies['category']->sort ) );
-		$this->assertTrue( empty( $wp_taxonomies['post_tag']->sort ) );
 
 		new Fieldmanager_Autocomplete( array(
 			'name' => 'test_terms',
@@ -343,7 +341,9 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 			) ),
 		) );
 
-		// Verify that the above datasource made our taxonomies sortable
+		// Verify that the above datasource made our taxonomy sortable. Also,
+		// ensure that tags and categories are now sortable (even though they
+		// may have already been due to code run elsewhere).
 		$this->assertTrue( $wp_taxonomies[ $taxonomy ]->sort );
 		$this->assertTrue( $wp_taxonomies['category']->sort );
 		$this->assertTrue( $wp_taxonomies['post_tag']->sort );
