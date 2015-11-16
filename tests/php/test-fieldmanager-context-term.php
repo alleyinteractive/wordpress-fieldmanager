@@ -38,6 +38,16 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Mark a test as skipped because of the current WP Version.
+	 *
+	 * @param  float $min_version The required version, e.g. 3.9.
+	 */
+	protected function _skip_tests_because_version( $min_version ) {
+		global $wp_version;
+		$this->markTestSkipped( "Test requires WordPress {$min_version} or greater, but we're currently testing against {$wp_version}" );
+	}
+
+	/**
 	 * Get valid test data.
 	 * Several tests transform this data to somehow be invalid.
 	 * @return array valid test data
@@ -110,6 +120,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	}
 
 	public function test_context_render_add_form() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
 		$base = $this->_get_elements();
 		ob_start();
 		$base->add_term_meta_box( 'test meta box', $this->taxonomy )->add_term_fields( $this->taxonomy );
@@ -124,6 +138,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	}
 
 	public function test_context_render_edit_form() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
 		$base = $this->_get_elements();
 		ob_start();
 		$base->add_term_meta_box( 'test meta box', $this->taxonomy )->edit_term_fields( $this->term, $this->taxonomy );
@@ -138,6 +156,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	}
 
 	public function test_context_save() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
 		$base = $this->_get_elements();
 		$test_data = $this->_get_valid_test_data();
 
@@ -160,6 +182,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	}
 
 	public function test_programmatic_save_terms() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
 		$base = $this->_get_elements();
 		$base->add_term_meta_box( 'test meta box', $this->taxonomy );
 
@@ -176,6 +202,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_single_field() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
 		$base = new Fieldmanager_TextField( array(
 			'name'           => 'base_field',
 			'limit'          => 0,
@@ -199,6 +229,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_single_field_sorting() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
 		$item_1 = rand_str();
 		$item_2 = rand_str();
 		$item_3 = rand_str();
@@ -229,6 +263,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_tabbed() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
 		$base = new Fieldmanager_Group( array(
 			'name'           => 'base_group',
 			'tabbed'         => true,
@@ -275,6 +313,10 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_mixed_depth() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
 		$base = new Fieldmanager_Group( array(
 			'name'           => 'base_group',
 			'serialize_data' => false,
