@@ -87,6 +87,7 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 
 	/**
 	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * @expectedDeprecated Fieldmanager_Context_Term::delete_term_fields
 	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
 	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::update_term_meta
 	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::delete_term_meta
