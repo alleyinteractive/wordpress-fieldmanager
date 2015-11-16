@@ -196,7 +196,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) );
 		$this->assertCount( 0, $post_terms );
 	}
-	
+
 	/**
 	 * Test behavior when set to save only to taxonomy and not append.
 	 * Ensure that all terms are removed in this case.
@@ -216,18 +216,18 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 
 		$term = $this->factory->tag->create_and_get( array( 'name' => rand_str() ) );
 		$terms = array( $this->term->term_id, $term->term_id );
-		
+
 		$this->save_values( $term_taxonomy, $this->post, $terms );
 
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) );
 		$this->assertSame( sort( $terms ), sort( $post_terms ) );
-		
+
 		$terms = array();
 		$this->save_values( $term_taxonomy, $this->post, $terms );
 
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) );
 		$this->assertSame( $terms, $post_terms );
-		
+
 	}
 
 	/**
@@ -317,5 +317,35 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 			array( $this->term->term_id ),
 			wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) )
 		);
+	}
+
+	/**
+	 * When FM stores the term datasource as a term relationship, the taxonomy
+	 * needs to be sortable. This tests that taxonomies are made sortable.
+	 */
+	public function test_taxonomy_made_sortable() {
+		global $wp_taxonomies;
+		$taxonomy = 'test-fm-unsortable-taxonomy';
+
+		// Create a custom taxonomy
+		register_taxonomy( $taxonomy, 'post' );
+
+		// Verify that tags, categories, and our custom tax are not sortable
+		$this->assertTrue( empty( $wp_taxonomies[ $taxonomy ]->sort ) );
+		$this->assertTrue( empty( $wp_taxonomies['category']->sort ) );
+		$this->assertTrue( empty( $wp_taxonomies['post_tag']->sort ) );
+
+		new Fieldmanager_Autocomplete( array(
+			'name' => 'test_terms',
+			'datasource' => new Fieldmanager_Datasource_Term( array(
+				'taxonomy' => array( 'category', 'post_tag', $taxonomy ),
+				'taxonomy_save_to_terms' => true,
+			) ),
+		) );
+
+		// Verify that the above datasource made our taxonomies sortable
+		$this->assertTrue( $wp_taxonomies[ $taxonomy ]->sort );
+		$this->assertTrue( $wp_taxonomies['category']->sort );
+		$this->assertTrue( $wp_taxonomies['post_tag']->sort );
 	}
 }
