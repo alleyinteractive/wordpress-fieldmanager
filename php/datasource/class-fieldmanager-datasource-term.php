@@ -203,7 +203,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * Sanitize a value
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-		return empty( $value ) ? null : intval( $value );
+		return empty( $value ) ? $value : intval( $value );
 	}
 
 	/**
