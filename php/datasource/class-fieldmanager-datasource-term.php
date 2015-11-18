@@ -83,8 +83,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		}
 
 		if ( $this->taxonomy_save_to_terms ) {
-			// Ensure that the taxonomies are sortable if we're not using FM
-			// storage
+			// Ensure that the taxonomies are sortable if we're not using FM storage.
 			foreach ( $this->get_taxonomies() as $taxonomy ) {
 				if ( ! empty( $wp_taxonomies[ $taxonomy ] ) ) {
 					$wp_taxonomies[ $taxonomy ]->sort = true;
