@@ -114,6 +114,25 @@ var match_value = function( values, match_string ) {
 	return false;
 }
 
+/**
+ * Initializes triggers to conditionally hide or show fields.
+ */
+var init_display_if = function() {
+	$( '.display-if' ).each(function() {
+		var src = $( this ).data( 'display-src' );
+		var values = $( this ).data( 'display-value' ).split( ',' );
+		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
+		var val = trigger.val();
+		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
+			val = trigger.filter( ':checked' ).val();
+		}
+		trigger.addClass( 'display-trigger' );
+		if ( ! match_value( values, val ) ) {
+			$( this ).hide();
+		}
+	});
+};
+
 fm_add_another = function( $element ) {
 	var el_name = $element.data( 'related-element' )
 		, limit = $element.data( 'limit' ) - 0
@@ -163,21 +182,6 @@ $( document ).ready( function () {
 
 	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
 
-	// Initializes triggers to conditionally hide or show fields
-	$( '.display-if' ).each( function() {
-		var src = $( this ).data( 'display-src' );
-		var values = $( this ).data( 'display-value' ).split( ',' );
-		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
-		var val = trigger.val();
-		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
-			val = trigger.filter( ':checked' ).val();
-		}
-		trigger.addClass( 'display-trigger' );
-		if ( !match_value( values, val ) ) {
-			$( this ).hide();
-		}
-	} );
-
 	// Controls the trigger to show or hide fields
 	$( document ).on( 'change', '.display-trigger', function() {
 		var val = $( this ).val().split(',');
@@ -198,9 +202,11 @@ $( document ).ready( function () {
 
 	init_label_macros();
 	init_sortable();
+	init_display_if();
 
 	$( document ).on( 'fm_activate_tab fm_customizer_control_section_expanded', init_sortable );
 	$( document ).on( 'fm_customizer_control_section_expanded', init_label_macros );
+	$( document ).on( 'fm_customizer_control_section_expanded', init_display_if );
 } );
 
 } )( jQuery );
