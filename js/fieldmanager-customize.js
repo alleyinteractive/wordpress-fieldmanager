@@ -31,7 +31,6 @@
 			return;
 		}
 
-		// @todo This gets unnecessarily delayed by the _debounce
 		if ( $target.hasClass( 'fm-autocomplete' ) ) {
 			// Update an autocomplete setting object when the input's text is deleted.
 			if ( '' === $target.val() ) {
@@ -146,8 +145,17 @@
 	var ready = function() {
 		var $document = $( document );
 
+		/*
+		 * We debounce() most keyup events to avoid refreshing the Customizer
+		 * preview every single time the user types a letter. But typing into
+		 * the autocomplete input does not itself trigger a refresh -- the only
+		 * time it should affect the preview is when removing an autocomplete
+		 * selection. We allow that to occur normally.
+		 */
+		$document.on( 'keyup', '.fm-element:not(.fm-autocomplete)', _.debounce( onFmElementKeyup, 500 ) );
+		$document.on( 'keyup', '.fm-autocomplete', onFmElementKeyup );
+
 		$document.on( 'change', '.fm-element', onFmElementChange );
-		$document.on( 'keyup', '.fm-element', _.debounce( onFmElementKeyup, 500 ) );
 		$document.on( 'click', '.fm-media-remove', onFmMediaRemoveClick );
 		$document.on( 'click', '.fmjs-remove', onFmjsRemoveClick );
 		$document.on( 'fm_sortable_drop', onFmSortableDrop );
