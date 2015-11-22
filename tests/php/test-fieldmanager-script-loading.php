@@ -56,7 +56,7 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 		return array(
 			array( 'fieldmanager_script', array( 'jquery' ) ),
 			array( 'fm_autocomplete_js', array( 'fieldmanager_script' ) ),
-			array( 'fm_datepicker', array( 'fieldmanager_script' ) ),
+			array( 'fm_datepicker', array( 'fieldmanager_script', 'jquery-ui-datepicker' ) ),
 			array( 'fm_draggablepost_js', array() ),
 			array( 'fm_group_tabs_js', array( 'jquery', 'jquery-hoverintent' ) ),
 			array( 'fm_media', array( 'jquery' ) ),
