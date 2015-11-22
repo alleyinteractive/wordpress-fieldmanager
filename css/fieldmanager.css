@@ -307,9 +307,10 @@ a.fm-delete:hover {
 	display: inline;
 }
 
-.wp-customizer .ui-autocomplete {
-	/* Hoist the autocomplete popup over who-knows-what in the Customizer. */
-	z-index: 500000;
+.wp-customizer .ui-autocomplete,
+.wp-customizer .ui-datepicker {
+	/* Hoist jQuery UI popups over who-knows-what in the Customizer. */
+	z-index: 500000 !important;
 }
 
 .wp-customizer .fmjs-removable .fmjs-drag-icon {
