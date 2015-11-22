@@ -199,9 +199,8 @@ $( document ).ready( function () {
 	init_label_macros();
 	init_sortable();
 
-	$( document ).on( 'fm_activate_tab', init_sortable );
-	$( document ).on( 'fm_init_sortable', init_sortable );
-	$( document ).on( 'fm_init_label_macros', init_label_macros );
+	$( document ).on( 'fm_activate_tab fm_customizer_control_section_expanded', init_sortable );
+	$( document ).on( 'fm_customizer_control_section_expanded', init_label_macros );
 } );
 
 } )( jQuery );

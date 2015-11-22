@@ -123,15 +123,23 @@
 	};
 
 	/**
-	 * Fires when a Customizer Section expands.
+	 * Trigger an event when a Customizer section with a Fieldmanager control expands.
 	 */
-	var onSectionContainerExpanded = function() {
-		/*
-		 * Initialize sortable fields and fields with label macros on any fields
-		 * that just been expanded and are now visible.
-		 */
-		$( document ).trigger( 'fm_init_sortable' );
-		$( document ).trigger( 'fm_init_label_macros' );
+	var bindToSectionsWithFm = function() {
+		// @todo Also do this on section add
+		api.section.each(function( section ) {
+			$.each( section.controls(), function( i, control ) {
+				if ( 'fieldmanager' !== control.params.type ) {
+					return;
+				}
+
+				section.container.bind( 'expanded', function() {
+					$( document ).trigger( 'fm_customizer_control_section_expanded' );
+				});
+
+				return false;
+			});
+		});
 	};
 
 	/**
@@ -147,10 +155,7 @@
 		$document.on( 'fm_sortable_drop', onFmSortableDrop );
 		$document.on( 'fieldmanager_media_preview', onFieldmanagerMediaPreview );
 
-		// @todo Also do this on section add
-		api.section.each(function( section ) {
-			section.container.bind( 'expanded', onSectionContainerExpanded );
-		});
+		bindToSectionsWithFm();
 
 		/*
 		 * Hacky, because it always prompts the user to save. Unlike when we
