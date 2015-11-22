@@ -36,10 +36,8 @@
 			// Update an autocomplete setting object when the input's text is deleted.
 			if ( '' === $target.val() ) {
 				// See fm.autocomplete.enable_autocomplete() for this tree.
-				var $targetAutocomplete = $target.siblings( 'input[type=hidden]' ).first();
-
 				// @todo Risky? Autocomplete hidden fields don't typically get set to value="".
-				$targetAutocomplete.val( '' );
+				$target.siblings( 'input[type=hidden]' ).first().val( '' );
 
 			/*
 			 * Don't update when typing into the autocomplete input. The hidden
