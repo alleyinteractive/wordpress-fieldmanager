@@ -983,8 +983,6 @@ abstract class Fieldmanager_Field {
 	 * @param int $parent Only show this field on child terms of this parent term ID
 	 */
 	public function add_term_form( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
-		_deprecated_function( __METHOD__, 'Fieldmanager-1.0.0-beta.3', 'Fieldmanager_Field::add_term_meta_box()' );
-
 		$this->require_base();
 		return new Fieldmanager_Context_Term( array(
 			'title'        => $title,

@@ -126,7 +126,9 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		} elseif ( empty( $taxonomies ) ) {
 			throw new FM_Developer_Exception( esc_html__( '"title" and "taxonomies" are required values for Fieldmanager_Context_Term', 'fieldmanager' ) );
 		} else {
-			_deprecated_argument( __METHOD__, 'Fieldmanager-1.0.0-beta.3', esc_html__( 'Instantiating Fieldmanager_Context_Term using individual arguments is deprecated. Please pass an array of arguments instead.', 'fieldmanager' ) );
+			// Instantiating Fieldmanager_Context_Term using individual
+			// arguments is deprecated as of Fieldmanager-1.0.0-beta.3; you
+			// should pass an array of arguments instead.
 
 			// Set the class variables
 			$this->title        = $args;
@@ -304,8 +306,6 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @param WP_term $deleted_term
 	 */
 	public function delete_term_fields( $term_id, $tt_id, $taxonomy, $deleted_term ) {
-		_deprecated_function( __METHOD__, 'Fieldmanager-1.0.0-beta.3' );
-
 		// Get an instance of the term meta class
 		$term_meta = Fieldmanager_Util_Term_Meta();
 

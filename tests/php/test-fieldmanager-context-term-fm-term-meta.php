@@ -112,8 +112,8 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @expectedDeprecated Fieldmanager_Field::add_term_form
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_context_render_add_form() {
 		$base = $this->_get_elements();
@@ -130,8 +130,8 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @expectedDeprecated Fieldmanager_Field::add_term_form
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_context_render_edit_form() {
 		$base = $this->_get_elements();
@@ -148,9 +148,9 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @expectedDeprecated Fieldmanager_Field::add_term_form
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::update_term_meta
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_context_save() {
 		$base = $this->_get_elements();
@@ -175,7 +175,7 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @expectedDeprecated Fieldmanager_Field::add_term_form
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_programmatic_save_terms() {
 		$base = $this->_get_elements();
@@ -192,10 +192,10 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
-	 * @expectedDeprecated Fieldmanager_Field::add_term_form
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::delete_term_meta
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::add_term_meta
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::add_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_unserialize_data_single_field() {
 		$base = new Fieldmanager_TextField( array(
@@ -219,10 +219,10 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
-	 * @expectedDeprecated Fieldmanager_Field::add_term_form
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::delete_term_meta
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::add_term_meta
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::add_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_unserialize_data_single_field_sorting() {
 		$item_1 = rand_str();
@@ -253,9 +253,9 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
-	 * @expectedDeprecated Fieldmanager_Field::add_term_form
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::update_term_meta
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_unserialize_data_tabbed() {
 		$base = new Fieldmanager_Group( array(
@@ -302,9 +302,9 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
-	 * @expectedDeprecated Fieldmanager_Field::add_term_form
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::get_term_meta
-	 * @expectedDeprecated Fieldmanager_Util_Term_Meta::update_term_meta
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_unserialize_data_mixed_depth() {
 		$base = new Fieldmanager_Group( array(
