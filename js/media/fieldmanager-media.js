@@ -49,6 +49,14 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		// This event is only fired when a file is uploaded.
 		// @see {wp.media.controller.Library:uploading()}
 		fm_media_frame[ $el.attr('id') ].on( 'library:selection:add', function() {
+			// This event gets fired for every frame that has ever been created on
+			// the current page, which causes errors. We only care about the visible
+			// frame. Also, FM can change the ID of buttons, which means some older
+			// frames may no longer be valid.
+			if ( 'undefined' === typeof fm_media_frame[ $el.attr('id') ] || ! fm_media_frame[ $el.attr('id') ].$el.is(':visible') ) {
+				return;
+			}
+
 			// Get the Selection object and the currently selected attachment.
 			var selection = fm_media_frame[ $el.attr('id') ].state().get('selection'),
 				attachment = selection.first();
