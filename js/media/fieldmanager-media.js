@@ -22,10 +22,10 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		return;
 	}
 
-	// If media type has been restricted, make sure the library only shows that
+	// If mime type has been restricted, make sure the library only shows that
 	// type.
-	if ( $el.data( 'type' ) && 'all' !== $el.data( 'type' ) ) {
-		library.type = $el.data( 'type' );
+	if ( $el.data( 'mime-type' ) && 'all' !== $el.data( 'mime-type' ) ) {
+		library.type = $el.data( 'mime-type' );
 	}
 
 	// Create the media frame.
@@ -43,17 +43,17 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		}
 	});
 
-	// If media type has been restricted, make sure the library doesn't autoselect
-	// an uploaded file if it's the wrong media type
-	if ( $el.data( 'type' ) && 'all' !== $el.data( 'type' ) ) {
+	// If mime type has been restricted, make sure the library doesn't autoselect
+	// an uploaded file if it's the wrong mime type
+	if ( $el.data( 'mime-type' ) && 'all' !== $el.data( 'mime-type' ) ) {
 		// This event is only fired when a file is uploaded.
 		// @see {wp.media.controller.Library:uploading()}
 		fm_media_frame[ $el.attr('id') ].on( 'library:selection:add', function() {
 			// Get the Selection object and the currently selected attachment.
 			var selection = fm_media_frame[ $el.attr('id') ].state().get('selection'),
 				attachment = selection.first();
-			// If the media type is wrong, deselect the file.
-			if ( attachment.attributes.type !== $el.data( 'type' ) ) {
+			// If the mime type is wrong, deselect the file.
+			if ( attachment.attributes.type !== $el.data( 'mime-type' ) ) {
 				selection.remove(attachment);
 			}
 		});

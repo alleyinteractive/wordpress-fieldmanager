@@ -46,10 +46,11 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 
 	/**
 	 * @var string
-	 * What media types are available to choose from.
-	 * Must be a string, and can be any of "all", "image", "audio", or "video".
+	 * What mime types are available to choose from.
+	 * Valid options are "all" or a partial or full mimetype (e.g. "image" or
+	 * "application/pdf").
 	 */
-	public $media_type = 'all';
+	public $mime_type = 'all';
 
 	/**
 	 * @var boolean
@@ -119,7 +120,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$preview = '';
 		}
 		return sprintf(
-			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" data-type="%9$s" />
+			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" data-mime-type="%9$s" />
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
 			<div class="media-wrapper">%5$s</div>
 			<script type="text/javascript">
@@ -134,7 +135,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			json_encode( $this->preview_size ),
 			esc_attr( $this->modal_title ),
 			esc_attr( $this->modal_button_label ),
-			esc_attr( $this->media_type )
+			esc_attr( $this->mime_type )
 		);
 	}
 
