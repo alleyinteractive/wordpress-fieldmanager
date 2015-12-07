@@ -76,15 +76,19 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		}
 
 		parent::__construct( $options );
-		if ( $this->only_save_to_taxonomy ) $this->taxonomy_save_to_terms = True;
 
-		// make post_tag and category sortable via term_order, if they're set as taxonomies, and if
-		// we're not using Fieldmanager storage
-		if ( $this->only_save_to_taxonomy && in_array( 'post_tag', $this->get_taxonomies() ) ) {
-			$wp_taxonomies['post_tag']->sort = True;
+		// Ensure that $taxonomy_save_to_terms is true if it needs to be
+		if ( $this->only_save_to_taxonomy ) {
+			$this->taxonomy_save_to_terms = true;
 		}
-		if ( $this->only_save_to_taxonomy && in_array( 'category', $this->get_taxonomies() ) ) {
-			$wp_taxonomies['category']->sort = True;
+
+		if ( $this->taxonomy_save_to_terms ) {
+			// Ensure that the taxonomies are sortable if we're not using FM storage.
+			foreach ( $this->get_taxonomies() as $taxonomy ) {
+				if ( ! empty( $wp_taxonomies[ $taxonomy ] ) ) {
+					$wp_taxonomies[ $taxonomy ]->sort = true;
+				}
+			}
 		}
 	}
 
@@ -190,7 +194,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			}
 			$this->save_taxonomy( $tax_values, $field->data_id );
 		}
-		if ( $this->only_save_to_taxonomy ) { 
+		if ( $this->only_save_to_taxonomy ) {
 			if ( empty( $values ) && ! ( $this->append_taxonomy ) ) {
 				$this->save_taxonomy( array(), $field->data_id );
 			}
@@ -203,7 +207,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * Sanitize a value
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-		return empty( $value ) ? null : intval( $value );
+		return empty( $value ) ? $value : intval( $value );
 	}
 
 	/**
