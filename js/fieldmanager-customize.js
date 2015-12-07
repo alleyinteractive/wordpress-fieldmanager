@@ -120,22 +120,14 @@
 	};
 
 	/**
-	 * Trigger an event when a Customizer section with a Fieldmanager control expands.
+	 * Trigger a Fieldmanager event when a Customizer section expands.
+	 *
+	 * We bind to sections whether or not they have FM controls in case a
+	 * control is added dynamically.
 	 */
-	var bindToSectionsWithFm = function() {
-		// @todo Also do this on section add
-		api.section.each(function( section ) {
-			$.each( section.controls(), function( i, control ) {
-				if ( 'fieldmanager' !== control.params.type ) {
-					return;
-				}
-
-				section.container.bind( 'expanded', function() {
-					$( document ).trigger( 'fm_customizer_control_section_expanded' );
-				});
-
-				return false;
-			});
+	var bindToSectionExpanded = function( section ) {
+		section.container.bind( 'expanded', function() {
+			$( document ).trigger( 'fm_customizer_control_section_expanded' );
 		});
 	};
 
@@ -160,8 +152,6 @@
 		$document.on( 'click', '.fmjs-remove', onFmjsRemoveClick );
 		$document.on( 'fm_sortable_drop', onFmSortableDrop );
 		$document.on( 'fieldmanager_media_preview', onFieldmanagerMediaPreview );
-
-		bindToSectionsWithFm();
 
 		/*
 		 * Hacky, because it always prompts the user to save. Unlike when we
@@ -189,8 +179,19 @@
 		alert( response.fieldmanager );
 	};
 
+	/**
+	 * Fires when a Customizer Section is added.
+	 *
+	 * @param {Object} section Customizer Section object.
+	 */
+	var addSection = function( section ) {
+		// It would be more efficient to do this only when adding an FM control to a section.
+		bindToSectionExpanded( section );
+	};
+
 	if ( typeof api !== 'undefined' ) {
 		api.bind( 'ready', ready );
 		api.bind( 'error', error );
+		api.section.bind( 'add', addSection );
 	}
 })( jQuery, wp.customize, _ );
