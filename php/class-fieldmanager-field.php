@@ -1075,7 +1075,7 @@ abstract class Fieldmanager_Field {
 
 		if ( is_customize_preview() ) {
 			// There isn't yet a way to catch this error during a preview refresh.
-			wp_send_json_error( array( 'fieldmanager' => sprintf( __( 'Error: %s', 'fieldmanager' ), $debug_message ) ) );
+			wp_send_json_error( array( 'fieldmanager' => sprintf( __( 'Error: %s. Please check your settings and save again.', 'fieldmanager' ), $debug_message ) ) );
 		}
 
 		wp_die( esc_html(
