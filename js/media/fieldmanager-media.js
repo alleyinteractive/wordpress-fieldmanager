@@ -37,7 +37,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 	fm_media_frame[ $el.attr('id') ].on( 'select', function() {
 		// Grab the selected attachment.
 		var attachment = fm_media_frame[ $el.attr('id') ].state().get('selection').first().attributes;
-		props = { size: fm_preview_size[ $el.attr('id') ] || 'thumbnail' };
+		props = { size: $el.data('preview-size') || 'thumbnail' };
 		props = wp.media.string.props( props, attachment );
 		props.align = 'none';
 		props.link = 'custom';
