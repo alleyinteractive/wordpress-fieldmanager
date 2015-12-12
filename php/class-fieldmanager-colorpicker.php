@@ -8,13 +8,6 @@
 class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 
 	/**
-	 * Sanitize values as a hex color
-	 *
-	 * @var string
-	 */
-	public $sanitize = 'sanitize_hex_color';
-
-	/**
 	 * Override field_class.
 	 *
 	 * @var string
@@ -43,6 +36,8 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 			self::$has_registered_statics = true;
 		}
 
+		$this->sanitize = array( $this, 'sanitize_hex_color' );
+
 		parent::__construct( $label, $options );
 	}
 
@@ -60,5 +55,24 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 			esc_attr( $value ),
 			$this->get_element_attributes()
 		);
+	}
+
+	/**
+	 * Sanitizes a hex color.
+	 *
+	 * Returns either '', a 3 or 6 digit hex color (with #), or nothing.
+	 * For sanitizing values without a #, see sanitize_hex_color_no_hash().
+	 *
+	 * @param string $color
+	 * @return string
+	 */
+	function sanitize_hex_color( $color ) {
+		$color = trim( $color );
+
+		if ( '' !== $color && preg_match( '|^#([A-Fa-f0-9]{3}){1,2}$|', $color ) ) {
+			return $color;
+		}
+
+		return '';
 	}
 }
