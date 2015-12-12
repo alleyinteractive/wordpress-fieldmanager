@@ -24,12 +24,13 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	/**
 	 * Static variable so we only load static assets once.
 	 *
-	 * @var string
+	 * @var boolean
 	 */
 	public static $has_registered_statics = false;
 
 	/**
-	 * Override constructor to set default size.
+	 * Build the colorpicker object and enqueue assets.
+	 *
 	 * @param string $label
 	 * @param array $options
 	 */
@@ -46,7 +47,8 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Form element
+	 * Form element.
+	 *
 	 * @param mixed $value
 	 * @return string HTML
 	 */
