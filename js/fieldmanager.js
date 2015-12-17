@@ -166,12 +166,16 @@ $( document ).ready( function () {
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
-		var values = $( this ).data( 'display-value' ).split( ',' );
+		var values = $( this ).data( 'display-value' ).toString().split( ',' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
 		var val = trigger.val();
 		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
 			val = trigger.filter( ':checked' ).val();
 		}
+		if ( trigger.is( ':checkbox' ) ) {
+			val = trigger.filter( ':checked' ).val();
+		}
+
 		trigger.addClass( 'display-trigger' );
 		if ( !match_value( values, val ) ) {
 			$( this ).hide();
@@ -180,20 +184,22 @@ $( document ).ready( function () {
 
 	// Controls the trigger to show or hide fields
 	$( document ).on( 'change', '.display-trigger', function() {
-		var val = $( this ).val().split(',');
+		var val = $( this ).val().toString().split(',');
 		var name = $( this ).attr('name');
-		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
-			if ( $( this ).hasClass( 'display-if' ) ) {
-				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
-					if ( match_value( $( this ).data( 'display-value' ).split( ',' ), val ) ) {
-						$( this ).show();
-					} else {
-						$( this ).hide();
+		if (name != undefined || name != null) {
+			$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
+				if ( $( this ).hasClass( 'display-if' ) ) {
+					if( name.match( $( this ).data( 'display-src' ) ) != null ) {
+						if ( match_value( $( this ).data( 'display-value' ).toString().split( ',' ), val ) ) {
+							$( this ).show();
+						} else {
+							$( this ).hide();
+						}
+						$( this ).trigger( 'fm_displayif_toggle' );
 					}
-					$( this ).trigger( 'fm_displayif_toggle' );
 				}
-			}
-		} );
+			} );
+		}
 	} );
 
 	init_label_macros();
