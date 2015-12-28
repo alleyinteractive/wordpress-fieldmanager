@@ -1006,4 +1006,20 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( "value=\"{$to_save[1]}\"", $html );
 		$this->assertContains( "value=\"{$to_save[2]}\"", $html );
 	}
+
+	/**
+	 * @group display_if
+	 */
+	public function test_display_if() {
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'display_if_testing',
+			'display_if' => array(
+				'src' => 'source_field',
+				'value' => 'source_value',
+			),
+		) );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( "data-display-src=\"source_field\"", $html );
+		$this->assertContains( "data-display-value=\"source_value\"", $html );
+	}
 }
