@@ -1011,6 +1011,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * @group display_if
 	 */
 	public function test_display_if() {
+		// test src, value, and default comparison
 		$field = new Fieldmanager_Textfield( array(
 			'name' => 'display_if_testing',
 			'display_if' => array(
@@ -1021,5 +1022,59 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$html = $this->_get_html_for( $field );
 		$this->assertContains( "data-display-src=\"source_field\"", $html );
 		$this->assertContains( "data-display-value=\"source_value\"", $html );
+		$this->assertContains( "data-display-compare=\"equals\"", $html );
+
+		// test compare -> equals
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'display_if_testing',
+			'display_if' => array(
+				'src' => 'source_field',
+				'value' => 'source_value',
+				'compare' => 'equals',
+			),
+		) );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( "data-display-compare=\"equals\"", $html );
+
+		// test compare -> not-equals
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'display_if_testing',
+			'display_if' => array(
+				'src' => 'source_field',
+				'value' => 'source_value',
+				'compare' => 'not-equals',
+			),
+		) );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( "data-display-compare=\"not-equals\"", $html );
+
+		// test compare -> contains
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'display_if_testing',
+			'display_if' => array(
+				'src' => 'source_field',
+				'value' => 'source_value',
+				'compare' => 'contains',
+			),
+		) );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( "data-display-compare=\"contains\"", $html );
 	}
+
+	/**
+	 * @group display_if
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_display_if_invalid_compare() {
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'display_if_testing',
+			'display_if' => array(
+				'src' => 'source_field',
+				'value' => 'source_value',
+				'compare' => 'equality',
+			),
+		) );
+		$markup = $field->element_markup();
+	}
+
 }

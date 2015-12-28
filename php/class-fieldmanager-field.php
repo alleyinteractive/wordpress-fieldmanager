@@ -205,13 +205,22 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * @var array[]
-	 * Field name and value on which to display element. Sample:
+	 * Field name, value, and optional comparison on which to display element.
+	 * Allowed comparisons are `equals` (default), `not-equals, `contains`. Sample:
 	 * $element->display_if = array(
 	 *	'src' => 'display-if-src-element',
-	 *	'value' => 'display-if-src-value'
+	 *	'value' => 'display-if-src-value',
+	 *	'compare' => 'equals',
 	 * );
 	 */
 	public $display_if = array();
+
+	/**
+	 * @var array
+	 * Allowed comparisons for the display_if property; first element in this array will be the default.
+	 * Note that `equals` and `not-equals` comparisons will use *non-strict* equality in fieldmanager.js
+	 */
+	protected $display_comparisons = array( 'equals', 'not-equals', 'contains' );
 
 	/**
 	* @var string
@@ -378,6 +387,7 @@ abstract class Fieldmanager_Field {
 	 * Generates all markup needed for all form elements in this field.
 	 * Could be called directly by a plugin or theme.
 	 * @param array $values the current values of this element, in a tree structure if the element has children.
+	 * @throws FM_Developer_Exception if an invalid display_if comparison is specified
 	 * @return string HTML for all form elements.
 	 */
 	public function element_markup( $values = array() ) {
@@ -437,7 +447,21 @@ abstract class Fieldmanager_Field {
 			$classes[] = 'display-if';
 			$fm_wrapper_attrs['data-display-src'] = $this->display_if['src'];
 			$fm_wrapper_attrs['data-display-value'] = $this->display_if['value'];
+
+			// use default comparison
+			if ( ! isset( $this->display_if['compare'] ) ) {
+				$fm_wrapper_attrs['data-display-compare'] = $this->display_comparisons[0];
+			}
+			// use valid comparison
+			else if ( in_array( $this->display_if['compare'], $this->display_comparisons, true ) ) {
+				$fm_wrapper_attrs['data-display-compare'] = $this->display_if['compare'];
+			}
+			// error if invalid comparison
+			else {
+				throw new FM_Developer_Exception( esc_html__( 'Invalid display_if comparison', 'fieldmanager' ) );
+			}
 		}
+
 		$fm_wrapper_attr_string = '';
 		foreach ( $fm_wrapper_attrs as $attr => $val ) {
 			$fm_wrapper_attr_string .= sprintf( '%s="%s" ', sanitize_key( $attr ), esc_attr( $val ) );
