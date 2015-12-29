@@ -106,6 +106,22 @@ var fm_renumber = function( $wrappers ) {
 }
 
 /**
+ * get data attribute value(s), accounting for jQuery converting string to number automatically
+ * @param HTMLDivElement el Wrapper with the data attribute
+ * @return string|number|array Single string or number, or array if data attr contains CSV
+ */
+var get_compare_values = function( el ) {
+	var values = $( el ).data( 'display-value' );
+	try {
+		values = values.split( ',' );
+	} catch(e) {
+		// if jQuery already converted string to number
+		values = [ values ];
+	}
+	return values;
+}
+
+/**
  * @param array values List of possible values to match against
  * @param string match_string Current value of field
  * @param string comparison Type of match, i.e. 'equals', 'not-equals', 'contains'
@@ -183,7 +199,7 @@ $( document ).ready( function () {
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
-		var values = $( this ).data( 'display-value' ).split( ',' );
+		var values = get_compare_values( this );
 		var compare = $( this ).data( 'display-compare' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
 		var val = trigger.val();
@@ -203,7 +219,7 @@ $( document ).ready( function () {
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
 			if ( $( this ).hasClass( 'display-if' ) ) {
 				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
-					if ( match_value( $( this ).data( 'display-value' ).split( ',' ), val, $( this ).data( 'display-compare' ) ) ) {
+					if ( match_value( get_compare_values( this ), val, $( this ).data( 'display-compare' ) ) ) {
 						$( this ).show();
 					} else {
 						$( this ).hide();
