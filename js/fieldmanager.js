@@ -105,13 +105,30 @@ var fm_renumber = function( $wrappers ) {
 	} );
 }
 
-var match_value = function( values, match_string ) {
+/**
+ * @param array values List of possible values to match against
+ * @param string match_string Current value of field
+ * @param string comparison Type of match, i.e. 'equals', 'not-equals', 'contains'
+ * @return bool True if we want to display the field, false if we want to hide the field
+ */
+var match_value = function( values, match_string, comparison ) {
+	comparison = comparison || 'equals';
 	for ( var index in values ) {
-		if ( values[index] == match_string ) {
+		// test if current value of the field contains any of the possible values
+		if ( 'contains' === comparison && match_string.indexOf( values[index] ) >= 0 ) {
 			return true;
 		}
+		// test equality of field against list of possible values
+		else if ( values[index] == match_string ) {
+			if ( 'equals' === comparison ) {
+				return true;
+			} else if ( 'not-equals' === comparison ) {
+				return false;
+			}
+		}
 	}
-	return false;
+	// not-equals returns false if nothing found, otherwise return true
+	return 'not-equals' === comparison;
 }
 
 fm_add_another = function( $element ) {
@@ -167,13 +184,14 @@ $( document ).ready( function () {
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
 		var values = $( this ).data( 'display-value' ).split( ',' );
+		var compare = $( this ).data( 'display-compare' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
 		var val = trigger.val();
 		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
 			val = trigger.filter( ':checked' ).val();
 		}
 		trigger.addClass( 'display-trigger' );
-		if ( !match_value( values, val ) ) {
+		if ( !match_value( values, val, compare ) ) {
 			$( this ).hide();
 		}
 	} );
@@ -185,7 +203,7 @@ $( document ).ready( function () {
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
 			if ( $( this ).hasClass( 'display-if' ) ) {
 				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
-					if ( match_value( $( this ).data( 'display-value' ).split( ',' ), val ) ) {
+					if ( match_value( $( this ).data( 'display-value' ).split( ',' ), val, $( this ).data( 'display-compare' ) ) ) {
 						$( this ).show();
 					} else {
 						$( this ).hide();
