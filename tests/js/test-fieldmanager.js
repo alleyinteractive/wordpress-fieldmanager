@@ -31,29 +31,88 @@
 		assert.notOk( $notSortable.sortable( 'instance' ), "Invisible sortable element should not have a sortable() instance" );
 	});
 
+	/**
+	 * test basic string comparisons for equals, not-equals, contains
+	 */
 	QUnit.test( "Display-if comparisons for single field", function( assert ) {
+		$trigger = $( '#fm-display_if_test-0-primary-0' );
 		// start with non-foo value
-		assert.notEqual( $( '#fm-display_if_test-0-primary-0' ).val(), 'foo' );
+		assert.notEqual( $trigger.val(), 'foo' );
 		assert.notOk( $( '.fm-single-test-equals-wrapper' ).is( ':visible' ) );
 		assert.ok( $( '.fm-single-test-not-equals-wrapper' ).is( ':visible' ) );
 		assert.notOk( $( '.fm-single-test-contains-wrapper' ).is( ':visible' ) );
 
 		// change to foo and expect opposite results
-		$( '#fm-display_if_test-0-primary-0' ).val( 'foo' ).change();
+		$trigger.val( 'foo' ).change();
 		assert.ok( $( '.fm-single-test-equals-wrapper' ).is( ':visible' ) );
 		assert.notOk( $( '.fm-single-test-not-equals-wrapper' ).is( ':visible' ) );
 		assert.ok( $( '.fm-single-test-contains-wrapper' ).is( ':visible' ) );
 
 	} );
 
+	/**
+	 * test numeric equals and not-equals
+	 */
 	QUnit.test( "Display-if numeric comparisons", function( assert ) {
-		assert.ok( $('#fm-display_if_numeric-0-primary-numeric-0').val() == 12 );
+		$trigger = $('#fm-display_if_numeric-0-primary-numeric-0');
+		assert.equal( $trigger.val(), 12 );
 		assert.ok( $( '.fm-numeric-test-equals-wrapper' ).is( ':visible' ) );
 		assert.notOk( $( '.fm-numeric-test-not-equals-wrapper' ).is( ':visible' ) );
 
-		$('#fm-display_if_numeric-0-primary-numeric-0').val( 13 ).change();
+		$trigger.val( 13 ).change();
 		assert.notOk( $( '.fm-numeric-test-equals-wrapper' ).is( ':visible' ) );
 		assert.ok( $( '.fm-numeric-test-not-equals-wrapper' ).is( ':visible' ) );
+	} );
+
+	/**
+	 * test equals, not-equals, contains with string and numeric CSV values
+	 */
+	QUnit.test( "Display-if CSV comparisons", function( assert ) {
+		$trigger = $('#fm-display_if_csv-0-primary-csv-0');
+
+		assert.equal( $trigger.val(), 'bar' );
+		assert.ok( $( '.fm-csv-strings-wrapper' ).is(':visible' ) );
+		assert.notOk( $( '.fm-csv-numbers-wrapper' ).is(':visible' ) );
+		assert.notOk( $( '.fm-csv-not-equals-wrapper' ).is(':visible' ) );
+		assert.notOk( $( '.fm-csv-contains-wrapper' ).is(':visible' ) );
+
+		$trigger.val( 12 ).change();
+		assert.notOk( $( '.fm-csv-strings-wrapper' ).is(':visible' ) );
+		assert.ok( $( '.fm-csv-numbers-wrapper' ).is(':visible' ) );
+		assert.ok( $( '.fm-csv-not-equals-wrapper' ).is(':visible' ) );
+		assert.notOk( $( '.fm-csv-contains-wrapper' ).is(':visible' ) );
+
+		$trigger.val( 'foo' ).change();
+		assert.ok( $( '.fm-csv-strings-wrapper' ).is(':visible' ) );
+		assert.notOk( $( '.fm-csv-numbers-wrapper' ).is(':visible' ) );
+		assert.ok( $( '.fm-csv-not-equals-wrapper' ).is(':visible' ) );
+		assert.ok( $( '.fm-csv-contains-wrapper' ).is(':visible' ) );
+	} );
+
+	/**
+	 * test showing/hiding repeatable fields
+	 */
+	QUnit.test( "Display-if for repeatable field", function( assert ) {
+		$trigger = $( '#fm-display_if_repeatable-0-primary-repeatable-0' );
+		assert.equal( $trigger.val(), 'bar' );
+		// start with no visible fields
+		assert.equal( $( '.fm-test-repeatable:visible:not(.fmjs-proto)' ).length, 0 );
+
+		// change to display-if value
+		$trigger.val( 'foo' ).change();
+		assert.equal( $( '.fm-test-repeatable:visible:not(.fmjs-proto)' ).length, 1 );
+
+		// add a field, should be visible
+		$('.fm-test-repeatable-add-another:first').click();
+		assert.equal( $( '.fm-test-repeatable:visible:not(.fmjs-proto)' ).length, 2 );
+
+		// hide fields
+		$trigger.val( 'bar' ).change();
+		assert.equal( $( '.fm-test-repeatable:visible:not(.fmjs-proto)' ).length, 0 );
+
+		// show again
+		$trigger.val( 'foo' ).change();
+		assert.equal( $( '.fm-test-repeatable:visible:not(.fmjs-proto)' ).length, 2 );
 	} );
 
 	QUnit.test( 'Renumber', function( assert ) {

@@ -173,6 +173,122 @@
 		</div>
 		<!-- /#display-if-numeric -->
 
+		<div id="display-if-csv" class="fm-wrapper fm-display_if_csv-wrapper" data-fm-array-position="0" >
+			<div class="fm-item fm-display_if_csv">
+				<div class="fm-wrapper fm-primary-csv-wrapper" data-fm-array-position="0" >
+					<div class="fm-item fm-primary-csv fm-text">
+						<div class="fm-label fm-label-primary-csv"><label for="fm-display_if_csv-0-primary-csv-0">Primary Field</label></div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_csv[primary-csv]"
+							id="fm-display_if_csv-0-primary-csv-0"
+							value="bar"
+							size="50"/>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-csv-strings-wrapper display-if" data-fm-array-position="0" data-display-src="primary-csv" data-display-value="foo,bar,zap" data-display-compare="equals" >
+					<div class="fm-item fm-csv-strings fm-text">
+						<div class="fm-label fm-label-csv-strings"><label for="fm-display_if_csv-0-csv-strings-0">Test Strings</label></div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_csv[csv-strings]"
+							id="fm-display_if_csv-0-csv-strings-0"
+							value=""
+							size="50"/>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-csv-numbers-wrapper display-if" data-fm-array-position="0" data-display-src="primary-csv" data-display-value="11,12,13" data-display-compare="equals" >
+					<div class="fm-item fm-csv-numbers fm-text">
+						<div class="fm-label fm-label-csv-numbers"><label for="fm-display_if_csv-0-csv-numbers-0">Test Numbers</label></div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_csv[csv-numbers]"
+							id="fm-display_if_csv-0-csv-numbers-0"
+							value=""
+							size="50"/>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-csv-not-equals-wrapper display-if" data-fm-array-position="0" data-display-src="primary-csv" data-display-value="bar,zap" data-display-compare="not-equals" >
+					<div class="fm-item fm-csv-not-equals fm-text">
+						<div class="fm-label fm-label-csv-not-equals"><label for="fm-display_if_csv-0-csv-not-equals-0">Test Not Equals</label></div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_csv[csv-not-equals]"
+							id="fm-display_if_csv-0-csv-not-equals-0"
+							value=""
+							size="50"/>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-csv-contains-wrapper display-if" data-fm-array-position="0" data-display-src="primary-csv" data-display-value="fo,za" data-display-compare="contains" >
+					<div class="fm-item fm-csv-contains fm-text">
+						<div class="fm-label fm-label-csv-contains"><label for="fm-display_if_csv-0-csv-contains-0">Test Contains</label></div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_csv[csv-contains]"
+							id="fm-display_if_csv-0-csv-contains-0"
+							value=""
+							size="50"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#display-if-csv -->
+
+		<div id="display-if-repeatable" class="fm-wrapper fm-display_if_repeatable-wrapper" data-fm-array-position="0" >
+			<div class="fm-item fm-display_if_repeatable">
+				<div class="fm-wrapper fm-primary-repeatable-wrapper" data-fm-array-position="0" >
+					<div class="fm-item fm-primary-repeatable fm-text">
+						<div class="fm-label fm-label-primary-repeatable"><label for="fm-display_if_repeatable-0-primary-repeatable-0">Primary Field</label></div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_repeatable[primary-repeatable]"
+							id="fm-display_if_repeatable-0-primary-repeatable-0"
+							value="bar"
+							size="50"/>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-test-repeatable-wrapper display-if" data-fm-array-position="2" data-display-src="primary-repeatable" data-display-value="foo" data-display-compare="equals" >
+					<div class="fm-item fm-test-repeatable fm-text fmjs-proto">
+						<div class="fmjs-removable-label fmjs-removable">
+							<div class="fmjs-removable-element">
+								<div class="fm-label fm-label-test-repeatable"><label for="fm-display_if_repeatable-0-test-repeatable-proto">Test Repeatable</label></div>
+							</div>
+							<a href="#" class="fmjs-remove" title="Remove">Remove</a>
+						</div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_repeatable[test-repeatable][proto]"
+							id="fm-display_if_repeatable-0-test-repeatable-proto"
+							value=""
+							size="50"/>
+					</div>
+					<div class="fm-item fm-test-repeatable fm-text">
+						<div class="fmjs-removable-label fmjs-removable">
+							<div class="fmjs-removable-element">
+								<div class="fm-label fm-label-test-repeatable"><label for="fm-display_if_repeatable-0-test-repeatable-0">Test Repeatable</label></div>
+							</div>
+							<a href="#" class="fmjs-remove" title="Remove">Remove</a>
+						</div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_repeatable[test-repeatable][0]"
+							id="fm-display_if_repeatable-0-test-repeatable-0"
+							value=""
+							size="50"/>
+					</div>
+					<div class="fm-add-another-wrapper"><input type="button" class="fm-add-another fm-test-repeatable-add-another button-secondary" value="Add field" name="fm_add_another_test-repeatable" data-related-element="test-repeatable" data-add-more-position="bottom" data-limit="0" /></div>
+				</div>
+			</div>
+		</div>
+		<!-- /#display-if-repeatable -->
 		<div id="renumbered" class="fm-wrapper" data-fm-array-position="1">
 			<div class="fm-item">
 				<div class="fm-element" name="mytest[0]">First</div>
