@@ -1,5 +1,6 @@
 tests/php/build
 tests/php/wp-unit-test
+node_modules
 
 # Silly Macs
 .DS_Store
