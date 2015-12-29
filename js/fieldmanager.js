@@ -127,7 +127,7 @@ var match_value = function( values, match_string, comparison ) {
 			}
 		}
 	}
-	// not-equals returns false if nothing found, otherwise return true
+	// not-equals returns true if nothing found, otherwise return false
 	return 'not-equals' === comparison;
 }
 
@@ -224,7 +224,7 @@ $( document ).ready( function () {
 	} );
 
 	// listen for those events and toggle fields according to custom JS like
-	// $( document ).trigger( 'my-custom-event', [ false ] );
+	// $( document ).trigger( 'my-custom-event', [ true|false ] );
 	$( document ).on( displayEvents.join( ' ' ), function( evt, showField ) {
 		// default to showing field if missing arg
 		if ( typeof showField === 'undefined' ) {
