@@ -1010,7 +1010,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	/**
 	 * @group display_if
 	 */
-	public function test_display_if() {
+	public function test_display_if_valid_field_compare() {
 		// test src, value, and default comparison
 		$field = new Fieldmanager_Textfield( array(
 			'name' => 'display_if_testing',
@@ -1023,6 +1023,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( "data-display-src=\"source_field\"", $html );
 		$this->assertContains( "data-display-value=\"source_value\"", $html );
 		$this->assertContains( "data-display-compare=\"equals\"", $html );
+		$this->assertRegExp( '/class=\"(?:.* )?display-if(?: .*)?\"/', $html );
 
 		// test compare -> equals
 		$field = new Fieldmanager_Textfield( array(
@@ -1063,15 +1064,68 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group display_if
-	 * @expectedException FM_Developer_Exception
 	 */
-	public function test_display_if_invalid_compare() {
+	public function test_display_if_conditional_callback() {
+		// test compare -> contains
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'display_if_testing',
+			'display_if' => array(
+				'event' => 'my_special_event',
+				'callback' => 'my_conditional_callback',
+			),
+		) );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( "data-display-event=\"my_special_event\"", $html );
+		$this->assertContains( "data-display-callback=\"my_conditional_callback\"", $html );
+		$this->assertRegExp( '/class=\"(?:.* )?display-conditional-callback(?: .*)?\"/', $html );
+	}
+
+	/**
+	 * @group display_if
+	 * @expectedException FM_Developer_Exception
+     * @expectedExceptionMessage Invalid `display_if` comparison type
+	 */
+	public function test_display_if_invalid_field_compare() {
 		$field = new Fieldmanager_Textfield( array(
 			'name' => 'display_if_testing',
 			'display_if' => array(
 				'src' => 'source_field',
 				'value' => 'source_value',
-				'compare' => 'equality',
+				'compare' => 'not_an_allowed_comparison',
+			),
+		) );
+		$markup = $field->element_markup();
+	}
+
+	/**
+	 * @group display_if
+	 * @expectedException FM_Developer_Exception
+     * @expectedExceptionMessage Invalid `display_if` arguments
+	 */
+	public function test_display_if_invalid_args() {
+		// need to use src and value, or event and callback
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'display_if_testing',
+			'display_if' => array(
+				'src' => 'source_field',
+				'callback' => 'my_conditional_callback',
+			),
+		) );
+		$markup = $field->element_markup();
+	}
+
+	/**
+	 * @group display_if
+	 * @expectedException FM_Developer_Exception
+     * @expectedExceptionMessage Invalid `display_if` arguments
+	 */
+	public function test_display_if_empty_required_arg() {
+		// need to use src and value, or event and callback
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'display_if_testing',
+			'display_if' => array(
+				'src' => 'source_field',
+				'callback' => '',
 			),
 		) );
 		$markup = $field->element_markup();
