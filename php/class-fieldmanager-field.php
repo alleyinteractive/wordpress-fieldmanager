@@ -207,7 +207,7 @@ abstract class Fieldmanager_Field {
 	 * @var array[]
 	 * Toggle the display of a field based on source field's name, value, and optional comparison (defaults to `equals`).
 	 * Note that `value` accepts a single value or a comma-separated list.
-	 * You can also provide a document-level event and callback that can be defined in external Javascript. Examples:
+	 * You can also provide a document-level event to trigger with external Javascript. Examples:
 	 * $element->display_if = array(
 	 *	'src' => 'display-if-src-element',
 	 *	'value' => 'display-if-src-value',
@@ -216,8 +216,11 @@ abstract class Fieldmanager_Field {
 	 *
 	 * $element->display_if = array(
 	 *	'event' => 'my_special_event',
-	 *	'callback' => 'my_callback_func',
 	 * );
+	 *
+	 * In this case, external JS would toggle fields attached to my_special_event using:
+	 * $( document ).trigger( 'my_special_event', [ showField ] );
+	 * Where showField is true if fields are to be shown and false if to be hidden
 	 */
 	public $display_if = array();
 
@@ -510,10 +513,14 @@ abstract class Fieldmanager_Field {
 	public function display_if_attrs() {
 		$output = array( 'classes' => array(), 'data' => array() );
 
-		$invalid_args =	( ! empty( $this->display_if['src'] ) && empty( $this->display_if['value'] ) ) ||
-						( ! empty( $this->display_if['value'] ) && empty( $this->display_if['src'] ) ) ||
-						( ! empty( $this->display_if['event'] ) && empty( $this->display_if['callback'] ) ) ||
-						( ! empty( $this->display_if['callback'] ) && empty( $this->display_if['event'] ) );
+		if ( 1 === count( $this->display_if ) ) {
+			$invalid_args = empty( $this->display_if['event'] );
+		} elseif ( 3 >= count( $this->display_if ) ) {
+			$invalid_args =	( empty( $this->display_if['src'] ) || empty( $this->display_if['value'] ) );
+		} else {
+			$invalid_args = true;
+		}
+
 		if ( $invalid_args ) {
 			throw new FM_Developer_Exception( esc_html__( 'Invalid `display_if` arguments', 'fieldmanager' ) );
 		}
@@ -541,7 +548,6 @@ abstract class Fieldmanager_Field {
 		else if ( ! empty( $this->display_if['event'] ) ) {
 			$output['classes'][] = 'display-conditional-callback';
 			$output['data']['data-display-event'] = $this->display_if['event'];
-			$output['data']['data-display-callback'] = $this->display_if['callback'];
 		} else {
 			throw new FM_Developer_Exception( esc_html__( 'Invalid `display_if` arguments', 'fieldmanager' ) );
 		}

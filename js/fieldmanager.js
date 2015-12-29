@@ -214,6 +214,26 @@ $( document ).ready( function () {
 		} );
 	} );
 
+	// get list of unique display-if events
+	var displayEvents = [];
+	$( '.display-conditional-callback' ).each( function() {
+		var eventName = $(this).data( 'display-event' );
+		if ( eventName && displayEvents.indexOf( eventName ) === -1 ) {
+			displayEvents.push( eventName );
+		}
+	} );
+
+	// listen for those events and toggle fields according to custom JS like
+	// $( document ).trigger( 'my-custom-event', [ false ] );
+	$( document ).on( displayEvents.join( ' ' ), function( evt, showField ) {
+		// default to showing field if missing arg
+		if ( typeof showField === 'undefined' ) {
+			showField = true;
+		}
+		// new search for .display-conditional-callback to account for newly added repeatable fields
+		$( '.display-conditional-callback[data-display-event="' + evt.type + '"]').toggle( Boolean( showField ) );
+	} );
+
 	init_label_macros();
 	init_sortable();
 

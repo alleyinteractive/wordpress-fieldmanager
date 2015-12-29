@@ -1071,12 +1071,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 			'name' => 'display_if_testing',
 			'display_if' => array(
 				'event' => 'my_special_event',
-				'callback' => 'my_conditional_callback',
 			),
 		) );
 		$html = $this->_get_html_for( $field );
 		$this->assertContains( "data-display-event=\"my_special_event\"", $html );
-		$this->assertContains( "data-display-callback=\"my_conditional_callback\"", $html );
 		$this->assertRegExp( '/class=\"(?:.* )?display-conditional-callback(?: .*)?\"/', $html );
 	}
 
@@ -1103,12 +1101,12 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
      * @expectedExceptionMessage Invalid `display_if` arguments
 	 */
 	public function test_display_if_invalid_args() {
-		// need to use src and value, or event and callback
+		// if src is used, value must also be used
 		$field = new Fieldmanager_Textfield( array(
 			'name' => 'display_if_testing',
 			'display_if' => array(
 				'src' => 'source_field',
-				'callback' => 'my_conditional_callback',
+				'event' => 'my_conditional_callback',
 			),
 		) );
 		$markup = $field->element_markup();
@@ -1120,12 +1118,12 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
      * @expectedExceptionMessage Invalid `display_if` arguments
 	 */
 	public function test_display_if_empty_required_arg() {
-		// need to use src and value, or event and callback
+		// src and value must both be not empty
 		$field = new Fieldmanager_Textfield( array(
 			'name' => 'display_if_testing',
 			'display_if' => array(
 				'src' => 'source_field',
-				'callback' => '',
+				'value' => '',
 			),
 		) );
 		$markup = $field->element_markup();
