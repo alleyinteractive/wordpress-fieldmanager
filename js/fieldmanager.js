@@ -198,7 +198,7 @@ $( document ).ready( function () {
 
 	// Controls the trigger to show or hide fields
 	$( document ).on( 'change', '.display-trigger', function() {
-		var val = $( this ).val().split(',');
+		var val = $( this ).val();
 		var name = $( this ).attr('name');
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
 			if ( $( this ).hasClass( 'display-if' ) ) {
