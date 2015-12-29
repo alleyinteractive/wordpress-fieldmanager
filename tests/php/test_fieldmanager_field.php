@@ -1016,12 +1016,12 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 			'name' => 'display_if_testing',
 			'display_if' => array(
 				'src' => 'source_field',
-				'value' => 'source_value',
+				'value' => 'source_value,other_value',
 			),
 		) );
 		$html = $this->_get_html_for( $field );
 		$this->assertContains( "data-display-src=\"source_field\"", $html );
-		$this->assertContains( "data-display-value=\"source_value\"", $html );
+		$this->assertContains( "data-display-value=\"source_value,other_value\"", $html );
 		$this->assertContains( "data-display-compare=\"equals\"", $html );
 		$this->assertRegExp( '/class=\"(?:.* )?display-if(?: .*)?\"/', $html );
 

@@ -206,7 +206,8 @@ abstract class Fieldmanager_Field {
 	/**
 	 * @var array[]
 	 * Toggle the display of a field based on source field's name, value, and optional comparison (defaults to `equals`).
-	 * Or provide a document-level event and callback that can be defined in external Javascript. Examples:
+	 * Note that `value` accepts a single value or a comma-separated list.
+	 * You can also provide a document-level event and callback that can be defined in external Javascript. Examples:
 	 * $element->display_if = array(
 	 *	'src' => 'display-if-src-element',
 	 *	'value' => 'display-if-src-value',
@@ -221,9 +222,10 @@ abstract class Fieldmanager_Field {
 	public $display_if = array();
 
 	/**
-	 * @var array
+	 * @var array	'equals'		True when value of named field equals (non-strict) any item in list of provided values
+	 *				'not-equals'	True when value of named field does not equal (non-strict) any item in list of provided values
+	 *				'contains'		True when value of named field contains any item in list of provided values
 	 * Allowed comparisons for the display_if property; first element in this array will be the default.
-	 * Note that `equals` and `not-equals` comparisons will use *non-strict* equality in fieldmanager.js
 	 */
 	protected $display_comparisons = array( 'equals', 'not-equals', 'contains' );
 
