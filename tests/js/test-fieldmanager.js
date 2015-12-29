@@ -31,39 +31,30 @@
 		assert.notOk( $notSortable.sortable( 'instance' ), "Invisible sortable element should not have a sortable() instance" );
 	});
 
-	QUnit.test( "Display-if", function( assert ) {
-		$( '.fm-test-displayif-wrapper .fm-element' ).each(function() {
-			assert.ok( $( this ).hasClass( 'display-trigger' ), "add '.display-trigger' to trigger" );
-		});
+	QUnit.test( "Display-if comparisons for single field", function( assert ) {
+		// start with non-foo value
+		assert.notEqual( $( '#fm-display_if_test-0-primary-0' ).val(), 'foo' );
+		assert.notOk( $( '.fm-single-test-equals-wrapper' ).is( ':visible' ) );
+		assert.ok( $( '.fm-single-test-not-equals-wrapper' ).is( ':visible' ) );
+		assert.notOk( $( '.fm-single-test-contains-wrapper' ).is( ':visible' ) );
 
-		assert.ok( $( '#di-foo' ).not( ':visible' ), "hide display-if value of 'foo'" );
-		assert.ok( $( '#di-bar' ).is( ':visible' ), "show display-if value of 'bar'" );
-		assert.ok( $( '#di-foobar' ).is( ':visible' ), "show display-if value of 'foo,bar'" );
+		// change to foo and expect opposite results
+		$( '#fm-display_if_test-0-primary-0' ).val( 'foo' ).change();
+		assert.ok( $( '.fm-single-test-equals-wrapper' ).is( ':visible' ) );
+		assert.notOk( $( '.fm-single-test-not-equals-wrapper' ).is( ':visible' ) );
+		assert.ok( $( '.fm-single-test-contains-wrapper' ).is( ':visible' ) );
 
-		assert.ok( $( '#di-blank' ).is( ':visible' ), "show display-if value of 'blank'" );
-		assert.ok( $( '#di-notblank' ).not( ':visible' ), "hide display-if value of 'notblank'" );
+	} );
 
-		$( '.display-always' ).each(function() {
-			assert.ok( $( this ).is( ':visible' ), 'non display-if field is visible (parent #' + $( this ).parent().attr( 'id' ) + ')' );
-		});
+	QUnit.test( "Display-if numeric comparisons", function( assert ) {
+		assert.ok( $('#fm-display_if_numeric-0-primary-numeric-0').val() == 12 );
+		assert.ok( $( '.fm-numeric-test-equals-wrapper' ).is( ':visible' ) );
+		assert.notOk( $( '.fm-numeric-test-not-equals-wrapper' ).is( ':visible' ) );
 
-		$( '#displayif-strings .display-trigger' ).attr( 'value', 'foo' ).trigger( 'change' );
-		assert.ok( $( '#di-foo' ).is( ':visible' ), "show display-if value of 'foo' after change" );
-		assert.ok( $( '#di-bar' ).not( ':visible' ), "hide display-if value of 'bar' after change" );
-		assert.ok( $( '#di-foobar' ).is( ':visible' ), "still show display-if value of 'foo,bar'" );
-
-		$( '#displayif-blanks .display-trigger' ).attr( 'value', 'notblank' ).trigger( 'change' );
-		assert.ok( $( '#di-blank' ).not( ':visible' ), "hide display-if value of 'blank' after change" );
-		assert.ok( $( '#di-notblank' ).is( ':visible' ), "show display-if value of 'notblank' after change" );
-
-		$( '.display-always' ).each(function() {
-			assert.ok( $( this ).is( ':visible' ), 'non display-if field is visible after changes (parent #' + $( this ).parent().attr( 'id' ) + ')' );
-		});
-
-		// assert.ok( $( '#di-789' ).is( ':visible' ), "show display-if value of '789'" );
-		// assert.ok( $( '#di-123' ).not( ':visible' ), "hide display-if value of '123'" );
-		// assert.ok( $( '#di-456' ).is( ':visible' ), "hide display-if value of '456'" );
-	});
+		$('#fm-display_if_numeric-0-primary-numeric-0').val( 13 ).change();
+		assert.notOk( $( '.fm-numeric-test-equals-wrapper' ).is( ':visible' ) );
+		assert.ok( $( '.fm-numeric-test-not-equals-wrapper' ).is( ':visible' ) );
+	} );
 
 	QUnit.test( 'Renumber', function( assert ) {
 		// Reorganize the items in the simple group.

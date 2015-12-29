@@ -69,35 +69,109 @@
 			<li class="fm-item"><span class="fmjs-drag"></span>Third</li>
 		</ul><!-- #not-sortable -->
 
-		<div id="displayif-strings">
-			<div class="fm-wrapper fm-test-displayif-wrapper">
-				<input class="fm-element" name="test-displayif" value="bar" />
-			</div>
-			<div id="di-foo" class="display-if" data-display-src="test-displayif" data-display-value="foo">foo</div>
-			<div id="di-bar" class="display-if" data-display-src="test-displayif" data-display-value="bar">bar</div>
-			<div id="di-foobar" class="display-if" data-display-src="test-displayif" data-display-value="foo,bar">foo,bar</div>
-			<div class="display-always">display</div>
-		</div><!-- #displayif-strings -->
 
-		<div id="displayif-blanks">
-			<div class="fm-wrapper fm-test-displayif-wrapper">
-				<input class="fm-element" name="test-displayif" value="" />
+		<div id="display-if-compare" class="fm-wrapper fm-display_if_test-wrapper" data-fm-array-position="0" >
+			<div class="fm-item fm-display_if_test">
+				<div class="fm-wrapper fm-primary-wrapper" data-fm-array-position="0" >
+					<div class="fm-item fm-primary fm-select">
+						<div class="fm-label fm-label-primary">
+							<label for="fm-display_if_test-0-primary-0">Primary Field</label>
+						</div>
+						<select class="fm-element" name="display_if_test[primary]" id="fm-display_if_test-0-primary-0" size="1">
+							<option value="">&nbsp;</option>
+							<option value="foo" >Foo</option>
+							<option value="bar" >Bar</option>
+							<option value="zap" >Zap</option>
+						</select>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-single-test-equals-wrapper display-if" data-fm-array-position="0" data-display-src="primary" data-display-value="foo" data-display-compare="equals" >
+					<div class="fm-item fm-single-test-equals fm-text">
+						<div class="fm-label fm-label-single-test-equals">
+							<label for="fm-display_if_test-0-single-test-equals-0">Test Equals foo</label>
+						</div>
+						<input
+						class="fm-element"
+						type="text"
+						name="display_if_test[single-test-equals]"
+						id="fm-display_if_test-0-single-test-equals-0"
+						value=""
+						size="50"/>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-single-test-not-equals-wrapper display-if" data-fm-array-position="0" data-display-src="primary" data-display-value="foo" data-display-compare="not-equals" >
+					<div class="fm-item fm-single-test-not-equals fm-text">
+						<div class="fm-label fm-label-single-test-not-equals">
+							<label for="fm-display_if_test-0-single-test-not-equals-0">Test Not Equals foo</label>
+						</div>
+						<input
+						class="fm-element"
+						type="text"
+						name="display_if_test[single-test-not-equals]"
+						id="fm-display_if_test-0-single-test-not-equals-0"
+						value=""
+						size="50"/>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-single-test-contains-wrapper display-if" data-fm-array-position="0" data-display-src="primary" data-display-value="fo" data-display-compare="contains" >
+					<div class="fm-item fm-single-test-contains fm-text">
+						<div class="fm-label fm-label-single-test-contains">
+							<label for="fm-display_if_test-0-single-test-contains-0">Test Contains fo</label>
+						</div>
+						<input
+						class="fm-element"
+						type="text"
+						name="display_if_test[single-test-contains]"
+						id="fm-display_if_test-0-single-test-contains-0"
+						value=""
+						size="50"/>
+					</div>
+				</div>
 			</div>
-			<div id="di-blank" class="display-if" data-display-src="test-displayif" data-display-value="">[blank]</div>
-			<div id="di-notblank" class="display-if" data-display-src="test-displayif" data-display-value="notblank">notblank</div>
-			<div class="display-always">display</div>
-		</div><!-- #displayif-blanks -->
-
-		<!-- Doesn't work: The data attribute is treated as a number, not a string
-		<div id="displayif-numbers">
-			<div class="fm-test-displayif-wrapper">
-				<input class="fm-element" value="789" />
-			</div>
-			<div id="di-123" class="display-if" data-display-src="test-displayif" data-display-value="123">123</div>
-			<div id="di-456" class="display-if" data-display-src="test-displayif" data-display-value="456">456</div>
-			<div id="di-789" class="display-if" data-display-src="test-displayif" data-display-value="789">789</div>
 		</div>
-		-->
+		<!-- /#display-if-compare -->
+
+		<div id="display-if-numeric" class="fm-wrapper fm-display_if_numeric-wrapper" data-fm-array-position="0" >
+			<div class="fm-item fm-display_if_numeric">
+				<div class="fm-wrapper fm-primary-numeric-wrapper" data-fm-array-position="0" >
+					<div class="fm-item fm-primary-numeric fm-text">
+						<div class="fm-label fm-label-primary-numeric"><label for="fm-display_if_numeric-0-primary-numeric-0">Primary Field</label></div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_numeric[primary-numeric]"
+							id="fm-display_if_numeric-0-primary-numeric-0"
+							value="12"
+							size="50"/>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-numeric-test-equals-wrapper display-if" data-fm-array-position="0" data-display-src="primary-numeric" data-display-value="12" data-display-compare="equals" >
+					<div class="fm-item fm-numeric-test-equals fm-text">
+						<div class="fm-label fm-label-numeric-test-equals"><label for="fm-display_if_numeric-0-numeric-test-equals-0">Test Equals 12</label></div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_numeric[numeric-test-equals]"
+							id="fm-display_if_numeric-0-numeric-test-equals-0"
+							value=""
+							size="50"/>
+					</div>
+				</div>
+				<div class="fm-wrapper fm-numeric-test-not-equals-wrapper display-if" data-fm-array-position="0" data-display-src="primary-numeric" data-display-value="12" data-display-compare="not-equals" >
+					<div class="fm-item fm-numeric-test-not-equals fm-text">
+						<div class="fm-label fm-label-numeric-test-not-equals"><label for="fm-display_if_numeric-0-numeric-test-not-equals-0">Test Not Equals 12</label></div>
+						<input
+							class="fm-element"
+							type="text"
+							name="display_if_numeric[numeric-test-not-equals]"
+							id="fm-display_if_numeric-0-numeric-test-not-equals-0"
+							value=""
+							size="50"/>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- /#display-if-numeric -->
 
 		<div id="renumbered" class="fm-wrapper" data-fm-array-position="1">
 			<div class="fm-item">
