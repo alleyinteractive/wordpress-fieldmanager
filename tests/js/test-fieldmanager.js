@@ -115,6 +115,61 @@
 		assert.equal( $( '.fm-test-repeatable:visible:not(.fmjs-proto)' ).length, 2 );
 	} );
 
+	/**
+	 * test using custom JS events to show/hide fields
+	 */
+	QUnit.test( "Display-if custom events", function( assert ) {
+		// start with all visible
+		assert.equal( $( '.fm-multi-repeatable:visible:not(.fmjs-proto)' ).length, 1 );
+		assert.equal( $( '.fm-multi-single:visible' ).length, 1 );
+		assert.equal( $( '.fm-multi-other:visible' ).length, 1 );
+
+		// hide two of them
+		$( document ).trigger( 'my-custom-event', [ false ] );
+		assert.equal( $( '.fm-multi-repeatable:visible:not(.fmjs-proto)' ).length, 0 );
+		assert.equal( $( '.fm-multi-single:visible' ).length, 0 );
+		assert.equal( $( '.fm-multi-other:visible' ).length, 1 );
+
+		// hide again, should stay hidden
+		$( document ).trigger( 'my-custom-event', [ false ] );
+		assert.equal( $( '.fm-multi-repeatable:visible:not(.fmjs-proto)' ).length, 0 );
+		assert.equal( $( '.fm-multi-single:visible' ).length, 0 );
+		assert.equal( $( '.fm-multi-other:visible' ).length, 1 );
+
+		// show them
+		$( document ).trigger( 'my-custom-event', [ true ] );
+		assert.equal( $( '.fm-multi-repeatable:visible:not(.fmjs-proto)' ).length, 1 );
+		assert.equal( $( '.fm-multi-single:visible' ).length, 1 );
+		assert.equal( $( '.fm-multi-other:visible' ).length, 1 );
+
+		// show again, should stay visible
+		$( document ).trigger( 'my-custom-event', [ true ] );
+		assert.equal( $( '.fm-multi-repeatable:visible:not(.fmjs-proto)' ).length, 1 );
+		assert.equal( $( '.fm-multi-single:visible' ).length, 1 );
+		assert.equal( $( '.fm-multi-other:visible' ).length, 1 );
+
+		// add a repeated field, should be visible
+		$('.fm-multi-repeatable-add-another:first').click();
+		assert.equal( $( '.fm-multi-repeatable:visible:not(.fmjs-proto)' ).length, 2 );
+
+		// hide again
+		$( document ).trigger( 'my-custom-event', [ false ] );
+		assert.equal( $( '.fm-multi-repeatable:visible:not(.fmjs-proto)' ).length, 0 );
+		assert.equal( $( '.fm-multi-single:visible' ).length, 0 );
+		assert.equal( $( '.fm-multi-other:visible' ).length, 1 );
+
+		// hide the other one
+		$( document ).trigger( 'my-other-event', [ false ] );
+		assert.equal( $( '.fm-multi-other:visible' ).length, 0 );
+
+		// show originals again
+		$( document ).trigger( 'my-custom-event', [ true ] );
+		assert.equal( $( '.fm-multi-repeatable:visible:not(.fmjs-proto)' ).length, 2 );
+		assert.equal( $( '.fm-multi-single:visible' ).length, 1 );
+		assert.equal( $( '.fm-multi-other:visible' ).length, 0 );
+
+	} );
+
 	QUnit.test( 'Renumber', function( assert ) {
 		// Reorganize the items in the simple group.
 		var $fieldLast = $( '#renumbered .fm-item' ).last();
