@@ -488,7 +488,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -555,7 +555,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -603,7 +603,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -656,7 +656,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
