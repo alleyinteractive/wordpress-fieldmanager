@@ -92,33 +92,48 @@ div.fm-group-label-wrapper {
 	clear: both;
 }
 
+.fmjs-drag-icon:before, .fmjs-remove:before, .fmjs-clear:before {
+	font-family: dashicons;
+	font-size: 15px;
+	line-height: 1;
+	color: #a0a5aa;
+}
+
 .fmjs-remove, .fmjs-clear {
-	margin: 7px 0 0 3px;
+	margin: 4px 0 0 5px;
 	display: block;
-	background: url('../images/xit.gif') 0 17% no-repeat;
-	height: 10px;
-	width: 10px;
+	height: 15px;
+	width: 15px;
 	float: left;
-	text-indent: -9999px;
-	-webkit-transition: none;
-	transition: none;
+	text-decoration: none;
+}
+
+.fmjs-remove:before, .fmjs-clear:before {
+	content: "\f153";
 }
 
 .fmjs-remove:hover {
-	background-position: 100% 17%;
+	cursor: pointer;
+}
+
+.fmjs-remove:hover:before, .fmjs-clear:hover:before {
+	color: #d54e21;
 }
 
 .fmjs-drag-icon {
-	background: transparent url(../images/draggable.png) no-repeat 0px 0px;
 	height: 15px;
 	width: 15px;
 	margin: 3px 3px 0 0;
-	text-indent: -9999px;
 	float: left;
 }
 
+.fmjs-drag-icon:before {
+	content: "\f156";
+}
+
 .fmjs-drag-icon:hover {
-	background-position: 0px -20px;
+	cursor: move;
+	color: #777;
 }
 
 .fm-group div.fm-group-label-wrapper.fmjs-drag-header {
@@ -236,15 +251,28 @@ div.fm-group-label-wrapper .fmjs-remove {
 	display: block;
 	height: 20px;
 	padding: 5px;
-	background: #fff 4px 4px url(../images/grid.png) no-repeat;
 	width: 200px;
 	border: solid 1px #000;
-	padding-left: 30px;
 	margin: 5px 0;
+	text-decoration: none;
+}
+
+.grid-activate:before {
+	font-family: dashicons;
+	font-size: 17px;
+	line-height: 1;
+	margin-right: 5px;
+	content: '\f509';
+	vertical-align: middle;
+	color: #a0a5aa;
 }
 
 .grid-activate:hover {
 	border: solid 1px #d54e21;
+}
+
+.grid-activate:hover:before {
+	color: #777;
 }
 
 .with-grid .grid-activate:hover {
@@ -253,7 +281,6 @@ div.fm-group-label-wrapper .fmjs-remove {
 
 .with-grid .grid-activate {
 	background: #fff;
-	padding-left: 0;
 	border: none;
 }
 
