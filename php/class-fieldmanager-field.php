@@ -923,7 +923,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_sort_handle() {
-		return sprintf( '<div class="fmjs-drag fmjs-drag-icon">%s</div>', esc_html__( 'Move', 'fieldmanager' ) );
+		return sprintf( '<div class="fmjs-drag fmjs-drag-icon"><span class="screen-reader-text">%s</span></div>', esc_html__( 'Move', 'fieldmanager' ) );
 	}
 
 	/**
@@ -931,7 +931,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_remove_handle() {
-		return sprintf( '<a href="#" class="fmjs-remove" title="%1$s">%1$s</a>', esc_attr__( 'Remove', 'fieldmanager' ) );
+		return sprintf( '<a href="#" class="fmjs-remove" title="%1$s"><span class="screen-reader-text">%1$s</span></a>', esc_attr__( 'Remove', 'fieldmanager' ) );
 	}
 
 	/**
