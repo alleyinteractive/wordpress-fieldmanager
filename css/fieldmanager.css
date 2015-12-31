@@ -83,7 +83,7 @@
 }
 
 .fm-item .fmjs-collapsible-handle.closed .toggle-indicator:before {
-    content: "\f140";
+	content: "\f140";
 }
 
 .fmjs-collapsible-handle .toggle-indicator {
