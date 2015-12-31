@@ -4,6 +4,7 @@
  * Tests the Quickedit context
  *
  * @group context
+ * @group quickedit
  */
 class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 	public function setUp() {
@@ -97,6 +98,23 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		) );
 	}
 
+	private function _get_html_for( $field, $test_data = null ) {
+		ob_start();
+		$context = $this->_get_context( $field );
+		if ( $test_data ) {
+			$context->save_to_post_meta( $this->post_id, $test_data );
+		}
+		$get = $_GET;
+		$_GET = array(
+			'action'      => 'fm_quickedit_render',
+			'post_id'     => $this->post_id,
+			'column_name' => $field->name,
+		);
+		$context->render_ajax_form();
+		$_GET = $get;
+		return ob_get_clean();
+	}
+
 	public function test_context_render() {
 		$base = $this->_get_elements();
 		$context = $this->_get_context( $base );
@@ -140,5 +158,138 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 
 	public function _quickedit_column( $post_id, $data ) {
 		return ! empty( $data['text'] ) ? $data['text'] : 'not set';
+	}
+
+	/**
+	 * @group serialize_data
+	 */
+	public function test_unserialize_data_single_field() {
+		$base = new Fieldmanager_TextField( array(
+			'name'           => 'base_field',
+			'limit'          => 0,
+			'serialize_data' => false,
+		) );
+		$html = $this->_get_html_for( $base );
+		$this->assertContains( 'name="base_field[0]"', $html );
+		$this->assertNotContains( 'name="base_field[3]"', $html );
+
+		$data = array( rand_str(), rand_str(), rand_str() );
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$this->assertContains( 'name="base_field[3]"', $html );
+		$this->assertContains( 'value="' . $data[0] . '"', $html );
+		$this->assertContains( 'value="' . $data[1] . '"', $html );
+		$this->assertContains( 'value="' . $data[2] . '"', $html );
+		$this->assertNotContains( 'name="base_field[4]"', $html );
+	}
+
+	/**
+	 * @group serialize_data
+	 */
+	public function test_unserialize_data_single_field_sorting() {
+		$item_1 = rand_str();
+		$item_2 = rand_str();
+		$item_3 = rand_str();
+		$base = new Fieldmanager_TextField( array(
+			'name'           => 'base_field',
+			'limit'          => 0,
+			'serialize_data' => false,
+		) );
+
+		// Test as 1, 2, 3
+		$data = array( $item_1, $item_2, $item_3 );
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_3 . '"/', $html );
+
+		// Reorder and test as 3, 1, 2
+		$data = array( $item_3, $item_1, $item_2 );
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
+	}
+
+	/**
+	 * @group serialize_data
+	 */
+	public function test_unserialize_data_tabbed() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'tabbed'         => true,
+			'serialize_data' => false,
+			'add_to_prefix'  => false,
+			'children'       => array(
+				'tab-1' => new Fieldmanager_Group( array(
+					'label'          => 'Tab One',
+					'serialize_data' => false,
+					'add_to_prefix'  => false,
+					'children'       => array(
+						'test_text' => new Fieldmanager_TextField( 'Text Field' ),
+					)
+				) ),
+				'tab-2' => new Fieldmanager_Group( array(
+					'label'          => 'Tab Two',
+					'serialize_data' => false,
+					'add_to_prefix'  => false,
+					'children'       => array(
+						'test_textarea' => new Fieldmanager_TextArea( 'TextArea' ),
+					)
+				) ),
+			)
+		) );
+		$data = array(
+			'tab-1' => array(
+				'test_text' => rand_str()
+			),
+			'tab-2' => array(
+				'test_textarea' => rand_str()
+			),
+		);
+
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data['tab-1']['test_text'], get_post_meta( $this->post_id, 'test_text', true ) );
+		$this->assertEquals( $data['tab-2']['test_textarea'], get_post_meta( $this->post_id, 'test_textarea', true ) );
+		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
+		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
+		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
+		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
+	}
+
+	/**
+	 * @group serialize_data
+	 */
+	public function test_unserialize_data_mixed_depth() {
+		$base = new Fieldmanager_Group( array(
+			'name'           => 'base_group',
+			'serialize_data' => false,
+			'children'       => array(
+				'test_text' => new Fieldmanager_TextField,
+				'test_group' => new Fieldmanager_Group( array(
+					'serialize_data' => false,
+					'children'       => array(
+						'deep_text' => new Fieldmanager_TextArea,
+					)
+				) ),
+			)
+		) );
+
+		$data = array(
+			'test_text' => rand_str(),
+			'test_group' => array(
+				'deep_text' => rand_str()
+			),
+		);
+
+		$html = $this->_get_html_for( $base, $data );
+		$this->assertEquals( $data['test_text'], get_post_meta( $this->post_id, 'base_group_test_text', true ) );
+		$this->assertEquals( $data['test_group']['deep_text'], get_post_meta( $this->post_id, 'base_group_test_group_deep_text', true ) );
+		$this->assertContains( 'name="base_group[test_text]"', $html );
+		$this->assertContains( 'value="' . $data['test_text'] . '"', $html );
+		$this->assertContains( 'name="base_group[test_group][deep_text]"', $html );
+		$this->assertContains( '>' . $data['test_group']['deep_text'] . '</textarea>', $html );
 	}
 }

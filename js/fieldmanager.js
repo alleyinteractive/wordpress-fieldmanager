@@ -9,8 +9,10 @@ var init_sortable_container = function( el ) {
 		$( el ).sortable( {
 			handle: '.fmjs-drag',
 			items: '> .fm-item',
+			placeholder: "sortable-placeholder",
+			forcePlaceholderSize: true,
 			start: function( e, ui ) {
-				$( document ).trigger( 'fm_sortable_drag', el ) ;
+				$( document ).trigger( 'fm_sortable_drag', el );
 			},
 			stop: function( e, ui ) {
 				var $parent = ui.item.parents( '.fm-wrapper' ).first();
@@ -156,22 +158,24 @@ $( document ).ready( function () {
 
 	// Handle collapse events
 	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
-		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).toggle();
+		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
 	} );
 
-	$( '.fm-collapsed' ).each( function() {
-		$( this ).find( '.fm-group-inner' ).hide();
-	} );
+	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
 
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
 		var values = $( this ).data( 'display-value' ).split( ',' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
+		var val = trigger.val();
+		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
+			val = trigger.filter( ':checked' ).val();
+		}
 		trigger.addClass( 'display-trigger' );
-		if ( !match_value( values, trigger.val() ) ) {
+		if ( !match_value( values, val ) ) {
 			$( this ).hide();
 		}
 	} );
@@ -196,6 +200,8 @@ $( document ).ready( function () {
 
 	init_label_macros();
 	init_sortable();
+
+	$( document ).on( 'fm_activate_tab', init_sortable );
 } );
 
 } )( jQuery );

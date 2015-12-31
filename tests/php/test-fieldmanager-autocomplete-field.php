@@ -2,7 +2,9 @@
 
 /**
  * Tests the Fieldmanager Autocomplete Field
- * @group fields
+ *
+ * @group field
+ * @group autocomplete
  */
 class Test_Fieldmanager_Autocomplete_Field extends WP_UnitTestCase {
 
@@ -62,6 +64,12 @@ class Test_Fieldmanager_Autocomplete_Field extends WP_UnitTestCase {
 		$this->assertSame( $this->data_posts[2]->ID, $items[0]['value'] );
 		$this->assertSame( $this->data_posts[1]->ID, $items[1]['value'] );
 		$this->assertSame( $this->data_posts[0]->ID, $items[2]['value'] );
+
+		$items = $datasource->get_items_for_ajax( $this->data_posts[1]->ID );
+		$this->assertSame( $this->data_posts[1]->ID, $items[0]['value'] );
+
+		$items = $datasource->get_items_for_ajax( get_permalink( $this->data_posts[2]->ID ) );
+		$this->assertSame( $this->data_posts[2]->ID, $items[0]['value'] );
 	}
 
 }

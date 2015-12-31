@@ -7,7 +7,7 @@
  * Use fieldmanager to create meta boxes on
  * @package Fieldmanager_Datasource
  */
-class Fieldmanager_Context_Term extends Fieldmanager_Context {
+class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	/**
 	 * @var string
 	 * Title of field to display in standard term form field location
@@ -51,6 +51,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	public $fm = '';
 
 	/**
+	 * The current taxonomy. Used when saving data.
+	 * @var string
+	 */
+	private $current_taxonomy;
+
+
+	/**
 	 * Add a context to a fieldmanager
 	 * @param string|string[] $taxonomies
 	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
@@ -59,7 +66,9 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function __construct( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '', $fm = null ) {
 		// Populate the list of taxonomies for which to add this meta box with the given settings
-		if ( !is_array( $taxonomies ) ) $taxonomies = array( $taxonomies );
+		if ( ! is_array( $taxonomies ) ) {
+			$taxonomies = array( $taxonomies );
+		}
 
 		// Set the class variables
 		$this->title = $title;
@@ -85,9 +94,6 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			// Also handle removing data when a term is deleted
 			add_action( 'delete_term', array( $this, 'delete_term_fields'), 10, 4 );
 		}
-
-
-
 	}
 
 	/**
@@ -98,11 +104,12 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function add_term_fields( $taxonomy ) {
 		// If the parent is set, do nothing because we don't know what the parent term is yet
-		if ( ! empty( $this->parent ) )
+		if ( ! empty( $this->parent ) ) {
 			return;
+		}
 
 		// Create the HTML template for output
-		$html_template = '<div class="form-field">%s%s%s</div>';
+		$html_template = '<div class="form-field">%s%s</div>';
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'addtag', 'term' );
@@ -121,11 +128,12 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function edit_term_fields( $term, $taxonomy ) {
 		// Check if this term's parent matches the specified term if it is set
-		if ( ! empty( $this->parent ) && $this->parent != $term->parent )
+		if ( ! empty( $this->parent ) && $this->parent != $term->parent ) {
 			return;
+		}
 
 		// Create the HTML template for output
-		$html_template = '<tr class="form-field"><th scope="row" valign="top">%s</th><td>%s%s</td></tr>';
+		$html_template = '<tr class="form-field"><th scope="row" valign="top">%s</th><td>%s</td></tr>';
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'edittag', 'term' );
@@ -145,19 +153,14 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 */
 	public function term_fields( $html_template, $taxonomy, $term = null ) {
 		// Make sure the user hasn't specified a field name we can't use
-		if ( in_array( $this->fm->name, $this->reserved_fields ) )
+		if ( in_array( $this->fm->name, $this->reserved_fields ) ) {
 			$this->fm->_invalid_definition( sprintf( __( 'The field name "%s" is reserved for WordPress on the term form.', 'fieldmanager' ), $this->fm->name ) );
-
-		// Check if there are any current values to retrieve
-		if ( isset( $term->term_id ) ) {
-			$term_meta = Fieldmanager_Util_Term_Meta();
-			$values = $term_meta->get_term_meta( $term->term_id, $taxonomy, $this->fm->name, true );
 		}
-		$values = empty( $values ) ? null : $values;
 
 		// Set the data type and ID
 		$this->fm->data_type = 'term';
 		$this->fm->data_id = is_object( $term ) ? $term->term_id : null;
+		$this->current_taxonomy = $taxonomy;
 
 		// Create the display label if one is set
 		if ( ! empty( $this->title ) ) {
@@ -170,12 +173,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			$label = '';
 		}
 
+		$field = $this->render_field( array( 'echo' => false ) );
+
 		// Create the markup and return it
 		return sprintf(
 			$html_template,
 			$label,
-			wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false ),
-			$this->fm->element_markup( $values )
+			$field
 		);
 	}
 
@@ -193,26 +197,20 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 			return;
 		}
 
-		// Ensure that the nonce is set
-		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
+		// Make sure that our nonce field arrived intact
+		if ( ! $this->is_valid_nonce() ) {
 			return;
 		}
 
 		// Make sure the current user can save this post
 		$tax_obj = get_taxonomy( $taxonomy );
-		if( !current_user_can( $tax_obj->cap->manage_terms ) ) {
+		if ( ! current_user_can( $tax_obj->cap->manage_terms ) ) {
 			$this->fm->_unauthorized_access( __( 'User cannot edit this term', 'fieldmanager' ) );
 			return;
 		}
 
-		// Make sure that our nonce field arrived intact
-		if( ! wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
-		}
-
 		// Save the data
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$this->save_to_term_meta( $term_id, $taxonomy, $value );
+		$this->save_to_term_meta( $term_id, $taxonomy );
 	}
 
 	/**
@@ -221,21 +219,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 	 * @param array $data
 	 * @return void
 	 */
-	public function save_to_term_meta( $term_id, $taxonomy, $data ) {
+	public function save_to_term_meta( $term_id, $taxonomy, $data = null ) {
 		// Set the data ID and type
 		$this->fm->data_id = $term_id;
 		$this->fm->data_type = 'term';
+		$this->current_taxonomy = $taxonomy;
 
-		// Get an instance of the term meta class
-		$term_meta = Fieldmanager_Util_Term_Meta();
-
-		// Get the current data and run presave
-		$current = $term_meta->get_term_meta( $this->fm->data_id, $taxonomy, $this->fm->name, true );
-		$data = $this->fm->presave_all( $data, $current );
-
-		// Unless we are skipping the save, store the new value in term meta
-		if ( ! $this->fm->skip_save )
-			$term_meta->update_term_meta( $term_id, $taxonomy, $this->fm->name, $data );
+		$this->save( $data );
 	}
 
 	/**
@@ -255,4 +245,41 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context {
 		// Delete any instance of this field for the term that was deleted
 		$term_meta->delete_term_meta( $term_id, $taxonomy, $this->fm->name );
 	}
+
+	/**
+	 * Callback to get term meta for the given term ID and current taxonomy.
+	 *
+	 * @see Fieldmanager_Util_Term_Meta::get_term_meta()
+	 */
+	protected function get_data( $term_id, $meta_key, $single = false ) {
+		return fm_get_term_meta( $term_id, $this->current_taxonomy, $meta_key, $single );
+	}
+
+	/**
+	 * Callback to add term meta for the given term ID and current taxonomy.
+	 *
+	 * @see Fieldmanager_Util_Term_Meta::add_term_meta()
+	 */
+	protected function add_data( $term_id, $meta_key, $meta_value, $unique = false ) {
+		return fm_add_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Callback to update term meta for the given term ID and current taxonomy.
+	 *
+	 * @see Fieldmanager_Util_Term_Meta::update_term_meta()
+	 */
+	protected function update_data( $term_id, $meta_key, $meta_value, $meta_prev_value = '' ) {
+		return fm_update_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $meta_prev_value );
+	}
+
+	/**
+	 * Callback to delete term meta for the given term ID and current taxonomy.
+	 *
+	 * @see Fieldmanager_Util_Term_Meta::delete_term_meta()
+	 */
+	protected function delete_data( $term_id, $meta_key, $meta_value = '' ) {
+		return fm_delete_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value );
+	}
+
 }

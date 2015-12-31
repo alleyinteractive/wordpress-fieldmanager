@@ -4,14 +4,14 @@
  */
 
 /**
- * Data source for WordPress Posts, for autocomplete and option types.
+ * Data source for WordPress Users, for autocomplete and option types.
  * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 
     /**
      * Supply a function which returns a list of users; takes one argument,
-     * a possible fragement
+     * a possible fragment
      */
     public $query_callback = Null;
 
@@ -36,6 +36,25 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     public $display_property = 'display_name';
 
     /**
+     * @var array
+     * Allowed display properties for validation.
+     */
+    protected $allowed_display_properties = array( 'display_name', 'user_login', 'user_email', 'user_nicename' );
+
+    /**
+     * @var string
+     * Store property. Defaults to ID, but can also be 'user_login', 'user_email',
+     * or 'user_nicename'.
+     */
+    public $store_property = 'ID';
+
+    /**
+     * @var array
+     * Allowed store properties for validation.
+     */
+    protected $allowed_store_properties = array( 'ID', 'user_login', 'user_email', 'user_nicename' );
+
+    /**
      * @var string
      * Capability required to refer to a user via this datasource.
      * @see http://codex.wordpress.org/Roles_and_Capabilities
@@ -44,23 +63,66 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 
     /**
      * @var string|Null
-     * If not empty, set this post's ID as a value on the user. This is used to
+     * If not empty, set this object's ID as a value on the user. This is used to
      * establish two-way relationships.
      */
     public $reciprocal = Null;
 
-    // constructor not required for this datasource; options are just set to keys,
-    // which Fieldmanager_Datasource does.
+    /**
+	 * Constructor. Used for validation.
+	 */
+	public function __construct( $options = array() ) {
+		parent::__construct( $options );
+
+		// Validate improper usage of store property
+		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
+			throw new FM_Developer_Exception( sprintf(
+				__( 'Store property %s is invalid. Must be one of %s.', 'fieldmanager' ),
+				$this->store_property,
+				implode( ', ', $this->allowed_store_properties )
+			) );
+		}
+
+		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
+			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID.', 'fieldmanager' ) );
+		}
+
+		// Validate improper usage of display property
+		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
+			throw new FM_Developer_Exception( sprintf(
+				__( 'Display property %s is invalid. Must be one of %s.', 'fieldmanager' ),
+				$this->display_property,
+				implode( ', ', $this->allowed_display_properties )
+			) );
+		}
+	}
 
     /**
-     * Get a post title by post ID
+     * Get a user by the specified field.
      * @param int $value post_id
-     * @return string post title
+     * @return int|string
      */
     public function get_value( $value ) {
-        $id = intval( $value );
-        $user = get_userdata( $id );
-        return $user ? $user->{$this->display_property} : '';
+    	switch ( $this->store_property ) {
+			case 'ID':
+				$field = 'id';
+				break;
+			case 'user_nicename':
+				$field = 'slug';
+				break;
+			case 'user_email':
+				$field = 'email';
+				break;
+			case 'user_login':
+				$field = 'login';
+				break;
+    	}
+
+		// Sanitize the value
+		$value = $this->sanitize_value( $value );
+
+		$user = get_user_by( $field, $value );
+		return $user ? $user->{$this->display_property} : '';
     }
 
     /**
@@ -73,14 +135,20 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         if ( is_callable( $this->query_callback ) ) {
             return call_user_func( $this->query_callback, $fragment );
         }
+
         $default_args = array();
         $user_args = array_merge( $default_args, $this->query_args );
         $ret = array();
-        if ( $fragment ) $user_args['search'] = $fragment;
+
+        if ( $fragment ) {
+        	$user_args['search'] = $fragment;
+        }
+
         $users = get_users( $user_args );
         foreach ( $users as $u ) {
-            $ret[$u->ID] = $u->{$this->display_property};
+            $ret[ $u->{$this->store_property} ] = $u->{$this->display_property};
         }
+
         return $ret;
     }
 
@@ -98,44 +166,57 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     }
 
     /**
-     * For post relationships, delete reciprocal post metadata prior to saving (presave will re-add)
+     * Delete reciprocal user metadata prior to saving (presave will re-add).
+     * Reciprocal relationships are not possible if we are not storing by ID.
      * @param array $values new post values
      * @param array $current_values existing post values
      */
     public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
-        if ( $field->data_type != 'post' || !$this->reciprocal ) return $values;
-        foreach ( $current_values as $user_id ) {
-            delete_user_meta( $user_id, $this->reciprocal, $field->data_id );
-        }
+		if ( $field->data_type != 'post' || ! $this->reciprocal || 'ID' != $this->store_property ) {
+			return $values;
+		}
+
+		if ( ! empty( $current_values ) ) {
+			foreach ( $current_values as $user_id ) {
+				delete_user_meta( $user_id, $this->reciprocal, $field->data_id );
+			}
+		}
+
         return $values;
     }
 
     /**
-     * Handle reciprocal postmeta
+     * Handle reciprocal usermeta.
+     * Reciprocal relationships are not possible if we are not storing by ID.
      * @param int $value
      * @return string
      */
     public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-        if ( empty( $value ) ) return;
+        if ( empty( $value ) ) {
+        	return;
+        }
+
         $return_single = False;
         if ( !is_array( $value ) ) {
             $return_single = True;
             $value = array( $value );
         }
+
         foreach ( $value as $i => $v ) {
-            $value[$i] = intval( $v );
-            if( !current_user_can( $this->capability, $v ) ) {
+            $value[$i] = $this->sanitize_value( $v );
+            if( ! current_user_can( $this->capability, $v ) ) {
                 wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
             }
-            if ( $this->reciprocal ) {
+            if ( $this->reciprocal && 'ID' == $this->store_property ) {
                 add_user_meta( $v, $this->reciprocal, $field->data_id );
             }
         }
+
         return $return_single ? $value[0] : $value;
     }
 
     /**
-     * Get view link for a user
+     * Get view link for a user.
      * @param int $value
      * @return string
      */
@@ -144,7 +225,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
     }
 
     /**
-     * Get edit link for a user
+     * Get edit link for a user.
      * @param int $value
      * @return string
      */
@@ -155,5 +236,26 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
             empty( $value ) ? '#' : esc_url( get_edit_user_link( $value ) ),
             esc_html__( 'Edit', 'fieldmanager' )
         );
+    }
+
+    /**
+     * Sanitize the value based on store_property.
+     * @param int|string $value
+     * @return int|string
+     */
+    protected function sanitize_value( $value ) {
+    	switch ( $this->store_property ) {
+		case 'ID':
+			$value = intval( $value );
+			break;
+		case 'user_email':
+			$value = sanitize_email( $value );
+			break;
+		default:
+			$value = sanitize_text_field( $value );
+			break;
+    	}
+
+    	return $value;
     }
 }

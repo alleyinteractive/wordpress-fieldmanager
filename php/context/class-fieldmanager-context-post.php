@@ -7,7 +7,7 @@
  * Use fieldmanager to create meta boxes on
  * @package Fieldmanager_Datasource
  */
-class Fieldmanager_Context_Post extends Fieldmanager_Context {
+class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 
 	/**
 	 * @var string
@@ -39,7 +39,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 */
 	public $fm = null;
 
-	/**
+	/*
 	 * @var boolean
 	 */
 	private static $doing_internal_update = false;
@@ -101,13 +101,10 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @return void.
 	 */
 	public function render_meta_box( $post, $form_struct = null ) {
-		$key = $this->fm->name;
-		$values = get_post_meta( $post->ID, $key );
-		$values = empty( $values ) ? Null : $values[0];
 		$this->fm->data_type = 'post';
 		$this->fm->data_id = $post->ID;
-		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
-		echo $this->fm->element_markup( $values );
+
+		$this->render_field();
 
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );
@@ -181,10 +178,6 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 			return;
 		}
 
-		if ( empty( $_POST['fieldmanager-' . $this->fm->name . '-nonce'] ) ) {
-			return;
-		}
-
 		// Make sure this post type is intended for handling by this FM context.
 		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) {
 			return;
@@ -195,21 +188,22 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 			return;
 		}
 
+		// Verify nonce is present and valid. If present but not valid, this
+		// throws an exception, but if it's absent we can assume our data is
+		// not present.
+		if ( ! $this->is_valid_nonce() ) {
+			return;
+		}
+
 		// Make sure the current user is authorized to save this post.
-		if( $_POST['post_type'] == 'post' ) {
-			if( !current_user_can( 'edit_post', $post_id ) ) {
+		if ( $_POST['post_type'] == 'post' ) {
+			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
 				return;
 			}
 		}
 
-		// Make sure that our nonce field arrived intact.
-		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
-		}
-
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";
-		$this->save_to_post_meta( $post_id, $value );
+		$this->save_to_post_meta( $post_id );
 	}
 
 	/**
@@ -233,15 +227,14 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 	 * @param array $data
 	 * @return void
 	 */
-	public function save_to_post_meta( $post_id, $data ) {
+	public function save_to_post_meta( $post_id, $data = null ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
 		$this->fm->data_id = $post_id;
 		$this->fm->data_type = 'post';
-		$current = get_post_meta( $this->fm->data_id, $this->fm->name, true );
-		$data = $this->fm->presave_all( $data, $current );
-		if ( !$this->fm->skip_save ) update_post_meta( $post_id, $this->fm->name, $data );
+
+		$this->save( $data );
 	}
 
 	/**
@@ -252,6 +245,42 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context {
 		$ret = wp_update_post( $args );
 		self::$doing_internal_update = false;
 		return $ret;
+	}
+
+	/**
+	 * Get post meta.
+	 *
+	 * @see get_post_meta().
+	 */
+	protected function get_data( $post_id, $meta_key, $single = false ) {
+		return get_post_meta( $post_id, $meta_key, $single );
+	}
+
+	/**
+	 * Add post meta.
+	 *
+	 * @see add_post_meta().
+	 */
+	protected function add_data( $post_id, $meta_key, $meta_value, $unique = false ) {
+		return add_post_meta( $post_id, $meta_key, $meta_value, $unique );
+	}
+
+	/**
+	 * Update post meta.
+	 *
+	 * @see update_post_meta().
+	 */
+	protected function update_data( $post_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		return update_post_meta( $post_id, $meta_key, $meta_value, $data_prev_value );
+	}
+
+	/**
+	 * Delete post meta.
+	 *
+	 * @see delete_post_meta().
+	 */
+	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
+		return delete_post_meta( $post_id, $meta_key, $meta_value );
 	}
 
 }
