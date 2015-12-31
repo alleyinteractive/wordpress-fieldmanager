@@ -69,6 +69,7 @@ class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
 		}
 		$_GET['page'] = $submenu;
 		$this->assertEquals( array( 'submenu', $submenu ), fm_calculate_context() );
+		$this->_context_action_assertions( 'submenu', $submenu );
 	}
 
 	/**
@@ -78,5 +79,39 @@ class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
 		$_SERVER['PHP_SELF'] = '/themes.php';
 		$_GET['page'] = rand_str();
 		$this->assertEquals( array( null, null ), fm_calculate_context() );
+		$this->_context_action_assertions( null, null );
+	}
+
+	protected function _context_action_assertions( $context, $type ) {
+		$a = new MockAction();
+
+		if ( $context ) {
+			add_action( "fm_{$context}", array( &$a, 'action' ) );
+		}
+		if ( $type ) {
+			add_action( "fm_{$context}_{$type}", array( &$a, 'action' ) );
+		}
+
+		fm_get_context( true );
+		fm_trigger_context_action();
+
+		if ( $type ) {
+			// only two events occurred for the hook
+			$this->assertEquals( 2, $a->get_call_count() );
+			// only our hooks were called
+			$this->assertEquals( array( "fm_{$context}_{$type}", "fm_{$context}" ), $a->get_tags() );
+			// The $type should have been passed as args
+			$this->assertEquals( array( array( $type ), array( $type ) ), $a->get_args() );
+		} elseif ( $context ) {
+			// only one event occurred for the hook
+			$this->assertEquals( 1, $a->get_call_count() );
+			// only our hook was called
+			$this->assertEquals( array( "fm_{$context}" ), $a->get_tags() );
+			// null should have been passed as an arg
+			$this->assertEquals( array( null ), $a->get_args() );
+		} else {
+			// No event should have fired
+			$this->assertEquals( 0, $a->get_call_count() );
+		}
 	}
 }
