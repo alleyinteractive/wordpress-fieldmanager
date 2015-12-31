@@ -94,7 +94,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 				<div class="updated success"><p><?php esc_html_e( 'Options updated', 'fieldmanager' ); ?></p></div>
 			<?php endif ?>
 
-			<h2><?php echo esc_html( $this->page_title ) ?></h2>
+			<h1><?php echo esc_html( $this->page_title ) ?></h1>
 
 			<form method="POST" id="<?php echo esc_attr( $this->uniqid ) ?>">
 				<div class="fm-submenu-form-wrapper">
