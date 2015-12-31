@@ -12,7 +12,7 @@ class Test_Fieldmanager_Colorpicker_Field extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		Fieldmanager_Field::$debug = TRUE;
+		Fieldmanager_Field::$debug = true;
 
 		// insert a post
 		$this->post = $this->factory->post->create_and_get( array( 'post_title' => rand_str(), 'post_date' => '2009-07-01 00:00:00' ) );
