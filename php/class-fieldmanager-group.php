@@ -52,6 +52,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	public $tab_limit = 0;
 
 	/**
+	 * Persist the active tab on the group between sessions
+	 *
+	 * @var boolean
+	 */
+	public $persist_active_tab = true;
+
+	/**
 	 * @var array
 	 * Label macro is a more convenient shortcut to label_format and label_token. The first element
 	 * of the two-element array is the title with a placeholder (%s), and the second element is
@@ -158,8 +165,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		// Add the tab JS and CSS if it is needed
 		if ( $this->tabbed ) {
 			fm_add_script( 'jquery-hoverintent', 'js/jquery.hoverIntent.js', array( 'jquery' ), '1.8.0' );
-			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.1' );
-			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.3' );
+			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.3' );
+			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.4' );
 		}
 	}
 
@@ -179,7 +186,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// If the display output for this group is set to tabs, build the tab group for navigation
 		if ( $this->tabbed ) {
-			$tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar" id="%s-tabs">', esc_attr( $this->get_element_id() ) );
+			$tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar %s" id="%s-tabs">',
+				$this->persist_active_tab ? 'fm-persist-active-tab' : '',
+				esc_attr( $this->get_element_id() ) );
 		}
 
 		// Produce HTML for each of the children
