@@ -243,6 +243,9 @@ function _fieldmanager_registry( $var, $val = null ) {
  *
  * @see fm_calculate_context() for detail about the returned array values.
  *
+ * @param bool $force Optional. If true, FM will recalculate the current context.
+ *                    This is necessary for testing and perhaps other
+ *                    programmatic purposes.
  * @return array Contextual information for the current request.
  */
 function fm_get_context( $force = false ) {
