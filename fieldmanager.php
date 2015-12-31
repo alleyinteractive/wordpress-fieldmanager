@@ -245,10 +245,10 @@ function _fieldmanager_registry( $var, $val = null ) {
  *
  * @return array Contextual information for the current request.
  */
-function fm_get_context() {
+function fm_get_context( $force = false ) {
 	static $calculated_context;
 
-	if ( $calculated_context ) {
+	if ( ! $force && $calculated_context ) {
 		return $calculated_context;
 	} else {
 		$calculated_context = fm_calculate_context();
