@@ -44,7 +44,7 @@
 
 .fm-group-inner {
 	padding: 10px;
-    border-top: none;
+	border-top: none;
 }
 
 .fm-group h4, .fm-group div.fm-group-label-wrapper {
@@ -75,7 +75,7 @@
 
 .fm-group .toggle-indicator {
 	color: #a0a5aa;
-    margin-left: 5px;
+	margin-left: 5px;
 }
 
 .fm-group .toggle-indicator:before {
