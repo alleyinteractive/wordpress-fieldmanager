@@ -362,14 +362,23 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
 			$this->assertContains( 'html-active', $html_1 );
 			$this->assertNotContains( 'tmce-active', $html_1 );
-			$this->assertContains( wp_htmledit_pre( $args['default_value'] ), $html_1 );
 
 			$this->assertContains( 'tmce-active', $html_2 );
 			$this->assertNotContains( 'html-active', $html_2 );
-			$this->assertContains( wp_richedit_pre( $args['default_value'] ), $html_2 );
 
 			$this->assertContains( 'html-active', $html_3 );
 			$this->assertNotContains( 'tmce-active', $html_3 );
+		} else {
+			$this->_skip_tests_because_version( 3.9 );
+		}
+
+		if ( _fm_phpunit_is_wp_at_least( 4.3 ) ) {
+			$this->assertContains( format_for_editor( $args['default_value'] ), $html_1 );
+			$this->assertContains( format_for_editor( $args['default_value'] ), $html_2 );
+			$this->assertContains( format_for_editor( $args['default_value'] ), $html_3 );
+		} elseif ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
+			$this->assertContains( wp_htmledit_pre( $args['default_value'] ), $html_1 );
+			$this->assertContains( wp_richedit_pre( $args['default_value'] ), $html_2 );
 			$this->assertContains( wp_htmledit_pre( $args['default_value'] ), $html_3 );
 		} else {
 			$this->_skip_tests_because_version( 3.9 );

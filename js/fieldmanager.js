@@ -168,8 +168,12 @@ $( document ).ready( function () {
 		var src = $( this ).data( 'display-src' );
 		var values = $( this ).data( 'display-value' ).split( ',' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
+		var val = trigger.val();
+		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
+			val = trigger.filter( ':checked' ).val();
+		}
 		trigger.addClass( 'display-trigger' );
-		if ( !match_value( values, trigger.val() ) ) {
+		if ( !match_value( values, val ) ) {
 			$( this ).hide();
 		}
 	} );

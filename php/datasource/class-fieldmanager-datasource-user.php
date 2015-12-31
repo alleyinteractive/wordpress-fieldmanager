@@ -11,7 +11,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 
     /**
      * Supply a function which returns a list of users; takes one argument,
-     * a possible fragement
+     * a possible fragment
      */
     public $query_callback = Null;
 
