@@ -5,13 +5,15 @@
  * @group context
  */
 class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
-	protected $screen, $self, $get, $submenus;
+	protected $screen, $self, $get, $submenus, $post_id;
 
 	public function setUp() {
 		$this->screen    = get_current_screen();
 		$this->self      = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] : null;
 		$this->get       = $_GET;
 		$this->submenus  = _fieldmanager_registry( 'submenus' );
+
+		$this->post_id   = $this->factory->post->create( array( 'post_title' => rand_str(), 'post_date' => '2015-07-01 00:00:00', 'post_type' => 'page' ) );
 
 		_fieldmanager_registry( 'submenus', array() );
 
@@ -152,8 +154,7 @@ class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
 
 	public function test_post_screen_context() {
 		$_SERVER['PHP_SELF'] = '/post.php';
-		$post_id = $this->factory->post->create( array( 'post_title' => rand_str(), 'post_date' => '2015-07-01 00:00:00', 'post_type' => 'page' ) );
-		$_GET = array( 'post' => strval( $post_id ) );
+		$_GET = array( 'post' => strval( $this->post_id ) );
 		$this->assertEquals( array( 'post', 'page' ), fm_calculate_context() );
 		$this->_context_action_assertions( 'post', 'page' );
 	}
