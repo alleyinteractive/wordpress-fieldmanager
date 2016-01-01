@@ -84,7 +84,7 @@
 	vertical-align: middle;
 }
 
-.fm-item .fmjs-collapsible-handle.closed .toggle-indicator:before {
+.fm-item .field-group-toggler.closed .toggle-indicator:before {
 	content: "\f140";
 }
 
