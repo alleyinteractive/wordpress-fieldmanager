@@ -939,7 +939,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_collapse_handle() {
-		return '<span class="toggle-indicator" aria-hidden="true"></span>';
+		return  sprintf( '<a href="#" class="field-group-toggler"><span class="screen-reader-text">%1$s</span><span class="toggle-indicator" aria-hidden="true"></span></a>', esc_attr__( 'Toggle field group', 'fieldmanager' ) );
 	}
 
 	/**
