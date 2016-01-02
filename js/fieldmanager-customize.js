@@ -15,7 +15,7 @@
 	 * @param {Event} e Event object.
 	 */
 	var onFmElementChange = function( e ) {
-		reserializeEachControl();
+		reserializeControlsContainingElement( e.target );
 	};
 
 	/**
@@ -47,7 +47,7 @@
 			}
 		}
 
-		reserializeEachControl();
+		reserializeControlsContainingElement( e.target );
 	};
 
 	/**
@@ -57,7 +57,7 @@
 	 * @param {Element} el The sorted element.
 	 */
 	var onFmSortableDrop = function( e, el ) {
-		reserializeEachControl();
+		reserializeControlsContainingElement( e.target );
 	};
 
 	/**
@@ -66,7 +66,7 @@
 	 * @param {Event} e Event object.
 	 */
 	var onFmAddedElement = function( e ) {
-		reserializeEachControl();
+		reserializeControlsContainingElement( e.target );
 	};
 
 	/**
@@ -78,7 +78,7 @@
 	 * @param {object} wp Global WordPress JS API.
 	 */
 	var onFieldmanagerMediaPreview = function( e, $wrapper, attachment, wp ) {
-		reserializeEachControl();
+		reserializeControlsContainingElement( e.target );
 	};
 
 	/**
@@ -87,7 +87,7 @@
 	 * @param {Event} e Event object.
 	 */
 	var onFmMediaRemoveClick = function( e ) {
-		reserializeEachControl();
+		reserializeControlsContainingElement( e.target );
 	};
 
 	/**
@@ -96,7 +96,7 @@
 	 * @param {Event} e Event object.
 	 */
 	var onFmjsRemoveClick = function( e ) {
-		reserializeEachControl();
+		reserializeControlsContainingElement( e.target );
 	};
 
 	/**
@@ -104,6 +104,19 @@
 	 */
 	var reserializeEachControl = function() {
 		api.control.each( reserializeControl );
+	};
+
+	/**
+	 * Set the value of any Fieldmanager control with a given element in its container.
+	 *
+	 * @param {Element} el Element to look for.
+	 */
+	var reserializeControlsContainingElement = function( el ) {
+		api.control.each(function( control ) {
+			if ( control.container.find( el ).length ) {
+				reserializeControl( control );
+			}
+		});
 	};
 
 	/**
