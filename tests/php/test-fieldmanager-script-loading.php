@@ -21,6 +21,9 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 		$GLOBALS['wp_scripts'] = new WP_Scripts();
 		$GLOBALS['wp_scripts']->default_version = get_bloginfo( 'version' );
 
+		// Media will only try to register a script once, so hack around that.
+		Fieldmanager_Media::$has_registered_media = false;
+
 		// Instantiate field classes that register scripts.
 		new Fieldmanager_Autocomplete( 'Test', array( 'datasource' => new Fieldmanager_Datasource_Post ) );
 		new Fieldmanager_Datepicker( 'Test' );

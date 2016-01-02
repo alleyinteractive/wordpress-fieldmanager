@@ -6,9 +6,13 @@
 	border: 1px solid transparent;
 	border-bottom: none;
 }
+.fm-tab-bar .fm-tab a:focus {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
 
 .fm-tab-bar .wp-tab-active {
-	background: #ededed;
+	background: #fff;
 	border-color: #dfdfdf;
 }
 
@@ -77,6 +81,10 @@
 
 .fm-wrapper .fm-submenu li:hover > a, .fm-wrapper .fm-submenu li:focus > a {
 	color: #333;
+}
+
+.fm-wrapper .wp-tabs-panel > .fm-wrapper > .fm-item {
+	border-top: none;
 }
 
 /* Vertical Tabs */
@@ -149,4 +157,11 @@
 .fm-tabbed-vertical .wp-tabs-panel .fm-group .fm-group {
 	border: 1px solid #ddd;
 	background: #ededed;
+}
+.fm-tabbed-vertical > .wp-tabs-panel > div > .fm-group {
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+.fm-tabbed-vertical > .wp-tabs-panel > div > .fm-group > .fm-group-inner {
+	border-top: none;
 }
