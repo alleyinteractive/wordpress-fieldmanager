@@ -29,7 +29,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$context = $this->get_context( $name );
 		$html = $this->get_html( $context, $name );
 
-		$this->assertContains( '<h2>Tools Meta Fields</h2>', $html );
+		$this->assertContains( '<h1>Tools Meta Fields</h1>', $html );
 		$this->assertRegExp( '/<input type="hidden"[^>]+name="fieldmanager-' . $name . '-nonce"/', $html );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[name\]"[^>]+value=""/', $html );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[email\]"[^>]+value=""/', $html );
@@ -50,7 +50,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertEquals( $_POST[ $name ]['email'], $processed_values['email'] );
 		$this->assertEquals( $_POST[ $name ]['remember'], $processed_values['remember'] );
 		$this->assertNotEquals( $_POST[ $name ]['name'], $processed_values['name'] );
-		$this->assertEquals( $processed_values['name'], 'Austin Smith' );
+		$this->assertEquals( $processed_values['name'], 'Austin "Smith"' );
 		$this->assertEquals( $_POST[ $name ]['group']['preferences'], $processed_values['group']['preferences'] );
 		$this->assertEquals( $processed_values['number'], 11 ); // changed in presave hook and sanitized.
 
@@ -190,7 +190,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 			'fm-form-context' => 'test_form',
 			$name => array(
 				'email' => 'test@example.com',
-				'name' => 'Austin Smith<script type="text/javascript">alert("HACKED")</script>', // should get auto-stripped
+				'name' => 'Austin \\"Smith\\"<script type="text/javascript">alert(/HACKED/)</script>', // both the script and slashes should get auto-stripped
 				'remember' => 1,
 				'number' => '7even', // will become 7 due to above sanitizer
 				'group' => array(
@@ -222,6 +222,17 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	public function presave_alter_number( $values, $context ) {
 		$values['number'] = 11;
 		return $values;
+	}
+
+	public function test_updated_message() {
+		$name = 'message_customization';
+		$updated_message = rand_str();
+		fm_register_submenu_page( $name, 'tools.php', 'Message Customization' );
+		$context = $this->get_context( $name );
+		$context->updated_message = $updated_message;
+		$html = $this->get_html( $context, $name );
+		$this->build_post( $html, $name );
+		$this->assertContains( "<div class=\"updated success\"><p>{$updated_message}</p></div>", $this->get_html( $context, $name ) );
 	}
 
 }

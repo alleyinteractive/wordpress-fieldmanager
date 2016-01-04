@@ -1,10 +1,15 @@
 <?php
 /**
+ * Use fieldmanager to store meta data for taxonomy terms.
+ *
+ * This is deprecated as of WordPress 4.4, which introduces Term Meta into core.
+ * If you were using this feature prior to 4.4, it will continue to operate
+ * until probably WordPress 4.8, however it is in your best interest to migrate
+ * your data ASAP, as core's term meta is significantly more efficient.
+ *
+ * @deprecated 1.0.0-beta.3
+ *
  * @package Fieldmanager_Util
- */
-
-/**
- * Use fieldmanager to store meta data for taxonomy terms
  */
 class Fieldmanager_Util_Term_Meta {
 
@@ -46,6 +51,7 @@ class Fieldmanager_Util_Term_Meta {
 	public function setup() {
 		add_action( 'init', array( $this, 'create_content_type' ) );
 		add_action( 'delete_term', array( $this, 'collect_garbage' ), 10, 3 );
+		add_action( 'split_shared_term', array( $this, 'split_shared_term' ), 10, 4 );
 	}
 
 	/**
@@ -55,16 +61,8 @@ class Fieldmanager_Util_Term_Meta {
 	 */
 	public function create_content_type() {
 		register_post_type( $this->post_type, array(
-			'public'              => false,
-			'publicly_queryable'  => false,
-			'exclude_from_search' => false,
-			'query_var'           => $this->post_type,
-			'rewrite'             => false,
-			'show_ui'             => false,
-			'capability_type'     => 'post',
-			'hierarchical'        => true,
-			'has_archive'         => false,
-			'label'               => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
+			'rewrite' => false,
+			'label'   => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
 		) );
 	}
 
@@ -90,7 +88,6 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return string|array @see get_post_meta().
 	 */
 	public function get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
-
 		// Check if this term has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
 		if ( false === $term_meta_post_id ) {
@@ -120,7 +117,6 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return boolean|integer @see add_post_meta().
 	 */
 	public function add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique = false ) {
-
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
 		if ( false === $term_meta_post_id ) {
@@ -160,7 +156,6 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return mixed @see update_post_meta().
 	 */
 	public function update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value='' ) {
-
 		// Check if this term already has a post to store meta data
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
 		if ( false === $term_meta_post_id ) {
@@ -195,7 +190,6 @@ class Fieldmanager_Util_Term_Meta {
 	 * @return boolean False for failure. True for success.
 	 */
 	public function delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value='' ) {
-
 		// Get the post used for this term
 		$term_meta_post_id = $this->get_term_meta_post_id( $term_id, $taxonomy );
 
@@ -231,7 +225,7 @@ class Fieldmanager_Util_Term_Meta {
 			// Check if a post exists for this term
 			$query = new WP_Query( array(
 				'name' => $this->post_slug( $term_id, $taxonomy ),
-				'post_type' => $this->post_type
+				'post_type' => $this->post_type,
 			) );
 
 			// Return the post ID if it exists, otherwise false
@@ -306,10 +300,33 @@ class Fieldmanager_Util_Term_Meta {
 			wp_delete_post( $post->ID, true );
 		}
 	}
+
+	/**
+	 * Update term meta when a shared term gets split (as of WordPress 4.2).
+	 *
+	 * @param  int $old_term_id The pre-split (previously shared) term ID.
+	 * @param  int $new_term_id The post-split term ID.
+	 * @param  int $term_taxonomy_id The term_taxonomy_id for this term. Note
+	 *                               that this doesn't change when a shared term
+	 *                               is split (since it's already unique).
+	 * @param  string $taxonomy The taxonomy of the *split* term.
+	 */
+	public function split_shared_term( $old_term_id, $new_term_id, $term_taxonomy_id, $taxonomy ) {
+		if ( false != ( $post_id = $this->get_term_meta_post_id( $old_term_id, $taxonomy ) ) ) {
+			wp_update_post( array(
+				'ID' => $post_id,
+				'post_name' => 	$this->post_slug( $new_term_id, $taxonomy ),
+				'post_title' => $this->post_slug( $new_term_id, $taxonomy ),
+			) );
+			$this->delete_term_meta_post_id_cache( $old_term_id, $taxonomy );
+		}
+	}
 }
 
 /**
  * Singleton helper for Fieldmanager_Util_Term_Meta
+ *
+ * @deprecated 1.0.0-beta.3
  *
  * @return object
  */
@@ -322,6 +339,8 @@ Fieldmanager_Util_Term_Meta();
 /**
  * Shortcut helper for Fieldmanager_Util_Term_Meta::get_term_meta().
  *
+ * @deprecated 1.0.0-beta.3
+ *
  * @see Fieldmanager_Util_Term_Meta::get_term_meta()
  */
 function fm_get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false ) {
@@ -330,6 +349,8 @@ function fm_get_term_meta( $term_id, $taxonomy, $meta_key = '', $single = false 
 
 /**
  * Shortcut helper for Fieldmanager_Util_Term_Meta::add_term_meta().
+ *
+ * @deprecated 1.0.0-beta.3
  *
  * @see Fieldmanager_Util_Term_Meta::add_term_meta()
  */
@@ -340,6 +361,8 @@ function fm_add_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $unique 
 /**
  * Shortcut helper for Fieldmanager_Util_Term_Meta::update_term_meta().
  *
+ * @deprecated 1.0.0-beta.3
+ *
  * @see Fieldmanager_Util_Term_Meta::update_term_meta()
  */
 function fm_update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta_prev_value = '' ) {
@@ -348,6 +371,8 @@ function fm_update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta
 
 /**
  * Shortcut helper for Fieldmanager_Util_Term_Meta::delete_term_meta().
+ *
+ * @deprecated 1.0.0-beta.3
  *
  * @see Fieldmanager_Util_Term_Meta::delete_term_meta()
  */
