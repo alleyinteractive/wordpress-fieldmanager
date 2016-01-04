@@ -23,3 +23,7 @@ To build Fieldmanager's API documentation, the latest version of which is availa
 ```bash
 apigen -c apigen.neon
 ```
+
+## Running QUnit tests
+
+Fieldmanager uses QUnit for JavaScript unit tests. To quickly check the status of the tests, open `/tests/js/index.html` in your browser. You can also run the tests from the command line: Install the dependencies with `npm install`, then use `grunt qunit:latest` to run the tests against WordPress trunk or `grunt qunit:recent` to run the tests against trunk and the last two major releases.
