@@ -939,7 +939,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_collapse_handle() {
-		return sprintf( '<div class="handlediv" title="%s"><br /></div>', esc_attr__( 'Click to toggle', 'fieldmanager' ) );
+		return '<span class="toggle-indicator" aria-hidden="true"></span>';
 	}
 
 	/**

@@ -344,8 +344,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$wrapper_classes[] = 'fmjs-drag-header';
 		}
 
+		$collapse_handle = '';
 		if ( $this->collapsible ) {
 			$wrapper_classes[] = 'fmjs-collapsible-handle';
+			$collapse_handle = $this->get_collapse_handle();
 		}
 
 		$extra_attrs = '';
@@ -369,12 +371,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		return sprintf(
-			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s</div>',
+			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s%7$s</div>',
 			esc_attr( implode( ' ', $wrapper_classes ) ),
 			$this->label_element,
 			esc_attr( implode( ' ', $classes ) ),
 			$extra_attrs,
 			$this->escape( 'label' ),
+			$collapse_handle,
 			$remove // get_remove_handle() is sanitized html
 		);
 	}

@@ -161,6 +161,12 @@ $( document ).ready( function () {
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
+		$( this ).toggleClass( 'closed' );
+		if ( $( this ).hasClass( 'closed' ) ) {
+			$( this ).attr( 'aria-expanded', 'false' );
+		} else {
+			$( this ).attr( 'aria-expanded', 'true' );
+		}
 	} );
 
 	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
