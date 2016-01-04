@@ -202,7 +202,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 			$li_inner .= sprintf( '<small><input type="checkbox" value="1" name="%s[_image_flags][%d]" %s /> Use image?</small>', $this->get_form_name(), $post_id, $checked );
 		}
 
-		$li = $li . apply_filters( 'fieldmanager_draggablepost_li_content', array('li_inner' => $li_inner, 'post_id' => $post_id) ) . '</li>';
+		$li = $li . apply_filters( 'fieldmanager_draggablepost_li_content', $li_inner, $post_id ) . '</li>';
 		return $li;
 	}
 

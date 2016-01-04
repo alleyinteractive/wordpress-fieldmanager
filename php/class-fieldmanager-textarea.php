@@ -36,7 +36,7 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 	 */
 	public function form_element( $value = '' ) {
 		return sprintf(
-			'<textarea class="fm-element" name="%s" id="%s" %s />%s</textarea>',
+			'<textarea class="fm-element" name="%s" id="%s" %s >%s</textarea>',
 			esc_attr( $this->get_form_name() ),
 			esc_attr( $this->get_element_id() ),
 			$this->get_element_attributes(),

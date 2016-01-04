@@ -28,4 +28,19 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 		);
 	}
 
+	/**
+	 * Override function to allow all boxes to be checked by default.
+	 * @param string $current_option this option
+	 * @param array $options all valid options
+	 * @param string $attribute
+	 * @return string $attribute on match, empty on failure.
+	 */
+	public function option_selected( $current_option, $options, $attribute ) {
+		if ( ( ( $options != null && !empty( $options ) ) && in_array( $current_option, $options ) ) || ( 'checked' == $this->default_value && in_array( $this->default_value, $options ) ) ) {
+			return $attribute;
+		} else { 
+			return '';
+		}
+	}
+
 }

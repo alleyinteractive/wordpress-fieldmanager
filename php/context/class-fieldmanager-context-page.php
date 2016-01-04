@@ -7,7 +7,7 @@
  * Use fieldmanager on the public-facing theme.
  * @package Fieldmanager_Datasource
  */
-class Fieldmanager_Context_Form extends Fieldmanager_Context {
+class Fieldmanager_Context_Page extends Fieldmanager_Context {
 
 	/**
 	 * @var Fieldmanager_Context_Page[]

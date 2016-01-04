@@ -76,15 +76,19 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		}
 
 		parent::__construct( $options );
-		if ( $this->only_save_to_taxonomy ) $this->taxonomy_save_to_terms = True;
 
-		// make post_tag and category sortable via term_order, if they're set as taxonomies, and if
-		// we're not using Fieldmanager storage
-		if ( $this->only_save_to_taxonomy && in_array( 'post_tag', $this->get_taxonomies() ) ) {
-			$wp_taxonomies['post_tag']->sort = True;
+		// Ensure that $taxonomy_save_to_terms is true if it needs to be
+		if ( $this->only_save_to_taxonomy ) {
+			$this->taxonomy_save_to_terms = true;
 		}
-		if ( $this->only_save_to_taxonomy && in_array( 'category', $this->get_taxonomies() ) ) {
-			$wp_taxonomies['category']->sort = True;
+
+		if ( $this->taxonomy_save_to_terms ) {
+			// Ensure that the taxonomies are sortable if we're not using FM storage.
+			foreach ( $this->get_taxonomies() as $taxonomy ) {
+				if ( ! empty( $wp_taxonomies[ $taxonomy ] ) ) {
+					$wp_taxonomies[ $taxonomy ]->sort = true;
+				}
+			}
 		}
 	}
 
@@ -152,10 +156,14 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		if ( get_class( $field ) == 'Fieldmanager_Autocomplete' && !$field->exact_match && isset( $this->taxonomy ) ) {
 			foreach( $values as $i => $value ) {
 				 // could be a mix of valid term IDs and new terms.
-				if ( is_numeric( $value ) ) continue;
+				if ( is_numeric( $value ) ) {
+					continue;
+				}
 
-				// the JS adds a '-' to the front if it's not a found term to prevent problems with new numeric terms.
-				$value = sanitize_text_field( substr( $value, 1 ) );
+				// the JS adds an '=' to the front of numeric values if it's not a found term to prevent problems with new numeric terms.
+				if ( '=' === substr( $value, 0, 1 ) ) {
+					$value = sanitize_text_field( substr( $value, 1 ) );
+				}
 
 				// an affordance for our friends at WordPress.com
 				$term_by = function_exists( 'wpcom_vip_get_term_by' ) ? 'wpcom_vip_get_term_by' : 'get_term_by';
@@ -186,7 +194,12 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			}
 			$this->save_taxonomy( $tax_values, $field->data_id );
 		}
-		if ( $this->only_save_to_taxonomy ) return array();
+		if ( $this->only_save_to_taxonomy ) {
+			if ( empty( $values ) && ! ( $this->append_taxonomy ) ) {
+				$this->save_taxonomy( array(), $field->data_id );
+			}
+			return array();
+		}
 		return $values;
 	}
 
@@ -194,7 +207,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * Sanitize a value
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-		return intval( $value );
+		return empty( $value ) ? $value : intval( $value );
 	}
 
 	/**
@@ -261,6 +274,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		}
 
 		// Put the taxonomy data into the proper data structure to be used for display
+		$stack = array();
 		foreach ( $terms as $term ) {
 			// Store the label for the taxonomy as the group since it will be used for display
 			$key = $this->store_term_taxonomy_id ? $term->term_taxonomy_id : $term->term_id;

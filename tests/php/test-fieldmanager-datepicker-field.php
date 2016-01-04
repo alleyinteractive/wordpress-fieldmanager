@@ -2,6 +2,9 @@
 
 /**
  * Tests the Fieldmanager Datepicker Field
+ *
+ * @group field
+ * @group datepicker
  */
 class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
@@ -29,7 +32,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$base = new Fieldmanager_Group( array(
 			'name'       => 'test_datetime_group',
 			'children'   => array(
-				'test_datetime_field' => new Fieldmanager_Datepicker( false, array( 'use_time' => true ) ),
+				'test_datetime_field' => new Fieldmanager_Datepicker( array( 'use_time' => true ) ),
 				),
 			) );
 
@@ -78,9 +81,22 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '2:37 am' ), $saved_data['test_datetime_field'] );
 
+		// Date set, time set, but no minutes
+		$test_data = array(
+			'test_datetime_group' => array(
+				'test_datetime_field' => array(
+					'date'      => '13 Mar 2014',
+					'hour'      => '2',
+					'minute'    => '',
+					'ampm'      => 'am',
+					),
+				),
+			);
+		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
+		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
+		$this->assertEquals( strtotime( '13 Mar 2014 2:00am' ), $saved_data['test_datetime_field'] );
 
 		// Date and time set
-		// Time set, but no date
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
@@ -119,6 +135,6 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$this->assertEquals( get_gmt_from_date( '2014-03-13 02:37:00', 'U' ), intval( $local_stamp ) );
 		$this->assertEquals( strtotime( '2014-03-13 02:37:00 America/New_York' ), intval( $local_stamp ) );
 
-		$this->assertEquals( $gmt_stamp - $local_stamp, get_option( 'gmt_offset' ) * HOUR_IN_SECONDS );
+		$this->assertEquals( $gmt_stamp - $local_stamp, -4 * HOUR_IN_SECONDS );
 	}
 }

@@ -9,8 +9,10 @@ var init_sortable_container = function( el ) {
 		$( el ).sortable( {
 			handle: '.fmjs-drag',
 			items: '> .fm-item',
+			placeholder: "sortable-placeholder",
+			forcePlaceholderSize: true,
 			start: function( e, ui ) {
-				$( document ).trigger( 'fm_sortable_drag', el ) ;
+				$( document ).trigger( 'fm_sortable_drag', el );
 			},
 			stop: function( e, ui ) {
 				var $parent = ui.item.parents( '.fm-wrapper' ).first();
@@ -68,11 +70,13 @@ var init_label_macros = function() {
 
 var fm_renumber = function( $wrappers ) {
 	$wrappers.each( function() {
-		var level_pos = $( this ).data( 'fm-array-position' );
+		var level_pos = $( this ).data( 'fm-array-position' ) - 0;
 		var order = 0;
 		if ( level_pos > 0 ) {
 			$( this ).find( '> .fm-item' ).each( function() {
-				if ( $( this ).hasClass( 'fmjs-proto' ) ) return; // continue
+				if ( $( this ).hasClass( 'fmjs-proto' ) ) {
+					return; // continue
+				}
 				$( this ).find( '.fm-element, .fm-incrementable' ).each( function() {
 					var fname = $(this).attr( 'name' );
 					if ( fname ) {
@@ -82,7 +86,7 @@ var fm_renumber = function( $wrappers ) {
 							parts[ level_pos ] = order;
 							var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
 							$( this ).attr( 'name', new_fname );
-							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) ) {
+							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
 								$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
 								dynamic_seq++;
 								return; // continue;
@@ -115,7 +119,8 @@ var match_value = function( values, match_string ) {
 fm_add_another = function( $element ) {
 	var el_name = $element.data( 'related-element' )
 		, limit = $element.data( 'limit' ) - 0
-		, siblings = $element.parent().siblings().not( '.fmjs-proto' );
+		, siblings = $element.parent().siblings( '.fm-item' ).not( '.fmjs-proto' )
+		, add_more_position = $element.data( 'add-more-position' ) || "bottom";
 
 	if ( limit > 0 && siblings.length >= limit ) {
 		return;
@@ -124,7 +129,8 @@ fm_add_another = function( $element ) {
 	var $new_element = $( '.fmjs-proto.fm-' + el_name, $element.closest( '.fm-wrapper' ) ).first().clone();
 
 	$new_element.removeClass( 'fmjs-proto' );
-	$new_element = $new_element.insertBefore( $element.parent() );
+	$new_element = add_more_position == "bottom" ? $new_element.insertBefore( $element.parent() ) :
+						$new_element.insertAfter( $element.parent() )	;
 	fm_renumber( $element.parents( '.fm-wrapper' ) );
 	// Trigger for subclasses to do any post-add event handling for the new element
 	$element.parent().siblings().last().trigger( 'fm_added_element' );
@@ -152,22 +158,30 @@ $( document ).ready( function () {
 
 	// Handle collapse events
 	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
-		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).toggle();
+		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
+		$( this ).toggleClass( 'closed' );
+		if ( $( this ).hasClass( 'closed' ) ) {
+			$( this ).attr( 'aria-expanded', 'false' );
+		} else {
+			$( this ).attr( 'aria-expanded', 'true' );
+		}
 	} );
 
-	$( '.fm-collapsed' ).each( function() {
-		$( this ).find( '.fm-group-inner' ).hide();
-	} );
+	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
 
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
 		var values = $( this ).data( 'display-value' ).split( ',' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
+		var val = trigger.val();
+		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
+			val = trigger.filter( ':checked' ).val();
+		}
 		trigger.addClass( 'display-trigger' );
-		if ( !match_value( values, trigger.val() ) ) {
+		if ( !match_value( values, val ) ) {
 			$( this ).hide();
 		}
 	} );
@@ -192,6 +206,8 @@ $( document ).ready( function () {
 
 	init_label_macros();
 	init_sortable();
+
+	$( document ).on( 'fm_activate_tab', init_sortable );
 } );
 
 } )( jQuery );
