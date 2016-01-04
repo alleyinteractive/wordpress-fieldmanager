@@ -9,8 +9,10 @@ var init_sortable_container = function( el ) {
 		$( el ).sortable( {
 			handle: '.fmjs-drag',
 			items: '> .fm-item',
+			placeholder: "sortable-placeholder",
+			forcePlaceholderSize: true,
 			start: function( e, ui ) {
-				$( document ).trigger( 'fm_sortable_drag', el ) ;
+				$( document ).trigger( 'fm_sortable_drag', el );
 			},
 			stop: function( e, ui ) {
 				var $parent = ui.item.parents( '.fm-wrapper' ).first();
@@ -189,9 +191,15 @@ $( document ).ready( function () {
 
 	// Handle collapse events
 	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
-		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).toggle();
+		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
+		$( this ).toggleClass( 'closed' );
+		if ( $( this ).hasClass( 'closed' ) ) {
+			$( this ).attr( 'aria-expanded', 'false' );
+		} else {
+			$( this ).attr( 'aria-expanded', 'true' );
+		}
 	} );
 
 	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();

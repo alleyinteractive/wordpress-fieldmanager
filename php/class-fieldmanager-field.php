@@ -1012,7 +1012,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_collapse_handle() {
-		return sprintf( '<div class="handlediv" title="%s"><br /></div>', esc_attr__( 'Click to toggle', 'fieldmanager' ) );
+		return '<span class="toggle-indicator" aria-hidden="true"></span>';
 	}
 
 	/**
@@ -1044,7 +1044,11 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Add a form on a term add/edit page
+	 *
+	 * @deprecated 1.0.0-beta.3 Replaced by {@see Fieldmanager_Field::add_term_meta_box()}.
+	 *
 	 * @see Fieldmanager_Context_Term
+	 *
 	 * @param string $title
 	 * @param string|array $taxonomies The taxonomies on which to display this form
 	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
@@ -1053,7 +1057,46 @@ abstract class Fieldmanager_Field {
 	 */
 	public function add_term_form( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
 		$this->require_base();
-		return new Fieldmanager_Context_Term( $title, $taxonomies, $show_on_add, $show_on_edit, $parent, $this );
+		return new Fieldmanager_Context_Term( array(
+			'title'        => $title,
+			'taxonomies'   => $taxonomies,
+			'show_on_add'  => $show_on_add,
+			'show_on_edit' => $show_on_edit,
+			'parent'       => $parent,
+			// Use the deprecated FM Term Meta instead of core's term meta
+			'use_fm_meta'  => true,
+			'field'        => $this,
+		) );
+	}
+
+	/**
+	 * Add fields to the term add/edit page
+	 *
+	 * @see Fieldmanager_Context_Term
+	 *
+	 * @param string $title
+	 * @param string|array $taxonomies The taxonomies on which to display this form
+	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
+	 * @param boolean $show_on_edit Whether or not to show the fields on the edit term form
+	 * @param int $parent Only show this field on child terms of this parent term ID
+	 */
+	public function add_term_meta_box( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
+		// Bail if term meta table is not installed.
+		if ( get_option( 'db_version' ) < 34370 ) {
+			_doing_it_wrong( __METHOD__, esc_html__( 'This method requires WordPress 4.4 or above', 'fieldmanager' ), 'Fieldmanager-1.0.0-beta.3' );
+			return false;
+		}
+
+		$this->require_base();
+		return new Fieldmanager_Context_Term( array(
+			'title'        => $title,
+			'taxonomies'   => $taxonomies,
+			'show_on_add'  => $show_on_add,
+			'show_on_edit' => $show_on_edit,
+			'parent'       => $parent,
+			'use_fm_meta'  => false,
+			'field'        => $this,
+		) );
 	}
 
 	/**
@@ -1068,6 +1111,9 @@ abstract class Fieldmanager_Field {
 		$this->require_base();
 		// Check if any default meta boxes need to be removed for this field
 		$this->add_meta_boxes_to_remove( $this->meta_boxes_to_remove );
+		if ( in_array( 'attachment', (array) $post_types ) ) {
+			$this->is_attachment = true;
+		}
 		return new Fieldmanager_Context_Post( $title, $post_types, $context, $priority, $this );
 	}
 
