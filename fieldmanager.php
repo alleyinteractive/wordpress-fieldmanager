@@ -3,7 +3,7 @@
  * Fieldmanager Base Plugin File.
  *
  * @package Fieldmanager
- * @version 1.0.0-beta.2
+ * @version 1.0.0-beta.3
  */
 
 /*
@@ -11,14 +11,14 @@ Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to content types programatically.
 Author: Austin Smith
-Version: 1.0.0-beta.2
+Version: 1.0.0-beta.3
 Author URI: http://www.alleyinteractive.com/
 */
 
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.0.0-beta.2' );
+define( 'FM_VERSION', '1.0.0-beta.3' );
 
 /**
  * Filesystem path to Fieldmanager.
@@ -100,8 +100,8 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
  * Enqueue CSS and JS in the Dashboard.
  */
 function fieldmanager_enqueue_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.6' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.1' );
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.3' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
 add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
@@ -296,8 +296,11 @@ function fm_calculate_context() {
 			$page = sanitize_text_field( $_GET['page'] );
 			$submenus = _fieldmanager_registry( 'submenus' );
 
-			if ( isset( $_GET['post_type'] ) && post_type_exists( $_GET['post_type'] ) ) {
-				$script .= '?post_type=' . $_GET['post_type'];
+			if ( isset( $_GET['post_type'] ) ) {
+				$post_type = sanitize_text_field( $_GET['post_type'] );
+				if ( post_type_exists( $post_type ) ) {
+					$script .= "?post_type={$post_type}";
+				}
 			}
 
 			if ( $submenus ) {

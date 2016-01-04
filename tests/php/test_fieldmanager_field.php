@@ -488,7 +488,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -555,7 +555,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -603,7 +603,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -656,7 +656,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -1005,5 +1005,31 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertNotContains( "value=\"{$to_remove}\"", $html );
 		$this->assertContains( "value=\"{$to_save[1]}\"", $html );
 		$this->assertContains( "value=\"{$to_save[2]}\"", $html );
+	}
+
+	public function test_attachment_detection() {
+		$fm_1 = new Fieldmanager_Textfield( array(
+			'name' => 'test_attachment_detection',
+		) );
+		$context_1 = $fm_1->add_meta_box( 'Test Attachment Detection', 'post' );
+		$this->assertFalse( $fm_1->is_attachment );
+
+		// Ensure attachment sets $is_attachment
+		$fm_2 = new Fieldmanager_Textfield( array(
+			'name' => 'test_attachment_detection',
+		) );
+		$context_2 = $fm_2->add_meta_box( 'Test Attachment Detection', 'attachment' );
+		$this->assertEquals( 10, has_filter( 'attachment_fields_to_save', array( $context_2, 'save_fields_for_attachment') ) );
+		remove_filter( 'attachment_fields_to_save', array( $context_2, 'save_fields_for_attachment' ) );
+		$this->assertTrue( $fm_2->is_attachment );
+
+		// Ensure attachment is read from an array
+		$fm_3 = new Fieldmanager_Textfield( array(
+			'name' => 'test_attachment_detection',
+		) );
+		$context_3 = $fm_3->add_meta_box( 'Test Attachment Detection', array( 'post', 'attachment' ) );
+		$this->assertEquals( 10, has_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment') ) );
+		remove_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment' ) );
+		$this->assertTrue( $fm_3->is_attachment );
 	}
 }
