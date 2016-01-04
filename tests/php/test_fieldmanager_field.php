@@ -3,6 +3,8 @@
 /**
  * Tests Fieldmanager_Field, which handles validation and
  * throws most core exceptions
+ *
+ * @group field
  */
 class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	public function setUp() {
@@ -19,6 +21,13 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->post_id = wp_insert_post( $this->post );
 		// reload as proper object
 		$this->post = get_post( $this->post_id );
+	}
+
+	public function tearDown() {
+		$meta = get_post_meta( $this->post_id );
+		foreach ( $meta as $key => $value ) {
+			delete_post_meta( $this->post_id, $key );
+		}
 	}
 
 	/**
@@ -498,7 +507,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -565,7 +574,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -613,7 +622,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -666,7 +675,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove">Remove</a>' ) );
+		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -764,7 +773,282 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				array( 'text' => 'e' ),
 			)
 		);
-		$str = $this->_get_html_for_extra_element_args( array( 'limit' => 3 ), $test_data_too_many );
+
+		$field = new Fieldmanager_Group( array(
+			'name' => 'base_group',
+			'children' => array(
+				'test_element' => new Fieldmanager_Group( array(
+					'limit' => 3,
+					'children' => array( 'text' => new Fieldmanager_TextField( false ) ),
+				) )
+			)
+		) );
+		$context = $field->add_meta_box( 'test meta box', $this->post );
+		$context->save_to_post_meta( $this->post_id, $test_data_too_many );
 	}
 
+	public function test_attributes(){
+		$fm = new Fieldmanager_Textfield( array(
+			'name' => 'test_attributes',
+			'attributes' => array(
+				'required' => true,
+				'data-foo' => 'bar',
+				'data-UPPER' => 'lower'
+			)
+		) );
+		ob_start();
+		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertRegExp( '/\srequired[\/\s]/', $html );
+		$this->assertRegExp( '/\sdata-foo="bar"[\/\s]/', $html );
+		$this->assertRegExp( '/\sdata-upper="lower"[\/\s]/', $html );
+	}
+
+	public function test_label_escaping() {
+		$id = rand_str();
+		$label_raw = rand_str();
+		$label_html = "<strong id='{$id}'>{$label_raw}</strong>";
+		$args = array(
+			'name' => 'label_escape_testing',
+			'label' => $label_html,
+		);
+
+		// Ensure that, by default, the label is present without the HTML
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label_raw, $html );
+		$this->assertNotContains( $label_html, $html );
+
+		// Ensure that the label has HTML when we change the escaping
+		$args['escape'] = array( 'label' => 'wp_kses_post' );
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $label_html, $html );
+	}
+
+	public function test_description_escaping() {
+		$id = rand_str();
+		$description_raw = rand_str();
+		$description_html = "<strong id='{$id}'>{$description_raw}</strong>";
+		$args = array(
+			'name' => 'description_escape_testing',
+			'description' => $description_html,
+		);
+
+		// Ensure that, by default, the description is present without the HTML
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $description_raw, $html );
+		$this->assertNotContains( $description_html, $html );
+
+		// Ensure that the description has HTML when we change the escaping
+		$args['escape'] = array( 'description' => 'wp_kses_post' );
+		$field = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $field );
+		$this->assertContains( $description_html, $html );
+	}
+
+	/**
+	 * @group serialize_data
+	 */
+	public function test_unserialize_data_single_field_render() {
+		$args = array(
+			'name'  => 'base_field',
+			'limit' => 0,
+		);
+
+		$base = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
+		$this->assertContains( 'name="base_field[proto]"', $html );
+		$this->assertContains( 'name="base_field[0]"', $html );
+		$this->assertNotContains( 'name="base_field[1]"', $html );
+
+		// Using serialize_data => false shouldn't change anything
+		$base = new Fieldmanager_TextField( array_merge( $args, array( 'serialize_data' => false ) ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
+		$this->assertContains( 'name="base_field[proto]"', $html );
+		$this->assertContains( 'name="base_field[0]"', $html );
+		$this->assertNotContains( 'name="base_field[1]"', $html );
+	}
+
+	/**
+	 * @group serialize_data
+	 */
+	public function test_unserialize_data_single_field_render_with_data() {
+		$args = array(
+			'name'  => 'base_field',
+			'limit' => 0,
+		);
+		$data = array( rand_str(), rand_str(), rand_str() );
+
+		update_post_meta( $this->post_id, 'base_field', $data );
+		$base = new Fieldmanager_TextField( $args );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
+		$this->assertContains( 'name="base_field[proto]"', $html );
+		$this->assertContains( 'name="base_field[3]"', $html );
+		$this->assertNotContains( 'name="base_field[4]"', $html );
+
+		// Using serialize_data => false requires a different data storage
+		delete_post_meta( $this->post_id, 'base_field' );
+		foreach ( $data as $meta_value ) {
+			add_post_meta( $this->post_id, 'base_field', $meta_value );
+		}
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$base = new Fieldmanager_TextField( array_merge( $args, array( 'serialize_data' => false ) ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
+		$this->assertContains( 'name="base_field[proto]"', $html );
+		$this->assertContains( 'name="base_field[3]"', $html );
+		$this->assertNotContains( 'name="base_field[4]"', $html );
+	}
+
+	/**
+	 * @group serialize_data
+	 */
+	public function test_unserialize_data_single_field_save() {
+		$base = new Fieldmanager_TextField( array(
+			'name'           => 'base_field',
+			'limit'          => 0,
+			'serialize_data' => false,
+		) );
+		$data = array( rand_str(), rand_str(), rand_str() );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+	}
+
+	/**
+	 * @group serialize_data
+	 */
+	public function test_unserialize_data_single_field_sorting() {
+		$item_1 = rand_str();
+		$item_2 = rand_str();
+		$item_3 = rand_str();
+		$base = new Fieldmanager_TextField( array(
+			'name'           => 'base_field',
+			'limit'          => 0,
+			'serialize_data' => false,
+		) );
+		$context = $base->add_meta_box( 'test meta box', 'post' );
+
+		// Test as 1, 2, 3
+		$data = array( $item_1, $item_2, $item_3 );
+		$context->save_to_post_meta( $this->post_id, $data );
+		$html = $this->_get_html_for( $base );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_3 . '"/', $html );
+
+		// Reorder and test as 3, 1, 2
+		$data = array( $item_3, $item_1, $item_2 );
+		$context->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
+
+		// Reorder and test as 2, 3, 1
+		$data = array( $item_2, $item_3, $item_1 );
+		$context->save_to_post_meta( $this->post_id, $data );
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$html = $this->_get_html_for( $base );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_1 . '"/', $html );
+	}
+
+	/**
+	 * @group serialize_data
+	 */
+	public function test_unserialize_data_limit_1_no_impact() {
+		$base = new Fieldmanager_TextField( array(
+			'name'           => 'base_field',
+			'serialize_data' => false,
+		) );
+		$data = rand_str();
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
+
+		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field', true ) );
+	}
+
+	/**
+	 * @group serialize_data
+	 * @expectedException FM_Developer_Exception
+	 */
+	public function test_unserialize_data_single_field_index() {
+		new Fieldmanager_TextField( array(
+			'name'           => 'test',
+			'limit'          => 0,
+			'serialize_data' => false,
+			'index'          => true,
+		) );
+	}
+
+	public function test_removing_item_from_repeatable() {
+		$field = new Fieldmanager_Textfield( array(
+			'name' => 'removing_items_testing',
+			'sortable' => true,
+			'extra_elements' => 0,
+			'limit' => 0,
+		) );
+
+		$context = $field->add_meta_box( 'removing_items_testing', $this->post );
+
+		$to_remove = rand_str();
+		$to_save = array( $to_remove, rand_str(), rand_str() );
+
+		$context->save_to_post_meta( $this->post_id, $to_save );
+
+		$data = get_post_meta( $this->post_id, 'removing_items_testing', true );
+
+		$this->assertEquals( 3, count( $data ) );
+
+		$to_save[0] = '';
+
+		$context->save_to_post_meta( $this->post_id, $to_save );
+
+		$data = get_post_meta( $this->post_id, 'removing_items_testing', true );
+
+		$this->assertEquals( 2, count( $data ) );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertNotContains( "value=\"{$to_remove}\"", $html );
+		$this->assertContains( "value=\"{$to_save[1]}\"", $html );
+		$this->assertContains( "value=\"{$to_save[2]}\"", $html );
+	}
+
+	public function test_attachment_detection() {
+		$fm_1 = new Fieldmanager_Textfield( array(
+			'name' => 'test_attachment_detection',
+		) );
+		$context_1 = $fm_1->add_meta_box( 'Test Attachment Detection', 'post' );
+		$this->assertFalse( $fm_1->is_attachment );
+
+		// Ensure attachment sets $is_attachment
+		$fm_2 = new Fieldmanager_Textfield( array(
+			'name' => 'test_attachment_detection',
+		) );
+		$context_2 = $fm_2->add_meta_box( 'Test Attachment Detection', 'attachment' );
+		$this->assertEquals( 10, has_filter( 'attachment_fields_to_save', array( $context_2, 'save_fields_for_attachment') ) );
+		remove_filter( 'attachment_fields_to_save', array( $context_2, 'save_fields_for_attachment' ) );
+		$this->assertTrue( $fm_2->is_attachment );
+
+		// Ensure attachment is read from an array
+		$fm_3 = new Fieldmanager_Textfield( array(
+			'name' => 'test_attachment_detection',
+		) );
+		$context_3 = $fm_3->add_meta_box( 'Test Attachment Detection', array( 'post', 'attachment' ) );
+		$this->assertEquals( 10, has_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment') ) );
+		remove_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment' ) );
+		$this->assertTrue( $fm_3->is_attachment );
+	}
 }

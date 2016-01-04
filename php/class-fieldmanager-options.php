@@ -65,13 +65,20 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css' );
 
 		// Sanitization
-		$this->sanitize = function( $value ) {
-			if ( isset( $value ) && is_array( $value ) && !empty( $value ) ) {
-				return array_map( 'sanitize_text_field', $value );
-			} else {
-				return sanitize_text_field( $value );
-			}
-		};
+		$this->sanitize = array( $this, 'sanitize' );
+	}
+
+	/**
+	 * Sanitize function that can handle arrays as well as string values.
+	 * @param array|string $value
+	 * @return array|string Sanitized $value
+	 */
+	public function sanitize( $value ) {
+		if ( isset( $value ) && is_array( $value ) && ! empty( $value ) ) {
+			return array_map( 'sanitize_text_field', $value );
+		} else {
+			return sanitize_text_field( $value );
+		}
 	}
 
 	/**
@@ -81,7 +88,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function add_options( $options ) {
 		$values = array_values( $options );
-		if ( is_array( $values[0] ) ) {
+		if ( isset( $values[0] ) && is_array( $values[0] ) ) {
 			foreach ( $options as $group => $data ) {
 				foreach ( $data as $value => $label ) {
 					$this->add_option_data( $value, $label, $group, $group );

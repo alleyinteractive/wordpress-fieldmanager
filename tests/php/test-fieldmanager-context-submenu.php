@@ -2,6 +2,9 @@
 
 /**
  * Tests submenu forms/pages
+ *
+ * @group context
+ * @group submenu
  */
 class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
@@ -26,7 +29,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$context = $this->get_context( $name );
 		$html = $this->get_html( $context, $name );
 
-		$this->assertContains( '<h2>Tools Meta Fields</h2>', $html );
+		$this->assertContains( '<h1>Tools Meta Fields</h1>', $html );
 		$this->assertRegExp( '/<input type="hidden"[^>]+name="fieldmanager-' . $name . '-nonce"/', $html );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[name\]"[^>]+value=""/', $html );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[email\]"[^>]+value=""/', $html );
@@ -47,7 +50,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertEquals( $_POST[ $name ]['email'], $processed_values['email'] );
 		$this->assertEquals( $_POST[ $name ]['remember'], $processed_values['remember'] );
 		$this->assertNotEquals( $_POST[ $name ]['name'], $processed_values['name'] );
-		$this->assertEquals( $processed_values['name'], 'Austin Smith' );
+		$this->assertEquals( $processed_values['name'], 'Austin "Smith"' );
 		$this->assertEquals( $_POST[ $name ]['group']['preferences'], $processed_values['group']['preferences'] );
 		$this->assertEquals( $processed_values['number'], 11 ); // changed in presave hook and sanitized.
 
@@ -80,8 +83,45 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$html = $this->get_html( $context, $name );
 
 		$this->build_post( $html, $name );
-		$_POST['fieldmanager-edit_meta_fields-nonce'] = '';
-		$context->save_submenu_data();
+		$_GET['page'] = $name;
+		$_POST["fieldmanager-{$name}-nonce"] = 'abc123';
+		$context->handle_submenu_save();
+	}
+
+	public function test_urls() {
+		$current_user = get_current_user_id();
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+
+		// Test URL generation with a normal parent, tools.php
+		$name_1 = rand_str();
+		fm_register_submenu_page( $name_1, 'tools.php', 'Testing URLs' );
+		$context_1 = $this->get_context( $name_1 );
+
+		// Test with a parent with an additional query arg
+		$name_2 = rand_str();
+		fm_register_submenu_page( $name_2, 'edit.php?post_type=page', 'Testing URLs' );
+		$context_2 = $this->get_context( $name_2 );
+
+		// Test with a null parent
+		$name_3 = rand_str();
+		fm_register_submenu_page( $name_3, null, 'Testing URLs' );
+		$context_3 = $this->get_context( $name_3 );
+
+		// Test with a parent slug
+		$name_4 = rand_str();
+		$parent = rand_str();
+		add_submenu_page( null, 'Test parent', 'Test parent', 'manage_options', $parent );
+		fm_register_submenu_page( $name_4, $parent, 'Testing URLs' );
+		$context_4 = $this->get_context( $name_4 );
+
+		wp_set_current_user( $current_user );
+
+		// We're running the assertions at the end so we can be guaranteed that
+		// we set the current user back.
+		$this->assertEquals( admin_url( 'tools.php?page=' . $name_1 ), $context_1->url() );
+		$this->assertEquals( admin_url( 'edit.php?post_type=page&page=' . $name_2 ), $context_2->url() );
+		$this->assertEquals( admin_url( 'admin.php?page=' . $name_3 ), $context_3->url() );
+		$this->assertEquals( admin_url( 'admin.php?page=' . $name_4 ), $context_4->url() );
 	}
 
 	/**
@@ -150,7 +190,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 			'fm-form-context' => 'test_form',
 			$name => array(
 				'email' => 'test@example.com',
-				'name' => 'Austin Smith<script type="text/javascript">alert("HACKED")</script>', // should get auto-stripped
+				'name' => 'Austin \\"Smith\\"<script type="text/javascript">alert(/HACKED/)</script>', // both the script and slashes should get auto-stripped
 				'remember' => 1,
 				'number' => '7even', // will become 7 due to above sanitizer
 				'group' => array(
@@ -182,6 +222,17 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	public function presave_alter_number( $values, $context ) {
 		$values['number'] = 11;
 		return $values;
+	}
+
+	public function test_updated_message() {
+		$name = 'message_customization';
+		$updated_message = rand_str();
+		fm_register_submenu_page( $name, 'tools.php', 'Message Customization' );
+		$context = $this->get_context( $name );
+		$context->updated_message = $updated_message;
+		$html = $this->get_html( $context, $name );
+		$this->build_post( $html, $name );
+		$this->assertContains( "<div class=\"updated success\"><p>{$updated_message}</p></div>", $this->get_html( $context, $name ) );
 	}
 
 }
