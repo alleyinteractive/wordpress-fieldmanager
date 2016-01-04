@@ -46,10 +46,12 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	public $submit_button_label = Null;
 
 	/**
-	 * @var string|Null
-	 * Only used for options pages
+	 * The "success" message displayed after options are saved. Defaults to
+	 * "Options updated".
+	 *
+	 * @var string|null
 	 */
-	public $updated_message = Null;
+	public $updated_message = null;
 
 	/**
 	 * @var string
@@ -73,7 +75,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		$this->parent_slug = $parent_slug;
 		$this->page_title = $page_title;
 		$this->capability = $capability;
-		$this->updated_message = esc_html__( 'Options updated', 'fieldmanager' );
+		$this->updated_message = __( 'Options updated', 'fieldmanager' );
 		$this->uniqid = $this->fm->get_element_id() . '_form';
 		if ( ! $already_registered )  {
 			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );

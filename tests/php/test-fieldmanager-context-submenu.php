@@ -224,4 +224,15 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		return $values;
 	}
 
+	public function test_updated_message() {
+		$name = 'message_customization';
+		$updated_message = rand_str();
+		fm_register_submenu_page( $name, 'tools.php', 'Message Customization' );
+		$context = $this->get_context( $name );
+		$context->updated_message = $updated_message;
+		$html = $this->get_html( $context, $name );
+		$this->build_post( $html, $name );
+		$this->assertContains( "<div class=\"updated success\"><p>{$updated_message}</p></div>", $this->get_html( $context, $name ) );
+	}
+
 }
