@@ -5,6 +5,7 @@
  *
  * @group util
  * @group term
+ * @group fm_term_meta
  */
 class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 	public $current_user;
@@ -39,6 +40,11 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 
 	/**
 	 * Test behavior when using the term meta fields.
+	 *
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_save_term_meta() {
 		$term_option = new Fieldmanager_Textfield( array(
@@ -80,6 +86,13 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 		$this->assertNotEquals( false, wp_cache_get( $cache_key ) );
 	}
 
+	/**
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Context_Term::delete_term_fields is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
+	 */
 	public function test_garbage_collection() {
 		$term_option = new Fieldmanager_Textfield( array(
 			'name'  => 'term_option',
@@ -110,6 +123,8 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 
 	/**
 	 * @group term_splitting
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::add_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_term_splitting() {
 		// Ensure that term splitting exists
