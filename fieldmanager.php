@@ -3,7 +3,7 @@
  * Fieldmanager Base Plugin File.
  *
  * @package Fieldmanager
- * @version 1.0.0-beta.2
+ * @version 1.0.0-beta.3
  */
 
 /*
@@ -11,14 +11,14 @@ Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to content types programatically.
 Author: Austin Smith
-Version: 1.0.0-beta.2
+Version: 1.0.0-beta.3
 Author URI: http://www.alleyinteractive.com/
 */
 
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.0.0-beta.2' );
+define( 'FM_VERSION', '1.0.0-beta.3' );
 
 /**
  * Filesystem path to Fieldmanager.
@@ -100,8 +100,8 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
  * Enqueue CSS and JS in the Dashboard.
  */
 function fieldmanager_enqueue_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.6' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.1' );
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.3' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
 add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
@@ -243,12 +243,15 @@ function _fieldmanager_registry( $var, $val = null ) {
  *
  * @see fm_calculate_context() for detail about the returned array values.
  *
+ * @param bool $recalculate Optional. If true, FM will recalculate the current
+ *                          context. This is necessary for testing and perhaps
+ *                          other programmatic purposes.
  * @return array Contextual information for the current request.
  */
-function fm_get_context() {
+function fm_get_context( $recalculate = false ) {
 	static $calculated_context;
 
-	if ( $calculated_context ) {
+	if ( ! $recalculate && $calculated_context ) {
 		return $calculated_context;
 	} else {
 		$calculated_context = fm_calculate_context();
@@ -296,8 +299,11 @@ function fm_calculate_context() {
 			$page = sanitize_text_field( $_GET['page'] );
 			$submenus = _fieldmanager_registry( 'submenus' );
 
-			if ( isset( $_GET['post_type'] ) && post_type_exists( $_GET['post_type'] ) ) {
-				$script .= '?post_type=' . $_GET['post_type'];
+			if ( isset( $_GET['post_type'] ) ) {
+				$post_type = sanitize_text_field( $_GET['post_type'] );
+				if ( post_type_exists( $post_type ) ) {
+					$script .= "?post_type={$post_type}";
+				}
 			}
 
 			if ( $submenus ) {
@@ -405,30 +411,38 @@ function fm_match_context( $context, $type = null ) {
  */
 function fm_trigger_context_action() {
 	$calculated_context = fm_get_context();
-	if ( empty( $calculated_context ) ) {
+	if ( empty( $calculated_context[0] ) ) {
 		return;
 	}
 
-	$context = $calculated_context[0];
-	if ( $type = $calculated_context[1] ) {
+	list( $context, $type ) = $calculated_context;
+
+	if ( $type ) {
 		/**
 		 * Fires when a specific Fieldmanager context and type load.
 		 *
 		 * The dynamic portions of the hook name, $context and $type, refer to
 		 * the values returned by fm_calculate_context(). For example, the Edit
 		 * screen for the Page post type would fire "fm_post_page".
-		 */
-		do_action( "fm_{$context}_{$type}" );
-	} else {
-		/**
-		 * Fires when a specific Fieldmanager context, but not type, loads.
 		 *
-		 * The dynamic portion of the hook name, $context, refers to the first
-		 * value returned by fm_calculate_context(). For example, the Edit User
-		 * screen would fire "fm_user".
+		 * @param string $type The context subtype, e.g. the post type, taxonomy
+		 *                     name, submenu option name.
 		 */
-		do_action( "fm_{$context}" );
+		do_action( "fm_{$context}_{$type}", $type );
 	}
+
+	/**
+	 * Fires when any Fieldmanager context loads.
+	 *
+	 * The dynamic portion of the hook name, $context, refers to the first
+	 * value returned by fm_calculate_context(). For example, the Edit User
+	 * screen would fire "fm_user".
+	 *
+	 * @param string|null $type The context subtype, e.g. the post type,
+	 *                          taxonomy name, submenu option name. null if this
+	 *                          context does not have a subtype.
+	 */
+	do_action( "fm_{$context}", $type );
 }
 add_action( 'init', 'fm_trigger_context_action', 99 );
 

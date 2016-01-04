@@ -1,27 +1,42 @@
 <?php
 
 /**
- * Tests the Quickedit context
+ * Tests the Term context using the deprecated Fieldmanager Term Meta. This will
+ * help ensure backwards compatibility.
  *
  * @group context
- * @group quickedit
+ * @group term
+ * @group fm_term_meta
  */
-class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
+class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
+	public $current_user;
+
 	public function setUp() {
 		parent::setUp();
-		Fieldmanager_Field::$debug = true;
+		Fieldmanager_Field::$debug = TRUE;
 
-		$this->post = array(
-			'post_status' => 'publish',
-			'post_content' => rand_str(),
-			'post_title' => rand_str(),
-		);
+		$this->current_user = get_current_user_id();
+		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
-		// insert a post
-		$this->post_id = wp_insert_post( $this->post );
+		$this->taxonomy = 'category';
+		$term = wp_insert_term( 'test', $this->taxonomy );
+		$this->term_id = $term['term_id'];
+		$this->tt_id = $term['term_taxonomy_id'];
 
 		// reload as proper object
-		$this->post = get_post( $this->post_id );
+		$this->term = get_term( $this->term_id, $this->taxonomy );
+	}
+
+	public function tearDown() {
+		$meta = fm_get_term_meta( $this->term_id, $this->taxonomy );
+		foreach ( $meta as $key => $value ) {
+			fm_delete_term_meta( $this->term_id, $this->taxonomy, $key );
+		}
+
+		if ( get_current_user_id() != $this->current_user ) {
+			wp_delete_user( get_current_user_id() );
+		}
+		wp_set_current_user( $this->current_user );
 	}
 
 	/**
@@ -53,20 +68,6 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		);
 	}
 
-	private function _get_context( $fm ) {
-		$context = $fm->add_quickedit_box( 'test meta box', 'post', array( $this, '_quickedit_column' ), 'Custom Column' );
-
-		// The QuickEdit context absolutely requires we be in the edit.php
-		// context, so we have to kind of fake it.
-		$context->post_types = array( 'post' );
-		$context->title = 'test meta box';
-		$context->column_title = 'Custom Column';
-		$context->column_display_callback = array( $this, '_quickedit_column' );
-		$context->fm = $fm;
-
-		return $context;
-	}
-
 	/**
 	 * Get a set of elements
 	 * @return Fieldmanager_Group
@@ -77,7 +78,7 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 			'children' => array(
 				'test_basic' => new Fieldmanager_TextField(),
 				'test_textfield' => new Fieldmanager_TextField( array(
-					'index' => '_test_index',
+					// 'index' => '_test_index',
 				) ),
 				'test_htmlfield' => new Fieldmanager_Textarea( array(
 					'sanitize' => 'wp_kses_post',
@@ -90,7 +91,7 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 							'name' => 'extext',
 							'one_label_per_item' => False,
 							'sortable' => True,
-							'index' => '_extext_index',
+							// 'index' => '_extext_index',
 						) ),
 					),
 				) ),
@@ -100,31 +101,26 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 
 	private function _get_html_for( $field, $test_data = null ) {
 		ob_start();
-		$context = $this->_get_context( $field );
+		$context = $field->add_term_form( 'test meta box', $this->taxonomy );
 		if ( $test_data ) {
-			$context->save_to_post_meta( $this->post_id, $test_data );
+			$context->save_to_term_meta( $this->term_id, $this->taxonomy, $test_data );
+			$context->edit_term_fields( $this->term, $this->taxonomy );
+		} else {
+			$context->add_term_fields( $this->taxonomy );
 		}
-		$get = $_GET;
-		$_GET = array(
-			'action'      => 'fm_quickedit_render',
-			'post_id'     => $this->post_id,
-			'column_name' => $field->name,
-		);
-		$context->render_ajax_form();
-		$_GET = $get;
 		return ob_get_clean();
 	}
 
-	public function test_context_render() {
+	/**
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 */
+	public function test_context_render_add_form() {
 		$base = $this->_get_elements();
-		$context = $this->_get_context( $base );
-
 		ob_start();
-		$context->add_quickedit_box( 'base_group', 'post' );
+		$base->add_term_form( 'test meta box', $this->taxonomy )->add_term_fields( $this->taxonomy );
 		$str = ob_get_clean();
-
 		// we can't really care about the structure of the HTML, but we can make sure that all fields are here
-		$this->assertContains( 'fm-quickedit', $str );
 		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_basic\]"/', $str );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_textfield\]"/', $str );
@@ -133,36 +129,40 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
 	}
 
-	public function test_title() {
-		$context = $this->_get_context( $this->_get_elements() );
-		$context->title = rand_str();
-
+	/**
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 */
+	public function test_context_render_edit_form() {
+		$base = $this->_get_elements();
 		ob_start();
-		$context->add_quickedit_box( 'base_group', 'post' );
+		$base->add_term_form( 'test meta box', $this->taxonomy )->edit_term_fields( $this->term, $this->taxonomy );
 		$str = ob_get_clean();
-
-		$this->assertRegExp( "/<h4[^>]*>{$context->title}<\/h4>/", $str );
-
-		$context->title = false;
-		ob_start();
-		$context->add_quickedit_box( 'base_group', 'post' );
-		$str = ob_get_clean();
-
-		$this->assertNotRegExp( '/<\/h4>/', $str );
+		// we can't really care about the structure of the HTML, but we can make sure that all fields are here
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_basic\]"/', $str );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_textfield\]"/', $str );
+		$this->assertRegExp( '/<textarea[^>]+name="base_group\[test_htmlfield\]"/', $str );
+		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
+		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
 	}
 
+	/**
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
+	 */
 	public function test_context_save() {
 		$base = $this->_get_elements();
 		$test_data = $this->_get_valid_test_data();
 
-		$context = $this->_get_context( $base );
-		$context->save_to_post_meta( $this->post_id, $test_data['base_group'] );
+		$base->add_term_form( 'test meta box', $this->taxonomy )->save_to_term_meta( $this->term_id, $this->taxonomy, $test_data['base_group'] );
 
-		$saved_value = get_post_meta( $this->post_id, 'base_group', true );
-		$saved_index = get_post_meta( $this->post_id, '_test_index', TRUE );
+		$saved_value = fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_group', true );
+		$saved_index = fm_get_term_meta( $this->term_id, $this->taxonomy, '_test_index', true );
 
 		$this->assertEquals( $saved_value['test_basic'], 'lorem ipsum' );
-		$this->assertEquals( $saved_index, $saved_value['test_textfield'] );
+		// $this->assertEquals( $saved_index, $saved_value['test_textfield'] );
 		$this->assertEquals( $saved_value['test_textfield'], 'alley interactive' );
 		$this->assertEquals( $saved_value['test_htmlfield'], '<b>Hello</b> world' );
 		$this->assertEquals( count( $saved_value['test_extended'] ), 4 );
@@ -174,12 +174,28 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$this->assertEquals( $saved_value['test_extended'][3]['extext'][0], 'fourth' );
 	}
 
-	public function _quickedit_column( $post_id, $data ) {
-		return ! empty( $data['text'] ) ? $data['text'] : 'not set';
+	/**
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 */
+	public function test_programmatic_save_terms() {
+		$base = $this->_get_elements();
+		$base->add_term_form( 'test meta box', $this->taxonomy );
+
+		$term = wp_insert_term( 'test-2', $this->taxonomy );
+		$this->assertTrue( $term['term_id'] > 0 );
+		$this->assertTrue( $term['term_taxonomy_id'] > 0 );
+
+		wp_update_term( $term['term_id'], $this->taxonomy, array( 'name' => 'Alley' ) );
+		$updated_term = get_term( $term['term_id'], $this->taxonomy );
+		$this->assertEquals( 'Alley', $updated_term->name );
 	}
 
 	/**
 	 * @group serialize_data
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::add_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_unserialize_data_single_field() {
 		$base = new Fieldmanager_TextField( array(
@@ -193,7 +209,7 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 
 		$data = array( rand_str(), rand_str(), rand_str() );
 		$html = $this->_get_html_for( $base, $data );
-		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$this->assertEquals( $data, fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_field' ) );
 		$this->assertContains( 'name="base_field[3]"', $html );
 		$this->assertContains( 'value="' . $data[0] . '"', $html );
 		$this->assertContains( 'value="' . $data[1] . '"', $html );
@@ -203,6 +219,10 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::add_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_unserialize_data_single_field_sorting() {
 		$item_1 = rand_str();
@@ -217,7 +237,7 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		// Test as 1, 2, 3
 		$data = array( $item_1, $item_2, $item_3 );
 		$html = $this->_get_html_for( $base, $data );
-		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$this->assertEquals( $data, fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_field' ) );
 		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_1 . '"/', $html );
 		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_2 . '"/', $html );
 		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_3 . '"/', $html );
@@ -225,7 +245,7 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		// Reorder and test as 3, 1, 2
 		$data = array( $item_3, $item_1, $item_2 );
 		$html = $this->_get_html_for( $base, $data );
-		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
+		$this->assertEquals( $data, fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_field' ) );
 		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_3 . '"/', $html );
 		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
 		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
@@ -233,6 +253,9 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_unserialize_data_tabbed() {
 		$base = new Fieldmanager_Group( array(
@@ -269,8 +292,8 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		);
 
 		$html = $this->_get_html_for( $base, $data );
-		$this->assertEquals( $data['tab-1']['test_text'], get_post_meta( $this->post_id, 'test_text', true ) );
-		$this->assertEquals( $data['tab-2']['test_textarea'], get_post_meta( $this->post_id, 'test_textarea', true ) );
+		$this->assertEquals( $data['tab-1']['test_text'], fm_get_term_meta( $this->term_id, $this->taxonomy, 'test_text', true ) );
+		$this->assertEquals( $data['tab-2']['test_textarea'], fm_get_term_meta( $this->term_id, $this->taxonomy, 'test_textarea', true ) );
 		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
 		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
 		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
@@ -279,6 +302,9 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
+	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
+	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_unserialize_data_mixed_depth() {
 		$base = new Fieldmanager_Group( array(
@@ -303,8 +329,8 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		);
 
 		$html = $this->_get_html_for( $base, $data );
-		$this->assertEquals( $data['test_text'], get_post_meta( $this->post_id, 'base_group_test_text', true ) );
-		$this->assertEquals( $data['test_group']['deep_text'], get_post_meta( $this->post_id, 'base_group_test_group_deep_text', true ) );
+		$this->assertEquals( $data['test_text'], fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_group_test_text', true ) );
+		$this->assertEquals( $data['test_group']['deep_text'], fm_get_term_meta( $this->term_id, $this->taxonomy, 'base_group_test_group_deep_text', true ) );
 		$this->assertContains( 'name="base_group[test_text]"', $html );
 		$this->assertContains( 'value="' . $data['test_text'] . '"', $html );
 		$this->assertContains( 'name="base_group[test_group][deep_text]"', $html );

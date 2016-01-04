@@ -32,7 +32,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$base = new Fieldmanager_Group( array(
 			'name'       => 'test_datetime_group',
 			'children'   => array(
-				'test_datetime_field' => new Fieldmanager_Datepicker( false, array( 'use_time' => true ) ),
+				'test_datetime_field' => new Fieldmanager_Datepicker( array( 'use_time' => true ) ),
 				),
 			) );
 

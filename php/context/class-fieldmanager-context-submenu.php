@@ -46,6 +46,14 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	public $submit_button_label = Null;
 
 	/**
+	 * The "success" message displayed after options are saved. Defaults to
+	 * "Options updated".
+	 *
+	 * @var string|null
+	 */
+	public $updated_message = null;
+
+	/**
 	 * @var string
 	 * For submenu pages, set autoload to true or false
 	 */
@@ -67,6 +75,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		$this->parent_slug = $parent_slug;
 		$this->page_title = $page_title;
 		$this->capability = $capability;
+		$this->updated_message = __( 'Options updated', 'fieldmanager' );
 		$this->uniqid = $this->fm->get_element_id() . '_form';
 		if ( ! $already_registered )  {
 			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
@@ -91,10 +100,10 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		?>
 		<div class="wrap">
 			<?php if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) : ?>
-				<div class="updated success"><p><?php esc_html_e( 'Options updated', 'fieldmanager' ); ?></p></div>
+				<div class="updated success"><p><?php echo esc_html( $this->updated_message ); ?></p></div>
 			<?php endif ?>
 
-			<h2><?php echo esc_html( $this->page_title ) ?></h2>
+			<h1><?php echo esc_html( $this->page_title ) ?></h1>
 
 			<form method="POST" id="<?php echo esc_attr( $this->uniqid ) ?>">
 				<div class="fm-submenu-form-wrapper">

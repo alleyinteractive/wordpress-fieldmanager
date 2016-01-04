@@ -29,7 +29,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$context = $this->get_context( $name );
 		$html = $this->get_html( $context, $name );
 
-		$this->assertContains( '<h2>Tools Meta Fields</h2>', $html );
+		$this->assertContains( '<h1>Tools Meta Fields</h1>', $html );
 		$this->assertRegExp( '/<input type="hidden"[^>]+name="fieldmanager-' . $name . '-nonce"/', $html );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[name\]"[^>]+value=""/', $html );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[email\]"[^>]+value=""/', $html );
@@ -222,6 +222,17 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	public function presave_alter_number( $values, $context ) {
 		$values['number'] = 11;
 		return $values;
+	}
+
+	public function test_updated_message() {
+		$name = 'message_customization';
+		$updated_message = rand_str();
+		fm_register_submenu_page( $name, 'tools.php', 'Message Customization' );
+		$context = $this->get_context( $name );
+		$context->updated_message = $updated_message;
+		$html = $this->get_html( $context, $name );
+		$this->build_post( $html, $name );
+		$this->assertContains( "<div class=\"updated success\"><p>{$updated_message}</p></div>", $this->get_html( $context, $name ) );
 	}
 
 }
