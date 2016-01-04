@@ -59,7 +59,7 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		// The QuickEdit context absolutely requires we be in the edit.php
 		// context, so we have to kind of fake it.
 		$context->post_types = array( 'post' );
-		$context->title = 'test_meta_box';
+		$context->title = 'test meta box';
 		$context->column_title = 'Custom Column';
 		$context->column_display_callback = array( $this, '_quickedit_column' );
 		$context->fm = $fm;
@@ -131,6 +131,24 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$this->assertRegExp( '/<textarea[^>]+name="base_group\[test_htmlfield\]"/', $str );
 		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
 		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
+	}
+
+	public function test_title() {
+		$context = $this->_get_context( $this->_get_elements() );
+		$context->title = rand_str();
+
+		ob_start();
+		$context->add_quickedit_box( 'base_group', 'post' );
+		$str = ob_get_clean();
+
+		$this->assertRegExp( "/<h4[^>]*>{$context->title}<\/h4>/", $str );
+
+		$context->title = false;
+		ob_start();
+		$context->add_quickedit_box( 'base_group', 'post' );
+		$str = ob_get_clean();
+
+		$this->assertNotRegExp( '/<\/h4>/', $str );
 	}
 
 	public function test_context_save() {
