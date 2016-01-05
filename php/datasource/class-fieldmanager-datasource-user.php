@@ -141,7 +141,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         $ret = array();
 
         if ( $fragment ) {
-        	$user_args['search'] = $fragment;
+        	$user_args['search'] = '*' . $fragment . '*';
         }
 
         $users = get_users( $user_args );
