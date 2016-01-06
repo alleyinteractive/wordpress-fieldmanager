@@ -12,7 +12,7 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
-		$this->author = $this->factory->user->create( array( 'role' => 'author', 'user_login' => 'author', 'user_email' => 'test@test.com' ) );
+		$this->author = $this->factory->user->create( array( 'role' => 'author', 'user_login' => 'author', 'user_email' => 'test@test.com', 'display_name' => 'Lorem Ipsum' ) );
 		$this->editor = $this->factory->user->create( array( 'role' => 'editor', 'user_login' => 'editor' ) );
 		$this->administrator = $this->factory->user->create( array( 'role' => 'administrator', 'user_login' => 'administrator' ) );
 
@@ -272,5 +272,31 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 		$test_users_user_nicename = $test_user_nicename->datasource->get_items( $user->user_login );
 		$this->assertEquals( $user->display_name, $test_users_user_nicename[ $user->user_nicename ] );
 		$this->assertEquals( $user->display_name, $test_user_nicename->datasource->get_value( $user->user_nicename ) );
+	}
+
+	public function test_search() {
+		$user = get_userdata( $this->author );
+		$display_name = 'Lorem Ipsum';
+
+		$fm = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_search',
+			'datasource' => new Fieldmanager_Datasource_User
+		) );
+
+		$test_users_id = $fm->datasource->get_items( $display_name );
+		$this->assertEquals( $display_name, $test_users_id[ $user->ID ] );
+		$this->assertEquals( $display_name, $fm->datasource->get_value( $user->ID ) );
+
+		$test_users_id = $fm->datasource->get_items( 'rem' );
+		$this->assertEquals( $display_name, $test_users_id[ $user->ID ] );
+
+		$test_users_id = $fm->datasource->get_items( 'test@test.com' );
+		$this->assertEquals( $display_name, $test_users_id[ $user->ID ] );
+
+		$test_users_id = $fm->datasource->get_items( 'author' );
+		$this->assertEquals( $display_name, $test_users_id[ $user->ID ] );
+
+		$test_users_id = $fm->datasource->get_items( $user->ID );
+		$this->assertEquals( $display_name, $test_users_id[ $user->ID ] );
 	}
 }
