@@ -61,6 +61,13 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	public $save_empty = false;
 
 	/**
+	 * Highlight menu items with current entered term
+	 *
+	 * @var bool
+	 */
+	public $highlight = True;
+
+	/**
 	 * Add libraries for autocomplete.
 	 *
 	 * @throws FM_Developer_Exception Must use a datasource.
@@ -119,6 +126,10 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 
 		if ( $this->exact_match ) {
 			$this->attributes['data-exact-match'] = true;
+		}
+
+		if ( $this->highlight ) {
+			$this->attributes['data-autocomplete-highlight'] = True;
 		}
 
 		if ( $this->datasource->use_ajax ) {
