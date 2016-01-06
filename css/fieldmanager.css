@@ -383,3 +383,9 @@ a.fm-delete:hover {
 .form-field .fm-checkbox label {
 	display: inline;
 }
+
+/* Autocomplete */
+.fm-autocomplete-highlight {
+	font-weight: bold;
+	color: #cc0000;
+}
