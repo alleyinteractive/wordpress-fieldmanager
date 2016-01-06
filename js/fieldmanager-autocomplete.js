@@ -75,12 +75,44 @@ fm.autocomplete = {
 					} );
 				}
 
+				// Set autocomplete highligth
+				if ( typeof $el.data( 'autocomplete-highlight' ) !== 'undefined' ) {
+					ac_params.highlight = true;
+				}
 				$( this ).autocomplete( ac_params );
 				$( this ).addClass( 'fm-autocomplete-enabled' );
 			}
 		} );
 	}
 }
+
+$( document ).ready( function() {
+
+	// Highlighted autocomplete instance
+	$.widget( "fm.autocomplete", $.ui.autocomplete, {
+
+		// Default options
+		options: {
+			// Enable highlighting
+			highlight: false,
+			// Which class get's applied to the matched text
+			highlightClass: "fm-autocomplete-highlight"
+		},
+
+		_renderItem: function( ul, item ) {
+
+			// Wrap the matched text with a span
+			if ( this.options.highlight === true ) {
+				return $( "<li>" )
+					.append( item.label.replace( new RegExp( "(" + this.term + ")", "gi" ), "<span class='" + this.options.highlightClass + "'>$1</span>" ) )
+					.appendTo( ul );
+			}
+
+			// Return parent method (no highlight)
+			return this._super(ul, item);
+		}
+	});
+});
 
 $( document ).ready( fm.autocomplete.enable_autocomplete );
 $( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle fm_activate_tab', fm.autocomplete.enable_autocomplete );
