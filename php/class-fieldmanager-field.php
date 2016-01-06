@@ -341,25 +341,24 @@ abstract class Fieldmanager_Field {
 	 * @throws FM_Developer_Exception if an option is set but not public.
 	 */
 	public function set_options( $label, $options ) {
-		if ( is_array( $label ) ) $options = $label;
-		else $options['label'] = $label;
+		if ( is_array( $label ) ) {
+			$options = $label;
+		} else {
+			$options['label'] = $label;
+		}
 
-		foreach ( $options as $k => $v ) {
-			try {
-				$reflection = new ReflectionProperty( $this, $k ); // Would throw a ReflectionException if item doesn't exist (developer error)
-				if ( $reflection->isPublic() ) $this->$k = $v;
-				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
-			} catch ( Exception $e ) {
+		// Get all the public properties for this object
+		$properties = call_user_func( 'get_object_vars', $this );
+
+		foreach ( $options as $key => $value ) {
+			if ( array_key_exists( $key, $properties ) ) {
+				$this->$key = $value;
+			} elseif ( self::$debug ) {
 				$message = sprintf(
 					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
-					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
+					$key, get_class( $this ), !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
-				$title = esc_html__( 'Nonexistant or invalid option', 'fieldmanager' );
-				if ( !self::$debug ) {
-					wp_die( esc_html( $message ), $title );
-				} else {
-					throw new FM_Developer_Exception( esc_html( $message ) );
-				}
+				throw new FM_Developer_Exception( esc_html( $message ) );
 			}
 		}
 
