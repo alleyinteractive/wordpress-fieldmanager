@@ -96,8 +96,10 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @return void.
 	 */
 	public function render_submenu_page() {
-		$values = get_option( $this->fm->name, null );
+		$this->fm->data_id = $this->fm->name;
+		$this->fm->data_type = 'options';
 		?>
+
 		<div class="wrap">
 			<?php if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) : ?>
 				<div class="updated success"><p><?php echo esc_html( $this->updated_message ); ?></p></div>
@@ -108,13 +110,13 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 			<form method="POST" id="<?php echo esc_attr( $this->uniqid ) ?>">
 				<div class="fm-submenu-form-wrapper">
 					<input type="hidden" name="fm-options-action" value="<?php echo sanitize_title( $this->fm->name ) ?>" />
-					<?php $this->render_field( array( 'data' => $values ) ); ?>
+					<?php $this->render_field(); ?>
 				</div>
 				<?php submit_button( $this->submit_button_label, 'primary', 'fm-submit' ) ?>
 			</form>
 		</div>
-		<?php
 
+		<?php
 		// Check if any validation is required
 		$fm_validation = Fieldmanager_Util_Validation( $this->uniqid, 'submenu' );
 		$fm_validation->add_field( $this->fm );
@@ -145,19 +147,16 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		}
 	}
 
+	/**
+	 * Save data to options.
+	 * @param  mixed $data Data to save.
+	 * @return boolean always true.
+	 */
 	public function save_submenu_data( $data = null ) {
 		$this->fm->data_id = $this->fm->name;
 		$this->fm->data_type = 'options';
-		$current = get_option( $this->fm->name, null );
-		$data = $this->prepare_data( $current, $data );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
-
-		if ( isset( $current ) ) {
-			update_option( $this->fm->name, $data );
-		} else {
-			add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
-		}
-
+		$this->save( $data );
 		return true;
 	}
 
@@ -173,6 +172,21 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		} else {
 			return admin_url( 'admin.php?page=' . $this->menu_slug );
 		}
+	}
+
+	/**
+	 * Load a single field's data from the options table.
+	 *
+	 * This overrides `Fieldmanager_Storable::load_field()` because that class
+	 * assumes setting the $single argument to false in `self::get_data()` would
+	 * always return an array. Options don't work that way, so we need to
+	 * account for that.
+	 *
+	 * @param  object $field The Fieldmanager field for which to load data.
+	 * @return mixed Data stored for that field in this context.
+	 */
+	protected function load_field( $field ) {
+		return $this->get_data( $this->fm->data_id, $field->get_element_key() );
 	}
 
 	/**
@@ -199,7 +213,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @see update_option().
 	 */
 	protected function update_data( $data_id, $option_name, $option_value, $option_prev_value = '' ) {
-		return update_option( $option_name, $option_value );
+		return update_option( $option_name, $option_value, $this->wp_option_autoload ? 'yes' : 'no' );
 	}
 
 	/**
