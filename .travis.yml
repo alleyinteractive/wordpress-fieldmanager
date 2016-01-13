@@ -24,6 +24,10 @@ matrix:
         - php: 7.0
     fast_finish: true
 
+branches:
+    only:
+        - master
+
 before_script:
     - export WP_TESTS_DIR=/tmp/wordpress/tests/phpunit
     - export WP_CORE_DIR=/tmp/wordpress/src/
@@ -40,4 +44,3 @@ before_script:
 script:
     - phpunit
     - grunt qunit:specific --wp=$WP_VERSION
-
