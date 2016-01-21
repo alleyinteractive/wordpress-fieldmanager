@@ -355,7 +355,7 @@ function fm_calculate_context() {
 				break;
 			// Context = "term".
 			case 'edit-tags.php':
-			case 'term.php':
+			case 'term.php': // As of 4.5-alpha; see https://core.trac.wordpress.org/changeset/36308
 				if ( !empty( $_POST['taxonomy'] ) ) {
 					$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
 				} elseif ( !empty( $_GET['taxonomy'] ) ) {
