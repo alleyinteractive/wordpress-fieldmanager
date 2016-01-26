@@ -32,25 +32,64 @@
 
 /* Groups */
 .fm-group {
-	border: solid 1px #dfdfdf;
 	margin-bottom: 5px;
 	background-color: #fff;
+}
+
+.fm-group-inner,
+.fm-group-label-wrapper {
+	border: solid 1px #dfdfdf;
 	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
 .fm-group-inner {
 	padding: 10px;
-	border-top: 1px solid #dfdfdf;
+	border-top: none;
 }
 
-.fm-group h4, .fm-group div.fm-group-label-wrapper {
+.fm-group h4,
+.fm-group div.fm-group-label-wrapper {
 	cursor: default;
 	font-size: 13px;
 	padding: 5px 5px 7px;
 	margin: 0;
 	background-color: #fafafa;
 	color: #222;
+}
+
+.fm-group-label-wrapper.fmjs-drag-header:hover,
+.fm-group-label-wrapper.fmjs-collapsible-handle:hover {
+	border: 1px solid #999;
+}
+
+.fm-group-label-wrapper.fmjs-collapsible-handle .fmjs-remove {
+	display:none;
+}
+
+.fm-group-label-wrapper.fmjs-collapsible-handle:hover .fmjs-remove {
+	display: block;
+}
+
+.fm-group-label-wrapper.fmjs-collapsible-handle:hover .toggle-indicator {
+	color: #777;
+}
+
+.fm-group .toggle-indicator {
+	color: #a0a5aa;
+	margin-left: 5px;
+}
+
+.fm-group .toggle-indicator:before {
+	vertical-align: middle;
+}
+
+.fm-item .fmjs-collapsible-handle.closed .toggle-indicator:before {
+	content: "\f140";
+}
+
+.fmjs-collapsible-handle .toggle-indicator {
+	float: right;
 }
 
 div.fm-group-label-wrapper {

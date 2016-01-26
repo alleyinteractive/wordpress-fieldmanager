@@ -87,6 +87,10 @@
 	border-top: none;
 }
 
+.fm-wrapper .wp-tabs-panel > .fm-wrapper .fm-group-inner {
+	border-top: solid 1px #dfdfdf;
+}
+
 /* Vertical Tabs */
 .fm-tabbed-vertical {
 	margin: -6px -12px -12px;
