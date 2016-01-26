@@ -56,8 +56,8 @@
 	 * @param {Event} e Event object.
 	 * @param {Element} el The sorted element.
 	 */
-	var onFmSortableDrop = function( e, el ) {
-		reserializeControlsContainingElement( e.target );
+	var onFmSortableDrop = function ( e, el ) {
+		reserializeControlsContainingElement( el );
 	};
 
 	/**
@@ -86,18 +86,20 @@
 	 *
 	 * @param {Event} e Event object.
 	 */
-	var onFmMediaRemoveClick = function( e ) {
-		reserializeControlsContainingElement( e.target );
-	};
+	 var onFmMediaRemoveClick = function ( e ) {
+		// The control no longer contains the element, so reserialize all of them.
+		reserializeEachControl();
+	 };
 
-	/**
-	 * Fires after clicking the "Remove" link of a Fieldmanager repeatable field.
-	 *
-	 * @param {Event} e Event object.
-	 */
-	var onFmjsRemoveClick = function( e ) {
-		reserializeControlsContainingElement( e.target );
-	};
+	 /**
+	  * Fires after clicking the "Remove" link of a Fieldmanager repeatable field.
+	  *
+	  * @param {Event} e Event object.
+	  */
+	 var onFmjsRemoveClick = function ( e ) {
+		// The control no longer contains the element, so reserialize all of them.
+		reserializeEachControl();
+	 };
 
 	/**
 	 * Set the values of all Fieldmanager controls.
