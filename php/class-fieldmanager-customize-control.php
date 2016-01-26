@@ -26,10 +26,18 @@ if ( class_exists( 'WP_Customize_Control' ) ) :
 		 * Enqueue control-related scripts and styles.
 		 */
 		public function enqueue() {
+			wp_register_script(
+				'fm-serializejson',
+				fieldmanager_get_baseurl() . 'js/jquery-serializejson/jquery.serializejson.min.js',
+				array(),
+				'2.0.0',
+				true
+			);
+
 			fm_add_script(
 				'fm_customizer',
 				'js/fieldmanager-customize.js',
-				array( 'jquery', 'underscore', 'fieldmanager_script', 'customize-controls' ),
+				array( 'jquery', 'underscore', 'fieldmanager_script', 'customize-controls', 'fm-serializejson' ),
 				'1.0.0',
 				true
 			);

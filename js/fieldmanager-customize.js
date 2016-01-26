@@ -126,12 +126,25 @@
 	 *
 	 * @param {Object} control Customizer Control object.
 	 */
-	var reserializeControl = function( control ) {
+	var reserializeControl = function ( control ) {
+		var $element;
+		var serialized;
+		var value;
+
 		if ( 'fieldmanager' !== control.params.type ) {
 			return;
 		}
 
-		control.setting.set( control.container.find( '.fm-element' ).serialize() );
+		$element = control.container.find( '.fm-element' );
+
+		if ( $.serializeJSON ) {
+			serialized = $element.serializeJSON();
+			value = serialized[ control.id ];
+		} else {
+			value = $element.serialize();
+		}
+
+		control.setting.set( value );
 	};
 
 	/**
