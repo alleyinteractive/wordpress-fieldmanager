@@ -217,7 +217,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param  WP_REST_Request $request The full request object from the REST API.
 	 * @param  string $object_type The REST API object type
 	 */
-	protected function rest_get_callback( $object, $field_name, $request, $object_type ) {
+	public function rest_get_callback( $object, $field_name, $request, $object_type ) {
 		return get_user_meta( $object['id'], $field_name, true );
 	}
 
@@ -231,7 +231,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param  WP_REST_Request $request The full request object from the REST API.
 	 * @param  string $object_type The REST API object type
 	 */
-	protected function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {
+	public function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {
 		$this->save_to_user_meta( $object->id, $value );
 	}
 }

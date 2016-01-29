@@ -128,7 +128,7 @@ abstract class Fieldmanager_Context {
 	 * @param  WP_REST_Request $request The full request object from the REST API.
 	 * @param  string $object_type The REST API object type
 	 */
-	protected function rest_get_callback( $object, $field_name, $request, $object_type ) {}
+	public function rest_get_callback( $object, $field_name, $request, $object_type ) {}
 
 	/**
 	 * Handles updating field data from the REST API.
@@ -140,6 +140,6 @@ abstract class Fieldmanager_Context {
 	 * @param  WP_REST_Request $request The full request object from the REST API.
 	 * @param  string $object_type The REST API object type
 	 */
-	protected function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {}
+	public function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {}
 
 }

@@ -382,7 +382,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @param  WP_REST_Request $request The full request object from the REST API.
 	 * @param  string $object_type The REST API object type
 	 */
-	protected function rest_get_callback( $object, $field_name, $request, $object_type ) {
+	public function rest_get_callback( $object, $field_name, $request, $object_type ) {
 		return fm_get_term_meta( $object['id'], $object_type, $field_name, true );
 	}
 
@@ -396,7 +396,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @param  WP_REST_Request $request The full request object from the REST API.
 	 * @param  string $object_type The REST API object type
 	 */
-	protected function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {
+	public function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {
 		$this->save_to_term_meta( $object->id, $object_type, $value );
 	}
 
