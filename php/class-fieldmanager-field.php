@@ -303,6 +303,12 @@ abstract class Fieldmanager_Field {
 	public $is_attachment = false;
 
 	/**
+	 * @var boolean
+	 * Whether or not to register this field in the REST API
+	 */
+	public $show_in_rest = false;
+
+	/**
 	 * @var int Global Sequence
 	 * The global sequence of elements
 	 */
