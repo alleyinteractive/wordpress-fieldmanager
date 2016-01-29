@@ -106,7 +106,7 @@ abstract class Fieldmanager_Context {
 	 */
 	protected function register_rest_field() {
 		// Ensure the REST API is active and the field wants to be shown in REST
-		if ( function_exists( 'register_rest_field' ) && true === $this->show_in_rest ) {
+		if ( function_exists( 'register_rest_field' ) && true === $this->fm->show_in_rest ) {
 			register_rest_field( $this->object_types,
 				$this->fm->name,
 				array(
