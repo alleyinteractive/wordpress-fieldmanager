@@ -73,6 +73,10 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		if ( $this->fm && !empty( $this->fm->meta_boxes_to_remove ) ) {
 			add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 100 );
 		}
+
+		// Register fields for the REST API
+		$this->rest_object_types = $post_types;
+		add_action( 'rest_api_init', array( $this, 'register_rest_field' ) );
 	}
 
 	/**
@@ -281,6 +285,33 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 */
 	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
 		return delete_post_meta( $post_id, $meta_key, $meta_value );
+	}
+
+	/**
+	 * Handles getting field data for the REST API.
+	 * Needs to be implemented by each context.
+	 *
+	 * @param  array $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	protected function rest_get_callback( $object, $field_name, $request, $object_type ) {
+		return get_post_meta( $object['id'], $field_name, true );
+	}
+
+	/**
+	 * Handles updating field data from the REST API.
+	 * Needs to be implemented by each context.
+	 *
+	 * @param  mixed $value The value to be updated for the field from the request.
+	 * @param  object $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	protected function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {
+		$this->save_to_post_meta( $object->id, $value );
 	}
 
 }

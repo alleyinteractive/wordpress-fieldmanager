@@ -28,6 +28,12 @@ abstract class Fieldmanager_Context {
 	public $save_keys = array();
 
 	/**
+	 * Object types for the REST API
+	 * @var array
+	 */
+	protected $rest_object_types = array();
+
+	/**
 	 * Check if the nonce is valid. Returns false if the nonce is missing and
 	 * throws an exception if it's invalid. If all goes well, returns true.
 	 *
@@ -92,5 +98,48 @@ abstract class Fieldmanager_Context {
 			return $nonce . $field;
 		}
 	}
+
+	/**
+	 * Register a field for use with the REST API.
+	 *
+	 * @param  string|array $object_type Required. The object type in the REST API where this field will be available.
+	 */
+	protected function register_rest_field() {
+		// Ensure the REST API is active and the field wants to be shown in REST
+		if ( function_exists( 'register_rest_field' ) && true === $this->show_in_rest ) {
+			register_rest_field( $this->object_types,
+				$this->fm->name,
+				array(
+					'get_callback'    => array( $this, 'rest_get_callback' ),
+					'update_callback' => array( $this, 'rest_update_callback' ),
+					//'schema'          => $this->create_schema(),
+					'schema'          => null,
+				)
+			);
+		}
+	}
+
+	/**
+	 * Handles getting field data for the REST API.
+	 * Needs to be implemented by each context.
+	 *
+	 * @param  array $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	protected function rest_get_callback( $object, $field_name, $request, $object_type ) {}
+
+	/**
+	 * Handles updating field data from the REST API.
+	 * Needs to be implemented by each context.
+	 *
+	 * @param  mixed $value The value to be updated for the field from the request.
+	 * @param  object $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	protected function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {}
 
 }

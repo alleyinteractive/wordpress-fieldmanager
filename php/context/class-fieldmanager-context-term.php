@@ -140,6 +140,10 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			$this->fm           = $fm;
 		}
 
+		// Register fields for the REST API
+		$this->rest_object_types = $taxonomies;
+		add_action( 'rest_api_init', array( $this, 'register_rest_field' ) );
+
 		// Iterate through the taxonomies and add the fields to the requested forms
 		// Also add handlers for saving the fields and which forms to validate (if enabled)
 		foreach ( $this->taxonomies as $taxonomy ) {
@@ -367,6 +371,33 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		} else {
 			return delete_term_meta( $term_id, $meta_key, $meta_value );
 		}
+	}
+
+	/**
+	 * Handles getting field data for the REST API.
+	 * Needs to be implemented by each context.
+	 *
+	 * @param  array $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	protected function rest_get_callback( $object, $field_name, $request, $object_type ) {
+		return fm_get_term_meta( $object['id'], $object_type, $field_name, true );
+	}
+
+	/**
+	 * Handles updating field data from the REST API.
+	 * Needs to be implemented by each context.
+	 *
+	 * @param  mixed $value The value to be updated for the field from the request.
+	 * @param  object $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	protected function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {
+		$this->save_to_term_meta( $object->id, $object_type, $value );
 	}
 
 }
