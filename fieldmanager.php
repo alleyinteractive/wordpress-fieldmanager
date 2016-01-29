@@ -448,6 +448,46 @@ function fm_trigger_context_action() {
 add_action( 'init', 'fm_trigger_context_action', 99 );
 
 /**
+ * Fire an action for the current Fieldmanager context for the REST API.
+ *
+ * This is separate from fm_trigger_context_action since rest_pre_dispatch fires on parse_request
+ * and is too late to be part of the existing context hooks.
+ *
+ * @param mixed           $result  Response to replace the requested version with. Can be anything
+ *                                 a normal endpoint can return, or null to not hijack the request.
+ * @param WP_REST_Server  $server    Server instance.
+ * @param WP_REST_Request $request Request used to generate the response.
+ */
+function fm_trigger_rest_context_action( $result, $server, $request ) {
+	// Get post types and taxonomies available for the REST API
+	$post_types = get_post_types( array( 'show_in_rest' => true ), 'names' );
+	$taxonomies = get_taxonomies( array( 'show_in_rest' => true ), 'names' );
+	$route = $request->get_route();
+
+	// If the route is empty, this is pointless
+	if ( empty( $route ) ) {
+		return;
+	}
+
+	// Store matches to use with the context action
+	$matches = array();
+
+	// Use regexes to find the right context
+	if ( ! empty( $post_types )
+		&& preg_match( '/\/wp\/v2\/(' . implode( '|', $post_types ) . ')(\/?)(.*?)/', $route, $matches ) ) {
+		do_action( "fm_post_{$matches[1]}" );
+	} else if ( ! empty( $taxonomies )
+		&& preg_match( '/\/wp\/v2\/(' . implode( '|', $taxonomies ) . ')(\/?)(.*?)/', $route, $matches ) ) {
+		do_action( "fm_term_{$matches[1]}" );
+	} else if ( preg_match( '/\/wp\/v2\/users(\/?)(.*?)/', $route, $matches ) ) {
+		do_action( 'fm_user' );
+	}
+
+	return $result;
+}
+add_filter( 'rest_pre_dispatch', 'fm_trigger_rest_context_action', 10, 3 );
+
+/**
  * Add data about a submenu page to the Fieldmanager registry under a slug.
  *
  * @see Fieldmanager_Context_Submenu for detail about $parent_slug, $page_title,

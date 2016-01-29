@@ -75,8 +75,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		}
 
 		// Register fields for the REST API
-		$this->rest_object_types = $post_types;
-		add_action( 'rest_api_init', array( $this, 'register_rest_field' ) );
+		$this->register_rest_field( $post_types );
 	}
 
 	/**

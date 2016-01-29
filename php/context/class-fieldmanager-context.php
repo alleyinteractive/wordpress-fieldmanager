@@ -28,12 +28,6 @@ abstract class Fieldmanager_Context {
 	public $save_keys = array();
 
 	/**
-	 * Object types for the REST API
-	 * @var array
-	 */
-	protected $rest_object_types = array();
-
-	/**
 	 * Check if the nonce is valid. Returns false if the nonce is missing and
 	 * throws an exception if it's invalid. If all goes well, returns true.
 	 *
@@ -104,10 +98,10 @@ abstract class Fieldmanager_Context {
 	 *
 	 * @param  string|array $object_type Required. The object type in the REST API where this field will be available.
 	 */
-	public function register_rest_field() {
+	public function register_rest_field( $object_type ) {
 		// Ensure the REST API is active and the field wants to be shown in REST
 		if ( function_exists( 'register_rest_field' ) && true === $this->fm->show_in_rest ) {
-			register_rest_field( $this->object_types,
+			register_rest_field( $object_type,
 				$this->fm->name,
 				array(
 					'get_callback'    => array( $this, 'rest_get_callback' ),

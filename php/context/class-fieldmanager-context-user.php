@@ -31,8 +31,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 		add_filter( 'fm_context_after_presave_data', array( $this, 'legacy_presave_filter' ) );
 
 		// Register fields for the REST API
-		$this->object_types = 'user';
-		add_action( 'rest_api_init', array( $this, 'register_rest_field' ) );
+		$this->register_rest_field( 'user' );
 	}
 
 	/**
