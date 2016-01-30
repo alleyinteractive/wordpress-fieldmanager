@@ -10,6 +10,13 @@
 	'use strict';
 
 	/**
+	 * Debounce interval between looking for changes after a 'keyup'.
+	 *
+	 * @type {Number}
+	 */
+	var keyupDebounceInterval = 500;
+
+	/**
 	 * Fires when an .fm-element input triggers a 'change' event.
 	 *
 	 * @param {Event} e Event object.
@@ -74,11 +81,24 @@
 	 *
 	 * @param {Event} e Event object.
 	 * @param {jQuery} $wrapper .media-wrapper jQuery object.
-	 * @param {object} attachment Attachment attributes.
-	 * @param {object} wp Global WordPress JS API.
+	 * @param {Object} attachment Attachment attributes.
+	 * @param {Object} wp Global WordPress JS API.
 	 */
 	var onFieldmanagerMediaPreview = function( e, $wrapper, attachment, wp ) {
 		reserializeControlsContainingElement( e.target );
+	};
+
+	/**
+	 * Fires after TinyMCE initializes in a Fieldmanager richtext field.
+	 *
+	 * @param {Event} e Event object.
+	 * @param {Object} ed TinyMCE instance.
+	 */
+	var onFmRichtextInit = function( e, ed ) {
+		ed.on( 'keyup AddUndo', _.debounce( function () {
+			ed.save();
+			reserializeControlsContainingElement( document.getElementById( ed.id ) );
+		}, keyupDebounceInterval ) );
 	};
 
 	/**
@@ -156,6 +176,7 @@
 	var bindToSectionExpanded = function( section ) {
 		section.container.bind( 'expanded', function() {
 			$( document ).trigger( 'fm_customizer_control_section_expanded' );
+			fm.richtextarea.add_rte_to_visible_textareas();
 		});
 	};
 
@@ -172,7 +193,7 @@
 		 * time it should affect the preview is when removing an autocomplete
 		 * selection. We allow that to occur normally.
 		 */
-		$document.on( 'keyup', '.fm-element:not(.fm-autocomplete)', _.debounce( onFmElementKeyup, 500 ) );
+		$document.on( 'keyup', '.fm-element:not(.fm-autocomplete)', _.debounce( onFmElementKeyup, keyupDebounceInterval ) );
 		$document.on( 'keyup', '.fm-autocomplete', onFmElementKeyup );
 
 		$document.on( 'change', '.fm-element', onFmElementChange );
@@ -180,6 +201,7 @@
 		$document.on( 'click', '.fmjs-remove', onFmjsRemoveClick );
 		$document.on( 'fm_sortable_drop', onFmSortableDrop );
 		$document.on( 'fieldmanager_media_preview', onFieldmanagerMediaPreview );
+		$document.on( 'fm_richtext_init', onFmRichtextInit );
 
 		/*
 		 * Hacky, because it always prompts the user to save. Unlike when we

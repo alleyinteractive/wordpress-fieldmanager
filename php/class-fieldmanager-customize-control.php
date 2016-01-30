@@ -37,7 +37,7 @@ if ( class_exists( 'WP_Customize_Control' ) ) :
 			fm_add_script(
 				'fm_customizer',
 				'js/fieldmanager-customize.js',
-				array( 'jquery', 'underscore', 'fieldmanager_script', 'customize-controls', 'fm-serializejson' ),
+				array( 'jquery', 'underscore', 'editor', 'quicktags', 'fieldmanager_script', 'customize-controls', 'fm-serializejson' ),
 				'1.0.0',
 				true
 			);

@@ -75,6 +75,13 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	protected $edit_config = false;
 
 	/**
+	 * Whether this class is hooked into the Customizer to print editor scripts.
+	 *
+	 * @var bool
+	 */
+	public static $has_registered_customize_scripts = false;
+
+	/**
 	 * Construct defaults for this field.
 	 *
 	 * @param string $label title of form field
@@ -113,6 +120,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 			'textarea_name'  => $this->get_form_name(),
 			'editor_class'   => 'fm-element fm-richtext',
 			'tinymce'        => array( 'wp_skip_init' => true ),
+			'teeny'          => is_customize_preview(),
 		) );
 
 		if ( $proto ) {
@@ -252,6 +260,24 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 		// removing whatever it added.
 		remove_filter( 'the_editor_content', 'wp_htmledit_pre' );
 		remove_filter( 'the_editor_content', 'wp_richedit_pre' );
+
+		if ( ! self::$has_registered_customize_scripts ) {
+			add_action( 'customize_controls_print_footer_scripts', array( $this, 'customize_controls_print_footer_scripts' ), 50 );
+			self::$has_registered_customize_scripts = true;
+		}
+	}
+
+	/**
+	 * Print Customizer control scripts in the footer.
+	 */
+	public function customize_controls_print_footer_scripts() {
+		if ( class_exists( '_WP_Editors' ) ) {
+			if ( false === has_action( 'customize_controls_print_footer_scripts', array( '_WP_Editors', 'editor_js' ) ) ) {
+				// Print the necessary JS for an RTE, unless we can't or suspect it's already there.
+				_WP_Editors::editor_js();
+				_WP_Editors::enqueue_scripts();
+			}
+		}
 	}
 
 	/**
