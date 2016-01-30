@@ -138,7 +138,10 @@
 		setTimeout( fm.richtextarea.reset_core_editor_mode, 50 );
 	} );
 
-	var core_editor_state = getUserSetting( 'editor' );
+	var core_editor_state;
+	if ( typeof getUserSetting === 'function' ) {
+		core_editor_state = getUserSetting( 'editor' );
+	}
 
 	/**
 	 * If the main editor's state changes, note that change.
