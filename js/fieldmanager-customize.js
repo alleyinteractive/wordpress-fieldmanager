@@ -168,15 +168,36 @@
 	};
 
 	/**
-	 * Trigger a Fieldmanager event when a Customizer section expands.
+	 * Fires when a Customizer Section expands.
 	 *
-	 * We bind to sections whether or not they have FM controls in case a
-	 * control is added dynamically.
+	 * @param {Object} section Customizer Section object.
 	 */
-	var bindToSectionExpanded = function( section ) {
-		section.container.bind( 'expanded', function() {
-			$( document ).trigger( 'fm_customizer_control_section_expanded' );
+	var onSectionExpanded = function( section ) {
+		/*
+		 * Trigger a Fieldmanager event when a Customizer section expands.
+		 *
+		 * We bind to sections whether or not they have FM controls in case a
+		 * control is added dynamically.
+		 */
+		$( document ).trigger( 'fm_customizer_control_section_expanded' );
+
+		if ( fm.richtextarea ) {
 			fm.richtextarea.add_rte_to_visible_textareas();
+		}
+
+		/*
+		 * Reserialize any Fieldmanager controls in this section with null
+		 * values. We assume null indicates nothing has been saved to the
+		 * database, so we want to make sure default values take effect in the
+		 * preview and are submitted on save as they would be in other contexts.
+		 */
+		_.each( section.controls(), function ( control ) {
+			if (
+				control.settings.default &&
+				null === control.settings.default.get()
+			) {
+				reserializeControl( control );
+			}
 		});
 	};
 
@@ -202,17 +223,6 @@
 		$document.on( 'fm_sortable_drop', onFmSortableDrop );
 		$document.on( 'fieldmanager_media_preview', onFieldmanagerMediaPreview );
 		$document.on( 'fm_richtext_init', onFmRichtextInit );
-
-		/*
-		 * Hacky, because it always prompts the user to save. Unlike when we
-		 * create individual settings, the field "value" is always going to
-		 * change when it's reserialized. It also ensures defaults are applied
-		 * when the Customizer loads. But if the user saved those changes, the
-		 * defaults would be applied, as opposed to a submenu page, where there
-		 * isn't an AYS prompt. Creating a query string on the PHP side might
-		 * work, but that's even weirder.
-		 */
-		reserializeEachControl();
 	};
 
 	/**
@@ -236,7 +246,9 @@
 	 */
 	var addSection = function( section ) {
 		// It would be more efficient to do this only when adding an FM control to a section.
-		bindToSectionExpanded( section );
+		section.container.bind( 'expanded', function () {
+			onSectionExpanded( section );
+		} );
 	};
 
 	if ( typeof api !== 'undefined' ) {
