@@ -84,7 +84,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 		}
 
 		// Return the value after Fieldmanager takes a shot at it.
-		return $this->fm->presave_all( $value, $this->current_value );
+		return stripslashes_deep( $this->prepare_data( $this->current_value, $value ) );
 	}
 
 	/**
