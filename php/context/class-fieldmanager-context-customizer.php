@@ -118,10 +118,20 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 				'type'       => 'option',
 			)
 		);
-		$setting_args['default']           = $this->fm->default_value;
 		$setting_args['sanitize_callback'] = array( $this, 'sanitize_callback' );
 		$setting_args['section']           = $this->fm->name;
-		$manager->add_setting( $this->fm->name, $setting_args );
+		$setting = $manager->add_setting( $this->fm->name, $setting_args );
+
+		/*
+		 * If the field default is null, the setting constructor won't detect it
+		 * Adding the setting as an ID first allows the filters in
+		 * WP_Customize_Manager::add_setting() to run; adding it again as a
+		 * WP_Customize_Setting instance replaces the first without re-running
+		 * them. An alternate approach could be for FM to instatiate its own
+		 * WP_Customize_Setting extension.
+		 */
+		$setting->default = $this->fm->default_value;
+		$manager->add_setting( $setting );
 
 		$manager->add_control( new Fieldmanager_Customize_Control( $manager, $this->fm->name, array(
 			'section' => $this->fm->name,
