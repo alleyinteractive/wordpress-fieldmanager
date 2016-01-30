@@ -66,6 +66,17 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	}
 
 	/**
+	 * Exposes Fieldmanager_Context::render_field() for the control to call.
+	 *
+	 * @param array $args Unused.
+	 */
+	public function render_field( $args = array() ) {
+		parent::render_field( array(
+			'data' => $this->current_value,
+		) );
+	}
+
+	/**
 	 * Filter a Customize setting value in un-slashed form.
 	 *
 	 * @param mixed $value Setting value.
@@ -113,8 +124,8 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 		$manager->add_setting( $this->fm->name, $setting_args );
 
 		$manager->add_control( new Fieldmanager_Customize_Control( $manager, $this->fm->name, array(
-			'fm'      => $this->fm,
 			'section' => $this->fm->name,
+			'context' => $this,
 		) ) );
 	}
 

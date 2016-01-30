@@ -9,11 +9,11 @@ if ( class_exists( 'WP_Customize_Control' ) ) :
 	 */
 	class Fieldmanager_Customize_Control extends WP_Customize_Control {
 		/**
-		 * The field object to use. Supply via `$args['fm']`.
+		 * The Fieldmanager context controlling this field.
 		 *
-		 * @var Fieldmanager_Field
+		 * @var Fieldmanager_Context
 		 */
-		protected $fm;
+		protected $context;
 
 		/**
 		 * The control 'type', used in scripts to identify FM controls.
@@ -49,7 +49,7 @@ if ( class_exists( 'WP_Customize_Control' ) ) :
 		 * @see Fieldmanager_Field::element_markup().
 		 */
 		public function render_content() {
-			echo $this->fm->element_markup( $this->value() );
+			$this->context->render_field();
 		}
 	}
 endif;
