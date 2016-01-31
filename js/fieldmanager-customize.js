@@ -1,13 +1,64 @@
-/* global document, jQuery, wp, _ */
+/* global document, jQuery, wp, _, fm */
 /**
  * Integrate Fieldmanager and the Customizer.
  *
  * @param {function} $ jQuery
- * @param {function} api wp.customize API.
+ * @param {function} api Customizer API.
  * @param {function} _ Underscore
+ * @param {Object} fm Fieldmanager API.
  */
-(function( $, api, _ ) {
+(function( $, api, _, fm ) {
 	'use strict';
+
+	fm.customize = {
+		/**
+		 * Set the values of all Fieldmanager controls.
+		 */
+		setEachControl: function () {
+			api.control.each( this.setControl );
+		},
+
+		/**
+		 * Set the value of any Fieldmanager control with a given element in its container.
+		 *
+		 * @param {Element} el Element to look for.
+		 */
+		setControlsContainingElement: function ( el ) {
+			var that = this;
+
+			api.control.each(function( control ) {
+				if ( control.container.find( el ).length ) {
+					that.setControl( control );
+				}
+			});
+		},
+
+		/**
+		 * Set a Fieldmanager setting to its control's form values.
+		 *
+		 * @param {Object} control Customizer Control object.
+		 */
+		setControl: function ( control ) {
+			var $element;
+			var serialized;
+			var value;
+
+			if ( 'fieldmanager' !== control.params.type ) {
+				return;
+			}
+
+			$element = control.container.find( '.fm-element' );
+
+			if ( $.serializeJSON ) {
+				serialized = $element.serializeJSON();
+				value = serialized[ control.id ];
+			} else {
+				value = $element.serialize();
+			}
+
+			control.setting.set( value );
+		},
+	};
 
 	/**
 	 * Debounce interval between looking for changes after a 'keyup'.
@@ -22,7 +73,7 @@
 	 * @param {Event} e Event object.
 	 */
 	var onFmElementChange = function( e ) {
-		reserializeControlsContainingElement( e.target );
+		fm.customize.setControlsContainingElement( e.target );
 	};
 
 	/**
@@ -54,7 +105,7 @@
 			}
 		}
 
-		reserializeControlsContainingElement( e.target );
+		fm.customize.setControlsContainingElement( e.target );
 	};
 
 	/**
@@ -64,7 +115,7 @@
 	 * @param {Element} el The sorted element.
 	 */
 	var onFmSortableDrop = function ( e, el ) {
-		reserializeControlsContainingElement( el );
+		fm.customize.setControlsContainingElement( el );
 	};
 
 	/**
@@ -73,7 +124,7 @@
 	 * @param {Event} e Event object.
 	 */
 	var onFmAddedElement = function( e ) {
-		reserializeControlsContainingElement( e.target );
+		fm.customize.setControlsContainingElement( e.target );
 	};
 
 	/**
@@ -85,7 +136,7 @@
 	 * @param {Object} wp Global WordPress JS API.
 	 */
 	var onFieldmanagerMediaPreview = function( e, $wrapper, attachment, wp ) {
-		reserializeControlsContainingElement( e.target );
+		fm.customize.setControlsContainingElement( e.target );
 	};
 
 	/**
@@ -97,7 +148,7 @@
 	var onFmRichtextInit = function( e, ed ) {
 		ed.on( 'keyup AddUndo', _.debounce( function () {
 			ed.save();
-			reserializeControlsContainingElement( document.getElementById( ed.id ) );
+			fm.customize.setControlsContainingElement( document.getElementById( ed.id ) );
 		}, keyupDebounceInterval ) );
 	};
 
@@ -107,8 +158,8 @@
 	 * @param {Event} e Event object.
 	 */
 	 var onFmMediaRemoveClick = function ( e ) {
-		// The control no longer contains the element, so reserialize all of them.
-		reserializeEachControl();
+		// The control no longer contains the element, so set all of them.
+		fm.customize.setEachControl();
 	 };
 
 	 /**
@@ -117,55 +168,9 @@
 	  * @param {Event} e Event object.
 	  */
 	 var onFmjsRemoveClick = function ( e ) {
-		// The control no longer contains the element, so reserialize all of them.
-		reserializeEachControl();
+		// The control no longer contains the element, so set all of them.
+		fm.customize.setEachControl();
 	 };
-
-	/**
-	 * Set the values of all Fieldmanager controls.
-	 */
-	var reserializeEachControl = function() {
-		api.control.each( reserializeControl );
-	};
-
-	/**
-	 * Set the value of any Fieldmanager control with a given element in its container.
-	 *
-	 * @param {Element} el Element to look for.
-	 */
-	var reserializeControlsContainingElement = function( el ) {
-		api.control.each(function( control ) {
-			if ( control.container.find( el ).length ) {
-				reserializeControl( control );
-			}
-		});
-	};
-
-	/**
-	 * Set a Fieldmanager control to its form values.
-	 *
-	 * @param {Object} control Customizer Control object.
-	 */
-	var reserializeControl = function ( control ) {
-		var $element;
-		var serialized;
-		var value;
-
-		if ( 'fieldmanager' !== control.params.type ) {
-			return;
-		}
-
-		$element = control.container.find( '.fm-element' );
-
-		if ( $.serializeJSON ) {
-			serialized = $element.serializeJSON();
-			value = serialized[ control.id ];
-		} else {
-			value = $element.serialize();
-		}
-
-		control.setting.set( value );
-	};
 
 	/**
 	 * Fires when a Customizer Section expands.
@@ -196,7 +201,7 @@
 				control.settings.default &&
 				null === control.settings.default.get()
 			) {
-				reserializeControl( control );
+				fm.customize.setControl( control );
 			}
 		});
 	};
@@ -256,4 +261,4 @@
 		api.bind( 'error', error );
 		api.section.bind( 'add', addSection );
 	}
-})( jQuery, wp.customize, _ );
+})( jQuery, wp.customize, _, fm );
