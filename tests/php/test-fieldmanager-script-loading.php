@@ -11,6 +11,9 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		require_once ABSPATH . WPINC . '/class-wp-customize-manager.php';
+		$customize_manager = new WP_Customize_Manager();
+
 		// Spoof is_admin() for fm_add_script().
 		$this->screen = get_current_screen();
 		set_current_screen( 'dashboard-user' );
@@ -35,6 +38,13 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 		new Fieldmanager_Select( 'Test' );
 		new Fieldmanager_RichTextArea( 'Test' );
 		new Fieldmanager_Colorpicker( 'Test' );
+
+		$control = new Fieldmanager_Customize_Control(
+			$customize_manager,
+			'test',
+			array( 'context' => $this->getMock( 'Fieldmanager_Context' ) )
+		);
+		$control->enqueue();
 
 		do_action( 'wp_enqueue_scripts' );
 		do_action( 'admin_enqueue_scripts' );
@@ -69,6 +79,7 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 			array( 'fm_select_js', array() ),
 			array( 'grid', array() ),
 			array( 'fm_colorpicker', array( 'jquery', 'wp-color-picker' ) ),
+			array( 'fm-customize', array( 'jquery', 'underscore', 'editor', 'quicktags', 'fieldmanager_script', 'customize-controls', 'fm-serializejson' ) ),
 		);
 	}
 
