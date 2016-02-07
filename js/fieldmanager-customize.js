@@ -153,6 +153,16 @@
 	};
 
 	/**
+	 * Fires after a Fieldmanager colorpicker field updates.
+	 *
+	 * @param {Event} e Event object.
+	 * @param {Element} el Colorpicker element.
+	 */
+	var onFmColorpickerUpdate = function( e, el ) {
+		fm.customize.setControlsContainingElement( el );
+	};
+
+	/**
 	 * Fires after clicking the "Remove" link of a Fieldmanager media field.
 	 *
 	 * @param {Event} e Event object.
@@ -188,6 +198,10 @@
 
 		if ( fm.richtextarea ) {
 			fm.richtextarea.add_rte_to_visible_textareas();
+		}
+
+		if ( fm.colorpicker ) {
+			fm.colorpicker.init();
 		}
 
 		/*
@@ -228,6 +242,7 @@
 		$document.on( 'fm_sortable_drop', onFmSortableDrop );
 		$document.on( 'fieldmanager_media_preview', onFieldmanagerMediaPreview );
 		$document.on( 'fm_richtext_init', onFmRichtextInit );
+		$document.on( 'fm_colorpicker_update', onFmColorpickerUpdate );
 	};
 
 	/**
