@@ -10,12 +10,14 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->field = new Fieldmanager_TextField( array( 'name' => 'foo' ) );
 	}
 
+	// Test that a section is created even without constructor args.
 	function test_bare_section() {
 		new Fieldmanager_Context_Customizer( array(), $this->field );
 		$this->register();
 		$this->assertInstanceOf( 'WP_Customize_Section', $this->manager->get_section( $this->field->name ) );
 	}
 
+	// Test that a section is created even with a title string.
 	function test_section_title() {
 		$title = rand_str();
 
@@ -24,6 +26,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->assertSame( $title, $this->manager->get_section( $this->field->name )->title );
 	}
 
+	// Test that a section is created with constructor args.
 	function test_section_args() {
 		$title = rand_str();
 		$priority = rand( 0, 100 );
@@ -42,12 +45,14 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->assertSame( $priority, $actual->priority );
 	}
 
+	// Test that a setting is created even without constructor args.
 	function test_bare_setting() {
 		new Fieldmanager_Context_Customizer( 'Foo', $this->field );
 		$this->register();
 		$this->assertInstanceOf( 'Fieldmanager_Customize_Setting', $this->manager->get_setting( $this->field->name ) );
 	}
 
+	// Test that a setting is created with constructor args.
 	function test_setting_args() {
 		$capability = 'edit_thing';
 		$default = rand_str();
@@ -66,6 +71,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->assertSame( $default, $actual->default );
 	}
 
+	// Test that a control is created even without constructor args.
 	function test_bare_control() {
 		new Fieldmanager_Context_Customizer( 'Foo', $this->field );
 
@@ -77,6 +83,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->assertInstanceOf( 'Fieldmanager_Customize_Setting', $actual->settings['default'] );
 	}
 
+	// Test that a control is created with constructor args.
 	function test_control_args() {
 		$label = rand_str();
 		$section = rand_str();
@@ -95,6 +102,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->assertSame( $label, $actual->label );
 	}
 
+	// Test that multiple objects are created with constructor args.
 	function test_multiple_args() {
 		$title = rand_str();
 		$theme_supports = rand_str();
@@ -131,6 +139,9 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 	}
 
 	/**
+	 * Test that a textfield is sanitized the same way when the value is passed
+     * as a bare string and a query string.
+	 *
 	 * @expectedException FM_Exception
 	 */
 	function test_sanitize_string() {
@@ -145,6 +156,10 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$context->sanitize_callback( array( 'Not', 'a', 'string' ), $setting );
 	}
 
+	/**
+	 * Test that a group is sanitized the same way when the value is passed as
+	 * an array or a query string.
+	 */
 	function test_sanitize_group() {
 		$fm = new Fieldmanager_Group( array(
 			'name'           => 'option_fields',
@@ -286,6 +301,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->assertSame( $expected, $context->sanitize_callback( $in_as_serialized, $setting ) );
 	}
 
+	// Make sure sanitizing strips slashes.
 	function test_sanitize_stripslashes() {
 		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
 		$this->register();
@@ -293,6 +309,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 	}
 
 
+	// Make sure the context's rendering method calls the field rendering method.
 	function test_render_field() {
 		$field = $this->getMockBuilder( 'Fieldmanager_Textfield' )->disableOriginalConstructor()->getMock();
 		$context = new Fieldmanager_Context_Customizer( 'Foo', $field );
