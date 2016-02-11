@@ -23,6 +23,23 @@ if ( class_exists( 'WP_Customize_Control' ) ) :
 		public $type = 'fieldmanager';
 
 		/**
+		 * Constructor.
+		 *
+		 * @param WP_Customize_Manager $manager
+		 * @param string $id Control ID.
+		 * @param array $args Control arguments, including $context.
+		 */
+		public function __construct( $manager, $id, $args = array() ) {
+			parent::__construct( $manager, $id, $args );
+
+			if ( ! ( $this->context instanceof Fieldmanager_Context_Customizer ) && FM_DEBUG ) {
+				throw new FM_Developer_Exception(
+					__( 'Fieldmanager_Customize_Control requires a Fieldmanager_Context_Customizer', 'fieldmanager' )
+				);
+			}
+		}
+
+		/**
 		 * Enqueue control-related scripts and styles.
 		 */
 		public function enqueue() {
@@ -46,10 +63,10 @@ if ( class_exists( 'WP_Customize_Control' ) ) :
 		/**
 		 * Render the control's content.
 		 *
-		 * @see Fieldmanager_Field::element_markup().
+		 * @see Fieldmanager_Context::render_field().
 		 */
-		public function render_content() {
-			$this->context->render_field();
+		protected function render_content() {
+			$this->context->render_field( array( 'data' => $this->value() ) );
 		}
 	}
 endif;

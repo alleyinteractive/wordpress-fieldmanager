@@ -42,7 +42,11 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 		$control = new Fieldmanager_Customize_Control(
 			$customize_manager,
 			'test',
-			array( 'context' => $this->getMock( 'Fieldmanager_Context' ) )
+			array(
+				'context' => $this->getMockBuilder( 'Fieldmanager_Context_Customizer' )
+					->disableOriginalConstructor()
+					->getMock()
+			)
 		);
 		$control->enqueue();
 

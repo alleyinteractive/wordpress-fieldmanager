@@ -10,24 +10,21 @@
  */
 class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
-	 * The value of the setting before any changes are submitted via the Customizer.
+	 * @var string|array $args {
+	 *     The title to use with the {@see WP_Customize_Section}, or arrays of
+	 *     arguments to construct Customizer objects.
 	 *
-	 * @see Fieldmanager_Field::presave_all().
-	 *
-	 * @var mixed
+	 *     @type array $section_args Arguments for constructing a WP_Customize_Section.
+	 *     @type array $setting_args Arguments for constructing a {@see Fieldmanager_Customize_Setting}.
+	 *     @type array $control_args Arguments for constructing a {@see Fieldmanager_Customize_Control}.
+	 * }
 	 */
-	protected $current_value;
+	protected $args;
 
 	/**
 	 * Constructor.
 	 *
-	 * @param string|array $args {
-	 *     The title to use with the {@see WP_Customize_Section}, or arrays of
-	 *     arguments to construct the Customizer section and setting.
-	 *
-	 *     @type array $section_args Arguments for constructing a WP_Customize_Section.
-	 *     @type array $setting_args Arguments for constructing a {@see WP_Customize_Setting}.
-	 * }
+	 * @param string|array $args Section title or Customizer object arguments.
 	 * @param Fieldmanager_Field $fm Field object to add to the Customizer.
 	 */
 	public function __construct( $args, $fm ) {
@@ -38,6 +35,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 		$this->args = wp_parse_args( $args, array(
 			'section_args' => array(),
 			'setting_args' => array(),
+			'control_args' => array(),
 		) );
 
 		$this->fm = $fm;
@@ -52,17 +50,6 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 */
 	public function customize_register( $manager ) {
 		$this->register( $manager );
-		/*
-		 * Get the current setting value for Fieldmanager_Field::presave_all()
-		 * before the setting's preview method is called.
-		 *
-		 * WP_Customize_Setting::preview() adds filters to get_option() and
-		 * get_theme_mod() that eventually call the setting's sanitize() method.
-		 * Attempting to call WP_Customize_Setting::value() inside of
-		 * Fieldmanager_Context_Customizer::sanitize_callback() creates an
-		 * infinite loop.
-		 */
-		$this->init_current_value( $manager );
 	}
 
 	/**
@@ -71,9 +58,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 * @param array $args Unused.
 	 */
 	public function render_field( $args = array() ) {
-		parent::render_field( array(
-			'data' => $this->current_value,
-		) );
+		return parent::render_field( $args );
 	}
 
 	/**
@@ -89,13 +74,13 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 			parse_str( $value, $value );
 		}
 
-		if ( is_array( $value ) && isset( $value[ $this->fm->name ] ) ) {
+		if ( is_array( $value ) && array_key_exists( $this->fm->name, $value ) ) {
 			// If the option name is the top-level array key, get just the value.
 			$value = $value[ $this->fm->name ];
 		}
 
 		// Return the value after Fieldmanager takes a shot at it.
-		return stripslashes_deep( $this->prepare_data( $this->current_value, $value ) );
+		return stripslashes_deep( $this->prepare_data( $setting->value(), $value ) );
 	}
 
 	/**
@@ -104,47 +89,53 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 * @param WP_Customize_Manager $manager WP_Customize_Manager instance.
 	 */
 	protected function register( $manager ) {
-		$manager->add_section( $this->fm->name, wp_parse_args(
-			$this->args['section_args'],
-			array()
-		) );
-
-		// Set Fieldmanager defaults after parsing the user args, then register the setting.
-		$setting_args = wp_parse_args(
-			$this->args['setting_args'],
-			array(
-				// Use the capability passed to Fieldmanager_Field::add_customizer_section().
-				'capability' => $manager->get_section( $this->fm->name )->capability,
-				'type'       => 'option',
-			)
-		);
-		$setting_args['sanitize_callback'] = array( $this, 'sanitize_callback' );
-		$setting_args['section']           = $this->fm->name;
-		$setting = $manager->add_setting( $this->fm->name, $setting_args );
-
-		/*
-		 * If the field default is null, the setting constructor won't detect it
-		 * Adding the setting as an ID first allows the filters in
-		 * WP_Customize_Manager::add_setting() to run; adding it again as a
-		 * WP_Customize_Setting instance replaces the first without re-running
-		 * them. An alternate approach could be for FM to instatiate its own
-		 * WP_Customize_Setting extension.
-		 */
-		$setting->default = $this->fm->default_value;
-		$manager->add_setting( $setting );
-
-		$manager->add_control( new Fieldmanager_Customize_Control( $manager, $this->fm->name, array(
-			'section' => $this->fm->name,
-			'context' => $this,
-		) ) );
+		$this->register_section( $manager );
+		$this->register_setting( $manager );
+		$this->register_control( $manager );
 	}
 
 	/**
-	 * Initialize $current_value for the type of Customizer setting.
+	 * Add a Customizer section for this field.
 	 *
-	 * @param WP_Customize_Manager $manager WP_Customize_Manager instance.
+	 * @param WP_Customize_Manager $manager
+	 * @return WP_Customize_Section Section object, where supported.
 	 */
-	protected function init_current_value( $manager ) {
-		$this->current_value = $manager->get_setting( $this->fm->name )->value();
+	protected function register_section( $manager ) {
+		return $manager->add_section( $this->fm->name, $this->args['section_args'] );
+	}
+
+	/**
+	 * Add a Customizer setting for this field.
+	 *
+	 * @param WP_Customize_Manager $manager
+	 * @return Fieldmanager_Customize_Setting Setting object, where supported.
+	 */
+	protected function register_setting( $manager ) {
+		return $manager->add_setting(
+			new Fieldmanager_Customize_Setting( $manager, $this->fm->name, wp_parse_args(
+				$this->args['setting_args'],
+				array(
+					'context' => $this,
+				)
+			) )
+		);
+	}
+
+	/**
+	 * Add a Customizer control for this field.
+	 *
+	 * @param WP_Customize_Manager $manager
+	 * @return Fieldmanager_Customize_Control Control object, where supported.
+	 */
+	protected function register_control( $manager ) {
+		return $manager->add_control(
+			new Fieldmanager_Customize_Control( $manager, $this->fm->name, wp_parse_args(
+				$this->args['control_args'],
+				array(
+					'section' => $this->fm->name,
+					'context' => $this,
+				)
+			) )
+		);
 	}
 }

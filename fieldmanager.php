@@ -74,6 +74,10 @@ function fieldmanager_load_class( $class ) {
 		return fieldmanager_load_file( 'class-fieldmanager-customize-control.php' );
 	}
 
+	if ( 'Fieldmanager_Customize_Setting' === $class ) {
+		return fieldmanager_load_file( 'class-fieldmanager-customize-setting.php' );
+	}
+
 	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );
 }
 
