@@ -223,10 +223,10 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return int[] $values
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
-		if ( !empty( $this->datasource ) ) {
-			return $this->datasource->presave_alter_values( $this, $values, $current_values );
+		if ( ! empty( $this->datasource ) ) {
+			$values = $this->datasource->presave_alter_values( $this, $values, $current_values );
 		}
-		return $values;
+		return apply_filters( 'fm_presave_alter_values', $values, $this, $current_values );
 	}
 
 

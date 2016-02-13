@@ -147,8 +147,11 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
 		// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.
-		if ( empty( $this->data_id ) || $this->data_type !== 'post' ) return $values;
-		return $this->datasource->presave_alter_values( $this, $values, $current_values );
+		if ( ! empty( $this->data_id ) && 'post' == $this->data_type ) {
+			$values = $this->datasource->presave_alter_values( $this, $values, $current_values );
+		}
+
+		return apply_filters( 'fm_presave_alter_values', $values, $this, $current_values );
 	}
 
 	/**
