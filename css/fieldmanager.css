@@ -46,6 +46,12 @@
 	line-height: 1.7em;
 }
 
+/* Item */
+.fm-item {
+	margin-bottom: 15px;
+	padding: 5px 0;
+}
+
 /* Groups */
 .fm-group {
 	margin-bottom: 5px;
