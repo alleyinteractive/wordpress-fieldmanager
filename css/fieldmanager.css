@@ -22,12 +22,28 @@
 	display: none;
 }
 
+.fm-label {
+	margin: 0 0 5px;
+}
+
 .fm-label-inline {
 	margin: 0 5px 0 0;
 }
 
 .fm-label-inline.fm-label-after {
 	margin: 0 0 0 5px;
+}
+
+.fm-label label {
+	display: block;
+	font-weight: bold;
+	font-size: 13px;
+	line-height: 1.4em;
+	margin: 0 0 3px;
+}
+
+.fmjs-removable-label label {
+	line-height: 1.7em;
 }
 
 /* Groups */
@@ -202,7 +218,12 @@ div.fm-group-label-wrapper .fmjs-remove {
 
 .fm-item-description {
 	font-style: italic;
+	line-height: 1.4em;
+	display: block;
+	margin: 3px 0 0;
+	color: #777;
 }
+
 
 .fm-wrapper div.fm-submenu {
 	background-color: transparent;
