@@ -5,7 +5,9 @@
 .fm-tab-bar .fm-tab {
 	border: 1px solid transparent;
 	border-bottom: none;
+	padding: 6px 10px 10px;
 }
+
 .fm-tab-bar .fm-tab a:focus {
 	-webkit-box-shadow: none;
 	box-shadow: none;
