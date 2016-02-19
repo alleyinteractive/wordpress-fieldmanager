@@ -125,6 +125,7 @@
 				var control = new wp.customize.Control( randStr(), {
 					setting: setting,
 					params: {
+						settings: {},
 						type: 'fieldmanager',
 					},
 				});
@@ -151,6 +152,7 @@
 								.attr( 'type', 'text' )
 								.attr( 'name', settingId )
 						),
+						settings: {},
 						type: 'text',
 					},
 				});
@@ -185,6 +187,7 @@
 					setting: setting,
 					params: {
 						content: markup,
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -222,6 +225,7 @@
 								.attr( 'name', 'option_fields[0][repeatable_group][0][text]' )
 								.attr( 'value', textValue )
 						),
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -253,6 +257,7 @@
 								.attr( 'name', 'option_fields[0][repeatable_group][0][text]' )
 								.attr( 'value', textValue )
 						),
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -283,6 +288,7 @@
 					setting: setting1,
 					params: {
 						content: $( '<li>' ).append( $element1 ),
+						settings: {},
 						type: 'fieldmanager',
 					},
 				});
@@ -301,6 +307,7 @@
 								.attr( 'name', id2 )
 								.attr( 'value', newValue )
 						),
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -333,6 +340,7 @@
 								.attr( 'name', id1 )
 								.attr( 'value', newValue1 )
 						 ),
+						settings: {},
 						type: 'fieldmanager',
 					},
 				});
@@ -351,6 +359,7 @@
 								.attr( 'name', id2 )
 								.attr( 'value', newValue2 )
 						),
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -376,6 +385,7 @@
 					setting: setting,
 					params: {
 						content: $( document ).find( '#customizer-events' ),
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
