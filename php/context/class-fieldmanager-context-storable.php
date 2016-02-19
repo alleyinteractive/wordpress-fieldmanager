@@ -54,8 +54,8 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 			$this->save_walk_children( $this->fm, $data, $this->fm->data_id );
 		}
 		if ( ! empty( $this->taxonomies_to_save ) ) {
-			foreach( $this->taxonomies_to_save as $taxonomy => $term_ids ) {
-				wp_set_object_terms( $this->fm->data_id, $term_ids, $taxonomy );
+			foreach( $this->taxonomies_to_save as $taxonomy => $data ) {
+				wp_set_object_terms( $this->fm->data_id, $data['term_ids'], $taxonomy, $data['append'] );
 			}
 			$this->taxonomies_to_save = array();
 		}
