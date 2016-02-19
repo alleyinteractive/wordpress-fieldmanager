@@ -316,13 +316,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
-<<<<<<< HEAD
 			if ( empty( $values[$element->name] ) ) {
 				$values[ $element->name ] = null;
-=======
-			if ( ! isset( $values[$element->name] ) ) {
-				$values[ $element->name ] = NULL;
->>>>>>> master
 			}
 			$child_value = empty( $values[ $element->name ] ) ? null : $values[ $element->name ];
 			$current_child_value = !isset( $current_values[$element->name ]) ? array() : $current_values[$element->name];
