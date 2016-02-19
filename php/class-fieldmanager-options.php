@@ -194,7 +194,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	public function presave_all( $values, $current_values ) {
 		// Multiple select and radio fields with no values chosen are left out of
 		// the post request altogether, requiring special case handling.
-		if ( true === $this->multiple && 1 !== $this->limit && '' === $values ) {
+		if ( 1 !== $this->limit && '' === $values ) {
 			$values = null;
 		}
 
