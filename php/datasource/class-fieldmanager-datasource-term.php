@@ -40,12 +40,6 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	public $append_taxonomy = False;
 
 	/**
-	 * @var boolean
-	 * When datasource is a part of a repeatable group, pass $append = true to wp_set_object_terms after the first group is saved.
-	 */
-	public $append_after_first_save = true;
-
-	/**
 	 * @var string
 	 * If true, additionally save taxonomy terms to WP's terms tables.
 	 */
@@ -223,14 +217,6 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 */
 	public function save_taxonomy( $tax_values, $data_id ) {
 
-		static $saved_once;
-		$append_taxonomy = $this->append_taxonomy;
-		if ( ! empty( $saved_once ) && $this->append_after_first_save ) {
-			$append_taxonomy = true;
-		} else {
-			$saved_once = true;
-		}
-
 		$tax_values = array_map( 'intval', $tax_values );
 		$tax_values = array_unique( $tax_values );
 		$taxonomies = $this->get_taxonomies();
@@ -245,10 +231,10 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				$taxonomies_to_save[ $term->taxonomy ][] = $term_id;
 			}
 			foreach ( $taxonomies_to_save as $taxonomy => $terms ) {
-				wp_set_object_terms( $data_id, $terms, $taxonomy, $append_taxonomy );
+				wp_set_object_terms( $data_id, $terms, $taxonomy, $this->append_taxonomy );
 			}
 		} else {
-			wp_set_object_terms( $data_id, $tax_values, $taxonomies[0], $append_taxonomy );
+			wp_set_object_terms( $data_id, $tax_values, $taxonomies[0], $this->append_taxonomy );
 		}
 	}
 
