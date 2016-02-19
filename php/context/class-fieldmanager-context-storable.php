@@ -55,7 +55,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		}
 		if ( ! empty( $this->taxonomies_to_save ) ) {
 			foreach( $this->taxonomies_to_save as $taxonomy => $term_ids ) {
-				$this->update_term_relationships( $this->fm->data_id, $term_ids, $taxonomy );
+				wp_set_object_terms( $this->fm->data_id, $term_ids, $taxonomy );
 			}
 			$this->taxonomies_to_save = array();
 		}
@@ -217,12 +217,5 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 *                  @see delete_post_meta().
 	 */
 	abstract protected function delete_data( $data_id, $data_key, $data_value = '' );
-
-	/**
-	 * Method to update the term relations for the context
-	 */
-	protected function update_term_relationships( $data_id, $term_ids, $taxonomy ) {
-		wp_set_object_terms( $data_id, $term_ids, $taxonomy );
-	}
 
 }
