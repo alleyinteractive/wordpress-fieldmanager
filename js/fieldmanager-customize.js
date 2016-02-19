@@ -12,6 +12,13 @@
 
 	fm.customize = {
 		/**
+		 * jQuery selector targeting all elements to include in a Fieldmanager setting value.
+		 *
+		 * @type {String}
+		 */
+		targetSelector: '.fm-element',
+
+		/**
 		 * Set the values of all Fieldmanager controls.
 		 */
 		setEachControl: function () {
@@ -47,7 +54,7 @@
 				return;
 			}
 
-			$element = control.container.find( '.fm-element' );
+			$element = control.container.find( this.targetSelector );
 
 			if ( $.serializeJSON ) {
 				serialized = $element.serializeJSON();
