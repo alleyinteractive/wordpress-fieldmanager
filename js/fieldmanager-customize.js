@@ -48,6 +48,7 @@
 		 * Set a Fieldmanager setting to its control's form values.
 		 *
 		 * @param {Object} control Customizer Control object.
+		 * @return {Object} The updated Control.
 		 */
 		setControl: function ( control ) {
 			var $element;
@@ -67,7 +68,7 @@
 				value = $element.serialize();
 			}
 
-			control.setting.set( value );
+			return control.setting.set( value );
 		},
 	};
 
