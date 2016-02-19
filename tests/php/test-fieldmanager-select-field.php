@@ -149,6 +149,27 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_repeatable_multiselect_save() {
+		$fm = new Fieldmanager_Select( array(
+			'name' => 'base_field',
+			'multiple' => true,
+			'limit' => 0,
+			'options' => array( 'one', 'two', 'three' ),
+		) );
+
+		$fm->add_meta_box( 'base_field', $this->post->post_type )->save_to_post_meta( $this->post->ID, array( 'two' ) );
+		$saved_value = get_post_meta( $this->post->ID, 'base_field', true );
+		$this->assertSame( array( 'two' ), $saved_value );
+
+		$fm->add_meta_box( 'base_field', $this->post->post_type )->save_to_post_meta( $this->post->ID, array( 'two', 'three' ) );
+		$saved_value = get_post_meta( $this->post->ID, 'base_field', true );
+		$this->assertSame( array( 'two', 'three' ), $saved_value );
+
+		$fm->add_meta_box( 'base_field', $this->post->post_type )->save_to_post_meta( $this->post->ID, '' );
+		$saved_value = get_post_meta( $this->post->ID, 'base_field', true );
+		$this->assertNull( $saved_value );
+	}
+
 	public function test_repeatable_render() {
 		$fm = new Fieldmanager_Select( array(
 			'name' => 'base_field',
