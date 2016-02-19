@@ -353,25 +353,24 @@ abstract class Fieldmanager_Field {
 	 * @throws FM_Developer_Exception if an option is set but not public.
 	 */
 	public function set_options( $label, $options ) {
-		if ( is_array( $label ) ) $options = $label;
-		else $options['label'] = $label;
+		if ( is_array( $label ) ) {
+			$options = $label;
+		} else {
+			$options['label'] = $label;
+		}
 
-		foreach ( $options as $k => $v ) {
-			try {
-				$reflection = new ReflectionProperty( $this, $k ); // Would throw a ReflectionException if item doesn't exist (developer error)
-				if ( $reflection->isPublic() ) $this->$k = $v;
-				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
-			} catch ( Exception $e ) {
+		// Get all the public properties for this object
+		$properties = call_user_func( 'get_object_vars', $this );
+
+		foreach ( $options as $key => $value ) {
+			if ( array_key_exists( $key, $properties ) ) {
+				$this->$key = $value;
+			} elseif ( self::$debug ) {
 				$message = sprintf(
 					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
-					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
+					$key, get_class( $this ), !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
-				$title = esc_html__( 'Nonexistant or invalid option', 'fieldmanager' );
-				if ( !self::$debug ) {
-					wp_die( esc_html( $message ), $title );
-				} else {
-					throw new FM_Developer_Exception( esc_html( $message ) );
-				}
+				throw new FM_Developer_Exception( esc_html( $message ) );
 			}
 		}
 
@@ -936,7 +935,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_sort_handle() {
-		return sprintf( '<div class="fmjs-drag fmjs-drag-icon">%s</div>', esc_html__( 'Move', 'fieldmanager' ) );
+		return sprintf( '<div class="fmjs-drag fmjs-drag-icon"><span class="screen-reader-text">%s</span></div>', esc_html__( 'Move', 'fieldmanager' ) );
 	}
 
 	/**
@@ -944,7 +943,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_remove_handle() {
-		return sprintf( '<a href="#" class="fmjs-remove" title="%1$s">%1$s</a>', esc_attr__( 'Remove', 'fieldmanager' ) );
+		return sprintf( '<a href="#" class="fmjs-remove" title="%1$s"><span class="screen-reader-text">%1$s</span></a>', esc_attr__( 'Remove', 'fieldmanager' ) );
 	}
 
 	/**
@@ -952,7 +951,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_collapse_handle() {
-		return sprintf( '<div class="handlediv" title="%s"><br /></div>', esc_attr__( 'Click to toggle', 'fieldmanager' ) );
+		return '<span class="toggle-indicator" aria-hidden="true"></span>';
 	}
 
 	/**
@@ -984,7 +983,11 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Add a form on a term add/edit page
+	 *
+	 * @deprecated 1.0.0-beta.3 Replaced by {@see Fieldmanager_Field::add_term_meta_box()}.
+	 *
 	 * @see Fieldmanager_Context_Term
+	 *
 	 * @param string $title
 	 * @param string|array $taxonomies The taxonomies on which to display this form
 	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
@@ -993,7 +996,46 @@ abstract class Fieldmanager_Field {
 	 */
 	public function add_term_form( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
 		$this->require_base();
-		return new Fieldmanager_Context_Term( $title, $taxonomies, $show_on_add, $show_on_edit, $parent, $this );
+		return new Fieldmanager_Context_Term( array(
+			'title'        => $title,
+			'taxonomies'   => $taxonomies,
+			'show_on_add'  => $show_on_add,
+			'show_on_edit' => $show_on_edit,
+			'parent'       => $parent,
+			// Use the deprecated FM Term Meta instead of core's term meta
+			'use_fm_meta'  => true,
+			'field'        => $this,
+		) );
+	}
+
+	/**
+	 * Add fields to the term add/edit page
+	 *
+	 * @see Fieldmanager_Context_Term
+	 *
+	 * @param string $title
+	 * @param string|array $taxonomies The taxonomies on which to display this form
+	 * @param boolean $show_on_add Whether or not to show the fields on the add term form
+	 * @param boolean $show_on_edit Whether or not to show the fields on the edit term form
+	 * @param int $parent Only show this field on child terms of this parent term ID
+	 */
+	public function add_term_meta_box( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
+		// Bail if term meta table is not installed.
+		if ( get_option( 'db_version' ) < 34370 ) {
+			_doing_it_wrong( __METHOD__, esc_html__( 'This method requires WordPress 4.4 or above', 'fieldmanager' ), 'Fieldmanager-1.0.0-beta.3' );
+			return false;
+		}
+
+		$this->require_base();
+		return new Fieldmanager_Context_Term( array(
+			'title'        => $title,
+			'taxonomies'   => $taxonomies,
+			'show_on_add'  => $show_on_add,
+			'show_on_edit' => $show_on_edit,
+			'parent'       => $parent,
+			'use_fm_meta'  => false,
+			'field'        => $this,
+		) );
 	}
 
 	/**
@@ -1008,6 +1050,9 @@ abstract class Fieldmanager_Field {
 		$this->require_base();
 		// Check if any default meta boxes need to be removed for this field
 		$this->add_meta_boxes_to_remove( $this->meta_boxes_to_remove );
+		if ( in_array( 'attachment', (array) $post_types ) ) {
+			$this->is_attachment = true;
+		}
 		return new Fieldmanager_Context_Post( $title, $post_types, $context, $priority, $this );
 	}
 

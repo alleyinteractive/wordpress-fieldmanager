@@ -165,8 +165,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		// Add the tab JS and CSS if it is needed
 		if ( $this->tabbed ) {
 			fm_add_script( 'jquery-hoverintent', 'js/jquery.hoverIntent.js', array( 'jquery' ), '1.8.0' );
-			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.2' );
-			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.2' );
+			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.3' );
+			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.4' );
 		}
 	}
 
@@ -316,8 +316,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
+<<<<<<< HEAD
 			if ( empty( $values[$element->name] ) ) {
 				$values[ $element->name ] = null;
+=======
+			if ( ! isset( $values[$element->name] ) ) {
+				$values[ $element->name ] = NULL;
+>>>>>>> master
 			}
 			$child_value = empty( $values[ $element->name ] ) ? null : $values[ $element->name ];
 			$current_child_value = !isset( $current_values[$element->name ]) ? array() : $current_values[$element->name];
@@ -353,8 +358,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$wrapper_classes[] = 'fmjs-drag-header';
 		}
 
+		$collapse_handle = '';
 		if ( $this->collapsible ) {
 			$wrapper_classes[] = 'fmjs-collapsible-handle';
+			$collapse_handle = $this->get_collapse_handle();
 		}
 
 		$extra_attrs = '';
@@ -378,12 +385,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		return sprintf(
-			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s</div>',
+			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s%7$s</div>',
 			esc_attr( implode( ' ', $wrapper_classes ) ),
 			$this->label_element,
 			esc_attr( implode( ' ', $classes ) ),
 			$extra_attrs,
 			$this->escape( 'label' ),
+			$collapse_handle,
 			$remove // get_remove_handle() is sanitized html
 		);
 	}

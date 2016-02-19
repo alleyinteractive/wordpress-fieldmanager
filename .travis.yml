@@ -11,10 +11,10 @@ php:
 env:
     - WP_VERSION=master WP_MULTISITE=0
     - WP_VERSION=master WP_MULTISITE=1
+    - WP_VERSION=4.4 WP_MULTISITE=0
+    - WP_VERSION=4.4 WP_MULTISITE=1
     - WP_VERSION=4.3 WP_MULTISITE=0
     - WP_VERSION=4.3 WP_MULTISITE=1
-    - WP_VERSION=4.2 WP_MULTISITE=0
-    - WP_VERSION=4.2 WP_MULTISITE=1
 
 matrix:
     include:
@@ -23,6 +23,10 @@ matrix:
     allow_failures:
         - php: 7.0
     fast_finish: true
+
+branches:
+    only:
+        - master
 
 before_script:
     - export WP_TESTS_DIR=/tmp/wordpress/tests/phpunit
@@ -33,5 +37,10 @@ before_script:
     - sed -i "s/youremptytestdbnamehere/wordpress_tests/" /tmp/wordpress/wp-tests-config.php
     - sed -i "s/yourusernamehere/travis/" /tmp/wordpress/wp-tests-config.php
     - sed -i "s/yourpasswordhere//" /tmp/wordpress/wp-tests-config.php
+    - npm install -g npm
+    - npm install -g grunt-cli
+    - npm install
 
-script: phpunit
+script:
+    - phpunit
+    - grunt qunit:specific --wp=$WP_VERSION
