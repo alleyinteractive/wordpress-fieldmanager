@@ -19,7 +19,8 @@
 }
 
 .fm-wrapper input[type="text"],
-.fm-wrapper select {
+.fm-wrapper select,
+.fm-wrapper textarea  {
 	margin: 1px;
     padding: 5px 8px;
 }
