@@ -894,4 +894,33 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->assertTrue( $add_another_occurrence < $text_field_occurrence );
 
 	}
+
+	public function test_textfield_zero_input_in_group() {
+		$group = new Fieldmanager_Group( array(
+			'name' => 'group',
+			'children' => array(
+				'a' => new Fieldmanager_Textfield(),
+			),
+		) );
+
+		$group_data = array(
+			'a' => 0,
+		);
+
+		$context = $group->add_meta_box( 'group', $this->post );
+		$context->save_to_post_meta( $this->post->ID, $group_data );
+		$this->assertEquals( array( 'a' => 0 ), get_post_meta( $this->post->ID, 'group', true ) );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertContains( 'value="0"', $html );
+
+		$group_data = array(
+			'a' => '',
+		);
+		$context->save_to_post_meta( $this->post->ID, $group_data );
+		$this->assertEquals( array( 'a' => '' ), get_post_meta( $this->post->ID, 'group', true ) );
+	}
 }
