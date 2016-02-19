@@ -15,6 +15,10 @@ class Fieldmanager_File extends Fieldmanager_Field {
 	 */
 	public $field_class = 'file';
 
+	/**
+	 * @var string[]
+	 * List of valid mime types for this upload
+	 */
 	public $valid_types = array(
 		'image/gif',
 		'image/jpeg',
@@ -28,6 +32,11 @@ class Fieldmanager_File extends Fieldmanager_Field {
 	 */
 	public $save_function = null;
 
+	/**
+	 * @var mixed[]
+	 * Temporary storage for uploaded file data; basically a sane restructring of
+	 * the $_FILES array.
+	 */
 	private $file_buffer = array();
 
 	/**
@@ -42,6 +51,12 @@ class Fieldmanager_File extends Fieldmanager_Field {
 		parent::__construct( $label, $options );
 	}
 
+	/**
+	 * Presave, validates upload, moves file into place
+	 * @param mixed[] $values
+	 * @param mixed[] $current_values
+	 * @return mixed[] sanitized values
+	 */
 	public function presave_all( $values, $current_values ) {
 		$ancestors = array();
 		foreach ( $this->get_form_tree() as &$p ) {
@@ -74,6 +89,11 @@ class Fieldmanager_File extends Fieldmanager_Field {
 		parent::presave_all( $values, $current_values );
 	}
 
+	/**
+	 * Override presave to move file into place
+	 * @param mixed $value If a single field expects to manage an array, it must override presave()
+	 * @return sanitized values.
+	 */
 	public function presave( $value, $current_value = null ) {
 		$fstruct = $this->file_buffer[ $value ];
 
@@ -90,12 +110,18 @@ class Fieldmanager_File extends Fieldmanager_Field {
 		return call_user_func_array( $this->save_function, array( $this->name, $fstruct ) );
 	}
 
+	/**
+	 * Return name for hidden form element
+	 */
 	public function get_form_saved_name() {
 		return $this->get_form_name() . '[saved]';
 	}
 
 	/**
 	 * Save the uploaded file to the media library.
+	 * @param string $filename name of the file on disk
+	 * @param mixed[] $file_struct from $_FILES array
+	 * @return int attachment ID
 	 */
 	public function save_attachment( $fieldname, $file_struct ) {
 		$filename = sanitize_text_field( $file_struct['name'] );

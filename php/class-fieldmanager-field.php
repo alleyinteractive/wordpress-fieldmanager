@@ -692,7 +692,8 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Presaves all elements in what could be a set of them, dispatches to $this->presave()
-	 * @input mixed[] $values
+	 * @param mixed[] $values
+	 * @param mixed[] $current_values
 	 * @return mixed[] sanitized values
 	 */
 	public function presave_all( $values, $current_values ) {
