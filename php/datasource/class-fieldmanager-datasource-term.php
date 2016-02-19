@@ -221,22 +221,25 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		$tax_values = array_unique( $tax_values );
 		$taxonomies = $this->get_taxonomies();
 
+		$tree = $field->get_form_tree();
+		$oldest_parent = array_shift( $tree );
+
 		// Store the each term for this post. Handle grouped fields differently since multiple taxonomies are present.
 		if ( count( $taxonomies ) > 1 ) {
 			// Build the taxonomy insert data
 			$taxonomies_to_save = array();
 			foreach ( $tax_values as $term_id ) {
 				$term = $this->get_term( $term_id );
-				if ( empty( $field->current_context->taxonomies_to_save[ $term->taxonomy ] ) ) {
-					$field->current_context->taxonomies_to_save[ $term->taxonomy ] = array();
+				if ( empty( $oldest_parent->current_context->taxonomies_to_save[ $term->taxonomy ] ) ) {
+					$oldest_parent->current_context->taxonomies_to_save[ $term->taxonomy ] = array();
 				}
-				$field->current_context->taxonomies_to_save[ $term->taxonomy ][] = $term_id;
+				$oldest_parent->current_context->taxonomies_to_save[ $term->taxonomy ][] = $term_id;
 			}
 		} else {
-			if ( ! isset( $field->current_context->taxonomies_to_save[ $taxonomies[0] ] ) ) {
-				$field->current_context->taxonomies_to_save[ $taxonomies[0] ] = array();
+			if ( ! isset( $oldest_parent->current_context->taxonomies_to_save[ $taxonomies[0] ] ) ) {
+				$oldest_parent->current_context->taxonomies_to_save[ $taxonomies[0] ] = array();
 			}
-			$field->current_context->taxonomies_to_save[ $taxonomies[0] ] = array_merge( $field->current_context->taxonomies_to_save[ $taxonomies[0] ], $tax_values );
+			$oldest_parent->current_context->taxonomies_to_save[ $taxonomies[0] ] = array_merge( $oldest_parent->current_context->taxonomies_to_save[ $taxonomies[0] ], $tax_values );
 		}
 	}
 
