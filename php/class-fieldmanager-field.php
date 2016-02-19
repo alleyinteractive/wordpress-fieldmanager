@@ -202,7 +202,7 @@ abstract class Fieldmanager_Field {
 	 */
 	public $visible = true;
 
-	/*
+	/**
 	 * Save the fields to their own keys (only works in some contexts). Default
 	 * is true.
 	 * @var boolean

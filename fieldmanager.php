@@ -99,8 +99,13 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
 /**
  * Enqueue CSS and JS in the Dashboard.
  */
+<<<<<<< HEAD
 function fieldmanager_enqueue_admin_scripts() {
 	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.5' );
+=======
+function fieldmanager_enqueue_scripts() {
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.6' );
+>>>>>>> 64ec597a7bdab565b39f3f33d88112f75127ab31
 	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.1' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
@@ -244,6 +249,10 @@ function _fieldmanager_registry( $var, $val = null ) {
  * @see fm_calculate_context() for detail about the returned array values.
  *
  * @todo trigger multiple contexts
+<<<<<<< HEAD
+=======
+ * @return string[] [$context, $type]
+>>>>>>> 64ec597a7bdab565b39f3f33d88112f75127ab31
  * @return array Contextual information for the current request.
  */
 function fm_get_context() {
@@ -280,7 +289,13 @@ function fm_get_context() {
  */
 function fm_calculate_context() {
 	// Safe to use at any point in the load process, and better than URL matching.
+<<<<<<< HEAD
 	if ( is_admin() ) {
+=======
+	if ( ! empty( $_POST['fm-form-context'] ) || ! empty( $_GET['fm-form-context'] ) ) {
+		$calculated_context = array( 'form', sanitize_text_field( !empty( $_POST['fm-form-context'] ) ? $_POST['fm-form-context'] : $_GET['fm-form-context'] ) );
+	} else if ( is_admin() ) {
+>>>>>>> 64ec597a7bdab565b39f3f33d88112f75127ab31
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
 		/*
@@ -296,10 +311,15 @@ function fm_calculate_context() {
 		if ( ! empty( $_GET['page'] ) ) {
 			$page = sanitize_text_field( $_GET['page'] );
 			$submenus = _fieldmanager_registry( 'submenus' );
+
+			if ( isset( $_GET['post_type'] ) && post_type_exists( $_GET['post_type'] ) ) {
+				$script .= '?post_type=' . $_GET['post_type'];
+			}
+
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
 					if ( $script == $submenu[0] || ( 'admin.php' == $script && $page == $submenu[4] ) ) {
-						return array( 'submenu', sanitize_text_field( $page ) );
+						return array( 'submenu', $page );
 					}
 				}
 			}
@@ -567,6 +587,11 @@ function _fm_form_init_once( $uniqid ) {
 function fm_sanitize_textarea( $value ) {
 	return implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $value ) ) );
 }
+
+/**
+ * Stripslashes_deep for submenu data.
+ */
+add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
 
 /**
  * Exception class for Fieldmanager's fatal errors.
