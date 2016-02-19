@@ -126,7 +126,6 @@
 /* Vertical Tabs */
 .fm-tabbed-vertical {
 	margin: -6px -12px -12px;
-	background: url(../images/vertical-tab-bg.png) 0 0 repeat-y;
 }
 .fm-tabbed-vertical:before,
 .fm-tabbed-vertical:after {
