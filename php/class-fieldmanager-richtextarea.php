@@ -120,11 +120,14 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 			'textarea_name'  => $this->get_form_name(),
 			'editor_class'   => 'fm-element fm-richtext',
 			'tinymce'        => array( 'wp_skip_init' => true ),
-			'teeny'          => is_customize_preview(),
 		) );
 
 		if ( $proto ) {
 			add_filter( 'the_editor', array( $this, 'add_proto_id' ) );
+		}
+
+		if ( ! isset( $settings['teeny'] ) ) {
+			$settings['teeny'] = is_customize_preview();
 		}
 
 		if ( ! isset( $settings['default_editor'] ) ) {
