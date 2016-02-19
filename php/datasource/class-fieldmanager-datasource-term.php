@@ -228,19 +228,39 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$taxonomies_to_save = array();
 			foreach ( $tax_values as $term_id ) {
 				$term = $this->get_term( $term_id );
-				if ( empty( $taxonomies_to_save[ $term->taxonomy ] ) ) $taxonomies_to_save[ $term->taxonomy ] = array();
-				$taxonomies_to_save[ $term->taxonomy ][] = $term_id;
-			}
-			foreach ( $taxonomies_to_save as $taxonomy => $terms ) {
-				// wp_set_object_terms( $data_id, $terms, $taxonomy, $this->append_taxonomy );
-				if ( ! isset( $this->terms_to_save[ $taxonomy ] ) ) {
-					$this->terms_to_save[ $taxonomy ] = array();
-				}
-				$this->terms_to_save[ $taxonomy ] = array_merge( $this->terms_to_save[ $taxonomy ], $terms );
+				$this->prepare_term_to_save( $term->taxonomy, array( $term_id ) );
 			}
 		} else {
-			wp_set_object_terms( $data_id, $tax_values, $taxonomies[0], $this->append_taxonomy );
+			$this->prepare_term_to_save( $taxonomies[0], $tax_values );
 		}
+
+		$this->hook_filter( $data_id );
+	}
+
+	protected function prepare_term_to_save( $taxonomy, $terms ) {
+			if ( ! isset( $this->terms_to_save[ $taxonomy ] ) ) {
+				$this->terms_to_save[ $taxonomy ] = array(
+					'terms' => array(),
+					'append' => $this->append_taxonomy,
+				);
+			}
+			$this->terms_to_save[ $taxonomy ]['terms'][] = array_merge( $this->terms_to_save[ $taxonomy ]['terms'], $terms );
+
+			// If any append for this taxonomy
+			$this->terms_to_save[ $taxonomy ]['append'] = $this->terms_to_save[ $taxonomy ]['append'] && $this->append_taxonomy;
+	}
+
+	protected function hook_filter( $data_id ) {
+		static $filter_hooked;
+		if ( ! $filter_hooked ) {
+			add_filter( 'fieldmanager_save_term_relationships_' . $data_id, array( $this, 'terms_to_save' ) );
+			$filter_hooked = true;
+		}
+	}
+
+	public function terms_to_save( $terms_to_save ) {
+		$terms_to_save[] = $this->terms_to_save;
+		return $terms_to_save;
 	}
 
 	/**
