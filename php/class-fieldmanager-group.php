@@ -307,7 +307,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
-			if ( empty( $values[$element->name] ) ) {
+			if ( ! isset( $values[$element->name] ) ) {
 				$values[ $element->name ] = NULL;
 			}
 			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
