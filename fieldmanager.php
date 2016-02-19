@@ -99,13 +99,8 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
 /**
  * Enqueue CSS and JS in the Dashboard.
  */
-<<<<<<< HEAD
 function fieldmanager_enqueue_admin_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.5' );
-=======
-function fieldmanager_enqueue_scripts() {
 	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.6' );
->>>>>>> 64ec597a7bdab565b39f3f33d88112f75127ab31
 	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.1' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
@@ -249,11 +244,7 @@ function _fieldmanager_registry( $var, $val = null ) {
  * @see fm_calculate_context() for detail about the returned array values.
  *
  * @todo trigger multiple contexts
-<<<<<<< HEAD
-=======
  * @return string[] [$context, $type]
->>>>>>> 64ec597a7bdab565b39f3f33d88112f75127ab31
- * @return array Contextual information for the current request.
  */
 function fm_get_context() {
 	static $calculated_context;
@@ -289,13 +280,9 @@ function fm_get_context() {
  */
 function fm_calculate_context() {
 	// Safe to use at any point in the load process, and better than URL matching.
-<<<<<<< HEAD
-	if ( is_admin() ) {
-=======
 	if ( ! empty( $_POST['fm-form-context'] ) || ! empty( $_GET['fm-form-context'] ) ) {
 		$calculated_context = array( 'form', sanitize_text_field( !empty( $_POST['fm-form-context'] ) ? $_POST['fm-form-context'] : $_GET['fm-form-context'] ) );
 	} else if ( is_admin() ) {
->>>>>>> 64ec597a7bdab565b39f3f33d88112f75127ab31
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
 		/*
