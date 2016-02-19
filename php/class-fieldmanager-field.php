@@ -508,6 +508,10 @@ abstract class Fieldmanager_Field {
 			$classes[] = 'form-required';
 		}
 
+		if ( ! $this->is_group() && ! $this->is_tab ) {
+			$classes[] = 'fm-field';
+		}
+
 		if ( $is_proto ) {
 			$classes[] = 'fmjs-proto';
 		}
