@@ -18,6 +18,12 @@
 	max-width: 100%;
 }
 
+.fm-wrapper input[type="text"],
+.fm-wrapper select {
+	margin: 1px;
+    padding: 5px 8px;
+}
+
 .fm-hidden {
 	display: none;
 }
@@ -36,10 +42,10 @@
 
 .fm-label label {
 	display: block;
-	font-weight: bold;
+	font-weight: 700;
 	font-size: 13px;
 	line-height: 1.4em;
-	margin: 0 0 3px;
+	margin: 0 0 4px;
 }
 
 .fmjs-removable-label label {
@@ -47,9 +53,8 @@
 }
 
 /* Item */
-.fm-item {
-	margin-bottom: 15px;
-	padding: 5px 0;
+.fm-item.fm-field {
+	margin: 25px 0;
 }
 
 /* Groups */
@@ -132,8 +137,8 @@ div.fm-group-label-wrapper {
 	margin-bottom: 10px;
 }
 
-.fm-group .fm-add-another-wrapper {
-	margin-bottom: 15px;
+.fm-add-another-wrapper {
+	margin: 15px 0;
 }
 
 .fmjs-proto {
@@ -226,10 +231,9 @@ div.fm-group-label-wrapper .fmjs-remove {
 	font-style: italic;
 	line-height: 1.4em;
 	display: block;
-	margin: 3px 0 0;
-	color: #777;
+	margin: 4px 0 0;
+	color: #999;
 }
-
 
 .fm-wrapper div.fm-submenu {
 	background-color: transparent;
