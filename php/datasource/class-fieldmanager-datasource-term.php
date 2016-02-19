@@ -37,7 +37,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @var boolean
 	 * Pass $append = true to wp_set_object_terms?
 	 */
-	public $append_taxonomy = False;
+	public $append_taxonomy = null;
 
 	/**
 	 * @var string
@@ -62,6 +62,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * Build this datasource using AJAX
 	 */
 	public $use_ajax = True;
+
+	public $terms_to_save = array();
 
 	/**
 	 * Constructor
@@ -192,11 +194,11 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 						$tax_values = $value;
 				}
 			}
-			$this->save_taxonomy( $tax_values, $field->data_id );
+			$this->pre_save_taxonomy( $tax_values, $field->data_id );
 		}
 		if ( $this->only_save_to_taxonomy ) {
 			if ( empty( $values ) && ! ( $this->append_taxonomy ) ) {
-				$this->save_taxonomy( array(), $field->data_id );
+				$this->pre_save_taxonomy( array(), $field->data_id );
 			}
 			return array();
 		}
@@ -215,8 +217,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @param mixed[] $tax_values
 	 * @return void
 	 */
-	public function save_taxonomy( $tax_values, $data_id ) {
-
+	public function pre_save_taxonomy( $tax_values, $data_id ) {
 		$tax_values = array_map( 'intval', $tax_values );
 		$tax_values = array_unique( $tax_values );
 		$taxonomies = $this->get_taxonomies();
@@ -231,7 +232,11 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				$taxonomies_to_save[ $term->taxonomy ][] = $term_id;
 			}
 			foreach ( $taxonomies_to_save as $taxonomy => $terms ) {
-				wp_set_object_terms( $data_id, $terms, $taxonomy, $this->append_taxonomy );
+				// wp_set_object_terms( $data_id, $terms, $taxonomy, $this->append_taxonomy );
+				if ( ! isset( $this->terms_to_save[ $taxonomy ] ) ) {
+					$this->terms_to_save[ $taxonomy ] = array();
+				}
+				$this->terms_to_save[ $taxonomy ] = array_merge( $this->terms_to_save[ $taxonomy ], $terms );
 			}
 		} else {
 			wp_set_object_terms( $data_id, $tax_values, $taxonomies[0], $this->append_taxonomy );
