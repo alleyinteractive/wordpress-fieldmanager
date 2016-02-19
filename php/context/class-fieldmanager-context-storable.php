@@ -10,6 +10,11 @@
 abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 
 	/**
+	 * @var array
+	 */
+	public $taxonomies_to_save = array();
+
+	/**
 	 * Render the field.
 	 *
 	 * @param array $args {
@@ -39,6 +44,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		// Reset the save keys in the event this context instance is saved twice
 		$this->save_keys = array();
 
+		$this->fm->current_context = $this;
 		if ( $this->fm->serialize_data ) {
 			$this->save_field( $this->fm, $data, $this->fm->data_id );
 		} else {
@@ -46,6 +52,12 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 				$data = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
 			}
 			$this->save_walk_children( $this->fm, $data, $this->fm->data_id );
+		}
+		if ( ! empty( $this->taxonomies_to_save ) ) {
+			foreach( $this->taxonomies_to_save as $taxonomy => $term_ids ) {
+				$this->update_term_relationships( $this->fm->data_id, $term_ids, $taxonomy );
+			}
+			$this->taxonomies_to_save = array();
 		}
 	}
 
@@ -205,4 +217,12 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 *                  @see delete_post_meta().
 	 */
 	abstract protected function delete_data( $data_id, $data_key, $data_value = '' );
+
+	/**
+	 * Method to update the term relations for the context
+	 */
+	protected function update_term_relationships( $data_id, $term_ids, $taxonomy ) {
+		wp_set_object_terms( $data_id, $term_ids, $taxonomy );
+	}
+
 }
