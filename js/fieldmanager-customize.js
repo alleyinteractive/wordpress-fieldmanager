@@ -60,7 +60,7 @@
 
 			$element = control.container.find( this.targetSelector );
 
-			if ( $.serializeJSON ) {
+			if ( $element.serializeJSON ) {
 				serialized = $element.serializeJSON();
 				value = serialized[ control.id ];
 			} else {
