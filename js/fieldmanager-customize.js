@@ -22,7 +22,11 @@
 		 * Set the values of all Fieldmanager controls.
 		 */
 		setEachControl: function () {
-			api.control.each( this.setControl );
+			var that = this;
+
+			api.control.each(function( control ) {
+				that.setControl( control );
+			});
 		},
 
 		/**
