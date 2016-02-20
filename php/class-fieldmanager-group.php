@@ -184,10 +184,6 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$out .= '<div class="fm-group-inner">';
 		}
 
-		if ( isset( $this->description ) && ! empty( $this->description ) && $this->is_group() ) {
-			$out .= sprintf( '<div class="fm-group-description">%s</div>', $this->escape( 'description' ) );
-		}
-
 		// If the display output for this group is set to tabs, build the tab group for navigation
 		if ( $this->tabbed ) {
 			$tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar %s" id="%s-tabs">',
