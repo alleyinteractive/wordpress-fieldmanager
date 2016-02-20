@@ -1,6 +1,8 @@
-# Fieldmanager <img align="right" src="https://travis-ci.org/alleyinteractive/wordpress-fieldmanager.png?branch=master" alt="Travis CI Build Status" />
+# Fieldmanager
 
 Fieldmanager is a comprehensive toolkit for building forms, metaboxes, and custom admin screens for WordPress.
+
+[![Build Status](https://travis-ci.org/alleyinteractive/wordpress-fieldmanager.svg?branch=master)](https://travis-ci.org/alleyinteractive/wordpress-fieldmanager)
 
 ## Using Fieldmanager in your WordPress Project
 

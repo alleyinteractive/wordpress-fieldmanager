@@ -55,6 +55,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param mixed $options
 	 */
 	public function __construct( $label = '', $options = array() ) {
+		$this->sanitize = array( $this, 'sanitize' );
 		parent::__construct( $label, $options );
 
 		if ( !empty( $this->options ) ) {
@@ -63,9 +64,6 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 		// Add the options CSS
 		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css' );
-
-		// Sanitization
-		$this->sanitize = array( $this, 'sanitize' );
 	}
 
 	/**
@@ -239,6 +237,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
 		if ( !empty( $this->datasource ) ) {
+			if ( ! empty( $this->datasource->only_save_to_taxonomy ) ) {
+				$this->skip_save = true;
+			}
 			return $this->datasource->presave_alter_values( $this, $values, $current_values );
 		}
 		return $values;
