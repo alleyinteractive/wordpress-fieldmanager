@@ -40,6 +40,24 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Helper which returns the post meta box HTML for a given field;
+	 *
+	 * @param  object $field Some Fieldmanager_Field object.
+	 * @param  object $post A WP_Post object.
+	 * @param  array  $test_data Data to save (and use when rendering)
+	 * @return string            Rendered HTML
+	 */
+	private function _get_html_for( $field, $post, $test_data = null ) {
+		ob_start();
+		$context = $field->add_meta_box( 'test meta box', $post );
+		if ( $test_data ) {
+			$context->save_to_post_meta( $post->ID, $test_data );
+		}
+		$context->render_meta_box( $post );
+		return ob_get_clean();
+	}
+
+	/**
 	 * Set up the request environment values and save the data.
 	 *
 	 * @param Fieldmanager_Field $field
@@ -54,7 +72,6 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 			"fieldmanager-{$field->name}-nonce" => wp_create_nonce( "fieldmanager-save-{$field->name}" ),
 			$field->name => $values,
 		);
-
 		$field->add_meta_box( $field->name, $post->post_type )->save_to_post_meta( $post->ID, $values );
 	}
 
@@ -242,7 +259,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 	 * Test save_to_post_parent logic
 	 */
 	public function test_post_parent() {
-		$test_data = $this->child_post_a->ID;
+		$test_data = $this->parent_post->ID;
 		$children = new Fieldmanager_Autocomplete( array(
 			'name' => 'test_parent',
 			'datasource' => new Fieldmanager_Datasource_Post( array(
@@ -252,17 +269,27 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 				'save_to_post_parent' => true,
 			) ),
 		) );
-		$this->save_values( $children, $this->parent_post, $test_data );
-		$parent = get_post( $this->parent_post->ID );
-		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
-		$this->assertEquals( get_post_meta( $this->parent_post->ID, 'test_parent', true ), $this->child_post_a->ID );
+
+		$html = $this->_get_html_for( $children, $this->child_post_a );
+		$this->assertContains( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="" />', $html );
+
+		$html = $this->_get_html_for( $children, $this->child_post_a, $test_data );
+
+		// Reload the post
+		$this->child_post_a = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $test_data, $this->child_post_a->post_parent );
+		$this->assertEquals( $test_data, get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+		$this->assertContains(
+			sprintf( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="%d" />', $test_data ),
+			$html
+		);
 	}
 
 	/**
 	 * Test save_to_post_parent logic
 	 */
 	public function test_post_parent_nested() {
-		$test_data = array( 'parent' => $this->child_post_a->ID );
+		$test_data = array( 'parent' => $this->parent_post->ID );
 		$children = new Fieldmanager_Group( array(
 			'name' => 'test_parent',
 			'children' => array(
@@ -272,21 +299,32 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 							'post_type' => 'post'
 						),
 						'save_to_post_parent' => true,
-						'only_save_to_post_parent' => true,
+						// 'only_save_to_post_parent' => true,
 					) ),
 				) ),
 			),
 		) );
-		$this->save_values( $children, $this->parent_post, $test_data );
-		$parent = get_post( $this->parent_post->ID );
-		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
+
+		$html = $this->_get_html_for( $children, $this->child_post_a );
+		$this->assertContains( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent[parent]" value="" />', $html );
+
+		$html = $this->_get_html_for( $children, $this->child_post_a, $test_data );
+
+		// Reload the post
+		$this->child_post_a = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $this->parent_post->ID, $this->child_post_a->post_parent );
+		$this->assertEquals( $test_data, get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+		$this->assertContains(
+			sprintf( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent[parent]" value="%d" />', $this->parent_post->ID ),
+			$html
+		);
 	}
 
 	/**
 	 * Test save_to_post_parent_only logic
 	 */
 	public function test_post_parent_only() {
-		$test_data = $this->child_post_a->ID;
+		$test_data = $this->parent_post->ID;
 		$children = new Fieldmanager_Autocomplete( array(
 			'name' => 'test_parent',
 			'datasource' => new Fieldmanager_Datasource_Post( array(
@@ -297,10 +335,20 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 				'only_save_to_post_parent' => true,
 			) ),
 		) );
-		$this->save_values( $children, $this->parent_post, $test_data );
-		$parent = get_post( $this->parent_post->ID );
-		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
-		$this->assertEmpty( get_post_meta( $this->parent_post->ID, 'test_parent', true ) );
+
+		$html = $this->_get_html_for( $children, $this->child_post_a );
+		$this->assertContains( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="" />', $html );
+
+		$html = $this->_get_html_for( $children, $this->child_post_a, $test_data );
+
+		// Reload the post
+		$this->child_post_a = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $test_data, $this->child_post_a->post_parent );
+		$this->assertEquals( '', get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+		$this->assertContains(
+			sprintf( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="%d" />', $test_data ),
+			$html
+		);
 	}
 
 	/**

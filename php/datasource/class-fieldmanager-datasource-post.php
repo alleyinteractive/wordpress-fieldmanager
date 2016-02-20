@@ -232,7 +232,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
                 );
             }
             if ( $this->only_save_to_post_parent ) {
-                return array();
+                return null;
             }
         }
 
@@ -258,12 +258,13 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      * The post datasource can store data outside FM's array.
      * This is how we add it back into the array for editing.
      * @param Fieldmanager_Field $field
-     * @param array $values
+     * @param mixed $values
      * @return array $values loaded up, if applicable.
      */
     public function preload_alter_values( Fieldmanager_Field $field, $values ) {
         if ( $this->only_save_to_post_parent ) {
-            return array( wp_get_post_parent_id( $field->data_id ) );
+            $parent = wp_get_post_parent_id( $field->data_id );
+            return $parent ? $parent : null;
         }
         return $values;
     }
