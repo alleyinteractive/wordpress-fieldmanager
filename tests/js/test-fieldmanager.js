@@ -37,7 +37,7 @@
 		});
 
 		// https://github.com/alleyinteractive/wordpress-fieldmanager/issues/408.
-		assert.notOk( $( '#displayif-not-fm' ).find( '.fm-element' ).hasClass( 'display-trigger' ), 'Require display-src and display-value before adding "display-if" to trigger.' );
+		assert.notOk( $( '#displayif-not-fm' ).find( '.fm-element' ).hasClass( 'display-trigger' ), 'Require display-src or display-value before adding "display-if" to trigger.' );
 
 		assert.ok( $( '#di-foo' ).not( ':visible' ), "hide display-if value of 'foo'" );
 		assert.ok( $( '#di-bar' ).is( ':visible' ), "show display-if value of 'bar'" );
