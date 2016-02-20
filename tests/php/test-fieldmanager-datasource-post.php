@@ -386,4 +386,50 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 			$html
 		);
 	}
+
+	/**
+	 * @expectedIncorrectUsage Fieldmanager_Datasource_Post::$save_to_post_parent
+	 */
+	public function test_repeatable_post_parent_invalid() {
+		$fm = new Fieldmanager_Autocomplete( array(
+			'name'       => 'test_limitless_datasource',
+			'limit'      => 0,
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'only_save_to_post_parent' => true,
+				'query_args' => array( 'post_type' => 'post' ),
+			) ),
+		) );
+	}
+
+	/**
+	 * @expectedIncorrectUsage Fieldmanager_Datasource_Post::$save_to_post_parent
+	 */
+	public function test_repeatable_options_post_parent_invalid() {
+		$fm = new Fieldmanager_Select( array(
+			'name'       => 'test_limitless_datasource',
+			'limit'      => 0,
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'only_save_to_post_parent' => true,
+				'query_args' => array( 'post_type' => 'post' ),
+			) ),
+		) );
+	}
+
+	/**
+	 * @expectedIncorrectUsage Fieldmanager_Datasource_Post::$save_to_post_parent
+	 */
+	public function test_inherited_repeatable_post_parent_invalid() {
+		$fm = new Fieldmanager_Group( array(
+			'name'     => 'test_limitless_datasource',
+			'limit'    => 0,
+			'children' => array(
+				'field' => new Fieldmanager_Autocomplete( array(
+					'datasource'     => new Fieldmanager_Datasource_Post( array(
+						'only_save_to_post_parent' => true,
+						'query_args' => array( 'post_type' => 'post' ),
+					) ),
+				) ),
+			),
+		) );
+	}
 }
