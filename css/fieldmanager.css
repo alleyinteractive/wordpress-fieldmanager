@@ -71,24 +71,37 @@
 	display: block;
 }
 
-.fm-group-label-wrapper.fmjs-collapsible-handle:hover .toggle-indicator {
+.fm-group-label-wrapper.fmjs-collapsible-handle:hover .field-group-toggler {
 	color: #777;
 }
 
-.fm-group .toggle-indicator {
-	color: #a0a5aa;
+.field-group-toggler {
+	display: block;
+	width: 21px;
+	height: 21px;
 	margin-left: 5px;
+	text-align: center;
+	color: #a0a5aa;
+	outline: 0;
+	outline: 0;
 }
 
-.fm-group .toggle-indicator:before {
+.field-group-toggler:before {
+	font-family: dashicons;
+	font-size: 15px;
+	line-height: 1;
+	display: inline-block;
+	content: '\f143';
 	vertical-align: middle;
+	border-radius: 50%;
+	speak: none;
 }
 
-.fm-item .fmjs-collapsible-handle.closed .toggle-indicator:before {
-	content: "\f140";
+.field-group-toggler.closed:before {
+	content: '\f140';
 }
 
-.fmjs-collapsible-handle .toggle-indicator {
+.fmjs-collapsible-handle .field-group-toggler {
 	float: right;
 }
 

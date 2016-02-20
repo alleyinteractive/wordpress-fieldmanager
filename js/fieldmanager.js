@@ -180,7 +180,8 @@ $( document ).ready( function () {
 	} );
 
 	// Handle collapse events
-	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
+	$( document ).on( 'click', '.field-group-toggler', function( e ) {
+		e.preventDefault();
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
