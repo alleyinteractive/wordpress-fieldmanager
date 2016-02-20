@@ -59,7 +59,7 @@ abstract class Fieldmanager_Context {
 			$fm = $this->fm;
 		}
 		if ( null === $new_value ) {
-			$new_value = isset( $_POST[ $fm->name ] ) ? $_POST[ $fm->name ] : '';
+			$new_value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
 		}
 		$new_value = apply_filters( "fm_context_before_presave_data", $new_value, $old_value, $this, $fm );
 		$data = $fm->presave_all( $new_value, $old_value );
