@@ -351,16 +351,6 @@ abstract class Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->set_options( $label, $options );
-
-		// This needs to run for all fields to add a schema for the REST API.
-		// Implementing classes can add their own methods to modify or append
-		// additional properties to the schema.
-		//
-		// However, these classes should do so only after their constructor
-		// has called parent::__construct() on Fieldmanager_Field.
-		//if ( true === $this->show_in_rest ) {
-		//	self::create_schema();
-		//}
 	}
 
 	/**
