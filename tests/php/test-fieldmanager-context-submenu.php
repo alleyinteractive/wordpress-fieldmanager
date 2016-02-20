@@ -142,6 +142,13 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertFalse( get_option( 'skip_save' ) );
 		$this->assertTrue( $context->save_submenu_data( $data ) );
 		$this->assertFalse( get_option( 'skip_save' ) );
+		// Permit saving the group, but not an individual field
+		$context->fm->skip_save = false;
+		$context->fm->children['name']->skip_save = true;
+		$this->assertTrue( $context->save_submenu_data( $data ) );
+		$option = get_option( 'skip_save' );
+		$this->assertFalse( isset( $option['name'] ) );
+		$this->assertEquals( 'foo@alleyinteractive.com', $option['email'] );
 	}
 
 	/**
