@@ -213,53 +213,51 @@ div.fm-group-label-wrapper {
 }
 
 .fm-item.fm-sortable-field {
-    position: relative;
-    margin-bottom: 10px;
-    padding: 6px 29px 6px 33px;
-    border: 1px solid #eee;
-    background: #fff;
+	position: relative;
+	margin-bottom: 10px;
+	padding: 6px 29px 6px 33px;
+	border: 1px solid #eee;
+	background: #fff;
 }
 
 .fm-sortable-field .fmjs-remove {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 30px;
-    height: 30px;
-    margin: 0;
-    text-align: center;
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 30px;
+	height: 30px;
+	margin: 0;
+	text-align: center;
 }
 
 .fm-sortable-field .fmjs-remove:before {
-    line-height: 2;
-    vertical-align: middle;
+	line-height: 2;
+	vertical-align: middle;
 }
 
 .fm-item.fm-no-labels.fm-text,
 .fm-item.fm-no-labels.fm-ajax,
 .fm-item.fm-no-labels.fm-autocomplete {
-    padding: 0 29px 0 30px;
-    border: none;
-    background: transparent;
+	padding: 0 29px 0 30px;
+	border: none;
+	background: transparent;
 }
 
 .fm-item.fm-no-labels.fm-text .fmjs-drag-icon,
 .fm-item.fm-no-labels.fm-ajax .fmjs-drag-icon,
 .fm-item.fm-no-labels.fm-autocomplete .fmjs-drag-icon {
-    width: 31px;
-    height: 31px;
+	width: 31px;
+	height: 31px;
 }
 
 .fm-item.fm-no-labels.fm-text .fmjs-remove,
 .fm-item.fm-no-labels.fm-ajax .fmjs-remove,
 .fm-item.fm-no-labels.fm-autocomplete .fmjs-remove {
-    position: relative;
-    top: 1px;
-    width: 31px;
-    height: 31px;
+	position: relative;
+	top: 1px;
+	width: 31px;
+	height: 31px;
 }
-
-
 
 .fmjs-removable-element,
 .fmjs-clearable-element {
@@ -278,7 +276,8 @@ div.fm-group-label-wrapper {
 
 .fmjs-drag-icon:before,
 .fmjs-remove:before,
-.fmjs-clear:before {
+.fmjs-clear:before,
+.fm-media-edit:before {
 	font-family: dashicons;
 	font-size: 15px;
 	line-height: 1;
@@ -310,18 +309,18 @@ div.fm-group-label-wrapper {
 }
 
 .fmjs-drag-icon {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 22px;
-    height: 100%;
-    margin: auto;
-    text-align: center;
-    background: #eee;
-    	-webkit-transition: background 0.15s ease-in-out;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	width: 22px;
+	height: 100%;
+	margin: auto;
+	-webkit-transition: background 0.15s ease-in-out;
 	-moz-transition: background 0.15s ease-in-out;
 	transition: background 0.15s ease-in-out;
+	text-align: center;
+	background: #eee;
 }
 
 .fmjs-drag-icon:hover {
@@ -331,15 +330,15 @@ div.fm-group-label-wrapper {
 }
 
 .fmjs-drag-icon:before {
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    width: 22px;
-    height: 16px;
-    margin: auto;
-    content: '\f156';
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	width: 22px;
+	height: 16px;
+	margin: auto;
+	content: '\f156';
 }
 
 .fm-group div.fm-group-label-wrapper.fmjs-drag-header {
@@ -519,10 +518,88 @@ a.fm-delete:hover {
 	color: #f00;
 }
 
-.media-wrapper {
-	margin: 5px 0 15px 15px;
-	padding-left: 10px;
-	border-left: solid 1px #ccc;
+
+/** Media Uploads **/
+
+.media-file-preview {
+	position: relative;
+	margin: 10px auto;
+	padding: 10px 66px 10px 10px;
+	border: solid 1px #ececec;
+	border-radius: 3px;
+	background-color: #fafafa;
+}
+
+.media-file-preview a {
+	text-decoration: none;
+}
+
+.media-file-preview img,
+.media-file-preview a {
+	opacity: 1;
+	-webkit-transition: opacity 0.15s ease-in-out;
+	-moz-transition: opacity 0.15s ease-in-out;
+	transition: opacity 0.15s ease-in-out;
+}
+
+.media-file-preview img:hover,
+.media-file-preview a:hover {
+	opacity: 0.95;
+}
+
+.media-file-preview .dashicons-media-document {
+	font-size: 40px;
+	width: 40px;
+	height: 40px;
+	padding: 2px;
+	color: #ccc;
+	border: 1px solid #ececec;
+	border-radius: 3px;
+	background-color: white;
+}
+
+.media-file-preview .fm-media-edit {
+	right: 30px;
+	text-decoration: none;
+}
+
+.fm-media-edit:before {
+	content: '\f464';
+}
+
+.fm-media-edit:hover:before {
+	color: #0073aa;
+}
+
+.fm-media-edit,
+.media-file-preview .fmjs-remove {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 30px;
+	height: 30px;
+	margin: 0;
+	text-align: center;
+}
+
+.fm-media-edit:before,
+.media-file-preview .fmjs-remove:before {
+	line-height: 2;
+	vertical-align: middle;
+}
+
+.fm-file-detail {
+    display: inline-block;
+    margin: 5px 0 0 10px;
+}
+
+.fm-file-detail h4 {
+	margin: 0;
+}
+
+.fm-file-type {
+	color: #999;
+	font-style: italic;
 }
 
 .fm-submenu-form-wrapper {
