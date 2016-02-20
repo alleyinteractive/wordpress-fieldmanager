@@ -111,7 +111,14 @@
 	border: 1px solid #999;
 }
 
-.fm-group-label-wrapper.fmjs-collapsible-handle .fmjs-remove {
+.fm-group-label-wrapper.fmjs-drag-header:focus .toggle-indicator:before,
+.fm-group-label-wrapper.fmjs-collapsible-handle:focus .toggle-indicator:before {
+	-webkit-box-shadow: 0 0 0 1px #5b9dd9,0 0 2px 1px rgba(30,140,190,.8);
+		box-shadow: 0 0 0 1px #5b9dd9,0 0 2px 1px rgba(30,140,190,.8);
+}
+
+.fm-group-label-wrapper.fmjs-collapsible-handle .fmjs-remove,
+.fm-group-label-wrapper.fmjs-drag-header .fmjs-remove {
 	visibility: hidden;
 	opacity: 0;
 	width: 36px;
@@ -122,13 +129,16 @@
 			transition: opacity 0.15s ease-in-out;
 }
 
-.fm-group-label-wrapper.fmjs-collapsible-handle .fmjs-remove:before {
+.fm-group-label-wrapper.fmjs-collapsible-handle .fmjs-remove:before,
+.fm-group-label-wrapper.fmjs-drag-header .fmjs-remove:before
+ {
     margin-left: 10px;
     margin-top: 10px;
     display: inline-block;
 }
 
-.fm-group-label-wrapper.fmjs-collapsible-handle:hover .fmjs-remove {
+.fm-group-label-wrapper.fmjs-collapsible-handle:hover .fmjs-remove,
+.fm-group-label-wrapper.fmjs-drag-header:hover .fmjs-remove  {
 	visibility: visible;
 	opacity: 1;
 }
@@ -153,6 +163,7 @@
 	margin-left: 8px;
 	vertical-align: middle;
 	text-indent: -1px;
+	border-radius: 50%;
 }
 
 
