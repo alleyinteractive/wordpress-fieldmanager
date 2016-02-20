@@ -19,31 +19,31 @@ var FieldmanagerGroupTabs;
 		 */
 		bindEvents: function() {
 
-			$('.fm-tab-bar').each( $.proxy( function( k, el ){
-				this.bindClickEvents( $(el) );
+			$('.fm-tab-bar').each( $.proxy( function( k, el ) {
+				this.bindClickEvents( $( el ) );
 			}, this ) );
-			$( document ).on( 'fm_added_element', $.proxy( function( e ){
-				var el = $(e.target);
+			$( document ).on( 'fm_added_element', $.proxy( function( e ) {
+				var el = $( e.target );
 				if ( ! $( '.fm-tab-bar a', el ).length ) {
 					return;
 				}
-				counter = el.parent().data( 'fm-group-counter');
+				counter = el.parent().data( 'fm-group-counter' );
 				if ( ! counter ) {
-					counter = el.siblings('.fm-item').length - 1;
+					counter = el.siblings( '.fm-item' ).length - 1;
 				} else {
 					counter++;
 				}
 				el.parent().data( 'fm-group-counter', counter );
 				var replaceProto = function( el, attr ) {
-					el.attr( attr, el.attr( attr ).replace( '-proto-', '-'+counter+'-' ) );
+					el.attr( attr, el.attr( attr ).replace( '-proto-', '-' + counter + '-' ) );
 				};
 
 				// We also need to set these unique IDs, because FM doesn't do it for us.
-				$( '.fm-tab-bar a', el ).each( function(){
-					replaceProto( $(this), 'href' );
+				$( '.fm-tab-bar a', el ).each( function() {
+					replaceProto( $( this ), 'href' );
 				});
-				$( '.wp-tabs-panel', el ).each( function(){
-					replaceProto( $(this), 'id' );
+				$( '.wp-tabs-panel', el ).each( function() {
+					replaceProto( $( this ), 'id' );
 				});
 				this.bindClickEvents( el );
 			}, this ) );
