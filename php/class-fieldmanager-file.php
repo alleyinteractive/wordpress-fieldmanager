@@ -52,7 +52,7 @@ class Fieldmanager_File extends Fieldmanager_Field {
 	 */
 	public function presave_all( $values, $current_values ) {
 		$ancestors = array();
-		foreach ( $this->get_form_tree() as &$p ) {
+		foreach ( $this->get_form_tree() as $p ) {
 			$ancestors[] = $p->name;
 		}
 
