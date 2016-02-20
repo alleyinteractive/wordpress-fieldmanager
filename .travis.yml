@@ -18,6 +18,11 @@ matrix:
       env: WP_TRAVISCI=phpcs
   fast_finish: true
 
+branches:
+  only:
+    - master
+    - dev
+
 before_script:
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
