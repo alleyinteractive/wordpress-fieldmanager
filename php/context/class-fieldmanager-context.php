@@ -51,7 +51,7 @@ abstract class Fieldmanager_Context {
 	 *
 	 * @param  mixed $old_value Optional. The previous value.
 	 * @param  mixed $new_value Optional. The new value for the field.
-	 * @param  object $fm Optional. The Fieldmanager field to prepare.
+	 * @param  object $fm Optional. The Fieldmanager_Field to prepare.
 	 * @return mixed The filtered and sanitized value, safe to save.
 	 */
 	protected function prepare_data( $old_value = null, $new_value = null, $fm = null ) {
@@ -61,9 +61,9 @@ abstract class Fieldmanager_Context {
 		if ( null === $new_value ) {
 			$new_value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
 		}
-		$new_value = apply_filters( "fm_context_before_presave_data", $new_value, $old_value, $this );
+		$new_value = apply_filters( "fm_context_before_presave_data", $new_value, $old_value, $this, $fm );
 		$data = $fm->presave_all( $new_value, $old_value );
-		return apply_filters( "fm_context_after_presave_data", $data, $old_value, $this );
+		return apply_filters( "fm_context_after_presave_data", $data, $old_value, $this, $fm );
 	}
 
 
