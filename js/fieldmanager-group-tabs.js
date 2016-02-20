@@ -27,7 +27,13 @@ var FieldmanagerGroupTabs;
 				if ( ! $( '.fm-tab-bar a', el ).length ) {
 					return;
 				}
-				counter = el.siblings('.fm-item').length - 1;
+				counter = el.parent().data( 'fm-group-counter');
+				if ( ! counter ) {
+					counter = el.siblings('.fm-item').length - 1;
+				} else {
+					counter++;
+				}
+				el.parent().data( 'fm-group-counter', counter );
 				var replaceProto = function( el, attr ) {
 					el.attr( attr, el.attr( attr ).replace( '-proto-', '-'+counter+'-' ) );
 				};
