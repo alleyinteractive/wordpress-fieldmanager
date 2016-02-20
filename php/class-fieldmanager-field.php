@@ -518,6 +518,13 @@ abstract class Fieldmanager_Field {
 			$classes[] = 'fm-field';
 		}
 
+		if ( ! $this->is_group() && $this->sortable ) {
+			$classes[] = 'fm-sortable-field';
+			if ( ( ! $this->one_label_per_item || empty( $this->label ) ) && empty( $this->description ) ) {
+				$classes[] = 'fm-no-labels';
+			}
+		}
+
 		if ( $is_proto ) {
 			$classes[] = 'fmjs-proto';
 		}
