@@ -106,6 +106,16 @@ class Fieldmanager_Datasource {
 	}
 
 	/**
+	 * Get the selected items given the data ID
+	 *
+	 * @param int $data_id
+	 * @return array
+	 */
+	public function get_selected_items( $data_id ) {
+		return array();
+	}
+
+	/**
 	 * Get available options, optionally filtering by a fragment (e.g. for Autocomplete)
 	 * @param string $fragment optional fragment to filter by
 	 * @return array, key => value of available options
