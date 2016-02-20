@@ -19,13 +19,27 @@ var FieldmanagerGroupTabs;
 		 */
 		bindEvents: function() {
 
-			$( '.fm-tab-bar a' ).on( 'click', $.proxy( function( e ) {
-				e.preventDefault();
-				this.selectTab( $( e.currentTarget ) );
+			$('.fm-tab-bar').each( $.proxy( function( k, el ){
+				this.bindClickEvents( $(el) );
 			}, this ) );
-			$( '.fm-tab-bar li' ).on( 'click', $.proxy( function( e ) {
-				e.preventDefault();
-				this.selectTab( $( e.currentTarget ).children('a') );
+			$( document ).on( 'fm_added_element', $.proxy( function( e ){
+				var el = $(e.target);
+				if ( ! $( '.fm-tab-bar a', el ).length ) {
+					return;
+				}
+				counter = el.siblings('.fm-item').length - 1;
+				var replaceProto = function( el, attr ) {
+					el.attr(attr, el.attr(attr).replace('-proto-', '-'+counter+'-'));
+				};
+
+				// We also need to set these unique IDs, because FM doesn't do it for us.
+				$( '.fm-tab-bar a', el ).each( function(){
+					replaceProto( $(this), 'href' );
+				})
+				$( '.wp-tabs-panel', el ).each( function(){
+					replaceProto( $(this), 'id' );
+				});
+				this.bindClickEvents( el );
 			}, this ) );
 
 			if ( this.supportsLocalStorage() ) {
@@ -81,6 +95,20 @@ var FieldmanagerGroupTabs;
 				interval: 90
 			});
 
+		},
+
+		/**
+		 * Bind tab item click events
+		 */
+		bindClickEvents: function( el ) {
+			$( 'a', el ).on( 'click.fm-select-tab', $.proxy( function( e ) {
+				e.preventDefault();
+				this.selectTab( $( e.currentTarget ) );
+			}, this ) );
+			$( 'li', el ).on( 'click.fm-select-tab', $.proxy( function( e ) {
+				e.preventDefault();
+				this.selectTab( $( e.currentTarget ).children('a') );
+			}, this ) );
 		},
 
 		/**
