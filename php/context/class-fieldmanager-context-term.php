@@ -390,13 +390,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * Needs to be implemented by each context.
 	 *
 	 * @param  mixed $value The value to be updated for the field from the request.
-	 * @param  object $object The REST API object.
+	 * @param  WP_Term $object The WP_Post object being updated.
 	 * @param  string $field_name The REST API field name.
 	 * @param  WP_REST_Request $request The full request object from the REST API.
 	 * @param  string $object_type The REST API object type
 	 */
 	public function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {
-		$this->save_to_term_meta( $object->id, $object_type, $value );
+		$this->save_to_term_meta( $object->term_id, $object_type, $value );
 	}
 
 }
