@@ -58,9 +58,15 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		$this->sanitize = array( $this, 'sanitize' );
 		parent::__construct( $label, $options );
 
-		if ( !empty( $this->options ) ) {
+		// Set data for this element
+		if ( ! empty( $this->datasource ) ) {
+			$this->add_options( $this->datasource->get_items() );
+		} else if ( ! empty( $this->options ) ) {
 			$this->add_options( $this->options );
 		}
+
+		// Handle REST API JSON schema additions for Options subclasses
+		$this->create_schema();
 
 		// Add the options CSS
 		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css' );
@@ -108,25 +114,21 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function form_data_elements( $value ) {
 
-		if ( !$this->has_built_data ) {
-			if ( $this->datasource ) {
-				$this->add_options( $this->datasource->get_items() );
-			}
-
+		if ( ! $this->has_built_data ) {
 			// Add the first element to the data array. This is useful for database-based data sets that require a first element.
-			if ( !empty( $this->first_element ) ) array_unshift( $this->data, $this->first_element );
+			if ( ! empty( $this->first_element ) ) array_unshift( $this->data, $this->first_element );
 			$this->has_built_data = True;
 		}
 
 		// If the value is not in an array, put it in one since sometimes there will be multiple selects
-		if ( !is_array( $value ) && isset( $value ) ) {
+		if ( ! is_array( $value ) && isset( $value ) ) {
 			$value = array( $value );
 		}
 
 		// Output the data for the form. Child classes will handle the output format appropriate for them.
 		$form_data_elements_html = '';
 
-		if ( !empty( $this->data ) ) {
+		if ( ! empty( $this->data ) ) {
 
 			$current_group = '';
 
@@ -134,7 +136,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 				// If grouped display is desired, check where to add the start and end points
 				// Note we are assuming the data has come pre-sorted into groups
-				if( $this->grouped && ( $current_group != $data_element['group'] ) ) {
+				if ( $this->grouped && ( $current_group != $data_element['group'] ) ) {
 
 					// Append the end for the previous group unless this is the first group
 					if ( $current_group != '' ) $form_data_elements_html .= $this->form_data_end_group();
@@ -151,7 +153,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			}
 
 			// If this was grouped display, close the final group
-			if( $this->grouped || ( isset( $this->datasource ) && $this->datasource->grouped ) ) $form_data_elements_html .= $this->form_data_end_group();
+			if ( $this->grouped || ( isset( $this->datasource ) && $this->datasource->grouped ) ) $form_data_elements_html .= $this->form_data_end_group();
 		}
 
 		return $form_data_elements_html;
@@ -180,8 +182,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return string $attribute on match, empty on failure.
 	 */
 	public function option_selected( $current_option, $options, $attribute ) {
-		if ( ( $options != null && !empty( $options ) ) && in_array( $current_option, $options ) ) return $attribute;
-		else return '';
+		if ( ( $options != null && ! empty( $options ) ) && in_array( $current_option, $options ) ) {
+			return $attribute;
+		} else {
+			return '';
+		}
 	}
 
 	/**
@@ -190,7 +195,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return sanitized values.
 	 */
 	public function presave( $value, $current_value = array() ) {
-		if ( !empty( $this->datasource ) ) {
+		if ( ! empty( $this->datasource ) ) {
 			return $this->datasource->presave( $this, $value, $current_value );
 		}
 		foreach ( $this->validate as $func ) {
@@ -210,7 +215,10 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param array $values
 	 */
 	public function preload_alter_values( $values ) {
-		if ( $this->datasource ) return $this->datasource->preload_alter_values( $this, $values );
+		if ( $this->datasource ) {
+			return $this->datasource->preload_alter_values( $this, $values );
+		}
+
 		return $values;
 	}
 
@@ -221,10 +229,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @return int[] $values
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
-		if ( !empty( $this->datasource ) ) {
+		if ( ! empty( $this->datasource ) ) {
 			if ( ! empty( $this->datasource->only_save_to_taxonomy ) ) {
 				$this->skip_save = true;
 			}
+
 			return $this->datasource->presave_alter_values( $this, $values, $current_values );
 		}
 		return $values;
@@ -244,8 +253,14 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			'name' => $name,
 			'value' => $value
 		);
-		if( isset( $group ) ) $data['group'] = $group;
-		if( isset( $group_id ) ) $data['group_id'] = $group_id;
+
+		if ( isset( $group ) ) {
+			$data['group'] = $group;
+		}
+
+		if ( isset( $group_id ) ) {
+			$data['group_id'] = $group_id;
+		}
 
 		$this->data[] = $data;
 	}
@@ -263,14 +278,15 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		if ( $this->remove_default_meta_boxes && get_class( $this->datasource ) == 'Fieldmanager_Datasource_Term' ) {
 			// Iterate over the list and build the list of meta boxes
 			$meta_boxes = array();
-			foreach( $this->datasource->get_taxonomies() as $taxonomy ) {
+			foreach ( $this->datasource->get_taxonomies() as $taxonomy ) {
 				// The ID differs if this is a hierarchical taxonomy or not. Get the taxonomy object.
 				$taxonomy_obj = get_taxonomy( $taxonomy );
 				if ( false !== $taxonomy_obj ) {
-					if ( $taxonomy_obj->hierarchical )
+					if ( $taxonomy_obj->hierarchical ) {
 						$id = $taxonomy . "div";
-					else
+					} else {
 						$id = 'tagsdiv-' . $taxonomy;
+					}
 
 					$meta_boxes[$id] = array(
 						'id' => $id,
@@ -281,6 +297,19 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 			// Merge in the new meta boxes to remove
 			$meta_boxes_to_remove = array_merge( $meta_boxes_to_remove, $meta_boxes );
+		}
+	}
+
+	/**
+	 * Creates the JSON Schema for all options fields.
+	 *
+	 * @see 					http://json-schema.org/draft-04/schema#
+	 * @return	array			The JSON schema, represented as a PHP array
+	 */
+	protected function create_schema() {		// Add option values for validation, if set.
+		// Option labels or hierarchical display aren't valid in this context.
+		if ( ! empty( $this->data ) ) {
+			$this->schema['enum'] = wp_list_pluck( array_values( $this->data ), 'value' );
 		}
 	}
 }

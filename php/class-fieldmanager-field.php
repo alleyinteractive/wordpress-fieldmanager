@@ -319,7 +319,7 @@ abstract class Fieldmanager_Field {
 	 * JSON schema for the field.
 	 * @see http://json-schema.org/draft-04/schema#
 	 */
-	public $schema = false;
+	protected $schema = array();
 
 	/**
 	 * @var int Global Sequence
@@ -345,11 +345,13 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Superclass constructor, just populates options and sanity-checks common elements.
 	 * It might also die, but only helpfully, to catch errors in development.
+	 * Also instantiates JSON schema properties required by the REST API for all fields.
 	 * @param string $label title of form field
 	 * @param array $options with keys matching vars of the field in use.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->set_options( $label, $options );
+		self::create_schema();
 	}
 
 	/**
@@ -1198,14 +1200,6 @@ abstract class Fieldmanager_Field {
 	 * @return	array			The JSON schema, represented as a PHP array
 	 */
 	public function get_schema() {
-		// Allow fields to specify a custom schema.
-		// If set, just return it.
-		if ( ! empty( $this->schema ) ) {
-			return $this->schema;
-		}
-
-		// Otherwise, create and then return the schema.
-		$this->create_schema();
 		return $this->schema;
 	}
 
@@ -1218,11 +1212,9 @@ abstract class Fieldmanager_Field {
 	protected function create_schema() {
 		// Set properties that map directly to JSON schema properties
 		// or that are required by the REST API.
-		$this->schema = array(
-			'type' => 'object',
-			'description' => ( ! empty( $this->description ) ) ? $this->description : $this->label,
-			'context' => array( 'view', 'edit' ),
-		);
+		$this->schema['type'] = 'object';
+		$this->schema['description'] = ( ! empty( $this->description ) ) ? $this->description : $this->label;
+		$this->schema['context'] = array( 'view', 'edit' );
 	}
 
 }
