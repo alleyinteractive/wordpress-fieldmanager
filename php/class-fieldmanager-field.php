@@ -524,7 +524,7 @@ abstract class Fieldmanager_Field {
 
 		$out .= sprintf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 
-		$label = $this->get_element_label( );
+		$label = $this->get_element_label();
 		$render_label_after = False;
 		// Hide the label if it is empty or if this is a tab since it would duplicate the title from the tab label
 		if ( !empty( $this->label ) && !$this->is_tab && $this->one_label_per_item ) {
@@ -550,7 +550,7 @@ abstract class Fieldmanager_Field {
 
 		if ( $render_label_after ) $out .= $label;
 
-		if ( isset( $this->description ) && !empty( $this->description ) ) {
+		if ( isset( $this->description ) && !empty( $this->description ) && ! $this->is_group() ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
 		}
 
