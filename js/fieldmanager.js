@@ -172,11 +172,21 @@ $( document ).ready( function () {
 	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
 
 	// Initializes triggers to conditionally hide or show fields
-	$( '.display-if' ).each( function() {
+	$( '.display-if' ).each(function() {
+		var values;
+		var trigger;
+		var val;
 		var src = $( this ).data( 'display-src' );
-		var values = $( this ).data( 'display-value' ).split( ',' );
-		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
-		var val = trigger.val();
+		var displayValue = $( this ).data( 'display-value' );
+
+		// Require a data attribute before proceeding to help avoid class collisions.
+		if ( typeof src === 'undefined' && typeof displayValue === 'undefined' ) {
+			return;
+		}
+
+		values = displayValue.split( ',' );
+		trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
+		val = trigger.val();
 		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
 			val = trigger.filter( ':checked' ).val();
 		}
@@ -184,7 +194,7 @@ $( document ).ready( function () {
 		if ( !match_value( values, val ) ) {
 			$( this ).hide();
 		}
-	} );
+	});
 
 	// Controls the trigger to show or hide fields
 	$( document ).on( 'change', '.display-trigger', function() {
