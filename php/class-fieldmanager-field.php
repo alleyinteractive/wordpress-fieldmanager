@@ -697,12 +697,12 @@ abstract class Fieldmanager_Field {
 	 * @return mixed[] sanitized values
 	 */
 	public function presave_all( $values, $current_values ) {
-		if ( $this->limit == 1 && empty( $this->multiple ) ) {
+		if ( 1 === $this->limit && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
 			if ( ! empty( $values ) ) {
 				$value = $this->presave( $values[0], $current_values );
 			} else {
-				$value = null;
+				$value = $values;
 			}
 			if ( !empty( $this->index ) ) {
 				$this->save_index( array( $value ), array( $current_values ) );
@@ -844,7 +844,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Presave function, which handles sanitization and validation
 	 * @param mixed $value If a single field expects to manage an array, it must override presave()
-	 * @return sanitized values.
+	 * @return sanitized value.
 	 */
 	public function presave( $value, $current_value = array() ) {
 		// It's possible that some elements (Grid is one) would be arrays at

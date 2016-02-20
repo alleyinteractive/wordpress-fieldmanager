@@ -5,7 +5,7 @@
  
 /**
  * Use fieldmanager on the public-facing theme.
- * @package Fieldmanager_Datasource
+ * @package Fieldmanager_Context
  */
 class Fieldmanager_Context_Form extends Fieldmanager_Context {
 

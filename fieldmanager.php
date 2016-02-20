@@ -107,6 +107,33 @@ function fieldmanager_enqueue_admin_scripts() {
 add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_admin_scripts' );
 
 /**
+ * Enqueue default scripts for a frontend form
+ * @param string $uniqid
+ * @return void
+ */
+function fm_enqueue_form_scripts( $uniqid ) {
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
+	wp_enqueue_script( 'jquery-ui-sortable' );
+	_fieldmanager_registry( 'allow_scripts', true );
+	// Field constructors enqueue CSS and JS as needed
+	_fm_form_init_once( $uniqid );
+}
+
+/**
+ * Enqueue default styles for a frontend form
+ * @param string $uniqid
+ * @return void
+ */
+function fm_enqueue_form_styles( $uniqid ) {
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.3' );
+	wp_enqueue_style( 'dashicons' );
+	_fieldmanager_registry( 'allow_styles', true );
+	// Field constructors enqueue CSS and JS as needed
+	_fm_form_init_once( $uniqid );
+}
+
+
+/**
  * Tell Fieldmanager that it has a base URL somewhere other than the plugins URL.
  *
  * @param string $path The URL to Fieldmanager, excluding "fieldmanager/", but
@@ -537,32 +564,6 @@ function fm_get_form( $uniqid ) {
 	_fm_form_init_once( $uniqid );
 	return Fieldmanager_Context_Form::get_form( $uniqid );
 }
-
-/**
- * Enqueue default scripts for a frontend form
- * @param string $uniqid
- * @return void
- */
-function fm_enqueue_form_scripts( $uniqid ) {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.4' );
-	wp_enqueue_script( 'jquery-ui-sortable' );
-	_fieldmanager_registry( 'allow_scripts', true );
-	// Field constructors enqueue CSS and JS as needed
-	_fm_form_init_once( $uniqid );
-}
-
-/**
- * Enqueue default styles for a frontend form
- * @param string $uniqid
- * @return void
- */
-function fm_enqueue_form_styles( $uniqid ) {
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.0' );
-	_fieldmanager_registry( 'allow_styles', true );
-	// Field constructors enqueue CSS and JS as needed
-	_fm_form_init_once( $uniqid );
-}
-
 /**
  * Load up a form
  */

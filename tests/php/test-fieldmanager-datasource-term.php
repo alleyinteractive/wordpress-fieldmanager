@@ -301,6 +301,8 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$base = new Fieldmanager_Group( $args );
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, $data );
 		$this->assertSame( $data['test_basic'], get_post_meta( $this->post->ID, 'base_group_test_basic', true ) );
+		
+		$val = get_post_meta( $this->post->ID, 'base_group_test_datasource', true );
 		$this->assertSame( array(), get_post_meta( $this->post->ID, 'base_group_test_datasource', true ) );
 		$this->assertSame(
 			array( $this->term->term_id ),
