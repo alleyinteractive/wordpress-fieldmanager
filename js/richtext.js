@@ -58,6 +58,11 @@
 						try {
 							if ( typeof tinyMCEPreInit.qtInit[ ed_id ] !== 'undefined' ) {
 								quicktags( tinyMCEPreInit.qtInit[ ed_id ] );
+								// _buttonsInit() only needs to be called on dynamic editors
+								// quicktags() handles it for us on the first initialization
+								if ( typeof QTags !== 'undefined' && -1 !== ed_id.indexOf( '-dynamic-' ) ) {
+									QTags._buttonsInit();
+								}
 							}
 						} catch(e){};
 					}

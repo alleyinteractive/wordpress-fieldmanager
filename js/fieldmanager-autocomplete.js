@@ -57,7 +57,14 @@ fm.autocomplete = {
 							$hidden.val( '' );
 							$el.val( '' );
 						}
-					}
+					};
+
+					// Handle the user deleting the input text, which is not an AC 'change'.
+					$( this ).on( 'keyup', function( e ) {
+						if ( e.target && '' === $( e.target ).val() ) {
+							$hidden.val( '' ).trigger( 'change' );
+						}
+					});
 				} else {
 					$( this ).on( 'keyup', function( e ) {
 						if ( e.keyCode == 27 || e.keyCode == 13 ) {
