@@ -37,6 +37,7 @@ before_script:
     fi
 
 script:
+  - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       phpunit
