@@ -2,45 +2,49 @@ sudo: false
 
 language: php
 
-php:
-    - 5.3
-    - 5.4
-    - 5.5
-    - 5.6
-
-env:
-    - WP_VERSION=master WP_MULTISITE=0
-    - WP_VERSION=master WP_MULTISITE=1
-    - WP_VERSION=4.4 WP_MULTISITE=0
-    - WP_VERSION=4.4 WP_MULTISITE=1
-    - WP_VERSION=4.3 WP_MULTISITE=0
-    - WP_VERSION=4.3 WP_MULTISITE=1
-
 matrix:
-    include:
-        - php: 7.0
-          env: WP_VERSION=master
-    allow_failures:
-        - php: 7.0
-    fast_finish: true
+  include:
+    - php: 5.3
+      env: WP_VERSION=4.3.3
+    - php: 5.3
+      env: WP_VERSION=latest
+    - php: 5.6
+      env: WP_VERSION=latest
+    - php: 7.0
+      env: WP_VERSION=latest
+    - php: 5.6
+      env: WP_VERSION=nightly
+    - php: 5.6
+      env: WP_TRAVISCI=phpcs
+  allow_failures:
+    - php: 7.0
+  fast_finish: true
 
 branches:
-    only:
-        - master
+  only:
+    - master
 
 before_script:
-    - export WP_TESTS_DIR=/tmp/wordpress/tests/phpunit
-    - export WP_CORE_DIR=/tmp/wordpress/src/
-    - git clone --depth=50 --branch="$WP_VERSION" git://develop.git.wordpress.org/ /tmp/wordpress
-    - mysql -e "CREATE DATABASE wordpress_tests;" -uroot
-    - cp /tmp/wordpress/wp-tests-config-sample.php /tmp/wordpress/wp-tests-config.php
-    - sed -i "s/youremptytestdbnamehere/wordpress_tests/" /tmp/wordpress/wp-tests-config.php
-    - sed -i "s/yourusernamehere/travis/" /tmp/wordpress/wp-tests-config.php
-    - sed -i "s/yourpasswordhere//" /tmp/wordpress/wp-tests-config.php
-    - npm install -g npm
-    - npm install -g grunt-cli
-    - npm install
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
+      npm install
+    fi
+  - |
+    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      npm install
+      composer install
+    fi
 
 script:
-    - phpunit
-    - grunt qunit:specific --wp=$WP_VERSION
+  - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
+  - |
+    if [[ ! -z "$WP_VERSION" ]] ; then
+      phpunit
+      phpunit -c multisite.xml
+      grunt qunit:specific --wp=$WP_VERSION
+    fi
+  - |
+    if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      grunt phpcs
+    fi
