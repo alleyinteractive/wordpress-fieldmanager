@@ -88,6 +88,10 @@ var fm_renumber = function( $wrappers ) {
 							$( this ).attr( 'name', new_fname );
 							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
 								$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
+								var parent = $(this).closest( '.fm-item' );
+								if ( parent.find( '.fm-label label' ).length ) {
+									parent.find( '.fm-label label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
+								}
 								dynamic_seq++;
 								return; // continue;
 							}
@@ -106,6 +110,25 @@ var fm_renumber = function( $wrappers ) {
 		} );
 	} );
 }
+
+/**
+ * Get data attribute display-value(s).
+ *
+ * Accounts for jQuery converting string to number automatically.
+ *
+ * @param HTMLDivElement el Wrapper with the data attribute.
+ * @return string|number|array Single string or number, or array if data attr contains CSV.
+ */
+var getCompareValues = function( el ) {
+	var values = $( el ).data( 'display-value' );
+	try {
+		values = values.split( ',' );
+	} catch( e ) {
+		// If jQuery already converted string to number.
+		values = [ values ];
+	}
+	return values;
+};
 
 var match_value = function( values, match_string ) {
 	for ( var index in values ) {
@@ -173,27 +196,57 @@ $( document ).ready( function () {
 
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
+		var val;
 		var src = $( this ).data( 'display-src' );
-		var values = $( this ).data( 'display-value' ).split( ',' );
-		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
-		var val = trigger.val();
-		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
-			val = trigger.filter( ':checked' ).val();
+		var values = getCompareValues( this );
+		// Wrapper divs sometimes receive .fm-element, but don't use them as
+		// triggers. Also don't use autocomplete inputs as triggers, because the
+		// value is in their sibling hidden fields (which this still matches).
+		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete' );
+		if ( trigger.is( ':checkbox' ) ) {
+			if ( trigger.is( ':checked' ) ) {
+				// If checked, use the checkbox value.
+				val = trigger.val();
+			} else {
+				// Otherwise, use the hidden sibling field with the "unchecked" value.
+				val = trigger.siblings( 'input[type=hidden][name="' + trigger.attr( 'name' ) + '"]' ).val();
+			}
+		} else if ( trigger.is( ':radio' ) ) {
+			if ( trigger.filter( ':checked' ).length ) {
+				val = trigger.filter( ':checked' ).val();
+			} else {
+				// On load, there might not be any selected radio, in which case call the value blank.
+				val = '';
+			}
+		} else {
+			val = trigger.val().split( ',' );
 		}
 		trigger.addClass( 'display-trigger' );
-		if ( !match_value( values, val ) ) {
+		if ( ! match_value( values, val ) ) {
 			$( this ).hide();
 		}
 	} );
 
 	// Controls the trigger to show or hide fields
 	$( document ).on( 'change', '.display-trigger', function() {
-		var val = $( this ).val().split(',');
-		var name = $( this ).attr('name');
+		var val;
+		var $this = $( this );
+		var name = $this.attr( 'name' );
+		if ( $this.is( ':checkbox' ) ) {
+			if ( $this.is( ':checked' ) ) {
+				val = $this.val();
+			} else {
+				val = $this.siblings( 'input[type=hidden][name="' + name + '"]' ).val();
+			}
+		} else if ( $this.is( ':radio' ) ) {
+			val = $this.filter( ':checked' ).val();
+		} else {
+			val = $this.val().split( ',' );
+		}
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
 			if ( $( this ).hasClass( 'display-if' ) ) {
-				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
-					if ( match_value( $( this ).data( 'display-value' ).split( ',' ), val ) ) {
+				if ( name && name.match( $( this ).data( 'display-src' ) ) != null ) {
+					if ( match_value( getCompareValues( this ), val ) ) {
 						$( this ).show();
 					} else {
 						$( this ).hide();

@@ -185,6 +185,21 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	}
 
 	/**
+	 * Override presave_all to handle special cases associated with multiple options fields.
+	 * @input mixed[] $values
+	 * @return mixed[] sanitized values
+	 */
+	public function presave_all( $values, $current_values ) {
+		// Multiple select and radio fields with no values chosen are left out of
+		// the post request altogether, requiring special case handling.
+		if ( 1 !== $this->limit && '' === $values ) {
+			$values = null;
+		}
+
+		return parent::presave_all( $values, $current_values );
+	}
+
+	/**
 	 * Presave function, which handles sanitization and validation
 	 * @param mixed $value If a single field expects to manage an array, it must override presave()
 	 * @return sanitized values.

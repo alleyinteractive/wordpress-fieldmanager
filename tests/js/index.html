@@ -5,8 +5,8 @@
 	<title>Fieldmanager QUnit Test Suite</title>
 
 	<!-- QUnit -->
-	<link rel="stylesheet" href="vendor/qunit-1.19.0.css">
-	<script src="vendor/qunit-1.19.0.js"></script>
+	<link rel="stylesheet" href="vendor/qunit-1.21.0.css">
+	<script src="vendor/qunit-1.21.0.js"></script>
 
 	<script>
 		var scripts = [];
@@ -88,7 +88,6 @@
 			<div class="display-always">display</div>
 		</div><!-- #displayif-blanks -->
 
-		<!-- Doesn't work: The data attribute is treated as a number, not a string
 		<div id="displayif-numbers">
 			<div class="fm-test-displayif-wrapper">
 				<input class="fm-element" value="789" />
@@ -97,7 +96,39 @@
 			<div id="di-456" class="display-if" data-display-src="test-displayif" data-display-value="456">456</div>
 			<div id="di-789" class="display-if" data-display-src="test-displayif" data-display-value="789">789</div>
 		</div>
-		-->
+
+		<div id="displayif-boolean-checkbox">
+			<div class="fm-wrapper fm-test-boolean-checkbox-wrapper">
+				<div class="fm-item fm-test-boolean-checkbox fm-element">
+					<input type="hidden" name="test-boolean-checkbox" value="">
+					<input class="fm-element display-trigger" type="checkbox" name="test-boolean-checkbox" value="1">
+				</div>
+			</div>
+			<div id="di-when-boolean-checkbox-true" class="display-if" data-display-src="test-boolean-checkbox" data-display-value="1">Display when checked</div>
+			<div id="di-when-boolean-checkbox-false" class="display-if" data-display-src="test-boolean-checkbox" data-display-value="0">Display when unchecked</div>
+		</div>
+
+		<div id="displayif-string-checkbox">
+			<div class="fm-wrapper fm-test-string-checkbox-wrapper">
+				<div class="fm-item fm-test-string-checkbox fm-element">
+					<input type="hidden" name="test-string-checkbox" value="wrong">
+					<input class="fm-element display-trigger" type="checkbox" name="test-string-checkbox" value="right">
+				</div>
+			</div>
+			<div id="di-when-string-checkbox-wrong" class="display-if" data-display-src="test-string-checkbox" data-display-value="wrong">Display when "wrong"</div>
+			<div id="di-when-string-checkbox-right" class="display-if" data-display-src="test-string-checkbox" data-display-value="right">Display when "right"</div>
+		</div>
+
+		<div id="displayif-radio">
+			<div class="fm-wrapper fm-test-displayif-radio-wrapper">
+				<div class="fm-item fm-test-displayif-radio">
+					<div class="fm-option"><input class="fm-element display-trigger" type="radio" value="a" name="test-displayif-radio"></div>
+					<div class="fm-option"><input class="fm-element display-trigger" type="radio" value="b" name="test-displayif-radio"></div>
+					<div class="fm-option"><input class="fm-element display-trigger" type="radio" value="c" name="test-displayif-radio"></div>
+				</div>
+			</div>
+			<div id="di-when-displayif-radio-b" class="display-if" data-display-src="test-displayif-radio" data-display-value="b">Display when radio is "b"</div>
+		</div>
 
 		<div id="renumbered" class="fm-wrapper" data-fm-array-position="1">
 			<div class="fm-item">
