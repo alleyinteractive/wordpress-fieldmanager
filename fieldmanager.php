@@ -101,7 +101,7 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
  */
 function fieldmanager_enqueue_admin_scripts() {
 	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.3' );
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.4' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
 add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_admin_scripts' );

@@ -910,7 +910,7 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 		$context = $group->add_meta_box( 'group', $this->post );
 		$context->save_to_post_meta( $this->post->ID, $group_data );
-		$this->assertEquals( array( 'a' => null ), get_post_meta( $this->post->ID, 'group', true ) );
+		$this->assertEquals( array( 'a' => 0 ), get_post_meta( $this->post->ID, 'group', true ) );
 
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
@@ -923,5 +923,43 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		);
 		$context->save_to_post_meta( $this->post->ID, $group_data );
 		$this->assertEquals( array( 'a' => '' ), get_post_meta( $this->post->ID, 'group', true ) );
+	}
+
+	public function test_obey_skip_save_inside_groups() {
+		$group = new Fieldmanager_Group( array(
+			'name' => 'group',
+			'children' => array(
+				'a' => new Fieldmanager_Textfield( array(
+					'label' => 'a',
+					'skip_save' => true,
+				) ),
+				'b' => new Fieldmanager_Textfield( array(
+					'label' => 'b',
+					'skip_save' => false,
+				) ),
+			),
+		) );
+
+		$skip = rand_str();
+		$save = rand_str();
+
+		$group_data = array(
+			'a' => $skip,
+			'b' => $save,
+		);
+
+		$context = $group->add_meta_box( 'group', $this->post );
+		$context->save_to_post_meta( $this->post->ID, $group_data );
+		$meta = get_post_meta( $this->post->ID, 'group', true );
+
+		$this->assertTrue( ! isset( $meta['a'] ) );
+		$this->assertEquals( $meta['b'], $save );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertNotContains( $skip, $html );
+		$this->assertContains( $save, $html );
 	}
 }

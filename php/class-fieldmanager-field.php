@@ -95,6 +95,12 @@ abstract class Fieldmanager_Field {
 	public $description = '';
 
 	/**
+	 * @var boolean
+	 * If true, the description will be displayed after the element.
+	 */
+	public $description_after_element = true;
+
+	/**
 	 * @var string|boolean[]
 	 * Extra HTML attributes to apply to the form element. Use boolean true to apply a standalone attribute, e.g. 'required' => true
 	 */
@@ -546,6 +552,10 @@ abstract class Fieldmanager_Field {
 			}
 		}
 
+		if ( isset( $this->description ) && !empty( $this->description ) && ! $this->description_after_element ) {
+			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
+		}
+
 		if ( Null === $value && Null !== $this->default_value )
 			$value = $this->default_value;
 
@@ -559,7 +569,7 @@ abstract class Fieldmanager_Field {
 
 		if ( $render_label_after ) $out .= $label;
 
-		if ( isset( $this->description ) && !empty( $this->description ) ) {
+		if ( isset( $this->description ) && !empty( $this->description ) && $this->description_after_element ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
 		}
 
