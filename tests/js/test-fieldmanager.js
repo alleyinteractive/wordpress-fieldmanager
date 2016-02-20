@@ -60,9 +60,34 @@
 			assert.ok( $( this ).is( ':visible' ), 'non display-if field is visible after changes (parent #' + $( this ).parent().attr( 'id' ) + ')' );
 		});
 
-		// assert.ok( $( '#di-789' ).is( ':visible' ), "show display-if value of '789'" );
-		// assert.ok( $( '#di-123' ).not( ':visible' ), "hide display-if value of '123'" );
-		// assert.ok( $( '#di-456' ).is( ':visible' ), "hide display-if value of '456'" );
+		assert.ok( $( '#di-789' ).is( ':visible' ), "show display-if value of '789'" );
+		assert.ok( $( '#di-123' ).not( ':visible' ), "hide display-if value of '123'" );
+		assert.ok( $( '#di-456' ).not( ':visible' ), "hide display-if value of '456'" );
+
+		// The boolean and "wrong"/"right" checkboxs are unchecked by default.
+		assert.notOk( $( '#di-when-boolean-checkbox-true:visible' ).length );
+		assert.ok( $( '#di-when-boolean-checkbox-false:visible' ).length );
+		assert.notOk( $( '#di-when-string-checkbox-right:visible' ).length );
+		assert.ok( $( '#di-when-string-checkbox-wrong:visible' ).length );
+
+		// Now, check the boxes.
+		$( '.fm-test-boolean-checkbox-wrapper' ).find( 'input[type=checkbox]' ).attr( 'checked', 'checked' ).trigger( 'change' );
+		assert.ok( $( '#di-when-boolean-checkbox-true:visible' ).length );
+		assert.notOk( $( '#di-when-boolean-checkbox-false:visible' ).length );
+		$( '.fm-test-string-checkbox-wrapper' ).find( 'input[type=checkbox]' ).attr( 'checked', 'checked' ).trigger( 'change' );
+		assert.ok( $( '#di-when-string-checkbox-right:visible' ).length );
+		assert.notOk( $( '#di-when-string-checkbox-wrong:visible' ).length );
+
+		// No radio is selected by default.
+		assert.notOk( $( '#di-when-displayif-radio-b:visible' ).length );
+
+		// Select the radio button.
+		$( '.fm-test-displayif-radio' ).find( 'input[value=b]' ).prop( 'checked', true ).trigger( 'change' );
+		assert.ok( $( '#di-when-displayif-radio-b:visible' ).length );
+
+		// Select a different radio.
+		$( '.fm-test-displayif-radio' ).find( 'input[value=c]' ).prop( 'checked', true ).trigger( 'change' );
+		assert.notOk( $( '#di-when-displayif-radio-b:visible' ).length );
 	});
 
 	QUnit.test( 'Renumber', function( assert ) {
