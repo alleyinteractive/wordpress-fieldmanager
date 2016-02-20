@@ -102,19 +102,11 @@
 		}
 
 		if ( $target.hasClass( 'fm-autocomplete' ) ) {
-			// Update an autocomplete setting object when the input's text is deleted.
-			if ( '' === $target.val() ) {
-				// See fm.autocomplete.enable_autocomplete() for this tree.
-				// @todo Risky? Autocomplete hidden fields don't typically get set to value="".
-				$target.siblings( 'input[type=hidden]' ).first().val( '' );
-
 			/*
 			 * Don't update when typing into the autocomplete input. The hidden
 			 * field actually contains the value and is handled onFmElementChange().
 			 */
-			} else {
-				return;
-			}
+			return;
 		}
 
 		fm.customize.setControlsContainingElement( e.target );
