@@ -117,8 +117,6 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 */
 	public function form_data_element( $data_row, $value = array() ) {
 
-		// For taxonomy-based selects, only return selected options if taxonomy preload is disabled
-		// Additional terms will be provided by AJAX for typeahead to avoid overpopulating the select for large taxonomies
 		$option_selected = $this->option_selected( $data_row['value'], $value, "selected" );
 
 		return sprintf(
