@@ -60,9 +60,9 @@
 			assert.ok( $( this ).is( ':visible' ), 'non display-if field is visible after changes (parent #' + $( this ).parent().attr( 'id' ) + ')' );
 		});
 
-		assert.ok( $( '#di-789' ).is( ':visible' ), "show display-if value of '789'" );
-		assert.ok( $( '#di-123' ).not( ':visible' ), "hide display-if value of '123'" );
-		assert.ok( $( '#di-456' ).not( ':visible' ), "hide display-if value of '456'" );
+		assert.ok( $( '#di-789:visible' ).length, "show display-if value of '789'" );
+		assert.notOk( $( '#di-123:visible' ).length, "hide display-if value of '123'" );
+		assert.notOk( $( '#di-456:visible' ).length, "hide display-if value of '456'" );
 
 		// The boolean and "wrong"/"right" checkboxs are unchecked by default.
 		assert.notOk( $( '#di-when-boolean-checkbox-true:visible' ).length );
