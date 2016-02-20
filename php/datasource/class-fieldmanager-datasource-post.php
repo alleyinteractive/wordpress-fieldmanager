@@ -263,7 +263,10 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      */
     public function preload_alter_values( Fieldmanager_Field $field, $values ) {
         if ( $this->only_save_to_post_parent ) {
-            return array( wp_get_post_parent_id( $field->data_id ) );
+            $post_parent = wp_get_post_parent_id( $field->data_id );
+            if ( $post_parent ) {
+                return ( $field->limit == 1 && empty( $field->multiple ) ) ? $post_parent : array( $post_parent );
+            }
         }
         return $values;
     }
