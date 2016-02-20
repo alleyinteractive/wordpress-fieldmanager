@@ -16,6 +16,8 @@ matrix:
       env: WP_VERSION=nightly
     - php: 5.6
       env: WP_TRAVISCI=phpcs
+    - php: 5.6
+      env: WP_TRAVISCI=qunit
   allow_failures:
     - php: 7.0
   fast_finish: true
@@ -35,6 +37,10 @@ before_script:
       npm install
       composer install
     fi
+  - |
+    if [[ "$WP_TRAVISCI" == "qunit" ]] ; then
+      npm install
+    fi
 
 script:
   - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
@@ -47,4 +53,8 @@ script:
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
       grunt phpcs
+    fi
+  - |
+    if [[ "$WP_TRAVISCI" == "qunit" ]] ; then
+      grunt qunit
     fi
