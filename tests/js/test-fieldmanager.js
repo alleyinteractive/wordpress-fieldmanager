@@ -65,29 +65,29 @@
 		assert.notOk( $( '#di-456:visible' ).length, "hide display-if value of '456'" );
 
 		// The boolean and "wrong"/"right" checkboxs are unchecked by default.
-		assert.notOk( $( '#di-when-boolean-checkbox-true:visible' ).length );
-		assert.ok( $( '#di-when-boolean-checkbox-false:visible' ).length );
-		assert.notOk( $( '#di-when-string-checkbox-right:visible' ).length );
-		assert.ok( $( '#di-when-string-checkbox-wrong:visible' ).length );
+		assert.notOk( $( '#di-when-boolean-checkbox-true:visible' ).length, "hide display-if value of 'true' when unchecked" );
+		assert.ok( $( '#di-when-boolean-checkbox-false:visible' ).length, "show display-if value of 'false' when unchecked" );
+		assert.notOk( $( '#di-when-string-checkbox-right:visible' ).length, "hide display-if value of 'right' when unchecked" );
+		assert.ok( $( '#di-when-string-checkbox-wrong:visible' ).length, "show display-if value of 'wrong' when unchecked" );
 
 		// Now, check the boxes.
 		$( '.fm-test-boolean-checkbox-wrapper' ).find( 'input[type=checkbox]' ).attr( 'checked', 'checked' ).trigger( 'change' );
-		assert.ok( $( '#di-when-boolean-checkbox-true:visible' ).length );
-		assert.notOk( $( '#di-when-boolean-checkbox-false:visible' ).length );
+		assert.ok( $( '#di-when-boolean-checkbox-true:visible' ).length, "show display-if 'true' when checked" );
+		assert.notOk( $( '#di-when-boolean-checkbox-false:visible' ).length, "hide display-if 'false' when checked" );
 		$( '.fm-test-string-checkbox-wrapper' ).find( 'input[type=checkbox]' ).attr( 'checked', 'checked' ).trigger( 'change' );
-		assert.ok( $( '#di-when-string-checkbox-right:visible' ).length );
-		assert.notOk( $( '#di-when-string-checkbox-wrong:visible' ).length );
+		assert.ok( $( '#di-when-string-checkbox-right:visible' ).length, "show display-if 'right' when checked" );
+		assert.notOk( $( '#di-when-string-checkbox-wrong:visible' ).length, "hide display-if 'wrong' when checked" );
 
 		// No radio is selected by default.
-		assert.notOk( $( '#di-when-displayif-radio-b:visible' ).length );
+		assert.notOk( $( '#di-when-displayif-radio-b:visible' ).length, "hide 'b' when not selected" );
 
 		// Select the radio button.
 		$( '.fm-test-displayif-radio' ).find( 'input[value=b]' ).prop( 'checked', true ).trigger( 'change' );
-		assert.ok( $( '#di-when-displayif-radio-b:visible' ).length );
+		assert.ok( $( '#di-when-displayif-radio-b:visible' ).length, "show 'b' when selected" );
 
 		// Select a different radio.
 		$( '.fm-test-displayif-radio' ).find( 'input[value=c]' ).prop( 'checked', true ).trigger( 'change' );
-		assert.notOk( $( '#di-when-displayif-radio-b:visible' ).length );
+		assert.notOk( $( '#di-when-displayif-radio-b:visible' ).length, "hide 'b' when 'c' selected" );
 	});
 
 	QUnit.test( 'Renumber', function( assert ) {
