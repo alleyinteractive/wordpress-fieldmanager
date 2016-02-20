@@ -35,7 +35,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @var boolean
 	 * Allow multiple selections?
 	 */
-	public $multiple = False;
+	public $multiple = false;
 
 	/**
 	 * @var string
@@ -47,7 +47,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @var boolean
 	 * Ensure that the datasource only runs once.
 	 */
-	private $has_built_data = False;
+	private $has_built_data = false;
 
 	/**
 	 * Add CSS, construct parent
@@ -59,9 +59,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		parent::__construct( $label, $options );
 
 		// Set data for this element
-		if ( ! empty( $this->datasource ) ) {
-			$this->add_options( $this->datasource->get_items() );
-		} elseif ( ! empty( $this->options ) ) {
+		if ( ! empty( $this->options ) ) {
 			$this->add_options( $this->options );
 		}
 
@@ -112,9 +110,17 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	public function form_data_elements( $value ) {
 
 		if ( ! $this->has_built_data ) {
+			// Build data from a datasource only when the field needs to be rendered
+			if ( ! empty( $this->datasource ) ) {
+				$this->add_options( $this->datasource->get_items() );
+			}
+
 			// Add the first element to the data array. This is useful for database-based data sets that require a first element.
-			if ( ! empty( $this->first_element ) ) array_unshift( $this->data, $this->first_element );
-			$this->has_built_data = True;
+			if ( ! empty( $this->first_element ) ) {
+				array_unshift( $this->data, $this->first_element );
+			}
+
+			$this->has_built_data = true;
 		}
 
 		// If the value is not in an array, put it in one since sometimes there will be multiple selects
@@ -305,6 +311,12 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	protected function create_schema() {
 		// Add the required schema properties
 		parent::create_schema();
+
+		// Build data from the datasource, which is needed by the schema
+		if ( ! $this->has_built_data && ! empty( $this->datasource ) ) {
+			$this->add_options( $this->datasource->get_items() );
+			$this->has_built_data = true;
+		}
 
 		// Add option values for validation, if set.
 		// Option labels or hierarchical display aren't valid in this context.
