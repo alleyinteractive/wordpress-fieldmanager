@@ -88,10 +88,22 @@
 .fm-group div.fm-group-label-wrapper {
 	cursor: default;
 	font-size: 13px;
-	padding: 5px 5px 7px;
 	margin: 0;
+	padding: 0;
 	background-color: #fafafa;
 	color: #222;
+}
+
+.fm-group-label-wrapper {
+	height: 36px;
+}
+
+.fm-group-label-wrapper.fmjs-drag-header,
+.fm-group-label-wrapper.fmjs-collapsible-handle {
+	transition: border 0.1s ease-in-out;
+	-webkit-transition: border 0.1s ease-in-out;
+		-moz-transition: border 0.1s ease-in-out;
+			transition: border 0.1s ease-in-out;
 }
 
 .fm-group-label-wrapper.fmjs-drag-header:hover,
@@ -100,25 +112,49 @@
 }
 
 .fm-group-label-wrapper.fmjs-collapsible-handle .fmjs-remove {
-	display:none;
+	visibility: hidden;
+	opacity: 0;
+	width: 36px;
+	height: 36px;
+	margin: 0;
+	-webkit-transition: opacity 0.15s ease-in-out;
+		-moz-transition: opacity 0.15s ease-in-out;
+			transition: opacity 0.15s ease-in-out;
+}
+
+.fm-group-label-wrapper.fmjs-collapsible-handle .fmjs-remove:before {
+    margin-left: 10px;
+    margin-top: 10px;
+    display: inline-block;
 }
 
 .fm-group-label-wrapper.fmjs-collapsible-handle:hover .fmjs-remove {
-	display: block;
+	visibility: visible;
+	opacity: 1;
 }
 
-.fm-group-label-wrapper.fmjs-collapsible-handle:hover .toggle-indicator {
+.fm-group-label-wrapper.fmjs-collapsible-handle .toggle-indicator:hover {
 	color: #777;
 }
 
 .fm-group .toggle-indicator {
 	color: #a0a5aa;
-	margin-left: 5px;
+	height: 36px;
+	width: 36px;
+}
+
+.fm-group .toggle-indicator:hover {
+	cursor: pointer;
 }
 
 .fm-group .toggle-indicator:before {
+	width: 20px;
+	margin-top: 7px;
+	margin-left: 8px;
 	vertical-align: middle;
+	text-indent: -1px;
 }
+
 
 .fm-item .fmjs-collapsible-handle.closed .toggle-indicator:before {
 	content: "\f140";
@@ -136,8 +172,9 @@ div.fm-group-label-wrapper {
 	background-color: transparent;
 	background-image: none;
 	margin: 0;
-	padding: 3px 5px 0 5px;
+	padding: 0 10px;
 	border-bottom: none;
+	line-height: 2.7;
 	float: left;
 }
 
