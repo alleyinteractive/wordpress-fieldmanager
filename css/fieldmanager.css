@@ -55,7 +55,15 @@
 
 /* Each FM Field */
 .fm-item.fm-field {
-	margin: 25px 0;
+	margin: 5px 0 25px;
+}
+
+.fm-option {
+	margin-bottom: 4px;
+}
+
+.fm-option label {
+	vertical-align: top;
 }
 
 /* Groups */
