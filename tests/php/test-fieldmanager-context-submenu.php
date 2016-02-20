@@ -125,6 +125,8 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	}
 
 	public function test_skip_save() {
+		$name = 'skip_save';
+		fm_register_submenu_page( $name, 'tools.php', 'Skip Save Fields' );
 		// Should save the first time
 		$context = $this->get_context( 'skip_save' );
 		$data = array(
