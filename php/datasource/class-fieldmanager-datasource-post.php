@@ -11,7 +11,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 
     /**
      * Supply a function which returns a list of posts; takes one argument,
-     * a possible fragement
+     * a possible fragment
      */
     public $query_callback = Null;
 
@@ -55,6 +55,18 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      */
     public $publish_with_parent = False;
 
+    /**
+     * @var boolean
+     * Save to post parent
+     */
+    public $save_to_post_parent = False;
+
+    /**
+     * @var boolean
+     * Only save to post parent
+     */
+    public $only_save_to_post_parent = False;
+
     // constructor not required for this datasource; options are just set to keys,
     // which Fieldmanager_Datasource does.
 
@@ -93,11 +105,15 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             if ( preg_match( '/^https?\:/i', $fragment ) ) {
                 $url = esc_url( $fragment );
                 $url_parts = parse_url( $url );
-                $get_vars = array();
-                parse_str( $url_parts['query'], $get_vars );
-                if ( !empty( $get_vars['post'] )  ) {
+
+                if ( ! empty( $url_parts['query'] ) )  {
+                    $get_vars = array();
+                    parse_str( $url_parts['query'], $get_vars );
+                }
+
+                if ( ! empty( $get_vars['post'] )  ) {
                     $post_id = intval( $get_vars['post'] );
-                } elseif ( !empty( $get_vars['p'] ) ) {
+                } elseif ( ! empty( $get_vars['p'] ) ) {
                     $post_id = intval( $get_vars['p'] );
                 } else {
                     $post_id = fm_url_to_post_id( $fragment );
@@ -182,7 +198,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     }
 
     /**
-     * Handle reciprocal postmeta
+     * Handle reciprocal postmeta and post parents
      * @param int $value
      * @return string
      */
@@ -197,12 +213,26 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
                 $post_type_obj = get_post_type_object( get_post_type( $value ) );
                 if ( empty( $post_type_obj->cap->edit_post ) || ! current_user_can( $post_type_obj->cap->edit_post, $value ) ) {
-                    wp_die( esc_html( sprintf( __( 'Tried to alter %s %d through field "%s", which user is not permitted edit.', 'fieldmanager' ), $post_type_obj->name, $value, $field->name ) ) );
+                    wp_die( esc_html( sprintf( __( 'Tried to alter %s %d through field "%s", which user is not permitted to edit.', 'fieldmanager' ), $post_type_obj->name, $value, $field->name ) ) );
                 }
             }
             $this->presave_status_transition( $field, $value );
             if ( $this->reciprocal ) {
                 add_post_meta( $value, $this->reciprocal, $field->data_id );
+            }
+        }
+
+        if ( $this->save_to_post_parent && 1 == $field->limit && 'post' == $field->data_type ) {
+            if ( ! wp_is_post_revision( $field->data_id ) ) {
+                Fieldmanager_Context_Post::safe_update_post(
+                    array(
+                        'ID' => $field->data_id,
+                        'post_parent' => $value,
+                    )
+                );
+            }
+            if ( $this->only_save_to_post_parent ) {
+                return array();
             }
         }
 
@@ -221,6 +251,21 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             // use wp_update_post so that post_name is generated if it's not been already
             wp_update_post( array( 'ID' => $value, 'post_status' => 'publish' ) );
         }
+    }
+
+    /**
+     * Preload alter values for post parent
+     * The post datasource can store data outside FM's array.
+     * This is how we add it back into the array for editing.
+     * @param Fieldmanager_Field $field
+     * @param array $values
+     * @return array $values loaded up, if applicable.
+     */
+    public function preload_alter_values( Fieldmanager_Field $field, $values ) {
+        if ( $this->only_save_to_post_parent ) {
+            return array( wp_get_post_parent_id( $field->data_id ) );
+        }
+        return $values;
     }
 
     /**

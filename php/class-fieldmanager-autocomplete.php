@@ -34,6 +34,12 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	public $query_callback = Null;
 
 	/**
+	 * @var string
+	 * Javascript trigger to handle adding custom args
+	 */
+	public $custom_args_js_event = Null;
+
+	/**
 	 * @var boolean
 	 * Override save_empty for this element type
 	 */
@@ -54,7 +60,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array(), '1.0.4', false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
+		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array( 'fieldmanager_script' ), '1.0.5', false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
 
 		if ( empty( $this->datasource ) ) {
 			$message = esc_html__( 'You must supply a datasource for the autocomplete field', 'fieldmanager' );
@@ -110,9 +116,10 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		}
 
 		$element = sprintf(
-			'<input class="fm-autocomplete fm-element fm-incrementable" type="text" id="%s" value="%s" %s />',
+			'<input class="fm-autocomplete fm-element fm-incrementable" type="text" id="%s" value="%s"%s %s />',
 			esc_attr( $this->get_element_id() ),
 			esc_attr( $display_value ),
+			( ! empty( $this->custom_args_js_event ) ) ? ' data-custom-args-js-event="' . esc_attr( $this->custom_args_js_event ) . '"' : '',
 			$this->get_element_attributes()
 		);
 
