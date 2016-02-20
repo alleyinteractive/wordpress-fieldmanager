@@ -192,11 +192,11 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 						$tax_values = $value;
 				}
 			}
-			$this->save_taxonomy( $tax_values, $field->data_id );
+			$this->pre_save_taxonomy( $tax_values, $field );
 		}
 		if ( $this->only_save_to_taxonomy ) {
 			if ( empty( $values ) && ! ( $this->append_taxonomy ) ) {
-				$this->save_taxonomy( array(), $field->data_id );
+				$this->pre_save_taxonomy( array(), $field );
 			}
 			return array();
 		}
@@ -215,11 +215,26 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @param mixed[] $tax_values
 	 * @return void
 	 */
-	public function save_taxonomy( $tax_values, $data_id ) {
+	public function pre_save_taxonomy( $tax_values, $field ) {
 
 		$tax_values = array_map( 'intval', $tax_values );
 		$tax_values = array_unique( $tax_values );
 		$taxonomies = $this->get_taxonomies();
+
+		$tree = $field->get_form_tree();
+		$oldest_parent = array_shift( $tree );
+
+		foreach( $taxonomies as $taxonomy ) {
+			if ( ! isset( $oldest_parent->current_context->taxonomies_to_save[ $taxonomy ] ) ) {
+				$oldest_parent->current_context->taxonomies_to_save[ $taxonomy ] = array(
+					'term_ids' => array(),
+					'append'   => $this->append_taxonomy,
+				);
+			} else {
+				// Append any means append all
+				$oldest_parent->current_context->taxonomies_to_save[ $taxonomy ]['append'] = $oldest_parent->current_context->taxonomies_to_save[ $taxonomy ]['append'] && $this->append_taxonomy;
+			}
+		}
 
 		// Store the each term for this post. Handle grouped fields differently since multiple taxonomies are present.
 		if ( count( $taxonomies ) > 1 ) {
@@ -227,14 +242,10 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$taxonomies_to_save = array();
 			foreach ( $tax_values as $term_id ) {
 				$term = $this->get_term( $term_id );
-				if ( empty( $taxonomies_to_save[ $term->taxonomy ] ) ) $taxonomies_to_save[ $term->taxonomy ] = array();
-				$taxonomies_to_save[ $term->taxonomy ][] = $term_id;
-			}
-			foreach ( $taxonomies_to_save as $taxonomy => $terms ) {
-				wp_set_object_terms( $data_id, $terms, $taxonomy, $this->append_taxonomy );
+				$oldest_parent->current_context->taxonomies_to_save[ $term->taxonomy ]['term_ids'][] = $term_id;
 			}
 		} else {
-			wp_set_object_terms( $data_id, $tax_values, $taxonomies[0], $this->append_taxonomy );
+			$oldest_parent->current_context->taxonomies_to_save[ $taxonomies[0] ]['term_ids'] = array_merge( $oldest_parent->current_context->taxonomies_to_save[ $taxonomies[0] ]['term_ids'], $tax_values );
 		}
 	}
 
