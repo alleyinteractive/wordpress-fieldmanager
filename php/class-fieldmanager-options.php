@@ -62,6 +62,14 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			$this->add_options( $this->options );
 		}
 
+		// A post can only have one parent, so if this saves to post_parent and
+		// it's repeatable, we're doing it wrong.
+		if ( $this->is_repeatable() && $this->datasource && ! empty( $this->datasource->save_to_post_parent ) ) {
+			_doing_it_wrong( __METHOD__, __( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ) );
+			$this->datasource->save_to_post_parent = false;
+			$this->datasource->only_save_to_post_parent = false;
+		}
+
 		// Add the options CSS
 		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css' );
 	}
