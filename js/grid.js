@@ -1,8 +1,20 @@
 ( function( $ ) {
 
+$.fm_grid_init = function() {
+	$( '.grid-activate' ).one( 'click', function( e ) {
+		e.preventDefault();
+		var grid = $( this ).parents( '.grid-toggle-wrapper' ).find( '.fm-grid' ).first();
+		if ( ! $( grid ).data( 'fm_grid_load_complete' ) ) {
+			$( grid ).fm_grid( $( grid ).data( 'fm-grid-opts') );
+		}
+	} );
+}
+
 $.fn.fm_grid_serialize = function() {
 	var rows = [], row_counter = 0, self = this, bottom_row_with_data = 0;
-	if ( this.find( 'tbody:visible' ).length == 0 ) return;
+	if ( this.find( 'tbody:visible' ).length == 0 ) {
+		return;
+	}
 	this.find( 'tbody tr:visible' ).each( function() {
 		var row = [];
 		$( this ).find( 'td' ).each( function() {
@@ -19,7 +31,9 @@ $.fn.fm_grid_serialize = function() {
 			row.push( to_save );
 		} );
 		row_counter++;
-		if ( row.length ) rows.push( row );
+		if ( row.length ) {
+			rows.push( row );
+		}
 	} );
 	var json_data = JSON.stringify( rows.slice( 0, bottom_row_with_data + 1 ) );
 	$( this.data( 'input-selector' ) ).val( json_data );
@@ -30,7 +44,9 @@ $.fn.fm_grid = function( opts ) {
 	self.data( 'fm_grid_load_complete', false );
 	opts.onChange = function() {
 		self.trigger( 'fm_grid_change' );
-		if ( self.data( 'fm_grid_load_complete' ) ) self.fm_grid_serialize();
+		if ( self.data( 'fm_grid_load_complete' ) ) {
+			self.fm_grid_serialize();
+		}
 	};
 	self.trigger( 'fm_grid_options', opts );
 	var grid_instance = self.handsontable( opts );
@@ -52,7 +68,6 @@ $.fn.fm_grid = function( opts ) {
 		var col = 0;
 		if ( !rows || typeof( rows[row] ) === 'undefined' ) return false;
 		$( this ).find( 'td' ).each( function() {
-			// console.log([row, col, rows[row][col]]);
 			if ( rows[row][col] == undefined ) return;
 			self.trigger( 'fm_grid_unserialize_cell', [rows[row][col], this] );
 			col++;
@@ -84,6 +99,16 @@ $( '.grid-activate' ).live( 'click', function( e ) {
 		$wrapper.addClass( 'with-grid' );
 		$wrapper.find( '.fm-grid' ).show();
 	}
+} );
+
+$( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle fm_activate_tab', function( e ) {
+	var name = $( e.target ).find( 'input' ).attr( 'name' );
+	$( e.target ).find( '.grid-toggle-wrapper .fm-grid' ).attr( 'data-fm-grid-name', name );
+	$.fm_grid_init();
+} );
+
+$( document ).ready( function() {
+	$.fm_grid_init();
 } );
 
 })( jQuery );
