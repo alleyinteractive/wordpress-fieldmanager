@@ -543,7 +543,7 @@ abstract class Fieldmanager_Field {
 			}
 		}
 
-		if ( isset( $this->description ) && !empty( $this->description ) && ! $this->description_after_element ) {
+		if ( isset( $this->description ) && !empty( $this->description ) && ! $this->description_after_element && ! $this->is_group() ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
 		}
 
@@ -560,7 +560,7 @@ abstract class Fieldmanager_Field {
 
 		if ( $render_label_after ) $out .= $label;
 
-		if ( isset( $this->description ) && !empty( $this->description ) && $this->description_after_element ) {
+		if ( isset( $this->description ) && !empty( $this->description ) && $this->description_after_element && ! $this->is_group() ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
 		}
 

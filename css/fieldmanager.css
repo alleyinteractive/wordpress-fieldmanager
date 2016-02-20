@@ -84,6 +84,11 @@
 	border-top: none;
 }
 
+.fm-group-description {
+	font-size: 14px;
+	margin: 13px 0 20px;
+}
+
 .fm-group h4,
 .fm-group div.fm-group-label-wrapper {
 	cursor: default;

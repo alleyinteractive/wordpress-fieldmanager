@@ -184,6 +184,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$out .= '<div class="fm-group-inner">';
 		}
 
+		if ( isset( $this->description ) && ! empty( $this->description ) && ! $this->description_after_element ) {
+			$out .= sprintf( '<div class="fm-group-description">%s</div>', $this->escape( 'description' ) );
+		}
+
 		// If the display output for this group is set to tabs, build the tab group for navigation
 		if ( $this->tabbed ) {
 			$tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar %s" id="%s-tabs">',
@@ -259,6 +263,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		}
 
+		if ( isset( $this->description ) && !empty( $this->description ) && $this->description_after_element ) {
+			$out .= sprintf( '<div class="fm-group-description">%s</div>', $this->escape( 'description' ) );
+		}
+
 		// We do not need the wrapper class for extra padding if no label is set for the group
 		if ( isset( $this->label ) && !empty( $this->label ) ) $out .= '</div>';
 
@@ -307,21 +315,15 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
-			if ( ! isset( $values[ $element->name ] ) ) {
+			if ( empty( $values[$element->name] ) ) {
 				$values[ $element->name ] = NULL;
 			}
-
-			if ( $element->skip_save ) {
-				unset( $values[ $element->name ] );
-				continue;
-			}
-
 			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
-			$current_child_value = ! isset( $current_values[ $element->name ] ) ? array() : $current_values[ $element->name ];
+			$current_child_value = !isset( $current_values[$element->name ]) ? array() : $current_values[$element->name];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
-			if ( ! $this->save_empty && $this->limit != 1 ) {
-				if ( is_array( $values[ $element->name ] ) && empty( $values[ $element->name ] ) ) unset( $values[ $element->name ] );
-				elseif ( empty( $values[ $element->name ] ) ) unset( $values[ $element->name ] );
+			if ( !$this->save_empty && $this->limit != 1 ) {
+				if ( is_array( $values[$element->name] ) && empty( $values[$element->name] ) ) unset( $values[$element->name] );
+				elseif ( empty( $values[$element->name] ) ) unset( $values[$element->name] );
 			}
 		}
 
