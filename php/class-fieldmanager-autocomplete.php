@@ -153,7 +153,10 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 
 		if ( ! empty( $this->datasource->only_save_to_taxonomy ) ) {
 			$this->skip_save = true;
+		} elseif ( ! empty( $this->datasource->only_save_to_post_parent ) ) {
+			$this->skip_save = true;
 		}
+
 		return $this->datasource->presave_alter_values( $this, $values, $current_values );
 	}
 

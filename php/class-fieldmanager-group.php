@@ -325,7 +325,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				elseif ( empty( $values[ $element->name ] ) ) unset( $values[ $element->name ] );
 			}
 
-			if ( ! empty( $element->datasource->only_save_to_taxonomy ) ) {
+			if ( ! empty( $element->datasource->only_save_to_taxonomy ) || ! empty( $element->datasource->only_save_to_post_parent ) ) {
 				unset( $values[ $element->name ] );
 				continue;
 			}
