@@ -1,0 +1,17 @@
+{
+  "name": "alleyinteractive/wordpress-fieldmanager",
+  "authors": [
+    {
+      "name": "Alley Interactive",
+      "email": "noreply@alleyinteractive.com"
+    }
+  ],
+  "require-dev": {
+    "squizlabs/php_codesniffer": "2.3.4",
+    "wp-coding-standards/wpcs": "0.8.0"
+  },
+  "scripts": {
+    "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",
+    "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+  }
+}
