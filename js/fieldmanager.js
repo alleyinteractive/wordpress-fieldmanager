@@ -111,13 +111,46 @@ var fm_renumber = function( $wrappers ) {
 	} );
 }
 
-var match_value = function( values, match_string ) {
+/**
+ * get data attribute value(s), accounting for jQuery converting string to number automatically
+ * @param HTMLDivElement el Wrapper with the data attribute
+ * @return string|number|array Single string or number, or array if data attr contains CSV
+ */
+var get_compare_values = function( el ) {
+	var values = $( el ).data( 'display-value' );
+	try {
+		values = values.split( ',' );
+	} catch(e) {
+		// if jQuery already converted string to number
+		values = [ values ];
+	}
+	return values;
+}
+
+/**
+ * @param array values List of possible values to match against
+ * @param string match_string Current value of field
+ * @param string comparison Type of match, i.e. 'equals', 'not-equals', 'contains'
+ * @return bool True if we want to display the field, false if we want to hide the field
+ */
+var match_value = function( values, match_string, comparison ) {
+	comparison = comparison || 'equals';
 	for ( var index in values ) {
-		if ( values[index] == match_string ) {
+		// test if current value of the field contains any of the possible values
+		if ( 'contains' === comparison && match_string.indexOf( values[index] ) >= 0 ) {
 			return true;
 		}
+		// test equality of field against list of possible values
+		else if ( values[index] == match_string ) {
+			if ( 'equals' === comparison ) {
+				return true;
+			} else if ( 'not-equals' === comparison ) {
+				return false;
+			}
+		}
 	}
-	return false;
+	// not-equals returns true if nothing found, otherwise return false
+	return 'not-equals' === comparison;
 }
 
 fm_add_another = function( $element ) {
@@ -178,26 +211,27 @@ $( document ).ready( function () {
 	// Initializes triggers to conditionally hide or show fields
 	$( '.display-if' ).each( function() {
 		var src = $( this ).data( 'display-src' );
-		var values = $( this ).data( 'display-value' ).split( ',' );
+		var values = get_compare_values( this );
+		var compare = $( this ).data( 'display-compare' );
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' );
 		var val = trigger.val();
 		if ( trigger.is( ':radio' ) && trigger.filter( ':checked' ).length ) {
 			val = trigger.filter( ':checked' ).val();
 		}
 		trigger.addClass( 'display-trigger' );
-		if ( !match_value( values, val ) ) {
+		if ( !match_value( values, val, compare ) ) {
 			$( this ).hide();
 		}
 	} );
 
 	// Controls the trigger to show or hide fields
 	$( document ).on( 'change', '.display-trigger', function() {
-		var val = $( this ).val().split(',');
+		var val = $( this ).val();
 		var name = $( this ).attr('name');
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
 			if ( $( this ).hasClass( 'display-if' ) ) {
 				if( name.match( $( this ).data( 'display-src' ) ) != null ) {
-					if ( match_value( $( this ).data( 'display-value' ).split( ',' ), val ) ) {
+					if ( match_value( get_compare_values( this ), val, $( this ).data( 'display-compare' ) ) ) {
 						$( this ).show();
 					} else {
 						$( this ).hide();
@@ -206,6 +240,26 @@ $( document ).ready( function () {
 				}
 			}
 		} );
+	} );
+
+	// get list of unique display-if events
+	var displayEvents = [];
+	$( '.display-conditional-callback' ).each( function() {
+		var eventName = $(this).data( 'display-event' );
+		if ( eventName && displayEvents.indexOf( eventName ) === -1 ) {
+			displayEvents.push( eventName );
+		}
+	} );
+
+	// listen for those events and toggle fields according to custom JS like
+	// $( document ).trigger( 'my-custom-event', [ true|false ] );
+	$( document ).on( displayEvents.join( ' ' ), function( evt, showField ) {
+		// default to showing field if missing arg
+		if ( typeof showField === 'undefined' ) {
+			showField = true;
+		}
+		// new search for .display-conditional-callback to account for newly added repeatable fields
+		$( '.display-conditional-callback[data-display-event="' + evt.type + '"]').toggle( Boolean( showField ) );
 	} );
 
 	init_label_macros();

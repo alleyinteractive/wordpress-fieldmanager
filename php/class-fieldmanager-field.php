@@ -211,13 +211,32 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * @var array[]
-	 * Field name and value on which to display element. Sample:
+	 * Toggle the display of a field based on source field's name, value, and optional comparison (defaults to `equals`).
+	 * Note that `value` accepts a single value or a comma-separated list.
+	 * You can also provide a document-level event to trigger with external Javascript. Examples:
 	 * $element->display_if = array(
 	 *	'src' => 'display-if-src-element',
-	 *	'value' => 'display-if-src-value'
+	 *	'value' => 'display-if-src-value',
+	 *	'compare' => 'equals',
 	 * );
+	 *
+	 * $element->display_if = array(
+	 *	'event' => 'my_special_event',
+	 * );
+	 *
+	 * In this case, external JS would toggle fields attached to my_special_event using:
+	 * $( document ).trigger( 'my_special_event', [ showField ] );
+	 * Where showField is true if fields are to be shown and false if to be hidden
 	 */
 	public $display_if = array();
+
+	/**
+	 * @var array	'equals'		True when value of named field equals (non-strict) any item in list of provided values
+	 *				'not-equals'	True when value of named field does not equal (non-strict) any item in list of provided values
+	 *				'contains'		True when value of named field contains any item in list of provided values
+	 * Allowed comparisons for the display_if property; first element in this array will be the default.
+	 */
+	protected $display_comparisons = array( 'equals', 'not-equals', 'contains' );
 
 	/**
 	* @var string
@@ -383,6 +402,7 @@ abstract class Fieldmanager_Field {
 	 * Generates all markup needed for all form elements in this field.
 	 * Could be called directly by a plugin or theme.
 	 * @param array $values the current values of this element, in a tree structure if the element has children.
+	 * @throws FM_Developer_Exception if an invalid display_if comparison is specified
 	 * @return string HTML for all form elements.
 	 */
 	public function element_markup( $values = array() ) {
@@ -439,10 +459,11 @@ abstract class Fieldmanager_Field {
 
 		// Checks to see if element has display_if data values, and inserts the data attributes if it does
 		if ( isset( $this->display_if ) && !empty( $this->display_if ) ) {
-			$classes[] = 'display-if';
-			$fm_wrapper_attrs['data-display-src'] = $this->display_if['src'];
-			$fm_wrapper_attrs['data-display-value'] = $this->display_if['value'];
+			$display_if_attrs = $this->display_if_attrs();
+			$classes = array_merge( $classes, $display_if_attrs['classes'] );
+			$fm_wrapper_attrs = array_merge( $fm_wrapper_attrs, $display_if_attrs['data'] );
 		}
+
 		$fm_wrapper_attr_string = '';
 		foreach ( $fm_wrapper_attrs as $attr => $val ) {
 			$fm_wrapper_attr_string .= sprintf( '%s="%s" ', sanitize_key( $attr ), esc_attr( $val ) );
@@ -484,6 +505,58 @@ abstract class Fieldmanager_Field {
 		if ( $this->is_tab ) $out .= '</div>';
 
 		return $out;
+	}
+
+	/**
+	 * Validate display_if input and generate classes and data attributes for field wrapper
+	 * @see Fieldmanager_Field::element_markup()
+	 * @see Fieldmanager_Field::$display_if
+	 * @return array	Classes and data attributes
+	 *					array classes	List of classes
+	 *					array data		Key-value pairs for data attributes
+	 */
+	public function display_if_attrs() {
+		$output = array( 'classes' => array(), 'data' => array() );
+
+		if ( 1 === count( $this->display_if ) ) {
+			$invalid_args = empty( $this->display_if['event'] );
+		} elseif ( 3 >= count( $this->display_if ) ) {
+			$invalid_args =	( empty( $this->display_if['src'] ) || empty( $this->display_if['value'] ) );
+		} else {
+			$invalid_args = true;
+		}
+
+		if ( $invalid_args ) {
+			throw new FM_Developer_Exception( esc_html__( 'Invalid `display_if` arguments', 'fieldmanager' ) );
+		}
+
+		// set up field comparison
+		if ( ! empty( $this->display_if['src'] ) ) {
+			$output['classes'][] = 'display-if';
+			$output['data']['data-display-src'] = $this->display_if['src'];
+			$output['data']['data-display-value'] = $this->display_if['value'];
+
+			// use default comparison
+			if ( empty( $this->display_if['compare'] ) ) {
+				$output['data']['data-display-compare'] = $this->display_comparisons[0];
+			}
+			// or use valid comparison
+			else if ( in_array( $this->display_if['compare'], $this->display_comparisons, true ) ) {
+				$output['data']['data-display-compare'] = $this->display_if['compare'];
+			}
+			// or error if invalid comparison
+			else {
+				throw new FM_Developer_Exception( esc_html__( 'Invalid `display_if` comparison type', 'fieldmanager' ) );
+			}
+		}
+		// set up custom JS event-callback
+		else if ( ! empty( $this->display_if['event'] ) ) {
+			$output['classes'][] = 'display-conditional-callback';
+			$output['data']['data-display-event'] = $this->display_if['event'];
+		} else {
+			throw new FM_Developer_Exception( esc_html__( 'Invalid `display_if` arguments', 'fieldmanager' ) );
+		}
+		return $output;
 	}
 
 	/**
