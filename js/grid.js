@@ -3,7 +3,7 @@
 $.fm_grid_init = function() {
 	$( '.grid-activate' ).one( 'click', function( e ) {
 		e.preventDefault();
-		var grid = $( this ).parents( '.grid-toggle-wrapper' ).find( '.fm-grid' ).first();
+		var grid = $( this ).closest( '.grid-toggle-wrapper' ).find( '.fm-grid' ).first();
 		if ( ! $( grid ).data( 'fm_grid_load_complete' ) ) {
 			$( grid ).fm_grid( $( grid ).data( 'fm-grid-opts') );
 		}
@@ -12,7 +12,7 @@ $.fm_grid_init = function() {
 
 $.fn.fm_grid_serialize = function() {
 	var rows = [], row_counter = 0, self = this, bottom_row_with_data = 0;
-	if ( this.find( 'tbody:visible' ).length == 0 ) {
+	if ( this.find( 'tbody:visible' ).length === 0 ) {
 		return;
 	}
 	this.find( 'tbody tr:visible' ).each( function() {

@@ -69,8 +69,8 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 			</div>',
 			esc_attr( $this->get_form_name() ),
 			esc_attr( 'hot-grid-id-' . uniqid( true ) ), // handsontable must have an ID, but we don't care what it is.
-			esc_attr( json_encode( $this->js_options ) ),
-			esc_attr( json_encode( $value ) ),
+			esc_attr( wp_json_encode( $this->js_options ) ),
+			esc_attr( wp_json_encode( $value ) ),
 			esc_attr__( 'Show Data Grid', 'fieldmanager' ),
 			esc_attr__( 'Hide Data Grid', 'fieldmanager' ),
 			esc_attr( $grid_activate_id )
