@@ -106,7 +106,7 @@ abstract class Fieldmanager_Context {
 				array(
 					'get_callback'    => array( $this, 'rest_get_callback' ),
 					'update_callback' => array( $this, 'rest_update_callback' ),
-					'schema'          => $this->create_schema(),
+					'schema'          => $this->fm->get_schema(),
 				)
 			);
 		}
@@ -134,17 +134,5 @@ abstract class Fieldmanager_Context {
 	 * @param  string $object_type The REST API object type
 	 */
 	public function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {}
-
-	/**
-	 * Handles creating a JSON Schema for the field.
-	 * Compatible with http://json-schema.org/draft-04/schema#
-	 *
-	 * @return	array	The JSON schema, represented as a PHP array
-	 */
-	public function create_schema() {
-		return array(
-			'type' => 'object',
-		);
-	}
 
 }
