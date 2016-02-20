@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="Fieldmanager">
+	<description>Sniffs for the coding standards of the Fieldmanager plugin</description>
+
+	<rule ref="WordPress-VIP">
+		<exclude name="WordPress.CSRF.NonceVerification" />
+		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
+		<exclude name="WordPress.VIP.DirectDatabaseQuery" />
+		<exclude name="WordPress.VIP.SlowDBQuery" />
+		<exclude name="WordPress.VIP.SuperGlobalInputUsage" />
+		<exclude name="WordPress.VIP.ValidatedSanitizedInput" />
+	</rule>
+</ruleset>
