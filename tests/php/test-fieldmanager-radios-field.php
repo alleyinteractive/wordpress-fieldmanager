@@ -1,10 +1,10 @@
 <?php
 
 /**
- * Tests the Fieldmanager Select Field
+ * Tests the Fieldmanager Radio Field
  *
  * @group field
- * @group select
+ * @group radio
  */
 class Test_Fieldmanager_Radios_Field extends WP_UnitTestCase {
 	public $post_id;
