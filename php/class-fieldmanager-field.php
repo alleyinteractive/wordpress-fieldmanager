@@ -1066,6 +1066,16 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Add this group to the post boxes in zoninator
+	 * @param string $label
+	 * @param string|string[] $post_types
+	 */
+	public function add_zoninator_post_form( $label, $post_types ) {
+		$this->require_base();
+		return new Fieldmanager_Context_Zoninator( $label, $post_types, $this );
+	}
+
+	/**
 	 * Activate this group in an already-added submenu page
 	 * @param string $title
 	 */

@@ -11,7 +11,7 @@
  *
  */
 
-$_tests_dir = getenv('WP_TESTS_DIR');
+$_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
 }
@@ -19,7 +19,13 @@ if ( ! $_tests_dir ) {
 require_once $_tests_dir . '/includes/functions.php';
 
 function _manually_load_plugin() {
+	$_zoninator_dir = getenv( 'ZONINATOR_DIR' );
+	if ( empty( $_zoninator_dir ) ) {
+		$_zoninator_dir = dirname( __FILE__ ) . '/../../../zoninator';
+	}
+	
 	require dirname( __FILE__ ) . '/../../fieldmanager.php';
+	require $_zoninator_dir . '/zoninator.php';
 }
 tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
 
