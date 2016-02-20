@@ -349,6 +349,40 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->assertTrue( $wp_taxonomies['post_tag']->sort );
 	}
 
+	public function test_append_true_after_first_save() {
+		$fm = new Fieldmanager_Group( array(
+			'name'     => 'author_data',
+			'children' => array(
+				'school' => new Fieldmanager_Group(array(
+					'label' => 'School',
+					'add_more_label' => 'Add new',
+					'limit' => 0,
+					'children' => array(
+						'school_city' => new Fieldmanager_Autocomplete( array(
+							'label' => 'School city',
+							'datasource' => new Fieldmanager_Datasource_Term( array(
+								'taxonomy' => 'post_tag',
+								'taxonomy_save_to_terms' => true
+							))
+						)),
+					)
+				))
+			)
+		) );
+		$data = array(
+			'school' => array(
+				array( 'school_city' => $this->term->term_id ),
+				array( 'school_city' => $this->term_2->term_id ),
+			),
+		);
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, $data );
+		$this->assertEqualSets(
+			array( $this->term->term_id, $this->term_2->term_id ),
+			wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) )
+		);
+	}
+
+
 	/**
 	 * Test saving term relationships to users.
 	 */
