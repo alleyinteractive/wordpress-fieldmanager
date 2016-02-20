@@ -29,13 +29,13 @@ var FieldmanagerGroupTabs;
 				}
 				counter = el.siblings('.fm-item').length - 1;
 				var replaceProto = function( el, attr ) {
-					el.attr(attr, el.attr(attr).replace('-proto-', '-'+counter+'-'));
+					el.attr( attr, el.attr( attr ).replace( '-proto-', '-'+counter+'-' ) );
 				};
 
 				// We also need to set these unique IDs, because FM doesn't do it for us.
 				$( '.fm-tab-bar a', el ).each( function(){
 					replaceProto( $(this), 'href' );
-				})
+				});
 				$( '.wp-tabs-panel', el ).each( function(){
 					replaceProto( $(this), 'id' );
 				});
