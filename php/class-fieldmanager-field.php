@@ -315,6 +315,13 @@ abstract class Fieldmanager_Field {
 	public $show_in_rest = false;
 
 	/**
+	 * @var array
+	 * JSON schema for the field.
+	 * @see http://json-schema.org/draft-04/schema#
+	 */
+	public $schema = false;
+
+	/**
 	 * @var int Global Sequence
 	 * The global sequence of elements
 	 */
@@ -1185,20 +1192,37 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Handles creating a JSON Schema for the field.
-	 * Compatible with http://json-schema.org/draft-04/schema#
+	 * Gets the JSON Schema for the field.
 	 *
+	 * @see 					http://json-schema.org/draft-04/schema#
 	 * @return	array			The JSON schema, represented as a PHP array
 	 */
 	public function get_schema() {
+		// Allow fields to specify a custom schema.
+		// If set, just return it.
+		if ( ! empty( $this->schema ) ) {
+			return $this->schema;
+		}
+
+		// Otherwise, create and then return the schema.
+		$this->create_schema();
+		return $this->schema;
+	}
+
+	/**
+	 * Creates the JSON Schema for the field.
+	 *
+	 * @see 					http://json-schema.org/draft-04/schema#
+	 * @return	array			The JSON schema, represented as a PHP array
+	 */
+	protected function create_schema() {
 		// Set properties that map directly to JSON schema properties
 		// or that are required by the REST API.
-		$properties = array(
+		$this->schema = array(
 			'type' => 'object',
 			'description' => ( ! empty( $this->description ) ) ? $this->description : $this->label,
 			'context' => array( 'view', 'edit' ),
 		);
-
-		return $properties;
 	}
+
 }
