@@ -107,6 +107,11 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
 	 * Add a Customizer setting for this field.
 	 *
+	 * By default, Fieldmanager registers one setting for a group and sends all
+	 * of the group data from the Customizer, rather than individual settings
+	 * for its children, so sanitization and validation routines can access the
+	 * full group data.
+	 *
 	 * @param WP_Customize_Manager $manager
 	 * @return Fieldmanager_Customize_Setting Setting object, where supported.
 	 */
