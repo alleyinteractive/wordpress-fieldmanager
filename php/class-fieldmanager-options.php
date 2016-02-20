@@ -61,7 +61,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		// Set data for this element
 		if ( ! empty( $this->datasource ) ) {
 			$this->add_options( $this->datasource->get_items() );
-		} else if ( ! empty( $this->options ) ) {
+		} elseif ( ! empty( $this->options ) ) {
 			$this->add_options( $this->options );
 		}
 
