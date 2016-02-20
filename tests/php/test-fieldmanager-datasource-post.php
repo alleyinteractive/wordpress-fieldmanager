@@ -325,4 +325,65 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 
 		$this->save_values( $children, $this->parent_post, $test_data );
 	}
+
+	public function test_post_parent_render() {
+		$fm = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_parent',
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'only_save_to_post_parent' => true,
+				'query_args' => array(
+					'post_type' => 'post'
+				),
+			) ),
+		) );
+
+		ob_start();
+		$fm->add_meta_box( 'Test Autocomplete', 'post' )->render_meta_box( $this->child_post_a, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp( '/<input[^>]+type=[\'"]hidden[\'"][^>]+value=[\'"]{2}/', $html );
+
+		$this->save_values( $fm, $this->child_post_a, $this->parent_post->ID );
+		$child = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $this->parent_post->ID, $child->post_parent );
+		$this->assertEquals( '', get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+
+		ob_start();
+		$fm->add_meta_box( 'Test Autocomplete', 'post' )->render_meta_box( $this->child_post_a, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp( "/<input[^>]+type=['\"]hidden['\"][^>]+value=['\"]{$this->parent_post->ID}['\"]/", $html );
+	}
+
+	public function test_options_post_parent_render() {
+		$fm = new Fieldmanager_Select( array(
+			'name' => 'test_parent',
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'only_save_to_post_parent' => true,
+				'query_args' => array(
+					'post_type' => 'post',
+					'post_status' => 'draft',
+				),
+			) ),
+		) );
+
+		ob_start();
+		$fm->add_meta_box( 'Test Select', 'post' )->render_meta_box( $this->child_post_a, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp(
+			sprintf( '#<option\s*value="%s"\s*>%s</option>#i', $this->parent_post->ID, $this->parent_post->post_title ),
+			$html
+		);
+
+		$this->save_values( $fm, $this->child_post_a, $this->parent_post->ID );
+		$child = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $this->parent_post->ID, $child->post_parent );
+		$this->assertEquals( '', get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+
+		ob_start();
+		$fm->add_meta_box( 'Test Select', 'post' )->render_meta_box( $this->child_post_a, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp(
+			sprintf( '#<option\s*value="%s"\s*selected(?:\s*=\s*"selected")?\s*>%s</option>#i', $this->parent_post->ID, $this->parent_post->post_title ),
+			$html
+		);
+	}
 }
