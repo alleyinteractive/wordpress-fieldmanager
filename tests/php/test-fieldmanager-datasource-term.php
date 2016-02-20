@@ -71,7 +71,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->save_values( $terms, $this->post, $this->term->term_id );
 
 		$saved_value = get_post_meta( $this->post->ID, 'test_terms', true );
-		$this->assertSame( array(), $saved_value );
+		$this->assertSame( '', $saved_value );
 
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) );
 		$this->assertSame( array( $this->term->term_id ), $post_terms );
@@ -120,7 +120,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->save_values( $terms, $this->post, array( $this->term->term_id, $term->term_id ) );
 
 		$saved_value = get_post_meta( $this->post->ID, 'test_terms', true );
-		$this->assertSame( array(), $saved_value );
+		$this->assertSame( '', $saved_value );
 
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) );
 		$this->assertCount( 2, $post_terms );
@@ -147,7 +147,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->save_values( $terms, $this->post, array( $new_term ) );
 
 		$saved_value = get_post_meta( $this->post->ID, 'test_terms', true );
-		$this->assertSame( array(), $saved_value );
+		$this->assertSame( '', $saved_value );
 
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) );
 		$this->assertCount( 1, $post_terms );
@@ -159,7 +159,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->save_values( $terms, $this->post, array( "={$numeric_term}" ) );
 
 		$saved_value = get_post_meta( $this->post->ID, 'test_terms', true );
-		$this->assertSame( array(), $saved_value );
+		$this->assertSame( '', $saved_value );
 
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) );
 		$this->assertCount( 1, $post_terms );
@@ -170,7 +170,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->save_values( $terms, $this->post, array( "={$numeric_term}" ) );
 
 		$saved_value = get_post_meta( $this->post->ID, 'test_terms', true );
-		$this->assertSame( array(), $saved_value );
+		$this->assertSame( '', $saved_value );
 
 		$post_terms = wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) );
 		$this->assertCount( 1, $post_terms );
@@ -301,7 +301,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$base = new Fieldmanager_Group( $args );
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, $data );
 		$this->assertSame( $data['test_basic'], get_post_meta( $this->post->ID, 'base_group_test_basic', true ) );
-		$this->assertSame( array(), get_post_meta( $this->post->ID, 'base_group_test_datasource', true ) );
+		$this->assertSame( '', get_post_meta( $this->post->ID, 'base_group_test_datasource', true ) );
 		$this->assertSame(
 			array( $this->term->term_id ),
 			wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) )
@@ -312,7 +312,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$base = new Fieldmanager_Group( array_merge( $args, array( 'add_to_prefix' => false ) ) );
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, $data );
 		$this->assertSame( $data['test_basic'], get_post_meta( $this->post->ID, 'test_basic', true ) );
-		$this->assertSame( array(), get_post_meta( $this->post->ID, 'test_datasource', true ) );
+		$this->assertSame( '', get_post_meta( $this->post->ID, 'test_datasource', true ) );
 		$this->assertSame(
 			array( $this->term->term_id ),
 			wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) )
@@ -405,7 +405,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		) );
 		$field->add_user_form( 'test' )->save_to_user_meta( $user_id, array( 'test_terms' => $term['term_id'] ) );
 
-		$this->assertSame( array(), get_user_meta( $user_id, 'test_terms', true ) );
+		$this->assertSame( '', get_user_meta( $user_id, 'test_terms', true ) );
 		$this->assertSame( array( $term['term_id'] ), wp_get_object_terms( $user_id, 'user-tax', array( 'fields' => 'ids' ) ) );
 	}
 }
