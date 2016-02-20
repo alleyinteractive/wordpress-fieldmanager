@@ -307,15 +307,21 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
-			if ( empty( $values[$element->name] ) ) {
+			if ( ! isset( $values[ $element->name ] ) ) {
 				$values[ $element->name ] = NULL;
 			}
+
+			if ( $element->skip_save ) {
+				unset( $values[ $element->name ] );
+				continue;
+			}
+
 			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
-			$current_child_value = !isset( $current_values[$element->name ]) ? array() : $current_values[$element->name];
+			$current_child_value = ! isset( $current_values[ $element->name ] ) ? array() : $current_values[ $element->name ];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
-			if ( !$this->save_empty && $this->limit != 1 ) {
-				if ( is_array( $values[$element->name] ) && empty( $values[$element->name] ) ) unset( $values[$element->name] );
-				elseif ( empty( $values[$element->name] ) ) unset( $values[$element->name] );
+			if ( ! $this->save_empty && $this->limit != 1 ) {
+				if ( is_array( $values[ $element->name ] ) && empty( $values[ $element->name ] ) ) unset( $values[ $element->name ] );
+				elseif ( empty( $values[ $element->name ] ) ) unset( $values[ $element->name ] );
 			}
 		}
 

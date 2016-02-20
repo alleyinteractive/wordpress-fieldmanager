@@ -101,7 +101,7 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
  */
 function fieldmanager_enqueue_scripts() {
 	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.3' );
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.4' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
 add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
@@ -355,6 +355,7 @@ function fm_calculate_context() {
 				break;
 			// Context = "term".
 			case 'edit-tags.php':
+			case 'term.php': // As of 4.5-alpha; see https://core.trac.wordpress.org/changeset/36308
 				if ( !empty( $_POST['taxonomy'] ) ) {
 					$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
 				} elseif ( !empty( $_GET['taxonomy'] ) ) {
