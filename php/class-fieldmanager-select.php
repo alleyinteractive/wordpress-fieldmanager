@@ -14,7 +14,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 	/**
 	 * @var boolean
-	 * Should we support type-ahead? i.e. use chosen.js or not
+	 * Should we support type-ahead? i.e. use selec2.js or not
 	 */
 	public $type_ahead = False;
 
@@ -31,7 +31,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	public $multiple = false;
 
 	/**
-	 * Override constructor to add chosen.js maybe
+	 * Override constructor to add select2.js maybe
 	 * @param string $label
 	 * @param array $options
 	 */
@@ -40,9 +40,6 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		$this->attributes = array(
 			'size' => '1'
 		);
-
-		// Add the Fieldmanager Select javascript library
-		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.1', false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
 
 		parent::__construct( $label, $options );
 
@@ -55,10 +52,10 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			$this->attributes['multiple'] = 'multiple';
 		}
 
-		// Add the chosen library for type-ahead capabilities
+		// Add the Select2 library for type-ahead capabilities
 		if ( $this->type_ahead ) {
-			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
-			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+			fm_add_script( 'select2', 'js/select2/select2.js', array( 'jquery' ), '3.5.2', false, 'fm_select2', array( 'searchPlaceholder' => esc_html__( 'Search for a term', 'fieldmanager' ), 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
+			fm_add_style( 'select2_css', 'js/select2/select2.css' );
 		}
 
 	}
@@ -78,12 +75,19 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			$do_multiple = "[]";
 		}
 
-		// Handle type-ahead based fields using the chosen library
+		// Handle type-ahead based fields using the select2 library
 		if ( $this->type_ahead ) {
-			$select_classes[] = 'chzn-select';
-			if ( !isset( $GLOBALS['fm_chosen_initialized'] ) ) {
-				add_action( 'admin_footer', array( $this, 'chosen_init' ) );
-				$GLOBALS['fm_chosen_initialized'] = true;
+			$select_classes[] = 'select2-select';
+			if ( !isset( $GLOBALS['fm_select2_initialized'] ) ) {
+				add_action( 'admin_footer', array( $this, 'select2_init' ) );
+				$GLOBALS['fm_select2_initialized'] = true;
+			}
+
+			if ( ! empty( $this->datasource ) && $this->datasource->use_ajax ) {
+				$select_classes[] = 'select2-ajax-datasource';
+				$this->attributes['fm-ajax-search-action'] = $this->datasource->get_ajax_action();
+			} else {
+				$select_classes[] = 'select2-static-datasource';
 			}
 
 			if ( $this->grouped ) {
@@ -117,8 +121,6 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 */
 	public function form_data_element( $data_row, $value = array() ) {
 
-		// For taxonomy-based selects, only return selected options if taxonomy preload is disabled
-		// Additional terms will be provided by AJAX for typeahead to avoid overpopulating the select for large taxonomies
 		$option_selected = $this->option_selected( $data_row['value'], $value, "selected" );
 
 		return sprintf(
@@ -151,17 +153,51 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	}
 
 	/**
-	 * Init chosen.js
+	 * Init select2.js
 	 * @return string HTML
 	 */
-	public function chosen_init() {
+	public function select2_init() {
 		?>
 		<script type="text/javascript">
 		jQuery(function($){
+			var select2Opts = {};
+			select2Opts.allowClear = true;
+			/*
+			 * Static datasources
+			 */
 			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
-				$(".chzn-select:visible",this).chosen({allow_single_deselect:true})
+				$(".select2-select.select2-static-datasource:visible",this).select2( select2Opts );
 			});
-			$(".chzn-select:visible").chosen({allow_single_deselect:true});
+			$(".select2-select.select2-static-datasource:visible").select2( select2Opts );
+
+			/*
+			 * AJAX datasources
+			 */
+			select2Opts.placeholder = fm_select2.searchPlaceholder;
+			select2Opts.minimumInputLength = 2;
+			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
+				$(".select2-select.select2-ajax-datasource:visible",this).select2( select2Opts );
+			});
+			var fmSetUpSelect2Ajax = function() {
+				select2Opts.ajax = {
+					url: ajaxurl,
+					data: function( term, page ) {
+						return {
+							action: $(this).data('fm-ajax-search-action'),
+							fm_search_nonce: fm_select2.nonce,
+							fm_autocomplete_search: term
+						};
+					},
+					results: function( response, page ) {
+						console.log( response );
+					}
+				};
+				$(this).select2( select2Opts );
+			};
+			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
+				$(".select2-select.select2-ajax-datasource:visible",this).each(fmSetUpSelect2Ajax);
+			});
+			$(".select2-select.select2-ajax-datasource:visible").each(fmSetUpSelect2Ajax);
 		});
 		</script>
 		<?php

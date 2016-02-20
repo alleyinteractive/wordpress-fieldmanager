@@ -112,7 +112,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 		if ( !$this->has_built_data ) {
 			if ( $this->datasource ) {
-				$this->add_options( $this->datasource->get_items() );
+				if ( $this->datasource->use_ajax ) {
+					$this->add_options( $this->datasource->get_selected_items( $this->data_id ) );
+				} else {
+					$this->add_options( $this->datasource->get_items() );
+				}
 			}
 
 			// Add the first element to the data array. This is useful for database-based data sets that require a first element.
