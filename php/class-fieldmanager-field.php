@@ -454,7 +454,7 @@ abstract class Fieldmanager_Field {
 		);
 
 		// After starting the field, apply a filter to allow other plugins to append functionality
-		$out = apply_filters( 'fm_element_markup_start', $out, $this );
+		$out = apply_filters( 'fm_element_markup_start', $out, $this, $values );
 		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && "top" == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
@@ -476,7 +476,7 @@ abstract class Fieldmanager_Field {
 		}
 
 		// Before closing the field, apply a filter to allow other plugins to append functionality
-		$out = apply_filters( 'fm_element_markup_end', $out, $this );
+		$out = apply_filters( 'fm_element_markup_end', $out, $this, $values );
 
 		$out .= '</div>';
 
