@@ -19,3 +19,7 @@ todo.txt
 /report/
 
 .svn
+
+composer.lock
+/vendor/
+/node_modules
