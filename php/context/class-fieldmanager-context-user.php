@@ -217,7 +217,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param  string $object_type The REST API object type
 	 */
 	public function rest_get_callback( $object, $field_name, $request, $object_type ) {
-		return get_user_meta( $object['id'], $field_name, true );
+		return $this->get_data( $object['id'], $field_name, true );
 	}
 
 	/**

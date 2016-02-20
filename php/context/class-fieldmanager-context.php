@@ -101,12 +101,13 @@ abstract class Fieldmanager_Context {
 	public function register_rest_field( $object_type ) {
 		// Ensure the REST API is active and the field wants to be shown in REST
 		if ( function_exists( 'register_rest_field' ) && true === $this->fm->show_in_rest ) {
-			register_rest_field( $object_type,
+			register_rest_field(
+				$object_type,
 				$this->fm->name,
 				array(
 					'get_callback'    => array( $this, 'rest_get_callback' ),
 					'update_callback' => array( $this, 'rest_update_callback' ),
-					'schema'          => $this->fm->get_schema(),
+					'schema'          => apply_filters( 'fm_rest_api_schema', $this->fm->get_schema(), $this ),
 				)
 			);
 		}

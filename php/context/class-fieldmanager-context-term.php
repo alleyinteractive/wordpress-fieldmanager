@@ -382,7 +382,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @param  string $object_type The REST API object type
 	 */
 	public function rest_get_callback( $object, $field_name, $request, $object_type ) {
-		return fm_get_term_meta( $object['id'], $object_type, $field_name, true );
+		return $this->get_data( $object['id'], $field_name, true );
 	}
 
 	/**
