@@ -124,6 +124,26 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertEquals( admin_url( 'admin.php?page=' . $name_4 ), $context_4->url() );
 	}
 
+	public function test_skip_save() {
+		// Should save the first time
+		$context = $this->get_context( 'skip_save' );
+		$data = array(
+			'name'      => 'Foo',
+			'email'     => 'foo@alleyinteractive.com',
+			'remember'  => true,
+			'number'    => 11,
+			'group'     => array( 'preferences' => '' ),
+		);
+		$this->assertTrue( $context->save_submenu_data( $data ) );
+		$this->assertEquals( $data, get_option( 'skip_save' ) );
+		// Shouldn't save the second time
+		$context->fm->skip_save = true;
+		delete_option( 'skip_save' );
+		$this->assertFalse( get_option( 'skip_save' ) );
+		$this->assertTrue( $context->save_submenu_data( $data ) );
+		$this->assertFalse( get_option( 'skip_save' ) );
+	}
+
 	/**
 	 * Build a html from the default context and fields.
 	 *
