@@ -379,7 +379,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		$extra_attrs = '';
 		if ( $this->label_macro ) {
 			$this->label_format = $this->label_macro[0];
-			$this->label_token = sprintf( '.fm-%s input.fm-element', $this->label_macro[1] );
+			$this->label_token = sprintf( '.fm-%s .fm-element:input', $this->label_macro[1] );
 		}
 
 		if ( $this->label_format && $this->label_token ) {
