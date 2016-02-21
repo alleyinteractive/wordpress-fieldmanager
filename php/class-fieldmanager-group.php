@@ -148,6 +148,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
 			}
 
+			// A post can only have one parent, so if this saves to post_parent and
+			// it's repeatable, we're doing it wrong.
+			if ( $element->datasource && ! empty( $element->datasource->save_to_post_parent ) && $this->is_repeatable() ) {
+				_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', __( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ), '1.0.0' );
+				$element->datasource->save_to_post_parent = false;
+				$element->datasource->only_save_to_post_parent = false;
+			}
+
 			// Flag this group as having unserialized descendants to check invalid use of repeatables
 			if ( ! $this->has_unserialized_descendants && ( ! $element->serialize_data || ( $element->is_group() && $element->has_unserialized_descendants ) ) ) {
 				$this->has_unserialized_descendants = true;
@@ -325,7 +333,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				elseif ( empty( $values[ $element->name ] ) ) unset( $values[ $element->name ] );
 			}
 
-			if ( ! empty( $element->datasource->only_save_to_taxonomy ) ) {
+			if ( ! empty( $element->datasource->only_save_to_taxonomy ) || ! empty( $element->datasource->only_save_to_post_parent ) ) {
 				unset( $values[ $element->name ] );
 				continue;
 			}

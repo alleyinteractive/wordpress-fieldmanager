@@ -337,6 +337,14 @@ abstract class Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->set_options( $label, $options );
+
+		// A post can only have one parent, so if this saves to post_parent and
+		// it's repeatable, we're doing it wrong.
+		if ( $this->datasource && ! empty( $this->datasource->save_to_post_parent ) && $this->is_repeatable() ) {
+			_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', __( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ), '1.0.0' );
+			$this->datasource->save_to_post_parent = false;
+			$this->datasource->only_save_to_post_parent = false;
+		}
 	}
 
 	/**

@@ -67,8 +67,14 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      */
     public $only_save_to_post_parent = False;
 
-    // constructor not required for this datasource; options are just set to keys,
-    // which Fieldmanager_Datasource does.
+    public function __construct( $options = array() ) {
+        parent::__construct( $options );
+
+        // Infer $save_to_post_parent if $only_save_to_post_parent
+        if ( $this->only_save_to_post_parent ) {
+            $this->save_to_post_parent = true;
+        }
+    }
 
     /**
      * Get a post title by post ID
@@ -263,7 +269,10 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
      */
     public function preload_alter_values( Fieldmanager_Field $field, $values ) {
         if ( $this->only_save_to_post_parent ) {
-            return array( wp_get_post_parent_id( $field->data_id ) );
+            $post_parent = wp_get_post_parent_id( $field->data_id );
+            if ( $post_parent ) {
+                return ( 1 == $field->limit && empty( $field->multiple ) ) ? $post_parent : array( $post_parent );
+            }
         }
         return $values;
     }
