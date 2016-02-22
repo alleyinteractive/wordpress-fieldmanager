@@ -88,9 +88,13 @@ var fm_renumber = function( $wrappers ) {
 							$( this ).attr( 'name', new_fname );
 							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
 								$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
-								var parent = $(this).closest( '.fm-item' );
-								if ( parent.find( '.fm-label label' ).length ) {
-									parent.find( '.fm-label label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
+								if ( $( this ).parent().hasClass( 'fm-option' ) ) {
+									$( this ).parent().find( 'label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
+								} else {
+									var parent = $( this ).closest( '.fm-item' );
+									if ( parent.length && parent.find( '.fm-label label' ).length ) {
+										parent.find( '.fm-label label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
+									}
 								}
 								dynamic_seq++;
 								return; // continue;
