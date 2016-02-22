@@ -54,7 +54,6 @@
 	line-height: 1.7em;
 }
 
-
 /* Each FM Field */
 
 .fm-item.fm-field {
@@ -69,9 +68,7 @@
 	vertical-align: top;
 }
 
-
 /* Groups */
-
 .fm-group {
 	margin-bottom: 5px;
 	background-color: #fff;
@@ -196,9 +193,7 @@ div.fm-group-label-wrapper {
 	background-image: none;
 }
 
-
 /* Sortables and repeatables */
-
 .fm-item,
 .fmjs-sortable .sortable-placeholder {
 	margin-bottom: 10px;
@@ -445,9 +440,7 @@ div.fm-group-label-wrapper .fmjs-remove {
 	height: 21px !important;
 }
 
-
 /* Grid editor CSS */
-
 .grid-toggle-wrapper {
 	overflow: scroll;
 	max-height: 500px;
@@ -498,9 +491,7 @@ div.fm-group-label-wrapper .fmjs-remove {
 	background: #fff;
 }
 
-
 /* Rich text area */
-
 .fm-richtext .fm-element {
 	width: 600px;
 	height: 100px;
@@ -518,9 +509,7 @@ a.fm-delete:hover {
 	color: #f00;
 }
 
-
 /** Media Uploads **/
-
 .media-file-preview {
 	position: relative;
 	margin: 10px auto;
