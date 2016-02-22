@@ -1,4 +1,4 @@
-.wp-tab-bar {
+.fm-wrapper .wp-tabs-panel > .fm-wrapper .fm-group-inner.wp-tab-bar {
 	margin-bottom: 4px;
 }
 
@@ -167,5 +167,7 @@
 	box-shadow: none;
 }
 .fm-tabbed-vertical > .wp-tabs-panel > div > .fm-group > .fm-group-inner {
-	border-top: none;
+	border: none;
+	-webkit-box-shadow: none;
+    box-shadow: none;
 }
