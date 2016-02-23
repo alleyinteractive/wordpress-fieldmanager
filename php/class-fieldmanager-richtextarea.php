@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Use the WordPress Editor in Fieldmanager.
+ * TinyMCE visual editor which submits HTML.
  *
- * @package Fieldmanager
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 

@@ -1,11 +1,10 @@
 <?php
-/**
- * @package Fieldmanager_Context
- */
 
 /**
- * Use fieldmanager to create meta boxes on
- * @package Fieldmanager_Datasource
+ * Use fieldmanager to create meta boxes on the new/edit post screen and save
+ * data primarily to post meta.
+ *
+ * @package Fieldmanager_Context
  */
 class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 

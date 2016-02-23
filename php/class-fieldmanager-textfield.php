@@ -1,8 +1,9 @@
 <?php
 
 /**
- * Text field. A good basic implementation guide, too.
- * @package Fieldmanager
+ * Single-line text field.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_TextField extends Fieldmanager_Field {
 

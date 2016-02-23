@@ -1,8 +1,15 @@
 <?php
 
 /**
- * Dropdown for options
- * @package Fieldmanager
+ * Select dropdown or multi-select field.
+ *
+ * This class extends {@link Fieldmanager_Options}, which allows you to define
+ * options (values) via an array or via a dynamic
+ * {@link Fieldmanager_Datasource}, like {@link Fieldmanager_Datasource_Post
+ * posts}, {@link Fieldmanager_Datasource_Term terms}, or
+ * {@link Fieldmanager_Datasource_User users}.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Select extends Fieldmanager_Options {
 

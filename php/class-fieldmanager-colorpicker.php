@@ -1,9 +1,14 @@
 <?php
 
 /**
- * Colorpicker
+ * Color picker field which submits a 6-character hex code with the hash mark.
  *
- * @package Fieldmanager
+ * Provides an interface to navigate colors and submits the 6-character hex code
+ * e.g. `#ffffff`. This field uses the
+ * {@link https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
+ * WordPress core color picker introduced in WordPress 3.5}.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 

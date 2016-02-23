@@ -1,11 +1,10 @@
 <?php
-/**
- * @package Fieldmanager_Context
- */
 
 /**
- * Use fieldmanager to create meta boxes on
- * @package Fieldmanager_Datasource
+ * Use fieldmanager to add fields to the "quick edit" (post list inline editing)
+ * and save data primarily to post meta.
+ *
+ * @package Fieldmanager_Context
  */
 class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 

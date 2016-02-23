@@ -1,10 +1,11 @@
 <?php
-/**
- * @package Fieldmanager_Context
- */
 
 /**
- * Base class for context
+ * Base class for contexts.
+ *
+ * Contexts dictate where fields appear, how they load data, and where they
+ * save data.
+ *
  * @package Fieldmanager_Context
  */
 abstract class Fieldmanager_Context {

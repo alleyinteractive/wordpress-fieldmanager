@@ -1,10 +1,8 @@
 <?php
-/**
- * @package Fieldmanager_Datasource
- */
 
 /**
- * Data source for WordPress Terms, for autocomplete and option types.
+ * Datasource to populate autocomplete and option fields with WordPress Terms.
+ *
  * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {

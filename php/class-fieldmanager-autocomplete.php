@@ -1,8 +1,13 @@
 <?php
 
 /**
- * Post auto-complete field
- * @package Fieldmanager
+ * Text field that respond to user input with autocomplete suggestions
+ * (optionally via an ajax request).
+ *
+ * This must include a {@link Fieldmanager_Datasource}, which the autocomplete
+ * uses to search against.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 

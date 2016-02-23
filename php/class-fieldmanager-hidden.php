@@ -1,8 +1,9 @@
 <?php
 
 /**
- * Hidden field
- * @package Fieldmanager
+ * Hidden input field.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Hidden extends Fieldmanager_Field {
 
