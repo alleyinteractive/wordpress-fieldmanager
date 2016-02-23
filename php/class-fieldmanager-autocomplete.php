@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Text field that respond to user input with autocomplete suggestions
+ * Text field that responds to user input with autocomplete suggestions
  * (optionally via an ajax request).
  *
  * This must include a {@link Fieldmanager_Datasource}, which the autocomplete
