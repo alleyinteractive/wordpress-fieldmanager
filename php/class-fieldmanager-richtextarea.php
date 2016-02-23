@@ -1,7 +1,7 @@
 <?php
 
 /**
- * TinyMCE visual editor which submits HTML.
+ * WordPress visual editor (TinyMCE) which submits HTML.
  *
  * @package Fieldmanager_Field
  */
