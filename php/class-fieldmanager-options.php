@@ -1,8 +1,10 @@
 <?php
 
 /**
- * Base class for handling option fields, like checkboxes or radios
- * @package Fieldmanager
+ * Abstract base class for handling option fields, like select elements,
+ * checkboxes or radios.
+ *
+ * @package Fieldmanager_Field
  */
 abstract class Fieldmanager_Options extends Fieldmanager_Field {
 

@@ -1,9 +1,13 @@
 <?php
 
 /**
- * Fieldmanager Group; allows associating multiple fields together
- * and required as the base element.
- * @package Fieldmanager
+ * Define a groups of fields.
+ *
+ * Groups shouldn't just be thought of as a top-level collection of fields (like
+ * a meta box). Groups can be infinitely nested, they can be used to create
+ * tabbed interfaces, and so on. Groups submit data as nested arrays.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Group extends Fieldmanager_Field {
 

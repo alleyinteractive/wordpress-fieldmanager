@@ -1,11 +1,13 @@
 <?php
-/**
- * @package Fieldmanager_Datasource
- */
 
 /**
- * Base data source; can provide static options for Option fields or
- * Autocomplete fields.
+ * Datasource base class to populate autocomplete and option fields.
+ *
+ * Datasources provide data to populate autocomplete and option fields.
+ *
+ * This class can be used as an arbitrary data source for static options, or it
+ * can be extended to provide custom data sources.
+ *
  * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Datasource {

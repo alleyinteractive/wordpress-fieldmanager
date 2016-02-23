@@ -1,8 +1,11 @@
 <?php
 
 /**
- * Media field
- * @package Fieldmanager
+ * A field to select an attachment via the WordPress Media Manager.
+ *
+ * This field submits the selected attachment as an attachment ID (post ID).
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Media extends Fieldmanager_Field {
 

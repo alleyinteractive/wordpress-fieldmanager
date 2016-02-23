@@ -1,10 +1,8 @@
 <?php
-/**
- * @package Fieldmanager_Datasource
- */
 
 /**
- * Data source for WordPress Posts, for autocomplete and option types.
+ * Datasource to populate autocomplete and option fields with WordPress Posts.
+ *
  * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {

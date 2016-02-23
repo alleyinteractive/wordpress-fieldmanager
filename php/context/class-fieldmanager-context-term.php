@@ -1,11 +1,10 @@
 <?php
-/**
- * @package Fieldmanager_Context
- */
 
 /**
- * Use fieldmanager to create meta boxes on
- * @package Fieldmanager_Datasource
+ * Use fieldmanager to create meta boxes on the new/edit term screens and save
+ * data primarily to term meta.
+ *
+ * @package Fieldmanager_Context
  */
 class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	/**
