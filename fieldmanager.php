@@ -372,7 +372,7 @@ function fm_calculate_context() {
 	/**
 	 * Filter the calculated context to allow for custom contexts and overrides to be used.
 	 *
-	 * @since 1.0.0-beta.4
+	 * @since 1.0.0
 	 *
 	 * @param array $calculated_context {
 	 *     Array of context information.
