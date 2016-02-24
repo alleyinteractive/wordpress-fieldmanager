@@ -267,4 +267,65 @@ $( document ).ready( function () {
 	$( document ).on( 'fm_activate_tab', init_sortable );
 } );
 
+/**
+ * Add character counter to input text / textarea elements
+ *
+ * @param object
+ *  - selector string jQuery selector
+ *  - type string It ca be 'lenght' (displays typed chars) or 'maxlength' (displays remaining chars)
+ */
+fm_add_character_counter = function() {
+	var args = jQuery.extend( {
+		debug: 0,
+		selector: null,
+		type: 'maxlength',
+		maxlength: 100,
+		force_container_block: false
+	}, arguments[0] );
+
+	jQuery( args.selector ).each( function(){
+
+		var el = jQuery( this );
+
+		// Check for fm
+		if ( el.closest( '.fm-item' ).hasClass( 'fmjs-proto' ) ) {
+			return;
+		}
+
+		// Add padding
+		el.addClass( 'fm-character-counter-padding' );
+
+		// Check type of counter
+		var type = typeof( el.attr( 'maxlength' ) ) === 'undefined' ? 'length' : args.type;
+
+		var div = jQuery( '<div />' );
+		var span = jQuery( '<span />' );
+
+		// Fix for textarea
+		if ( /^textarea$/i.test( el.prop( 'tagName' ) ) ) {
+			span.css( 'top', 'inherit' );
+			if ( args.force_container_block )
+				div.css( 'display', 'block' );
+		}
+
+		div.addClass( 'fm-character-counter' );
+		el.wrap(div);
+
+		span.text( type === 'length' ? el.val().length : el.attr( 'maxlength' ) - el.val().length );
+
+		el.before( span );
+
+		el.on( 'keydown', function() {
+			span.text( type === 'length' ? el.val().length : el.attr( 'maxlength' ) - el.val().length );
+		});
+		el.on( 'keyup', function() {
+			span.text( type === 'length' ? el.val().length : el.attr( 'maxlength' ) - el.val().length );
+		});
+	});
+}
+// Add character counter based on 'data-character-counter' attribute
+jQuery( document ).ready( function() {
+	fm_add_character_counter( { selector: '.fm-element[data-character-counter]' } );
+} );
+
 } )( jQuery );
