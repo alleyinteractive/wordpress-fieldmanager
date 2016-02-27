@@ -303,9 +303,10 @@ fm_add_character_counter = function() {
 
 		// Fix for textarea
 		if ( /^textarea$/i.test( el.prop( 'tagName' ) ) ) {
-			span.css( 'top', 'inherit' );
-			if ( args.force_container_block )
-				div.css( 'display', 'block' );
+			span.addClass( 'fm-character-counter-top' );
+			if ( args.force_container_block ) {
+				div.addClass( 'fm-character-counter-block' );
+			}
 		}
 
 		div.addClass( 'fm-character-counter' );
