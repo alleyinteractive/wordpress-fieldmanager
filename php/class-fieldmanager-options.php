@@ -1,8 +1,10 @@
 <?php
 
 /**
- * Base class for handling option fields, like checkboxes or radios
- * @package Fieldmanager
+ * Abstract base class for handling option fields, like select elements,
+ * checkboxes or radios.
+ *
+ * @package Fieldmanager_Field
  */
 abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
@@ -238,6 +240,8 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	public function presave_alter_values( $values, $current_values = array() ) {
 		if ( !empty( $this->datasource ) ) {
 			if ( ! empty( $this->datasource->only_save_to_taxonomy ) ) {
+				$this->skip_save = true;
+			} elseif ( ! empty( $this->datasource->only_save_to_post_parent ) ) {
 				$this->skip_save = true;
 			}
 			return $this->datasource->presave_alter_values( $this, $values, $current_values );

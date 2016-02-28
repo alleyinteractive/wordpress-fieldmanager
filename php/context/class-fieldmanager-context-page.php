@@ -1,11 +1,9 @@
 <?php
-/**
- * @package Fieldmanager_Context
- */
 
 /**
  * Use fieldmanager on the public-facing theme.
- * @package Fieldmanager_Datasource
+ *
+ * @package Fieldmanager_Context
  */
 class Fieldmanager_Context_Page extends Fieldmanager_Context {
 

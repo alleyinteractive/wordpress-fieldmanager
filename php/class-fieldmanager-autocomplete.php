@@ -1,8 +1,13 @@
 <?php
 
 /**
- * Post auto-complete field
- * @package Fieldmanager
+ * Text field that responds to user input with autocomplete suggestions
+ * (optionally via an ajax request).
+ *
+ * This must include a {@link Fieldmanager_Datasource}, which the autocomplete
+ * uses to search against.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 
@@ -153,7 +158,10 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 
 		if ( ! empty( $this->datasource->only_save_to_taxonomy ) ) {
 			$this->skip_save = true;
+		} elseif ( ! empty( $this->datasource->only_save_to_post_parent ) ) {
+			$this->skip_save = true;
 		}
+
 		return $this->datasource->presave_alter_values( $this, $values, $current_values );
 	}
 

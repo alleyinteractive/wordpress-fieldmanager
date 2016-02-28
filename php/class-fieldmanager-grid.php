@@ -1,10 +1,12 @@
 <?php
 
 /**
- * Fieldmanager plugin for Handsontable Grid view, packaged with main
- * Fieldmanager implemenation to demonstrate advanced custom functionality, and
- * a field which overrides presave.
- * @package Fieldmanager
+ * Data grid (spreadsheet) field.
+ *
+ * This field uses {@link https://github.com/handsontable/handsontable/
+ * Handsontable} to provide a grid interface.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Grid extends Fieldmanager_Field {
 

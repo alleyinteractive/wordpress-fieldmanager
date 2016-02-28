@@ -1,8 +1,11 @@
 <?php
 
 /**
- * Password field.
- * @package Fieldmanager
+ * Text field which hides the user input.
+ *
+ * This field submits plain text.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Password extends Fieldmanager_Field {
 

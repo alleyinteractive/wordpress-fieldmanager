@@ -1,8 +1,9 @@
 <?php
 
 /**
- * A Javascript date-picker which stores dates as unix timestamps.
- * @package Fieldmanager
+ * A Javascript date-picker which submits dates as unix timestamps.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Datepicker extends Fieldmanager_Field {
 
