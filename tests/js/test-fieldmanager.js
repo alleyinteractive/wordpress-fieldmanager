@@ -441,7 +441,8 @@
 
 			QUnit.test( '.fm-autocomplete keyup', function ( assert ) {
 				$( document ).find( '#customizer-events' ).find( '.fm-autocomplete' ).trigger( 'keyup' );
-				assertStrictEqualSettingValue( assert );
+				// This in itself should *not* trigger a change.
+				assert.strictEqual( wp.customize.instance( id ).get(), initialValue, 'Setting value unchanged' );
 			});
 
 			QUnit.test( '.fm-element change', function ( assert ) {
