@@ -59,6 +59,10 @@
 				return;
 			}
 
+			if ( ! control.setting ) {
+				return;
+			}
+
 			$element = control.container.find( this.targetSelector );
 
 			if ( $element.serializeJSON ) {
