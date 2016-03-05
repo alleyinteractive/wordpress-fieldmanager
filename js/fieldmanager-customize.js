@@ -77,13 +77,6 @@
 	};
 
 	/**
-	 * Debounce interval between looking for changes after a 'keyup'.
-	 *
-	 * @type {Number}
-	 */
-	var keyupDebounceInterval = 500;
-
-	/**
 	 * Fires when an .fm-element input triggers a 'change' event.
 	 *
 	 * @param {Event} e Event object.
@@ -154,10 +147,10 @@
 	 * @param {Object} ed TinyMCE instance.
 	 */
 	var onFmRichtextInit = function( e, ed ) {
-		ed.on( 'keyup AddUndo', _.debounce( function () {
+		ed.on( 'keyup AddUndo', function () {
 			ed.save();
 			fm.customize.setControlsContainingElement( document.getElementById( ed.id ) );
-		}, keyupDebounceInterval ) );
+		}, keyupDebounceInterval );
 	};
 
 	/**
@@ -234,16 +227,8 @@
 	var ready = function() {
 		var $document = $( document );
 
-		/*
-		 * We debounce() most keyup events to avoid refreshing the Customizer
-		 * preview every single time the user types a letter. But typing into
-		 * the autocomplete input does not itself trigger a refresh -- the only
-		 * time it should affect the preview is when removing an autocomplete
-		 * selection. We allow that to occur normally.
-		 */
-		$document.on( 'keyup', '.fm-element:not(.fm-autocomplete)', _.debounce( onFmElementKeyup, keyupDebounceInterval ) );
+		$document.on( 'keyup', '.fm-element:not(.fm-autocomplete)', onFmElementKeyup );
 		$document.on( 'keyup', '.fm-autocomplete', onFmElementKeyup );
-
 		$document.on( 'change', '.fm-element', onFmElementChange );
 		$document.on( 'click', '.fm-media-remove', onFmMediaRemoveClick );
 		$document.on( 'click', '.fmjs-remove', onFmjsRemoveClick );
