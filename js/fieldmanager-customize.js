@@ -150,7 +150,7 @@
 		ed.on( 'keyup AddUndo', function () {
 			ed.save();
 			fm.customize.setControlsContainingElement( document.getElementById( ed.id ) );
-		}, keyupDebounceInterval );
+		} );
 	};
 
 	/**
