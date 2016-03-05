@@ -227,8 +227,7 @@
 	var ready = function() {
 		var $document = $( document );
 
-		$document.on( 'keyup', '.fm-element:not(.fm-autocomplete)', onFmElementKeyup );
-		$document.on( 'keyup', '.fm-autocomplete', onFmElementKeyup );
+		$document.on( 'keyup', '.fm-element', onFmElementKeyup );
 		$document.on( 'change', '.fm-element', onFmElementChange );
 		$document.on( 'click', '.fm-media-remove', onFmMediaRemoveClick );
 		$document.on( 'click', '.fmjs-remove', onFmjsRemoveClick );
