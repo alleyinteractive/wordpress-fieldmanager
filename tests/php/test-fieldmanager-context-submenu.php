@@ -17,6 +17,8 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 	public function tearDown() {
 		remove_filter( 'fm_submenu_presave_data', array( $this, 'presave_alter_number' ), 10, 2 );
+		// Allow the network submenu tests to re-use submenu names.
+		_fieldmanager_registry( 'submenus', array() );
 		parent::tearDown();
 	}
 
@@ -45,7 +47,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->build_post( $html, $name );
 		$this->assertTrue( $context->save_submenu_data() );
 
-		$processed_values = get_option( $name );
+		$processed_values = $this->_get_option( $name );
 
 		$this->assertEquals( $_POST[ $name ]['email'], $processed_values['email'] );
 		$this->assertEquals( $_POST[ $name ]['remember'], $processed_values['remember'] );
@@ -70,6 +72,10 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 		$this->assertContains( '<div class="updated success">', $processed_html );
 
+		$_POST[ $name ]['email'] = '';
+		$this->assertTrue( $context->save_submenu_data() );
+		$processed_values = $this->_get_option( $name );
+		$this->assertSame( '', $processed_values['email'] );
 	}
 
 	/**
@@ -118,10 +124,10 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 		// We're running the assertions at the end so we can be guaranteed that
 		// we set the current user back.
-		$this->assertEquals( admin_url( 'tools.php?page=' . $name_1 ), $context_1->url() );
-		$this->assertEquals( admin_url( 'edit.php?post_type=page&page=' . $name_2 ), $context_2->url() );
-		$this->assertEquals( admin_url( 'admin.php?page=' . $name_3 ), $context_3->url() );
-		$this->assertEquals( admin_url( 'admin.php?page=' . $name_4 ), $context_4->url() );
+		$this->assertEquals( $this->_get_admin_url( 'tools.php?page=' . $name_1 ), $context_1->url() );
+		$this->assertEquals( $this->_get_admin_url( 'edit.php?post_type=page&page=' . $name_2 ), $context_2->url() );
+		$this->assertEquals( $this->_get_admin_url( 'admin.php?page=' . $name_3 ), $context_3->url() );
+		$this->assertEquals( $this->_get_admin_url( 'admin.php?page=' . $name_4 ), $context_4->url() );
 	}
 
 	public function test_skip_save() {
@@ -137,20 +143,37 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 			'group'     => array( 'preferences' => '' ),
 		);
 		$this->assertTrue( $context->save_submenu_data( $data ) );
-		$this->assertEquals( $data, get_option( 'skip_save' ) );
+		$this->assertEquals( $data, $this->_get_option( 'skip_save' ) );
 		// Shouldn't save the second time
 		$context->fm->skip_save = true;
-		delete_option( 'skip_save' );
-		$this->assertFalse( get_option( 'skip_save' ) );
+		$this->_delete_option( 'skip_save' );
+		$this->assertFalse( $this->_get_option( 'skip_save' ) );
 		$this->assertTrue( $context->save_submenu_data( $data ) );
-		$this->assertFalse( get_option( 'skip_save' ) );
+		$this->assertFalse( $this->_get_option( 'skip_save' ) );
 		// Permit saving the group, but not an individual field
 		$context->fm->skip_save = false;
 		$context->fm->children['name']->skip_save = true;
 		$this->assertTrue( $context->save_submenu_data( $data ) );
-		$option = get_option( 'skip_save' );
+		$option = $this->_get_option( 'skip_save' );
 		$this->assertFalse( isset( $option['name'] ) );
 		$this->assertEquals( 'foo@alleyinteractive.com', $option['email'] );
+	}
+
+	/**
+	 * Test that the submenu context adds an action to later register a submenu page.
+	 */
+	public function test_hook_registration() {
+		$context = new Fieldmanager_Context_Submenu( null, null, null, null, null, $this->get_fields( 'hook_registration' ) );
+		$this->assert_unhooked( $context );
+	}
+
+	/**
+	 * Test that the submenu context registers a submenu page.
+	 */
+	public function test_register_submenu_page() {
+		$context = new Fieldmanager_Context_Submenu( 'foo.php', null, null, 'exist', 'bar.php', $this->get_fields( 'register_submenu_page' ) );
+		$context->register_submenu_page();
+		$this->assertNotEmpty( remove_submenu_page( 'foo.php', 'bar.php' ) );
 	}
 
 	/**
@@ -169,7 +192,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	 *
 	 * @param  string $name The FM name.
 	 */
-	private function get_context( $name ) {
+	protected function get_context( $name ) {
 		$fields = $this->get_fields( $name );
 		$fields->activate_submenu_page();
 		return _fieldmanager_registry( 'active_submenu' );
@@ -180,7 +203,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	 *
 	 * @param  string $name The FM name.
 	 */
-	private function get_fields( $name ) {
+	protected function get_fields( $name ) {
 		return new Fieldmanager_Group( array(
 			'name' => $name,
 			'children' => array(
@@ -264,4 +287,38 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertContains( "<div class=\"updated success\"><p>{$updated_message}</p></div>", $this->get_html( $context, $name ) );
 	}
 
+	/**
+	 * Assert that the action a given context added for registering its submenu page is removed.
+	 */
+	protected function assert_unhooked( $context ) {
+		$this->assertTrue( $this->unhook_registration( $context ) );
+	}
+
+	/**
+	 * Attempt to remove the action that a given conext added for registering its submenu page.
+	 */
+	protected function unhook_registration( $context ) {
+		return remove_action( 'admin_menu', array( $context, 'register_submenu_page' ) );
+	}
+
+	/**
+	 * Which get_option() to use with tests in this class.
+	 */
+	protected function _get_option( $name ) {
+		return get_option( $name );
+	}
+
+	/**
+	 * Which delete_option() to use with tests in this class.
+	 */
+	protected function _delete_option( $name ) {
+		return delete_option( $name );
+	}
+
+	/**
+	 * Which admin_url() to use with tests in this class.
+	 */
+	protected function _get_admin_url( $path ) {
+		return admin_url( $path );
+	}
 }
