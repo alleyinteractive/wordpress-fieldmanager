@@ -309,7 +309,11 @@ function fm_calculate_context() {
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
 					if ( $script == $submenu[0] || ( 'admin.php' == $script && $page == $submenu[4] ) ) {
-						return array( 'submenu', $page );
+						if ( is_network_admin() ) {
+							return array( 'network_submenu', $page );
+						} else {
+							return array( 'submenu', $page );
+						}
 					}
 				}
 			}
@@ -459,11 +463,11 @@ add_action( 'init', 'fm_trigger_context_action', 99 );
  * @param string $parent_slug Parent menu slug name or admin page file name.
  * @param string $page_title Page title.
  * @param string $menu_title Menu title. Falls back to $page_title if not set. Default null.
- * @param string $capability Capability required to access the page. Default "manage_options".
+ * @param string $capability Capability required to access the page. Defaults to submenu context defaults.
  * @param string $menu_slug Unique slug name for this submenu. Falls back to
  *     $group_name if not set. Default null.
  */
-function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu_title = null, $capability = 'manage_options', $menu_slug = null ) {
+function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu_title = null, $capability = null, $menu_slug = null ) {
 	$submenus = _fieldmanager_registry( 'submenus' );
 	if ( !$submenus ) {
 		$submenus = array();
@@ -474,6 +478,17 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
 
 	if ( !$menu_title ) {
 		$menu_title = $page_title;
+	}
+
+	if ( ! $capability ) {
+		// Construct an inert context to get its default capability.
+		if ( is_network_admin() ) {
+			$context = new Fieldmanager_Context_NetworkSubmenu( null, null );
+		} else {
+			$context = new Fieldmanager_Context_Submenu( null, null );
+		}
+
+		$capability = $context->capability;
 	}
 
 	/**
@@ -515,6 +530,7 @@ function _fm_add_submenus() {
 	}
 }
 add_action( 'admin_menu', '_fm_add_submenus', 15 );
+add_action( 'network_admin_menu', '_fm_add_submenus', 15 );
 
 /**
  * Sanitize multi-line text.
