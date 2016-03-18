@@ -124,9 +124,6 @@
 }
 
 /* Vertical Tabs */
-.fm-tabbed-vertical {
-	margin: -6px -12px -12px;
-}
 .fm-tabbed-vertical:before,
 .fm-tabbed-vertical:after {
   content: " ";
@@ -138,7 +135,7 @@
 .fm-tabbed-vertical .fm-tab-bar {
 	width: 175px;
 	float: left;
-	margin: 0;
+	margin: 0 0 0 -12px;
 	padding: 0;
 	-moz-box-shadow: 0 1px 0px #dfdfdf;
 	-webkit-box-shadow: 0 1px 0px #dfdfdf;
