@@ -10,18 +10,24 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->field = new Fieldmanager_TextField( array( 'name' => 'foo' ) );
 	}
 
-	// Test that a section is created even without constructor args.
-	function test_bare_section() {
+	// Test that no section is created if no section args are passed.
+	function test_no_section() {
 		new Fieldmanager_Context_Customizer( array(), $this->field );
+		$this->assertEmpty( $this->manager->get_section( $this->field->name ) );
+	}
+
+	// Test that a section is created even with empty constructor args.
+	function test_bare_section() {
+		new Fieldmanager_Context_Customizer( array( 'section_args' => array() ), $this->field );
 		$this->register();
 		$this->assertInstanceOf( 'WP_Customize_Section', $this->manager->get_section( $this->field->name ) );
 	}
 
-	// Test that a section is created even with a title string.
+	// Test that a section is created with a title string.
 	function test_section_title() {
 		$title = rand_str();
 
-		new Fieldmanager_Context_Customizer( $title, $this->field );
+		new Fieldmanager_Context_Customizer( array( 'section_args' => array( 'title' => $title ) ), $this->field );
 		$this->register();
 		$this->assertSame( $title, $this->manager->get_section( $this->field->name )->title );
 	}

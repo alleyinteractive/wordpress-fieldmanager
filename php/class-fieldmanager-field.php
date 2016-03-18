@@ -1084,11 +1084,18 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Add this field to the Customizer.
 	 *
-	 * @param string|array $args Customizer section title or arguments for the
-	 *     section and setting. @see Fieldmanager_Context_Customizer.
+	 * @param string|array $args @see Fieldmanager_Context_Customizer. Pass a
+	 *     string to add a Customizer section for this field that uses the
+	 *     string for its title and context defaults for the remaining
+	 *     arguments. Or, pass a full array of arguments for the context.
 	 */
-	public function add_customizer_section( $args ) {
+	public function add_to_customizer( $args = array() ) {
 		$this->require_base();
+
+		if ( is_string( $args ) ) {
+			$args = array( 'section_args' => array( 'title' => $args ) );
+		}
+
 		return new Fieldmanager_Context_Customizer( $args, $this );
 	}
 

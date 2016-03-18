@@ -10,11 +10,11 @@
  */
 class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
-	 * @var string|array $args {
-	 *     The title to use with the {@see WP_Customize_Section}, or arrays of
-	 *     arguments to construct Customizer objects.
+	 * @var array $args {
+	 *     Arguments to construct Customizer objects.
 	 *
-	 *     @type array $section_args Arguments for constructing a WP_Customize_Section.
+	 *     @type array|bool $section_args Arguments for constructing a {@see WP_Customize_Section},
+	 *           or false to not create one for this context.
 	 *     @type array $setting_args Arguments for constructing a {@see Fieldmanager_Customize_Setting}.
 	 *     @type array $control_args Arguments for constructing a {@see Fieldmanager_Customize_Control}.
 	 * }
@@ -24,16 +24,12 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
 	 * Constructor.
 	 *
-	 * @param string|array $args Section title or Customizer object arguments.
+	 * @param array $args Customizer object arguments. @see Fieldmanager_Context_Customizer::args.
 	 * @param Fieldmanager_Field $fm Field object to add to the Customizer.
 	 */
 	public function __construct( $args, $fm ) {
-		if ( is_string( $args ) ) {
-			$args = array( 'section_args' => array( 'title' => $args ) );
-		}
-
 		$this->args = wp_parse_args( $args, array(
-			'section_args' => array(),
+			'section_args' => false,
 			'setting_args' => array(),
 			'control_args' => array(),
 		) );
@@ -98,9 +94,13 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 * Add a Customizer section for this field.
 	 *
 	 * @param WP_Customize_Manager $manager
-	 * @return WP_Customize_Section Section object, where supported.
+	 * @return WP_Customize_Section|void Section object, where supported, if created.
 	 */
 	protected function register_section( $manager ) {
+		if ( false === $this->args['section_args'] ) {
+			return;
+		}
+
 		return $manager->add_section( $this->fm->name, $this->args['section_args'] );
 	}
 
