@@ -8,7 +8,6 @@ class Fieldmanager_Customizer_UnitTestCase extends WP_UnitTestCase {
 		$this->manager = new WP_Customize_Manager();
 	}
 
-
 	function register() {
 		do_action( 'customize_register', $this->manager );
 	}
