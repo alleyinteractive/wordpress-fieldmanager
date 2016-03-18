@@ -150,7 +150,7 @@
 				var control = new wp.customize.Control( randStr(), {
 					setting: setting,
 					params: {
-						settings: {},
+						settings: { 'default': setting.id },
 						type: 'fieldmanager',
 					},
 				});
@@ -177,7 +177,7 @@
 								.attr( 'type', 'text' )
 								.attr( 'name', settingId )
 						),
-						settings: {},
+						settings: { 'default': setting.id },
 						type: 'text',
 					},
 				});
@@ -212,7 +212,7 @@
 					setting: setting,
 					params: {
 						content: markup,
-						settings: {},
+						settings: { 'default': setting.id },
 						type: 'fieldmanager',
 					}
 				});
@@ -250,7 +250,7 @@
 								.attr( 'name', 'option_fields[0][repeatable_group][0][text]' )
 								.attr( 'value', textValue )
 						),
-						settings: {},
+						settings: { 'default': setting.id },
 						type: 'fieldmanager',
 					}
 				});
@@ -282,7 +282,7 @@
 								.attr( 'name', 'option_fields[0][repeatable_group][0][text]' )
 								.attr( 'value', textValue )
 						),
-						settings: {},
+						settings: { 'default': setting.id },
 						type: 'fieldmanager',
 					}
 				});
@@ -313,7 +313,7 @@
 					setting: setting1,
 					params: {
 						content: $( '<li>' ).append( $element1 ),
-						settings: {},
+						settings: { 'default': setting1.id },
 						type: 'fieldmanager',
 					},
 				});
@@ -332,7 +332,7 @@
 								.attr( 'name', id2 )
 								.attr( 'value', newValue )
 						),
-						settings: {},
+						settings: { 'default': setting2.id },
 						type: 'fieldmanager',
 					}
 				});
@@ -365,7 +365,7 @@
 								.attr( 'name', id1 )
 								.attr( 'value', newValue1 )
 						 ),
-						settings: {},
+						settings: { 'default': setting1.id },
 						type: 'fieldmanager',
 					},
 				});
@@ -384,7 +384,7 @@
 								.attr( 'name', id2 )
 								.attr( 'value', newValue2 )
 						),
-						settings: {},
+						settings: { 'default': setting2.id },
 						type: 'fieldmanager',
 					}
 				});
@@ -410,7 +410,7 @@
 					setting: setting,
 					params: {
 						content: $( document ).find( '#customizer-events' ),
-						settings: {},
+						settings: { 'default': setting.id },
 						type: 'fieldmanager',
 					}
 				});
