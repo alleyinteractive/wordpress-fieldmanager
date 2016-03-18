@@ -40,7 +40,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 
 		$this->fm = $fm;
 
-		add_action( 'customize_register', array( $this, 'customize_register' ) );
+		add_action( 'customize_register', array( $this, 'customize_register' ), 100 );
 	}
 
 	/**
