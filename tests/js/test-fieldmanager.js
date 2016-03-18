@@ -150,8 +150,7 @@
 				var control = new wp.customize.Control( randStr(), {
 					setting: setting,
 					params: {
-						// Hack so the setting isn't overwritten.
-						settings: [ '' ],
+						settings: {},
 						type: 'fieldmanager',
 					},
 				});
@@ -178,7 +177,7 @@
 								.attr( 'type', 'text' )
 								.attr( 'name', settingId )
 						),
-						settings: [ '' ],
+						settings: {},
 						type: 'text',
 					},
 				});
@@ -213,8 +212,7 @@
 					setting: setting,
 					params: {
 						content: markup,
-						// Hack so the setting isn't overwritten.
-						settings: [ '' ],
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -252,7 +250,7 @@
 								.attr( 'name', 'option_fields[0][repeatable_group][0][text]' )
 								.attr( 'value', textValue )
 						),
-						settings: [ '' ],
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -284,7 +282,7 @@
 								.attr( 'name', 'option_fields[0][repeatable_group][0][text]' )
 								.attr( 'value', textValue )
 						),
-						settings: [ '' ],
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -315,7 +313,7 @@
 					setting: setting1,
 					params: {
 						content: $( '<li>' ).append( $element1 ),
-						settings: [ '' ],
+						settings: {},
 						type: 'fieldmanager',
 					},
 				});
@@ -334,7 +332,7 @@
 								.attr( 'name', id2 )
 								.attr( 'value', newValue )
 						),
-						settings: [ '' ],
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -367,7 +365,7 @@
 								.attr( 'name', id1 )
 								.attr( 'value', newValue1 )
 						 ),
-						settings: [ '' ],
+						settings: {},
 						type: 'fieldmanager',
 					},
 				});
@@ -386,7 +384,7 @@
 								.attr( 'name', id2 )
 								.attr( 'value', newValue2 )
 						),
-						settings: [ '' ],
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
@@ -412,7 +410,7 @@
 					setting: setting,
 					params: {
 						content: $( document ).find( '#customizer-events' ),
-						settings: [ '' ],
+						settings: {},
 						type: 'fieldmanager',
 					}
 				});
