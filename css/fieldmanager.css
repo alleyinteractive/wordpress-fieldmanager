@@ -68,6 +68,11 @@
 	vertical-align: top;
 }
 
+/* Gallery */
+.fm-gallery .fm-item-description {
+	margin: 4px 0 10px;
+}
+
 /* Groups */
 .fm-group {
 	margin-bottom: 5px;
@@ -365,6 +370,7 @@ div.fm-group-label-wrapper .fmjs-remove {
 	font-style: italic;
 	line-height: 1.4em;
 	display: block;
+	clear: both;
 	margin: 4px 0 0;
 	color: #999;
 }
