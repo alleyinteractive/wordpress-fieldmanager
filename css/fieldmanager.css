@@ -235,6 +235,7 @@ div.fm-group-label-wrapper {
 	vertical-align: middle;
 }
 
+/* Fields sortables without labels provide a minimal presentation */
 .fm-item.fm-no-labels.fm-text,
 .fm-item.fm-no-labels.fm-ajax,
 .fm-item.fm-no-labels.fm-autocomplete {
@@ -257,6 +258,10 @@ div.fm-group-label-wrapper {
 	top: 1px;
 	width: 31px;
 	height: 31px;
+}
+
+.fmjs-removable-element {
+	max-width: 100%;
 }
 
 .fmjs-removable-element,
