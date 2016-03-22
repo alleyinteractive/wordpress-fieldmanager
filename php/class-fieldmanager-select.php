@@ -86,7 +86,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// Handle type-ahead based fields using the chosen library
 		if ( $this->type_ahead ) {
-			$select_classes[] = 'chzn-select';
+			$select_classes[] = 'chosen-select';
 			if ( !isset( $GLOBALS['fm_chosen_initialized'] ) ) {
 				add_action( 'admin_footer', array( $this, 'chosen_init' ) );
 				$GLOBALS['fm_chosen_initialized'] = true;
@@ -164,10 +164,15 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		?>
 		<script type="text/javascript">
 		jQuery(function($){
+			var chosenOpts = {
+				allow_single_deselect: true,
+				disable_search_threshold: -1,
+				width: '350px'
+			}
 			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
-				$(".chzn-select:visible",this).chosen({allow_single_deselect:true})
+				$(".chosen-select:visible",this).chosen(chosenOpts)
 			});
-			$(".chzn-select:visible").chosen({allow_single_deselect:true});
+			$(".chosen-select:visible").chosen(chosenOpts);
 		});
 		</script>
 		<?php
