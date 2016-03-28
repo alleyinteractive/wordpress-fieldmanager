@@ -8,7 +8,8 @@
 	padding: 8px 10px;
 	border-radius: 3px 3px 0 0;
 	background: #f1f1f1;
-	margin-right: 5px;
+	margin: 3px 0 0 5px;
+	display: inline-block;
 }
 
 .fm-tab-bar .fm-tab:hover {
@@ -16,7 +17,8 @@
 }
 
 .fm-tab-bar {
-	padding: 20px 5px 3px 10px;
+	padding: 20px 5px 0 10px;
+	margin-bottom: 0;
 }
 
 .fm-tab-bar,
