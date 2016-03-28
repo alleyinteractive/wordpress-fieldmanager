@@ -45,7 +45,7 @@
 .fm-label label {
 	font-size: 13px;
 	font-weight: 700;
-	line-height: 1.4em;
+	line-height: 1.4;
 	display: inline-block;
 	margin: 0 0 4px;
 }
@@ -373,7 +373,7 @@ div.fm-group-label-wrapper .fmjs-remove {
 
 .fm-item-description {
 	font-style: italic;
-	line-height: 1.4em;
+	line-height: 1.4;
 	display: block;
 	clear: both;
 	margin: 4px 0 0;
