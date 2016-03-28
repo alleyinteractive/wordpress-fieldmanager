@@ -135,19 +135,14 @@
   clear: both;
 }
 .fm-tabbed-vertical .fm-tab-bar {
-	width: 175px;
-	float: left;
-	margin: 0 0 0 -12px;
+	margin: 0;
 	padding: 0;
-	-moz-box-shadow: 0 1px 0px #dfdfdf;
-	-webkit-box-shadow: 0 1px 0px #dfdfdf;
-	box-shadow: 0 1px 0px #dfdfdf;
 }
 .fm-tabbed-vertical .fm-tab-bar li {
-	display: block;
+	display: inline-block;
 	border: none;
 	padding: 0;
-	margin: 0;
+	margin: 5px 5px 0 0;
 }
 .fm-tabbed-vertical .fm-tab-bar li a {
 	display: block;
@@ -155,7 +150,6 @@
 	padding: 12px 14px;
 	color: #999;
 	font-weight: bold;
-	border-bottom: 1px solid #dfdfdf;
 	border-right: 1px solid #dfdfdf;
 	background-color: #f0f0f0;
 }
@@ -172,8 +166,6 @@
 	color: #444;
 }
 .fm-tabbed-vertical .wp-tabs-panel {
-	margin-left: 185px;
-	padding: 10px;
 	overflow: auto;
 }
 .fm-tabbed-vertical .wp-tabs-panel .fm-group {
@@ -190,4 +182,30 @@
 }
 .fm-tabbed-vertical > .wp-tabs-panel > div > .fm-group > .fm-group-inner {
 	border-top: none;
+}
+
+@media screen and (min-width: 575px) {
+
+	.fm-tabbed-vertical .fm-tab-bar {
+		width: 175px;
+		float: left;
+		margin: 0 0 0 -12px;
+		-moz-box-shadow: 0 1px 0px #dfdfdf;
+		-webkit-box-shadow: 0 1px 0px #dfdfdf;
+		box-shadow: 0 1px 0px #dfdfdf;
+	}
+
+	.fm-tabbed-vertical .fm-tab-bar li {
+		display: block;
+		margin: 0;
+	}
+
+	.fm-tabbed-vertical .fm-tab-bar li a {
+		border-bottom: 1px solid #dfdfdf;
+	}
+
+	.fm-tabbed-vertical .wp-tabs-panel {
+		margin-left: 185px;
+		padding: 10px;
+	}
 }
