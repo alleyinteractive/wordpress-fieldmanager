@@ -68,6 +68,10 @@
 	vertical-align: top;
 }
 
+.fm-option input[type=radio] {
+	margin-bottom: 7px;
+}
+
 /* Gallery */
 .fm-gallery .fm-item-description {
 	margin: 4px 0 10px;
@@ -624,4 +628,10 @@ a.fm-delete:hover {
 .form-field .fm-option label,
 .form-field .fm-checkbox label {
 	display: inline;
+}
+
+@media screen and (min-width: 783px) {
+	.fm-option input[type=radio] {
+		margin-bottom: 0;
+	}
 }
