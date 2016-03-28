@@ -68,7 +68,8 @@
 	vertical-align: top;
 }
 
-.fm-option input[type=radio] {
+.fm-option input[type=radio],
+.fm-option input[type='checkbox'] {
 	margin-bottom: 7px;
 }
 
@@ -631,7 +632,8 @@ a.fm-delete:hover {
 }
 
 @media screen and (min-width: 783px) {
-	.fm-option input[type=radio] {
+	.fm-option input[type=radio],
+	.fm-option input[type='checkbox'] {
 		margin-bottom: 0;
 	}
 }
