@@ -20,6 +20,13 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	public $field_class = 'colorpicker';
 
 	/**
+	 * The default color for the color picker.
+	 *
+	 * @var string
+	 */
+	public $default_color = null;
+
+	/**
 	 * Static variable so we only load static assets once.
 	 *
 	 * @var boolean
@@ -43,6 +50,10 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 
 		$this->sanitize = array( $this, 'sanitize_hex_color' );
 
+		if ( ! empty( $options['default_color'] ) ) {
+			$this->default_color = $options['default_color'];
+		}
+
 		parent::__construct( $label, $options );
 	}
 
@@ -54,9 +65,10 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	 */
 	public function form_element( $value = '' ) {
 		return sprintf(
-			'<input class="fm-element fm-colorpicker-popup" name="%1$s" id="%2$s" value="%3$s" %4$s />',
+			'<input class="fm-element fm-colorpicker-popup" name="%1$s" id="%2$s" data-default-color="%3$s" value="%4$s" %5$s />',
 			esc_attr( $this->get_form_name() ),
 			esc_attr( $this->get_element_id() ),
+			esc_attr( $this->default_color ),
 			esc_attr( $value ),
 			$this->get_element_attributes()
 		);
