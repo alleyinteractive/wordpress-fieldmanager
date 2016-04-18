@@ -28,7 +28,7 @@ class Test_Fieldmanager_Colorpicker_Field extends WP_UnitTestCase {
 	}
 
 	public function test_default_color() {
-		$fm = new Fieldmanager_Colorpicker( array( 'name' => 'test_colorpicker', 'default_color' => '#ff0000' ) );
+		$fm = new Fieldmanager_Colorpicker( array( 'name' => 'test_colorpicker', 'default_value' => '#ff0000' ) );
 
 		ob_start();
 		$fm->add_meta_box( 'Test Colorpicker', 'post' )->render_meta_box( $this->post, array() );
