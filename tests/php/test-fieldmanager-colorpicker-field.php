@@ -27,6 +27,15 @@ class Test_Fieldmanager_Colorpicker_Field extends WP_UnitTestCase {
 		$this->assertRegExp( '#<input class="[^"]*fm-colorpicker-popup[^>]+name="test_colorpicker"#', $html );
 	}
 
+	public function test_default_color() {
+		$fm = new Fieldmanager_Colorpicker( array( 'name' => 'test_colorpicker', 'default_color' => '#ff0000' ) );
+
+		ob_start();
+		$fm->add_meta_box( 'Test Colorpicker', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$this->assertEquals( 1, preg_match( '[data-default-color="#ff0000"]', $html ) );
+	}
+
 	public function test_basic_save() {
 		$test_data = '#bada55';
 		$fm = new Fieldmanager_Colorpicker( array( 'name' => 'test_colorpicker' ) );
