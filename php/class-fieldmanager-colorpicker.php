@@ -50,13 +50,13 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 
 		$this->sanitize = array( $this, 'sanitize_hex_color' );
 
-		if ( ! empty( $options['default_color'] ) ) {
-			$this->default_color = $options['default_color'];
-		} else if ( ! empty( $options['default_value'] ) ) {
-			$this->default_color = $options['default_value'];
-		}
-
 		parent::__construct( $label, $options );
+
+		// If we have a default_value and default_color was not explicitly set
+		// to be empty, set default_color to default_value.
+		if ( ! isset( $this->default_color ) && ! empty( $this->default_value ) ) {
+			$this->default_color = $this->default_value;
+		}
 	}
 
 	/**
