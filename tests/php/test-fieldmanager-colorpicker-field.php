@@ -28,12 +28,29 @@ class Test_Fieldmanager_Colorpicker_Field extends WP_UnitTestCase {
 	}
 
 	public function test_default_color() {
-		$fm = new Fieldmanager_Colorpicker( array( 'name' => 'test_colorpicker', 'default_value' => '#ff0000' ) );
-
+		$fm_1 = new Fieldmanager_Colorpicker( 'test-1', array( 'name' => 'test_colorpicker', 'default_color' => '#ff0000' ) );
 		ob_start();
-		$fm->add_meta_box( 'Test Colorpicker', 'post' )->render_meta_box( $this->post, array() );
+		$fm_1->add_meta_box( 'Test Colorpicker', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertEquals( 1, preg_match( '[data-default-color="#ff0000"]', $html ) );
+		$this->assertRegExp( '/data-default-color="#ff0000"/', $html );
+
+		$fm_2 = new Fieldmanager_Colorpicker( 'test-1', array( 'name' => 'test_colorpicker', 'default_value' => '#ff0000' ) );
+		ob_start();
+		$fm_2->add_meta_box( 'Test Colorpicker', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp( '/data-default-color="#ff0000"/', $html );
+
+		$fm_3 = new Fieldmanager_Colorpicker( 'test-1', array( 'name' => 'test_colorpicker', 'default_color' => '', 'default_value' => '#ff0000' ) );
+		ob_start();
+		$fm_3->add_meta_box( 'Test Colorpicker', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp( '/data-default-color/', $html );
+
+		$fm_4 = new Fieldmanager_Colorpicker( 'test-1', array( 'name' => 'test_colorpicker' ) );
+		ob_start();
+		$fm_4->add_meta_box( 'Test Colorpicker', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp( '/data-default-color/', $html );
 	}
 
 	public function test_basic_save() {
