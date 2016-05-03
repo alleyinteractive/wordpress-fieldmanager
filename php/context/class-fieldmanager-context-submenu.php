@@ -1,10 +1,9 @@
 <?php
-/**
- * @package Fieldmanager_Context
- */
 
 /**
- * Use fieldmanager to create meta boxes on
+ * Use fieldmanager to create arbitrary pages in the WordPress admin and save
+ * data primarily to options.
+ *
  * @package Fieldmanager_Context
  */
 class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
@@ -151,6 +150,9 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		$current = get_option( $this->fm->name, null );
 		$data = $this->prepare_data( $current, $data );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
+		if ( $this->fm->skip_save ) {
+			return true;
+		}
 
 		if ( isset( $current ) ) {
 			update_option( $this->fm->name, $data );

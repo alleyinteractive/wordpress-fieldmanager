@@ -1,8 +1,13 @@
 <?php
 
 /**
- * Post auto-complete field
- * @package Fieldmanager
+ * Text field that responds to user input with autocomplete suggestions
+ * (optionally via an ajax request).
+ *
+ * This must include a {@link Fieldmanager_Datasource}, which the autocomplete
+ * uses to search against.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 
@@ -60,7 +65,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 		add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_scripts' ) );
 
-		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array( 'fieldmanager_script' ), '1.0.5', false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
+		fm_add_script( 'fm_autocomplete_js', 'js/fieldmanager-autocomplete.js', array( 'fieldmanager_script' ), '1.0.6', false, 'fm_search', array( 'nonce' => wp_create_nonce( 'fm_search_nonce' ) ) );
 
 		if ( empty( $this->datasource ) ) {
 			$message = esc_html__( 'You must supply a datasource for the autocomplete field', 'fieldmanager' );
@@ -146,8 +151,17 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 * @param array $current_values existing post values
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
-		// return if there are no saved values, if this isn't a post, or if the reciprocal relationship isn't set.
-		if ( empty( $this->data_id ) || $this->data_type !== 'post' ) return $values;
+		// return if there is no data id
+		if ( empty( $this->data_id ) ) {
+			return $values;
+		}
+
+		if ( ! empty( $this->datasource->only_save_to_taxonomy ) ) {
+			$this->skip_save = true;
+		} elseif ( ! empty( $this->datasource->only_save_to_post_parent ) ) {
+			$this->skip_save = true;
+		}
+
 		return $this->datasource->presave_alter_values( $this, $values, $current_values );
 	}
 

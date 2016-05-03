@@ -1,7 +1,12 @@
 <?php
 /**
- * Class file for draggable post selector field
- * @package Fieldmanager
+ * An interface for dragging posts from a repository to assorted buckets.
+ *
+ * This field might be deprecated in a future version of Fieldmanager. It is
+ * preferable to use {@link https://github.com/alleyinteractive/fm-zones}
+ * instead.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 

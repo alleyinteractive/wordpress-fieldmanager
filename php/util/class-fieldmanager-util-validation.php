@@ -1,5 +1,7 @@
 <?php
 /**
+ * Framework for user-facing data validation.
+ *
  * @package Fieldmanager_Util
  */
 
