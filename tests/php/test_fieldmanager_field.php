@@ -1051,4 +1051,94 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		remove_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment' ) );
 		$this->assertTrue( $fm_3->is_attachment );
 	}
+
+
+	public function save_empty_data() {
+		return array(
+			// Test 1: Basic field with save_empty
+			array(),
+
+			// Test 2: Repeating field
+			array( array(
+				'fm_args' => array( 'limit' => 0 ),
+				'test_data' => array( '123', 'abc', '456' ),
+				'empty_data' => array(),
+			) ),
+
+			// Test 3: Repeating field unserialized
+			array( array(
+				'fm_args' => array( 'limit' => 0, 'serialize_data' => false ),
+				'test_data' => array( '123', 'abc', '456' ),
+				'empty_data' => array(),
+				'data_dont_save_assertion' => array( '123', 'abc', '456' ),
+				'empty_do_save_assertion' => array( '' ),
+				'data_do_save_assertion' => array( '123', 'abc', '456' ),
+			) ),
+		);
+	}
+
+	/**
+	 * @dataProvider save_empty_data
+	 * @param  array $fm_args_dont_save_empty Group args with save_empty => false
+	 * @param  array $fm_args_do_save_empty   Group args with save_empty => true
+	 * @param  mixed $test_data               Test POST data with values
+	 * @param  mixed $empty_data              Test POST data without values
+	 * @param  array  $assertions             Optional. Assertion overrides.
+	 */
+	public function test_save_empty( $args = array() ) {
+		$args = wp_parse_args( $args, array(
+			'fm_args'    => array(),
+			'test_data'  => rand_str(),
+			'empty_data' => '',
+		) );
+		$args = wp_parse_args( $args, array(
+			'empty_dont_save_assertion' => array(),
+			'data_dont_save_assertion'  => array( $args['test_data'] ),
+			'empty_do_save_assertion'   => array( $args['empty_data'] ),
+			'data_do_save_assertion'    => array( $args['test_data'] ),
+		) );
+
+		$fm_args_dont_save_empty = wp_parse_args( $args['fm_args'], array(
+			'name' => 'test_save_empty',
+			'save_empty' => false,
+		) );
+
+		$fm_args_do_save_empty = wp_parse_args( $args['fm_args'], array(
+			'name' => 'test_save_empty',
+			'save_empty' => true,
+		) );
+
+		// Ensure nothing exists out of the gate
+		$this->assertSame( array(), get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Test skip_save => false
+		$fm = new Fieldmanager_TextField( $fm_args_dont_save_empty );
+
+		// Ensure that the empty data doesn't save
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $args['empty_data'] );
+		$this->assertSame( $args['empty_dont_save_assertion'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Ensure the populated data does save
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $args['test_data'] );
+		$this->assertSame( $args['data_dont_save_assertion'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Ensure that the populated data is removed and empty data doesn't save
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $args['empty_data'] );
+		$this->assertSame( $args['empty_dont_save_assertion'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Test skip_save => true
+		$fm = new Fieldmanager_TextField( $fm_args_do_save_empty );
+
+		// Ensure that the empty data saves
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $args['empty_data'] );
+		$this->assertSame( $args['empty_do_save_assertion'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Ensure the populated data does save
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $args['test_data'] );
+		$this->assertSame( $args['data_do_save_assertion'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Ensure that the populated data is removed and empty data saves
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $args['empty_data'] );
+		$this->assertSame( $args['empty_do_save_assertion'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+	}
 }

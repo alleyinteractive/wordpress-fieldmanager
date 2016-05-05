@@ -909,7 +909,7 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 		$context = $group->add_meta_box( 'group', $this->post );
 		$context->save_to_post_meta( $this->post->ID, $group_data );
-		$this->assertEquals( array( 'a' => 0 ), get_post_meta( $this->post->ID, 'group', true ) );
+		$this->assertEquals( $group_data, get_post_meta( $this->post->ID, 'group', true ) );
 
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
@@ -921,7 +921,37 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 			'a' => '',
 		);
 		$context->save_to_post_meta( $this->post->ID, $group_data );
-		$this->assertEquals( array( 'a' => '' ), get_post_meta( $this->post->ID, 'group', true ) );
+		$this->assertEquals( array(), get_post_meta( $this->post->ID, 'group', true ) );
+	}
+
+	public function test_textfield_zero_input_in_repeating_group() {
+		$group = new Fieldmanager_Group( array(
+			'name' => 'group',
+			'limit' => 0,
+			'children' => array(
+				'a' => new Fieldmanager_Textfield(),
+			),
+		) );
+
+		$group_data = array( array(
+			'a' => 'foo',
+		) );
+
+		$context = $group->add_meta_box( 'group', $this->post );
+		$context->save_to_post_meta( $this->post->ID, $group_data );
+		$this->assertEquals( $group_data, get_post_meta( $this->post->ID, 'group', true ) );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertContains( 'value="foo"', $html );
+
+		$group_data = array( array(
+			'a' => '',
+		) );
+		$context->save_to_post_meta( $this->post->ID, $group_data );
+		$this->assertEquals( array(), get_post_meta( $this->post->ID, 'group', true ) );
 	}
 
 	public function test_obey_skip_save_inside_groups() {
@@ -960,5 +990,160 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 		$this->assertNotContains( $skip, $html );
 		$this->assertContains( $save, $html );
+	}
+
+	public function save_empty_data() {
+		return array(
+			// Test 1: Basic group with save_empty
+			array(
+				array(
+					'name' => 'test_save_empty',
+					'save_empty' => false,
+					'children' => array(
+						'field' => new Fieldmanager_TextField,
+					),
+				),
+				array(
+					'name' => 'test_save_empty',
+					'save_empty' => true,
+					'children' => array(
+						'field' => new Fieldmanager_TextField,
+					),
+				),
+				array( 'field' => rand_str() ),
+				array( 'field' => '' ),
+			),
+
+			// Test 2: Nested group with save_empty
+			array(
+				array(
+					'name' => 'test_save_empty',
+					'save_empty' => false,
+					'children' => array(
+						'group' => new Fieldmanager_Group( array(
+							'children' => array(
+								'field' => new Fieldmanager_TextField,
+							),
+						) ),
+					),
+				),
+				array(
+					'name' => 'test_save_empty',
+					'save_empty' => true,
+					'children' => array(
+						'group' => new Fieldmanager_Group( array(
+							'children' => array(
+								'field' => new Fieldmanager_TextField,
+							),
+						) ),
+					),
+				),
+				array( 'group' => array( 'field' => rand_str() ) ),
+				array( 'group' => array( 'field' => '' ) ),
+			),
+
+			// Test 3: save_empty in child group
+			array(
+				array(
+					'name' => 'test_save_empty',
+					'save_empty' => true,
+					'children' => array(
+						'group' => new Fieldmanager_Group( array(
+							'save_empty' => false,
+							'children' => array(
+								'field' => new Fieldmanager_TextField,
+							),
+						) ),
+					),
+				),
+				array(
+					'name' => 'test_save_empty',
+					'save_empty' => true,
+					'children' => array(
+						'group' => new Fieldmanager_Group( array(
+							'save_empty' => true,
+							'children' => array(
+								'field' => new Fieldmanager_TextField,
+							),
+						) ),
+					),
+				),
+				array( 'group' => array( 'field' => rand_str() ) ),
+				array( 'group' => array( 'field' => '' ) ),
+				array( 'empty_dont_save' => array( array() ) ),
+			),
+
+			// Test 4: repeating
+			array(
+				array(
+					'name' => 'test_save_empty',
+					'limit' => 0,
+					'save_empty' => false,
+					'children' => array(
+						'field' => new Fieldmanager_TextField,
+					),
+				),
+				array(
+					'name' => 'test_save_empty',
+					'limit' => 0,
+					'save_empty' => true,
+					'children' => array(
+						'field' => new Fieldmanager_TextField,
+					),
+				),
+				array( array( 'field' => rand_str() ), array( 'field' => rand_str() ) ),
+				array( array( 'field' => '' ), array( 'field' => '' ) ),
+			),
+		);
+	}
+
+	/**
+	 * @dataProvider save_empty_data
+	 * @param  array $fm_args_dont_save_empty Group args with save_empty => false
+	 * @param  array $fm_args_do_save_empty   Group args with save_empty => true
+	 * @param  mixed $test_data               Test POST data with values
+	 * @param  mixed $empty_data              Test POST data without values
+	 * @param  array  $assertions             Optional. Assertion overrides.
+	 */
+	public function test_save_empty( $fm_args_dont_save_empty, $fm_args_do_save_empty, $test_data, $empty_data, $assertions = array() ) {
+		$assertions = wp_parse_args( $assertions, array(
+			'empty_dont_save' => array(),
+			'data_dont_save'  => array( $test_data ),
+			'empty_do_save'   => array( $empty_data ),
+			'data_do_save'    => array( $test_data ),
+		) );
+
+		// Ensure nothing exists out of the gate
+		$this->assertSame( array(), get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Test skip_save => false
+		$fm = new Fieldmanager_Group( $fm_args_dont_save_empty );
+
+		// Ensure that the empty data doesn't save
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $empty_data );
+		$this->assertSame( $assertions['empty_dont_save'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Ensure the populated data does save
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data );
+		$this->assertSame( $assertions['data_dont_save'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Ensure that the populated data is removed and empty data doesn't save
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $empty_data );
+		$this->assertSame( $assertions['empty_dont_save'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Test skip_save => true
+		$fm = new Fieldmanager_Group( $fm_args_do_save_empty );
+
+		// Ensure that the empty data saves
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $empty_data );
+		$this->assertSame( $assertions['empty_do_save'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Ensure the populated data does save
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data );
+		$this->assertSame( $assertions['data_do_save'], get_post_meta( $this->post_id, 'test_save_empty' ) );
+
+		// Ensure that the populated data is removed and empty data saves
+		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $empty_data );
+		$this->assertSame( $assertions['empty_do_save'], get_post_meta( $this->post_id, 'test_save_empty' ) );
 	}
 }
