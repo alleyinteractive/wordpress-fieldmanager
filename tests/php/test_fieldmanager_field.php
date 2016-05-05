@@ -1059,11 +1059,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$ma = new MockAction();
 		add_filter( 'fm_element_markup_start', array( $ma, 'filter' ) );
 		add_filter( 'fm_element_markup_end', array( $ma, 'filter' ) );
-		add_filter( "fm_element_markup_start_{$name}", array( $ma, 'filter2' ) );
-		add_filter( "fm_element_markup_end_{$name}", array( $ma, 'filter2' ) );
+		add_filter( "fm_element_markup_start_{$name}", array( $ma, 'filter' ) );
+		add_filter( "fm_element_markup_end_{$name}", array( $ma, 'filter' ) );
 
 		$fm->element_markup( rand_str() );
-		$this->assertSame( 2, $ma->get_call_count( 'filter' ), 'Missing calls to global element-markup filters.' );
-		$this->assertSame( 2, $ma->get_call_count( 'filter2' ), 'Missing calls to field-specific element-markup filters' );
+		$this->assertSame( 4, $ma->get_call_count(), 'Missing calls to element-markup filters' );
 	}
 }
