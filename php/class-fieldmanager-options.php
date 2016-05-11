@@ -91,7 +91,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		if ( isset( $values[0] ) && is_array( $values[0] ) ) {
 			foreach ( $options as $group => $data ) {
 				foreach ( $data as $value => $label ) {
-					$this->add_option_data( $value, $label, $group, $group );
+					$this->add_option_data( $label, $value, $group, $group );
 				}
 			}
 		} else {
