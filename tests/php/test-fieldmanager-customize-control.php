@@ -71,13 +71,16 @@ class Test_Fieldmanager_Customize_Control extends Fieldmanager_Customizer_UnitTe
 	}
 
 	function test_render_content() {
-		$name  = rand_str();
-		$value = rand_str();
+		$name        = rand_str();
+		$value       = rand_str();
+		$label       = rand_str();
+		$description = rand_str();
 
 		$context = new Fieldmanager_Context_Customizer( array(
 			// Bypass capability checks.
 			'section_args' => array( 'capability' => 'exist' ),
 			'setting_args' => array( 'capability' => 'exist' ),
+			'control_args' => array( 'label' => $label, 'description' => $description ),
 		), new Fieldmanager_Textfield( array( 'name' => $name ) ) );
 
 		update_option( $name, $value );
@@ -86,6 +89,8 @@ class Test_Fieldmanager_Customize_Control extends Fieldmanager_Customizer_UnitTe
 		$actual = $this->manager->get_control( $name )->get_content();
 		$this->assertContains( 'fm-element', $actual );
 		$this->assertContains( sprintf( 'name="%s"', $name ), $actual );
+		$this->assertRegExp( '#<([^ ]+)[^>]*?>' . $label . '</\1>#', $actual );
+		$this->assertRegExp( '#<([^ ]+)[^>]*?>' . $description . '</\1>#', $actual );
 		// Slip in a test that the option value is also used.
 		$this->assertContains( sprintf( 'value="%s"', $value ), $actual );
 	}

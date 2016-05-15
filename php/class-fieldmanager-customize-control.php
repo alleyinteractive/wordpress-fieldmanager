@@ -64,8 +64,20 @@ if ( class_exists( 'WP_Customize_Control' ) ) :
 		 * Render the control's content.
 		 *
 		 * @see Fieldmanager_Context::render_field().
+		 * @see WP_Customize_Control::render_content().
 		 */
 		protected function render_content() {
+			?>
+
+			<?php if ( ! empty( $this->label ) ) : ?>
+				<span class="customize-control-title"><?php echo esc_html( $this->label ); ?></span>
+			<?php endif; ?>
+
+			<?php if ( ! empty( $this->description ) ) : ?>
+				<span class="description customize-control-description"><?php echo esc_html( $this->description ); ?></span>
+			<?php endif; ?>
+
+			<?php
 			$this->context->render_field( array( 'data' => $this->value() ) );
 		}
 	}
