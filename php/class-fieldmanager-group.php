@@ -321,7 +321,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
 			if ( ! isset( $values[ $element->name ] ) ) {
-				$values[ $element->name ] = NULL;
+				$values[ $element->name ] = null;
 			}
 
 			if ( $element->skip_save ) {
@@ -329,12 +329,17 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				continue;
 			}
 
-			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
+			$child_value = empty( $values[ $element->name ] ) ? null : $values[ $element->name ];
 			$current_child_value = ! isset( $current_values[ $element->name ] ) ? array() : $current_values[ $element->name ];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
 			if ( ! $this->save_empty && $this->limit != 1 ) {
-				if ( is_array( $values[ $element->name ] ) && empty( $values[ $element->name ] ) ) unset( $values[ $element->name ] );
-				elseif ( empty( $values[ $element->name ] ) ) unset( $values[ $element->name ] );
+				if ( is_array( $values[ $element->name ] ) ) {
+					if ( empty( $values[ $element->name ] ) ) {
+						unset( $values[ $element->name ] );
+					}
+				} elseif ( ! strlen( $values[ $element->name ] ) ) {
+					unset( $values[ $element->name ] );
+				}
 			}
 
 			if ( ! empty( $element->datasource->only_save_to_taxonomy ) || ! empty( $element->datasource->only_save_to_post_parent ) ) {

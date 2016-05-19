@@ -1051,4 +1051,16 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		remove_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment' ) );
 		$this->assertTrue( $fm_3->is_attachment );
 	}
+
+	public function test_zero_in_repeating_field() {
+		$save_data = array( '1', '0', '', '2' );
+		$stored_data = array( '1', '0', '2' );
+		$fm = new Fieldmanager_Textfield( array(
+			'name' => 'repeating_text_field',
+			'limit' => 0,
+		) );
+		$fm->add_meta_box( 'Repeating Text Field', 'post' )->save_to_post_meta( $this->post_id, $save_data );;
+
+		$this->assertSame( $stored_data, get_post_meta( $this->post_id, 'repeating_text_field', true ) );
+	}
 }
