@@ -760,8 +760,16 @@ abstract class Fieldmanager_Field {
 		}
 
 		if ( ! $this->save_empty ) {
+			// Remove empty values
+			$values = array_filter( $values, function( $value ) {
+				if ( is_array( $value ) ) {
+					return ! empty( $value );
+				} else {
+					return strlen( $value );
+				}
+			} );
 			// reindex the array after removing empty values
-			$values = array_values( array_filter( $values ) );
+			$values = array_values( $values );
 		}
 
 		if ( ! empty( $this->index ) ) {

@@ -961,4 +961,28 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->assertNotContains( $skip, $html );
 		$this->assertContains( $save, $html );
 	}
+
+	public function test_textfield_zero_input_in_repeating_group() {
+		$save_data = array(
+			array( 'a' => '1' ),
+			array( 'a' => '0' ),
+			array( 'a' => '' ),
+			array( 'a' => '2' ),
+		);
+		$stored_data = array(
+			array( 'a' => '1' ),
+			array( 'a' => '0' ),
+			array( 'a' => '2' ),
+		);
+
+		$group = new Fieldmanager_Group( array(
+			'name' => 'group',
+			'limit' => 0,
+			'children' => array(
+				'a' => new Fieldmanager_Textfield(),
+			),
+		) );
+		$group->add_meta_box( 'group', $this->post->ID )->save_to_post_meta( $this->post->ID, $save_data );
+		$this->assertEquals( $stored_data, get_post_meta( $this->post->ID, 'group', true ) );
+	}
 }
