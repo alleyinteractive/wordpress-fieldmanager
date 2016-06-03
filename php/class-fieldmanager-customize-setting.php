@@ -26,7 +26,7 @@ if ( class_exists( 'WP_Customize_Setting' ) ) :
 			if ( isset( $args['context'] ) && ( $args['context'] instanceof Fieldmanager_Context ) ) {
 				$this->context = $args['context'];
 
-				// Set the default without checking isset() to support null values.
+				// Set the default without checking isset() (as in WP_Customize_Setting) to support null values.
 				$this->default = $this->context->fm->default_value;
 
 				// Sanitize and validate with the context.
