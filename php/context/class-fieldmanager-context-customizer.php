@@ -22,6 +22,16 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	protected $args;
 
 	/**
+	 * Whether to support the Customizer's setting validation model.
+	 *
+	 * By default, the context will automatically set this to true when it
+	 * detects that the Customizer's validation model is available.
+	 *
+	 * @var bool
+	 */
+	public $use_customize_validiation = false;
+
+	/**
 	 * Constructor.
 	 *
 	 * @param array $args Customizer object arguments. @see Fieldmanager_Context_Customizer::args.
@@ -37,6 +47,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 		$this->fm = $fm;
 
 		add_action( 'customize_register', array( $this, 'customize_register' ), 100 );
+		add_action( 'customize_save_validation_before', array( $this, 'customize_save_validation_before' ) );
 	}
 
 	/**
@@ -46,6 +57,16 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 */
 	public function customize_register( $manager ) {
 		$this->register( $manager );
+	}
+
+	/**
+	 * Fires before save validation happens.
+	 *
+	 * @param WP_Customize_Manager $this WP_Customize_Manager instance.
+	 */
+	public function customize_save_validation_before( $manager ) {
+		// This hook facilitates "just-in-time" support for validation.
+		$this->use_customize_validiation = true;
 	}
 
 	/**
@@ -62,7 +83,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 *
 	 * @param mixed $value Setting value.
 	 * @param WP_Customize_Setting $setting WP_Customize_Setting instance.
-	 * @return mixed The sanitized setting value.
+	 * @return mixed The sanitized setting value; WP_Error on invalidity.
 	 */
 	public function sanitize_callback( $value, $setting ) {
 		if ( is_string( $value ) && 0 === strpos( $value, $this->fm->name ) ) {
@@ -75,8 +96,45 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 			$value = $value[ $this->fm->name ];
 		}
 
+		$validity = $this->validate_callback( new WP_Error(), $value, $setting );
+
+		if ( $validity->get_error_message() ) {
+			if ( $this->use_customize_validiation ) {
+				return $validity;
+			}
+
+			/*
+			 * Returning null is a backwards-compatible way to reject a value
+			 * from WP_Customize_Setting::sanitize(). See
+			 * https://core.trac.wordpress.org/ticket/34893.
+			 */
+			return null;
+		}
+
 		// Return the value after Fieldmanager takes a shot at it.
 		return stripslashes_deep( $this->prepare_data( $setting->value(), $value ) );
+	}
+
+	/**
+	 * Filter the validity of a Customize setting value.
+	 *
+	 * @param WP_Error $validity Object with error messages, if any.
+	 * @param mixed $value Setting value.
+	 * @param WP_Customize_Setting $setting WP_Customize_Setting instance.
+	 * @return WP_Error Object with an added message from Fieldmanager, if any.
+	 */
+	public function validate_callback( $validity, $value, $setting ) {
+		try {
+			$this->prepare_data( $setting->value(), $value );
+		} catch ( FM_Validation_Exception $e ) {
+			if ( ! is_wp_error( $validity ) ) {
+				$validity = new WP_Error();
+			}
+
+			$validity->add( 'fieldmanager', $e->getMessage() );
+		}
+
+		return $validity;
 	}
 
 	/**

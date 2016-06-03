@@ -238,20 +238,6 @@
 	};
 
 	/**
-	 * Fires when a Customizer request to save values fails.
-	 *
-	 * @return {Mixed} response The response from the server.
-	 */
-	var error = function( response ) {
-		if ( ! response.fieldmanager ) {
-			return;
-		}
-
-		// There isn't yet an official way to signal a save failure, but this mimics the AYS prompt.
-		alert( response.fieldmanager );
-	};
-
-	/**
 	 * Fires when a Customizer Section is added.
 	 *
 	 * @param {Object} section Customizer Section object.
@@ -265,7 +251,6 @@
 
 	if ( typeof api !== 'undefined' ) {
 		api.bind( 'ready', ready );
-		api.bind( 'error', error );
 		api.section.bind( 'add', addSection );
 	}
 })( jQuery, wp.customize, _, fm );

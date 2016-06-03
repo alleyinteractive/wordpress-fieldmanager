@@ -29,8 +29,9 @@ if ( class_exists( 'WP_Customize_Setting' ) ) :
 				// Set the default without checking isset() to support null values.
 				$this->default = $this->context->fm->default_value;
 
-				// Sanitize with the context.
+				// Sanitize and validate with the context.
 				$this->sanitize_callback = array( $this->context, 'sanitize_callback' );
+				$this->validate_callback = array( $this->context, 'validate_callback' );
 
 				// Use the Fieldmanager submenu default.
 				$this->type = 'option';
@@ -53,12 +54,13 @@ if ( class_exists( 'WP_Customize_Setting' ) ) :
 		 */
 		public function _preview_filter( $original ) {
 			/*
-			 * Don't continue to the parent _preview_filter() while sanitizing.
-			 * _preview_filter() eventually calls sanitize_callback(), which
-			 * calls Fieldmanager_Context_Customizer::sanitize_callback(), which
+			 * Don't continue to the parent _preview_filter() while sanitizing
+			 * or validating. _preview_filter() eventually calls
+			 * sanitize_callback() and validate_callback(), which calls the
+			 * hooks to those methods in Fieldmanager_Context_Customizer, which
 			 * calls WP_Customize_Setting::value(), which ends up back here.
 			 */
-			if ( doing_filter( "customize_sanitize_{$this->id}" ) ) {
+			if ( doing_filter( "customize_sanitize_{$this->id}" ) || doing_filter( "customize_validate_{$this->id}" ) ) {
 				return $original;
 			}
 
