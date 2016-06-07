@@ -1072,7 +1072,7 @@ abstract class Fieldmanager_Field {
 	 * Add this group to an options page
 	 * @param string $title
 	 */
-	public function add_submenu_page( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null ) {
+	public function add_submenu_page( $parent_slug, $page_title, $menu_title = null, $capability = null, $menu_slug = null ) {
 		$this->require_base();
 		return new Fieldmanager_Context_Submenu( $parent_slug, $page_title, $menu_title, $capability, $menu_slug, $this );
 	}
@@ -1085,7 +1085,8 @@ abstract class Fieldmanager_Field {
 		$this->require_base();
 		$submenus = _fieldmanager_registry( 'submenus' );
 		$s = $submenus[ $this->name ];
-		$active_submenu = new Fieldmanager_Context_Submenu( $s[0], $s[1], $s[2], $s[3], $s[4], $this, True );
+		$submenu = fm_match_context( 'network_submenu' ) ? 'Fieldmanager_Context_NetworkSubmenu' : 'Fieldmanager_Context_Submenu';
+		$active_submenu = new $submenu( $s[0], $s[1], $s[2], $s[3], $s[4], $this, true );
 		_fieldmanager_registry( 'active_submenu', $active_submenu );
 	}
 

@@ -1,8 +1,8 @@
 <phpunit
 	bootstrap="tests/php/bootstrap.php"
-        backupGlobals="false"
-        colors="true"
-        >
+    backupGlobals="false"
+    colors="true"
+    >
     <testsuites>
         <!-- Default test suite to run all tests -->
         <testsuite>
@@ -12,6 +12,7 @@
     <groups>
         <exclude>
             <group>ajax</group>
+            <group>multisite</group>
         </exclude>
     </groups>
     <logging>

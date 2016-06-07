@@ -30,7 +30,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @var string
 	 * Capability required
 	 */
-	public $capability;
+	public $capability = 'manage_options';
 
 	/**
 	 * @var string
@@ -53,7 +53,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	public $updated_message = null;
 
 	/**
-	 * @var string
+	 * @var bool
 	 * For submenu pages, set autoload to true or false
 	 */
 	public $wp_option_autoload = False;
@@ -67,19 +67,30 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @param string $menu_slug
 	 * @param Fieldmanager_Field $fm
 	 */
-	public function __construct( $parent_slug, $page_title, $menu_title = Null, $capability = 'manage_options', $menu_slug = Null, $fm = Null, $already_registered = False ) {
+	public function __construct( $parent_slug, $page_title, $menu_title = null, $capability = null, $menu_slug = null, $fm = null, $already_registered = false ) {
+		if ( ! $fm ) {
+			return;
+		}
+
 		$this->fm = $fm;
 		$this->menu_slug = $menu_slug ?: $this->fm->name;
 		$this->menu_title = $menu_title ?: $page_title;
 		$this->parent_slug = $parent_slug;
 		$this->page_title = $page_title;
-		$this->capability = $capability;
+		$this->capability = $capability ?: $this->capability;
 		$this->updated_message = __( 'Options updated', 'fieldmanager' );
 		$this->uniqid = $this->fm->get_element_id() . '_form';
-		if ( ! $already_registered )  {
-			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
+		if ( ! $already_registered ) {
+			$this->hook_registration();
 		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
+	}
+
+	/**
+	 * Add action to register the submenu page.
+	 */
+	protected function hook_registration() {
+		add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
 	}
 
 	/**
@@ -95,7 +106,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @return void.
 	 */
 	public function render_submenu_page() {
-		$values = get_option( $this->fm->name, null );
+		$values = $this->get_data( null, $this->fm->name );
 		?>
 		<div class="wrap">
 			<?php if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) : ?>
@@ -147,7 +158,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	public function save_submenu_data( $data = null ) {
 		$this->fm->data_id = $this->fm->name;
 		$this->fm->data_type = 'options';
-		$current = get_option( $this->fm->name, null );
+		$current = $this->get_data( null, $this->fm->name );
 		$data = $this->prepare_data( $current, $data );
 		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
 		if ( $this->fm->skip_save ) {
@@ -155,9 +166,9 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		}
 
 		if ( isset( $current ) ) {
-			update_option( $this->fm->name, $data );
+			$this->update_data( null, $this->fm->name, $data );
 		} else {
-			add_option( $this->fm->name, $data, '', $this->wp_option_autoload ? 'yes' : 'no' );
+			$this->add_data( null, $this->fm->name, $data );
 		}
 
 		return true;
