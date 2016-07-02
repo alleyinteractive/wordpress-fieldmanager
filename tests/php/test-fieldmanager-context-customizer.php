@@ -3,22 +3,11 @@
  * @group customize
  */
 class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitTestCase {
-	protected $field, $old_debug;
+	protected $field;
 
 	function setUp() {
 		parent::setUp();
-
-		// Since we can't simulate is_customize_preview(), make sure debug mode
-		// is on so FM_Validation_Exceptions are thrown.
-		$this->old_debug = Fieldmanager_Field::$debug;
-		Fieldmanager_Field::$debug = true;
-
 		$this->field = new Fieldmanager_TextField( array( 'name' => 'foo' ) );
-	}
-
-	function tearDown() {
-		parent::tearDown();
-		Fieldmanager_Field::$debug = $this->old_debug;
 	}
 
 	// Test that no section is created if no section args are passed.
@@ -325,49 +314,6 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->assertSame( 'Foo "bar" baz', $context->sanitize_callback( 'Foo \"bar\" baz', $this->manager->get_setting( $this->field->name ) ) );
 	}
 
-	// Make sure sanitizing returns null when the received value is invalid but
-	// we don't have support for the Customizer's setting validation.
-	function test_sanitize_without_validation() {
-		$this->field->validate = array( 'is_numeric' );
-
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
-		$this->register();
-
-		$this->assertNull( $context->sanitize_callback( rand_str(), $this->manager->get_setting( $this->field->name ) ) );
-	}
-
-	// Make sure sanitizing returns a WP_Error when the received value is
-	// invalid and we have support for the Customizer's setting validation.
-	function test_sanitize_with_validation() {
-		$this->field->validate = array( 'is_numeric' );
-
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
-		$this->register();
-
-		$context->use_customize_validiation = true;
-		$this->assertWPError( $context->sanitize_callback( rand_str(), $this->manager->get_setting( $this->field->name ) ) );
-	}
-
-	// Make sure validating doesn't fail a valid value.
-	function test_validate_valid_value() {
-		$this->field->validate = array( 'is_numeric' );
-
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
-		$this->register();
-
-		$validity = rand_str();
-		$this->assertSame( $validity, $context->validate_callback( $validity, rand( 1, 100 ), $this->manager->get_setting( $this->field->name ) ) );
-	}
-
-	// Make sure validating fails an invalid value.
-	function test_validate_invalid_value() {
-		$this->field->validate = array( 'is_numeric' );
-
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
-		$this->register();
-
-		$this->assertWPError( $context->validate_callback( rand_str(), rand_str(), $this->manager->get_setting( $this->field->name ) ) );
-	}
 
 	// Make sure the context's rendering method calls the field rendering method.
 	function test_render_field() {
