@@ -19,7 +19,7 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 		) );
 
 		// Add attachments needed for rendering
-		$this->media_id = [];
+		$this->media_id = array();
 		foreach ( range(1, 3) as $i ) {
 			$this->media_id[] = self::factory()->attachment->create_object( 'img' . $i . '.jpg', $this->post->ID, array( 'post_mime_type' => 'image/jpeg', 'post_type' => 'attachment' ) );
 		}
