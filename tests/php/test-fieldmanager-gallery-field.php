@@ -50,7 +50,7 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Test render 
+	 * Test render
 	 */
 	public function test_render () {
 
@@ -62,7 +62,7 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 			'modal_title'         => 'Choose image',
 			'empty_gallery_label' => 'Empty gallery'
 		) );
-		
+
 		$html = $this->render( $gallery, $this->post );
 		$this->assertContains( 'name="test_gallery"', $html );
 		$this->assertContains( 'data-collection="0"', $html );
@@ -73,7 +73,7 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 	 * Test render
 	 */
 	public function test_render_default_value () {
-	
+
 		$gallery = new Fieldmanager_Gallery( false, array(
 			'name' => 'test_gallery',
 			'collection'          => false,
@@ -103,7 +103,7 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 			'modal_title'         => 'Choose image',
 			'empty_gallery_label' => 'Empty gallery'
 		) );
-	
+
 		$html = $this->render( $gallery, $this->post );
 		$this->assertContains( 'name="test_gallery"', $html );
 		$this->assertContains( 'data-collection="1"', $html );
@@ -125,7 +125,7 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 			'empty_gallery_label' => 'Empty gallery',
 			'default_value' => $this->media_id
 		) );
-	
+
 		$html = $this->render( $gallery, $this->post );
 		$this->assertContains( 'name="test_gallery"', $html );
 		$this->assertContains( 'data-collection="1"', $html );
@@ -147,7 +147,7 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 			'modal_title'         => 'Choose image',
 			'empty_gallery_label' => 'Empty gallery'
 		) );
-	
+
 		$html = $this->render( $gallery, $this->post );
 		$this->assertContains( 'button-disabled', $html );
 		$this->save_values( $gallery, $this->post, implode( ',', $this->media_id ) );
@@ -160,7 +160,7 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 		$this->assertRegExp( '#src="http://example.org/wp-content/uploads/img(1|2).jpg"#', $html );
 		$this->assertNotContains( 'button-disabled', $html );
 	}
-	
+
 	/**
 	 * Test save group collection
 	 */
@@ -173,7 +173,7 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 			'modal_title'         => 'Choose image',
 			'empty_gallery_label' => 'Empty gallery'
 		) );
-		
+
 		$group = new Fieldmanager_Group( array(
 			'name' => 'test_gallery_group',
 			'limit' => 0,
@@ -186,10 +186,11 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 				'test_gallery' => $gallery
 			),
 		) );
-		
+
 		$html = $this->render( $group, $this->post );
 		$this->save_values( $group, $this->post, array( array( 'test_gallery' => implode( ',', $this->media_id ) ) ) );
 		$saved_value = get_post_meta( $this->post->ID, 'test_gallery_group', true );
 		$this->assertSame( $this->media_id, $saved_value[0]['test_gallery'] );
-	}	
+	}
 }
+
