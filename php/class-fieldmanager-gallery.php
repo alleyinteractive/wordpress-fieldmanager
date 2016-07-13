@@ -88,6 +88,7 @@ class Fieldmanager_Gallery extends Fieldmanager_Field {
 			$this->button_label       = __( 'Attach Gallery', 'fieldmanager' );
 			$this->modal_button_label = __( 'Select Attachments', 'fieldmanager' );
 			$this->modal_title        = __( 'Choose Attachments', 'fieldmanager' );
+			$this->empty_gallery_label = __( 'Empty Gallery', 'fieldmanager' );
 		} else {
 			$this->button_label       = __( 'Attach a File', 'fieldmanager' );
 			$this->modal_button_label = __( 'Select Attachment', 'fieldmanager' );
@@ -178,7 +179,7 @@ class Fieldmanager_Gallery extends Fieldmanager_Field {
 				}
 
 				if ( ! $this->collection ) {
-					$out .= sprintf( '<br /><a href="#" class="fm-gallery-remove fm-delete">%s</a>', __( 'remove' ) );
+					$out .= sprintf( '<br /><a href="#" class="fm-gallery-remove fm-delete">%s</a>', __( 'remove', 'fieldmanager' ) );
 				}
 
 				$out .= '</div>';
