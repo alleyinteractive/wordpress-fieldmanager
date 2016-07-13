@@ -122,14 +122,13 @@ class Test_Fieldmanager_Gallery_Field extends WP_UnitTestCase {
 			'button_label'        => 'Select images',
 			'modal_button_label'  => 'Select images',
 			'modal_title'         => 'Choose image',
-			'empty_gallery_label' => 'Empty gallery',
 			'default_value' => $this->media_id
 		) );
 
 		$html = $this->render( $gallery, $this->post );
 		$this->assertContains( 'name="test_gallery"', $html );
 		$this->assertContains( 'data-collection="1"', $html );
-		$this->assertContains( 'value="Empty gallery"', $html );
+		$this->assertContains( 'value="Empty Gallery"', $html );
 		$this->assertNotContains( 'button-disabled', $html );
 		$this->assertRegExp( '#src="http://example.org/wp-content/uploads/img(1|2).jpg"#', $html );
 	}
