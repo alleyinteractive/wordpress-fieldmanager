@@ -1,8 +1,9 @@
 <?php
 
 /**
- * Textarea field
- * @package Fieldmanager
+ * Multi-line text field.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_TextArea extends Fieldmanager_Field {
 

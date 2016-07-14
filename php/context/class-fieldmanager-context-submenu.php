@@ -1,10 +1,9 @@
 <?php
-/**
- * @package Fieldmanager_Context
- */
 
 /**
- * Use fieldmanager to create meta boxes on
+ * Use fieldmanager to create arbitrary pages in the WordPress admin and save
+ * data primarily to options.
+ *
  * @package Fieldmanager_Context
  */
 class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {

@@ -1,8 +1,14 @@
 <?php
 
 /**
- * Dropdown for options
- * @package Fieldmanager
+ * Select dropdown or multi-select field.
+ *
+ * This class extends {@link Fieldmanager_Options}, which allows you to define
+ * options (values) via an array or via a dynamic
+ * {@link Fieldmanager_Datasource}, like {@link Fieldmanager_Datasource_Post},
+ * {@link Fieldmanager_Datasource_Term}, or {@link Fieldmanager_Datasource_User}.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Select extends Fieldmanager_Options {
 
@@ -42,7 +48,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		);
 
 		// Add the Fieldmanager Select javascript library
-		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.1', false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
+		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.2', false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
 
 		parent::__construct( $label, $options );
 

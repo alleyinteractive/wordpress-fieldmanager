@@ -1,10 +1,8 @@
 <?php
-/**
- * @package Fieldmanager_Context
- */
 
 /**
- * Base class for context
+ * Base class for contexts that store data.
+ *
  * @package Fieldmanager_Context
  */
 abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {

@@ -1,8 +1,14 @@
 <?php
 
 /**
- * Checkboxes multi-select field
- * @package Fieldmanager
+ * A set of multiple checkboxes which submits as an array of the checked values.
+ *
+ * This class extends {@link Fieldmanager_Options}, which allows you to define
+ * options (values) via an array or via a dynamic
+ * {@link Fieldmanager_Datasource}, like {@link Fieldmanager_Datasource_Post},
+ * {@link Fieldmanager_Datasource_Term}, or {@link Fieldmanager_Datasource_User}.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 

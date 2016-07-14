@@ -1,8 +1,11 @@
 <?php
 
 /**
- * Media field
- * @package Fieldmanager
+ * A field to select an attachment via the WordPress Media Manager.
+ *
+ * This field submits the selected attachment as an attachment ID (post ID).
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Media extends Fieldmanager_Field {
 
@@ -70,7 +73,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 
 		add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
 		if ( ! self::$has_registered_media ) {
-			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), '1.0.3' );
+			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), '1.0.4' );
 			self::$has_registered_media = true;
 		}
 		parent::__construct( $label, $options );

@@ -1,25 +1,11 @@
 <?php
 
 /**
- * Base class containing core functionality for Fieldmanager
+ * Abstract base class containing core functionality for Fieldmanager fields.
  *
- * Security features of this class for verifying access and saving data:
- * 1. In Fieldmanager_Field::save_fields_for_post(), verify that we are using an assigned post type
- *    This is the starting point for $_POST requests to post edit pages.
- * 2. In Fieldmanager_Field::save_fields_for_post(), verify that the user can save the post type
- * 3. In Fieldmanager_Field::save_fields_for_post(), perform nonce validation
- * 4. In Fieldmanager_Field::save_to_post_meta(), call Fieldmanager_Field::presave_all()
- *    This is the starting point for save routines that use Fieldmanager as an API
- * 5. In Fieldmanager_Field::presave_all(), verify that the number of elements is less than $limit,
- *    if $limit is not 1 or infinite (0), and verify that all multi-element arrays are numeric only.
- * 6. In Fieldmanager_Field::presave_all(), call Fieldmanager_Field::presave()
- * 5. In Fieldmanager_Field::presave(), call all assigned validators; if one returns false, die.
- * 6a. For groups (including the root group) in Fieldmanager_Group::presave(), verify that all
- *     keys in the submission match the form names of valid children.
- * 6b. For all other fields, in Fieldmanager_Field::presave(), sanitize the field to save to the DB.
- *     The default sanitizer is sanitize_text_field().
+ * Fields are UI elements that allow a person to interact with data.
  *
- * @package Fieldmanager
+ * @package Fieldmanager_Field
  */
 abstract class Fieldmanager_Field {
 
@@ -337,6 +323,14 @@ abstract class Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->set_options( $label, $options );
+
+		// A post can only have one parent, so if this saves to post_parent and
+		// it's repeatable, we're doing it wrong.
+		if ( $this->datasource && ! empty( $this->datasource->save_to_post_parent ) && $this->is_repeatable() ) {
+			_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', __( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ), '1.0.0' );
+			$this->datasource->save_to_post_parent = false;
+			$this->datasource->only_save_to_post_parent = false;
+		}
 	}
 
 	/**
@@ -777,8 +771,16 @@ abstract class Fieldmanager_Field {
 		}
 
 		if ( ! $this->save_empty ) {
+			// Remove empty values
+			$values = array_filter( $values, function( $value ) {
+				if ( is_array( $value ) ) {
+					return ! empty( $value );
+				} else {
+					return strlen( $value );
+				}
+			} );
 			// reindex the array after removing empty values
-			$values = array_values( array_filter( $values ) );
+			$values = array_values( $values );
 		}
 
 		if ( ! empty( $this->index ) ) {

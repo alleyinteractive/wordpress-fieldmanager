@@ -1,9 +1,13 @@
 <?php
 
 /**
- * Fieldmanager Group; allows associating multiple fields together
- * and required as the base element.
- * @package Fieldmanager
+ * Define a groups of fields.
+ *
+ * Groups shouldn't just be thought of as a top-level collection of fields (like
+ * a meta box). Groups can be infinitely nested, they can be used to create
+ * tabbed interfaces, and so on. Groups submit data as nested arrays.
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Group extends Fieldmanager_Field {
 
@@ -148,6 +152,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
 			}
 
+			// A post can only have one parent, so if this saves to post_parent and
+			// it's repeatable, we're doing it wrong.
+			if ( $element->datasource && ! empty( $element->datasource->save_to_post_parent ) && $this->is_repeatable() ) {
+				_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', __( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ), '1.0.0' );
+				$element->datasource->save_to_post_parent = false;
+				$element->datasource->only_save_to_post_parent = false;
+			}
+
 			// Flag this group as having unserialized descendants to check invalid use of repeatables
 			if ( ! $this->has_unserialized_descendants && ( ! $element->serialize_data || ( $element->is_group() && $element->has_unserialized_descendants ) ) ) {
 				$this->has_unserialized_descendants = true;
@@ -164,9 +176,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// Add the tab JS and CSS if it is needed
 		if ( $this->tabbed ) {
-			fm_add_script( 'jquery-hoverintent', 'js/jquery.hoverIntent.js', array( 'jquery' ), '1.8.0' );
-			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.3' );
-			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.4' );
+			fm_add_script( 'jquery-hoverintent', 'js/jquery.hoverIntent.js', array( 'jquery' ), '1.8.1' );
+			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.4' );
+			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.5' );
 		}
 	}
 
@@ -321,18 +333,30 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id = $this->data_id;
 			$element->data_type = $this->data_type;
-			if ( empty( $values[$element->name] ) ) {
-				$values[ $element->name ] = NULL;
-			}
-			$child_value = empty( $values[ $element->name ] ) ? Null : $values[ $element->name ];
-			$current_child_value = !isset( $current_values[$element->name ]) ? array() : $current_values[$element->name];
-			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
-			if ( !$this->save_empty && $this->limit != 1 ) {
-				if ( is_array( $values[$element->name] ) && empty( $values[$element->name] ) ) unset( $values[$element->name] );
-				elseif ( empty( $values[$element->name] ) ) unset( $values[$element->name] );
+
+			if ( ! isset( $values[ $element->name ] ) ) {
+				$values[ $element->name ] = null;
 			}
 
-			if ( ! empty( $element->datasource->only_save_to_taxonomy ) ) {
+			if ( $element->skip_save ) {
+				unset( $values[ $element->name ] );
+				continue;
+			}
+
+			$child_value = empty( $values[ $element->name ] ) ? null : $values[ $element->name ];
+			$current_child_value = ! isset( $current_values[ $element->name ] ) ? array() : $current_values[ $element->name ];
+			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
+			if ( ! $this->save_empty && $this->limit != 1 ) {
+				if ( is_array( $values[ $element->name ] ) ) {
+					if ( empty( $values[ $element->name ] ) ) {
+						unset( $values[ $element->name ] );
+					}
+				} elseif ( ! strlen( $values[ $element->name ] ) ) {
+					unset( $values[ $element->name ] );
+				}
+			}
+
+			if ( ! empty( $element->datasource->only_save_to_taxonomy ) || ! empty( $element->datasource->only_save_to_post_parent ) ) {
 				unset( $values[ $element->name ] );
 				continue;
 			}
@@ -378,7 +402,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		$extra_attrs = '';
 		if ( $this->label_macro ) {
 			$this->label_format = $this->label_macro[0];
-			$this->label_token = sprintf( '.fm-%s input.fm-element', $this->label_macro[1] );
+			$this->label_token = sprintf( '.fm-%s .fm-element:input', $this->label_macro[1] );
 		}
 
 		if ( $this->label_format && $this->label_token ) {

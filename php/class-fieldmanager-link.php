@@ -1,9 +1,9 @@
 <?php
 
 /**
- * Link field
- * @package Fieldmanager
- * @todo good test case for JS validation framework
+ * Link (url) field
+ *
+ * @package Fieldmanager_Field
  */
 class Fieldmanager_Link extends Fieldmanager_Textfield {
 
