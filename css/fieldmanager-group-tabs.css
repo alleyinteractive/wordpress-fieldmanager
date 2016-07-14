@@ -126,6 +126,10 @@
 }
 
 /* Vertical Tabs */
+#fm_meta_box_vertical_tabbed_meta_fields .inside {
+	margin-top: 0;
+}
+
 .fm-tabbed-vertical:before,
 .fm-tabbed-vertical:after {
   content: " ";
