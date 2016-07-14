@@ -181,12 +181,24 @@
 	border-radius: 50%;
 }
 
+.fm-item .fmjs-collapsible-handle .toggle-indicator:before {
+	content: '\f142';
+}
+
 .fm-item .fmjs-collapsible-handle.closed .toggle-indicator:before {
 	content: '\f140';
 }
 
 .fmjs-collapsible-handle .toggle-indicator {
 	float: right;
+}
+
+.fm-wrapper .toggle-indicator {
+	font: 400 20px/1 dashicons;
+}
+
+.fm-wrapper .toggle-indicator:before {
+	display: inline-block;
 }
 
 div.fm-group-label-wrapper {
