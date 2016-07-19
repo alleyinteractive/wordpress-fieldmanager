@@ -149,7 +149,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 			// Catch errors when using serialize_data => false and index => true
 			if ( ! $this->serialize_data && $element->index ) {
-				throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
+				throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with `"index" => true`', 'fieldmanager' ) );
 			}
 
 			// A post can only have one parent, so if this saves to post_parent and
@@ -171,7 +171,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// Check for invalid usage of repeatables and serialize_data
 		if ( $is_repeatable && $this->has_unserialized_descendants ) {
-			throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with repeating groups', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with repeating groups', 'fieldmanager' ) );
 		}
 
 		// Add the tab JS and CSS if it is needed
@@ -294,7 +294,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// Catch errors when using serialize_data => false and index-> true
 		if ( ! $this->serialize_data && $child->index ) {
-			throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with `"index" => true`', 'fieldmanager' ) );
 		}
 	}
 
