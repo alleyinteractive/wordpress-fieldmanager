@@ -5,7 +5,7 @@
  *
  * @group i18n
  */
-class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
+class Test_Fieldmanager_Translations extends WP_UnitTestCase {
 
 	protected $post;
 
@@ -20,6 +20,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 
 	public function test_basic_render_it_IT() {
 
+		$current_locale = get_locale();
 		$this->assertTrue( $this->_load_textdomain_locale( 'it_IT' ) );
 
 		$args = array(
@@ -41,6 +42,10 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 			),
 			$html
 		);
+
+		// Restore previous translations (if any)
+		unload_textdomain( 'fieldmanager' );
+		$this->_load_textdomain_locale( $current_locale );
 	}
 
 	/**
