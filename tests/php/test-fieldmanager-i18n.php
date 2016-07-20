@@ -10,7 +10,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 	protected $post;
 
 	public function setUp() {
-		
+
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
@@ -19,9 +19,9 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 	}
 
 	public function test_basic_render_it_IT() {
-		
+
 		$this->assertTrue( $this->_load_textdomain_locale( 'it_IT' ) );
-		
+
 		$args = array(
 			'name' => 'test_media',
 			'preview_size' => rand_str(),
@@ -41,16 +41,15 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 			),
 			$html
 		);
-		//print_r($html);
 		$this->assertRegExp( '#<input type="hidden" name="test_media" value="" class="fm-element fm-media-id" />#', $html );
 		$this->assertRegExp( '#<div class="media-wrapper"></div>#', $html );
 	}
-	
+
 	/**
 	 * Helper which load localized translation file
-	 * 
+	 *
 	 * @param string $locale
-	 * 
+	 *
 	 * @return empty
 	 */
 	private function _load_textdomain_locale ( $locale = WPLANG ) {
