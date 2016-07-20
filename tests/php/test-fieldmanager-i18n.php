@@ -41,8 +41,6 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 			),
 			$html
 		);
-		$this->assertRegExp( '#<input type="hidden" name="test_media" value="" class="fm-element fm-media-id" />#', $html );
-		$this->assertRegExp( '#<div class="media-wrapper"></div>#', $html );
 	}
 
 	/**
