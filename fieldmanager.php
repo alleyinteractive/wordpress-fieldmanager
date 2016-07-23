@@ -69,6 +69,11 @@ function fieldmanager_load_class( $class ) {
 		}
 		return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource-' . $class_id . '.php' );
 	}
+
+	if ( 0 === strpos( $class, 'Fieldmanager_Util' ) ) {
+		return fieldmanager_load_file( 'util/class-fieldmanager-util-' . $class_id . '.php' );
+	}
+
 	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );
 }
 
@@ -92,19 +97,9 @@ function fieldmanager_load_file( $file ) {
 	require_once( $file );
 }
 
-// Load utility classes with helper functions.
+// Load utility classes with helper functions. These can't be autoloaded.
 fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
 fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
-
-/**
- * Enqueue CSS and JS in the Dashboard.
- */
-function fieldmanager_enqueue_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.4' );
-	wp_enqueue_script( 'jquery-ui-sortable' );
-}
-add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
 
 /**
  * Tell Fieldmanager that it has a base URL somewhere other than the plugins URL.
@@ -145,72 +140,42 @@ function fieldmanager_get_template( $tpl_slug ) {
 }
 
 /**
- * Enqueue a script with a closure, optionally localizing data to it.
+ * Enqueue a script, optionally localizing data to it.
  *
- * @see wp_enqueue_script() for detail about $handle, $deps, $ver, and $in_footer.
- * @see wp_localize_script() for detail about $data_object and $data.
- * @see FM_GLOBAL_ASSET_VERSION for detail about the fallback value of $ver.
- * @see fieldmanager_get_baseurl() for detail about the fallback value of $plugin_dir.
+ * @see Fieldmanager_Util_Assets::add_script().
  *
- * @param string $handle Script name.
+ * @param string $handle Script handle.
  * @param string $path The path to the file inside $plugin_dir.
- * @param array $deps Script dependencies. Default empty array.
- * @param string|bool $ver Script version. Default none.
- * @param bool $in_footer Whether to render the script in the footer. Default false.
- * @param string $data_object The $object_name in wp_localize_script(). Default none.
- * @param array $data The $l10n in wp_localize_script(). Default empty array.
- * @param string $plugin_dir The base URL to the directory with the script. Default none.
- * @param bool $admin Unused.
+ * @param array $deps Optional. Script dependencies. Default empty array.
+ * @param string|bool $ver Optional. Script version. Default none.
+ * @param bool $in_footer Optional. Whether to render the script in the footer.
+ *                        Default false.
+ * @param string $data_object Optional. The $object_name in wp_localize_script().
+ *                            Default none.
+ * @param array $data Optional. The $l10n in wp_localize_script(). Default empty
+ *                    array.
+ * @param string $plugin_dir The base URL to the directory with the script.
+ *                           Default none.
+ * @param bool $admin Deprecated.
  */
 function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
-	if ( !is_admin() ) {
-		return;
-	}
-	if ( !$ver ) {
-		$ver = FM_GLOBAL_ASSET_VERSION;
-	}
-	if ( '' == $plugin_dir ) {
-		$plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
-	}
-	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
-		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver, $in_footer );
-		if ( !empty( $data_object ) && !empty( $data ) ) {
-			wp_localize_script( $handle, $data_object, $data );
-		}
-	};
-
-	add_action( 'admin_enqueue_scripts', $add_script );
-	add_action( 'wp_enqueue_scripts', $add_script );
+	Fieldmanager_Util_Assets::instance()->add_script( compact( 'handle', 'path', 'deps', 'ver', 'in_footer', 'data_object', 'data', 'plugin_dir' ) );
 }
 
 /**
- * Register and enqueue a style with a closure.
+ * Register and enqueue a style.
  *
- * @see wp_enqueue_script() for detail about $handle, $path, $deps, $ver, and $media.
- * @see FM_GLOBAL_ASSET_VERSION for detail about the fallback value of $ver.
- * @see fieldmanager_get_baseurl() for detail about base URL.
+ * @see Fieldmanager_Util_Assets::add_style().
  *
  * @param string $handle Stylesheet name.
  * @param string $path Path to the file inside of the Fieldmanager base URL.
- * @param array $deps Stylesheet dependencies. Default empty array.
- * @param string|bool Stylesheet version. Default none.
- * @param string $media Media for this stylesheet. Default 'all'.
- * @param bool $admin Unused.
+ * @param array $deps Optional. Stylesheet dependencies. Default empty array.
+ * @param string|bool Optional. Stylesheet version. Default none.
+ * @param string $media Optional. Media for this stylesheet. Default 'all'.
+ * @param bool $admin Deprecated.
  */
 function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
-	if( !is_admin() ) {
-		return;
-	}
-	if ( !$ver ) {
-		$ver = FM_GLOBAL_ASSET_VERSION;
-	}
-	$add_script = function() use ( $handle, $path, $deps, $ver, $media ) {
-		wp_register_style( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver, $media );
-        wp_enqueue_style( $handle );
-	};
-
-	add_action( 'admin_enqueue_scripts', $add_script );
-	add_action( 'wp_enqueue_scripts', $add_script );
+	Fieldmanager_Util_Assets::instance()->add_style( compact( 'handle', 'path', 'deps', 'ver', 'media' ) );
 }
 
 /**
