@@ -281,6 +281,8 @@ function fm_get_context( $recalculate = false ) {
  * }
  */
 function fm_calculate_context() {
+	$calculated_context = array( null, null );
+
 	// Safe to use at any point in the load process, and better than URL matching.
 	if ( is_admin() ) {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
@@ -309,67 +311,65 @@ function fm_calculate_context() {
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
 					if ( $script == $submenu[0] || ( 'admin.php' == $script && $page == $submenu[4] ) ) {
-						return array( 'submenu', $page );
+						$calculated_context = array( 'submenu', $page );
 					}
 				}
 			}
 		}
 
-		switch ( $script ) {
-			// Context = "post".
-			case 'post.php':
-				if ( !empty( $_POST['action'] ) && ( 'editpost' === $_POST['action'] || 'newpost' === $_POST['action'] ) ) {
-					$calculated_context = array( 'post', sanitize_text_field( $_POST['post_type'] ) );
-				} elseif ( !empty( $_GET['post'] ) ) {
-					$calculated_context = array( 'post', get_post_type( intval( $_GET['post'] ) ) );
-				}
-				break;
-			case 'post-new.php':
-				$calculated_context = array( 'post', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
-				break;
-			// Context = "user".
-			case 'profile.php':
-			case 'user-edit.php':
-				$calculated_context = array( 'user', null );
-				break;
-			// Context = "quickedit".
-			case 'edit.php':
-				$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
-				break;
-			case 'admin-ajax.php':
-				// Passed in via an Ajax form.
-				if ( !empty( $_POST['fm_context'] ) ) {
-					$subcontext = !empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( $_POST['fm_subcontext'] ) : null;
-					$calculated_context = array( sanitize_text_field( $_POST['fm_context'] ), $subcontext );
-				} elseif ( !empty( $_POST['screen'] ) && !empty( $_POST['action'] ) ) {
-					if ( 'edit-post' === $_POST['screen'] && 'inline-save' === $_POST['action'] ) {
-						$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
-					// Context = "term".
-					} elseif ( 'add-tag' === $_POST['action'] && !empty( $_POST['taxonomy'] ) ) {
-						$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
+		if ( empty( $calculated_context[0] ) ) {
+			switch ( $script ) {
+				// Context = "post".
+				case 'post.php':
+					if ( !empty( $_POST['action'] ) && ( 'editpost' === $_POST['action'] || 'newpost' === $_POST['action'] ) ) {
+						$calculated_context = array( 'post', sanitize_text_field( $_POST['post_type'] ) );
+					} elseif ( !empty( $_GET['post'] ) ) {
+						$calculated_context = array( 'post', get_post_type( intval( $_GET['post'] ) ) );
 					}
+					break;
+				case 'post-new.php':
+					$calculated_context = array( 'post', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
+					break;
+				// Context = "user".
+				case 'profile.php':
+				case 'user-edit.php':
+					$calculated_context = array( 'user', null );
+					break;
 				// Context = "quickedit".
-				} elseif ( !empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) {
-					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );
-				}
-				break;
-			// Context = "term".
-			case 'edit-tags.php':
-			case 'term.php': // As of 4.5-alpha; see https://core.trac.wordpress.org/changeset/36308
-				if ( !empty( $_POST['taxonomy'] ) ) {
-					$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
-				} elseif ( !empty( $_GET['taxonomy'] ) ) {
-					$calculated_context = array( 'term', sanitize_text_field( $_GET['taxonomy'] ) );
-				}
-				break;
+				case 'edit.php':
+					$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
+					break;
+				case 'admin-ajax.php':
+					// Passed in via an Ajax form.
+					if ( !empty( $_POST['fm_context'] ) ) {
+						$subcontext = !empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( $_POST['fm_subcontext'] ) : null;
+						$calculated_context = array( sanitize_text_field( $_POST['fm_context'] ), $subcontext );
+					} elseif ( !empty( $_POST['screen'] ) && !empty( $_POST['action'] ) ) {
+						if ( 'edit-post' === $_POST['screen'] && 'inline-save' === $_POST['action'] ) {
+							$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
+						// Context = "term".
+						} elseif ( 'add-tag' === $_POST['action'] && !empty( $_POST['taxonomy'] ) ) {
+							$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
+						}
+					// Context = "quickedit".
+					} elseif ( !empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) {
+						$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );
+					}
+					break;
+				// Context = "term".
+				case 'edit-tags.php':
+				case 'term.php': // As of 4.5-alpha; see https://core.trac.wordpress.org/changeset/36308
+					if ( !empty( $_POST['taxonomy'] ) ) {
+						$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
+					} elseif ( !empty( $_GET['taxonomy'] ) ) {
+						$calculated_context = array( 'term', sanitize_text_field( $_GET['taxonomy'] ) );
+					}
+					break;
+			}
 		}
 	}
 
-	if ( empty( $calculated_context ) ) {
-		$calculated_context = array( null, null );
-	}
-
-	return $calculated_context;
+	return apply_filters( 'fm_calculated_context', $calculated_context );
 }
 
 /**
