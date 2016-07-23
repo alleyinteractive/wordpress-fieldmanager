@@ -124,9 +124,11 @@ class Fieldmanager_Util_Assets {
 	 *     Script arguments.
 	 *
 	 *     @type string $handle Script handle.
-	 *     @type string $path The path to the file inside $plugin_dir.
+	 *     @type string|bool $path Optional. The path to the file inside $plugin_dir.
+	 *                             If absent, the script will only be enqueued
+	 *                             and not registered. Default false.
 	 *     @type array $deps Optional. Script dependencies. Default empty array.
-	 *     @type string|bool $ver Optional. Script version. Default none.
+	 *     @type string|bool $ver Optional. Script version. Default false.
 	 *     @type bool $in_footer Optional. Whether to render the script in the
 	 *                           footer. Default false.
 	 *     @type string $data_object Optional. The $object_name in
@@ -139,6 +141,7 @@ class Fieldmanager_Util_Assets {
 	 */
 	public function add_script( $args ) {
 		$args = wp_parse_args( $args, array(
+			'path'        => false,
 			'deps'        => array(),
 			'ver'         => false,
 			'in_footer'   => false,
@@ -148,24 +151,26 @@ class Fieldmanager_Util_Assets {
 		) );
 
 		// Bail if we don't have a handle and a path.
-		if ( ! isset( $args['handle'], $args['path'] ) ) {
+		if ( ! isset( $args['handle'] ) ) {
 			return;
 		}
 
-		// Set the default version
-		if ( ! $args['ver'] ) {
-			$args['ver'] = FM_GLOBAL_ASSET_VERSION;
-		}
+		if ( $args['path'] ) {
+			// Set the default version
+			if ( ! $args['ver'] ) {
+				$args['ver'] = FM_GLOBAL_ASSET_VERSION;
+			}
 
-		// Set the default directory
-		if ( '' == $args['plugin_dir'] ) {
-			$args['plugin_dir'] = fieldmanager_get_baseurl(); // allow overrides for child plugins
-		}
+			// Set the default directory
+			if ( '' == $args['plugin_dir'] ) {
+				$args['plugin_dir'] = fieldmanager_get_baseurl(); // allow overrides for child plugins
+			}
 
-		// Register the script and localize data if applicable
-		wp_register_script( $args['handle'], $args['plugin_dir'] . $args['path'], $args['deps'], $args['ver'], $args['in_footer'] );
-		if ( ! empty( $args['data_object'] ) && ! empty( $args['data'] ) ) {
-			wp_localize_script( $args['handle'], $args['data_object'], $args['data'] );
+			// Register the script and localize data if applicable
+			wp_register_script( $args['handle'], $args['plugin_dir'] . $args['path'], $args['deps'], $args['ver'], $args['in_footer'] );
+			if ( ! empty( $args['data_object'] ) && ! empty( $args['data'] ) ) {
+				wp_localize_script( $args['handle'], $args['data_object'], $args['data'] );
+			}
 		}
 
 		// Enqueue or output the script
@@ -183,7 +188,9 @@ class Fieldmanager_Util_Assets {
 	 *     Stylesheet arguments.
 	 *
 	 *     @type string $handle Stylesheet name.
-	 *     @type string $path Path to the file inside of the Fieldmanager base URL.
+	 *     @type string $path Optional. Path to the file inside of the Fieldmanager
+	 *                        base URL. If absent, the style will only be enqueued
+	 *                        and not registered. Default false.
 	 *     @type array $deps Optional. Stylesheet dependencies. Default empty array.
 	 *     @type string|bool Optional. Stylesheet version. Default none.
 	 *     @type string $media Optional. Media for this stylesheet. Default 'all'.
@@ -193,24 +200,27 @@ class Fieldmanager_Util_Assets {
 	 */
 	public function add_style( $args ) {
 		$args = wp_parse_args( $args, array(
+			'path'       => false,
 			'deps'       => array(),
 			'ver'        => false,
 			'media'      => 'all',
 			'plugin_dir' => '',
 		) );
 
-		// Set the default version
-		if ( ! $args['ver'] ) {
-			$args['ver'] = FM_GLOBAL_ASSET_VERSION;
-		}
+		if ( $args['path'] ) {
+			// Set the default version
+			if ( ! $args['ver'] ) {
+				$args['ver'] = FM_GLOBAL_ASSET_VERSION;
+			}
 
-		// Set the default directory
-		if ( '' == $args['plugin_dir'] ) {
-			$args['plugin_dir'] = fieldmanager_get_baseurl(); // allow overrides for child plugins
-		}
+			// Set the default directory
+			if ( '' == $args['plugin_dir'] ) {
+				$args['plugin_dir'] = fieldmanager_get_baseurl(); // allow overrides for child plugins
+			}
 
-		// Register the style
-		wp_register_style( $args['handle'], $args['plugin_dir'] . $args['path'], $args['deps'], $args['ver'], $args['media'] );
+			// Register the style
+			wp_register_style( $args['handle'], $args['plugin_dir'] . $args['path'], $args['deps'], $args['ver'], $args['media'] );
+		}
 
 		// Enqueue or output hte style
 		$this->enqueue_style( $args['handle'] );

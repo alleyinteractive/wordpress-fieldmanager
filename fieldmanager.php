@@ -145,7 +145,8 @@ function fieldmanager_get_template( $tpl_slug ) {
  * @see Fieldmanager_Util_Assets::add_script().
  *
  * @param string $handle Script handle.
- * @param string $path The path to the file inside $plugin_dir.
+ * @param string|bool $path Optional. The path to the file inside $plugin_dir.
+ *                          Default false.
  * @param array $deps Optional. Script dependencies. Default empty array.
  * @param string|bool $ver Optional. Script version. Default none.
  * @param bool $in_footer Optional. Whether to render the script in the footer.
@@ -158,7 +159,7 @@ function fieldmanager_get_template( $tpl_slug ) {
  *                           Default none.
  * @param bool $admin Deprecated.
  */
-function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
+function fm_add_script( $handle, $path = false, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
 	Fieldmanager_Util_Assets::instance()->add_script( compact( 'handle', 'path', 'deps', 'ver', 'in_footer', 'data_object', 'data', 'plugin_dir' ) );
 }
 
@@ -168,13 +169,14 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
  * @see Fieldmanager_Util_Assets::add_style().
  *
  * @param string $handle Stylesheet name.
- * @param string $path Path to the file inside of the Fieldmanager base URL.
+ * @param string|bool $path Optional. Path to the file inside of the Fieldmanager
+ *                          base URL. Default false.
  * @param array $deps Optional. Stylesheet dependencies. Default empty array.
  * @param string|bool Optional. Stylesheet version. Default none.
  * @param string $media Optional. Media for this stylesheet. Default 'all'.
  * @param bool $admin Deprecated.
  */
-function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
+function fm_add_style( $handle, $path = false, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
 	Fieldmanager_Util_Assets::instance()->add_style( compact( 'handle', 'path', 'deps', 'ver', 'media' ) );
 }
 

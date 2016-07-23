@@ -20,13 +20,6 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	public $field_class = 'colorpicker';
 
 	/**
-	 * Static variable so we only load static assets once.
-	 *
-	 * @var boolean
-	 */
-	public static $has_registered_statics = false;
-
-	/**
 	 * The default color for the color picker.
 	 *
 	 * @var string
@@ -40,13 +33,8 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	 * @param array $options
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		if ( ! self::$has_registered_statics ) {
-			add_action( 'admin_enqueue_scripts', function() {
-				wp_enqueue_style( 'wp-color-picker' );
-			} );
-			fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', array( 'jquery', 'wp-color-picker' ), '1.0', true );
-			self::$has_registered_statics = true;
-		}
+		fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', array( 'jquery', 'wp-color-picker' ), '1.0', true );
+		fm_add_style( 'wp-color-picker' );
 
 		$this->sanitize = array( $this, 'sanitize_hex_color' );
 
