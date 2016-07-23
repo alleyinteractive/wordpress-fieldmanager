@@ -23,7 +23,7 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 
 		// Some fields will only register a script once, so hack around that.
 		Fieldmanager_Media::$has_registered_media = false;
-		Fieldmanager_Colorpicker::$has_registered_statics = false;
+		Fieldmanager_Field::$enqueued_base_assets = false;
 
 		// Instantiate field classes that register scripts.
 		new Fieldmanager_Autocomplete( 'Test', array( 'datasource' => new Fieldmanager_Datasource_Post ) );
@@ -59,10 +59,10 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 	 */
 	public function script_data() {
 		return array(
-			array( 'fieldmanager_script', array( 'jquery' ) ),
-			array( 'fm_autocomplete_js', array( 'fieldmanager_script' ) ),
-			array( 'fm_datepicker', array( 'fieldmanager_script' ) ),
-			array( 'fm_draggablepost_js', array() ),
+			array( 'fieldmanager_script', array( 'jquery', 'jquery-ui-sortable' ) ),
+			array( 'fm_autocomplete_js', array( 'fieldmanager_script', 'jquery-ui-autocomplete' ) ),
+			array( 'fm_datepicker', array( 'fieldmanager_script', 'jquery-ui-datepicker' ) ),
+			array( 'fm_draggablepost_js', array( 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable' ) ),
 			array( 'fm_group_tabs_js', array( 'jquery', 'jquery-hoverintent' ) ),
 			array( 'fm_media', array( 'jquery' ) ),
 			array( 'fm_richtext', array( 'jquery', 'fieldmanager_script' ) ),
@@ -78,7 +78,6 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 	function test_script_is_registered( $handle ) {
 		global $wp_scripts;
 		$this->assertInstanceOf( '_WP_Dependency', $wp_scripts->query( $handle ) );
-
 	}
 
 	/**

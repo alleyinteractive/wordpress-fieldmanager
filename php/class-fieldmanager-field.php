@@ -20,7 +20,7 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @var boolean
 	 */
-	protected static $enqueued_base_assets = false;
+	public static $enqueued_base_assets = false;
 
 	/**
 	 * @var int
