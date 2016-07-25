@@ -57,13 +57,13 @@ class Fieldmanager_Util_Assets {
 		foreach ( $enqueue_scripts as $args ) {
 			$this->enqueue_script( $args );
 		}
-		$this->scripts = [];
+		$this->scripts = array();
 
 		$enqueue_styles = apply_filters( 'fm_enqueue_styles', array_values( $this->styles ) );
 		foreach ( $enqueue_styles as $args ) {
 			$this->enqueue_style( $args );
 		}
-		$this->styles = [];
+		$this->styles = array();
 	}
 
 	/**
