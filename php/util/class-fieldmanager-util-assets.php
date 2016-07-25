@@ -53,14 +53,14 @@ class Fieldmanager_Util_Assets {
 	 * Enqueue all assets during the correct action.
 	 */
 	public function enqueue_assets() {
-		$enqueue_scripts = apply_filters( 'fm_enqueue_scripts', array_keys( $this->scripts ) );
-		foreach ( $enqueue_scripts as $handle ) {
-			wp_enqueue_script( $handle );
+		$enqueue_scripts = apply_filters( 'fm_enqueue_scripts', array_values( $this->scripts ) );
+		foreach ( $enqueue_scripts as $args ) {
+			$this->enqueue_script( $args );
 		}
 
-		$enqueue_styles = apply_filters( 'fm_enqueue_styles', array_keys( $this->styles ) );
-		foreach ( $enqueue_styles as $handle ) {
-			wp_enqueue_style( $handle );
+		$enqueue_styles = apply_filters( 'fm_enqueue_styles', array_values( $this->styles ) );
+		foreach ( $enqueue_styles as $args ) {
+			$this->enqueue_style( $args );
 		}
 	}
 
@@ -73,12 +73,25 @@ class Fieldmanager_Util_Assets {
 	 *
 	 * @param  string $handle The script to enqueue/output.
 	 */
-	protected function enqueue_script( $handle ) {
+	protected function pre_enqueue_script( $args ) {
 		if ( did_action( 'admin_enqueue_scripts' ) || did_action( 'wp_enqueue_scripts' ) ) {
-			wp_enqueue_script( $handle );
+			$this->enqueue_script( $args );
 		} else {
-			$this->scripts[ $handle ] = true;
+			$this->scripts[ $args['handle'] ] = $args;
 			$this->hook_enqueue();
+		}
+	}
+
+	/**
+	 * Enqueue a script.
+	 *
+	 * @param  array $args {@see Fieldmanager_Util_Assets::add_script()}
+	 */
+	protected function enqueue_script( $args ) {
+		// Register the script and localize data if applicable
+		wp_enqueue_script( $args['handle'], $args['path'], $args['deps'], $args['ver'], $args['in_footer'] );
+		if ( ! empty( $args['data_object'] ) && ! empty( $args['data'] ) ) {
+			wp_localize_script( $args['handle'], $args['data_object'], $args['data'] );
 		}
 	}
 
@@ -91,13 +104,23 @@ class Fieldmanager_Util_Assets {
 	 *
 	 * @param  string $handle The style to enqueue/output.
 	 */
-	protected function enqueue_style( $handle ) {
+	protected function pre_enqueue_style( $args ) {
 		if ( did_action( 'admin_enqueue_scripts' ) || did_action( 'wp_enqueue_scripts' ) ) {
-			wp_enqueue_style( $handle );
+			$this->enqueue_style( $args );
 		} else {
-			$this->styles[ $handle ] = true;
+			$this->styles[ $args['handle'] ] = $args;
 			$this->hook_enqueue();
 		}
+	}
+
+	/**
+	 * Enqueue a style.
+	 *
+	 * @param  array $args {@see Fieldmanager_Util_Assets::add_style()}
+	 */
+	protected function enqueue_style( $args ) {
+		// Register the style
+		wp_enqueue_style( $args['handle'], $args['path'], $args['deps'], $args['ver'], $args['media'] );
 	}
 
 	/**
@@ -165,16 +188,11 @@ class Fieldmanager_Util_Assets {
 			if ( '' == $args['plugin_dir'] ) {
 				$args['plugin_dir'] = fieldmanager_get_baseurl(); // allow overrides for child plugins
 			}
-
-			// Register the script and localize data if applicable
-			wp_register_script( $args['handle'], $args['plugin_dir'] . $args['path'], $args['deps'], $args['ver'], $args['in_footer'] );
-			if ( ! empty( $args['data_object'] ) && ! empty( $args['data'] ) ) {
-				wp_localize_script( $args['handle'], $args['data_object'], $args['data'] );
-			}
+			$args['path'] = $args['plugin_dir'] . $args['path'];
 		}
 
 		// Enqueue or output the script
-		$this->enqueue_script( $args['handle'] );
+		$this->pre_enqueue_script( $args );
 	}
 
 	/**
@@ -207,6 +225,11 @@ class Fieldmanager_Util_Assets {
 			'plugin_dir' => '',
 		) );
 
+		// Bail if we don't have a handle and a path.
+		if ( ! isset( $args['handle'] ) ) {
+			return;
+		}
+
 		if ( $args['path'] ) {
 			// Set the default version
 			if ( ! $args['ver'] ) {
@@ -217,12 +240,10 @@ class Fieldmanager_Util_Assets {
 			if ( '' == $args['plugin_dir'] ) {
 				$args['plugin_dir'] = fieldmanager_get_baseurl(); // allow overrides for child plugins
 			}
-
-			// Register the style
-			wp_register_style( $args['handle'], $args['plugin_dir'] . $args['path'], $args['deps'], $args['ver'], $args['media'] );
+			$args['path'] = $args['plugin_dir'] . $args['path'];
 		}
 
 		// Enqueue or output hte style
-		$this->enqueue_style( $args['handle'] );
+		$this->pre_enqueue_style( $args );
 	}
 }
