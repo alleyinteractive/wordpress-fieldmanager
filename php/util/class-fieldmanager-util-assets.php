@@ -31,7 +31,7 @@ class Fieldmanager_Util_Assets {
 	 *
 	 * @var boolean
 	 */
-	protected $hooked = false;
+	public $hooked = false;
 
 	private function __construct() {
 		/* Don't do anything, needs to be initialized via instance() method */
@@ -163,6 +163,10 @@ class Fieldmanager_Util_Assets {
 	 * }
 	 */
 	public function add_script( $args ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		$args = wp_parse_args( $args, array(
 			'path'        => false,
 			'deps'        => array(),
@@ -217,6 +221,10 @@ class Fieldmanager_Util_Assets {
 	 * }
 	 */
 	public function add_style( $args ) {
+		if ( ! is_admin() ) {
+			return;
+		}
+
 		$args = wp_parse_args( $args, array(
 			'path'       => false,
 			'deps'       => array(),

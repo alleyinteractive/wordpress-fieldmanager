@@ -35,3 +35,6 @@ function _fm_phpunit_is_wp_at_least( $min_version ) {
 	global $wp_version;
 	return floatval( $wp_version ) >= $min_version;
 }
+
+// Load custom `UnitTestCase` classes
+require_once( __DIR__ . '/includes/class-fieldmanager-assets-unit-test-case.php' );
