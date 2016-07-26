@@ -384,6 +384,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$wrapper_classes[] = 'fmjs-collapsible-handle';
 			$collapse_handle = $this->get_collapse_handle();
 		}
+		if ( $this->collapsed ) {
+			$wrapper_classes[] = 'closed';
+		}
 
 		$extra_attrs = '';
 		if ( $this->label_macro ) {
