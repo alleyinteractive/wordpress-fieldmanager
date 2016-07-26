@@ -985,4 +985,21 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$group->add_meta_box( 'group', $this->post->ID )->save_to_post_meta( $this->post->ID, $save_data );
 		$this->assertEquals( $stored_data, get_post_meta( $this->post->ID, 'group', true ) );
 	}
+
+	public function test_collapsed_group() {
+		$args = array(
+			'name' => 'base_group',
+			'label' => 'Testing Collapsed',
+			'children' => array(
+				'test_basic' => new Fieldmanager_TextField(),
+			),
+		);
+
+		$base = new Fieldmanager_Group( $args );
+		$this->assertNotContains( 'fmjs-collapsible-handle closed"', $this->_get_html_for( $base ) );
+
+		$args['collapsed'] = true;
+		$base = new Fieldmanager_Group( $args );
+		$this->assertContains( 'fmjs-collapsible-handle closed"', $this->_get_html_for( $base ) );
+	}
 }
