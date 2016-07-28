@@ -112,6 +112,12 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * @var string
+	 * Set submit button for frontend forms
+	 */
+	public $submit_button_label = 'Save options';
+
+	/**
+	 * @var string
 	 * HTML element to use for label
 	 */
 	public $label_element = 'div';
@@ -181,6 +187,12 @@ abstract class Fieldmanager_Field {
 	 * @var boolean
 	 */
 	public $index = False;
+
+	/**
+	 * @var boolean
+	 * Should this field be visible?
+	 */
+	public $visible = true;
 
 	/**
 	 * Save the fields to their own keys (only works in some contexts). Default
@@ -380,6 +392,7 @@ abstract class Fieldmanager_Field {
 	 * @return string HTML for all form elements.
 	 */
 	public function element_markup( $values = array() ) {
+		if ( !$this->visible ) return '';
 		$values = $this->preload_alter_values( $values );
 		if ( $this->limit != 1 ) {
 			$max = max( $this->minimum_count, count( $values ) + $this->extra_elements );
@@ -392,7 +405,7 @@ abstract class Fieldmanager_Field {
 			$max = 1;
 		}
 
-		$classes = array( 'fm-wrapper', 'fm-' . $this->name . '-wrapper' );
+		$classes = array( 'fm-wrapper', 'form-group', 'fm-' . $this->name . '-wrapper' );
 		$fm_wrapper_attrs = array();
 		if ( $this->sortable ) {
 			$classes[] = 'fmjs-sortable';
@@ -683,11 +696,12 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Presaves all elements in what could be a set of them, dispatches to $this->presave()
-	 * @input mixed[] $values
+	 * @param mixed[] $values
+	 * @param mixed[] $current_values
 	 * @return mixed[] sanitized values
 	 */
 	public function presave_all( $values, $current_values ) {
-		if ( $this->limit == 1 && empty( $this->multiple ) ) {
+		if ( 1 === $this->limit && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
 			if ( ! empty( $values ) ) {
 				$value = $this->presave( $values[0], $current_values );
@@ -842,7 +856,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Presave function, which handles sanitization and validation
 	 * @param mixed $value If a single field expects to manage an array, it must override presave()
-	 * @return sanitized values.
+	 * @return sanitized value.
 	 */
 	public function presave( $value, $current_value = array() ) {
 		// It's possible that some elements (Grid is one) would be arrays at
@@ -889,12 +903,12 @@ abstract class Fieldmanager_Field {
 		$classes[] = 'fm-label';
 		$classes[] = 'fm-label-' . $this->name;
 		if ( $this->inline_label ) {
-			$this->label_element = 'span';
 			$classes[] = 'fm-label-inline';
 		}
 		if ( $this->label_after_element ) {
 			$classes[] = 'fm-label-after';
 		}
+		// @TODO add inline and block to .label in stylesheet. Test this all.
 		return sprintf(
 			'<%s class="%s"><label for="%s">%s</label></%s>',
 			sanitize_key( $this->label_element ),
@@ -975,9 +989,9 @@ abstract class Fieldmanager_Field {
 	 * @see Fieldmanager_Context_Form
 	 * @param string $uniqid a unique identifier for this form
 	 */
-	public function add_page_form( $uniqid ) {
+	public function add_form( $uniqid ) {
 		$this->require_base();
-		return new Fieldmanager_Context_Page( $uniqid, $this );
+		return Fieldmanager_Context_Form::get_form( $uniqid, $this );
 	}
 
 	/**

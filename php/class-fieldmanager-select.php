@@ -76,7 +76,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 */
 	public function form_element( $value = array() ) {
 
-		$select_classes = array( 'fm-element' );
+		$select_classes = array( 'fm-element', $this->field_class );
 
 		// If this is a multiple select, need to handle differently
 		$do_multiple = '';

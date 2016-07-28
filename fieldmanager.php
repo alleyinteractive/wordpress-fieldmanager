@@ -99,12 +99,39 @@ fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
 /**
  * Enqueue CSS and JS in the Dashboard.
  */
-function fieldmanager_enqueue_scripts() {
+function fieldmanager_enqueue_admin_scripts() {
 	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
 	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.4' );
 	wp_enqueue_script( 'jquery-ui-sortable' );
 }
-add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
+add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_admin_scripts' );
+
+/**
+ * Enqueue default scripts for a frontend form
+ * @param string $uniqid
+ * @return void
+ */
+function fm_enqueue_form_scripts( $uniqid ) {
+	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
+	wp_enqueue_script( 'jquery-ui-sortable' );
+	_fieldmanager_registry( 'allow_scripts', true );
+	// Field constructors enqueue CSS and JS as needed
+	_fm_form_init_once( $uniqid );
+}
+
+/**
+ * Enqueue default styles for a frontend form
+ * @param string $uniqid
+ * @return void
+ */
+function fm_enqueue_form_styles( $uniqid ) {
+	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.3' );
+	wp_enqueue_style( 'dashicons' );
+	_fieldmanager_registry( 'allow_styles', true );
+	// Field constructors enqueue CSS and JS as needed
+	_fm_form_init_once( $uniqid );
+}
+
 
 /**
  * Tell Fieldmanager that it has a base URL somewhere other than the plugins URL.
@@ -162,11 +189,11 @@ function fieldmanager_get_template( $tpl_slug ) {
  * @param string $plugin_dir The base URL to the directory with the script. Default none.
  * @param bool $admin Unused.
  */
-function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
-	if ( !is_admin() ) {
+function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = "", $data = array(), $plugin_dir = "", $admin = true ) {
+	if ( ! is_admin() && ! _fieldmanager_registry( 'allow_scripts' ) ) {
 		return;
 	}
-	if ( !$ver ) {
+	if ( ! $ver ) {
 		$ver = FM_GLOBAL_ASSET_VERSION;
 	}
 	if ( '' == $plugin_dir ) {
@@ -174,7 +201,7 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
 	}
 	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
 		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver, $in_footer );
-		if ( !empty( $data_object ) && !empty( $data ) ) {
+		if ( ! empty( $data_object ) && !empty( $data ) ) {
 			wp_localize_script( $handle, $data_object, $data );
 		}
 	};
@@ -198,7 +225,7 @@ function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_foote
  * @param bool $admin Unused.
  */
 function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
-	if( !is_admin() ) {
+	if ( !is_admin() && !_fieldmanager_registry( 'allow_styles' ) ) {
 		return;
 	}
 	if ( !$ver ) {
@@ -282,7 +309,9 @@ function fm_get_context( $recalculate = false ) {
  */
 function fm_calculate_context() {
 	// Safe to use at any point in the load process, and better than URL matching.
-	if ( is_admin() ) {
+	if ( ! empty( $_POST['fm-form-context'] ) || ! empty( $_GET['fm-form-context'] ) ) {
+		$calculated_context = array( 'form', sanitize_text_field( !empty( $_POST['fm-form-context'] ) ? $_POST['fm-form-context'] : $_GET['fm-form-context'] ) );
+	} else if ( is_admin() ) {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
 		/*
@@ -515,6 +544,41 @@ function _fm_add_submenus() {
 	}
 }
 add_action( 'admin_menu', '_fm_add_submenus', 15 );
+
+/**
+ * Template tag to output a form by unique ID
+ * @param string $uniqid
+ * @return void
+ */
+function fm_the_form( $uniqid ) {
+	_fm_form_init_once( $uniqid );
+	Fieldmanager_Context_Form::get_form( $uniqid )->render_page_form();
+}
+
+/**
+ * Template tag to get a form by unique ID
+ * @param string $uniqid
+ * @return void
+ */
+function fm_get_form( $uniqid ) {
+	_fm_form_init_once( $uniqid );
+	return Fieldmanager_Context_Form::get_form( $uniqid );
+}
+/**
+ * Load up a form
+ */
+function _fm_form_init_once( $uniqid ) {
+	static $loaded_forms;
+	if ( !$loaded_forms ) $loaded_forms = array();
+	if ( !empty( $loaded_forms[ $uniqid ] ) ) return;
+
+	// mark this form as loaded first in case the action hooks try to reload it
+	$loaded_forms[ $uniqid ] = true;
+
+	// make sure the form wasn't initialized by fm_trigger_context_action()
+	$ctx = fm_get_context();
+	if ( $ctx[1] !== $uniqid ) do_action( 'fm_form_' . $uniqid );
+}
 
 /**
  * Sanitize multi-line text.

@@ -1,3 +1,5 @@
+var fm_validation;
+
 ( function( $ ) {
 
 fm_validation = {
@@ -16,6 +18,10 @@ fm_validation = {
 	submitHandler: function( form_element ) {
 		$(window).off( 'beforeunload.edit-post' );
 		form_element.submit();
+	},
+	// meant to be overriden by custom plugins.
+	errorPlacement: function(error, element) {
+		error.appendTo(element.parent());
 	}
 }
 

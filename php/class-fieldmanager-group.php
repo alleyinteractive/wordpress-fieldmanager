@@ -21,7 +21,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @var string
 	 * Override field class
 	 */
-	public $field_class = 'group';
+	public $field_class = 'fm-group';
 
 	/**
 	 * @var string
@@ -295,6 +295,15 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		// Catch errors when using serialize_data => false and index-> true
 		if ( ! $this->serialize_data && $child->index ) {
 			throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
+		}
+	}
+
+	public function build_tree() {
+		foreach ( $this->children as &$child ) {
+			$child->parent = $this;
+			if ( method_exists( $child, 'build_tree' ) ) {
+				$child->build_tree();
+			}
 		}
 	}
 
