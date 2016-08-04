@@ -199,7 +199,7 @@ $( document ).ready( function () {
 	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
 
 	// Initializes triggers to conditionally hide or show fields
-	$( '.display-if' ).each( function() {
+	fm.init_display_if = function() {
 		var val;
 		var src = $( this ).data( 'display-src' );
 		var values = getCompareValues( this );
@@ -229,10 +229,11 @@ $( document ).ready( function () {
 		if ( ! match_value( values, val ) ) {
 			$( this ).hide();
 		}
-	} );
+	};
+	$( '.display-if' ).each( fm.init_display_if );
 
 	// Controls the trigger to show or hide fields
-	$( document ).on( 'change', '.display-trigger', function() {
+	fm.trigger_display_if = function() {
 		var val;
 		var $this = $( this );
 		var name = $this.attr( 'name' );
@@ -259,7 +260,8 @@ $( document ).ready( function () {
 				}
 			}
 		} );
-	} );
+	};
+	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
 
 	init_label_macros();
 	init_sortable();
