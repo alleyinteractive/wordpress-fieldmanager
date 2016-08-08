@@ -46,7 +46,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		if ( $this->fm->serialize_data ) {
 			$this->save_field( $this->fm, $data, $this->fm->data_id );
 		} else {
-			if ( null === $data ) {
+			if ( empty( $data ) ) {
 				$data = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : '';
 			}
 			$this->save_walk_children( $this->fm, $data, $this->fm->data_id );
