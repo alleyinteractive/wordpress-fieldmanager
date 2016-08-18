@@ -64,6 +64,11 @@ class Fieldmanager_Util_Assets {
 		}
 		$this->scripts = array();
 
+		/**
+		 * Filters the stylesheet argument arrays for Fieldmanager_Util_Assets::enqueue_style().
+		 *
+		 * @var array Arrays of stylesheet arguments. @see Fieldmanager_Util_Assets::add_style().
+		 */
 		$enqueue_styles = apply_filters( 'fm_enqueue_styles', array_values( $this->styles ) );
 		foreach ( $enqueue_styles as $args ) {
 			$this->enqueue_style( $args );
