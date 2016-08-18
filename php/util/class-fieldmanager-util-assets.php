@@ -53,6 +53,11 @@ class Fieldmanager_Util_Assets {
 	 * Enqueue all assets during the correct action.
 	 */
 	public function enqueue_assets() {
+		/**
+		 * Filters the script argument arrays for Fieldmanager_Util_Assets::enqueue_script().
+		 *
+		 * @var array Arrays of script arguments. @see Fieldmanager_Util_Assets::add_script().
+		 */
 		$enqueue_scripts = apply_filters( 'fm_enqueue_scripts', array_values( $this->scripts ) );
 		foreach ( $enqueue_scripts as $args ) {
 			$this->enqueue_script( $args );
