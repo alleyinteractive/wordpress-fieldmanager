@@ -265,11 +265,12 @@ $( document ).ready( function () {
 
 	init_label_macros();
 	init_sortable();
-	fm.init_display_if();
 
 	$( document ).on( 'fm_activate_tab fm_customizer_control_section_expanded', init_sortable );
 	$( document ).on( 'fm_customizer_control_section_expanded', init_label_macros );
-	$( document ).on( 'fm_customizer_control_section_expanded', fm.init_display_if );
+	$( document ).on( 'fm_customizer_control_section_expanded', function () {
+		$( '.display-if' ).each( fm.init_display_if );
+	} );
 } );
 
 } )( jQuery );
