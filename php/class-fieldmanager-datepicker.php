@@ -61,7 +61,6 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @param array $options
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		wp_enqueue_script( 'jquery-ui-datepicker' );
 		fm_add_style( 'fm-jquery-ui', 'css/jquery-ui/jquery-ui-1.10.2.custom.min.css' );
 		fm_add_script( 'fm_datepicker', 'js/fieldmanager-datepicker.js', array( 'fieldmanager_script', 'jquery-ui-datepicker' ) );
 		parent::__construct( $label, $options );

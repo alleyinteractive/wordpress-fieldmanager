@@ -4,9 +4,7 @@
  *
  * @group scripts
  */
-class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
-
-	protected $screen, $old_wp_scripts;
+class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Case {
 
 	public function setUp() {
 		parent::setUp();
@@ -54,15 +52,6 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 		do_action( 'admin_enqueue_scripts' );
 	}
 
-	public function tearDown() {
-		// Restore current_screen.
-		$GLOBALS['current_screen'] = $this->screen;
-
-		// Restore scripts. @see Tests_Dependencies_Scripts.
-		$GLOBALS['wp_scripts'] = $this->old_wp_scripts;
-		add_action( 'wp_default_scripts', 'wp_default_scripts' );
-	}
-
 	/**
 	 * Provide test data.
 	 *
@@ -73,10 +62,10 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 	 */
 	public function script_data() {
 		return array(
-			array( 'fieldmanager_script', array( 'jquery' ) ),
-			array( 'fm_autocomplete_js', array( 'fieldmanager_script' ) ),
+			array( 'fieldmanager_script', array( 'jquery', 'jquery-ui-sortable' ) ),
+			array( 'fm_autocomplete_js', array( 'fieldmanager_script', 'jquery-ui-autocomplete' ) ),
 			array( 'fm_datepicker', array( 'fieldmanager_script', 'jquery-ui-datepicker' ) ),
-			array( 'fm_draggablepost_js', array() ),
+			array( 'fm_draggablepost_js', array( 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable' ) ),
 			array( 'fm_group_tabs_js', array( 'jquery', 'jquery-hoverintent' ) ),
 			array( 'fm_media', array( 'jquery' ) ),
 			array( 'fm_richtext', array( 'jquery', 'fieldmanager_script' ) ),
@@ -93,7 +82,6 @@ class Test_Fieldmanager_Script_Loading extends WP_UnitTestCase {
 	function test_script_is_registered( $handle ) {
 		global $wp_scripts;
 		$this->assertInstanceOf( '_WP_Dependency', $wp_scripts->query( $handle ) );
-
 	}
 
 	/**

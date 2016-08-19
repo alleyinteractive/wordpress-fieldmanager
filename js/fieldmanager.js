@@ -143,43 +143,6 @@ var match_value = function( values, match_string ) {
 	return false;
 }
 
-/**
- * Initializes triggers to conditionally hide or show fields.
- */
-var init_display_if = function() {
-	$( '.display-if' ).each( function() {
-		var val;
-		var src = $( this ).data( 'display-src' );
-		var values = getCompareValues( this );
-		// Wrapper divs sometimes receive .fm-element, but don't use them as
-		// triggers. Also don't use autocomplete inputs as triggers, because the
-		// value is in their sibling hidden fields (which this still matches).
-		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete' );
-		if ( trigger.is( ':checkbox' ) ) {
-			if ( trigger.is( ':checked' ) ) {
-				// If checked, use the checkbox value.
-				val = trigger.val();
-			} else {
-				// Otherwise, use the hidden sibling field with the "unchecked" value.
-				val = trigger.siblings( 'input[type=hidden][name="' + trigger.attr( 'name' ) + '"]' ).val();
-			}
-		} else if ( trigger.is( ':radio' ) ) {
-			if ( trigger.filter( ':checked' ).length ) {
-				val = trigger.filter( ':checked' ).val();
-			} else {
-				// On load, there might not be any selected radio, in which case call the value blank.
-				val = '';
-			}
-		} else {
-			val = trigger.val().split( ',' );
-		}
-		trigger.addClass( 'display-trigger' );
-		if ( ! match_value( values, val ) ) {
-			$( this ).hide();
-		}
-	});
-};
-
 fm_add_another = function( $element ) {
 	var el_name = $element.data( 'related-element' )
 		, limit = $element.data( 'limit' ) - 0
@@ -235,8 +198,42 @@ $( document ).ready( function () {
 
 	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
 
+	// Initializes triggers to conditionally hide or show fields
+	fm.init_display_if = function() {
+		var val;
+		var src = $( this ).data( 'display-src' );
+		var values = getCompareValues( this );
+		// Wrapper divs sometimes receive .fm-element, but don't use them as
+		// triggers. Also don't use autocomplete inputs as triggers, because the
+		// value is in their sibling hidden fields (which this still matches).
+		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete' );
+		if ( trigger.is( ':checkbox' ) ) {
+			if ( trigger.is( ':checked' ) ) {
+				// If checked, use the checkbox value.
+				val = trigger.val();
+			} else {
+				// Otherwise, use the hidden sibling field with the "unchecked" value.
+				val = trigger.siblings( 'input[type=hidden][name="' + trigger.attr( 'name' ) + '"]' ).val();
+			}
+		} else if ( trigger.is( ':radio' ) ) {
+			if ( trigger.filter( ':checked' ).length ) {
+				val = trigger.filter( ':checked' ).val();
+			} else {
+				// On load, there might not be any selected radio, in which case call the value blank.
+				val = '';
+			}
+		} else {
+			val = trigger.val().split( ',' );
+		}
+		trigger.addClass( 'display-trigger' );
+		if ( ! match_value( values, val ) ) {
+			$( this ).hide();
+		}
+	};
+	$( '.display-if' ).each( fm.init_display_if );
+
 	// Controls the trigger to show or hide fields
-	$( document ).on( 'change', '.display-trigger', function() {
+	fm.trigger_display_if = function() {
 		var val;
 		var $this = $( this );
 		var name = $this.attr( 'name' );
@@ -263,15 +260,16 @@ $( document ).ready( function () {
 				}
 			}
 		} );
-	} );
+	};
+	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
 
 	init_label_macros();
 	init_sortable();
-	init_display_if();
+	fm.init_display_if();
 
 	$( document ).on( 'fm_activate_tab fm_customizer_control_section_expanded', init_sortable );
 	$( document ).on( 'fm_customizer_control_section_expanded', init_label_macros );
-	$( document ).on( 'fm_customizer_control_section_expanded', init_display_if );
+	$( document ).on( 'fm_customizer_control_section_expanded', fm.init_display_if );
 } );
 
 } )( jQuery );
