@@ -393,5 +393,5 @@ a.fm-delete:hover {
 
 .wp-customizer .fmjs-removable .fmjs-drag-icon + .fmjs-removable-element {
 	/* Nudge for the Customizer. */
-	max-width: 90%;
+	max-width: 80%;
 }
