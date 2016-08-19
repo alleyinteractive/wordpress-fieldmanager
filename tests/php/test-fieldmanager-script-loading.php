@@ -12,20 +12,6 @@ class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Cas
 		require_once ABSPATH . WPINC . '/class-wp-customize-manager.php';
 		$customize_manager = new WP_Customize_Manager();
 
-		// Spoof is_admin() for fm_add_script().
-		$this->screen = get_current_screen();
-		set_current_screen( 'dashboard-user' );
-
-		// Re-init scripts. @see Tests_Dependencies_Scripts.
-		$this->old_wp_scripts = isset( $GLOBALS['wp_scripts'] ) ? $GLOBALS['wp_scripts'] : null;
-		remove_action( 'wp_default_scripts', 'wp_default_scripts' );
-		$GLOBALS['wp_scripts'] = new WP_Scripts();
-		$GLOBALS['wp_scripts']->default_version = get_bloginfo( 'version' );
-
-		// Some fields will only register a script once, so hack around that.
-		Fieldmanager_Media::$has_registered_media = false;
-		Fieldmanager_Colorpicker::$has_registered_statics = false;
-
 		// Instantiate field classes that register scripts.
 		new Fieldmanager_Autocomplete( 'Test', array( 'datasource' => new Fieldmanager_Datasource_Post ) );
 		new Fieldmanager_Datepicker( 'Test' );
@@ -36,7 +22,6 @@ class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Cas
 		new Fieldmanager_Select( 'Test' );
 		new Fieldmanager_RichTextArea( 'Test' );
 		new Fieldmanager_Colorpicker( 'Test' );
-
 		$control = new Fieldmanager_Customize_Control(
 			$customize_manager,
 			'test',
