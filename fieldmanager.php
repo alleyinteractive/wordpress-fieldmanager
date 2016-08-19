@@ -258,8 +258,12 @@ function fm_get_context( $recalculate = false ) {
 function fm_calculate_context() {
 	$calculated_context = array( null, null );
 
+	if ( is_customize_preview() ) {
+		$calculated_context = array( 'customizer', null );
+	}
+
 	// Safe to use at any point in the load process, and better than URL matching.
-	if ( is_admin() ) {
+	if ( empty( $calculated_context[0] ) && is_admin() ) {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
 		/*
@@ -292,7 +296,12 @@ function fm_calculate_context() {
 			}
 		}
 
+		if ( 'customize.php' === $script || is_customize_preview() ) {
+			$calculated_context = array( 'customizer', null );
+		}
+
 		if ( empty( $calculated_context[0] ) ) {
+
 			switch ( $script ) {
 				// Context = "post".
 				case 'post.php':
