@@ -36,12 +36,13 @@ module.exports = function( grunt ) {
 			}
 		},
 		phpcs: {
-			plugin: {
-				src: './'
-			},
+			plugin: {},
 			options: {
-				bin: "vendor/bin/phpcs --extensions=php --ignore=\"*/vendor/*,*/node_modules/*,/*\"",
-				standard: "phpcs.ruleset.xml"
+				bin: "vendor/bin/phpcs",
+				showSniffCodes: true,
+				standard: "phpcs.ruleset.xml",
+				verbose: true,
+				warningSeverity: 0,
 			}
 		},
 	});
