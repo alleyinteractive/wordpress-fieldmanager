@@ -2,6 +2,10 @@
 <ruleset name="Fieldmanager">
 	<description>Sniffs for the coding standards of the Fieldmanager plugin</description>
 
+	<file>fieldmanager.php</file>
+	<file>php/</file>
+	<file>templates/</file>
+
 	<rule ref="WordPress-VIP">
 		<exclude name="WordPress.CSRF.NonceVerification" />
 		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
