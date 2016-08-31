@@ -177,36 +177,12 @@ class Fieldmanager_Util_Validation {
 	 * @access public
 	 */
 	public function add_validation() {
-		// Iterate through the fields and output the required Javascript
-		$rules = array();
-		$messages = array();
-		foreach ( $this->fields as $field ) {
-			// Add the rule string to an array
-			$rule = $this->value_to_js( $field, $this->rules );
-			if ( ! empty( $rule ) ) {
-				$rules[] = $rule;
-
-				// Add the message to an array, if it exists
-				$message = $this->value_to_js( $field, $this->messages );
-				if ( ! empty( $message ) )
-					$messages[] = $message;
-			}
-		}
-
-		// Create final rule string
-		if ( ! empty( $rules ) ) {
-			$rules_js = $this->array_to_js( $rules, "rules" );
-			$messages_js = $this->array_to_js( $messages, "messages" );
-
-			// Add a comma and newline if messages is not empty
-			if ( ! empty( $messages_js ) ) {
-				$rules_js .= ",\n";
-			}
-
+		if ( ! empty( $this->rules ) ) {
 			// Fields that should always be ignored
+			$ignore = array();
 			$ignore[] = ".fm-autocomplete";
 			$ignore[] = "input[type='button']";
-			$ignore[] = ":hidden:not(.fm-media-id)";
+			$ignore[] = ":hidden";
 
 			// Certain fields need to be ignored depending on the context
 			switch ( $this->context ) {
@@ -215,119 +191,33 @@ class Fieldmanager_Util_Validation {
 					break;
 			}
 
-			// Add JS for fields to ignore
-			$ignore_js = implode( ", ", $ignore );
+			// Fields that contain hidden inputs and still need to be verified, ie: image fields
+			$force = array();
+			$force[] = '.fm-media-id';
 
 			// Add the Fieldmanager validation script and CSS
 			// This is not done via the normal enqueue process since there is no way to know at that point if any fields will require validation
 			// Doing this here avoids loading JS/CSS for validation if not in use
 			echo "<link rel='stylesheet' id='fm-validation-css' href='" . fieldmanager_get_baseurl() . "css/fieldmanager-validation.css' />\n";
-			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/fieldmanager-validation.js?ver=0.3'></script>\n";
 
 			// Add the jQuery validation script
-			echo "<script type='text/javascript' src='" . fieldmanager_get_baseurl() . "js/validation/jquery.validate.min.js'></script>\n";
+			wp_enqueue_script( 'jquery-validate', fieldmanager_get_baseurl() . 'js/validation/jquery.validate.min.js', array( 'jquery' ), '1.11.1', true );
+			wp_enqueue_script( 'fm-validation', fieldmanager_get_baseurl() . 'js/validation/fieldmanager-validation.js', array( 'jquery-validate' ), FM_VERSION, true );
 
-			// Add the ignore, rules and messages to final validate method with form ID, wrap in script tags and output
-			echo sprintf(
-				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm_validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
-				esc_attr( $this->form_id ),
-				$ignore_js,
-				$rules_js,
-				$messages_js
-			);
+
+			$validation_data = apply_filters( 'fm_validation_options', array(
+				'form_id' => $this->form_id,
+				'ignore' => $ignore,
+				'force' => $force,
+				'options' => array(
+					'errorClass' => 'fm-js-error',
+					'rules' => array_filter( $this->rules ),
+					'messages' => array_filter( $this->messages ),
+				)
+			) );
+
+			wp_localize_script( 'fm-validation', 'FM_VALIDATION_OPTIONS', $validation_data );
 		}
-	}
-
-	/**
-	 * Converts a single rule or message value into Javascript
-	 *
-	 * @access private
-	 * @param string $field
-	 * @param string $data
-	 * @return string The Javascript output or an empty string if no data was provided
-	 */
-	private function value_to_js( $field, $data ) {
-		// Check the array for the corresponding value. If it doesn't exist, return an empty string.
-		if ( empty( $data[$field] ) )
-			return "";
-
-		// Format the field name
-		$name = $this->quote_field_name( $field );
-
-		// Iterate over the values convert them into a single string
-		$values = array();
-		foreach ( $data[$field] as $k => $v ) {
-			$values[] = sprintf(
-				"\t\t\t\t\t\t%s: %s",
-				esc_js( $k ),
-				$this->format_value( $v )
-			);
-		}
-
-		// Convert the array to a string
-		$value = sprintf(
-			"{\n%s\n\t\t\t\t\t}",
-			implode( ",\n", $values )
-		);
-
-		// Combine the name and value and return it
-		return sprintf(
-			"\t\t\t\t\t%s: %s",
-			$name,
-			$value
-		);
-	}
-
-	/**
-	 * Converts an array of values into Javascript
-	 *
-	 * @access private
-	 * @param array $data
-	 * @param string $label
-	 * @return string The Javascript output or an empty string if no data was provided
-	 */
-	private function array_to_js( $data, $label ) {
-		return sprintf(
-			"\t\t\t\t%s: {\n%s\n\t\t\t\t}",
-			esc_js( $label ),
-			implode( ",\n", $data )
-		);
-	}
-
-	/**
-	 * Converts a PHP value to the required format for Javascript
-	 *
-	 * @access private
-	 * @param string $value
-	 * @return string The formatted value
-	 */
-	private function format_value( $value ) {
-		// Determine the data type and return the value formatted appropriately
-		if ( is_bool( $value ) ) {
-			// Convert the value to a string
-			return ( $value ) ? "true" : "false";
-		} else if ( is_numeric( $value ) ) {
-			// Return as-is
-			return $value;
-		} else {
-			// For any other type (should only be a string) escape for JS output
-			return '"' . esc_js( $value ) . '"';
-		}
-	}
-
-	/**
-	 * Determine if the field name needs to be quoted for Javascript output
-	 *
-	 * @access private
-	 * @param string $field
-	 * @return string The field name with quotes added if necessary
-	 */
-	private function quote_field_name( $field ) {
-		// Check if the field name is alphanumeric (underscores and dashes are allowed)
-		if ( ctype_alnum( str_replace( array( '_', '-'), '', $field ) ) )
-			return $field;
-		else
-			return '"' . esc_js( $field ) . '"';
 	}
 }
 
