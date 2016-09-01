@@ -8,6 +8,11 @@
 
 	<rule ref="WordPress" />
 
+	<rule ref="Squiz.Commenting.FileComment.SpacingAfterComment">
+		<!-- Allow templates to put closing PHP tags immediately after the file header. -->
+		<exclude-pattern>templates/</exclude-pattern>
+	</rule>
+
 	<!-- New files must follow coding standards. These files are exempt, for now: -->
 	<exclude-pattern>fieldmanager.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-autocomplete.php</exclude-pattern>
@@ -44,7 +49,6 @@
 	<exclude-pattern>php/util/class-fieldmanager-util-assets.php</exclude-pattern>
 	<exclude-pattern>php/util/class-fieldmanager-util-term-meta.php</exclude-pattern>
 	<exclude-pattern>php/util/class-fieldmanager-util-validation.php</exclude-pattern>
-	<exclude-pattern>templates/datepicker.php</exclude-pattern>
 	<exclude-pattern>templates/options-checkboxes.php</exclude-pattern>
 	<exclude-pattern>templates/options-radios.php</exclude-pattern>
 	<exclude-pattern>templates/textfield.php</exclude-pattern>
