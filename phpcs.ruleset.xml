@@ -8,7 +8,7 @@
 
 	<rule ref="WordPress" />
 
-	<!-- New files must follow coding standards. Existing files are exempt, for now. -->
+	<!-- New files must follow coding standards. These files are exempt, for now: -->
 	<exclude-pattern>fieldmanager.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-autocomplete.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-checkbox.php</exclude-pattern>
