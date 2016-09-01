@@ -6,14 +6,7 @@
 	<file>php/</file>
 	<file>templates/</file>
 
-	<rule ref="WordPress-VIP">
-		<exclude name="WordPress.CSRF.NonceVerification" />
-		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
-		<exclude name="WordPress.VIP.DirectDatabaseQuery" />
-		<exclude name="WordPress.VIP.SlowDBQuery" />
-		<exclude name="WordPress.VIP.SuperGlobalInputUsage" />
-		<exclude name="WordPress.VIP.ValidatedSanitizedInput" />
-	</rule>
+	<rule ref="WordPress" />
 
 	<!-- New files must follow coding standards. Existing files are exempt, for now. -->
 	<exclude-pattern>fieldmanager.php</exclude-pattern>
