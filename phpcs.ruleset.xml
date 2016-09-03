@@ -14,7 +14,7 @@
 	</rule>
 
 	<!-- New files must follow coding standards. These files are exempt, for now: -->
-	<exclude-pattern type="relative">^fieldmanager.php$</exclude-pattern>
+	<exclude-pattern>fieldmanager.php$</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-autocomplete.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-checkbox.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-checkboxes.php</exclude-pattern>
