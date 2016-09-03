@@ -8,7 +8,7 @@
 /**
  * Use Fieldmanager to store meta data for taxonomy terms.
  *
- * This is deprecated as of WordPress 4.4, which introduces term MetA into core.
+ * This is deprecated as of WordPress 4.4, which introduces term meta into core.
  * If you were using this feature prior to 4.4, it will continue to operate
  * until probably WordPress 4.8, however it is in your best interest to migrate
  * your data ASAP, as core's term meta is significantly more efficient.
