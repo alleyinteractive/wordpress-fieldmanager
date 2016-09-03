@@ -1,27 +1,32 @@
 <?php
+/**
+ * Class file for Fieldmanager_TextArea.
+ *
+ * @package Fieldmanager_Field
+ */
 
 /**
  * Multi-line text field.
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_TextArea extends Fieldmanager_Field {
 
 	/**
+	 * Override $field_class.
+	 *
 	 * @var string
-	 * Override field_class
 	 */
 	public $field_class = 'text';
 
 	/**
-	 * Construct default attributes; 50x10 textarea
-	 * @param string $label
-	 * @param array $options
+	 * Construct default attributes; 50x10 textarea.
+	 *
+	 * @param string $label   Field label.
+	 * @param array  $options Associative array of class property values. @see Fieldmanager_Field::__construct().
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->attributes = array(
 			'cols' => '50',
-			'rows' => '10'
+			'rows' => '10',
 		);
 
 		// Sanitize the textarea to preserve newlines. Could be overriden.
@@ -31,8 +36,9 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Form element
-	 * @param mixed $value
+	 * Form element.
+	 *
+	 * @param mixed $value Field value.
 	 * @return string HTML
 	 */
 	public function form_element( $value = '' ) {
