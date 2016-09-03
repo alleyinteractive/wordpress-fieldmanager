@@ -1,8 +1,13 @@
 <?php
 /**
- * Fieldmanager Assets
+ * Class file for Fieldmanager_Util_Assets.
+ *
+ * @package Fieldmanager
  */
 
+/**
+ * Asset management.
+ */
 class Fieldmanager_Util_Assets {
 
 	/**
@@ -33,9 +38,10 @@ class Fieldmanager_Util_Assets {
 	 */
 	public $hooked = false;
 
-	private function __construct() {
-		/* Don't do anything, needs to be initialized via instance() method */
-	}
+	/**
+	 * Don't do anything, needs to be initialized via instance() method.
+	 */
+	private function __construct() {}
 
 	/**
 	 * Get the singleton instance.
@@ -83,7 +89,7 @@ class Fieldmanager_Util_Assets {
 	 * the script immediately. If not, the handle gets added to an array to
 	 * enqueue later.
 	 *
-	 * @param  string $handle The script to enqueue/output.
+	 * @param array $args Script arguments. @see Fieldmanager_Util_Assets::add_script().
 	 */
 	protected function pre_enqueue_script( $args ) {
 		if ( did_action( 'admin_enqueue_scripts' ) || did_action( 'wp_enqueue_scripts' ) ) {
@@ -97,10 +103,10 @@ class Fieldmanager_Util_Assets {
 	/**
 	 * Enqueue a script.
 	 *
-	 * @param  array $args {@see Fieldmanager_Util_Assets::add_script()}
+	 * @param array $args Script arguments. @see Fieldmanager_Util_Assets::add_script().
 	 */
 	protected function enqueue_script( $args ) {
-		// Register the script and localize data if applicable
+		// Register the script and localize data if applicable.
 		wp_enqueue_script( $args['handle'], $args['path'], $args['deps'], $args['ver'], $args['in_footer'] );
 		if ( ! empty( $args['data_object'] ) && ! empty( $args['data'] ) ) {
 			wp_localize_script( $args['handle'], $args['data_object'], $args['data'] );
@@ -114,7 +120,7 @@ class Fieldmanager_Util_Assets {
 	 * the style immediately. If not, the handle gets added to an array to
 	 * enqueue later.
 	 *
-	 * @param  string $handle The style to enqueue/output.
+	 * @param array $args Stylesheet arguments. @see Fieldmanager_Util_Assets::add_style().
 	 */
 	protected function pre_enqueue_style( $args ) {
 		if ( did_action( 'admin_enqueue_scripts' ) || did_action( 'wp_enqueue_scripts' ) ) {
@@ -128,16 +134,15 @@ class Fieldmanager_Util_Assets {
 	/**
 	 * Enqueue a style.
 	 *
-	 * @param  array $args {@see Fieldmanager_Util_Assets::add_style()}
+	 * @param array $args Stylesheet arguments. @see Fieldmanager_Util_Assets::add_style().
 	 */
 	protected function enqueue_style( $args ) {
-		// Register the style
+		// Register the style.
 		wp_enqueue_style( $args['handle'], $args['path'], $args['deps'], $args['ver'], $args['media'] );
 	}
 
 	/**
-	 * Hook into admin_enqueue_scripts and wp_enqueue_scripts if we haven't
-	 * already.
+	 * Hook into admin_enqueue_scripts and wp_enqueue_scripts if we haven't already.
 	 */
 	protected function hook_enqueue() {
 		if ( ! $this->hooked ) {
@@ -195,19 +200,19 @@ class Fieldmanager_Util_Assets {
 		}
 
 		if ( $args['path'] ) {
-			// Set the default version
+			// Set the default version.
 			if ( ! $args['ver'] ) {
 				$args['ver'] = FM_GLOBAL_ASSET_VERSION;
 			}
 
-			// Set the default directory
+			// Set the default directory.
 			if ( '' == $args['plugin_dir'] ) {
-				$args['plugin_dir'] = fieldmanager_get_baseurl(); // allow overrides for child plugins
+				$args['plugin_dir'] = fieldmanager_get_baseurl(); // Allow overrides for child plugins.
 			}
 			$args['path'] = $args['plugin_dir'] . $args['path'];
 		}
 
-		// Enqueue or output the script
+		// Enqueue or output the script.
 		$this->pre_enqueue_script( $args );
 	}
 
@@ -251,19 +256,19 @@ class Fieldmanager_Util_Assets {
 		}
 
 		if ( $args['path'] ) {
-			// Set the default version
+			// Set the default version.
 			if ( ! $args['ver'] ) {
 				$args['ver'] = FM_GLOBAL_ASSET_VERSION;
 			}
 
-			// Set the default directory
+			// Set the default directory.
 			if ( '' == $args['plugin_dir'] ) {
-				$args['plugin_dir'] = fieldmanager_get_baseurl(); // allow overrides for child plugins
+				$args['plugin_dir'] = fieldmanager_get_baseurl(); // Allow overrides for child plugins.
 			}
 			$args['path'] = $args['plugin_dir'] . $args['path'];
 		}
 
-		// Enqueue or output hte style
+		// Enqueue or output the style.
 		$this->pre_enqueue_style( $args );
 	}
 }
