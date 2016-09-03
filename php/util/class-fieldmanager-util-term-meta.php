@@ -75,7 +75,7 @@ class Fieldmanager_Util_Term_Meta {
 	 *
 	 * @param  int    $term_id  Term ID.
 	 * @param  string $taxonomy Term taxonomy.
-	 * @return string           Post slug.
+	 * @return string Post slug.
 	 */
 	protected function post_slug( $term_id, $taxonomy ) {
 		return $this->post_type . '-' . $term_id . '-' . $taxonomy;
@@ -97,7 +97,7 @@ class Fieldmanager_Util_Term_Meta {
 		if ( false === $term_meta_post_id ) {
 			/*
 			 * If not, exit. There is no meta data for this term at all. Mimic
-			 * the normal return behavior of get_post_meta
+			 * the normal return behavior of get_post_meta().
 			 */
 			return $single ? '' : array();
 		}
