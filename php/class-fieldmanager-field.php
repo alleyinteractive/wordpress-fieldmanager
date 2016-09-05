@@ -1124,20 +1124,29 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Fail validation. If self::$debug is true, throw an exception.
-	 * @param string $error_message
-	 * @return void
+	 * Fail validation.
+	 *
+	 * @throws FM_Validation_Exception If self::$debug is true.
+	 *
+	 * @since 1.1.0 Fires 'fm_failed_validation' instead of calling wp_die()
+	 *              when self::$debug is false.
+	 *
+	 * @param string $error_message Optional. Error message.
 	 */
-	protected function _failed_validation( $debug_message = '' ) {
+	protected function _failed_validation( $error_message = '' ) {
 		if ( self::$debug ) {
-			throw new FM_Validation_Exception( $debug_message );
+			throw new FM_Validation_Exception( $error_message );
 		}
-		else {
-			wp_die( esc_html(
-				$debug_message . "\n\n" .
-				__( "You may be able to use your browser's back button to resolve this error.", 'fieldmanager' )
-			) );
-		}
+
+		/**
+		 * Fires when the field fails validation.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param string             $error_message Error message.
+		 * @param Fieldmanager_Field $this          Field object.
+		 */
+		do_action( 'fm_failed_validation', $error_message, $this );
 	}
 
 	/**

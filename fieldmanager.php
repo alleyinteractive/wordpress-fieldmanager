@@ -499,6 +499,23 @@ function fm_sanitize_textarea( $value ) {
 }
 
 /**
+ * Call wp_die() with an error message for Fieldmanager_Field::_failed_validation().
+ *
+ * @since 1.1.0
+ *
+ * @param string $error_message Optional. Error message in addition to the
+ *                              default message for validation errors.
+ */
+function fm_failed_validation_to_wp_die( $error_message = '' ) {
+	wp_die( esc_html(
+		$error_message
+		. "\n\n"
+		. __( "You may be able to use your browser's back button to resolve this error.", 'fieldmanager' )
+	) );
+}
+add_action( 'fm_failed_validation', 'fm_failed_validation_to_wp_die' );
+
+/**
  * Stripslashes_deep for submenu data.
  */
 add_filter( 'fm_submenu_presave_data', 'stripslashes_deep' );
