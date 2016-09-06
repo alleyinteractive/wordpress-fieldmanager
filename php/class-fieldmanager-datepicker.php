@@ -118,7 +118,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 		if ( isset( $value['hour'] ) && is_numeric( $value['hour'] ) && $this->use_time ) {
 			$hour = intval( $value['hour'] );
 			$minute = ( isset( $value['minute'] ) && is_numeric( $value['minute'] ) ) ? intval( $value['minute'] ) : 0;
-			if ( 0 == $hour && $this->use_am_pm ) {
+			if ( 0 === $hour && $this->use_am_pm ) {
 				$hour = 12;
 			}
 			$time_to_parse .= ' ' . $hour;
