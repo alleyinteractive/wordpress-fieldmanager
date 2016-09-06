@@ -24,7 +24,6 @@
 	<exclude-pattern>php/class-fieldmanager-checkbox.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-checkboxes.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-colorpicker.php</exclude-pattern>
-	<exclude-pattern>php/class-fieldmanager-datepicker.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-draggablepost.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-field.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-grid.php</exclude-pattern>
@@ -37,7 +36,6 @@
 	<exclude-pattern>php/class-fieldmanager-radios.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-richtextarea.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-select.php</exclude-pattern>
-	<exclude-pattern>php/class-fieldmanager-textarea.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-textfield.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-page.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-post.php</exclude-pattern>
