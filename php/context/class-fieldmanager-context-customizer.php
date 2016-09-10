@@ -58,6 +58,32 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	}
 
 	/**
+	 * Filter the validity of a Customize setting value.
+	 *
+	 * Amend the `$validity` object via its `WP_Error::add()` method.
+	 *
+	 * @see WP_Customize_Setting::validate().
+	 *
+	 * @param WP_Error $validity Filtered from `true` to `WP_Error` when invalid.
+	 * @param mixed $value Value of the setting.
+	 * @param WP_Customize_Setting $this WP_Customize_Setting instance.
+	 */
+	public function validate_callback( $validity, $value, $setting ) {
+		try {
+			$this->prepare_data( $setting->value(), $value );
+		} catch ( FM_Validation_Exception $e ) {
+			if ( ! is_wp_error( $validity ) ) {
+				$validity = new WP_Error();
+			}
+
+			// @see https://core.trac.wordpress.org/ticket/37890 for the use of array( $value ).
+			$validity->add( 'fieldmanager', $e->getMessage(), array( $value ) );
+		}
+
+		return $validity;
+	}
+
+	/**
 	 * Filter a Customize setting value in un-slashed form.
 	 *
 	 * @param mixed $value Setting value.
