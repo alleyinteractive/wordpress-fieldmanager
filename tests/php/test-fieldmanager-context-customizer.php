@@ -144,6 +144,27 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->assertSame( $input_attrs, $control->input_attrs );
 	}
 
+	// Make sure validating passes a valid value.
+	function test_validate_valid_value() {
+		$this->field->validate = array( 'is_numeric' );
+
+		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$this->register();
+
+		$validity = rand_str();
+		$this->assertSame( $validity, $context->validate_callback( $validity, rand( 1, 100 ), $this->manager->get_setting( $this->field->name ) ) );
+	}
+
+	// Make sure validating fails an invalid value.
+	function test_validate_invalid_value() {
+		$this->field->validate = array( 'is_numeric' );
+
+		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$this->register();
+
+		$this->assertWPError( $context->validate_callback( rand_str(), rand_str(), $this->manager->get_setting( $this->field->name ) ) );
+	}
+
 	/**
 	 * Test that a textfield is sanitized the same way when the value is passed
      * as a bare string and a query string.
@@ -312,27 +333,6 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
 		$this->register();
 		$this->assertSame( 'Foo "bar" baz', $context->sanitize_callback( 'Foo \"bar\" baz', $this->manager->get_setting( $this->field->name ) ) );
-	}
-
-	// Make sure validating passes a valid value.
-	function test_validate_valid_value() {
-		$this->field->validate = array( 'is_numeric' );
-
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
-		$this->register();
-
-		$validity = rand_str();
-		$this->assertSame( $validity, $context->validate_callback( $validity, rand( 1, 100 ), $this->manager->get_setting( $this->field->name ) ) );
-	}
-
-	// Make sure validating fails an invalid value.
-	function test_validate_invalid_value() {
-		$this->field->validate = array( 'is_numeric' );
-
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
-		$this->register();
-
-		$this->assertWPError( $context->validate_callback( rand_str(), rand_str(), $this->manager->get_setting( $this->field->name ) ) );
 	}
 
 	// Make sure the context's rendering method calls the field rendering method.
