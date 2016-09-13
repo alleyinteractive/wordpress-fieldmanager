@@ -4,13 +4,11 @@
  */
 
 class Test_Fieldmanager extends WP_UnitTestCase {
+	/**
+	 * @expectedException        WPDieException
+	 * @expectedExceptionMessage test_fm_failed_validation_to_wp_die
+	 */
 	public function test_fm_failed_validation_to_wp_die() {
-		$rand_str = rand_str();
-
-		try {
-			fm_failed_validation_to_wp_die( $rand_str );
-		} catch ( WPDieException $e ) {
-			$this->assertContains( $rand_str, $e->getMessage() );
-		}
+		fm_failed_validation_to_wp_die( __FUNCTION__ );
 	}
 }
