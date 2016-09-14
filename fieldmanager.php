@@ -133,10 +133,15 @@ function fieldmanager_get_baseurl() {
  *     requested template is not found.
  */
 function fieldmanager_get_template( $tpl_slug ) {
-	if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php' ) ) {
+	
+	if ( file_exists( get_stylesheet_directory() . '/plugins/fieldmanager/templates/' . $tpl_slug . '.php' ) ){
+		$tpl_slug = locate_template( 'plugins/fieldmanager/templates/' . $tpl_slug . '.php' );
+	} elseif ( file_exists( plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php' ) ) {
+		$tpl_slug = plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php';
+	} else {
 		$tpl_slug = 'textfield';
 	}
-	return plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php';
+	return $tpl_slug;
 }
 
 /**
