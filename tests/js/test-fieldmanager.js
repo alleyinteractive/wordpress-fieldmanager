@@ -88,6 +88,9 @@
 		// Select a different radio.
 		$( '.fm-test-displayif-radio' ).find( 'input[value=c]' ).prop( 'checked', true ).trigger( 'change' );
 		assert.notOk( $( '#di-when-displayif-radio-b:visible' ).length, "hide 'b' when 'c' selected" );
+
+		// Test when a wrapper has a class that qualifies as a display trigger but has no eligible siblings.
+		assert.ok( ! $( '#di-when-trigger-length-is-zero' ).hasClass( 'display-trigger' ) );
 	});
 
 	QUnit.test( 'Renumber', function( assert ) {
