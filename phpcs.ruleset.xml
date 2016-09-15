@@ -22,7 +22,6 @@
 	<exclude-pattern>fieldmanager.php$</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-autocomplete.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-checkbox.php</exclude-pattern>
-	<exclude-pattern>php/class-fieldmanager-checkboxes.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-colorpicker.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-draggablepost.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-field.php</exclude-pattern>
@@ -32,7 +31,6 @@
 	<exclude-pattern>php/class-fieldmanager-link.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-media.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-options.php</exclude-pattern>
-	<exclude-pattern>php/class-fieldmanager-password.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-radios.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-richtextarea.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-select.php</exclude-pattern>
