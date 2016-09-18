@@ -4,10 +4,26 @@
  */
 class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitTestCase {
 	protected $field;
+	protected $old_debug;
 
 	function setUp() {
 		parent::setUp();
 		$this->field = new Fieldmanager_TextField( array( 'name' => 'foo' ) );
+		$this->old_debug = Fieldmanager_Field::$debug;
+	}
+
+	function tearDown() {
+		Fieldmanager_Field::$debug = $this->old_debug;
+	}
+
+	/**
+	 * Data provider for running a test with field debugging on and off.
+	 */
+	function data_field_debug() {
+		return array(
+			array( true ),
+			array( false ),
+		);
 	}
 
 	// Test that no section is created if no section args are passed.
@@ -333,6 +349,37 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
 		$this->register();
 		$this->assertSame( 'Foo "bar" baz', $context->sanitize_callback( 'Foo \"bar\" baz', $this->manager->get_setting( $this->field->name ) ) );
+	}
+
+	/**
+	 * Make sure sanitizing returns a WP_Error on an invalid value.
+	 *
+	 * @dataProvider data_field_debug
+	 */
+	function test_sanitize_invalid_value( $debug ) {
+		Fieldmanager_Field::$debug = $debug;
+		$this->field->validate = array( 'is_numeric' );
+
+		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$this->register();
+		do_action( 'customize_save_validation_before' );
+
+		$this->assertWPError( $context->sanitize_callback( rand_str(), $this->manager->get_setting( $this->field->name ) ) );
+	}
+
+	/**
+	 * Make sure sanitizing returns null on an invalid value where we don't have Customizer validation.
+	 *
+	 * @dataProvider data_field_debug
+	 */
+	function test_sanitize_invalid_value_backcompat( $debug ) {
+		Fieldmanager_Field::$debug = $debug;
+		$this->field->validate = array( 'is_numeric' );
+
+		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$this->register();
+
+		$this->assertNull( $context->sanitize_callback( rand_str(), $this->manager->get_setting( $this->field->name ) ) );
 	}
 
 	// Make sure the context's rendering method calls the field rendering method.
