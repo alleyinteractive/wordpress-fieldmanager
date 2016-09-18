@@ -160,25 +160,45 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$this->assertSame( $input_attrs, $control->input_attrs );
 	}
 
-	// Make sure validating passes a valid value.
+	// Make sure validating passes a valid value passed as a bare string and as a query string.
 	function test_validate_valid_value() {
 		$this->field->validate = array( 'is_numeric' );
 
 		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
 		$this->register();
+		$setting = $this->manager->get_setting( $this->field->name );
 
 		$validity = rand_str();
-		$this->assertSame( $validity, $context->validate_callback( $validity, rand( 1, 100 ), $this->manager->get_setting( $this->field->name ) ) );
+		$this->assertSame( $validity, $context->validate_callback( $validity, rand( 1, 100 ), $setting ) );
+		$this->assertSame( $validity, $context->validate_callback( $validity, "{$this->field->name}=" . rand( 1, 100 ), $setting ) );
 	}
 
-	// Make sure validating fails an invalid value.
-	function test_validate_invalid_value() {
+	/**
+	 * Make sure validating fails an invalid value (with both FM debug settings)
+	 * passed as a bare string and as a query string.
+	 *
+	 * @dataProvider data_field_debug
+	 */
+	function test_validate_invalid_value( $debug ) {
+		Fieldmanager_Field::$debug = $debug;
+
 		$this->field->validate = array( 'is_numeric' );
 
 		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
 		$this->register();
+		$setting = $this->manager->get_setting( $this->field->name );
 
-		$this->assertWPError( $context->validate_callback( rand_str(), rand_str(), $this->manager->get_setting( $this->field->name ) ) );
+		$message = ( $debug ) ? __( 'Failed with $debug = true', 'fieldmanager' ) : __( 'Failed with $debug = false', 'fieldmanager' );
+
+		$this->assertWPError(
+			$context->validate_callback( rand_str(), rand_str(), $setting ),
+			$message
+		);
+
+		$this->assertWPError(
+			$context->validate_callback( rand_str(), "{$this->field->name}=" . rand_str(), $setting ),
+			$message
+		);
 	}
 
 	/**
