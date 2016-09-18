@@ -95,9 +95,19 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	public function sanitize_callback( $value, $setting ) {
 		$value = $this->parse_field_query_string( $value );
 
-		if ( is_array( $value ) && array_key_exists( $this->fm->name, $value ) ) {
-			// If the option name is the top-level array key, get just the value.
-			$value = $value[ $this->fm->name ];
+		// Run the validation routine in case we need to reject the value.
+		$validity = $this->validate_callback( true, $value, $setting );
+
+		if ( is_wp_error( $validity ) ) {
+			/*
+			 * The 'customize_save_validation_before' action was added with the
+			 * Customizer's validation framework. If it fires, assume it's safe
+			 * to return a WP_Error to indicate invalid values. Returning null
+			 * is a backwards-compatible way to reject a value from
+			 * WP_Customize_Setting::sanitize(). See
+			 * https://core.trac.wordpress.org/ticket/34893.
+			 */
+			return ( did_action( 'customize_save_validation_before' ) ) ? $validity : null;
 		}
 
 		// Return the value after Fieldmanager takes a shot at it.
