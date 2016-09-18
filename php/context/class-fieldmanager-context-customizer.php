@@ -69,6 +69,8 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 * @param WP_Customize_Setting $this WP_Customize_Setting instance.
 	 */
 	public function validate_callback( $validity, $value, $setting ) {
+		$value = $this->parse_field_query_string( $value );
+
 		try {
 			$this->prepare_data( $setting->value(), $value );
 		} catch ( FM_Validation_Exception $e ) {
@@ -91,10 +93,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 * @return mixed The sanitized setting value.
 	 */
 	public function sanitize_callback( $value, $setting ) {
-		if ( is_string( $value ) && 0 === strpos( $value, $this->fm->name ) ) {
-			// Parse the query-string version of our values into an array.
-			parse_str( $value, $value );
-		}
+		$value = $this->parse_field_query_string( $value );
 
 		if ( is_array( $value ) && array_key_exists( $this->fm->name, $value ) ) {
 			// If the option name is the top-level array key, get just the value.
@@ -168,5 +167,25 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 				)
 			) )
 		);
+	}
+
+	/**
+	 * Decode form element values for this field from a URL-encoded string.
+	 *
+	 * @param  mixed $value Value to parse.
+	 * @return mixed
+	 */
+	protected function parse_field_query_string( $value ) {
+		if ( is_string( $value ) && 0 === strpos( $value, $this->fm->name ) ) {
+			// Parse the query-string version of our values into an array.
+			parse_str( $value, $value );
+		}
+
+		if ( is_array( $value ) && array_key_exists( $this->fm->name, $value ) ) {
+			// If the option name is the top-level array key, get just the value.
+			$value = $value[ $this->fm->name ];
+		}
+
+		return $value;
 	}
 }
