@@ -1,6 +1,8 @@
 <?php
 /**
  * Class file for Fieldmanager_Customize_Control.
+ *
+ * @package Fieldmanager_Customize
  */
 
 if ( class_exists( 'WP_Customize_Control' ) ) :
@@ -25,9 +27,11 @@ if ( class_exists( 'WP_Customize_Control' ) ) :
 		/**
 		 * Constructor.
 		 *
-		 * @param WP_Customize_Manager $manager
-		 * @param string $id Control ID.
-		 * @param array $args Control arguments, including $context.
+		 * @throws FM_Developer_Exception When no context is included.
+		 *
+		 * @param WP_Customize_Manager $manager WP_Customize_Manager instance.
+		 * @param string               $id      Control ID.
+		 * @param array                $args    Control arguments, including $context.
 		 */
 		public function __construct( $manager, $id, $args = array() ) {
 			parent::__construct( $manager, $id, $args );

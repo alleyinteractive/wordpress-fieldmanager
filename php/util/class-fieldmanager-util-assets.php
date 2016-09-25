@@ -148,6 +148,7 @@ class Fieldmanager_Util_Assets {
 		if ( ! $this->hooked ) {
 			add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_assets' ) );
 			add_action( 'wp_enqueue_scripts', array( $this, 'enqueue_assets' ) );
+
 			/*
 			 * Use a later priority because 'customize_controls_enqueue_scripts'
 			 * will, by default, be firing at the default priority when

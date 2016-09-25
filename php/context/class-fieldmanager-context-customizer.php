@@ -10,9 +10,9 @@
  */
 class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
-	 * @var array $args {
-	 *     Arguments to construct Customizer objects.
+	 * Arguments to construct Customizer objects.
 	 *
+	 * @var array $args {
 	 *     @type array|bool $section_args Arguments for constructing a {@see WP_Customize_Section},
 	 *           or false to not create one for this context.
 	 *     @type array $setting_args Arguments for constructing a {@see Fieldmanager_Customize_Setting}.
@@ -24,8 +24,8 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
 	 * Constructor.
 	 *
-	 * @param array $args Customizer object arguments. @see Fieldmanager_Context_Customizer::args.
-	 * @param Fieldmanager_Field $fm Field object to add to the Customizer.
+	 * @param array              $args Customizer object arguments. @see Fieldmanager_Context_Customizer::args.
+	 * @param Fieldmanager_Field $fm   Field object to add to the Customizer.
 	 */
 	public function __construct( $args, $fm ) {
 		$this->args = wp_parse_args( $args, array(
@@ -64,9 +64,9 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 *
 	 * @see WP_Customize_Setting::validate().
 	 *
-	 * @param WP_Error $validity Filtered from `true` to `WP_Error` when invalid.
-	 * @param mixed $value Value of the setting.
-	 * @param WP_Customize_Setting $this WP_Customize_Setting instance.
+	 * @param WP_Error             $validity Filtered from `true` to `WP_Error` when invalid.
+	 * @param mixed                $value    Value of the setting.
+	 * @param WP_Customize_Setting $setting  WP_Customize_Setting instance.
 	 */
 	public function validate_callback( $validity, $value, $setting ) {
 		$value = $this->parse_field_query_string( $value );
@@ -94,9 +94,9 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
 	 * Filter a Customize setting value in un-slashed form.
 	 *
-	 * @param mixed $value Setting value.
-	 * @param WP_Customize_Setting $setting WP_Customize_Setting instance.
-	 * @return mixed The sanitized setting value.
+	 * @param  mixed                $value   Setting value.
+	 * @param  WP_Customize_Setting $setting WP_Customize_Setting instance.
+	 * @return mixed                         The sanitized setting value.
 	 */
 	public function sanitize_callback( $value, $setting ) {
 		$value = $this->parse_field_query_string( $value );
@@ -179,8 +179,8 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
 	 * Add a Customizer section for this field.
 	 *
-	 * @param WP_Customize_Manager $manager
-	 * @return WP_Customize_Section|void Section object, where supported, if created.
+	 * @param  WP_Customize_Manager $manager WP_Customize_Manager instance.
+	 * @return WP_Customize_Section|void     Section object, where supported, if created.
 	 */
 	protected function register_section( $manager ) {
 		if ( false === $this->args['section_args'] ) {
@@ -198,7 +198,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	 * for its children, so sanitization and validation routines can access the
 	 * full group data.
 	 *
-	 * @param WP_Customize_Manager $manager
+	 * @param  WP_Customize_Manager $manager WP_Customize_Manager instance.
 	 * @return Fieldmanager_Customize_Setting Setting object, where supported.
 	 */
 	protected function register_setting( $manager ) {
@@ -215,7 +215,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
 	 * Add a Customizer control for this field.
 	 *
-	 * @param WP_Customize_Manager $manager
+	 * @param  WP_Customize_Manager $manager WP_Customize_Manager instance.
 	 * @return Fieldmanager_Customize_Control Control object, where supported.
 	 */
 	protected function register_control( $manager ) {

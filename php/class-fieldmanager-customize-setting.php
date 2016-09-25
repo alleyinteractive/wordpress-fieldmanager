@@ -1,6 +1,8 @@
 <?php
 /**
  * Class file for Fieldmanager_Customize_Setting.
+ *
+ * @package Fieldmanager_Customize
  */
 
 if ( class_exists( 'WP_Customize_Setting' ) ) :
@@ -18,9 +20,11 @@ if ( class_exists( 'WP_Customize_Setting' ) ) :
 		/**
 		 * Constructor.
 		 *
-		 * @param WP_Customize_Manager $manager
-		 * @param string $id Setting ID.
-		 * @param array $args Setting arguments, including $context.
+		 * @throws FM_Developer_Exception When no context is included.
+		 *
+		 * @param WP_Customize_Manager $manager WP_Customize_Manager instance.
+		 * @param string               $id      Setting ID.
+		 * @param array                $args    Setting arguments, including $context.
 		 */
 		public function __construct( $manager, $id, $args = array() ) {
 			if ( isset( $args['context'] ) && ( $args['context'] instanceof Fieldmanager_Context ) ) {
