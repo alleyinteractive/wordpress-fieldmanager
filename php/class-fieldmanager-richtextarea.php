@@ -265,7 +265,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 		remove_filter( 'the_editor_content', 'wp_richedit_pre' );
 
 		if ( ! self::$has_registered_customize_scripts ) {
-			add_action( 'customize_controls_print_footer_scripts', array( $this, 'customize_controls_print_footer_scripts' ), 50 );
+			// This action must fire after settings are exported in WP_Customize_Manager::customize_pane_settings().
+			add_action( 'customize_controls_print_footer_scripts', array( $this, 'customize_controls_print_footer_scripts' ), 1001 );
 			self::$has_registered_customize_scripts = true;
 		}
 	}
