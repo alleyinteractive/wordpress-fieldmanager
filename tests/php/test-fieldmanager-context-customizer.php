@@ -204,8 +204,6 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 	/**
 	 * Test that a textfield is sanitized the same way when the value is passed
      * as a bare string and a query string.
-	 *
-	 * @expectedException FM_Exception
 	 */
 	function test_sanitize_string() {
 		$value = rand_str();
@@ -216,7 +214,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 
 		$this->assertSame( $value, $context->sanitize_callback( $value, $setting ) );
 		$this->assertSame( $value, $context->sanitize_callback( "{$this->field->name}={$value}", $setting ) );
-		$context->sanitize_callback( array( 'Not', 'a', 'string' ), $setting );
+		$this->assertNull( $context->sanitize_callback( array( 'Not', 'a', 'string' ), $setting ) );
 	}
 
 	/**
@@ -377,6 +375,8 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 	 * @dataProvider data_field_debug
 	 */
 	function test_sanitize_invalid_value( $debug ) {
+		global $wp_actions;
+
 		Fieldmanager_Field::$debug = $debug;
 		$this->field->validate = array( 'is_numeric' );
 
@@ -385,6 +385,9 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		do_action( 'customize_save_validation_before' );
 
 		$this->assertWPError( $context->sanitize_callback( rand_str(), $this->manager->get_setting( $this->field->name ) ) );
+
+		// "Revert" to not affect future did_action() checks.
+		$wp_actions['customize_save_validation_before']--;
 	}
 
 	/**

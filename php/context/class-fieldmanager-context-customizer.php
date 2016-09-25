@@ -71,6 +71,9 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	public function validate_callback( $validity, $value, $setting ) {
 		$value = $this->parse_field_query_string( $value );
 
+		// Start assuming calls to wp_die() signal Fieldmanager validation errors.
+		$this->start_handling_wp_die();
+
 		try {
 			$this->prepare_data( $setting->value(), $value );
 		} catch ( FM_Validation_Exception $e ) {
@@ -81,6 +84,9 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 			// @see https://core.trac.wordpress.org/ticket/37890 for the use of array( $value ).
 			$validity->add( 'fieldmanager', $e->getMessage(), array( $value ) );
 		}
+
+		// Resume normal wp_die() handling.
+		$this->stop_handling_wp_die();
 
 		return $validity;
 	}
@@ -112,6 +118,51 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 
 		// Return the value after Fieldmanager takes a shot at it.
 		return stripslashes_deep( $this->prepare_data( $setting->value(), $value ) );
+	}
+
+	/**
+	 * Filter the callback for killing WordPress execution.
+	 *
+	 * Fieldmanager calls wp_die() to signal some errors, but messages passed to
+	 * wp_die() are not automatically displayed in the Customizer. This filter
+	 * should return a callback that throws the message passed to wp_die() as an
+	 * exception, which the default validation callback in this context can
+	 * catch and convert to a WP_Error.
+	 *
+	 * @return callable Callback function name.
+	 */
+	public function on_filter_wp_die_handler() {
+		/*
+		 * Side effect: We don't want execution to stop, so remove all other
+		 * filters because they presumably assume the opposite. See, e.g.,
+		 * WP_Customize_Manager::remove_preview_signature().
+		 */
+		remove_all_filters( current_filter() );
+
+		// Return the new callback.
+		return array( $this, 'wp_die_handler' );
+	}
+
+	/**
+	 * Handle wp_die() by throwing an exception instead of killing execution.
+	 *
+	 * @throws FM_Validation_Exception With the message passed to wp_die().
+	 *
+	 * @param string|WP_Error $message Error message or WP_Error object.
+	 * @param string          $title   Optional. Error title.
+	 * @param string|array    $args    Optional. Arguments to control behavior.
+	 */
+	public function wp_die_handler( $message, $title, $args ) {
+		if ( is_wp_error( $message ) ) {
+			$message = $message->get_error_message();
+		}
+
+		/*
+		 * Modify $message in two ways that follow from our assumption that
+		 * Fieldmanager generated this wp_die(): Remove the blank lines and
+		 * "back button" message, and unescape HTML.
+		 */
+		throw new FM_Validation_Exception( preg_replace( '#\n\n.*?$#', '', htmlspecialchars_decode( $message, ENT_QUOTES ) ) );
 	}
 
 	/**
@@ -197,5 +248,29 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Add filters that convert calls to wp_die() into exceptions.
+	 *
+	 * @return bool Whether the filters were added.
+	 */
+	protected function start_handling_wp_die() {
+		return (
+			add_filter( 'wp_die_ajax_handler', array( $this, 'on_filter_wp_die_handler' ), 0 )
+			&& add_filter( 'wp_die_handler', array( $this, 'on_filter_wp_die_handler' ), 0 )
+		);
+	}
+
+	/**
+	 * Remove filters that convert calls to wp_die() into exceptions.
+	 *
+	 * @return bool Whether the filters were removed.
+	 */
+	protected function stop_handling_wp_die() {
+		return (
+			remove_filter( 'wp_die_ajax_handler', array( $this, 'on_filter_wp_die_handler' ), 0 )
+			&& remove_filter( 'wp_die_handler', array( $this, 'on_filter_wp_die_handler' ), 0 )
+		);
 	}
 }
