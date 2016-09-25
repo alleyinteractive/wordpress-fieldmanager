@@ -76,13 +76,21 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 
 		try {
 			$this->prepare_data( $setting->value(), $value );
-		} catch ( FM_Validation_Exception $e ) {
+		} catch ( Exception $e ) {
 			if ( ! is_wp_error( $validity ) ) {
 				$validity = new WP_Error();
 			}
 
+			/*
+			 * Handle all exceptions Fieldmanager might generate, but use the
+			 * message from only validation exceptions, which are more
+			 * user-friendly. For others, use the generic message from
+			 * WP_Customize_Setting::validate().
+			 */
+			$message = ( $e instanceof FM_Validation_Exception ) ? $e->getMessage() : __( 'Invalid value.', 'fieldmanager' );
+
 			// @see https://core.trac.wordpress.org/ticket/37890 for the use of array( $value ).
-			$validity->add( 'fieldmanager', $e->getMessage(), array( $value ) );
+			$validity->add( 'fieldmanager', $message, array( $value ) );
 		}
 
 		// Resume normal wp_die() handling.
