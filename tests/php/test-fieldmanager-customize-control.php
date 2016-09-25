@@ -49,27 +49,6 @@ class Test_Fieldmanager_Customize_Control extends Fieldmanager_Customizer_UnitTe
 		$this->assertSame( 1, ( count( $after ) - count( $before ) ) );
 	}
 
-	/**
-	 * Tests for closures hooked with fm_add_script().
-	 */
-	function test_fm_add_scripts() {
-		global $wp_filter;
-
-		// Spoof is_admin().
-		$screen = get_current_screen();
-		set_current_screen( 'dashboard-user' );
-
-		$before = $wp_filter['customize_controls_enqueue_scripts'];
-
-		$control = new Fieldmanager_Customize_Control( $this->manager, rand_str(), array( 'context' => $this->mock_context ) );
-		$control->enqueue();
-
-		$after = $wp_filter['customize_controls_enqueue_scripts'];
-		$this->assertSame( 1, ( count( $after ) - count( $before ) ) );
-
-		$GLOBALS['current_screen'] = $screen;
-	}
-
 	function test_render_content() {
 		$name        = rand_str();
 		$value       = rand_str();
