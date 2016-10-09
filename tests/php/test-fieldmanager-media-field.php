@@ -19,17 +19,22 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 	}
 
 	public function test_basic_render() {
+		$meta_key = 'test_media';
 		$args = array(
-			'name' => 'test_media',
+			'name' => $meta_key,
 			'button_label' => rand_str(),
 			'modal_button_label' => rand_str(),
 			'modal_title' => rand_str(),
+			'selected_image_label' => rand_str(),
+			'selected_file_label' => rand_str(),
+			'remove_media_label' => rand_str(),
 			'preview_size' => rand_str(),
 		);
 		$fm = new Fieldmanager_Media( $args );
+		$context = $fm->add_meta_box( 'Test Media', 'post' );
 
 		ob_start();
-		$fm->add_meta_box( 'Test Media', 'post' )->render_meta_box( $this->post, array() );
+		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 		$this->assertRegExp(
 			sprintf(
@@ -43,6 +48,29 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		);
 		$this->assertRegExp( '#<input type="hidden" name="test_media" value="" class="fm-element fm-media-id" />#', $html );
 		$this->assertRegExp( '#<div class="media-wrapper"></div>#', $html );
+
+		// Test $selected_image_label.
+		update_post_meta( $this->post->ID, 'test_media', self::factory()->attachment->create_object( 'image.jpg', 0, array(
+			'post_mime_type' => 'image/jpeg',
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+		) ) );
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$this->assertContains( $args['selected_image_label'], $html );
+
+		// Test $selected_file_label and $remove_media_label.
+		update_post_meta( $this->post->ID, 'test_media', self::factory()->attachment->create_object( 'foo.bar', 0, array(
+			'post_mime_type' => 'foo',
+			'post_type'      => 'attachment',
+			'post_status'    => 'inherit',
+		) ) );
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$this->assertContains( $args['selected_file_label'], $html );
+		$this->assertContains( $args['remove_media_label'], $html );
 	}
 
 	public function test_basic_save() {
