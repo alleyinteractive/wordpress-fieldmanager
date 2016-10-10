@@ -36,9 +36,9 @@ if ( class_exists( 'WP_Customize_Control' ) ) :
 		public function __construct( $manager, $id, $args = array() ) {
 			parent::__construct( $manager, $id, $args );
 
-			if ( ! ( $this->context instanceof Fieldmanager_Context_Customizer ) && FM_DEBUG ) {
+			if ( ! ( $this->context instanceof Fieldmanager_Context_Customize ) && FM_DEBUG ) {
 				throw new FM_Developer_Exception(
-					__( 'Fieldmanager_Customize_Control requires a Fieldmanager_Context_Customizer', 'fieldmanager' )
+					__( 'Fieldmanager_Customize_Control requires a Fieldmanager_Context_Customize', 'fieldmanager' )
 				);
 			}
 		}

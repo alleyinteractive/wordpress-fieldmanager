@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_Context_Customizer.
+ * Class file for Fieldmanager_Context_Customize.
  *
  * @package Fieldmanager_Context
  */
@@ -8,7 +8,7 @@
 /**
  * Add Fieldmanager fields to the Customizer.
  */
-class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
+class Fieldmanager_Context_Customize extends Fieldmanager_Context {
 	/**
 	 * Arguments to construct Customizer objects.
 	 *
@@ -24,7 +24,7 @@ class Fieldmanager_Context_Customizer extends Fieldmanager_Context {
 	/**
 	 * Constructor.
 	 *
-	 * @param array              $args Customizer object arguments. @see Fieldmanager_Context_Customizer::args.
+	 * @param array              $args Customizer object arguments. @see Fieldmanager_Context_Customize::args.
 	 * @param Fieldmanager_Field $fm   Field object to add to the Customizer.
 	 */
 	public function __construct( $args, $fm ) {

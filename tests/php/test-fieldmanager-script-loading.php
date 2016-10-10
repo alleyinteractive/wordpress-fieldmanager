@@ -26,7 +26,7 @@ class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Cas
 			$customize_manager,
 			'test',
 			array(
-				'context' => $this->getMockBuilder( 'Fieldmanager_Context_Customizer' )
+				'context' => $this->getMockBuilder( 'Fieldmanager_Context_Customize' )
 					->disableOriginalConstructor()
 					->getMock()
 			)

@@ -1,5 +1,5 @@
 <?php
-class Fieldmanager_Customizer_UnitTestCase extends WP_UnitTestCase {
+class Fieldmanager_Customize_UnitTestCase extends WP_UnitTestCase {
 	protected $manager;
 
 	function setUp() {

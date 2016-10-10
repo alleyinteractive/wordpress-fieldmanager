@@ -259,7 +259,7 @@ function fm_calculate_context() {
 	$calculated_context = array( null, null );
 
 	if ( is_customize_preview() ) {
-		$calculated_context = array( 'customizer', null );
+		$calculated_context = array( 'customize', null );
 	}
 
 	// Safe to use at any point in the load process, and better than URL matching.
@@ -297,7 +297,7 @@ function fm_calculate_context() {
 		}
 
 		if ( 'customize.php' === $script || is_customize_preview() ) {
-			$calculated_context = array( 'customizer', null );
+			$calculated_context = array( 'customize', null );
 		}
 
 		if ( empty( $calculated_context[0] ) ) {

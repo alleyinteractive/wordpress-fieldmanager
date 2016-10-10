@@ -2,7 +2,7 @@
 /**
  * @group customize
  */
-class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitTestCase {
+class Test_Fieldmanager_Context_Customize extends Fieldmanager_Customize_UnitTestCase {
 	protected $field;
 	protected $old_debug;
 
@@ -28,13 +28,13 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 
 	// Test that no section is created if no section args are passed.
 	function test_no_section() {
-		new Fieldmanager_Context_Customizer( array(), $this->field );
+		new Fieldmanager_Context_Customize( array(), $this->field );
 		$this->assertEmpty( $this->manager->get_section( $this->field->name ) );
 	}
 
 	// Test that a section is created even with empty constructor args.
 	function test_bare_section() {
-		new Fieldmanager_Context_Customizer( array( 'section_args' => array() ), $this->field );
+		new Fieldmanager_Context_Customize( array( 'section_args' => array() ), $this->field );
 		$this->register();
 		$this->assertInstanceOf( 'WP_Customize_Section', $this->manager->get_section( $this->field->name ) );
 	}
@@ -43,7 +43,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 	function test_section_title() {
 		$title = rand_str();
 
-		new Fieldmanager_Context_Customizer( array( 'section_args' => array( 'title' => $title ) ), $this->field );
+		new Fieldmanager_Context_Customize( array( 'section_args' => array( 'title' => $title ) ), $this->field );
 		$this->register();
 		$this->assertSame( $title, $this->manager->get_section( $this->field->name )->title );
 	}
@@ -53,7 +53,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$title = rand_str();
 		$priority = rand( 0, 100 );
 
-		new Fieldmanager_Context_Customizer( array(
+		new Fieldmanager_Context_Customize( array(
 			'section_args' => array(
 				'title' => $title,
 				'priority' => $priority,
@@ -69,7 +69,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 
 	// Test that a setting is created even without constructor args.
 	function test_bare_setting() {
-		new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		new Fieldmanager_Context_Customize( 'Foo', $this->field );
 		$this->register();
 		$this->assertInstanceOf( 'Fieldmanager_Customize_Setting', $this->manager->get_setting( $this->field->name ) );
 	}
@@ -79,7 +79,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$capability = 'edit_thing';
 		$default = rand_str();
 
-		new Fieldmanager_Context_Customizer( array(
+		new Fieldmanager_Context_Customize( array(
 			'setting_args' => array(
 				'capability' => $capability,
 				'default' => $default
@@ -95,7 +95,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 
 	// Test that a control is created even without constructor args.
 	function test_bare_control() {
-		new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		new Fieldmanager_Context_Customize( 'Foo', $this->field );
 
 		$this->register();
 
@@ -110,7 +110,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$label = rand_str();
 		$section = rand_str();
 
-		new Fieldmanager_Context_Customizer( array(
+		new Fieldmanager_Context_Customize( array(
 			'control_args' => array(
 				'label' => $label,
 				'section' => $section,
@@ -132,7 +132,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		$type = 'theme_mod';
 		$input_attrs = array( rand_str(), rand_str() );
 
-		new Fieldmanager_Context_Customizer( array(
+		new Fieldmanager_Context_Customize( array(
 			'section_args' => array(
 				'title' => $title,
 				'theme_supports' => $theme_supports,
@@ -164,7 +164,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 	function test_validate_valid_value() {
 		$this->field->validate = array( 'is_numeric' );
 
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$context = new Fieldmanager_Context_Customize( 'Foo', $this->field );
 		$this->register();
 		$setting = $this->manager->get_setting( $this->field->name );
 
@@ -184,7 +184,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 
 		$this->field->validate = array( 'is_numeric' );
 
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$context = new Fieldmanager_Context_Customize( 'Foo', $this->field );
 		$this->register();
 		$setting = $this->manager->get_setting( $this->field->name );
 
@@ -208,7 +208,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 	function test_sanitize_string() {
 		$value = rand_str();
 
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$context = new Fieldmanager_Context_Customize( 'Foo', $this->field );
 		$this->register();
 		$setting = $this->manager->get_setting( $this->field->name );
 
@@ -354,7 +354,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 			),
 		);
 
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $fm );
+		$context = new Fieldmanager_Context_Customize( 'Foo', $fm );
 		$this->register();
 		$setting = $this->manager->get_setting( $fm->name );
 
@@ -364,7 +364,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 
 	// Make sure sanitizing strips slashes.
 	function test_sanitize_stripslashes() {
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$context = new Fieldmanager_Context_Customize( 'Foo', $this->field );
 		$this->register();
 		$this->assertSame( 'Foo "bar" baz', $context->sanitize_callback( 'Foo \"bar\" baz', $this->manager->get_setting( $this->field->name ) ) );
 	}
@@ -380,7 +380,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		Fieldmanager_Field::$debug = $debug;
 		$this->field->validate = array( 'is_numeric' );
 
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$context = new Fieldmanager_Context_Customize( 'Foo', $this->field );
 		$this->register();
 		do_action( 'customize_save_validation_before' );
 
@@ -399,7 +399,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 		Fieldmanager_Field::$debug = $debug;
 		$this->field->validate = array( 'is_numeric' );
 
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $this->field );
+		$context = new Fieldmanager_Context_Customize( 'Foo', $this->field );
 		$this->register();
 
 		$this->assertNull( $context->sanitize_callback( rand_str(), $this->manager->get_setting( $this->field->name ) ) );
@@ -408,7 +408,7 @@ class Test_Fieldmanager_Context_Customizer extends Fieldmanager_Customizer_UnitT
 	// Make sure the context's rendering method calls the field rendering method.
 	function test_render_field() {
 		$field = $this->getMockBuilder( 'Fieldmanager_Textfield' )->disableOriginalConstructor()->getMock();
-		$context = new Fieldmanager_Context_Customizer( 'Foo', $field );
+		$context = new Fieldmanager_Context_Customize( 'Foo', $field );
 
 		$field->expects( $this->once() )->method( 'element_markup' );
 		$context->render_field( array( 'echo' => false ) );

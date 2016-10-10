@@ -2,13 +2,13 @@
 /**
  * @group customize
  */
-class Test_Fieldmanager_Customize_Control extends Fieldmanager_Customizer_UnitTestCase {
+class Test_Fieldmanager_Customize_Control extends Fieldmanager_Customize_UnitTestCase {
 	protected $mock_context;
 
 	function setUp() {
 		parent::setUp();
 
-		$this->mock_context = $this->getMockBuilder( 'Fieldmanager_Context_Customizer' )
+		$this->mock_context = $this->getMockBuilder( 'Fieldmanager_Context_Customize' )
 			->disableOriginalConstructor()
 			->getMock();
 	}
@@ -55,7 +55,7 @@ class Test_Fieldmanager_Customize_Control extends Fieldmanager_Customizer_UnitTe
 		$label       = rand_str();
 		$description = rand_str();
 
-		$context = new Fieldmanager_Context_Customizer( array(
+		$context = new Fieldmanager_Context_Customize( array(
 			// Bypass capability checks.
 			'section_args' => array( 'capability' => 'exist' ),
 			'setting_args' => array( 'capability' => 'exist' ),

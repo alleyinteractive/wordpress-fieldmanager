@@ -2,13 +2,13 @@
 /**
  * @group customize
  */
-class Test_Fieldmanager_Customize_Setting extends Fieldmanager_Customizer_UnitTestCase {
+class Test_Fieldmanager_Customize_Setting extends Fieldmanager_Customize_UnitTestCase {
 	protected $field, $context;
 
 	function setUp() {
 		parent::setUp();
 		$this->field   = new Fieldmanager_TextField( array( 'name' => 'foo' ) );
-		$this->context = new Fieldmanager_Context_Customizer( array(), $this->field );
+		$this->context = new Fieldmanager_Context_Customize( array(), $this->field );
 	}
 
 	function test_construction() {

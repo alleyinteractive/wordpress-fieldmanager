@@ -1106,7 +1106,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Add this field to the Customizer.
 	 *
-	 * @param string|array $args @see Fieldmanager_Context_Customizer. Pass a
+	 * @param string|array $args @see Fieldmanager_Context_Customize. Pass a
 	 *     string to add a Customizer section for this field that uses the
 	 *     string for its title and context defaults for the remaining
 	 *     arguments. Or, pass a full array of arguments for the context.
@@ -1118,7 +1118,7 @@ abstract class Fieldmanager_Field {
 			$args = array( 'section_args' => array( 'title' => $args ) );
 		}
 
-		return new Fieldmanager_Context_Customizer( $args, $this );
+		return new Fieldmanager_Context_Customize( $args, $this );
 	}
 
 	private function require_base() {

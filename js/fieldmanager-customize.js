@@ -195,7 +195,7 @@
 		 * We bind to sections whether or not they have FM controls in case a
 		 * control is added dynamically.
 		 */
-		$( document ).trigger( 'fm_customizer_control_section_expanded' );
+		$( document ).trigger( 'fm_customize_control_section_expanded' );
 
 		if ( fm.richtextarea ) {
 			fm.richtextarea.add_rte_to_visible_textareas();
