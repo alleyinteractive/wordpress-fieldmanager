@@ -386,6 +386,21 @@ a.fm-delete:hover {
 	z-index: 500000 !important;
 }
 
+.customize-control input.fm-datepicker-popup {
+	/* Override Customizer defaults; datepickers have multiple inputs on one line. */
+	width: 100px;
+}
+
+.customize-control input.fm-datepicker-time {
+	/* Override Customizer defaults; datepickers have multiple inputs on one line. */
+	width: 30px;
+}
+
+.fm-datepicker-time-wrapper select {
+	/* Override Customizer defaults; datepickers have multiple inputs on one line. */
+	min-width: 0;
+}
+
 .wp-customizer .fmjs-removable .fmjs-drag-icon {
 	/* Nudge for the Customizer. */
 	margin-top: 7px;
