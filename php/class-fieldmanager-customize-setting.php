@@ -27,7 +27,7 @@ if ( class_exists( 'WP_Customize_Setting' ) ) :
 		 * @param array                $args    Setting arguments, including $context.
 		 */
 		public function __construct( $manager, $id, $args = array() ) {
-			if ( isset( $args['context'] ) && ( $args['context'] instanceof Fieldmanager_Context ) ) {
+			if ( isset( $args['context'] ) && ( $args['context'] instanceof Fieldmanager_Context_Customize ) ) {
 				$this->context = $args['context'];
 
 				// Set the default without checking isset() (as in WP_Customize_Setting) to support null values.
