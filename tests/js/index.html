@@ -29,10 +29,14 @@
 			svn + '/src/wp-includes/js/jquery/ui/sortable.js',
 			svn + '/src/wp-includes/js/jquery/ui/draggable.js',
 			svn + '/src/wp-includes/js/jquery/ui/droppable.js',
+			svn + '/src/wp-includes/js/jquery/ui/slider.js',
+			svn + '/src/wp-admin/js/iris.min.js',
+			svn + '/src/wp-admin/js/color-picker.js',
 		];
 
 		// Fieldmanager.
 		scripts.push( '../../js/fieldmanager.js' );
+		scripts.push( '../../js/fieldmanager-colorpicker.js' );
 
 		// Tests.
 		scripts.push( 'test-fieldmanager.js' );
@@ -45,6 +49,9 @@
 			var node = document.getElementsByTagName( 'script' )[0];
 			node.parentNode.insertBefore( script, null );
 		});
+
+		// Requirements for WordPress scripts.
+		window.wpColorPickerL10n = {};
 	</script>
 </head>
 <body>
@@ -179,6 +186,10 @@
 			</div>
 			<span class="test-renumber fmjs-collapsible-handle"></span>
 		</div><!-- #renumbered-group -->
+
+		<div id="colorpicker-dom">
+			<input class="fm-element fm-colorpicker-popup" />
+		</div><!-- #colorpicker-dom -->
 	</div><!-- #qunit-fixture -->
 
 </body>
