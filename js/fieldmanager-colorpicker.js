@@ -22,7 +22,7 @@
 					 * @param {Element} input The Colorpicker input element,
 					 *                        inferred via DOM placement.
 					 */
-					$( document ).trigger( 'fm_colorpicker_clear', [ event.target.parentNode.querySelector( '.wp-color-picker' ) ] );
+					$( document ).trigger( 'fm_colorpicker_clear', [ event.target.parentNode.querySelector( '.fm-colorpicker-popup' ) ] );
 				},
 			});
 		}
