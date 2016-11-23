@@ -185,6 +185,16 @@
 	content: '\f142';
 }
 
+.fm-item .fmjs-collapsible-handle .toggle-indicator:before {
+	content: "\f142";
+	display: inline-block;
+	font: normal 20px/1 dashicons;
+	speak: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-decoration: none !important;
+}
+
 .fm-item .fmjs-collapsible-handle.closed .toggle-indicator:before {
 	content: '\f140';
 }

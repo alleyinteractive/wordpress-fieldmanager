@@ -24,8 +24,8 @@ module.exports = function( grunt ) {
 				options: {
 					urls: [
 						'http://localhost:8000/tests/js/index.html',
-						'http://localhost:8000/tests/js/index.html?wp=4.3',
-						'http://localhost:8000/tests/js/index.html?wp=4.2'
+						'http://localhost:8000/tests/js/index.html?wp=4.6',
+						'http://localhost:8000/tests/js/index.html?wp=4.5'
 					]
 				}
 			},
@@ -36,12 +36,13 @@ module.exports = function( grunt ) {
 			}
 		},
 		phpcs: {
-			plugin: {
-				src: './'
-			},
+			plugin: {},
 			options: {
-				bin: "vendor/bin/phpcs --extensions=php --ignore=\"*/vendor/*,*/node_modules/*,/*\"",
-				standard: "phpcs.ruleset.xml"
+				bin: "vendor/bin/phpcs",
+				showSniffCodes: true,
+				standard: "phpcs.ruleset.xml",
+				verbose: true,
+				warningSeverity: 0,
 			}
 		},
 	});
