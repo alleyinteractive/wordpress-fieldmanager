@@ -36,6 +36,16 @@
 
 						try {
 							if ( 'html' !== fm.richtextarea.mode_enabled( this ) ) {
+								tinyMCEPreInit.mceInit[ ed_id ].setup = function ( ed ) {
+									ed.on( 'init', function( args ) {
+										/**
+										 * Fires after a Fieldmanager_RichTextArea editor initializes.
+										 *
+										 * @var {Object} TinyMCE instance.
+										 */
+										 $( document ).trigger( 'fm_richtext_init', ed );
+									});
+								};
 								tinymce.init( tinyMCEPreInit.mceInit[ ed_id ] );
 								$( this ).closest( '.wp-editor-wrap' ).on( 'click.wp-editor', function() {
 									if ( this.id ) {
