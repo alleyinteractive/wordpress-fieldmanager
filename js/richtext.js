@@ -41,9 +41,9 @@
 										/**
 										 * Fires after a Fieldmanager_RichTextArea editor initializes.
 										 *
-										 * @var {Object} TinyMCE instance.
+										 * @var {String} ed_id Editor element ID; for TinyMCE, the textarea ID.
 										 */
-										 $( document ).trigger( 'fm_richtext_init', ed );
+										 $( document ).trigger( 'fm_richtext_init', ed_id );
 									});
 								};
 								tinymce.init( tinyMCEPreInit.mceInit[ ed_id ] );
