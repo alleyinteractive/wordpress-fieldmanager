@@ -138,7 +138,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
                     else {
                         $date_pad = '';
                     }
-                    $ret[ $post_id ] = html_entity_decode( $exact_post->post_title ) . $date_pad;
+                    $title = html_entity_decode( $exact_post->post_title ) . $date_pad;
+                    $ret[ $post_id ] = apply_filters( 'fm_datasource_post_title', $title, $exact_post );
                 }
             }
             $this->_fragment = $fragment;
@@ -155,7 +156,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             else {
                 $date_pad = '';
             }
-            $ret[$p->ID] = $p->post_title . $date_pad;
+            $title = $p->post_title . $date_pad;
+            $ret[$p->ID] = apply_filters( 'fm_datasource_post_title', $title, $p );
         }
         return $ret;
     }
