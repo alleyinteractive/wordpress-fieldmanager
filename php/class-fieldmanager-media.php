@@ -138,15 +138,25 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function form_element( $value = array() ) {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
+			// open the preview wrapper
 			$preview = '<div class="media-file-preview">';
+			// If the preview is an image display the image, otherwise use a media icon
 			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-				$preview = esc_html( $this->selected_image_label ) . '<br />';
 				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 			} else {
-				$preview = esc_html( $this->selected_file_label ) . '&nbsp;';
-				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
+				// Potentially display other icons for other mime types
+				$preview .= '<a href="#"><span class="dashicons dashicons-media-document"></span></a>';
 			}
-			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', esc_html( $this->remove_media_label ) );
+
+			$preview .= sprintf( '<div class="fm-file-detail"><h4>%s</h4><span class="fm-file-type">%s</span></div>',
+				wp_get_attachment_link( $value, $this->preview_size, true, true, $attachment->post_title ),
+				$attachment->post_mime_type
+			);
+
+			$preview .= sprintf( '<a href="#" class="fm-media-edit"><span class="screen-reader-text">%s</span></a>', esc_html__( 'edit', 'fieldmanager' ) );
+			$preview .= sprintf( '<a href="#" class="fm-media-remove fm-delete fmjs-remove"><span class="screen-reader-text">%s</span></a>', esc_html__( 'remove', 'fieldmanager' ) );
+			$preview .= '</div>';
+
 			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );
 		} else {
 			$preview = '';
