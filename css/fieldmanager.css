@@ -555,6 +555,7 @@ a.fm-delete:hover {
 	border: solid 1px #ececec;
 	border-radius: 3px;
 	background-color: #fafafa;
+	display: inline-block;
 }
 
 .media-file-preview a {
