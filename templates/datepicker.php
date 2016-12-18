@@ -13,7 +13,7 @@
 	name="<?php echo esc_attr( $this->get_form_name( '[date]' ) ); ?>"
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
 	<?php if ( ! empty( $value ) ) : ?>
-		value="<?php echo esc_attr( date( $this->date_format, intval( $value ) ) ); ?>"
+		value="<?php echo esc_attr( date_i18n( $this->date_format, intval( $value ), true ) ); ?>"
 	<?php endif; ?>
 	<?php echo $this->get_element_attributes(); // Escaped interally. xss ok. ?>
 />
