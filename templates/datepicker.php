@@ -18,6 +18,11 @@
 	<?php echo $this->get_element_attributes(); // Escaped interally. xss ok. ?>
 />
 
+<?php // Render only if no user-supplied options already exist. ?>
+<?php if ( empty( $this->js_opts['altField'] ) && empty( $this->js_opts['altFormat'] ) ) : ?>
+	<?php include fieldmanager_get_template( 'datepicker-altfield' ); ?>
+<?php endif; ?>
+
 <?php if ( $this->use_time ) : ?>
 	<span class="fm-datepicker-time-wrapper">
 		@

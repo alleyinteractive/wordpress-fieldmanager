@@ -55,6 +55,9 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * Also, it's best to change $js_opts['dateFormat'] and $date_format
 	 * together for a consistent user experience.
 	 *
+	 * altField and altFormat will always be set if not included as $js_opts for
+	 * storing a language-agnostic copy of the selected date. See #555.
+	 *
 	 * @see http://api.jqueryui.com/datepicker/.
 	 * @see Fieldmanager_Datepicker::__construct() For the default options.
 	 *
@@ -114,7 +117,9 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @return int Unix timestamp.
 	 */
 	public function presave( $value, $current_value = array() ) {
-		$time_to_parse = sanitize_text_field( $value['date'] );
+		$date_field = ( isset( $value['date_altfield'] ) ) ? 'date_altfield' : 'date';
+
+		$time_to_parse = sanitize_text_field( $value[ $date_field ] );
 		if ( isset( $value['hour'] ) && is_numeric( $value['hour'] ) && $this->use_time ) {
 			$hour = intval( $value['hour'] );
 			$minute = ( isset( $value['minute'] ) && is_numeric( $value['minute'] ) ) ? intval( $value['minute'] ) : 0;

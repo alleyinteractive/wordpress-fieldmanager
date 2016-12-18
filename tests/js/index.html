@@ -29,10 +29,12 @@
 			svn + '/src/wp-includes/js/jquery/ui/sortable.js',
 			svn + '/src/wp-includes/js/jquery/ui/draggable.js',
 			svn + '/src/wp-includes/js/jquery/ui/droppable.js',
+			svn + '/src/wp-includes/js/jquery/ui/datepicker.js',
 		];
 
 		// Fieldmanager.
 		scripts.push( '../../js/fieldmanager.js' );
+		scripts.push( '../../js/fieldmanager-datepicker.js' );
 
 		// Tests.
 		scripts.push( 'test-fieldmanager.js' );
@@ -179,6 +181,8 @@
 			</div>
 			<span class="test-renumber fmjs-collapsible-handle"></span>
 		</div><!-- #renumbered-group -->
+
+		<div id="datepicker-altfield"></div><!-- #datepicker-altfield -->
 	</div><!-- #qunit-fixture -->
 
 </body>
