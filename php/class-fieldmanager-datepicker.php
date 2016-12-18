@@ -93,6 +93,8 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @return string HTML for the element.
 	 */
 	public function form_element( $value ) {
+		global $wp_locale;
+
 		$value = absint( $value );
 		$old_value = $value;
 		// If we're storing the local time, in order to make the form work as expected, we have

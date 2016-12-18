@@ -31,8 +31,8 @@
 		<input class="fm-element fm-datepicker-time" type="text" value="<?php echo esc_attr( $this->get_minute( $value ) ); ?>" name="<?php echo esc_attr( $this->get_form_name( '[minute]' ) ); ?>" />
 		<?php if ( $this->use_am_pm ) : ?>
 			<select class="fm-element" name="<?php echo esc_attr( $this->get_form_name( '[ampm]' ) ); ?>">
-				<option value="am"<?php selected( $this->get_am_pm( $value ), 'am' ) ?>>A.M.</option>
-				<option value="pm"<?php selected( $this->get_am_pm( $value ), 'pm' ) ?>>P.M.</option>
+				<option value="am"<?php selected( $this->get_am_pm( $value ), 'am' ) ?>><?php echo esc_html( $wp_locale->get_meridiem( 'AM' ) ) ?></option>
+				<option value="pm"<?php selected( $this->get_am_pm( $value ), 'pm' ) ?>><?php echo esc_html( $wp_locale->get_meridiem( 'PM' ) ) ?></option>
 			</select>
 		<?php endif; ?>
 	</span>
