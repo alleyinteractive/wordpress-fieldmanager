@@ -602,10 +602,15 @@ abstract class Fieldmanager_Field {
 	 */
 	public function wrap_with_multi_tools( $html, $classes = array() ) {
 		$classes[] = 'fmjs-removable';
-		$out = sprintf( '<div class="%s">', implode( ' ', $classes ) );
+		$handle = '';
 		if ( $this->sortable ) {
-			$out .= $this->get_sort_handle();
+			if ( ( $this->one_label_per_item || ! empty( $this->label ) ) && ! in_array( 'fmjs-removable-label', $classes ) && empty( $this->description ) ) {
+				$classes[] = 'fmjs-removable-sort';
+			}
+			$handle = $this->get_sort_handle();
 		}
+		$out = sprintf( '<div class="%s">', implode( ' ', $classes ) );
+		$out .= $handle;
 		$out .= '<div class="fmjs-removable-element">';
 		$out .= $html;
 		$out .= '</div>';
