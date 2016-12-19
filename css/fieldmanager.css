@@ -23,7 +23,7 @@
 .fm-wrapper select,
 .fm-wrapper textarea {
 	margin: 1px;
-	padding: 5px 8px;
+	padding: 6px 8px;
 }
 
 .fm-hidden {
@@ -239,12 +239,20 @@ div.fm-group-label-wrapper {
 	display: none;
 }
 
-.fm-item.fm-sortable-field {
+.fm-item.fm-sortable-field,
+.fmjs-removable-sort {
 	position: relative;
 	margin-bottom: 10px;
 	padding: 6px 29px 6px 33px;
 	border: 1px solid #eee;
 	background: #fff;
+}
+
+.fm-no-labels .fmjs-removable-sort {
+	position: static;
+	margin: 5px 0;;
+	padding: 0;
+	border: none;
 }
 
 .fm-sortable-field .fmjs-remove {
@@ -640,6 +648,10 @@ a.fm-delete:hover {
 
 .fm-datepicker-time {
 	width: 30px;
+}
+
+.fm-datepicker-time-wrapper select {
+	vertical-align: baseline;
 }
 
 .form-field input[type='checkbox'],
