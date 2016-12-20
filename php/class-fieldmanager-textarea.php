@@ -29,8 +29,11 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 			'rows' => '10',
 		);
 
-		// Sanitize the textarea to preserve newlines. Could be overriden.
-		$this->sanitize = 'fm_sanitize_textarea';
+		/*
+		 * Sanitize the textarea to preserve newlines. Could be overriden.
+		 * sanitize_textarea_field() is available as of WordPress 4.7.
+		 */
+		$this->sanitize = ( function_exists( 'sanitize_textarea_field' ) ) ? 'sanitize_textarea_field' : 'fm_sanitize_textarea';
 
 		parent::__construct( $label, $options );
 	}
