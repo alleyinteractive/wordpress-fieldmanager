@@ -244,9 +244,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			} elseif ( ! empty( $this->datasource->only_save_to_post_parent ) ) {
 				$this->skip_save = true;
 			}
-			return $this->datasource->presave_alter_values( $this, $values, $current_values );
+			$values = $this->datasource->presave_alter_values( $this, $values, $current_values );
 		}
-		return $values;
+		return parent::presave_alter_values( $values, $current_values );
 	}
 
 
