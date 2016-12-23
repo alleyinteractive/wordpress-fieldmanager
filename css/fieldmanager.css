@@ -113,7 +113,7 @@
 }
 
 .fm-group-label-wrapper {
-	height: 36px;
+	min-height: 36px;
 }
 
 .fm-group-label-wrapper.fmjs-drag-header,
@@ -217,10 +217,9 @@ div.fm-group-label-wrapper {
 }
 
 .fm-group div.fm-group-label-wrapper h4 {
-	line-height: 2.7;
-	float: left;
+	line-height: 1.4;
 	margin: 0;
-	padding: 0 10px;
+	padding: 8px 12px 8px 12px;
 	border-bottom: none;
 	background-color: transparent;
 	background-image: none;

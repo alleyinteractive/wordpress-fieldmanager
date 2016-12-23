@@ -423,14 +423,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		return sprintf(
-			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s%7$s</div>',
+			'<div class="%1$s">%2$s%3$s<%4$s class="%5$s"%4$s>%7$s</%4$s></div>',
 			esc_attr( implode( ' ', $wrapper_classes ) ),
+			$collapse_handle,
+			$remove, // get_remove_handle() is sanitized html
 			$this->label_element,
 			esc_attr( implode( ' ', $classes ) ),
 			$extra_attrs,
-			$this->escape( 'label' ),
-			$collapse_handle,
-			$remove // get_remove_handle() is sanitized html
+			$this->escape( 'label' )
 		);
 	}
 
