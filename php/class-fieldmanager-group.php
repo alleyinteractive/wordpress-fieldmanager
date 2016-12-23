@@ -423,7 +423,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		return sprintf(
-			'<div class="%1$s">%2$s%3$s<%4$s class="%5$s"%4$s>%7$s</%4$s></div>',
+			'<div class="%1$s">%2$s%3$s<%4$s class="%5$s"%6$s>%7$s</%4$s></div>',
 			esc_attr( implode( ' ', $wrapper_classes ) ),
 			$collapse_handle,
 			$remove, // get_remove_handle() is sanitized html
