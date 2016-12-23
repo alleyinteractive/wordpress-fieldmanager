@@ -243,14 +243,14 @@ div.fm-group-label-wrapper {
 .fmjs-removable-sort {
 	position: relative;
 	margin-bottom: 10px;
-	padding: 6px 29px 6px 33px;
+	padding: 6px 36px 6px 33px;
 	border: 1px solid #eee;
 	background: #fff;
 }
 
 .fm-no-labels .fmjs-removable-sort {
 	position: static;
-	margin: 5px 0;;
+	margin: 0;
 	padding: 0;
 	border: none;
 }
@@ -259,15 +259,15 @@ div.fm-group-label-wrapper {
 	position: absolute;
 	top: 0;
 	right: 0;
-	width: 30px;
-	height: 30px;
+	width: 36px;
+	height: 36px;
 	margin: 0;
 	text-align: center;
 }
 
-.fm-sortable-field .fmjs-remove:before {
-	line-height: 2;
-	vertical-align: middle;
+.fm-sortable-field.fm-no-labels .fmjs-remove {
+	bottom: 0;
+	margin: auto;
 }
 
 /* Fields sortables without labels provide a minimal presentation */
@@ -290,9 +290,9 @@ div.fm-group-label-wrapper {
 .fm-item.fm-no-labels.fm-ajax .fmjs-remove,
 .fm-item.fm-no-labels.fm-autocomplete .fmjs-remove {
 	position: relative;
-	top: 1px;
-	width: 31px;
-	height: 31px;
+	float: left;
+	width: 32px;
+	height: 32px;
 }
 
 .fmjs-removable-element {
@@ -324,7 +324,27 @@ div.fm-group-label-wrapper {
 	color: #a0a5aa;
 }
 
-.fmjs-remove,
+.fmjs-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 36px;
+    height: 36px;
+    margin: 0;
+    text-align: center;
+}
+
+.fmjs-remove:before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 15px;
+    height: 15px;
+}
+
 .fmjs-clear {
 	display: block;
 	float: left;
@@ -387,6 +407,7 @@ div.fm-group-label-wrapper {
 
 div.fm-group-label-wrapper .fmjs-remove {
 	float: right;
+	position: relative;
 }
 
 .fm-dialog {
@@ -618,8 +639,7 @@ a.fm-delete:hover {
 	text-align: center;
 }
 
-.fm-media-edit:before,
-.media-file-preview .fmjs-remove:before {
+.fm-media-edit:before {
 	line-height: 2;
 	vertical-align: middle;
 }
