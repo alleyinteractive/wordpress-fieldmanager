@@ -266,7 +266,7 @@ $( document ).ready( function () {
 				}
 			}
 		} );
-		// check for chozen not loaded do to being hidden and load t found
+		// check if chozen not loaded due to being hidden and load if found
 		$(".chzn-select").not( ".chzn-done" ).chosen().trigger("chosen:updated");
 	};
 	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
