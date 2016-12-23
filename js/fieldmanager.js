@@ -163,6 +163,8 @@ fm_add_another = function( $element ) {
 	$element.parent().siblings().last().trigger( 'fm_added_element' );
 	init_label_macros();
 	init_sortable();
+	// reload chosen on show
+    $(".chzn-select", $new_element ).chosen('destroy').chosen();
 }
 
 fm_remove = function( $element ) {
