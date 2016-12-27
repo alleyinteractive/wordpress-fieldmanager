@@ -57,8 +57,9 @@
 /* Each FM Field */
 
 .fm-item.fm-field {
-	padding-top: 12px;
+	position: relative;
 	margin: 0 0 12px;
+	padding-top: 12px;
 }
 
 .fm-option {
