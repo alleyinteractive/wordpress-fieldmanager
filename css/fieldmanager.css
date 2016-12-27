@@ -304,10 +304,6 @@ div.fm-group-label-wrapper {
 	float: left;
 }
 
-.fmjs-removable {
-	position: relative;
-}
-
 .fmjs-removable:before,
 .fmjs-removable:after {
 	display: table;
