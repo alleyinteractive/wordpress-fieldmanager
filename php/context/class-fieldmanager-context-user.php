@@ -72,7 +72,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 		}
 
 		if ( ! current_user_can( 'edit_user', $user_id ) ) {
-			$this->fm->_unauthorized_access( __( 'Current user cannot edit this user', 'fieldmanager' ) );
+			$this->fm->_unauthorized_access( __( 'Current user cannot edit this user.', 'fieldmanager' ) );
 			return;
 		}
 

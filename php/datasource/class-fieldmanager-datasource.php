@@ -61,10 +61,10 @@ class Fieldmanager_Datasource {
 				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
-					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
+					__( 'You attempted to set a property `%1$s` that is nonexistant or invalid for an instance of `%2$s` named `%3$s`.', 'fieldmanager' ),
 					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
-				$title = esc_html__( 'Nonexistant or invalid option' );
+				$title = esc_html__( 'Nonexistant or invalid option.' );
 				if ( !Fieldmanager_Field::$debug ) {
 					wp_die( esc_html( $message ), $title );
 				} else {
@@ -74,11 +74,11 @@ class Fieldmanager_Datasource {
 		}
 
 		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
-			$message = esc_html__( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' );
+			$message = esc_html__( 'Invalid datasource options; must use the `$options` parameter to supply an array.', 'fieldmanager' );
 			if ( Fieldmanager_Field::$debug ) {
 				throw new FM_Developer_Exception( $message );
 			} else {
-				wp_die( $message, esc_html__( 'Invalid Datasource Options', 'fieldmanager' ) );
+				wp_die( $message, esc_html__( 'Invalid datasource options.', 'fieldmanager' ) );
 			}
 		}
 

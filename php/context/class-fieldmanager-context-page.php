@@ -41,7 +41,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	 */
 	public function save_page_form() {
 		if( !wp_verify_nonce( $_POST['fieldmanager-' . $this->fm->name . '-nonce'], 'fieldmanager-save-' . $this->fm->name ) ) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
+			$this->fm->_unauthorized_access( __( 'Nonce validation failed.', 'fieldmanager' ) );
 		}
 		$this->fm->data_id = $user_id;
 		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : "";

@@ -334,7 +334,7 @@ abstract class Fieldmanager_Field {
 		// A post can only have one parent, so if this saves to post_parent and
 		// it's repeatable, we're doing it wrong.
 		if ( $this->datasource && ! empty( $this->datasource->save_to_post_parent ) && $this->is_repeatable() ) {
-			_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', __( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ), '1.0.0' );
+			_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', __( 'A post can only have one parent, therefore you cannot store to `post_parent` in repeatable fields.', 'fieldmanager' ), '1.0.0' );
 			$this->datasource->save_to_post_parent = false;
 			$this->datasource->only_save_to_post_parent = false;
 		}
@@ -369,7 +369,7 @@ abstract class Fieldmanager_Field {
 				$this->$key = $value;
 			} elseif ( self::$debug ) {
 				$message = sprintf(
-					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
+					__( 'You attempted to set a property `%1$s` that is nonexistant or invalid for an instance of `%2$s` named `%3$s`.', 'fieldmanager' ),
 					$key, get_class( $this ), !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
 				throw new FM_Developer_Exception( esc_html( $message ) );
@@ -383,7 +383,7 @@ abstract class Fieldmanager_Field {
 
 		// Cannot use serialize_data => false with index => true
 		if ( ! $this->serialize_data && $this->index ) {
-			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with `"index" => true`', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with `"index" => true`.', 'fieldmanager' ) );
 		}
 	}
 
@@ -730,7 +730,7 @@ abstract class Fieldmanager_Field {
 				return;
 			}
 
-			$this->_unauthorized_access( sprintf( __( '$values should be an array because $limit is %d', 'fieldmanager' ), $this->limit ) );
+			$this->_unauthorized_access( sprintf( __( '`$values` should be an array because `$limit` is %d.', 'fieldmanager' ), $this->limit ) );
 		}
 
 		if ( empty( $values ) ) {
@@ -745,7 +745,7 @@ abstract class Fieldmanager_Field {
 		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
 		if ( $this->limit > 1 && count( $values ) > $this->limit ) {
 			$this->_unauthorized_access(
-				sprintf( __( 'submitted %1$d values against a limit of %2$d', 'fieldmanager' ), count( $values ), $this->limit )
+				sprintf( __( 'Submitted %1$d values against a limit of %2$d.', 'fieldmanager' ), count( $values ), $this->limit )
 			);
 		}
 
@@ -863,12 +863,12 @@ abstract class Fieldmanager_Field {
 		// this point, but those elements must override this function. Let's
 		// make sure we're dealing with one value here.
 		if ( is_array( $value ) ) {
-			$this->_unauthorized_access( __( 'presave() in the base class should not get arrays, but did.', 'fieldmanager' ) );
+			$this->_unauthorized_access( __( '`presave()` in the base class should not get arrays, but did.', 'fieldmanager' ) );
 		}
 		foreach ( $this->validate as $func ) {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
-					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
+					__( 'Input `%1$s` is not valid for field `%2$s` ', 'fieldmanager' ),
 					(string) $value,
 					$this->label
 				) );
@@ -1035,7 +1035,7 @@ abstract class Fieldmanager_Field {
 	public function add_term_meta_box( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
 		// Bail if term meta table is not installed.
 		if ( get_option( 'db_version' ) < 34370 ) {
-			_doing_it_wrong( __METHOD__, esc_html__( 'This method requires WordPress 4.4 or above', 'fieldmanager' ), 'Fieldmanager-1.0.0-beta.3' );
+			_doing_it_wrong( __METHOD__, esc_html__( 'This method requires WordPress 4.4 or above.', 'fieldmanager' ), 'Fieldmanager-1.0.0-beta.3' );
 			return false;
 		}
 
@@ -1105,7 +1105,7 @@ abstract class Fieldmanager_Field {
 
 	private function require_base() {
 		if ( !empty( $this->parent ) ) {
-			throw new FM_Developer_Exception( esc_html__( 'You cannot use this method on a subgroup', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use this method on a subgroup.', 'fieldmanager' ) );
 		}
 	}
 

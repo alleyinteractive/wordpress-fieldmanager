@@ -75,22 +75,32 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		// Validate improper usage of store property
 		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
 			throw new FM_Developer_Exception( sprintf(
-				__( 'Store property %s is invalid. Must be one of %s.', 'fieldmanager' ),
+				__( 'Store property `%1$s` is invalid. Must be one of %2$s.', 'fieldmanager' ),
 				$this->store_property,
-				implode( ', ', $this->allowed_store_properties )
+				implode( __( ', ', 'fieldmanager' ), array_map(
+					function ( $property ) {
+						return sprintf( _x( '`%s`', 'property name like `user_nicename`', 'fieldmanager' ), $property );
+					},
+					$this->allowed_store_properties
+				) )
 			) );
 		}
 
 		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
-			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID.', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with `Fieldmanager_Datasource_User` if `store_property` is not set to `ID`.', 'fieldmanager' ) );
 		}
 
 		// Validate improper usage of display property
 		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
 			throw new FM_Developer_Exception( sprintf(
-				__( 'Display property %s is invalid. Must be one of %s.', 'fieldmanager' ),
+				__( 'Display property `%1$s` is invalid. Must be one of %2$s.', 'fieldmanager' ),
 				$this->display_property,
-				implode( ', ', $this->allowed_display_properties )
+				implode( __( ', ', 'fieldmanager' ), array_map(
+					function ( $property ) {
+						return sprintf( _x( '`%s`', 'property name like `user_nicename`', 'fieldmanager' ), $property );
+					},
+					$this->allowed_display_properties
+				) )
 			) );
 		}
 	}
@@ -203,7 +213,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         foreach ( $value as $i => $v ) {
             $value[$i] = $this->sanitize_value( $v );
             if( ! current_user_can( $this->capability, $v ) ) {
-                wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
+                wp_die( esc_html( sprintf( __( 'Tried to refer to user `%s` which current user cannot edit.', 'fieldmanager' ), $v ) ) );
             }
             if ( $this->reciprocal && 'ID' == $this->store_property ) {
                 add_user_meta( $v, $this->reciprocal, $field->data_id );

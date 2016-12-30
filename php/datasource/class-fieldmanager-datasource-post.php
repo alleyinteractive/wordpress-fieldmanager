@@ -217,7 +217,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
             if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
                 $post_type_obj = get_post_type_object( get_post_type( $value ) );
                 if ( empty( $post_type_obj->cap->edit_post ) || ! current_user_can( $post_type_obj->cap->edit_post, $value ) ) {
-                    wp_die( esc_html( sprintf( __( 'Tried to alter %s %d through field "%s", which user is not permitted to edit.', 'fieldmanager' ), $post_type_obj->name, $value, $field->name ) ) );
+                    wp_die( esc_html( sprintf( __( 'Tried to alter `%1$s` %2$d through field `%3$s`, which current user cannot edit.', 'fieldmanager' ), $post_type_obj->name, $value, $field->name ) ) );
                 }
             }
             $this->presave_status_transition( $field, $value );

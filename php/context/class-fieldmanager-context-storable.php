@@ -70,7 +70,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		$field->data_type = $this->fm->data_type;
 
 		if ( isset( $this->save_keys[ $field->get_element_key() ] ) ) {
-			throw new FM_Developer_Exception( sprintf( esc_html__( 'You have two fields in this group saving to the same key: %s', 'fieldmanager' ), $field->get_element_key() ) );
+			throw new FM_Developer_Exception( sprintf( esc_html__( 'You have two fields in this group saving to the same key: `%s`.', 'fieldmanager' ), $field->get_element_key() ) );
 		} else {
 			$this->save_keys[ $field->get_element_key() ] = true;
 		}

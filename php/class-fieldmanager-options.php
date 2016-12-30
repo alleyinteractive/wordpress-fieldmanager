@@ -213,7 +213,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		foreach ( $this->validate as $func ) {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
-					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
+					__( 'Input `%1$s` is not valid for field `%2$s`.', 'fieldmanager' ),
 					(string) $value,
 					$this->label
 				) );

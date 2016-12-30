@@ -135,7 +135,7 @@ class Fieldmanager_Util_Validation {
 		if ( ! is_array( $fm->validation_rules ) ) {
 			// If a string, the only acceptable value is "required".
 			if ( ! is_string( $fm->validation_rules ) || $fm->validation_rules != 'required' )
-				$fm->_invalid_definition( sprintf( __( 'The validation rule "%s" does not exist.', 'wordpress-fieldmanager' ), $fm->validation_rules ) );
+				$fm->_invalid_definition( sprintf( __( 'The validation rule `%s` does not exist.', 'wordpress-fieldmanager' ), $fm->validation_rules ) );
 
 			// Convert the value to an array since we standardize the Javascript output on this format
 			$fm->validation_rules = array( 'required' => true );
@@ -149,7 +149,7 @@ class Fieldmanager_Util_Validation {
 			foreach ( $fm->validation_rules as $validation_key => $validation_rule ) {
 				if ( ! in_array( $validation_key, $this->valid_rules ) ) {
 					// This is not a rule available in jQuery validation
-					$fm->_invalid_definition( sprintf( __( 'The validation rule "%s" does not exist.', 'wordpress-fieldmanager' ), $validation_key ) );
+					$fm->_invalid_definition( sprintf( __( 'The validation rule `%s` does not exist.', 'wordpress-fieldmanager' ), $validation_key ) );
 				} else {
 					// This rule is valid so check for any messages
 					if ( isset( $fm->validation_messages[$validation_key] ) )
