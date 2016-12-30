@@ -61,6 +61,7 @@ class Fieldmanager_Datasource {
 				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
 			} catch ( Exception $e ) {
 				$message = sprintf(
+					/* translators: 1: property name, 2: class name, 3: field name */
 					__( 'You attempted to set a property `%1$s` that is nonexistant or invalid for an instance of `%2$s` named `%3$s`.', 'fieldmanager' ),
 					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);

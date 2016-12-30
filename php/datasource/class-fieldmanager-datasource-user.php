@@ -75,8 +75,10 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		// Validate improper usage of store property
 		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
 			throw new FM_Developer_Exception( sprintf(
+				/* translators: 1: invalid property name, 2: list of valid property names */
 				__( 'Store property `%1$s` is invalid. Must be one of %2$s.', 'fieldmanager' ),
 				$this->store_property,
+				/* translators: used between list items, there is a space after the comma */
 				implode( __( ', ', 'fieldmanager' ), array_map(
 					function ( $property ) {
 						return sprintf( _x( '`%s`', 'property name like `user_nicename`', 'fieldmanager' ), $property );
@@ -93,8 +95,10 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		// Validate improper usage of display property
 		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
 			throw new FM_Developer_Exception( sprintf(
+				/* translators: 1: invalid property name, 2: list of valid property names */
 				__( 'Display property `%1$s` is invalid. Must be one of %2$s.', 'fieldmanager' ),
 				$this->display_property,
+				/* translators: used between list items, there is a space after the comma */
 				implode( __( ', ', 'fieldmanager' ), array_map(
 					function ( $property ) {
 						return sprintf( _x( '`%s`', 'property name like `user_nicename`', 'fieldmanager' ), $property );
@@ -213,6 +217,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
         foreach ( $value as $i => $v ) {
             $value[$i] = $this->sanitize_value( $v );
             if( ! current_user_can( $this->capability, $v ) ) {
+            	/* translators: %s: property name */
                 wp_die( esc_html( sprintf( __( 'Tried to refer to user `%s` which current user cannot edit.', 'fieldmanager' ), $v ) ) );
             }
             if ( $this->reciprocal && 'ID' == $this->store_property ) {

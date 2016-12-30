@@ -369,6 +369,7 @@ abstract class Fieldmanager_Field {
 				$this->$key = $value;
 			} elseif ( self::$debug ) {
 				$message = sprintf(
+					/* translators: 1: property name, 2: class name, 3: field name */
 					__( 'You attempted to set a property `%1$s` that is nonexistant or invalid for an instance of `%2$s` named `%3$s`.', 'fieldmanager' ),
 					$key, get_class( $this ), !empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
@@ -730,6 +731,7 @@ abstract class Fieldmanager_Field {
 				return;
 			}
 
+			/* translators: %d: `limit` property value */
 			$this->_unauthorized_access( sprintf( __( '`$values` should be an array because `$limit` is %d.', 'fieldmanager' ), $this->limit ) );
 		}
 
@@ -745,6 +747,7 @@ abstract class Fieldmanager_Field {
 		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
 		if ( $this->limit > 1 && count( $values ) > $this->limit ) {
 			$this->_unauthorized_access(
+				/* translators: 1: count of submitted values, 2: `limit` property value */
 				sprintf( __( 'Submitted %1$d values against a limit of %2$d.', 'fieldmanager' ), count( $values ), $this->limit )
 			);
 		}
@@ -868,6 +871,7 @@ abstract class Fieldmanager_Field {
 		foreach ( $this->validate as $func ) {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
+					/* translators: 1: input name, 2: field label */
 					__( 'Input `%1$s` is not valid for field `%2$s`.', 'fieldmanager' ),
 					(string) $value,
 					$this->label

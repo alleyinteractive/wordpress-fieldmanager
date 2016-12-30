@@ -142,6 +142,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $name => $element ) {
 			// if the array key is not an int, and the name attr is set, and they don't match, we got a problem.
 			if ( $element->name && !is_int( $name ) && $element->name != $name ) {
+				/* translators: 1: group child name, 2: group child name */
 				throw new FM_Developer_Exception( sprintf( esc_html__( 'Group child name conflict: `%1$s` / `%2$s`.', 'fieldmanager' ), $name, $element->name ) );
 			} elseif ( ! $element->name ) {
 				$element->name = $name;
@@ -310,6 +311,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				if ( !isset( $this->children[$key] ) ) {
 					// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
 					// and thus one which we cannot sanitize and must not save. This might be an attack.
+					/* translators: %s: input name */
 					$this->_unauthorized_access( sprintf( __( 'Found `%s` in data but not in children.', 'fieldmanager' ), $key ) );
 				}
 			}
