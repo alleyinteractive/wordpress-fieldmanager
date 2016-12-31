@@ -13,6 +13,8 @@ Description: Add fields to content types programatically.
 Author: Austin Smith, Matthew Boynes
 Version: 1.1.0-beta.1
 Author URI: http://www.alleyinteractive.com/
+Text Domain: fieldmanager
+Domain Path: /languages
 */
 
 /**
@@ -138,6 +140,16 @@ function fieldmanager_get_template( $tpl_slug ) {
 	}
 	return plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php';
 }
+
+/**
+ * Load Fieldmanager's translated strings.
+ *
+ * @return bool @see load_plugin_textdomain().
+ */
+function fm_load_textdomain() {
+	return load_plugin_textdomain( 'fieldmanager', false, plugin_basename( FM_BASE_DIR ) . '/languages/' );
+}
+add_action( 'init', 'fm_load_textdomain' );
 
 /**
  * Enqueue a script, optionally localizing data to it.
