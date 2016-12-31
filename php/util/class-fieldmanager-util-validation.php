@@ -136,7 +136,7 @@ class Fieldmanager_Util_Validation {
 			// If a string, the only acceptable value is "required".
 			if ( ! is_string( $fm->validation_rules ) || $fm->validation_rules != 'required' )
 				/* translators: %s: validation rule name */
-				$fm->_invalid_definition( sprintf( __( 'The validation rule `%s` does not exist.', 'fieldmanager' ), $fm->validation_rules ) );
+				$fm->_invalid_definition( sprintf( __( 'The validation rule %s does not exist.', 'fieldmanager' ), "`{$fm->validation_rules}`" ) );
 
 			// Convert the value to an array since we standardize the Javascript output on this format
 			$fm->validation_rules = array( 'required' => true );
@@ -151,7 +151,7 @@ class Fieldmanager_Util_Validation {
 				if ( ! in_array( $validation_key, $this->valid_rules ) ) {
 					// This is not a rule available in jQuery validation
 					/* translators: %s: validation rule name */
-					$fm->_invalid_definition( sprintf( __( 'The validation rule `%s` does not exist.', 'fieldmanager' ), $validation_key ) );
+					$fm->_invalid_definition( sprintf( __( 'The validation rule %s does not exist.', 'fieldmanager' ), "`{$validation_key}`" ) );
 				} else {
 					// This rule is valid so check for any messages
 					if ( isset( $fm->validation_messages[$validation_key] ) )

@@ -62,8 +62,8 @@ class Fieldmanager_Datasource {
 			} catch ( Exception $e ) {
 				$message = sprintf(
 					/* translators: 1: property name, 2: class name, 3: field name */
-					__( 'You attempted to set a property `%1$s` that is nonexistant or invalid for an instance of `%2$s` named `%3$s`.', 'fieldmanager' ),
-					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
+					__( 'You attempted to set a property %1$s that is nonexistant or invalid for an instance of %2$s named %3$s.', 'fieldmanager' ),
+					"`{$k}`", '`' . __CLASS__ . '`', ! empty( $options['name'] ) ? "`{$options['name']}`" : '`NULL`'
 				);
 				$title = esc_html__( 'Nonexistant or invalid option.' );
 				if ( !Fieldmanager_Field::$debug ) {
@@ -75,7 +75,11 @@ class Fieldmanager_Datasource {
 		}
 
 		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
-			$message = esc_html__( 'Invalid datasource options; must use the `$options` parameter to supply an array.', 'fieldmanager' );
+			$message = esc_html( sprintf(
+				/* translators: %s: `$options` */
+				__( 'Invalid datasource options; must use the %s parameter to supply an array.', 'fieldmanager' ),
+				'`$options`'
+			) );
 			if ( Fieldmanager_Field::$debug ) {
 				throw new FM_Developer_Exception( $message );
 			} else {

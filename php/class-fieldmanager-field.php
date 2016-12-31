@@ -334,7 +334,8 @@ abstract class Fieldmanager_Field {
 		// A post can only have one parent, so if this saves to post_parent and
 		// it's repeatable, we're doing it wrong.
 		if ( $this->datasource && ! empty( $this->datasource->save_to_post_parent ) && $this->is_repeatable() ) {
-			_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', __( 'A post can only have one parent, therefore you cannot store to `post_parent` in repeatable fields.', 'fieldmanager' ), '1.0.0' );
+			/* translators: %s: `post_parent` */
+			_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', sprintf( __( 'A post can only have one parent, therefore you cannot store to %s in repeatable fields.', 'fieldmanager' ), '`post_parent`' ), '1.0.0' );
 			$this->datasource->save_to_post_parent = false;
 			$this->datasource->only_save_to_post_parent = false;
 		}
@@ -370,8 +371,8 @@ abstract class Fieldmanager_Field {
 			} elseif ( self::$debug ) {
 				$message = sprintf(
 					/* translators: 1: property name, 2: class name, 3: field name */
-					__( 'You attempted to set a property `%1$s` that is nonexistant or invalid for an instance of `%2$s` named `%3$s`.', 'fieldmanager' ),
-					$key, get_class( $this ), !empty( $options['name'] ) ? $options['name'] : 'NULL'
+					__( 'You attempted to set a property %1$s that is nonexistant or invalid for an instance of %2$s named %3$s.', 'fieldmanager' ),
+					"`{$key}`", '`' . get_class( $this ) . '`', ! empty( $options['name'] ) ? "`{$options['name']}`" : '`NULL`'
 				);
 				throw new FM_Developer_Exception( esc_html( $message ) );
 			}
@@ -384,7 +385,12 @@ abstract class Fieldmanager_Field {
 
 		// Cannot use serialize_data => false with index => true
 		if ( ! $this->serialize_data && $this->index ) {
-			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with `"index" => true`.', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html( sprintf(
+				/* translators: 1: `'serialize_data' => false`, 2: `'index' => true` */
+				__( 'You cannot use %1$s with %2$s.', 'fieldmanager' ),
+				"`'serialize_data' => false`",
+				"`'index' => true`"
+			) ) );
 		}
 	}
 
@@ -731,8 +737,13 @@ abstract class Fieldmanager_Field {
 				return;
 			}
 
-			/* translators: %d: `limit` property value */
-			$this->_unauthorized_access( sprintf( __( '`$values` should be an array because `$limit` is %d.', 'fieldmanager' ), $this->limit ) );
+			/* translators: 1: `$values`, 2: `$limit`, 3: `limit` property value */
+			$this->_unauthorized_access( sprintf(
+				__( '%1$s should be an array because %2$s is %3$d.', 'fieldmanager' ),
+				'`$values`',
+				'`$limit`',
+				$this->limit
+			) );
 		}
 
 		if ( empty( $values ) ) {
@@ -866,14 +877,15 @@ abstract class Fieldmanager_Field {
 		// this point, but those elements must override this function. Let's
 		// make sure we're dealing with one value here.
 		if ( is_array( $value ) ) {
-			$this->_unauthorized_access( __( '`presave()` in the base class should not get arrays, but did.', 'fieldmanager' ) );
+			/* translators: %s: `presave()` */
+			$this->_unauthorized_access( sprintf( __( '%s in the base class should not get arrays, but did.', 'fieldmanager' ), '`presave()`' ) );
 		}
 		foreach ( $this->validate as $func ) {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
 					/* translators: 1: input name, 2: field label */
-					__( 'Input `%1$s` is not valid for field `%2$s`.', 'fieldmanager' ),
-					(string) $value,
+					__( 'Input %1$s is not valid for field "%2$s".', 'fieldmanager' ),
+					'`' . (string) $value . '`',
 					$this->label
 				) );
 			}

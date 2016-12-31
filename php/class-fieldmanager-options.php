@@ -214,8 +214,8 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
 					/* translators: 1: input name, 2: field label */
-					__( 'Input `%1$s` is not valid for field `%2$s`.', 'fieldmanager' ),
-					(string) $value,
+					__( 'Input %1$s is not valid for field "%2$s".', 'fieldmanager' ),
+					'`' . (string) $value . '`',
 					$this->label
 				) );
 			}
