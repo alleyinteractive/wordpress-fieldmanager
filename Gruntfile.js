@@ -35,6 +35,21 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
+		makepot: {
+			target: {
+				options: {
+					domainPath: '/languages',
+					mainFile: 'fieldmanager.php',
+					potFilename: 'fieldmanager.pot',
+					potHeaders: {
+						poedit: true,
+						'x-poedit-keywordslist': true
+					},
+					type: 'wp-plugin',
+					updateTimestamp: true
+				}
+			}
+		},
 		phpcs: {
 			plugin: {},
 			options: {
@@ -51,8 +66,8 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-contrib-connect' );
 	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
 	grunt.loadNpmTasks( 'grunt-phpcs' );
+	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 
-	grunt.task.run( 'connect' );
-
-	grunt.registerTask( 'default', ['qunit:latest'] );
+	grunt.registerTask( 'default', [ 'connect', 'qunit:latest' ] );
+	grunt.registerTask( 'i18n', [ 'makepot' ] );
 };
