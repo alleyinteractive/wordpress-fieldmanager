@@ -68,6 +68,6 @@ module.exports = function( grunt ) {
 	grunt.loadNpmTasks( 'grunt-phpcs' );
 	grunt.loadNpmTasks( 'grunt-wp-i18n' );
 
-	grunt.registerTask( 'default', [ 'connect', 'qunit:latest' ] );
-	grunt.registerTask( 'i18n', [ 'makepot' ] );
+	// Run server for QUnit.
+	grunt.task.run( 'connect' );
 };
