@@ -761,7 +761,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 	/**
 	 * @expectedException FM_Exception
-     * @expectedExceptionMessage submitted 5 values against a limit of 3
+     * @expectedExceptionMessage Submitted 5 values against a limit of 3.
 	 */
 	public function test_limit_exceeded_exceptions() {
 		$test_data_too_many = array(
