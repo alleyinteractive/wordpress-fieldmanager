@@ -130,6 +130,12 @@
 			<div id="di-when-displayif-radio-b" class="display-if" data-display-src="test-displayif-radio" data-display-value="b">Display when radio is "b"</div>
 		</div>
 
+		<!-- This markup should also not cause a TypeError -->
+		<div id="displayif-zerolength">
+			<div id="di-when-trigger-length-is-zero" class="fm-test-displayif-zerolength-wrapper"></div>
+			<div class="display-if" data-display-src="test-displayif-zerolength"></div>
+		</div>
+
 		<div id="renumbered" class="fm-wrapper" data-fm-array-position="1">
 			<div class="fm-item">
 				<div class="fm-element" name="mytest[0]">First</div>

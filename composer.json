@@ -8,8 +8,8 @@
   ],
   "type": "wordpress-plugin",
   "require-dev": {
-    "squizlabs/php_codesniffer": "2.3.4",
-    "wp-coding-standards/wpcs": "0.8.0"
+    "squizlabs/php_codesniffer": "2.*",
+    "wp-coding-standards/wpcs": "dev-master"
   },
   "scripts": {
     "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",

@@ -16,6 +16,13 @@ abstract class Fieldmanager_Field {
 	public static $debug = FM_DEBUG;
 
 	/**
+	 * Indicate that the base FM assets have been enqueued so we only do it once.
+	 *
+	 * @var boolean
+	 */
+	public static $enqueued_base_assets = false;
+
+	/**
 	 * @var int
 	 * How many of these fields to display, 0 for no limit
 	 */
@@ -330,6 +337,13 @@ abstract class Fieldmanager_Field {
 			_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', __( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ), '1.0.0' );
 			$this->datasource->save_to_post_parent = false;
 			$this->datasource->only_save_to_post_parent = false;
+		}
+
+		// Only enqueue base assets once, and only when we have a field.
+		if ( ! self::$enqueued_base_assets ) {
+			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'jquery', 'jquery-ui-sortable' ), '1.0.8' );
+			fm_add_style( 'fieldmanager_style', 'css/fieldmanager.css', array(), '1.0.4' );
+			self::$enqueued_base_assets = true;
 		}
 	}
 

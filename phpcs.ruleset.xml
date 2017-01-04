@@ -2,12 +2,52 @@
 <ruleset name="Fieldmanager">
 	<description>Sniffs for the coding standards of the Fieldmanager plugin</description>
 
-	<rule ref="WordPress-VIP">
-		<exclude name="WordPress.CSRF.NonceVerification" />
-		<exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
-		<exclude name="WordPress.VIP.DirectDatabaseQuery" />
-		<exclude name="WordPress.VIP.SlowDBQuery" />
-		<exclude name="WordPress.VIP.SuperGlobalInputUsage" />
-		<exclude name="WordPress.VIP.ValidatedSanitizedInput" />
+	<file>fieldmanager.php</file>
+	<file>php/</file>
+	<file>templates/</file>
+
+	<rule ref="WordPress" />
+
+	<rule ref="Squiz.Commenting.FileComment.SpacingAfterComment">
+		<!-- Allow templates to put closing PHP tags immediately after the file header. -->
+		<exclude-pattern>templates/</exclude-pattern>
 	</rule>
+
+	<rule ref="WordPress.VIP.RestrictedFunctions.get_page_by_path">
+		<!-- Avoid functional churn in Fieldmanager_Util_Term_Meta, which is deprecated. -->
+		<exclude-pattern>class-fieldmanager-util-term-meta.php</exclude-pattern>
+	</rule>
+
+	<!-- New files must follow coding standards. These files are exempt, for now: -->
+	<exclude-pattern>fieldmanager.php$</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-autocomplete.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-checkbox.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-colorpicker.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-draggablepost.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-field.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-grid.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-group.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-hidden.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-link.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-media.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-options.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-radios.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-richtextarea.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-select.php</exclude-pattern>
+	<exclude-pattern>php/class-fieldmanager-textfield.php</exclude-pattern>
+	<exclude-pattern>php/context/class-fieldmanager-context-page.php</exclude-pattern>
+	<exclude-pattern>php/context/class-fieldmanager-context-post.php</exclude-pattern>
+	<exclude-pattern>php/context/class-fieldmanager-context-quickedit.php</exclude-pattern>
+	<exclude-pattern>php/context/class-fieldmanager-context-storable.php</exclude-pattern>
+	<exclude-pattern>php/context/class-fieldmanager-context-submenu.php</exclude-pattern>
+	<exclude-pattern>php/context/class-fieldmanager-context-term.php</exclude-pattern>
+	<exclude-pattern>php/context/class-fieldmanager-context-user.php</exclude-pattern>
+	<exclude-pattern>php/context/class-fieldmanager-context.php</exclude-pattern>
+	<exclude-pattern>php/datasource/class-fieldmanager-datasource-post.php</exclude-pattern>
+	<exclude-pattern>php/datasource/class-fieldmanager-datasource-term.php</exclude-pattern>
+	<exclude-pattern>php/datasource/class-fieldmanager-datasource-user.php</exclude-pattern>
+	<exclude-pattern>php/datasource/class-fieldmanager-datasource.php</exclude-pattern>
+	<exclude-pattern>php/util/class-fieldmanager-util-validation.php</exclude-pattern>
+	<exclude-pattern>templates/options-radios.php</exclude-pattern>
+	<exclude-pattern>templates/textfield.php</exclude-pattern>
 </ruleset>
