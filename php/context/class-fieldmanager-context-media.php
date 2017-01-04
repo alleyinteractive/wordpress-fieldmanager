@@ -1,11 +1,16 @@
 <?php
+/**
+ * The Media context.
+ *
+ * @package PHP / Context
+ */
 
 /**
  * Use fieldmanager to create settings in the media modal attachment details sidebar.
  *
  * @package Fieldmanager_Context
  */
-class Fieldmanager_Context_Media extends Fieldmanager_Context {
+class Fieldmanager_Context_Media extends Fieldmanager_Context_Storable {
 	/**
 	 * Base field.
 	 *
@@ -14,33 +19,15 @@ class Fieldmanager_Context_Media extends Fieldmanager_Context {
 	public $fm = null;
 
 	/**
-	 * Title of the attachment field.
-	 *
-	 * @var string
-	 */
-	public $title = '';
-
-	/**
-	 * Description of the attachment field.
-	 *
-	 * @var string
-	 */
-	public $description = '';
-
-	/**
 	 * Add a context to a fieldmanager.
 	 *
-	 * @param string             $title       The attachment field title.
-	 * @param string             $description The attachment field description.
-	 * @param Fieldmanager_Field $fm          The Fieldmanager object.
+	 * @param Fieldmanager_Field $fm The Fieldmanager object.
 	 */
-	public function __construct( $title, $description, $fm = null ) {
+	public function __construct( $fm = null ) {
 		$this->fm = $fm;
-		$this->title = $title;
-		$this->description = $description;
 
 		add_filter( 'attachment_fields_to_edit', array( $this, 'add_settings' ), 10, 2 );
-		// add_action( 'edit_attachment', array( $this, 'save_settings' ) );
+		add_action( 'edit_attachment', array( $this, 'save_settings' ) );
 	}
 
 	/**
@@ -51,22 +38,44 @@ class Fieldmanager_Context_Media extends Fieldmanager_Context {
 	 */
 	public function add_settings( $form_fields, $post ) {
 		// Get the current value.
-		$field_value = $this->get_data( $post->ID, 'fm_attachment_field_' . $this->fm->name, true );
+		$this->fm->data_id = $post->ID;
+		$this->fm->data_type = 'post';
+		$field_value = $this->load();
 
 		// Add the field to the form fields array.
 		$form_fields[ 'fm_attachment_field_' . $this->fm->name ] = array(
-			'value' => $field_value ? $field_value : '',
-			'label' => $this->title,
-			'helps' => $this->description,
+			'input' => 'html',
+			'html'  => $this->render_field( array( 'echo' => false ) ),
+			'label' => $this->fm->label,
+			'helps' => $this->fm->description,
 		);
 
 		return $form_fields;
 	}
 
 	/**
+	 * Save the attachment settings.
+	 *
+	 * @param  int $post_id The attachment ID.
+	 */
+	public function save_settings( $post_id ) {
+		if ( ! empty( $_REQUEST[ $this->fm->name ] ) ) {
+			$this->fm->data_id = $post_id;
+			$this->fm->data_type = 'post';
+
+			$this->save( $_REQUEST[ $this->fm->name ] );
+		}
+	}
+
+	/**
 	 * Get post meta.
 	 *
 	 * @see get_post_meta().
+	 *
+	 * @param  int     $post_id  The post ID.
+	 * @param  string  $meta_key The meta key.
+	 * @param  boolean $single   Just return one value.
+	 * @return mixed             The value.
 	 */
 	protected function get_data( $post_id, $meta_key, $single = false ) {
 		return get_post_meta( $post_id, $meta_key, $single );
@@ -76,6 +85,12 @@ class Fieldmanager_Context_Media extends Fieldmanager_Context {
 	 * Add post meta.
 	 *
 	 * @see add_post_meta().
+	 *
+	 * @param  int    $post_id    The post ID.
+	 * @param  string $meta_key   The meta key.
+	 * @param  mixed  $meta_value The meta value.
+	 * @param  bool   $unique     Only have one value.
+	 * @return bool
 	 */
 	protected function add_data( $post_id, $meta_key, $meta_value, $unique = false ) {
 		return add_post_meta( $post_id, $meta_key, $meta_value, $unique );
@@ -85,6 +100,12 @@ class Fieldmanager_Context_Media extends Fieldmanager_Context {
 	 * Update post meta.
 	 *
 	 * @see update_post_meta().
+	 *
+	 * @param  int    $post_id         The post ID.
+	 * @param  string $meta_key        The meta key.
+	 * @param  mixed  $meta_value      The meta value.
+	 * @param  mixed  $data_prev_value The previous meta value.
+	 * @return bool
 	 */
 	protected function update_data( $post_id, $meta_key, $meta_value, $data_prev_value = '' ) {
 		return update_post_meta( $post_id, $meta_key, $meta_value, $data_prev_value );
@@ -94,6 +115,11 @@ class Fieldmanager_Context_Media extends Fieldmanager_Context {
 	 * Delete post meta.
 	 *
 	 * @see delete_post_meta().
+	 *
+	 * @param  int    $post_id    The post ID.
+	 * @param  string $meta_key   The meta key.
+	 * @param  mixed  $meta_value The meta value.
+	 * @return bool
 	 */
 	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
 		return delete_post_meta( $post_id, $meta_key, $meta_value );

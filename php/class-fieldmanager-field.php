@@ -1096,17 +1096,11 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @see Fieldmanager_Context_Term
 	 *
-	 * @param  string       $title       The title of the field.
-	 * @param  string|array $description The description of the field.
 	 * @return Fieldmanager_Context_Media The context.
 	 */
-	public function add_media_field( $title, $description = null ) {
-		if ( ! empty( $this->field_class ) && 'text' !== $this->field_class ) {
-			throw new FM_Developer_Exception( esc_html__( 'Media fields can only be of type text.', 'fieldmanager' ) );
-		}
-
+	public function add_media_field() {
 		$this->require_base();
-		return new Fieldmanager_Context_Media( $title, $description, $this );
+		return new Fieldmanager_Context_Media( $this );
 	}
 
 	/**
