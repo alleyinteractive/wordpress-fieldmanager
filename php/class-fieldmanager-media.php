@@ -34,6 +34,27 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public $modal_title;
 
 	/**
+	 * Label for the preview of the selected image attachment.
+	 *
+	 * @var string
+	 */
+	public $selected_image_label;
+
+	/**
+	 * Label for the preview of the selected non-image attachment.
+	 *
+	 * @var string
+	 */
+	public $selected_file_label;
+
+	/**
+	 * Text of the link that deselects the currently selected attachment.
+	 *
+	 * @var string
+	 */
+	public $remove_media_label;
+
+	/**
 	 * @var string
 	 * Class to attach to thumbnail media display
 	 */
@@ -67,9 +88,12 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @param array $options
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		$this->button_label       = __( 'Attach a File', 'fieldmanager' );
-		$this->modal_button_label = __( 'Select Attachment', 'fieldmanager' );
-		$this->modal_title        = __( 'Choose an Attachment', 'fieldmanager' );
+		$this->button_label         = __( 'Attach a File', 'fieldmanager' );
+		$this->modal_button_label   = __( 'Select Attachment', 'fieldmanager' );
+		$this->modal_title          = __( 'Choose an Attachment', 'fieldmanager' );
+		$this->selected_image_label = __( 'Uploaded image:', 'fieldmanager' );
+		$this->selected_file_label  = __( 'Uploaded file:', 'fieldmanager' );
+		$this->remove_media_label   = __( 'remove', 'fieldmanager' );
 
 		if ( ! self::$has_registered_media ) {
 			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), '1.0.4' );
@@ -115,13 +139,13 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
 			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-				$preview = esc_html__( 'Uploaded image:', 'fieldmanager' ) . '<br />';
+				$preview = esc_html( $this->selected_image_label ) . '<br />';
 				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 			} else {
-				$preview = esc_html__( 'Uploaded file:', 'fieldmanager' ) . '&nbsp;';
+				$preview = esc_html( $this->selected_file_label ) . '&nbsp;';
 				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
 			}
-			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', esc_html__( 'remove', 'fieldmanager' ) );
+			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', esc_html( $this->remove_media_label ) );
 			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );
 		} else {
 			$preview = '';
