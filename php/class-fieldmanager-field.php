@@ -956,7 +956,11 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_remove_handle() {
-		return sprintf( '<a href="#" class="fmjs-remove" title="%1$s"><span class="screen-reader-text">%1$s</span></a>', esc_attr__( 'Remove', 'fieldmanager' ) );
+		$remove_handle_html = '<a href="#" class="fmjs-remove" title="%1$s"';
+		if (isset($this->minimum_count)) {
+			$remove_handle_html .= ' data-minimum_count="' . $this->minimum_count . '"';
+		}
+		return sprintf($remove_handle_html . '><span class="screen-reader-text">%1$s</span></a>', esc_attr__( 'Remove', 'fieldmanager' ) );
 	}
 
 	/**

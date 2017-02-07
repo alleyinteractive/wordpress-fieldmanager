@@ -166,7 +166,10 @@ fm_add_another = function( $element ) {
 }
 
 fm_remove = function( $element ) {
-	$wrapper = $( this ).parents( '.fm-wrapper' ).first();
+	$wrapper = $element.parents( '.fm-wrapper' ).first();
+	if ($element.data('minimum_count') && $wrapper.children().length <= $element.data('minimum_count') + 2) {
+		return;
+	}
 	$element.parents( '.fm-item' ).first().remove();
 	fm_renumber( $wrapper );
 }
