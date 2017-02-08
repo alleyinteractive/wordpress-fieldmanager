@@ -23,3 +23,5 @@ todo.txt
 composer.lock
 /vendor/
 /node_modules
+*.js~
+*.php~
