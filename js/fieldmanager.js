@@ -180,7 +180,10 @@ $( document ).ready( function () {
 	// Handle remove events
 	$( document ).on( 'click', '.fmjs-remove', function( e ) {
 		e.preventDefault();
-		fm_remove( $( this ) );
+		var minimumCount = Number($(this).parents('.fm-wrapper').first().data('minimum_count'));
+ 		if (!minimumCount || $(this).parents('.fm-group').first().siblings('.fm-group').length > minimumCount) {
+ 			fm_remove( $( this ) );
+ 		}
 	} );
 
 	// Handle collapse events
