@@ -507,8 +507,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$match_array = [];
-		$this->assertEquals( 6, preg_match_all('/<a href="#" class="fmjs-remove" title="Remove"( data-minimum_count="\d+")?><span class=\"screen-reader-text\">Remove<\/span><\/a>/', $html, $match_array) );
+		$this->assertEquals( 6, preg_match_all('/<a href="#" class="fmjs-remove" title="Remove"( data-minimum_count="\d+")?><span class=\"screen-reader-text\">Remove<\/span><\/a>/', $html) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -575,8 +574,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$match_array = [];
-		$this->assertEquals( 6, preg_match_all('/<a href="#" class="fmjs-remove" title="Remove"( data-minimum_count="\d+")?><span class=\"screen-reader-text\">Remove<\/span><\/a>/', $html, $match_array) );
+		$this->assertEquals( 6, preg_match_all('/<a href="#" class="fmjs-remove" title="Remove"( data-minimum_count="\d+")?><span class=\"screen-reader-text\">Remove<\/span><\/a>/', $html) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -624,8 +622,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$match_array = [];
-		$this->assertEquals( 6, preg_match_all('/<a href="#" class="fmjs-remove" title="Remove"( data-minimum_count="\d+")?><span class=\"screen-reader-text\">Remove<\/span><\/a>/', $html, $match_array) );
+		$this->assertEquals( 6, preg_match_all('/<a href="#" class="fmjs-remove" title="Remove"( data-minimum_count="\d+")?><span class=\"screen-reader-text\">Remove<\/span><\/a>/', $html) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
@@ -678,8 +675,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// minimum count of 5
 		$field->minimum_count = 5;
 		$html = $this->_get_html_for( $field );
-		$match_array = [];
-		$this->assertEquals( 6, preg_match_all('/<a href="#" class="fmjs-remove" title="Remove"( data-minimum_count="\d+")?><span class=\"screen-reader-text\">Remove<\/span><\/a>/', $html, $match_array) );
+		$this->assertEquals( 6, preg_match_all('/<a href="#" class="fmjs-remove" title="Remove"( data-minimum_count="\d+")?><span class=\"screen-reader-text\">Remove<\/span><\/a>/', $html) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
