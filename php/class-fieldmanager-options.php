@@ -302,6 +302,29 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			$meta_boxes_to_remove = array_merge( $meta_boxes_to_remove, $meta_boxes );
 		}
 	}
+
+
+	/**
+	 * Creates the JSON Schema for all options fields.
+	 *
+	 * @see http://json-schema.org/draft-04/schema#
+	 */
+	protected function create_schema() {
+		// Add the required schema properties.
+		parent::create_schema();
+
+		// Build data from the datasource, which is needed by the schema.
+		if ( ! $this->has_built_data && ! empty( $this->datasource ) ) {
+			$this->add_options( $this->datasource->get_items() );
+			$this->has_built_data = true;
+		}
+
+		// Add option values for validation, if set.
+		// Option labels or hierarchical display aren't valid in this context.
+		if ( ! empty( $this->data ) ) {
+			$this->schema['enum'] = wp_list_pluck( array_values( $this->data ), 'value' );
+		}
+	}
 }
 
 require_once( dirname( __FILE__ ) . '/class-fieldmanager-select.php' );

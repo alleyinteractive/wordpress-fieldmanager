@@ -420,6 +420,81 @@ function fm_trigger_context_action() {
 add_action( 'init', 'fm_trigger_context_action', 99 );
 
 /**
+ * Fire an action for the current Fieldmanager context for the REST API.
+ *
+ * This is separate from fm_trigger_context_action since rest_pre_dispatch fires on parse_request
+ * and is too late to be part of the existing context hooks.
+ *
+ * @param mixed           $result  Response to replace the requested version with. Can be anything
+ *                                 a normal endpoint can return, or null to not hijack the request.
+ * @param WP_REST_Server  $server    Server instance.
+ * @param WP_REST_Request $request Request used to generate the response.
+ */
+function fm_trigger_rest_context_action( $result, $server, $request ) {
+	// Get post type and taxonomy endpoints available for the REST API.
+	$post_type_endpoints = fm_get_registered_object_rest_base( 'post_types' );
+	$taxonomy_endpoints = fm_get_registered_object_rest_base( 'taxonomies' );
+
+	// Get the route for the request for comparison.
+	$route = $request->get_route();
+
+	// If the route is empty, we cannot continue.
+	if ( empty( $route ) ) {
+		return;
+	}
+
+	// Store matches to use with the context action.
+	$matches = array();
+
+	// Use regexes to find the right context.
+	if ( ! empty( $post_type_endpoints )
+		&& preg_match( '/\/wp\/v2\/(' . implode( '|', $post_type_endpoints ) . ')(\/?)(.*?)/', $route, $matches ) ) {
+		do_action( "fm_post_{$matches[1]}" );
+	} elseif ( ! empty( $taxonomy_endpoints )
+		&& preg_match( '/\/wp\/v2\/(' . implode( '|', $taxonomy_endpoints ) . ')(\/?)(.*?)/', $route, $matches ) ) {
+		do_action( "fm_term_{$matches[1]}" );
+	} elseif ( preg_match( '/\/wp\/v2\/users(\/?)(.*?)/', $route, $matches ) ) {
+		do_action( 'fm_user' );
+	}
+
+	return $result;
+}
+add_filter( 'rest_pre_dispatch', 'fm_trigger_rest_context_action', 10, 3 );
+
+/**
+ * Gets the REST API base for all registered WordPress objects of a certain type.
+ * Currently works for post types and taxonomies.
+ *
+ * @param string $type	Either 'post_types' or 'taxonomies'.
+ * @return array		A list of all the rest bases for the object type.
+ */
+function fm_get_registered_object_rest_base( $type ) {
+	$rest_bases = array();
+
+	// Create the WordPress function name.
+	$function_name = 'get_' . $type;
+
+	// Do some basic error checking in case this function is used elsewhere.
+	if ( ! function_exists( $function_name ) || ! in_array( $type, array( 'post_types', 'taxonomies' ), true ) ) {
+		return $rest_bases;
+	}
+
+	// Get the objects.
+	$objects = call_user_func( $function_name, array( 'show_in_rest' => true ), 'objects' );
+
+	// Ensure there are some available for the rest API.
+	if ( empty( $objects ) ) {
+		return $rest_bases;
+	}
+
+	// Extract the rest base for each.
+	foreach ( $objects as $object ) {
+		$rest_bases[] = ( empty( $object->rest_base ) ) ? $object->name : $object->rest_base;
+	}
+	return $rest_bases;
+}
+
+/**
  * Add data about a submenu page to the Fieldmanager registry under a slug.
  *
  * @see Fieldmanager_Context_Submenu for detail about $parent_slug, $page_title,

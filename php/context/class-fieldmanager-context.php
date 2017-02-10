@@ -94,4 +94,113 @@ abstract class Fieldmanager_Context {
 		}
 	}
 
+
+	/**
+	 * Register a field for use with the REST API.
+	 *
+	 * @param  string|array $object_type Required. The object type in the REST API where this field will be available.
+	 */
+	public function register_rest_field( $object_type ) {
+		// Ensure the REST API is active and the field wants to be shown in REST
+		if ( function_exists( 'register_rest_field' ) && true === $this->fm->show_in_rest ) {
+			register_rest_field(
+				$object_type,
+				$this->fm->name,
+				array(
+					'get_callback'    => array( $this, 'rest_get_callback' ),
+					'update_callback' => array( $this, 'rest_update_callback' ),
+					'schema'          => apply_filters( 'fm_rest_api_schema', $this->fm->get_schema(), $this ),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Handles getting field data for the REST API.
+	 * Needs to be implemented by each context.
+	 *
+	 * @param  array $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	public function rest_get_callback( $object, $field_name, $request, $object_type ) {}
+
+	/**
+	 * Parse the reponse data returned to the REST API.
+	 *
+	 * @param  mixed $data The data.
+	 * @param  array $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	public function parse_rest_response( $data, $object, $field_name, $request, $object_type ) {
+		/**
+		 * Filter a single field's data to the REST API.
+		 *
+		 * @param  array           $object      The REST API object.
+		 * @param  string          $field_name  The REST API field name.
+		 * @param  WP_REST_Request $request     The full request object from the REST API.
+		 * @param  string          $object_type The REST API object type
+		 */
+		$data = apply_filters( 'fm_rest_get_' . $field_name, $data, $object, $field_name, $request, $object_type );
+
+		/**
+		 * Filter all data passed to the REST API.
+		 *
+		 * @param  array           $object      The REST API object.
+		 * @param  string          $field_name  The REST API field name.
+		 * @param  WP_REST_Request $request     The full request object from the REST API.
+		 * @param  string          $object_type The REST API object type
+		 */
+		$data = apply_filters( 'fm_rest_get', $data, $object, $field_name, $request, $object_type );
+
+		return $data;
+	}
+
+	/**
+	 * Handles updating field data from the REST API.
+	 * Needs to be implemented by each context.
+	 *
+	 * @param  mixed $value The value to be updated for the field from the request.
+	 * @param  object $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	public function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {}
+
+	/**
+	 * Parse the data retrieved from the REST API to be saved.
+	 *
+	 * @param  mixed $data The data.
+	 * @param  array $object The REST API object.
+	 * @param  string $field_name The REST API field name.
+	 * @param  WP_REST_Request $request The full request object from the REST API.
+	 * @param  string $object_type The REST API object type
+	 */
+	public function parse_rest_data( $data, $object, $field_name, $request, $object_type ) {
+		/**
+		 * Filter a single field's data to the REST API.
+		 *
+		 * @param  array           $object      The REST API object.
+		 * @param  string          $field_name  The REST API field name.
+		 * @param  WP_REST_Request $request     The full request object from the REST API.
+		 * @param  string          $object_type The REST API object type
+		 */
+		$data = apply_filters( 'fm_rest_update_' . $field_name, $data, $object, $field_name, $request, $object_type );
+
+		/**
+		 * Filter all data passed to the REST API.
+		 *
+		 * @param  array           $object      The REST API object.
+		 * @param  string          $field_name  The REST API field name.
+		 * @param  WP_REST_Request $request     The full request object from the REST API.
+		 * @param  string          $object_type The REST API object type
+		 */
+		$data = apply_filters( 'fm_rest_update', $data, $object, $field_name, $request, $object_type );
+
+		return $data;
+	}
 }
