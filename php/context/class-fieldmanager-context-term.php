@@ -140,7 +140,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		}
 
 		// Register fields for the REST API
-		$this->register_rest_field( $taxonomies );
+		$this->register_rest_field( $this->taxonomies );
 
 		// Iterate through the taxonomies and add the fields to the requested forms
 		// Also add handlers for saving the fields and which forms to validate (if enabled)
