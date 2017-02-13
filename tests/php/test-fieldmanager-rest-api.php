@@ -324,10 +324,10 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 	 * Add user fields.
 	 */
 	function _fm_user_test_fields() {
-		$fm_user = new Fieldmanager_TextField( [
+		$fm_user = new Fieldmanager_TextField( array(
 			'name' => $this->test_field,
 			'show_in_rest' => true,
-		] );
+		) );
 		$fm_user->add_user_form( __( 'Test Fields', 'fieldmanager' ) );
 	}
 }
