@@ -230,7 +230,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param  string $object_type The REST API object type
 	 */
 	public function rest_update_callback( $value, $object, $field_name, $request, $object_type ) {
-		$this->parse_rest_data( $value, $object, $field_name, $request, $object_type );
+		$value = $this->parse_rest_data( $value, $object, $field_name, $request, $object_type );
 		$this->save_to_user_meta( $object->ID, $value );
 	}
 }
