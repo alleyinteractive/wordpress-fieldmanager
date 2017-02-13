@@ -18,7 +18,9 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 	/**
 	 * Peform initial setup.
 	 */
-	function setup() {
+	function setUp() {
+		parent::setUp();
+
 		// Name of the test field.
 		$this->test_field = rand_str();
 
@@ -31,7 +33,10 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 		) );
 		wp_set_current_user( $this->admin_id );
 
-		parent::setup();
+		if ( is_multisite() ) {
+			$admin = wp_get_current_user();
+			update_site_option( 'site_admins', array( $admin->user_login ) );
+		}
 	}
 
 	/**
@@ -171,7 +176,7 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 		add_action( 'fm_term_category', array( $this, '_fm_term_test_fields' ) );
 		add_action( 'fm_term_categories', array( $this, '_fm_term_test_fields' ) );
 
-		// Create the post.
+		// Create the term.
 		$term_id = $this->factory->category->create();
 
 		// Add data.
@@ -194,7 +199,7 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 		add_action( 'fm_term_category', array( $this, '_fm_term_test_fields' ) );
 		add_action( 'fm_term_categories', array( $this, '_fm_term_test_fields' ) );
 
-		// Create the post.
+		// Create the term.
 		$term_id = $this->factory->category->create();
 
 		// Add data.
@@ -219,7 +224,7 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 		add_action( 'fm_user', array( $this, '_fm_user_test_fields' ) );
 		add_action( 'fm_users', array( $this, '_fm_user_test_fields' ) );
 
-		// Create the post.
+		// Create the user.
 		$user_id = $this->factory->user->create();
 
 		// Add data.
@@ -242,7 +247,7 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 		add_action( 'fm_user', array( $this, '_fm_user_test_fields' ) );
 		add_action( 'fm_users', array( $this, '_fm_user_test_fields' ) );
 
-		// Create the post.
+		// Create the user.
 		$user_id = $this->factory->user->create();
 
 		// Add data.
