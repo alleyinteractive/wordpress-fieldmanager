@@ -77,9 +77,9 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 
 		// Process the REST API call.
 		$request = new WP_REST_Request( 'POST', '/wp/v2/posts/' . $post_id );
-		$request->set_body_params( [
+		$request->set_body_params( array(
 			$this->test_field => $test_data,
-		] );
+		) );
 		$response = $this->server->dispatch( $request );
 
 		$this->assertEquals( get_post_meta( $post_id, $this->test_field, true ), $test_data );
@@ -149,9 +149,9 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 
 		// Process the REST API call.
 		$request = new WP_REST_Request( 'POST', '/wp/v2/posts/' . $post_id );
-		$request->set_body_params( [
+		$request->set_body_params( array(
 			$this->test_field => $test_data,
-		] );
+		) );
 		$response = $this->server->dispatch( $request );
 
 		$this->assertEquals( get_post_meta( $post_id, $this->test_field, true ), $this->new_test_data );
@@ -196,9 +196,9 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 
 		// Process the REST API call.
 		$request = new WP_REST_Request( 'POST', '/wp/v2/categories/' . $term_id );
-		$request->set_body_params( [
+		$request->set_body_params( array(
 			$this->test_field => $test_data,
-		] );
+		) );
 		$response = $this->server->dispatch( $request );
 
 		$this->assertEquals( get_term_meta( $term_id, $this->test_field, true ), $test_data );
@@ -243,9 +243,9 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 
 		// Process the REST API call.
 		$request = new WP_REST_Request( 'POST', '/wp/v2/users/' . $user_id );
-		$request->set_body_params( [
+		$request->set_body_params( array(
 			$this->test_field => $test_data,
-		] );
+		) );
 		$response = $this->server->dispatch( $request );
 
 		$this->assertEquals( get_metadata( 'user', $user_id, $this->test_field, true ), $test_data );
@@ -255,10 +255,10 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 	 * Add post fields.
 	 */
 	function _fm_post_test_fields() {
-		$fm_post = new Fieldmanager_TextField( [
+		$fm_post = new Fieldmanager_TextField( array(
 			'name' => $this->test_field,
 			'show_in_rest' => true,
-		] );
+		) );
 		$fm_post->add_meta_box( __( 'Test Fields', 'fieldmanager' ), array( 'post' ), 'side' );
 	}
 
@@ -266,10 +266,10 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 	 * Add field without adding it to the REST repsonse.
 	 */
 	function _fm_no_post_test_fields() {
-		$fm_post = new Fieldmanager_TextField( [
+		$fm_post = new Fieldmanager_TextField( array(
 			'name' => $this->test_field,
 			'show_in_rest' => false,
-		] );
+		) );
 		$fm_post->add_meta_box( __( 'NO Test Fields', 'fieldmanager' ), array( 'post' ), 'side' );
 	}
 
@@ -313,10 +313,10 @@ class Test_Fieldmanager_REST_API extends Fieldmanager_REST_API_Controller {
 	 * Add term fields.
 	 */
 	function _fm_term_test_fields() {
-		$fm_term = new Fieldmanager_TextField( [
+		$fm_term = new Fieldmanager_TextField( array(
 			'name' => $this->test_field,
 			'show_in_rest' => true,
-		] );
+		) );
 		$fm_term->add_term_meta_box( __( 'Test Fields', 'fieldmanager' ), array( 'category' ) );
 	}
 
