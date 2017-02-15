@@ -24,7 +24,6 @@
 	<exclude-pattern>php/class-fieldmanager-checkbox.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-colorpicker.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-draggablepost.php</exclude-pattern>
-	<exclude-pattern>php/class-fieldmanager-field.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-grid.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-group.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-hidden.php</exclude-pattern>
