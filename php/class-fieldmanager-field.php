@@ -1094,7 +1094,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Add a form on user pages.
 	 *
-	 * @param string $title
+	 * @param string $title The form title.
 	 */
 	public function add_user_form( $title = '' ) {
 		$this->require_base();
