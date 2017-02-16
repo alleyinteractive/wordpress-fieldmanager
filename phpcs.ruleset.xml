@@ -27,7 +27,6 @@
 	<exclude-pattern>php/class-fieldmanager-field.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-grid.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-group.php</exclude-pattern>
-	<exclude-pattern>php/class-fieldmanager-hidden.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-link.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-media.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-options.php</exclude-pattern>
