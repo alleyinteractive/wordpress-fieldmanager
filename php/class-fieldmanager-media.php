@@ -1,35 +1,42 @@
 <?php
+/**
+ * Class file for Fieldmanager_Media.
+ *
+ * @package Field / Media
+ */
 
 /**
  * A field to select an attachment via the WordPress Media Manager.
  *
  * This field submits the selected attachment as an attachment ID (post ID).
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_Media extends Fieldmanager_Field {
 
 	/**
+	 * Override field_class.
+	 *
 	 * @var string
-	 * Override field_class
 	 */
 	public $field_class = 'media';
 
 	/**
+	 * Button Label.
+	 *
 	 * @var string
-	 * Button Label
 	 */
 	public $button_label;
 
 	/**
+	 * Button label in the media modal popup.
+	 *
 	 * @var string
-	 * Button label in the media modal popup
 	 */
 	public $modal_button_label;
 
 	/**
+	 * Title of the media modal popup.
+	 *
 	 * @var string
-	 * Title of the media modal popup
 	 */
 	public $modal_title;
 
@@ -55,37 +62,42 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public $remove_media_label;
 
 	/**
+	 * Class to attach to thumbnail media display.
+	 *
 	 * @var string
-	 * Class to attach to thumbnail media display
 	 */
 	public $thumbnail_class = 'thumbnail';
 
 	/**
-	 * @var string
 	 * Which size a preview image should be.
 	 * Should be a string (e.g. "thumbnail", "large", or some size created with add_image_size)
-	 * You can use an array here
+	 * You can use an array here.
+	 *
+	 * @var string
 	 */
 	public $preview_size = 'thumbnail';
 
 	/**
-	 * @var string
 	 * What mime types are available to choose from.
 	 * Valid options are "all" or a partial or full mimetype (e.g. "image" or
 	 * "application/pdf").
+	 *
+	 * @var string
 	 */
 	public $mime_type = 'all';
 
 	/**
+	 * Static variable so we only load media JS once.
+	 *
 	 * @var boolean
-	 * Static variable so we only load media JS once
 	 */
 	public static $has_registered_media = false;
 
 	/**
-	 * Construct default attributes
-	 * @param string $label
-	 * @param array $options
+	 * Construct default attributes.
+	 *
+	 * @param string $label   The form label.
+	 * @param array  $options The form options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->button_label         = __( 'Attach a File', 'fieldmanager' );
@@ -121,19 +133,24 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Presave; ensure that the value is an absolute integer
+	 * Presave; ensure that the value is an absolute integer.
+	 *
+	 * @param  int   $value         The new value.
+	 * @param  array $current_value The current value.
+	 * @return int                  The sanitized value.
 	 */
 	public function presave( $value, $current_value = array() ) {
-		if ( $value == 0 || !is_numeric( $value ) ) {
-			return NULL;
+		if ( 0 == $value || ! is_numeric( $value ) ) {
+			return null;
 		}
 		return absint( $value );
 	}
 
 	/**
-	 * Form element
-	 * @param mixed $value
-	 * @return string HTML
+	 * Form element.
+	 *
+	 * @param mixed $value The current value.
+	 * @return string      HTML string.
 	 */
 	public function form_element( $value = array() ) {
 		if ( is_numeric( $value ) && $value > 0 ) {
@@ -143,7 +160,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 			} else {
 				$preview = esc_html( $this->selected_file_label ) . '&nbsp;';
-				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
+				$preview .= wp_get_attachment_link( $value, $this->preview_size, true, true, $attachment->post_title );
 			}
 			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', esc_html( $this->remove_media_label ) );
 			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );
