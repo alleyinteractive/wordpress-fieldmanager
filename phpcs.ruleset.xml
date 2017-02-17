@@ -41,7 +41,6 @@
 	<exclude-pattern>php/context/class-fieldmanager-context-storable.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-submenu.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-term.php</exclude-pattern>
-	<exclude-pattern>php/context/class-fieldmanager-context-user.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context.php</exclude-pattern>
 	<exclude-pattern>php/datasource/class-fieldmanager-datasource-post.php</exclude-pattern>
 	<exclude-pattern>php/datasource/class-fieldmanager-datasource-term.php</exclude-pattern>
