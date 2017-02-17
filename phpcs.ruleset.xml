@@ -18,6 +18,11 @@
 		<exclude-pattern>class-fieldmanager-util-term-meta.php</exclude-pattern>
 	</rule>
 
+	<!-- Make specific VIP functions warnings not errors. -->
+	<rule ref="WordPress.VIP.RestrictedFunctions.get_term_link">
+		<type>warning</type>
+	</rule>
+
 	<!-- New files must follow coding standards. These files are exempt, for now: -->
 	<exclude-pattern>fieldmanager.php$</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-autocomplete.php</exclude-pattern>
@@ -44,7 +49,6 @@
 	<exclude-pattern>php/context/class-fieldmanager-context-user.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context.php</exclude-pattern>
 	<exclude-pattern>php/datasource/class-fieldmanager-datasource-post.php</exclude-pattern>
-	<exclude-pattern>php/datasource/class-fieldmanager-datasource-term.php</exclude-pattern>
 	<exclude-pattern>php/datasource/class-fieldmanager-datasource-user.php</exclude-pattern>
 	<exclude-pattern>php/datasource/class-fieldmanager-datasource.php</exclude-pattern>
 	<exclude-pattern>php/util/class-fieldmanager-util-validation.php</exclude-pattern>
