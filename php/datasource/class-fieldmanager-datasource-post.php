@@ -43,7 +43,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * If not empty, set this post's ID as a value on the linked post. This is used to
 	 * establish two-way relationships.
 	 *
-	 * @var string|Null
+	 * @var string
 	 */
 	public $reciprocal = null;
 
