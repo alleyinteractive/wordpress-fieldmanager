@@ -106,7 +106,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		$this->render_field();
 
 		// Check if any validation is required
-		$fm_validation = Fieldmanager_Util_Validation( 'post', 'post' );
+		$fm_validation = fieldmanager_util_validation( 'post', 'post' );
 		$fm_validation->add_field( $this->fm );
 	}
 

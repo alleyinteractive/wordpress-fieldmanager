@@ -115,7 +115,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		<?php
 
 		// Check if any validation is required
-		$fm_validation = Fieldmanager_Util_Validation( $this->uniqid, 'submenu' );
+		$fm_validation = fieldmanager_util_validation( $this->uniqid, 'submenu' );
 		$fm_validation->add_field( $this->fm );
 	}
 
