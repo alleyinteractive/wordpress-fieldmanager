@@ -204,7 +204,24 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 
 		if ( ! empty( $current_values ) ) {
 			foreach ( $current_values as $user_id ) {
-				delete_metadata( 'user', $user_id, $this->reciprocal, $field->data_id );
+				call_user_func(
+					/**
+					 * Allow control over deleting from the user data storage.
+					 * This improves compatibility with WordPress.com.
+					 *
+					 * @see delete_user_meta() for more details about each param.
+					 *
+					 * @param string $function_name The function to call to get user
+					 *                              data. Default is 'delete_user_meta'.
+					 * @param int $user_id User ID.
+					 * @param string $meta_key Meta key to retrieve.
+					 * @param mixed $meta_value Only delete if the current value matches.
+					 */
+					apply_filters( 'fm_user_context_delete_data', 'delete_user_meta' ),
+					$user_id,
+					$this->reciprocal,
+					$field->data_id
+				);
 			}
 		}
 
@@ -237,7 +254,27 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 				wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
 			}
 			if ( $this->reciprocal && 'ID' == $this->store_property ) {
-				add_metadata( 'user', $v, $this->reciprocal, $field->data_id );
+				call_user_func(
+					/**
+					 * Allow control over adding to the user data storage.
+					 * This improves compatibility with WordPress.com.
+					 *
+					 * @see add_user_meta() for more details about each param.
+					 *
+					 * @param string $function_name The function to call to get user
+					 *                              data. Default is 'add_user_meta'.
+					 * @param int $user_id User ID.
+					 * @param string $meta_key Meta key to add.
+					 * @param mixed $meta_value The meta value to store.
+					 * @param boolean $unique If true, only add if key is unique.
+					 *                        Default is false.
+					 */
+					apply_filters( 'fm_user_context_add_data', 'add_user_meta' ),
+					$v,
+					$this->reciprocal,
+					$field->data_id,
+					false
+				);
 			}
 		}
 
