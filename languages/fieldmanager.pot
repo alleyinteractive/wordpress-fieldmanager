@@ -1,14 +1,14 @@
-# Copyright (C) 2016 Austin Smith, Matthew Boynes
+# Copyright (C) 2017 Austin Smith, Matthew Boynes
 # This file is distributed under the same license as the Fieldmanager package.
 msgid ""
 msgstr ""
 "Project-Id-Version: Fieldmanager 1.1.0-beta.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/fieldmanager\n"
-"POT-Creation-Date: 2016-12-31 06:54:43+00:00\n"
+"POT-Creation-Date: 2017-02-25 19:05:01+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"PO-Revision-Date: 2017-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "X-Generator: grunt-wp-i18n 0.5.4\n"
