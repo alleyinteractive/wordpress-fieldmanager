@@ -236,19 +236,33 @@ class Fieldmanager_Util_Validation {
 			// Add the Fieldmanager validation script and CSS.
 			// This is not done via the normal enqueue process since there is no way to know at that point if any fields will require validation.
 			// Doing this here avoids loading JS/CSS for validation if not in use.
-			echo "<link rel='stylesheet' id='fm-validation-css' href='" . esc_url( fieldmanager_get_baseurl() ) . "css/fieldmanager-validation.css' />\n";
-			echo "<script type='text/javascript' src='" . esc_url( fieldmanager_get_baseurl() ) . "js/validation/fieldmanager-validation.js?ver=0.3'></script>\n";
+			echo sprintf(
+				"<link rel='%s' id='fm-validation-css' href='%scss/fieldmanager-validation.css' />\n",
+				'stylesheet',
+				esc_url( fieldmanager_get_baseurl() )
+			);
+			echo sprintf(
+				"<%s type='%s' src='%sjs/validation/fieldmanager-validation.js?ver=0.3'></script>\n",
+				'script',
+				'text/javascript',
+				esc_url( fieldmanager_get_baseurl() )
+			);
 
 			// Add the jQuery validation script.
-			echo "<script type='text/javascript' src='" . esc_url( fieldmanager_get_baseurl() ) . "js/validation/jquery.validate.min.js'></script>\n";
+			echo sprintf(
+				"<%s type='%s' src='%sjs/validation/jquery.validate.min.js'></script>\n",
+				'script',
+				'text/javascript',
+				esc_url( fieldmanager_get_baseurl() )
+			);
 
 			// Add the ignore, rules and messages to final validate method with form ID, wrap in script tags and output.
-			echo sprintf(
+			echo sprintf( // WPCS: XSS ok.
 				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm_validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
 				esc_attr( $this->form_id ),
-				esc_attr( $ignore_js ),
-				esc_attr( $rules_js ),
-				esc_attr( $messages_js )
+				esc_js( $ignore_js ),
+				$rules_js, // Escaped in $this->array_to_js().
+				$messages_js // Escaped in $this->array_to_js().
 			);
 		}
 	}
