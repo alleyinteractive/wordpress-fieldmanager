@@ -448,27 +448,27 @@ abstract class Fieldmanager_Field {
 		);
 
 		/**
-		 * Filter field markup before adding markup for its form elements.
+		 * Filters field markup before adding markup for its form elements.
 		 *
 		 * @since 0.1.0
 		 * @since 1.0.0 The `$values` parameter was added.
 		 *
-		 * @param string $out Field markup.
-		 * @param Fieldmanager_Field $this Field instance.
-		 * @param mixed $values Current element values.
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
 		 */
 		$out = apply_filters( 'fm_element_markup_start', $out, $this, $values );
 
 		/**
-		 * Filter a specific field's markup before adding markup for its form elements.
+		 * Filters a specific field's markup before adding markup for its form elements.
 		 *
 		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
 		 *
 		 * @since 1.1.0
 		 *
-		 * @param string $out Field markup.
-		 * @param Fieldmanager_Field $this Field instance.
-		 * @param mixed $values Current element values.
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
 		 */
 		$out = apply_filters( "fm_element_markup_start_{$this->name}", $out, $this, $values );
 
@@ -493,27 +493,27 @@ abstract class Fieldmanager_Field {
 		}
 
 		/**
-		 * Filter field markup after adding markup for its form elements.
+		 * Filters field markup after adding markup for its form elements.
 		 *
 		 * @since 0.1.0
 		 * @since 1.0.0 The `$values` parameter was added.
 		 *
-		 * @param string $out Field markup.
-		 * @param Fieldmanager_Field $this Field instance.
-		 * @param mixed $values Current element values.
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
 		 */
 		$out = apply_filters( 'fm_element_markup_end', $out, $this, $values );
 
 		/**
-		 * Filter a specific field's markup after adding markup for its form elements.
+		 * Filters a specific field's markup after adding markup for its form elements.
 		 *
 		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
 		 *
 		 * @since 1.1.0
 		 *
-		 * @param string $out Field markup.
-		 * @param Fieldmanager_Field $this Field instance.
-		 * @param mixed $values Current element values.
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
 		 */
 		$out = apply_filters( "fm_element_markup_end_{$this->name}", $out, $this, $values );
 
