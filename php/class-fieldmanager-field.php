@@ -209,6 +209,12 @@ abstract class Fieldmanager_Field {
 	 *	'src' => 'display-if-src-element',
 	 *	'value' => 'display-if-src-value'
 	 * );
+	 *
+	 * Multiple values are allowed if comma-separated. Sample:
+	 * $element->display_if = array(
+	 *	'src' => 'display-if-src-element',
+	 *	'value' => 'display-if-src-value1,display-if-src-value2'
+	 * );
 	 */
 	public $display_if = array();
 
