@@ -227,7 +227,8 @@ class Fieldmanager_Util_Term_Meta {
 	public function get_term_meta_post_id( $term_id, $taxonomy ) {
 		$cache_key = $this->get_term_meta_post_id_cache_key( $term_id, $taxonomy );
 
-		if ( false === ( $term_meta_post_id = wp_cache_get( $cache_key ) ) ) {
+		$term_meta_post_id = wp_cache_get( $cache_key );
+		if ( false === $term_meta_post_id ) {
 			// Check if a post exists for this term.
 			$query = new WP_Query( array(
 				'name' => $this->post_slug( $term_id, $taxonomy ),
@@ -305,7 +306,8 @@ class Fieldmanager_Util_Term_Meta {
 	 * @param string $taxonomy Term taxonomy.
 	 */
 	public function collect_garbage( $term_id, $tt_id, $taxonomy ) {
-		if ( $post = get_page_by_path( $this->post_slug( $term_id, $taxonomy ), OBJECT, $this->post_type ) ) {
+		$post = get_page_by_path( $this->post_slug( $term_id, $taxonomy ), OBJECT, $this->post_type );
+		if ( $post ) {
 			wp_delete_post( $post->ID, true );
 		}
 	}
@@ -321,7 +323,8 @@ class Fieldmanager_Util_Term_Meta {
 	 * @param string $taxonomy         The taxonomy of the *split* term.
 	 */
 	public function split_shared_term( $old_term_id, $new_term_id, $term_taxonomy_id, $taxonomy ) {
-		if ( false != ( $post_id = $this->get_term_meta_post_id( $old_term_id, $taxonomy ) ) ) {
+		$post_id = $this->get_term_meta_post_id( $old_term_id, $taxonomy );
+		if ( false != $post_id ) {
 			wp_update_post( array(
 				'ID' => $post_id,
 				'post_name' => $this->post_slug( $new_term_id, $taxonomy ),
