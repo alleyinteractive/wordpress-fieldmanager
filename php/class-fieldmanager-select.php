@@ -100,8 +100,14 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		}
 
 		$opts = '';
-		if ( $this->is_repeatable() || $this->first_empty ) {
-			$opts .= '<option value="">&nbsp;</option>';
+		if ( $this->parent ) {
+			if ( $this->first_empty ) {
+				$opts .= '<option value="">&nbsp;</option>';
+			}
+		} else {
+			if ( $this->is_repeatable() || $this->first_empty ) {
+				$opts .= '<option value="">&nbsp;</option>';
+			}
 		}
 		$opts .= $this->form_data_elements( $value );
 
