@@ -123,6 +123,7 @@
 	$( document ).on( 'fm_collapsible_toggle fm_added_element fm_activate_tab fm_displayif_toggle', fm.richtextarea.add_rte_to_visible_textareas );
 	$( document ).on( 'fm_sortable_drop', fm.richtextarea.reload_editors );
 	$( document ).on( 'postbox-toggled', fm.richtextarea.should_readd_rte );
+
 	$( document ).on( 'click', '.fm-richtext .wp-switch-editor', function() {
 		var aid = this.id,
 			l = aid.length,
