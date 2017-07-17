@@ -113,10 +113,12 @@
 		},
 
 		should_readd_rte: function( e, el ) {
-			if ( ! $( el ).hasClass( 'closed' ) && $( el ).find( 'textarea.fm-richtext' ).length ) {
-				if ( ! $( el ).find( 'textarea' ).hasClass( 'fm-tinymce' ) ) {
-					fm.richtextarea.add_rte_to_visible_textareas();
-				}
+			if (
+				! el.classList.contains( 'closed' ) &&
+				el.querySelector( 'textarea.fm-richtext') &&
+				! el.querySelector( 'textarea.fm-tinymce' )
+			) {
+				fm.richtextarea.add_rte_to_visible_textareas();
 			}
 		}
 	}
