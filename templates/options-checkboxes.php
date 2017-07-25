@@ -15,7 +15,8 @@ $cb_id = $this->get_element_id() . '-' . sanitize_text_field( $data_row['value']
 		value="<?php echo esc_attr( $data_row['value'] ); ?>"
 		name="<?php echo esc_attr( $this->get_form_name( '[]' ) ); ?>"
 		id="<?php echo esc_attr( $cb_id ); ?>"
-		<?php echo $this->get_element_attributes(); // Escaped interally. xss ok. ?>
+		<?php // Escaped interally. xss ok.
+		echo $this->get_element_attributes(); ?>
 		<?php echo esc_attr( $this->option_selected( $data_row['value'], $value, 'checked' ) ); ?>
 	/>
 	<label for="<?php echo esc_attr( $cb_id ); ?>" class="fm-option-label">
