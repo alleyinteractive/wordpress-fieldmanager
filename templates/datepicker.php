@@ -15,8 +15,9 @@
 	<?php if ( ! empty( $value ) ) : ?>
 		value="<?php echo esc_attr( date( $this->date_format, intval( $value ) ) ); ?>"
 	<?php endif; ?>
-	<?php // Escaped interally. xss ok.
-	echo $this->get_element_attributes(); ?>
+	<?php
+	echo $this->get_element_attributes(); // Escaped interally. xss ok.
+	?>
 />
 
 <?php if ( $this->use_time ) : ?>
