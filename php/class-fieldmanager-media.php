@@ -138,7 +138,6 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function form_element( $value = array() ) {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
-			d($attachment->post_mime_type);
 			// open the preview wrapper
 			$preview = '<div class="media-file-preview">';
 			$file_label = ''; // the uploaded file label - image or file
