@@ -138,6 +138,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function form_element( $value = array() ) {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
+			d($attachment->post_mime_type);
 			// open the preview wrapper
 			$preview = '<div class="media-file-preview">';
 			$file_label = ''; // the uploaded file label - image or file
@@ -145,6 +146,12 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
 				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
 				$file_label = $this->selected_image_label;
+			} elseif ( strpos( $attachment->post_mime_type, 'audio/' ) === 0 ) {
+				$preview .= '<a href="#"><span class="dashicons dashicons-media-audio"></span></a>';
+				$file_label = $this->selected_file_label;
+			} elseif ( strpos( $attachment->post_mime_type, 'video/' ) === 0 ) {
+				$preview .= '<a href="#"><span class="dashicons dashicons-media-video"></span></a>';
+				$file_label = $this->selected_file_label;
 			} else {
 				// Potentially display other icons for other mime types
 				$preview .= '<a href="#"><span class="dashicons dashicons-media-document"></span></a>';
