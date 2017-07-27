@@ -82,6 +82,10 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		if ( attachment.type == 'image' ) {
 			props.url = props.src;
 			preview += wp.media.string.image( props );
+		} else if ( attachment.type == 'audio' ) {
+			preview += '<a href="#"><span class="dashicons dashicons-media-audio"></span></a>';
+		} else if ( attachment.type == 'video' ) {
+			preview += '<a href="#"><span class="dashicons dashicons-media-video"></span></a>';
 		} else {
 			preview += '<a href="#"><span class="dashicons dashicons-media-document"></span></a>';
 		}
