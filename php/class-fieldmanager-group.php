@@ -198,7 +198,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		if ( isset( $this->description ) && ! empty( $this->description ) && ! $this->description_after_element ) {
-			$before_desc = sprintf( '<p class="fm-group-description">%s</p>', $this->escape( 'description' ) );
+			$before_desc = '<p class="fm-group-description">' . $this->escape( 'description' ) . '</p>';
 			if ( ! $this->tabbed ) {
 				$out .= $before_desc;
 			}
@@ -206,10 +206,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// If the display output for this group is set to tabs, build the tab group for navigation
 		if ( $this->tabbed ) {
-			$tab_group = sprintf( '%s<ul class="fm-tab-bar wp-tab-bar %s" id="%s-tabs">',
+			$tab_group = sprintf( '%1$s<ul class="fm-tab-bar wp-tab-bar %2$s" id="%3$s-tabs">',
 				$before_desc,
 				$this->persist_active_tab ? 'fm-persist-active-tab' : '',
-				esc_attr( $this->get_element_id() ) );
+				esc_attr( $this->get_element_id() )
+			);
 		}
 
 		// Produce HTML for each of the children
@@ -280,8 +281,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		}
 
-		if ( isset( $this->description ) && !empty( $this->description ) && $this->description_after_element ) {
-			$out .= sprintf( '<p class="fm-group-description">%s</p>', $this->escape( 'description' ) );
+		if ( isset( $this->description ) && ! empty( $this->description ) && $this->description_after_element ) {
+			$out .= '<p class="fm-group-description">' . $this->escape( 'description' ) . '</p>';
 		}
 
 		// We do not need the wrapper class for extra padding if no label is set for the group
