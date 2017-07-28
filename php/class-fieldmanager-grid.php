@@ -65,9 +65,9 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 		}
 		$out = sprintf(
 			'<div class="grid-toggle-wrapper">
+				<p><a href="#" class="grid-activate button-secondary" id="%7$s" data-with-grid-title="%6$s">%5$s</a></p>
 				<div class="fm-grid" id="%2$s" data-fm-grid-name="%1$s" data-fm-grid-opts="%3$s"></div>
 				<input name="%1$s" class="fm-element" type="hidden" value="%4$s" />
-				<p><a href="#" class="grid-activate" id="%7$s" data-with-grid-title="%6$s">%5$s</a></p>
 			</div>',
 			esc_attr( $this->get_form_name() ),
 			esc_attr( 'hot-grid-id-' . uniqid( true ) ), // handsontable must have an ID, but we don't care what it is.

@@ -512,24 +512,20 @@ div.fm-group-label-wrapper .fmjs-remove {
 .grid-toggle-wrapper {
 	overflow: scroll;
 	max-height: 500px;
-	margin: 5px 5px 5px 0;
-	padding: 7px;
 }
 
 .grid-toggle-wrapper.with-grid {
-	padding: 5px;
-	border: solid 2px #ccc;
 	background: #fff;
 }
 
-.grid-activate {
-	display: block;
-	width: 200px;
-	height: 20px;
+.grid-toggle-wrapper > p {
+	margin: 0;
+}
+
+.grid-activate.button-secondary {
+	-webkit-box-shadow: 0 1px 0 #ccc;
+	box-shadow: 0 1px 0 #ccc;
 	margin: 5px 0;
-	padding: 5px;
-	text-decoration: none;
-	border: solid 1px #000;
 }
 
 .grid-activate:before {
@@ -542,20 +538,11 @@ div.fm-group-label-wrapper .fmjs-remove {
 	color: #a0a5aa;
 }
 
-.grid-activate:hover {
-	border: solid 1px #d54e21;
-}
-
 .grid-activate:hover:before {
 	color: #777;
 }
 
-.with-grid .grid-activate:hover {
-	border: none;
-}
-
 .with-grid .grid-activate {
-	border: none;
 	background: #fff;
 }
 
