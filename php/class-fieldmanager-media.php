@@ -141,30 +141,63 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			// open the preview wrapper
 			$preview = '<div class="media-file-preview">';
 			$file_label = ''; // the uploaded file label - image or file
-			// If the preview is an image display the image, otherwise use a media icon
-			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
-				$file_label = $this->selected_image_label;
-			} elseif ( strpos( $attachment->post_mime_type, 'audio/' ) === 0 ) {
-				$preview .= '<a href="#"><span class="dashicons dashicons-media-audio"></span></a>';
-				$file_label = $this->selected_file_label;
-			} elseif ( strpos( $attachment->post_mime_type, 'video/' ) === 0 ) {
-				$preview .= '<a href="#"><span class="dashicons dashicons-media-video"></span></a>';
-				$file_label = $this->selected_file_label;
-			} else {
-				// Potentially display other icons for other mime types
-				$preview .= '<a href="#"><span class="dashicons dashicons-media-document"></span></a>';
-				$file_label = $this->selected_file_label;
+			$dashicon_class = '';
+
+			if ( $attachment->post_mime_type ) {
+				$preview .= '<a href="#">';
+				$image_type = strpos( $attachment->post_mime_type, 'image/' );
+
+				if ( strpos( $attachment->post_mime_type, 'audio/' ) === 0 ) {
+					$dashicon_class = 'dashicons-media-audio';
+				} elseif ( strpos( $attachment->post_mime_type, 'video/' ) === 0 ) {
+					$dashicon_class = 'dashicons-media-video';
+				} else {
+					$dashicon_class = 'dashicons-media-document';
+				}
+
+				$dashicon_class = apply_filters( 'fieldmanager_media_preview_icon', $dashicon_class, $attachment->post_mime_type );
+
+				// If the preview is an image display the image, otherwise use a media icon
+				if ( false === $image_type ) {
+					$file_label = $this->selected_file_label;
+					if ( '' !== $dashicon_class ) {
+						$preview .= "<span class='dashicons {$dashicon_class}'></span>";
+					}
+				} elseif ( 0 === $image_type ) {
+					$file_label = $this->selected_image_label;
+					$preview .= wp_get_attachment_image(
+						$value,
+						$this->preview_size,
+						false,
+						array(
+							'class' => $this->thumbnail_class,
+						)
+					);
+				}
+
+				$preview .= '</a>';
 			}
 
-			$preview .= sprintf( '<div class="fm-file-detail">%s<h4>%s</h4><span class="fm-file-type">%s</span></div>',
+			$preview .= sprintf( '<div class="fm-file-detail">%1$s<h4>%2$s</h4><span class="fm-file-type">%3$s</span></div>',
 				esc_html( $file_label ),
 				wp_get_attachment_link( $value, $this->preview_size, true, true, $attachment->post_title ),
-				$attachment->post_mime_type
+				esc_html( $attachment->post_mime_type )
 			);
 
-			$preview .= sprintf( '<a href="#" class="fm-media-edit"><span class="screen-reader-text">%s</span></a>', esc_html__( 'edit', 'fieldmanager' ) );
-			$preview .= sprintf( '<a href="#" class="fm-media-remove fm-delete fmjs-remove"><span class="screen-reader-text">%s</span></a>', esc_html( $this->remove_media_label ) );
+			$button_string = '<a href="#" class="%1$s"><span class="screen-reader-text">%2$s</span></a>';
+
+			$preview .= sprintf(
+				$button_string,
+				esc_attr( 'fm-media-edit' ),
+				esc_html__( 'edit', 'fieldmanager' )
+			);
+
+			$preview .= sprintf(
+				$button_string,
+				esc_attr( 'fm-media-remove fm-delete fmjs-remove' ),
+				esc_html( $this->remove_media_label )
+			);
+
 			$preview .= '</div>';
 
 			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );

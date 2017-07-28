@@ -607,9 +607,7 @@ a.fm-delete:hover {
 	opacity: 0.95;
 }
 
-.media-file-preview .dashicons-media-document,
-.media-file-preview .dashicons-media-video,
-.media-file-preview .dashicons-media-audio {
+.media-file-preview span.dashicons {
 	font-size: 40px;
 	width: 40px;
 	height: 40px;
