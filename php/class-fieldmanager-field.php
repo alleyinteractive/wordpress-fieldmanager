@@ -424,11 +424,6 @@ abstract class Fieldmanager_Field {
 			);
 		}
 
-		// For lists of items where $one_label_per_item = False, the label should go outside the wrapper.
-		if ( !empty( $this->label ) && !$this->one_label_per_item ) {
-			$out .= $this->get_element_label( array( 'fm-label-for-list' ) );
-		}
-
 		// Find the array position of the "counter" (e.g. in element[0], [0] is the counter, thus the position is 1)
 		$html_array_position = 0; // default is no counter; i.e. if $this->limit = 0
 		if ( $this->limit != 1 ) {
@@ -460,6 +455,11 @@ abstract class Fieldmanager_Field {
 			absint( $html_array_position ),
 			$fm_wrapper_attr_string
 		);
+
+		// For lists of items where $one_label_per_item = False, the label should go before the elements.
+		if ( !empty( $this->label ) && !$this->one_label_per_item ) {
+			$out .= $this->get_element_label( array( 'fm-label-for-list' ) );
+		}
 
 		// After starting the field, apply a filter to allow other plugins to append functionality
 		$out = apply_filters( 'fm_element_markup_start', $out, $this, $values );
