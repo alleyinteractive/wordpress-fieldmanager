@@ -40,7 +40,7 @@ class Fieldmanager_Util_Term_Meta {
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
-			self::$instance = new Fieldmanager_Util_Term_Meta;
+			self::$instance = new Fieldmanager_Util_Term_Meta();
 			self::$instance->setup();
 		}
 		return self::$instance;

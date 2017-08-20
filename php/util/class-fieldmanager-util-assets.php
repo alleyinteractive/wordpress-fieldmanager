@@ -50,7 +50,7 @@ class Fieldmanager_Util_Assets {
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
-			self::$instance = new Fieldmanager_Util_Assets;
+			self::$instance = new Fieldmanager_Util_Assets();
 		}
 		return self::$instance;
 	}
