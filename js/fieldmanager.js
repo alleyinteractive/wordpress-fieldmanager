@@ -285,12 +285,15 @@ $( document ).ready( function () {
 		});
 
 		affectedFields.forEach(function ( field ) {
+			var $field = $( field );
+
 			if ( match_value( getCompareValues( field ), val ) ) {
-				$( field ).show();
+				$field.show();
 			} else {
-				$( field ).hide();
+				$field.hide();
 			}
-			$( field ).trigger( 'fm_displayif_toggle' );
+
+			$field.trigger( 'fm_displayif_toggle' );
 		});
 	};
 	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
