@@ -203,18 +203,29 @@ abstract class Fieldmanager_Field {
 	public $datasource = Null;
 
 	/**
-	 * @var array[]
 	 * Field name and value on which to display element. Sample:
+	 *
 	 * $element->display_if = array(
-	 *	'src' => 'display-if-src-element',
-	 *	'value' => 'display-if-src-value'
+	 *     'src' => 'display-if-src-element',
+	 *     'value' => 'display-if-src-value',
 	 * );
 	 *
-	 * Multiple values are allowed if comma-separated. Sample:
+	 * Multiple values are allowed if they're comma-separated. Sample:
+	 *
 	 * $element->display_if = array(
-	 *	'src' => 'display-if-src-element',
-	 *	'value' => 'display-if-src-value1,display-if-src-value2'
+	 *     'src' => 'display-if-src-element',
+	 *     'value' => 'display-if-src-value1,display-if-src-value2',
 	 * );
+	 *
+	 * Use a selector instead of `src` to show or hide the field based on the
+	 * value of elements matching the selector. Sample:
+	 *
+	 * $element->display_if = array(
+	 *     'selector' => '#page_template',
+	 *     'value' => 'my-page-template.php',
+	 * );
+	 *
+	 * @var array
 	 */
 	public $display_if = array();
 
@@ -452,9 +463,29 @@ abstract class Fieldmanager_Field {
 		}
 
 		// Checks to see if element has display_if data values, and inserts the data attributes if it does
-		if ( isset( $this->display_if ) && !empty( $this->display_if ) ) {
+		if ( ! empty( $this->display_if ) ) {
 			$classes[] = 'display-if';
-			$fm_wrapper_attrs['data-display-src'] = $this->display_if['src'];
+
+			if ( isset( $this->display_if['src'] ) && isset( $this->display_if['selector'] ) ) {
+				throw new \FM_Developer_Exception(
+					esc_html( sprintf(
+						/* translators: 1: 'display-if', 2: `src`, 3: `selector` */
+						__( 'A field cannot have both a %1$s %2$s and a %1$s %3$s', 'fieldmanager' ),
+						'`$display_if`',
+						'`src`',
+						'`selector`'
+					) )
+				);
+			}
+
+			if ( isset( $this->display_if['src'] ) ) {
+				$fm_wrapper_attrs['data-display-src'] = $this->display_if['src'];
+			}
+
+			if ( isset( $this->display_if['selector'] ) ) {
+				$fm_wrapper_attrs['data-display-selector'] = $this->display_if['selector'];
+			}
+
 			$fm_wrapper_attrs['data-display-value'] = $this->display_if['value'];
 		}
 		$fm_wrapper_attr_string = '';
