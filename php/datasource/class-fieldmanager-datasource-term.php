@@ -164,7 +164,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				}
 
 				// an affordance for our friends at WordPress.com
-				$term_by = function_exists( 'wpcom_vip_get_term_by' ) ? 'wpcom_vip_get_term_by' : 'get_term_by';
+				$term_by = 'get_term_by';
 				$term = call_user_func( $term_by, 'name', $value, $this->taxonomy );
 
 				if ( !$term ) {
