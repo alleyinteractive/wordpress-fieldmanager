@@ -25,6 +25,9 @@ branches:
     - master
 
 before_script:
+  # Turn off Xdebug. See https://core.trac.wordpress.org/changeset/40138.
+  - phpenv config-rm xdebug.ini || echo "Xdebug not available"
+
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
