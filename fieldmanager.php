@@ -13,6 +13,8 @@ Description: Add fields to content types programatically.
 Author: Austin Smith, Matthew Boynes
 Version: 1.1.0-beta.1
 Author URI: http://www.alleyinteractive.com/
+Text Domain: fieldmanager
+Domain Path: /languages
 */
 
 /**
@@ -36,6 +38,16 @@ define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 if ( !defined( 'FM_DEBUG' ) ) {
 	define( 'FM_DEBUG', WP_DEBUG );
 }
+
+/**
+ * Load plugin text domain
+ *
+ * @since 1.X.Y
+ */
+function fieldmanager_load_plugin_textdomain () {
+	load_plugin_textdomain( 'fieldmanager', false, dirname( plugin_basename(__FILE__) ) . '/languages/' );
+}
+add_action( 'plugins_loaded', 'fieldmanager_load_plugin_textdomain' );
 
 /**
  * Load a Fieldmanager class based on a class name.

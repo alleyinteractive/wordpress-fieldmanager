@@ -1,0 +1,284 @@
+# Fieldmanager translation template.
+# Copyright (C) 2016 Alley Interactive
+# This file is distributed under the same license as the PACKAGE package.
+# Enrico Sorcinelli, 2016.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Fieldmanager 1.0.0\n"
+"Report-Msgid-Bugs-To: https://github.com/alleyinteractive/wordpress-"
+"fieldmanager\n"
+"POT-Creation-Date: 2016-07-20 10:12+0200\n"
+"PO-Revision-Date: 2016-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Fieldmanager <EMAIL@ADDRESS>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: php/class-fieldmanager-field.php:330 php/class-fieldmanager-group.php:158
+msgid ""
+"A post can only have one parent, therefore you cannot store to post_parent "
+"in repeatable fields."
+msgstr ""
+
+#: php/class-fieldmanager-field.php:358
+#: php/datasource/class-fieldmanager-datasource.php:64
+#, php-format
+msgid ""
+"You attempted to set a property \"%1$s\" that is nonexistant or invalid for "
+"an instance of \"%2$s\" named \"%3$s\"."
+msgstr ""
+
+#: php/class-fieldmanager-field.php:372 php/class-fieldmanager-group.php:152
+#: php/class-fieldmanager-group.php:297
+msgid "You cannot use `\"serialize_data\" => false` with `\"index\" => true`"
+msgstr ""
+
+#: php/class-fieldmanager-field.php:719
+#, php-format
+msgid "$values should be an array because $limit is %d"
+msgstr ""
+
+#: php/class-fieldmanager-field.php:734
+#, php-format
+msgid "submitted %1$d values against a limit of %2$d"
+msgstr ""
+
+#: php/class-fieldmanager-field.php:742
+msgid ""
+"Use of a non-numeric key suggests that something is wrong with this group."
+msgstr ""
+
+#: php/class-fieldmanager-field.php:852
+msgid "presave() in the base class should not get arrays, but did."
+msgstr ""
+
+#: php/class-fieldmanager-field.php:857 php/class-fieldmanager-options.php:216
+#, php-format
+msgid "Input \"%1$s\" is not valid for field \"%2$s\" "
+msgstr ""
+
+#: php/class-fieldmanager-field.php:915
+msgid "Add group"
+msgstr ""
+
+#: php/class-fieldmanager-field.php:915
+msgid "Add field"
+msgstr ""
+
+#: php/class-fieldmanager-field.php:937
+msgid "Move"
+msgstr ""
+
+#: php/class-fieldmanager-field.php:945
+msgid "Remove"
+msgstr ""
+
+#: php/class-fieldmanager-field.php:1024
+msgid "This method requires WordPress 4.4 or above"
+msgstr ""
+
+#: php/class-fieldmanager-field.php:1094
+msgid "You cannot use this method on a subgroup"
+msgstr ""
+
+#: php/class-fieldmanager-field.php:1108
+msgid "Sorry, you're not supposed to do that..."
+msgstr ""
+
+#: php/class-fieldmanager-field.php:1124
+msgid ""
+"You may be able to use your browser's back button to resolve this error."
+msgstr ""
+
+#: php/class-fieldmanager-field.php:1138
+msgid ""
+"Sorry, you've created an invalid field definition. Please check your code "
+"and try again."
+msgstr ""
+
+#: php/class-fieldmanager-draggablepost.php:133
+msgid "drop posts here"
+msgstr ""
+
+#: php/class-fieldmanager-draggablepost.php:171
+msgid "(no authors)"
+msgstr ""
+
+#: php/class-fieldmanager-autocomplete.php:71
+msgid "You must supply a datasource for the autocomplete field"
+msgstr ""
+
+#: php/class-fieldmanager-autocomplete.php:75
+msgid "No Datasource"
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource-post.php:220
+#, php-format
+msgid ""
+"Tried to alter %s %d through field \"%s\", which user is not permitted to "
+"edit."
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource-post.php:288
+#: php/datasource/class-fieldmanager-datasource-term.php:371
+msgid "View"
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource-post.php:302
+#: php/datasource/class-fieldmanager-datasource-term.php:386
+#: php/datasource/class-fieldmanager-datasource-user.php:235
+msgid "Edit"
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource-user.php:78
+#, php-format
+msgid "Store property %s is invalid. Must be one of %s."
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource-user.php:85
+msgid ""
+"You cannot use reciprocal relationships with FM_Datasource_User if "
+"store_property is not set to ID."
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource-user.php:91
+#, php-format
+msgid "Display property %s is invalid. Must be one of %s."
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource-user.php:206
+#, php-format
+msgid "Tried to refer to user \"%s\" which current user cannot edit."
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource.php:67
+msgid "Nonexistant or invalid option"
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource.php:77
+msgid ""
+"Invalid options for Datasource; must use the options parameter to supply an "
+"array."
+msgstr ""
+
+#: php/datasource/class-fieldmanager-datasource.php:81
+msgid "Invalid Datasource Options"
+msgstr ""
+
+#: php/class-fieldmanager-media.php:70
+msgid "Attach a File"
+msgstr ""
+
+#: php/class-fieldmanager-media.php:71
+msgid "Select Attachment"
+msgstr ""
+
+#: php/class-fieldmanager-media.php:72
+msgid "Choose an Attachment"
+msgstr ""
+
+#: php/class-fieldmanager-media.php:114
+msgid "Uploaded image:"
+msgstr ""
+
+#: php/class-fieldmanager-media.php:117
+msgid "Uploaded file:"
+msgstr ""
+
+#: php/class-fieldmanager-media.php:120
+msgid "remove"
+msgstr ""
+
+#: php/context/class-fieldmanager-context-post.php:200
+#: php/context/class-fieldmanager-context-quickedit.php:196
+msgid "User cannot edit this post"
+msgstr ""
+
+#: php/context/class-fieldmanager-context-page.php:44
+#: php/context/class-fieldmanager-context.php:43
+msgid "Nonce validation failed"
+msgstr ""
+
+#: php/context/class-fieldmanager-context-page.php:70
+msgid "Save Options"
+msgstr ""
+
+#: php/context/class-fieldmanager-context-storable.php:73
+#, php-format
+msgid "You have two fields in this group saving to the same key: %s"
+msgstr ""
+
+#: php/context/class-fieldmanager-context-submenu.php:77
+msgid "Options updated"
+msgstr ""
+
+#: php/context/class-fieldmanager-context-submenu.php:137
+msgid "Current user cannot edit this page"
+msgstr ""
+
+#: php/context/class-fieldmanager-context-user.php:75
+msgid "Current user cannot edit this user"
+msgstr ""
+
+#: php/context/class-fieldmanager-context-quickedit.php:55
+msgid "You must set a valid column display callback."
+msgstr ""
+
+#: php/context/class-fieldmanager-context-term.php:115
+#: php/context/class-fieldmanager-context-term.php:126
+msgid ""
+"\"title\" and \"taxonomies\" are required values for "
+"Fieldmanager_Context_Term"
+msgstr ""
+
+#: php/context/class-fieldmanager-context-term.php:220
+#, php-format
+msgid "The field name \"%s\" is reserved for WordPress on the term form."
+msgstr ""
+
+#: php/context/class-fieldmanager-context-term.php:271
+msgid "User cannot edit this term"
+msgstr ""
+
+#: php/util/class-fieldmanager-util-validation.php:138
+#: php/util/class-fieldmanager-util-validation.php:152
+#, php-format
+msgid "The validation rule \"%s\" does not exist."
+msgstr ""
+
+#: php/util/class-fieldmanager-util-term-meta.php:65
+msgid "Fieldmanager Term Metadata"
+msgstr ""
+
+#: php/class-fieldmanager-group.php:133 php/class-fieldmanager-group.php:174
+msgid "You cannot use `\"serialize_data\" => false` with repeating groups"
+msgstr ""
+
+#: php/class-fieldmanager-group.php:145
+msgid "Group child name conflict: "
+msgstr ""
+
+#: php/class-fieldmanager-group.php:234
+msgid "More..."
+msgstr ""
+
+#: php/class-fieldmanager-group.php:313
+#, php-format
+msgid "Found \"%1$s\" in data but not in children"
+msgstr ""
+
+#: php/class-fieldmanager-grid.php:76
+msgid "Show Data Grid"
+msgstr ""
+
+#: php/class-fieldmanager-grid.php:77
+msgid "Hide Data Grid"
+msgstr ""
+
+#: php/class-fieldmanager-checkbox.php:69
+msgid "Saved a checkbox with a value that was not one of the options"
+msgstr ""
