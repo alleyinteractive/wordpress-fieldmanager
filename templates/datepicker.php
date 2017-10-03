@@ -14,8 +14,8 @@
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
 	<?php if ( ! empty( $value ) ) : ?>
 		value="<?php echo esc_attr( date( $this->date_format, intval( $value ) ) ); ?>"
-	<?php endif; ?>
 	<?php
+	endif;
 	echo $this->get_element_attributes(); // Escaped interally. xss ok.
 	?>
 />
