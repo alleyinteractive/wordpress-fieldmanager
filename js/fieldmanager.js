@@ -143,33 +143,99 @@ var match_value = function( values, match_string ) {
 	return false;
 }
 
-fm_add_another = function( $element ) {
-	var el_name = $element.data( 'related-element' )
-		, limit = $element.data( 'limit' ) - 0
-		, siblings = $element.parent().siblings( '.fm-item' ).not( '.fmjs-proto' )
-		, add_more_position = $element.data( 'add-more-position' ) || "bottom";
+var fm_add_another = function( $element ) {
+	var elName = $element.data( 'related-element' );
+	var limit = $element.data( 'limit' ) - 0;
+	var siblings = getItemsInWrapper( $element.parents( '.fm-wrapper' ).first() );
+	var addMorePosition = $element.data( 'add-more-position' ) || "bottom";
+	var $newElement;
 
 	if ( limit > 0 && siblings.length >= limit ) {
 		return;
 	}
 
-	var $new_element = $( '.fmjs-proto.fm-' + el_name, $element.closest( '.fm-wrapper' ) ).first().clone();
+	$newElement = $( '.fmjs-proto.fm-' + elName, $element.closest( '.fm-wrapper' ) ).first().clone();
 
-	$new_element.removeClass( 'fmjs-proto' );
-	$new_element = add_more_position == "bottom" ? $new_element.insertBefore( $element.parent() ) :
-						$new_element.insertAfter( $element.parent() )	;
+	$newElement.removeClass( 'fmjs-proto' );
+	$newElement = ( addMorePosition === 'bottom' ) ?
+		$newElement.insertBefore( $element.parent() ) :
+		$newElement.insertAfter( $element.parent() );
+
 	fm_renumber( $element.parents( '.fm-wrapper' ) );
+	updateAddMoreButtonForLength( $element, siblings.length + 1 );
+
 	// Trigger for subclasses to do any post-add event handling for the new element
 	$element.parent().siblings().last().trigger( 'fm_added_element' );
+
 	init_label_macros();
 	init_sortable();
 }
 
-fm_remove = function( $element ) {
-	$wrapper = $( this ).parents( '.fm-wrapper' ).first();
+var fm_remove = function( $element ) {
+	var $wrapper = $element.parents( '.fm-wrapper' ).first();
+	var $addAnotherButton = $wrapper.find( 'input.fm-add-another' );
+
 	$element.parents( '.fm-item' ).first().remove();
+
+	updateAddMoreButtonForLength( $addAnotherButton, getItemsInWrapper( $wrapper ).length );
+
 	fm_renumber( $wrapper );
 }
+
+/**
+ * Toggle the "Add Another" button based on field state.
+ *
+ * @param  {Element} button        "Add Another" button element.
+ * @param  {Integer} currentLength Number of items already added to the field
+ *                                 corresponding to the "Add Another" button.
+ */
+var updateAddMoreButtonForLength = function ( button, currentLength ) {
+	var $button = $( button );
+	var labels = $button.data( 'add-more-label' );
+	var limit = $button.data( 'limit' );
+	var labelDescribingState;
+
+	labelDescribingState = (function () {
+		if ( 0 === currentLength ) {
+			return labels.add_first;
+		}
+
+		if ( limit > 0 && currentLength === limit ) {
+			return labels.limit_reached;
+		}
+
+		return labels.add_another;
+	})();
+
+	if ( labelDescribingState === labels.add_first ) {
+		$button.val( labels.add_first );
+	} else {
+		// Use only labels that indicate available actions -- i.e., not "limit reached."
+		// See https://core.trac.wordpress.org/ticket/41610#comment:23.
+		$button.val( labels.add_another );
+	}
+
+	if ( labelDescribingState === labels.limit_reached ) {
+		$button.attr( 'aria-disabled', 'true' );
+		// Avoid `disabled=true`. See https://core.trac.wordpress.org/ticket/41610#comment:23 (again).
+		$button.addClass( 'disabled' );
+		document.getElementById( $button.attr( 'aria-describedby' ) ).innerText = labels.limit_reached;
+	} else {
+		$button.attr( 'aria-disabled', 'false' );
+		$button.removeClass( 'disabled' );
+		document.getElementById( $button.attr( 'aria-describedby' ) ).innerText = '';
+	}
+}
+
+/**
+ * Get the Fieldmanager items within an element, excluding prototypes.
+ *
+ * @param  {Element} element Element to search.
+ * @return {jQuery}
+ */
+var getItemsInWrapper = function ( element ) {
+	return $( element ).find( '.fm-item' ).not( '.fmjs-proto' );
+};
 
 $( document ).ready( function () {
 	$( document ).on( 'click', '.fm-add-another', function( e ) {
@@ -182,6 +248,12 @@ $( document ).ready( function () {
 		e.preventDefault();
 		fm_remove( $( this ) );
 	} );
+
+	$( '.fm-add-another' ).each(function () {
+		var $this = $( this );
+
+		updateAddMoreButtonForLength( $this, getItemsInWrapper( $this.parents( '.fm-wrapper' ).first() ).length );
+	});
 
 	// Handle collapse events
 	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {

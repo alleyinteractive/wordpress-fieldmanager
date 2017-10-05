@@ -55,7 +55,7 @@ abstract class Fieldmanager_Field {
 	 * @var string
 	 * Text for add more button
 	 */
-	public $add_more_label = '';
+	public $add_more_label = array();
 
 	/**
 	 * @var string
@@ -924,20 +924,53 @@ abstract class Fieldmanager_Field {
 	 * @return string button HTML.
 	 */
 	public function add_another() {
-		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
-		if ( empty( $this->add_more_label ) ) {
-			$this->add_more_label = $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
+		$default_labels = array(
+			'add_another' => $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' ),
+			'add_first' => $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' ),
+			'limit_reached' => __( 'Limit reached', 'fieldmanager' ),
+		);
+
+		// Compatibility with passing just the "Add Another" label as a string.
+		if ( $this->add_more_label && is_string( $this->add_more_label ) ) {
+			$this->add_more_label = array(
+				'add_another' => $this->add_more_label,
+				'add_first' => $this->add_more_label,
+			);
+		}
+
+		if ( is_array( $this->add_more_label ) ) {
+			$this->add_more_label = wp_parse_args( $this->add_more_label, $default_labels );
+		} else {
+			$this->add_more_label = $default_labels;
 		}
 
 		$out = '<div class="fm-add-another-wrapper">';
+
 		$out .= sprintf(
-			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-add-more-position="%s" data-limit="%d" />',
-			esc_attr( implode( ' ', $classes ) ),
-			esc_attr( $this->add_more_label ),
+			'<p id="%s" class="fm-add-another-limit-reached-message error-message"></p>',
+			esc_attr( 'fm-' . $this->name . '-add-another-limit-reached-message' )
+		);
+
+		$out .= sprintf(
+			'<input
+				type="button"
+				class="%s"
+				value="%s"
+				name="%s"
+				data-related-element="%s"
+				data-add-more-position="%s"
+				data-limit="%d"
+				data-add-more-label="%s"
+				aria-describedby="%s"
+			/>',
+			esc_attr( implode( ' ', array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' ) ) ),
+			esc_attr( $this->add_more_label['add_another'] ),
 			esc_attr( 'fm_add_another_' . $this->name ),
 			esc_attr( $this->name ),
 			esc_attr( $this->add_more_position ),
-			intval( $this->limit )
+			intval( $this->limit ),
+			esc_attr( wp_json_encode( $this->add_more_label ) ),
+			esc_attr( 'fm-' . $this->name . '-add-another-limit-reached-message' )
 		);
 		$out .= '</div>';
 		return $out;

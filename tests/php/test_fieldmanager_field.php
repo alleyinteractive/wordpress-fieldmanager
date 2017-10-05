@@ -1063,4 +1063,109 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		$this->assertSame( $stored_data, get_post_meta( $this->post_id, 'repeating_text_field', true ) );
 	}
+
+	/**
+	 * Extract an array of 'Add Another' labels from HTML.
+	 *
+	 * @param string $html HTML.
+	 * @return array Array of JSON-decoded labels from the 'Add Another' data attribute, if any.
+	 */
+	private function extract_labels_from_add_another( $html ) {
+		preg_match( '/data-add-more-label=(.)([^\1]+?)\1/', $html, $matches );
+		return ( isset( $matches[2] ) ) ? json_decode( html_entity_decode( $matches[2] ), true ) : array();
+	}
+
+	/**
+	 * Test that backwards-compatibility is maintained for passing an 'Add Another' string label.
+	 */
+	public function test_add_more_label_string_backcompat() {
+		$label = 'Foo';
+
+		$fm = new Fieldmanager_TextField( array(
+			'add_more_label' => $label,
+		) );
+		$actual = $this->extract_labels_from_add_another( $fm->add_another() );
+
+		$this->assertArrayHasKey( 'add_first', $actual );
+		$this->assertSame( $actual['add_first'], $label );
+
+		$this->assertArrayHasKey( 'add_another', $actual );
+		$this->assertSame( $actual['add_another'], $label );
+
+		$this->assertArrayHasKey( 'limit_reached', $actual );
+		$this->assertNotSame( $actual['limit_reached'], $label );
+	}
+
+	/**
+	 * Test that provided 'Add More' labels are used.
+	 *
+	 * @dataProvider data_add_more_labels
+	 *
+	 * @param array $labels Value for Fieldmanager_Field::$add_more_label.
+	 */
+	public function test_add_more_labels( $labels ) {
+		$fm = new Fieldmanager_Radios();
+
+		if ( $labels ) {
+			$fm->add_more_label = $labels;
+		}
+
+		$actual = $this->extract_labels_from_add_another( $fm->add_another() );
+
+		// These are not currently exposed on the class.
+		$known_keys = array(
+			'add_another',
+			'add_first',
+			'limit_reached'
+		);
+
+		foreach ( $known_keys as $key ) {
+			// All known keys should be present.
+			$this->assertArrayHasKey( $key, $actual );
+
+			if ( isset( $labels[ $key ] ) ) {
+				$this->assertSame( $actual[ $key ], $labels[ $key ] );
+			} else {
+				// Testing only that there are strings, not that the strings match a specific default value.
+				$this->assertNotEmpty( $actual[ $key ] );
+				$this->assertInternalType( 'string', $actual[ $key ] );
+			}
+		}
+	}
+
+	/**
+	 * Get values for Fieldmanager_Field::$add_more_label to test.
+	 *
+	 * @return array Arrays of data provider values.
+	 */
+	public function data_add_more_labels() {
+		return array(
+			array(
+				array(),
+			),
+			array(
+				array(
+					'add_another' => 'Foo',
+				),
+			),
+			array(
+				array(
+					'limit_reached' => 'Foo',
+				),
+			),
+			array(
+				array(
+					'add_another' => 'Foo',
+					'add_first' => 'Bar',
+					'limit_reached' => 'Baz',
+				),
+			),
+			array(
+				'',
+			),
+			array(
+				12345,
+			),
+		);
+	}
 }
