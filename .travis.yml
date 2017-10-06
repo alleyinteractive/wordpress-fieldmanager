@@ -5,7 +5,7 @@ language: php
 matrix:
   include:
     - php: 5.3
-      env: WP_VERSION=4.4.4
+      env: WP_VERSION=4.4.11
       dist: precise
     - php: 5.3
       env: WP_VERSION=latest
