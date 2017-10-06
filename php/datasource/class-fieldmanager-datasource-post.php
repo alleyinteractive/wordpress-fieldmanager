@@ -175,7 +175,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
     /**
      * Perform a LIKE search on post_title, since 's' in WP_Query is too fuzzy when trying to autocomplete a title
      */
-    public function title_like( $where, &$wp_query ) {
+    public function title_like( $where, $wp_query ) {
         global $wpdb;
         if ( method_exists( $wpdb, 'esc_like' ) ) {
             $like = esc_sql( $wpdb->esc_like( $this->_fragment ) );
