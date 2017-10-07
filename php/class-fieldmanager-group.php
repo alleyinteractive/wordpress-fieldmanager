@@ -346,6 +346,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				if ( ! isset( $this->children[ $key ] ) ) {
 					// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
 					// and thus one which we cannot sanitize and must not save. This might be an attack.
+					/* translators: 1: key attempting to be saved */
 					$this->_unauthorized_access( sprintf( __( 'Found "%1$s" in data but not in children', 'fieldmanager' ), $key ) );
 				}
 			}
