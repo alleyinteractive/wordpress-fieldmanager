@@ -98,11 +98,11 @@ class Fieldmanager_Datasource {
 		}
 
 		if ( get_class( $this ) === __CLASS__ && empty( $options ) ) {
-			$message = esc_html__( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' );
+			$message = __( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' );
 			if ( Fieldmanager_Field::$debug ) {
 				throw new FM_Developer_Exception( $message );
 			} else {
-				wp_die( $message, esc_html__( 'Invalid Datasource Options', 'fieldmanager' ) ); // WPCS: XSS ok.
+				wp_die( esc_html( $message ), esc_html__( 'Invalid Datasource Options', 'fieldmanager' ) );
 			}
 		}
 
