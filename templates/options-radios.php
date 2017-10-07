@@ -1,3 +1,11 @@
+<?php
+/**
+ * Default template for Fieldmanager_Radios.
+ *
+ * @package Fieldmanager\Template
+ */
+?>
+
 <?php $cb_id = $this->get_element_id() . '-' . esc_attr( sanitize_text_field( $data_row['value'] ) ); ?>
 <div class="fm-option">
 	<input

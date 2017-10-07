@@ -2,7 +2,7 @@
 /**
  * Default template for Fieldmanager_Datepicker.
  *
- * @package Fieldmanager
+ * @package Fieldmanager\Template
  */
 ?>
 

@@ -1,8 +1,8 @@
 <?php
 /**
- * Template file for a textfield
+ * Default template for Fieldmanager_Textfield.
  *
- * @package Templates
+ * @package Fieldmanager\Template
  */
 
 ?>
@@ -12,5 +12,5 @@
 	name="<?php echo esc_attr( $this->get_form_name() ); ?>"
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
 	value="<?php echo esc_attr( $value ); ?>"
-	<?php echo $this->get_element_attributes(); // Escaped in function call WPCS XSS okay. ?>
+	<?php echo $this->get_element_attributes(); // Escaped internally. WPCS XSS okay. ?>
 />
