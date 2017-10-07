@@ -132,7 +132,9 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 		$settings = $this->array_merge_deep( $this->editor_settings, array(
 			'textarea_name'  => $this->get_form_name(),
 			'editor_class'   => 'fm-element fm-richtext',
-			'tinymce'        => array( 'wp_skip_init' => true ),
+			'tinymce'        => array(
+				'wp_skip_init' => true,
+			),
 		) );
 
 		if ( $proto ) {
@@ -147,7 +149,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 			} else {
 				$cookie_value = '';
 				// look for cookie.
-				if ( $user = wp_get_current_user() ) {
+				$user = wp_get_current_user();
+				if ( $user ) {
 					$setting_key = str_replace( '-', '_', $this->get_element_id() );
 					$setting_key = preg_replace( '/[^a-z0-9_]/i', '', $setting_key );
 					$cookie_value = get_user_setting( 'editor_' . $setting_key, 'tinymce' );
@@ -219,10 +222,17 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public function customize_buttons( $buttons ) {
 		switch ( current_filter() ) {
 			case 'teeny_mce_buttons':
-			case 'mce_buttons'      : return $this->buttons_1;
-			case 'mce_buttons_2'    : return $this->buttons_2;
-			case 'mce_buttons_3'    : return $this->buttons_3;
-			case 'mce_buttons_4'    : return $this->buttons_4;
+			case 'mce_buttons':
+				return $this->buttons_1;
+
+			case 'mce_buttons_2':
+				return $this->buttons_2;
+
+			case 'mce_buttons_3':
+				return $this->buttons_3;
+
+			case 'mce_buttons_4':
+				return $this->buttons_4;
 		}
 		return $buttons;
 	}
