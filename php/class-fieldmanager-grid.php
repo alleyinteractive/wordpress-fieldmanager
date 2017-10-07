@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Grid.
+ * Class file for Fieldmanager_Grid
  *
- * @package Field / Grid
+ * @package Fieldmanager
  */
 
 /**
@@ -10,8 +10,6 @@
  *
  * This field uses {@link https://github.com/handsontable/handsontable/
  * Handsontable} to provide a grid interface.
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_Grid extends Fieldmanager_Field {
 

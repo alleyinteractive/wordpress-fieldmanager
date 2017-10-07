@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Link.
+ * Class file for Fieldmanager_Link
  *
- * @package Field / Link
+ * @package Fieldmanager
  */
 
 /**

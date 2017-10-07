@@ -2,7 +2,7 @@
 /**
  * Class file for Fieldmanager_Field
  *
- * @package Fieldmanager_Field
+ * @package Fieldmanager
  */
 
 /**

@@ -1,14 +1,12 @@
 <?php
 /**
- * Class file for Fieldmanager_Context.
+ * Class file for Fieldmanager_Datasource_Post
  *
- * @package Fieldmanager_Context
+ * @package Fieldmanager
  */
 
 /**
  * Datasource to populate autocomplete and option fields with WordPress Posts.
- *
- * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 

@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_Util_Assets.
+ * Class file for Fieldmanager_Util_Assets
  *
  * @package Fieldmanager
  */

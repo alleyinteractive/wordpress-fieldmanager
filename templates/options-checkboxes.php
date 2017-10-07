@@ -1,8 +1,8 @@
 <?php
 /**
- * Default template for Fieldmanager_Checkboxes.
+ * Default template for Fieldmanager_Checkboxes
  *
- * @package Fieldmanager\Template
+ * @package Fieldmanager
  */
 
 $cb_id = $this->get_element_id() . '-' . sanitize_text_field( $data_row['value'] );

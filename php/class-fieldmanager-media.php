@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Media.
+ * Class file for Fieldmanager_Media
  *
- * @package Field / Media
+ * @package Fieldmanager
  */
 
 /**

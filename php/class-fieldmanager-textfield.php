@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_TextField.
+ * Class file for Fieldmanager_TextField
  *
- * @package Fieldmanager_Field
+ * @package Fieldmanager
  */
 
 /**

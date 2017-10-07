@@ -1,8 +1,8 @@
 <?php
 /**
- * Default template for Fieldmanager_Textfield.
+ * Default template for Fieldmanager_TextField
  *
- * @package Fieldmanager\Template
+ * @package Fieldmanager
  */
 
 ?>

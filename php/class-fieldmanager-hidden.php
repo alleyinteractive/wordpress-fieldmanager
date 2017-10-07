@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Hidden.
+ * Class file for Fieldmanager_Hidden
  *
- * @package Field / Hidden
+ * @package Fieldmanager
  */
 
 /**

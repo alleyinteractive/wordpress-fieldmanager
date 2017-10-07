@@ -1,8 +1,8 @@
 <?php
 /**
- * Fieldmanager Autocomplete Field.
+ * Class file for Fieldmanager_Autocomplete
  *
- * @package Fields / Autocomplete
+ * @package Fieldmanager
  */
 
 /**
@@ -11,8 +11,6 @@
  *
  * This must include a {@link Fieldmanager_Datasource}, which the autocomplete
  * uses to search against.
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 

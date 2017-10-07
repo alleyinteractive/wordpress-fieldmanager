@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_Util_Term_Meta.
+ * Class file for Fieldmanager_Util_Term_Meta
  *
  * @package Fieldmanager
  */

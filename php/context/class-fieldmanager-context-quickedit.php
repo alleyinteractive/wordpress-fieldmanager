@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Context_QuickEdit.
+ * Class file for Fieldmanager_Context_QuickEdit
  *
- * @package Fieldmanager_Context_Storable
+ * @package Fieldmanager
  */
 
 /**

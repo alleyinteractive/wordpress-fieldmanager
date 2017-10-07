@@ -1,14 +1,12 @@
 <?php
 /**
- * Fieldmanager Checkbox Field
+ * Class file for Fieldmanager_Checkbox
  *
- * @package Field / Checkbox
+ * @package Fieldmanager
  */
 
 /**
  * Single boolean checkbox.
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_Checkbox extends Fieldmanager_Field {
 

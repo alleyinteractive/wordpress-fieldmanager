@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Datasource_User.
+ * Class file for Fieldmanager_Datasource_User
  *
- * @package Fieldmanager_Datasource
+ * @package Fieldmanager
  */
 
 /**

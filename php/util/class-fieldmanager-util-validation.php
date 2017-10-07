@@ -1,12 +1,12 @@
 <?php
 /**
- * Framework for user-facing data validation.
+ * Class file for Fieldmanager_Util_Validation
  *
- * @package Fieldmanager_Util
+ * @package Fieldmanager
  */
 
 /**
- * Class for Fieldmanager_Util_Validation.
+ * Framework for user-facing data validation.
  */
 class Fieldmanager_Util_Validation {
 

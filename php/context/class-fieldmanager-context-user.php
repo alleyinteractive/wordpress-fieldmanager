@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Context_User.
+ * Class file for Fieldmanager_Context_User
  *
- * @package Fieldmanager_Context_Storable
+ * @package Fieldmanager
  */
 
 /**

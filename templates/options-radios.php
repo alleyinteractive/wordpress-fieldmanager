@@ -1,8 +1,8 @@
 <?php
 /**
- * Default template for Fieldmanager_Radios.
+ * Default template for Fieldmanager_Radios
  *
- * @package Fieldmanager\Template
+ * @package Fieldmanager
  */
 
 $cb_id = $this->get_element_id() . '-' . esc_attr( sanitize_text_field( $data_row['value'] ) );

@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Radios.
+ * Class file for Fieldmanager_Radios
  *
- * @package Fieldmanager_Options
+ * @package Fieldmanager
  */
 
 /**

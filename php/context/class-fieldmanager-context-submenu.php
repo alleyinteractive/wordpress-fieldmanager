@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Context_Submenu.
+ * Class file for Fieldmanager_Context_Submenu
  *
- * @package Fieldmanager_Context_Storable
+ * @package Fieldmanager
  */
 
 /**

@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Options.
+ * Class file for Fieldmanager_Options
  *
- * @package Field / Options
+ * @package Fieldmanager
  */
 
 /**

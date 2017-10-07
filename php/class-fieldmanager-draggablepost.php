@@ -2,7 +2,7 @@
 /**
  * Class file for Fieldmanager_DraggablePost
  *
- * @package Field / DraggablePost
+ * @package Fieldmanager
  */
 
 /**
