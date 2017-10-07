@@ -156,7 +156,9 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$attachment = get_post( $value );
 			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
 				$preview = esc_html( $this->selected_image_label ) . '<br />';
-				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
+				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array(
+					'class' => $this->thumbnail_class,
+				) ) . '</a>';
 			} else {
 				$preview = esc_html( $this->selected_file_label ) . '&nbsp;';
 				$preview .= wp_get_attachment_link( $value, $this->preview_size, true, true, $attachment->post_title );
