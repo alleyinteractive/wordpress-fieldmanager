@@ -97,7 +97,7 @@ class Fieldmanager_Datasource {
 			}
 		}
 
-		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
+		if ( get_class( $this ) === __CLASS__ && empty( $options ) ) {
 			$message = esc_html__( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' );
 			if ( Fieldmanager_Field::$debug ) {
 				throw new FM_Developer_Exception( $message );

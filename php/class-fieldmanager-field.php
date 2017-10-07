@@ -777,7 +777,7 @@ abstract class Fieldmanager_Field {
 	 * @return bool True if yes, false if no.
 	 */
 	public function is_group() {
-		return $this instanceof Fieldmanager_Group;
+		return $this instanceof \Fieldmanager_Group;
 	}
 
 	/**

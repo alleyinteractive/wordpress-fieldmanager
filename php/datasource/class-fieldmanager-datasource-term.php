@@ -189,7 +189,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		}
 
 		// maybe we can create terms here.
-		if ( 'Fieldmanager_Autocomplete' == get_class( $field ) && ! $field->exact_match && isset( $this->taxonomy ) ) {
+		if ( $field instanceof \Fieldmanager_Autocomplete && ! $field->exact_match && isset( $this->taxonomy ) ) {
 			foreach ( $values as $i => $value ) {
 				// could be a mix of valid term IDs and new terms.
 				if ( is_numeric( $value ) ) {

@@ -129,7 +129,7 @@ class Fieldmanager_Util_Validation {
 	 */
 	public function add_field( &$fm ) {
 		// If this field is a Fieldmanager_Group, iterate over the children.
-		if ( get_class( $fm ) == 'Fieldmanager_Group' ) {
+		if ( $fm->is_group() ) {
 			foreach ( $fm->children as $child ) {
 				$this->add_field( $child );
 			}
