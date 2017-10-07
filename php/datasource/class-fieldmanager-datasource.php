@@ -81,12 +81,15 @@ class Fieldmanager_Datasource {
 					$this->$k = $v;
 				} else {
 					// If the property isn't public, don't set it (rare).
-					throw new FM_Developer_Exception;
+					throw new FM_Developer_Exception();
 				}
 			} catch ( Exception $e ) {
 				$message = sprintf(
+					/* translators: 1: property name, 2: current class name, 3: option name */
 					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
-					$k, __CLASS__, ! empty( $options['name'] ) ? $options['name'] : 'NULL'
+					$k,
+					__CLASS__,
+					! empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
 				if ( ! Fieldmanager_Field::$debug ) {
 					wp_die( esc_html( $message ), esc_html__( 'Nonexistant or invalid option' ) );
@@ -173,7 +176,10 @@ class Fieldmanager_Datasource {
 		$return = array();
 
 		foreach ( $items as $id => $label ) {
-			$return[] = array( 'label' => $label, 'value' => $id );
+			$return[] = array(
+				'label' => $label,
+				'value' => $id,
+			);
 		}
 
 		return $return;
