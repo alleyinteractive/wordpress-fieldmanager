@@ -133,7 +133,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * Load a single field.
 	 *
 	 * @param  object $field The Fieldmanager field for which to load data.
-	 * @return mixed         Data stored for that field in this context.
+	 * @return mixed Data stored for that field in this context.
 	 */
 	protected function load_field( $field ) {
 		$data = $this->get_data( $this->fm->data_id, $field->get_element_key() );
@@ -148,8 +148,8 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * Walk group children to load when serialize_data => false.
 	 *
 	 * @param  object $field Fieldmanager field for which to load data.
-	 * @return mixed         Data stored for a singular field with serialized data, or
-	 *                       array of data for a groups's children.
+	 * @return mixed Data stored for a singular field with serialized data, or
+	 *               array of data for a groups's children.
 	 */
 	protected function load_walk_children( $field ) {
 		if ( $field->serialize_data || ! $field->is_group() ) {
@@ -171,8 +171,8 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * @param boolean $single   Optional. If true, only returns the first value
 	 *                          found for the given data_key. This won't apply to
 	 *                          every context. Default is false.
-	 * @return string|array     The stored data. If no data is found, should return
-	 *                          an empty string (""). @see get_post_meta().
+	 * @return string|array The stored data. If no data is found, should return
+	 *                      an empty string (""). {@see get_post_meta()}.
 	 */
 	abstract protected function get_data( $data_id, $data_key, $single = false );
 
@@ -186,11 +186,11 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 *                            object with the given $data_id doesn't already
 	 *                            contain data for the given $data_key. This may not
 	 *                            apply to every context. Default is false.
-	 * @return boolean|integer    On success, should return the ID of the stored
-	 *                            data (an integer, which will evaluate as true).
-	 *                            If the $unique argument is set to true and data
-	 *                            with the given key already exists, this should
-	 *                            return false.  @see add_post_meta().
+	 * @return bool|integer On success, should return the ID of the stored data
+	 *                      (an integer, which will evaluate as true). If the
+	 *                      $unique argument is set to true and data with the
+	 *                      given key already exists, this should return false.
+	 *                      {@see add_post_meta()}.
 	 */
 	abstract protected function add_data( $data_id, $data_key, $data_value, $unique = false );
 
@@ -203,11 +203,11 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * @param mixed  $data_prev_value Optional. Only update data if the previous
 	 *                                value matches the data provided. This may
 	 *                                not apply to every context.
-	 * @return mixed                  Should return data id if the data doesn't exist, otherwise
-	 *                                should return true on success and false on failure. If the
-	 *                                value passed to this method is the same as the stored
-	 *                                value, this method should return false.
-	 *                                @see update_post_meta().
+	 * @return mixed Should return data id if the data doesn't exist, otherwise
+	 *               should return true on success and false on failure. If the
+	 *               value passed to this method is the same as the stored
+	 *               value, this method should return false.
+	 *               {@see update_post_meta()}.
 	 */
 	abstract protected function update_data( $data_id, $data_key, $data_value, $data_prev_value = '' );
 
@@ -219,8 +219,8 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * @param mixed  $data_value Only delete the data if the stored value matches
 	 *                           $data_value. This may not apply to every
 	 *                           context.
-	 * @return boolean           False for failure. True for success.
-	 *                           @see delete_post_meta().
+	 * @return bool False for failure. True for success.
+	 *              {@see delete_post_meta()}.
 	 */
 	abstract protected function delete_data( $data_id, $data_key, $data_value = '' );
 

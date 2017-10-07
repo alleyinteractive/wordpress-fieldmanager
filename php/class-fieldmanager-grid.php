@@ -64,7 +64,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 * Render HTML for Grid element.
 	 *
 	 * @param array $value The current value.
-	 * @return string      The HTML string.
+	 * @return string The HTML string.
 	 */
 	public function form_element( $value = '' ) {
 		$grid_activate_id = 'grid-activate-' . uniqid( true );
@@ -93,7 +93,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 *
 	 * @param  array $value         The new value.
 	 * @param  array $current_value The current values.
-	 * @return array                Sanitized row/col matrix.
+	 * @return array Sanitized row/col matrix.
 	 */
 	public function presave( $value, $current_value = array() ) {
 		$rows = json_decode( stripslashes( $value ), true );

@@ -369,7 +369,7 @@ abstract class Fieldmanager_Field {
 	 * tag, no wrappers.
 	 *
 	 * @param mixed $value The value of the element.
-	 * @return string      HTML for the element.
+	 * @return string HTML for the element.
 	 */
 	public function form_element( $value ) {
 		if ( ! $this->template ) {
@@ -458,7 +458,7 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @param array $values The current values of this element, in a tree structure
 	 *                      if the element has children.
-	 * @return string       HTML for all form elements.
+	 * @return string HTML for all form elements.
 	 */
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
@@ -574,7 +574,7 @@ abstract class Fieldmanager_Field {
 	 * @see Fieldmanager_Field::form_element()
 	 * @param  mixed   $value    The current value of this element.
 	 * @param  boolean $is_proto True to generate a prototype element for Javascript.
-	 * @return string            HTML for a single form element.
+	 * @return string HTML for a single form element.
 	 */
 	public function single_element_markup( $value = null, $is_proto = false ) {
 		if ( $is_proto ) {
@@ -670,7 +670,7 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @param  string $html    HTML to wrap.
 	 * @param  array  $classes An array of classes.
-	 * @return string          Wrapped HTML.
+	 * @return string Wrapped HTML.
 	 */
 	public function wrap_with_multi_tools( $html, $classes = array() ) {
 		$classes[] = 'fmjs-removable';
@@ -694,7 +694,7 @@ abstract class Fieldmanager_Field {
 	 * Get HTML form name (e.g. questions[answer]).
 	 *
 	 * @param string $multiple Multiple fields.
-	 * @return string          Form name
+	 * @return string Form name.
 	 */
 	public function get_form_name( $multiple = '' ) {
 		$tree = $this->get_form_tree();
@@ -789,7 +789,7 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @param  mixed $values         The new values.
 	 * @param  mixed $current_values The current values.
-	 * @return mixed                 Sanitized values.
+	 * @return mixed Sanitized values.
 	 */
 	public function presave_all( $values, $current_values ) {
 		if ( 1 == $this->limit && empty( $this->multiple ) ) {
@@ -943,7 +943,7 @@ abstract class Fieldmanager_Field {
 	 * to change per field type.
 	 *
 	 * @param mixed $value The current value.
-	 * @return mixed       The processed value.
+	 * @return mixed The processed value.
 	 */
 	protected function process_index_value( $value ) {
 		if ( is_callable( $this->index_filter ) ) {
@@ -958,7 +958,7 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @param  array $values         The new values.
 	 * @param  array $current_values The current values.
-	 * @return array                 The filtered values.
+	 * @return array The filtered values.
 	 */
 	protected function presave_alter_values( $values, $current_values = array() ) {
 		return apply_filters( 'fm_presave_alter_values', $values, $this, $current_values );
@@ -970,7 +970,7 @@ abstract class Fieldmanager_Field {
 	 * @param  mixed $value         If a single field expects to manage an array,
 	 *                              it must override presave().
 	 * @param  array $current_value The current values.
-	 * @return array                The sanitized values.
+	 * @return array The sanitized values.
 	 */
 	public function presave( $value, $current_value = array() ) {
 		// It's possible that some elements (Grid is one) would be arrays at
@@ -1014,7 +1014,7 @@ abstract class Fieldmanager_Field {
 	 * Get an HTML label for this element.
 	 *
 	 * @param  array $classes Extra CSS classes.
-	 * @return string         HTML label.
+	 * @return string HTML label.
 	 */
 	public function get_element_label( $classes = array() ) {
 		$classes[] = 'fm-label';
@@ -1333,7 +1333,7 @@ abstract class Fieldmanager_Field {
 	 * @param  string $field   The field to escape.
 	 * @param  string $default The default function to use to escape the field.
 	 *                         Optional. Defaults to `esc_html()`.
-	 * @return string          The escaped field.
+	 * @return string The escaped field.
 	 */
 	public function escape( $field, $default = 'esc_html' ) {
 		if ( isset( $this->escape[ $field ] ) && is_callable( $this->escape[ $field ] ) ) {

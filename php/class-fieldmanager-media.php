@@ -136,7 +136,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 *
 	 * @param  int   $value         The new value.
 	 * @param  array $current_value The current value.
-	 * @return int                  The sanitized value.
+	 * @return int The sanitized value.
 	 */
 	public function presave( $value, $current_value = array() ) {
 		if ( 0 == $value || ! is_numeric( $value ) ) {
@@ -149,7 +149,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * Form element.
 	 *
 	 * @param mixed $value The current value.
-	 * @return string      HTML string.
+	 * @return string HTML string.
 	 */
 	public function form_element( $value = array() ) {
 		if ( is_numeric( $value ) && $value > 0 ) {

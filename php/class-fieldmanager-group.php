@@ -335,7 +335,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 *
 	 * @param  mixed $values         The new values.
 	 * @param  mixed $current_values The current values.
-	 * @return mixed                 The sanitized values.
+	 * @return mixed The sanitized values.
 	 */
 	public function presave( $values, $current_values = array() ) {
 		// @SECURITY@ First, make sure all the values we're given are legal.
@@ -402,7 +402,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * Get an HTML label for this element.
 	 *
 	 * @param array $classes Extra CSS classes.
-	 * @return string        HTML label.
+	 * @return string HTML label.
 	 */
 	public function get_element_label( $classes = array() ) {
 		$classes[] = 'fm-label';
@@ -461,7 +461,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 *
 	 * @param  string $html    Current HTML.
 	 * @param  array  $classes HTML classes.
-	 * @return string          New HTML.
+	 * @return string New HTML.
 	 */
 	public function wrap_with_multi_tools( $html, $classes = array() ) {
 		if ( empty( $this->label ) || ! $this->one_label_per_item ) {

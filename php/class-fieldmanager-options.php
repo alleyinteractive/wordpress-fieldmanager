@@ -83,7 +83,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * Sanitize function that can handle arrays as well as string values.
 	 *
 	 * @param  array|string $value The current value.
-	 * @return array|string        Sanitized $value.
+	 * @return array|string Sanitized $value.
 	 */
 	public function sanitize( $value ) {
 		if ( isset( $value ) && is_array( $value ) && ! empty( $value ) ) {
@@ -119,7 +119,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * Generate form elements.
 	 *
 	 * @param mixed $value The current value.
-	 * @return string      HTML string.
+	 * @return string HTML string.
 	 */
 	public function form_data_elements( $value ) {
 
@@ -187,7 +187,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 *
 	 * @param  mixed $data_row The data row.
 	 * @param  mixed $value    The current value.
-	 * @return string          HTML.
+	 * @return string HTML.
 	 */
 	public function form_data_element( $data_row, $value ) {
 		if ( ! $this->options_template ) {
@@ -205,7 +205,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param  string $current_option This option.
 	 * @param  array  $options all    Valid options.
 	 * @param  string $attribute      The option attribute.
-	 * @return string $attribute      On match, empty On failure.
+	 * @return string $attribute On match, empty On failure.
 	 */
 	public function option_selected( $current_option, $options, $attribute ) {
 		if ( ( null != $options && ! empty( $options ) ) && in_array( $current_option, $options ) ) {
@@ -220,7 +220,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 *
 	 * @param  mixed $values         The new values.
 	 * @param  mixed $current_values The current values.
-	 * @return mixed                 Sanitized values.
+	 * @return mixed Sanitized values.
 	 */
 	public function presave_all( $values, $current_values ) {
 		// Multiple select and radio fields with no values chosen are left out of
@@ -238,7 +238,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * @param  mixed $value         If a single field expects to manage an array,
 	 *                              it must override presave().
 	 * @param  mixed $current_value The current value.
-	 * @return mixed                Sanitized values.
+	 * @return mixed Sanitized values.
 	 */
 	public function presave( $value, $current_value = array() ) {
 		if ( ! empty( $this->datasource ) ) {
@@ -274,7 +274,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 *
 	 * @param  array $values         The new values.
 	 * @param  array $current_values The current values.
-	 * @return array $values         Sanitized values.
+	 * @return array $values Sanitized values.
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
 		if ( ! empty( $this->datasource ) ) {

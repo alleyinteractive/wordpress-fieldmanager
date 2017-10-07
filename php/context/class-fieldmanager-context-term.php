@@ -230,7 +230,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @param  string  $html_template The HTML used to wrap the field.
 	 * @param  string  $taxonomy      The term taxonomy.
 	 * @param  WP_Term $term          The term.
-	 * @return string                 The element markup
+	 * @return string The element markup
 	 */
 	public function term_fields( $html_template, $taxonomy, $term = null ) {
 		// Make sure the user hasn't specified a field name we can't use.

@@ -83,7 +83,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 * Form element.
 	 *
 	 * @param array $value The current value.
-	 * @return string      HTML string.
+	 * @return string HTML string.
 	 */
 	public function form_element( $value = array() ) {
 
@@ -131,7 +131,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 *
 	 * @param  array $data_row The data row.
 	 * @param  array $value    The option value.
-	 * @return string          HTML string.
+	 * @return string HTML string.
 	 */
 	public function form_data_element( $data_row, $value = array() ) {
 
@@ -152,7 +152,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 * Start an <optgroup>.
 	 *
 	 * @param string $label Optgroup label.
-	 * @return string       HTML string.
+	 * @return string HTML string.
 	 */
 	public function form_data_start_group( $label ) {
 		return sprintf(

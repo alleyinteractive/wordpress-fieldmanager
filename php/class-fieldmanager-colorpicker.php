@@ -54,7 +54,7 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	 * Form element.
 	 *
 	 * @param  mixed $value The current value.
-	 * @return string        HTML
+	 * @return string HTML.
 	 */
 	public function form_element( $value = '' ) {
 		return sprintf(

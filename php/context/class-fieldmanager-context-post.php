@@ -140,7 +140,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 *
 	 * @param  array $post       The post fields.
 	 * @param  array $attachment The attachment fields.
-	 * @return array $post       The post fields.
+	 * @return array The post fields.
 	 */
 	public function save_fields_for_attachment( $post, $attachment ) {
 		// Use save_fields_for_post to handle saving any Fieldmanager meta data.
@@ -260,7 +260,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 * infinite loops.
 	 *
 	 * @param  array $args The post args to save.
-	 * @return mixed $ret  The result of the post update function.
+	 * @return mixed The result of the post update function.
 	 */
 	public static function safe_update_post( $args ) {
 		self::$doing_internal_update = true;

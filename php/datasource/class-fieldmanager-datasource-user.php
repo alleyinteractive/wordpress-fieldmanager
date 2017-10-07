@@ -151,7 +151,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	 * a search fragment, e.g. for Autocomplete.
 	 *
 	 * @param string $fragment The search string.
-	 * @return array           post_id => post_title for display or AJAX.
+	 * @return array post_id => post_title for display or AJAX.
 	 */
 	public function get_items( $fragment = null ) {
 		if ( is_callable( $this->query_callback ) ) {
@@ -197,7 +197,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	 * @param Fieldmanager_Field $field          The current field.
 	 * @param array              $values         The new values.
 	 * @param array              $current_values The existing values.
-	 * @return string                            Sanitized values.
+	 * @return string Sanitized values.
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
 		if ( 'post' != $field->data_type || ! $this->reciprocal || 'ID' != $this->store_property ) {
@@ -237,7 +237,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	 * @param  Fieldmanager_Field $field         The current field.
 	 * @param  array              $value         The new value.
 	 * @param  array              $current_value The existing value.
-	 * @return string                            Sanitized value.
+	 * @return string Sanitized value.
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
 		if ( empty( $value ) ) {

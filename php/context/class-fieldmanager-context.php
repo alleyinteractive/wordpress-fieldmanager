@@ -59,7 +59,7 @@ abstract class Fieldmanager_Context {
 	 * @param  mixed  $old_value Optional. The previous value.
 	 * @param  mixed  $new_value Optional. The new value for the field.
 	 * @param  object $fm Optional.        The Fieldmanager_Field to prepare.
-	 * @return mixed                       The filtered and sanitized value, safe to save.
+	 * @return mixed The filtered and sanitized value, safe to save.
 	 */
 	protected function prepare_data( $old_value = null, $new_value = null, $fm = null ) {
 		if ( null === $fm ) {

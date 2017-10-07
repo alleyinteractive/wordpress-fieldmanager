@@ -121,7 +121,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * Render the form element, which is a textarea by default.
 	 *
 	 * @param mixed $value The current value.
-	 * @return string      HTML string.
+	 * @return string HTML string.
 	 */
 	public function form_element( $value = '' ) {
 		$proto = $this->has_proto();
@@ -241,7 +241,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * Make final tweaks to the editor config.
 	 *
 	 * @param  array $mce_init The raw settings passed to TinyMCE.
-	 * @return array           The raw settings passed to TinyMCE.
+	 * @return array The raw settings passed to TinyMCE.
 	 */
 	public function editor_config( $mce_init ) {
 		if ( isset( $this->stylesheet ) ) {

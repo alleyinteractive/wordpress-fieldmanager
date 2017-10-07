@@ -136,7 +136,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 *
 	 * @param  Fieldmanager_Field $field  The base field.
 	 * @param  array              $values The loaded values.
-	 * @return array              $values Loaded up, if applicable.
+	 * @return array $values Loaded up, if applicable.
 	 */
 	public function preload_alter_values( Fieldmanager_Field $field, $values ) {
 		if ( $this->only_save_to_taxonomy ) {
@@ -166,7 +166,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 *
 	 * @param  WP_Term $term_a First term.
 	 * @param  WP_Term $term_b Second term.
-	 * @return bool            Whether or not it is in order.
+	 * @return bool Whether or not it is in order.
 	 */
 	public function sort_terms( $term_a, $term_b ) {
 		if ( $term_a === $term_b ) {
@@ -181,7 +181,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @param  Fieldmanager_Field $field          The base field.
 	 * @param  array              $values         The new values.
 	 * @param  array              $current_values The current values.
-	 * @return array              $values         The sanitized values.
+	 * @return array $values The sanitized values.
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
 		if ( ! is_array( $values ) ) {
@@ -249,7 +249,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @param  Fieldmanager_Field $field         The base field.
 	 * @param  array              $value         The new values.
 	 * @param  array              $current_value The current values.
-	 * @return array              $values        The sanitized values.
+	 * @return array $values The sanitized values.
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
 		return empty( $value ) ? $value : intval( $value );
@@ -299,7 +299,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * Get taxonomy data per $this->taxonomy_args.
 	 *
 	 * @param  string $fragment The query string.
-	 * @return array            The results.
+	 * @return array The results.
 	 */
 	public function get_items( $fragment = null ) {
 
@@ -351,7 +351,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @param  int    $depth        Current recursive depth level.
 	 * @param  string $stack        Current stack.
 	 * @param  string $pattern      Optional matching pattern.
-	 * @return array  $stack        Stack of terms or false if no children found.
+	 * @return array $stack Stack of terms or false if no children found.
 	 */
 	protected function build_hierarchical_term_data( $parent_terms, $tax_args, $depth, $stack = array(), $pattern = '' ) {
 

@@ -71,7 +71,7 @@ class Fieldmanager_Util_Validation {
 	 *
 	 * @param  array  $form_id The form ID.
 	 * @param  string $context The context.
-	 * @return object          The singleton instance.
+	 * @return object The singleton instance.
 	 */
 	public static function instance( $form_id, $context ) {
 		// The current form ID and context are used to generate a global variable name to store the instance.
@@ -276,7 +276,7 @@ class Fieldmanager_Util_Validation {
 	 * @access private
 	 * @param  string $field The base field.
 	 * @param  string $data  The JS data.
-	 * @return string        The Javascript output or an empty string if no data was provided.
+	 * @return string The Javascript output or an empty string if no data was provided.
 	 */
 	private function value_to_js( $field, $data ) {
 		// Check the array for the corresponding value. If it doesn't exist, return an empty string.
@@ -317,7 +317,7 @@ class Fieldmanager_Util_Validation {
 	 * @access private
 	 * @param  array  $data  The JS data.
 	 * @param  string $label The label.
-	 * @return string        The Javascript output or an empty string if no data was provided.
+	 * @return string The Javascript output or an empty string if no data was provided.
 	 */
 	private function array_to_js( $data, $label ) {
 		return sprintf(
@@ -332,7 +332,7 @@ class Fieldmanager_Util_Validation {
 	 *
 	 * @access private
 	 * @param string $value The current value.
-	 * @return string       The formatted value.
+	 * @return string The formatted value.
 	 */
 	private function format_value( $value ) {
 		// Determine the data type and return the value formatted appropriately.
@@ -370,7 +370,7 @@ class Fieldmanager_Util_Validation {
  *
  * @param string $form_id The form ID.
  * @param string $context The context.
- * @return object         The singleon Fieldmanager_Util_Validation instance.
+ * @return object The singleon Fieldmanager_Util_Validation instance.
  */
 function fieldmanager_util_validation( $form_id, $context ) {
 	return Fieldmanager_Util_Validation::instance( $form_id, $context );

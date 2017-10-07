@@ -113,7 +113,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 * Render form element.
 	 *
 	 * @param mixed $value The current value.
-	 * @return string HTML
+	 * @return string HTML.
 	 */
 	public function form_element( $value = null ) {
 
@@ -187,7 +187,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 *
 	 * @param  array $value         The new values.
 	 * @param  array $current_value The current values.
-	 * @return array                The new values.
+	 * @return array The new values.
 	 */
 	public function presave( $value, $current_value = array() ) {
 		return $this->datasource->presave( $this, $value, $current_value );

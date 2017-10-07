@@ -98,7 +98,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * Get a post title by post ID.
 	 *
 	 * @param int $value Post ID.
-	 * @return string    Post title.
+	 * @return string Post title.
 	 */
 	public function get_value( $value ) {
 		$id = intval( $value );
@@ -110,7 +110,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * a fragment, e.g. for Autocomplete.
 	 *
 	 * @param  string $fragment The query string.
-	 * @return array            The post_id => post_title for display or AJAX.
+	 * @return array The post_id => post_title for display or AJAX.
 	 */
 	public function get_items( $fragment = null ) {
 		if ( is_callable( $this->query_callback ) ) {
@@ -298,7 +298,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 *
 	 * @param  Fieldmanager_Field $field  The field.
 	 * @param  array              $values The loaded values.
-	 * @return array              $values Loaded up, if applicable.
+	 * @return array $values Loaded up, if applicable.
 	 */
 	public function preload_alter_values( Fieldmanager_Field $field, $values ) {
 		if ( $this->only_save_to_post_parent ) {
@@ -314,7 +314,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * Get edit link for a post.
 	 *
 	 * @param int $value The current value.
-	 * @return string    HTML string.
+	 * @return string HTML string.
 	 */
 	public function get_view_link( $value ) {
 		return sprintf(
@@ -329,7 +329,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * Get edit link for a post.
 	 *
 	 * @param int $value The current value.
-	 * @return string    HTML string.
+	 * @return string HTML string.
 	 */
 	public function get_edit_link( $value ) {
 		return sprintf(

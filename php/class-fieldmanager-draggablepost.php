@@ -66,7 +66,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 *
 	 * @param  array $value          The new value.
 	 * @param  array $current_values The current value.
-	 * @return array $value          The new value.
+	 * @return array $value The new value.
 	 */
 	public function presave( $value, $current_values = array() ) {
 
@@ -91,7 +91,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * Render form element.
 	 *
 	 * @param  mixed $value The current value.
-	 * @return string       HTML
+	 * @return string HTML.
 	 */
 	public function form_element( $value ) {
 		// Avoid null array errors later.
@@ -165,7 +165,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @param  int     $post_id           The post ID.
 	 * @param  boolean $use_image_checked If true, render this item with the "use image"
 	 *                                    checkbox checked (if enabled).
-	 * @return string                     Containing the li element.
+	 * @return string Containing the li element.
 	 */
 	protected function draggable_item_html( $post_id, $use_image_checked = false ) {
 		$post = get_post( $post_id );
@@ -222,8 +222,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * thus should be skipped in rendering.
 	 *
 	 * @param array $value As passed to form_element().
-	 * @return array       Containing post_ids in any subarray, except the one
-	 *                     attached to key '_image_flags'.
+	 * @return array Containing post_ids in any subarray, except the one
+	 *               attached to key '_image_flags'.
 	 */
 	protected function flatten_arrays( $value ) {
 		if ( empty( $value ) ) {

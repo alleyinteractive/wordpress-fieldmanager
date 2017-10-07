@@ -26,7 +26,7 @@ class Fieldmanager_Radios extends Fieldmanager_Options {
 	 * Form element.
 	 *
 	 * @param array $value The current value.
-	 * @return string      HTML string.
+	 * @return string HTML string.
 	 */
 	public function form_element( $value = array() ) {
 		return $this->form_data_elements( $value );

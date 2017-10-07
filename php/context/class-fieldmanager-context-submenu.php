@@ -163,7 +163,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * Save the submenu data.
 	 *
 	 * @param  array $data The new data.
-	 * @return boolean     True.
+	 * @return bool True.
 	 */
 	public function save_submenu_data( $data = null ) {
 		$this->fm->data_id = $this->fm->name;
@@ -206,7 +206,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @param  int    $data_id     Deprecated.
 	 * @param  string $option_name The option name.
 	 * @param  string $single      Deprecated.
-	 * @return boolen              The current data or false.
+	 * @return bool The current data or false.
 	 */
 	protected function get_data( $data_id, $option_name, $single = false ) {
 		return get_option( $option_name, null );
@@ -221,7 +221,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @param  string $option_name  The option name.
 	 * @param  string $option_value The option value.
 	 * @param  bool   $unique       Deprecated.
-	 * @return bool                 Option added successfully.
+	 * @return bool Option added successfully.
 	 */
 	protected function add_data( $data_id, $option_name, $option_value, $unique = false ) {
 		return add_option( $option_name, $option_value, '', $this->wp_option_autoload ? 'yes' : 'no' );
@@ -236,7 +236,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @param  string $option_name       The option name.
 	 * @param  string $option_value      The option value.
 	 * @param  string $option_prev_value Deprecated.
-	 * @return bool                      Option updated successfully.
+	 * @return bool Option updated successfully.
 	 */
 	protected function update_data( $data_id, $option_name, $option_value, $option_prev_value = '' ) {
 		return update_option( $option_name, $option_value );
@@ -250,7 +250,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @param  int    $data_id      Deprecated.
 	 * @param  string $option_name  The option name.
 	 * @param  string $option_value The option value.
-	 * @return bool                 Option deleted successfully.
+	 * @return bool Option deleted successfully.
 	 */
 	protected function delete_data( $data_id, $option_name, $option_value = '' ) {
 		return delete_option( $option_name, $option_value );

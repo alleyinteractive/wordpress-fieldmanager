@@ -136,7 +136,7 @@ class Fieldmanager_Datasource {
 	 * Get available options, optionally filtering by a fragment (e.g. for Autocomplete).
 	 *
 	 * @param string $fragment Optional fragment to filter by.
-	 * @return array           The key => value of available options.
+	 * @return array The key => value of available options.
 	 */
 	public function get_items( $fragment = null ) {
 		if ( ! $fragment ) {
@@ -207,7 +207,7 @@ class Fieldmanager_Datasource {
 	 * @param  Fieldmanager_Field $field          Base field.
 	 * @param  mixed              $values         New value.
 	 * @param  mixed              $current_values Current value.
-	 * @return string             $values         Cleaned value.
+	 * @return string $values Cleaned value.
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
 		// nothing here, but some child classes need this method.
@@ -219,7 +219,7 @@ class Fieldmanager_Datasource {
 	 *
 	 * @param  Fieldmanager_Field $field  Base field.
 	 * @param  mixed              $values New values.
-	 * @return array              $values Loaded up, if applicable.
+	 * @return array $values Loaded up, if applicable.
 	 */
 	public function preload_alter_values( Fieldmanager_Field $field, $values ) {
 		return $values;
@@ -231,7 +231,7 @@ class Fieldmanager_Datasource {
 	 * @param  Fieldmanager_Field $field         Base field.
 	 * @param  mixed              $value         New value.
 	 * @param  mixed              $current_value Current value.
-	 * @return string             $values        Cleaned value.
+	 * @return string $values Cleaned value.
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
 		if ( is_array( $value ) ) {

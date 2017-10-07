@@ -187,8 +187,9 @@ function fm_add_style( $handle, $path = false, $deps = array(), $ver = false, $m
  *
  * @param  string $var The variable name to set.
  * @param  mixed  $val The value to store for $var. Default null.
- * @return mixed       The stored value of $var if $val is null, or false if $val is
- *                     null and $var was not set in the registry, or void if $val is being set.
+ * @return mixed The stored value of $var if $val is null, or false if $val is
+ *               null and $var was not set in the registry, or void if $val is
+ *               being set.
  */
 function _fieldmanager_registry( $var, $val = null ) {
 	static $registry;
@@ -366,10 +367,11 @@ function fm_calculate_context() {
  *
  * @param  string       $context The Fieldmanager context to check for.
  * @param  string|array $type    Type or types to check for. Default null.
- * @return bool                  True if $context is "form". If $type is null, true if $context
- *                               matches the first value of fm_get_context(). If $type is a string or
- *                               array, true if the second value of fm_get_context() matches the string or
- *                               is in the array and the first value matches $context. False otherwise.
+ * @return bool True if $context is "form". If $type is null, true if $context
+ *              matches the first value of fm_get_context(). If $type is a
+ *              string or array, true if the second value of fm_get_context()
+ *              matches the string or is in the array and the first value
+ *              matches $context. False otherwise.
  */
 function fm_match_context( $context, $type = null ) {
 	if ( 'form' === $context ) {

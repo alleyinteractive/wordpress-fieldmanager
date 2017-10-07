@@ -21,7 +21,7 @@ class Fieldmanager_Hidden extends Fieldmanager_Field {
 	 * Hidden form element.
 	 *
 	 * @param mixed $value The current value.
-	 * @return string      HTML string.
+	 * @return string HTML string.
 	 */
 	public function form_element( $value = '' ) {
 		return sprintf(
