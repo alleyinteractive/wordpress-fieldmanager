@@ -84,7 +84,7 @@ class Fieldmanager_Util_Validation {
 		if ( isset( $GLOBALS[ $global_id ] ) ) {
 			return $GLOBALS[ $global_id ];
 		} else {
-			self::$instance = new Fieldmanager_Util_Validation;
+			self::$instance = new Fieldmanager_Util_Validation();
 			self::$instance->setup( $form_id, $context );
 			$GLOBALS[ $global_id ] = self::$instance;
 			return self::$instance;
@@ -145,12 +145,14 @@ class Fieldmanager_Util_Validation {
 		$messages = '';
 		if ( ! is_array( $fm->validation_rules ) ) {
 			// If a string, the only acceptable value is "required".
-			if ( ! is_string( $fm->validation_rules ) || 'required' != $fm->validation_rules ) {
-				$fm->_invalid_definition( sprintf( __( 'The validation rule "%s" does not exist.', 'wordpress-fieldmanager' ), $fm->validation_rules ) );
+			if ( ! is_string( $fm->validation_rules ) || 'required' !== $fm->validation_rules ) {
+				$fm->_invalid_definition( sprintf( __( 'The validation rule is not valid.', 'fieldmanager' ), $fm->validation_rules ) );
 			}
 
 			// Convert the value to an array since we standardize the Javascript output on this format.
-			$fm->validation_rules = array( 'required' => true );
+			$fm->validation_rules = array(
+				'required' => true,
+			);
 
 			// In this instance, messages must either be a string or empty. If valid and defined, store this.
 			if ( ! empty( $fm->validation_messages ) && is_string( $fm->validation_messages ) ) {
@@ -161,7 +163,8 @@ class Fieldmanager_Util_Validation {
 			foreach ( $fm->validation_rules as $validation_key => $validation_rule ) {
 				if ( ! in_array( $validation_key, $this->valid_rules ) ) {
 					// This is not a rule available in jQuery validation.
-					$fm->_invalid_definition( sprintf( __( 'The validation rule "%s" does not exist.', 'wordpress-fieldmanager' ), $validation_key ) );
+					/* translators: %s: validation key */
+					$fm->_invalid_definition( sprintf( __( 'The validation rule "%s" does not exist.', 'fieldmanager' ), $validation_key ) );
 				} else {
 					// This rule is valid so check for any messages.
 					if ( isset( $fm->validation_messages[ $validation_key ] ) ) {
