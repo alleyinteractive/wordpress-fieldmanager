@@ -95,6 +95,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		// Validate improper usage of store property.
 		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
 			throw new FM_Developer_Exception( sprintf(
+				/* translators: 1: stored property, 2: allowed store properties */
 				__( 'Store property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
 				$this->store_property,
 				implode( ', ', $this->allowed_store_properties )
@@ -108,6 +109,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		// Validate improper usage of display property.
 		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
 			throw new FM_Developer_Exception( sprintf(
+				/* translators: 1: display property, 2: allowed display properties */
 				__( 'Display property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
 				$this->display_property,
 				implode( ', ', $this->allowed_display_properties )
@@ -251,6 +253,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		foreach ( $value as $i => $v ) {
 			$value[ $i ] = $this->sanitize_value( $v );
 			if ( ! current_user_can( $this->capability, $v ) ) {
+				/* translators: %s: user id */
 				wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
 			}
 			if ( $this->reciprocal && 'ID' == $this->store_property ) {
