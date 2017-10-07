@@ -129,7 +129,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		$post_args = array_merge( $default_args, $this->query_args );
 		$ret = array();
 		if ( $fragment ) {
-			$post_id = $exact_post = null;
+			$post_id = null;
+			$exact_post = null;
 			if ( preg_match( '/^https?\:/i', $fragment ) ) {
 				$url = esc_url( $fragment );
 				$url_parts = parse_url( $url );
@@ -139,7 +140,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 					parse_str( $url_parts['query'], $get_vars );
 				}
 
-				if ( ! empty( $get_vars['post'] )  ) {
+				if ( ! empty( $get_vars['post'] ) ) {
 					$post_id = intval( $get_vars['post'] );
 				} elseif ( ! empty( $get_vars['p'] ) ) {
 					$post_id = intval( $get_vars['p'] );
@@ -206,11 +207,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 */
 	public function title_like( $where, $wp_query ) {
 		global $wpdb;
-		if ( method_exists( $wpdb, 'esc_like' ) ) {
-			$like = esc_sql( $wpdb->esc_like( $this->_fragment ) );
-		} else {
-			$like = esc_sql( like_escape( $this->_fragment ) );
-		}
+		$like = $wpdb->esc_like( $this->_fragment );
 		$where .= " AND {$wpdb->posts}.post_title LIKE '%{$like}%'";
 		return $where;
 	}
@@ -252,6 +249,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
 				$post_type_obj = get_post_type_object( get_post_type( $value ) );
 				if ( empty( $post_type_obj->cap->edit_post ) || ! current_user_can( $post_type_obj->cap->edit_post, $value ) ) {
+					/* translators: 1: post type object name, 2: post ID value being saved, 3: field name */
 					wp_die( esc_html( sprintf( __( 'Tried to alter %1$s %2$d through field "%3$s", which user is not permitted to edit.', 'fieldmanager' ), $post_type_obj->name, $value, $field->name ) ) );
 				}
 			}
@@ -288,7 +286,10 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		// if this child post is in a post (or quickedit) context on a published post, publish the child also.
 		if ( $this->publish_with_parent && 'post' === $field->data_type && ! empty( $field->data_id ) && 'publish' === get_post_status( $field->data_id ) ) {
 			// use wp_update_post so that post_name is generated if it's not been already.
-			wp_update_post( array( 'ID' => $value, 'post_status' => 'publish' ) );
+			wp_update_post( array(
+				'ID' => $value,
+				'post_status' => 'publish',
+			) );
 		}
 	}
 
