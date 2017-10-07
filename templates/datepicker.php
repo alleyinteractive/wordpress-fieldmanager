@@ -1,9 +1,10 @@
 <?php
 /**
- * Default template for Fieldmanager_Datepicker.
+ * Default template for Fieldmanager_Datepicker
  *
  * @package Fieldmanager
  */
+
 ?>
 
 <input
