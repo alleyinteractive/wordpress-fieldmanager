@@ -247,16 +247,16 @@ abstract class Fieldmanager_Field {
 	public $display_if = array();
 
 	/**
-	 *
-	 * Where the new item should to added ( top/bottom ) of the stack. Used by Add Another button
-	 * "top|bottom".
+	 * Where the new item should to added (top/bottom) of the stack. Used by Add
+	 * Another button "top|bottom".
 	 *
 	 * @var string
 	 */
 	public $add_more_position = 'bottom';
 
 	/**
-	 * If true, remove any default meta boxes that are overridden by Fieldmanager fields.
+	 * If true, remove any default meta boxes that are overridden by Fieldmanager
+	 * fields.
 	 *
 	 * @var bool
 	 */
@@ -479,7 +479,7 @@ abstract class Fieldmanager_Field {
 
 		$out = '';
 
-		/**
+		/*
 		 * If this element is part of tabbed output, there needs to be a wrapper
 		 * to contain the tab content.
 		 */
@@ -607,7 +607,7 @@ abstract class Fieldmanager_Field {
 
 		$label = $this->get_element_label();
 		$render_label_after = false;
-		/**
+		/*
 		 * Hide the label if it is empty or if this is a tab since it would duplicate
 		 * the title from the tab label.
 		 */
@@ -711,7 +711,7 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Recursively build path to this element (e.g. array(grandparent, parent, this) ).
+	 * Recursively build path to this element, e.g. [grandparent, parent, this].
 	 *
 	 * @return array $tree The form tree of parents.
 	 */
@@ -1281,7 +1281,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Die violently. If self::$debug is true, throw an exception.
 	 *
-	 * @throws FM_Exception Invalid Defintion.
+	 * @throws FM_Exception Invalid definition.
 	 *
 	 * @param string $debug_message The debug message.
 	 */
