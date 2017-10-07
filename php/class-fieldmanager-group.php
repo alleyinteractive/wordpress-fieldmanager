@@ -17,7 +17,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	/**
 	 * Children elements of this group. Not much point in creating an empty group.
 	 *
-	 * @var Fieldmanager_Field[]
+	 * @var array Fieldmanager_Field objects.
 	 */
 	public $children = array();
 

@@ -64,7 +64,7 @@ abstract class Fieldmanager_Field {
 	public $add_more_label = '';
 
 	/**
-	 * The name of the form element, As in 'foo' in <input name="foo" />.
+	 * The name of the form element, as in 'foo' in `<input name="foo" />`.
 	 *
 	 * @var string
 	 */
@@ -152,7 +152,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Functions to use to validate input.
 	 *
-	 * @var callback[]
+	 * @var array Callables.
 	 */
 	public $validate = array();
 
@@ -242,7 +242,7 @@ abstract class Fieldmanager_Field {
 	 *     'value' => 'display-if-src-value',
 	 * );
 	 *
-	 * @var array[]
+	 * @var array
 	 */
 	public $display_if = array();
 
@@ -1179,10 +1179,10 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @see Fieldmanager_Context_Post
 	 *
-	 * @param string          $title      The title of the form.
-	 * @param string|string[] $post_types The post type.
-	 * @param string          $context    The context for the meta box.
-	 * @param string          $priority   The priority of the meta box.
+	 * @param string       $title      The title of the form.
+	 * @param string|array $post_types The post type(s).
+	 * @param string       $context    The context for the meta box.
+	 * @param string       $priority   The priority of the meta box.
 	 */
 	public function add_meta_box( $title, $post_types, $context = 'normal', $priority = 'default' ) {
 		$this->require_base();
@@ -1199,10 +1199,10 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @see Fieldmanager_Context_Quickedit
 	 *
-	 * @param string          $title                   The title of the form.
-	 * @param string|string[] $post_types              The post type.
-	 * @param callable        $column_display_callback The display callback.
-	 * @param string          $column_title            The column title.
+	 * @param string       $title                   The title of the form.
+	 * @param string|array $post_types              The post type(s).
+	 * @param callable     $column_display_callback The display callback.
+	 * @param string       $column_title            The column title.
 	 */
 	public function add_quickedit_box( $title, $post_types, $column_display_callback, $column_title = '' ) {
 		$this->require_base();

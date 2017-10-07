@@ -13,7 +13,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	/**
 	 * Array of contexts for rendering forms.
 	 *
-	 * @var Fieldmanager_Context_Page[]
+	 * @var array Fieldmanager_Context_Page objects.
 	 */
 	public static $forms = array();
 

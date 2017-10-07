@@ -87,8 +87,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Get a set of elements
-	 * @return Fieldmanager_Field[]
+	 * Get a set of elements to be used as children for a Fieldmanager_Group object.
+	 *
+	 * @return array Fieldmanager_Field objects.
 	 */
 	private function _get_elements() {
 		return array(
