@@ -204,9 +204,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 					$value = sanitize_text_field( substr( $value, 1 ) );
 				}
 
-				// An affordance for our friends at WordPress.com.
-				$term_by = function_exists( 'wpcom_vip_get_term_by' ) ? 'wpcom_vip_get_term_by' : 'get_term_by';
-				$term = call_user_func( $term_by, 'name', $value, $this->taxonomy );
+				$term = get_term_by( 'name', $value, $this->taxonomy );
 
 				if ( ! $term ) {
 					$term = wp_insert_term( $value, $this->taxonomy );

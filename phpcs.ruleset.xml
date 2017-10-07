@@ -8,6 +8,7 @@
 
 	<rule ref="WordPress">
 		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_link_get_term_link" />
+		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_by_get_term_by" />
 	</rule>
 
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
