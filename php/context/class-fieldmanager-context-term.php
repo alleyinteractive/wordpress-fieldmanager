@@ -235,6 +235,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	public function term_fields( $html_template, $taxonomy, $term = null ) {
 		// Make sure the user hasn't specified a field name we can't use.
 		if ( in_array( $this->fm->name, $this->reserved_fields ) ) {
+			/* translators: %s: field name */
 			$this->fm->_invalid_definition( sprintf( __( 'The field name "%s" is reserved for WordPress on the term form.', 'fieldmanager' ), $this->fm->name ) );
 		}
 
@@ -254,7 +255,9 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			$label = '';
 		}
 
-		$field = $this->render_field( array( 'echo' => false ) );
+		$field = $this->render_field( array(
+			'echo' => false,
+		) );
 
 		// Create the markup and return it.
 		return sprintf(
