@@ -168,7 +168,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 *
 	 * @param int     $data_id  The ID of the object holding the data, e.g. Post ID.
 	 * @param string  $data_key The key for the data, e.g. a meta_key.
-	 * @param boolean $single   Optional. If true, only returns the first value
+	 * @param bool    $single   Optional. If true, only returns the first value
 	 *                          found for the given data_key. This won't apply to
 	 *                          every context. Default is false.
 	 * @return string|array The stored data. If no data is found, should return
@@ -182,7 +182,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * @param int     $data_id    The ID of the object holding the data, e.g. Post ID.
 	 * @param string  $data_key   The key for the data, e.g. a meta_key.
 	 * @param mixed   $data_value The value to store.
-	 * @param boolean $unique     Optional. If true, data will only be added if the
+	 * @param bool    $unique     Optional. If true, data will only be added if the
 	 *                            object with the given $data_id doesn't already
 	 *                            contain data for the given $data_key. This may not
 	 *                            apply to every context. Default is false.

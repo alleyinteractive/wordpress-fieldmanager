@@ -162,9 +162,9 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	/**
 	 * Generate the html for a single draggable item.
 	 *
-	 * @param  int     $post_id           The post ID.
-	 * @param  boolean $use_image_checked If true, render this item with the "use image"
-	 *                                    checkbox checked (if enabled).
+	 * @param  int  $post_id           The post ID.
+	 * @param  bool $use_image_checked If true, render this item with the "use image"
+	 *                                 checkbox checked (if enabled).
 	 * @return string Containing the li element.
 	 */
 	protected function draggable_item_html( $post_id, $use_image_checked = false ) {

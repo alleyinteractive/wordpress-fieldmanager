@@ -567,13 +567,14 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Generate wrappers and labels for one form element.
-	 * Is called by element_markup(), calls form_element().
+	 * Generate wrappers and labels for one form element. Is called by
+	 * `element_markup()`, calls `form_element()`.
 	 *
 	 * @see Fieldmanager_Field::element_markup()
 	 * @see Fieldmanager_Field::form_element()
-	 * @param  mixed   $value    The current value of this element.
-	 * @param  boolean $is_proto True to generate a prototype element for Javascript.
+	 *
+	 * @param  mixed $value    The current value of this element.
+	 * @param  bool  $is_proto True to generate a prototype element for Javascript.
 	 * @return string HTML for a single form element.
 	 */
 	public function single_element_markup( $value = null, $is_proto = false ) {
@@ -762,7 +763,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Is this element repeatable or does it have a repeatable ancestor?
 	 *
-	 * @return boolean True if yes, false if no.
+	 * @return bool True if yes, false if no.
 	 */
 	public function is_repeatable() {
 		if ( 1 != $this->limit ) {
@@ -776,7 +777,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Is the current field a group?
 	 *
-	 * @return boolean True if yes, false if no.
+	 * @return bool True if yes, false if no.
 	 */
 	public function is_group() {
 		return $this instanceof Fieldmanager_Group;
@@ -1128,8 +1129,8 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @param string       $title        The title of the form.
 	 * @param string|array $taxonomies   The taxonomies on which to display this form.
-	 * @param boolean      $show_on_add  Whether or not to show the fields on the add term form.
-	 * @param boolean      $show_on_edit Whether or not to show the fields on the edit term form.
+	 * @param bool         $show_on_add  Whether or not to show the fields on the add term form.
+	 * @param bool         $show_on_edit Whether or not to show the fields on the edit term form.
 	 * @param int          $parent       Only show this field on child terms of this parent term ID.
 	 */
 	public function add_term_form( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
@@ -1153,8 +1154,8 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @param string       $title        The title of the form.
 	 * @param string|array $taxonomies   The taxonomies on which to display this form.
-	 * @param boolean      $show_on_add  Whether or not to show the fields on the add term form.
-	 * @param boolean      $show_on_edit Whether or not to show the fields on the edit term form.
+	 * @param bool         $show_on_add  Whether or not to show the fields on the add term form.
+	 * @param bool         $show_on_edit Whether or not to show the fields on the edit term form.
 	 * @param int          $parent       Only show this field on child terms of this parent term ID.
 	 */
 	public function add_term_meta_box( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
@@ -1307,7 +1308,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Are we in the middle of generating a prototype element for repeatable fields?
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function has_proto() {
 		if ( $this->is_proto ) {

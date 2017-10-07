@@ -259,18 +259,18 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 			if ( $this->reciprocal && 'ID' == $this->store_property ) {
 				call_user_func(
 					/**
-					 * Allow control over adding to the user data storage.
-					 * This improves compatibility with WordPress.com.
+					 * Allow control over adding to the user data storage. This improves
+					 * compatibility with WordPress.com.
 					 *
 					 * @see add_user_meta() for more details about each param.
 					 *
-					 * @param string $function_name The function to call to get user
-					 *                              data. Default is 'add_user_meta'.
-					 * @param int $user_id User ID.
-					 * @param string $meta_key Meta key to add.
-					 * @param mixed $meta_value The meta value to store.
-					 * @param boolean $unique If true, only add if key is unique.
-					 *                        Default is false.
+					 * @param string $function_name The function to call to get user data. Default
+					 *                              is 'add_user_meta'.
+					 * @param int    $user_id       User ID.
+					 * @param string $meta_key      Meta key to add.
+					 * @param mixed  $meta_value    The meta value to store.
+					 * @param bool   $unique        If true, only add if key is unique. Default is
+					 *                              false.
 					 */
 					apply_filters( 'fm_user_context_add_data', 'add_user_meta' ),
 					$v,

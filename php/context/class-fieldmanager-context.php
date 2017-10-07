@@ -38,7 +38,7 @@ abstract class Fieldmanager_Context {
 	 * Check if the nonce is valid. Returns false if the nonce is missing and
 	 * throws an exception if it's invalid. If all goes well, returns true.
 	 *
-	 * @return boolean
+	 * @return bool
 	 */
 	protected function is_valid_nonce() {
 		if ( empty( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ] ) ) { // WPCS: input var okay.

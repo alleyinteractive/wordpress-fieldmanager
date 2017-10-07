@@ -109,8 +109,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * }
 	 * @param string|array       $taxonomies   Optional. Deprecated. Required if $args
 	 *                                         is a string.
-	 * @param boolean            $show_on_add  Optional. Deprecated.
-	 * @param boolean            $show_on_edit Optional. Deprecated.
+	 * @param bool               $show_on_add  Optional. Deprecated.
+	 * @param bool               $show_on_edit Optional. Deprecated.
 	 * @param string             $parent       Optional. Deprecated.
 	 * @param Fieldmanager_Field $fm           Optional. Deprecated.
 	 */

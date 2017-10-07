@@ -119,7 +119,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 			 *                              data. Default is 'get_user_meta'.
 			 * @param int $user_id User ID.
 			 * @param string $meta_key Meta key to retrieve.
-			 * @param boolean $single Get single value (true) or array of values
+			 * @param bool    $single Get single value (true) or array of values
 			 *                        (false). Default is false.
 			 */
 			apply_filters( 'fm_user_context_get_data', 'get_user_meta' ),
@@ -152,7 +152,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 			 * @param int $user_id User ID.
 			 * @param string $meta_key Meta key to add.
 			 * @param mixed $meta_value The meta value to store.
-			 * @param boolean $unique If true, only add if key is unique.
+			 * @param bool    $unique If true, only add if key is unique.
 			 *                        Default is false.
 			 */
 			apply_filters( 'fm_user_context_add_data', 'add_user_meta' ),
