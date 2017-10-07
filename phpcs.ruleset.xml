@@ -27,7 +27,6 @@
 	<exclude-pattern>php/class-fieldmanager-richtextarea.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-textfield.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-post.php</exclude-pattern>
-	<exclude-pattern>php/context/class-fieldmanager-context-quickedit.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-storable.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-submenu.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-term.php</exclude-pattern>
