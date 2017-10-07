@@ -208,8 +208,8 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 			foreach ( $current_values as $user_id ) {
 				call_user_func(
 					/**
-					 * Allow control over deleting from the user data storage.
-					 * This improves compatibility with WordPress.com.
+					 * Filters function used to delete user meta. This improves compatibility with
+					 * WordPress.com.
 					 *
 					 * @see delete_user_meta() for more details about each param.
 					 *
@@ -259,8 +259,8 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 			if ( $this->reciprocal && 'ID' == $this->store_property ) {
 				call_user_func(
 					/**
-					 * Allow control over adding to the user data storage. This improves
-					 * compatibility with WordPress.com.
+					 * Filters function used to add user meta. This improves compatibility with
+					 * WordPress.com.
 					 *
 					 * @see add_user_meta() for more details about each param.
 					 *

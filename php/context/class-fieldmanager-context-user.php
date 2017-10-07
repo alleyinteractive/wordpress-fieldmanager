@@ -110,8 +110,8 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	protected function get_data( $user_id, $meta_key, $single = false ) {
 		return call_user_func(
 			/**
-			 * Allow control over retrieving from the user data storage.
-			 * This improves compatibility with WordPress.com.
+			 * Filters function used to get user meta. This improves compatibility with
+			 * WordPress.com.
 			 *
 			 * @see get_user_meta() for more details about each param.
 			 *
@@ -142,8 +142,8 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	protected function add_data( $user_id, $meta_key, $meta_value, $unique = false ) {
 		return call_user_func(
 			/**
-			 * Allow control over adding to the user data storage.
-			 * This improves compatibility with WordPress.com.
+			 * Filters function used to add user meta. This improves compatibility with
+			 * WordPress.com.
 			 *
 			 * @see add_user_meta() for more details about each param.
 			 *
@@ -176,8 +176,8 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	protected function update_data( $user_id, $meta_key, $meta_value, $data_prev_value = '' ) {
 		return call_user_func(
 			/**
-			 * Allow control over updating the user data storage.
-			 * This improves compatibility with WordPress.com.
+			 * Filters function used to update user meta. This improves compatibility with
+			 * WordPress.com.
 			 *
 			 * @see update_user_meta() for more details about each param.
 			 *
@@ -209,8 +209,8 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	protected function delete_data( $user_id, $meta_key, $meta_value = '' ) {
 		return call_user_func(
 			/**
-			 * Allow control over deleting from the user data storage.
-			 * This improves compatibility with WordPress.com.
+			 * Filters function used to delete user meta. This improves compatibility with
+			 * WordPress.com.
 			 *
 			 * @see delete_user_meta() for more details about each param.
 			 *
