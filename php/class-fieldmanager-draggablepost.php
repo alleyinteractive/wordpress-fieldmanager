@@ -160,7 +160,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Generate the html for a single draggable item.
+	 * Generate the HTML for a single draggable item.
 	 *
 	 * @param  int  $post_id           The post ID.
 	 * @param  bool $use_image_checked If true, render this item with the "use image"
