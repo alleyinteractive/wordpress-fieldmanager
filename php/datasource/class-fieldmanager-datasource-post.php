@@ -30,7 +30,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	public $query_args = array();
 
 	/**
-	 * Allow AJAX. If set to false, Autocomplete will pre-load get_items() with no fragment,
+	 * Allow Ajax. If set to false, Autocomplete will pre-load get_items() with no fragment,
 	 * so False could cause performance problems.
 	 *
 	 * @var bool
@@ -110,7 +110,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * a fragment, e.g. for Autocomplete.
 	 *
 	 * @param  string $fragment The query string.
-	 * @return array The post_id => post_title for display or AJAX.
+	 * @return array The post_id => post_title for display or Ajax.
 	 */
 	public function get_items( $fragment = null ) {
 		if ( is_callable( $this->query_callback ) ) {
@@ -185,7 +185,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * Get an action to register by hashing (non cryptographically for speed)
 	 * the options that make this datasource unique.
 	 *
-	 * @return string AJAX action.
+	 * @return string Ajax action.
 	 */
 	public function get_ajax_action() {
 		if ( ! empty( $this->ajax_action ) ) {

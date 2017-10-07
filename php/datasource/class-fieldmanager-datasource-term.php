@@ -67,7 +67,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	public $store_term_taxonomy_id = false;
 
 	/**
-	 * Build this datasource using AJAX.
+	 * Build this datasource using Ajax.
 	 *
 	 * @var bool
 	 */

@@ -28,7 +28,7 @@ class Fieldmanager_Datasource {
 	public $options_callback = null;
 
 	/**
-	 * Whether or not to use AJAX.
+	 * Whether or not to use Ajax.
 	 *
 	 * @var bool
 	 */
@@ -42,14 +42,14 @@ class Fieldmanager_Datasource {
 	public $allow_optgroups = true;
 
 	/**
-	 * The AJAX action.
+	 * The Ajax action.
 	 *
 	 * @var string
 	 */
 	public $ajax_action = '';
 
 	/**
-	 * Counter to create uniquely named AJAX actions.
+	 * Counter to create uniquely named Ajax actions.
 	 *
 	 * @var int
 	 */
@@ -155,7 +155,7 @@ class Fieldmanager_Datasource {
 	 * Get an action to register by hashing (non cryptographically for speed)
 	 * the options that make this datasource unique.
 	 *
-	 * @return string ajax action
+	 * @return string Ajax action.
 	 */
 	public function get_ajax_action() {
 		if ( ! empty( $this->ajax_action ) ) {
@@ -165,7 +165,7 @@ class Fieldmanager_Datasource {
 	}
 
 	/**
-	 * Format items for use in AJAX.
+	 * Format items for use in Ajax.
 	 *
 	 * @param string|null $fragment Search string.
 	 */
@@ -184,7 +184,7 @@ class Fieldmanager_Datasource {
 	}
 
 	/**
-	 * AJAX callback to find posts.
+	 * Ajax callback to find posts.
 	 */
 	public function autocomplete_search() {
 		// Check the nonce before we do anything.
