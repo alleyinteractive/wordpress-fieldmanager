@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class file for Fieldmanager_Grid.
+ *
+ * @package Field / Grid
+ */
 
 /**
  * Data grid (spreadsheet) field.
@@ -11,27 +16,31 @@
 class Fieldmanager_Grid extends Fieldmanager_Field {
 
 	/**
+	 * Override field class.
+	 *
 	 * @var string
-	 * Override field clas
 	 */
 	public $field_class = 'grid';
 
 	/**
+	 * Sort a grid before rendering (takes entire grid as a parameter).
+	 *
 	 * @var callable
-	 * Sort a grid before rendering (takes entire grid as a parameter)
 	 */
-	public $grid_sort = Null;
+	public $grid_sort = null;
 
 	/**
-	 * @var string[]
-	 * Options to pass to grid manager
+	 * Options to pass to grid manager.
+	 *
+	 * @var array
 	 */
 	public $js_options = array();
 
 	/**
-	 * Constructor which adds several scrips and CSS
-	 * @param string $label
-	 * @param array $options
+	 * Constructor which adds several scrips and CSS.
+	 *
+	 * @param string $label   The form label.
+	 * @param array  $options The form options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->attributes = array(
@@ -40,7 +49,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 		parent::__construct( $label, $options );
 		$this->sanitize = function( $row, $col, $values ) {
 			foreach ( $values as $k => $val ) {
-				$values[$k] = sanitize_text_field( $val );
+				$values[ $k ] = sanitize_text_field( $val );
 			}
 			return $values;
 		};
@@ -54,13 +63,14 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Render HTML for Grid element
-	 * @param array $value
-	 * @return string
+	 * Render HTML for Grid element.
+	 *
+	 * @param array $value The current value.
+	 * @return string      The HTML string.
 	 */
 	public function form_element( $value = '' ) {
 		$grid_activate_id = 'grid-activate-' . uniqid( true );
-		if ( !empty( $value ) && is_callable( $this->grid_sort ) ) {
+		if ( ! empty( $value ) && is_callable( $this->grid_sort ) ) {
 			$value = call_user_func( $this->grid_sort, $value );
 		}
 		$out = sprintf(
@@ -81,13 +91,18 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Override presave, using the sanitize function per cell
-	 * @param string $value
-	 * @return array sanitized row/col matrix
+	 * Override presave, using the sanitize function per cell.
+	 *
+	 * @param  array $value         The new value.
+	 * @param  array $current_value The current values.
+	 * @return array                Sanitized row/col matrix.
 	 */
 	public function presave( $value, $current_value = array() ) {
-		$rows = json_decode( stripslashes( $value ), TRUE );
-		if ( !is_array( $rows ) ) return array();
+		$rows = json_decode( stripslashes( $value ), true );
+		if ( ! is_array( $rows ) ) {
+			return array();
+		}
+
 		foreach ( $rows as $i => $cells ) {
 			foreach ( $cells as $k => $cell ) {
 				$cell = call_user_func( $this->sanitize, $i, $k, $cell );
