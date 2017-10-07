@@ -43,7 +43,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	/**
 	 * Base field
 	 *
-	 * @var Fieldmanager_Group
+	 * @var Fieldmanager_Field
 	 */
 	public $fm = '';
 
