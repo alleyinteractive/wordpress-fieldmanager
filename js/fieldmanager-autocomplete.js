@@ -1,4 +1,4 @@
-( function( $ ) {
+(function( $ ) {
 
 fm.autocomplete = {
 
@@ -84,5 +84,9 @@ fm.autocomplete = {
 
 $( document ).ready( fm.autocomplete.enable_autocomplete );
 $( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle fm_activate_tab', fm.autocomplete.enable_autocomplete );
+$( document ).on( 'focus',
+	'input[class*="fm-autocomplete"]:not(.fm-autocomplete-enabled)',
+	fm.autocomplete.enable_autocomplete
+);
 
-} ) ( jQuery );
+})( jQuery );

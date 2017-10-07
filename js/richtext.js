@@ -36,6 +36,16 @@
 
 						try {
 							if ( 'html' !== fm.richtextarea.mode_enabled( this ) ) {
+								tinyMCEPreInit.mceInit[ ed_id ].setup = function ( ed ) {
+									ed.on( 'init', function( args ) {
+										/**
+										 * Event after TinyMCE loads for an Fieldmanager_RichTextArea.
+										 *
+										 * @var {Object} TinyMCE instance.
+										 */
+										 $( document ).trigger( 'fm_richtext_init', ed );
+									});
+								};
 								tinymce.init( tinyMCEPreInit.mceInit[ ed_id ] );
 								$( this ).closest( '.wp-editor-wrap' ).on( 'click.wp-editor', function() {
 									if ( this.id ) {
@@ -133,7 +143,10 @@
 		setTimeout( fm.richtextarea.reset_core_editor_mode, 50 );
 	} );
 
-	var core_editor_state = getUserSetting( 'editor' );
+	var core_editor_state;
+	if ( typeof getUserSetting === 'function' ) {
+		core_editor_state = getUserSetting( 'editor' );
+	}
 
 	/**
 	 * If the main editor's state changes, note that change.

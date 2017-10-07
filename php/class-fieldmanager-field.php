@@ -868,7 +868,7 @@ abstract class Fieldmanager_Field {
 		foreach ( $this->validate as $func ) {
 			if ( !call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
-					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
+					__( 'Input "%1$s" is not valid for field "%2$s"', 'fieldmanager' ),
 					(string) $value,
 					$this->label
 				) );
@@ -1103,6 +1103,24 @@ abstract class Fieldmanager_Field {
 		_fieldmanager_registry( 'active_submenu', $active_submenu );
 	}
 
+	/**
+	 * Add this field to the Customizer.
+	 *
+	 * @param string|array $args @see Fieldmanager_Context_Customize. Pass a
+	 *     string to add a Customizer section for this field that uses the
+	 *     string for its title and context defaults for the remaining
+	 *     arguments. Or, pass a full array of arguments for the context.
+	 */
+	public function add_to_customizer( $args = array() ) {
+		$this->require_base();
+
+		if ( is_string( $args ) ) {
+			$args = array( 'section_args' => array( 'title' => $args ) );
+		}
+
+		return new Fieldmanager_Context_Customize( $args, $this );
+	}
+
 	private function require_base() {
 		if ( !empty( $this->parent ) ) {
 			throw new FM_Developer_Exception( esc_html__( 'You cannot use this method on a subgroup', 'fieldmanager' ) );
@@ -1131,8 +1149,7 @@ abstract class Fieldmanager_Field {
 	protected function _failed_validation( $debug_message = '' ) {
 		if ( self::$debug ) {
 			throw new FM_Validation_Exception( $debug_message );
-		}
-		else {
+		} else {
 			wp_die( esc_html(
 				$debug_message . "\n\n" .
 				__( "You may be able to use your browser's back button to resolve this error.", 'fieldmanager' )

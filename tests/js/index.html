@@ -23,16 +23,27 @@
 
 		scripts = [
 			svn + '/src/wp-includes/js/jquery/jquery.js',
+			svn + '/src/wp-includes/js/underscore.min.js',
+			svn + '/src/wp-includes/js/backbone.min.js',
+			svn + '/src/wp-includes/js/wp-util.js',
 			svn + '/src/wp-includes/js/jquery/ui/core.js',
 			svn + '/src/wp-includes/js/jquery/ui/widget.js',
 			svn + '/src/wp-includes/js/jquery/ui/mouse.js',
 			svn + '/src/wp-includes/js/jquery/ui/sortable.js',
 			svn + '/src/wp-includes/js/jquery/ui/draggable.js',
 			svn + '/src/wp-includes/js/jquery/ui/droppable.js',
+			svn + '/src/wp-includes/js/jquery/ui/menu.js',
+			svn + '/src/wp-includes/js/jquery/ui/autocomplete.js',
+			svn + '/src/wp-includes/js/customize-base.js',
+			svn + '/src/wp-includes/js/customize-models.js',
+			svn + '/src/wp-admin/js/customize-controls.js',
 		];
 
 		// Fieldmanager.
 		scripts.push( '../../js/fieldmanager.js' );
+		scripts.push( '../../js/fieldmanager-autocomplete.js' );
+		scripts.push( '../../js/jquery-serializejson/jquery.serializejson.min.js' );
+		scripts.push( '../../js/fieldmanager-customize.js' );
 
 		// Tests.
 		scripts.push( 'test-fieldmanager.js' );
@@ -134,6 +145,19 @@
 		<div id="displayif-zerolength">
 			<div id="di-when-trigger-length-is-zero" class="fm-test-displayif-zerolength-wrapper"></div>
 			<div class="display-if" data-display-src="test-displayif-zerolength"></div>
+		</div>
+
+		<div id="autocomplete">
+			<input type="text" id="ac-visible" class="fm-autocomplete">
+			<input type="text" id="ac-invisible" class="fm-autocomplete" style="display: none;">
+		</div>
+
+		<div id="customizer-events" class="fm-wrapper">
+			<a href="#" class="fmjs-remove">Remove</a>
+			<a class="fm-media-remove fm-delete" href="#">Remove</a>
+			<textarea class="tinymce"></textarea>
+			<input type="text" class="fm-autocomplete" />
+			<input type="text" class="fm-element" name="customize-text" value="First" />
 		</div>
 
 		<div id="renumbered" class="fm-wrapper" data-fm-array-position="1">

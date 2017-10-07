@@ -75,6 +75,13 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	protected $edit_config = false;
 
 	/**
+	 * Whether this class is hooked into the Customizer to print editor scripts.
+	 *
+	 * @var bool
+	 */
+	public static $has_registered_customize_scripts = false;
+
+	/**
 	 * Construct defaults for this field.
 	 *
 	 * @param string $label title of form field
@@ -117,6 +124,10 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 
 		if ( $proto ) {
 			add_filter( 'the_editor', array( $this, 'add_proto_id' ) );
+		}
+
+		if ( ! isset( $settings['teeny'] ) ) {
+			$settings['teeny'] = is_customize_preview();
 		}
 
 		if ( ! isset( $settings['default_editor'] ) ) {
@@ -252,6 +263,25 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 		// removing whatever it added.
 		remove_filter( 'the_editor_content', 'wp_htmledit_pre' );
 		remove_filter( 'the_editor_content', 'wp_richedit_pre' );
+
+		if ( ! self::$has_registered_customize_scripts ) {
+			// This action must fire after settings are exported in WP_Customize_Manager::customize_pane_settings().
+			add_action( 'customize_controls_print_footer_scripts', array( $this, 'customize_controls_print_footer_scripts' ), 1001 );
+			self::$has_registered_customize_scripts = true;
+		}
+	}
+
+	/**
+	 * Print Customizer control scripts in the footer.
+	 */
+	public function customize_controls_print_footer_scripts() {
+		if ( class_exists( '_WP_Editors' ) ) {
+			if ( false === has_action( 'customize_controls_print_footer_scripts', array( '_WP_Editors', 'editor_js' ) ) ) {
+				// Print the necessary JS for an RTE, unless we can't or suspect it's already there.
+				_WP_Editors::editor_js();
+				_WP_Editors::enqueue_scripts();
+			}
+		}
 	}
 
 	/**

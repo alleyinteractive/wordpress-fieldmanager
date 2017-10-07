@@ -9,6 +9,9 @@ class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Cas
 	public function setUp() {
 		parent::setUp();
 
+		require_once ABSPATH . WPINC . '/class-wp-customize-manager.php';
+		$customize_manager = new WP_Customize_Manager();
+
 		// Instantiate field classes that register scripts.
 		new Fieldmanager_Autocomplete( 'Test', array( 'datasource' => new Fieldmanager_Datasource_Post ) );
 		new Fieldmanager_Datepicker( 'Test' );
@@ -19,6 +22,16 @@ class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Cas
 		new Fieldmanager_Select( 'Test' );
 		new Fieldmanager_RichTextArea( 'Test' );
 		new Fieldmanager_Colorpicker( 'Test' );
+		$control = new Fieldmanager_Customize_Control(
+			$customize_manager,
+			'test',
+			array(
+				'context' => $this->getMockBuilder( 'Fieldmanager_Context_Customize' )
+					->disableOriginalConstructor()
+					->getMock()
+			)
+		);
+		$control->enqueue();
 
 		do_action( 'wp_enqueue_scripts' );
 		do_action( 'admin_enqueue_scripts' );
@@ -44,6 +57,7 @@ class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Cas
 			array( 'fm_select_js', array() ),
 			array( 'grid', array() ),
 			array( 'fm_colorpicker', array( 'jquery', 'wp-color-picker' ) ),
+			array( 'fm-customize', array( 'jquery', 'underscore', 'editor', 'quicktags', 'fieldmanager_script', 'customize-controls', 'fm-serializejson' ) ),
 		);
 	}
 

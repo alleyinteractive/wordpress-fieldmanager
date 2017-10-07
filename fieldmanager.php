@@ -70,6 +70,14 @@ function fieldmanager_load_class( $class ) {
 		return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource-' . $class_id . '.php' );
 	}
 
+	if ( 'Fieldmanager_Customize_Control' === $class ) {
+		return fieldmanager_load_file( 'class-fieldmanager-customize-control.php' );
+	}
+
+	if ( 'Fieldmanager_Customize_Setting' === $class ) {
+		return fieldmanager_load_file( 'class-fieldmanager-customize-setting.php' );
+	}
+
 	if ( 0 === strpos( $class, 'Fieldmanager_Util' ) ) {
 		return fieldmanager_load_file( 'util/class-fieldmanager-util-' . $class_id . '.php' );
 	}
@@ -250,8 +258,12 @@ function fm_get_context( $recalculate = false ) {
 function fm_calculate_context() {
 	$calculated_context = array( null, null );
 
+	if ( is_customize_preview() ) {
+		$calculated_context = array( 'customize', null );
+	}
+
 	// Safe to use at any point in the load process, and better than URL matching.
-	if ( is_admin() ) {
+	if ( empty( $calculated_context[0] ) && is_admin() ) {
 		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
 
 		/*
@@ -284,7 +296,12 @@ function fm_calculate_context() {
 			}
 		}
 
+		if ( 'customize.php' === $script || is_customize_preview() ) {
+			$calculated_context = array( 'customize', null );
+		}
+
 		if ( empty( $calculated_context[0] ) ) {
+
 			switch ( $script ) {
 				// Context = "post".
 				case 'post.php':
