@@ -1,14 +1,12 @@
 <?php
 /**
- * Fieldmanager Checkbox Field
+ * Class file for Fieldmanager_Checkbox
  *
- * @package Field / Checkbox
+ * @package Fieldmanager
  */
 
 /**
  * Single boolean checkbox.
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_Checkbox extends Fieldmanager_Field {
 
@@ -29,21 +27,21 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	/**
 	 * Override save_empty default for this element type.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $save_empty = true;
 
 	/**
 	 * Override inline_label.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $inline_label = true;
 
 	/**
 	 * Override label_after_element.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $label_after_element = true;
 
@@ -51,7 +49,7 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	 * Form element implementation for checkboxes.
 	 *
 	 * @param  mixed $value The current value.
-	 * @return string       HTML
+	 * @return string HTML.
 	 */
 	public function form_element( $value = null ) {
 		return sprintf(
@@ -70,7 +68,7 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	 *
 	 * @param  mixed $value         The new value.
 	 * @param  mixed $current_value The curent value.
-	 * @return mixed                Proper value
+	 * @return mixed Proper value.
 	 */
 	public function presave( $value = null, $current_value = array() ) {
 		if ( $value == $this->checked_value || $value === $this->unchecked_value ) {
