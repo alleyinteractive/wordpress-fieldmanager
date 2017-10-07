@@ -24,7 +24,6 @@
 	</rule>
 
 	<!-- New files must follow coding standards. These files are exempt, for now: -->
-	<exclude-pattern>php/context/class-fieldmanager-context-storable.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-term.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context-user.php</exclude-pattern>
 	<exclude-pattern>php/context/class-fieldmanager-context.php</exclude-pattern>
