@@ -24,7 +24,6 @@
 	</rule>
 
 	<!-- New files must follow coding standards. These files are exempt, for now: -->
-	<exclude-pattern>php/class-fieldmanager-draggablepost.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-field.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-grid.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-group.php</exclude-pattern>
