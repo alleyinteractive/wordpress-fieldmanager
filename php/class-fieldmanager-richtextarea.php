@@ -301,9 +301,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	/**
 	 * Modeled on the similarly named function in drupal. This differs from
 	 * array_merge_recursive in that if it sees two strings, it doesn't merge
-	 * them into an array of strings. That's dumb.
-	 *
-	 * @NOTE array_merge_recursive as it should have been done.
+	 * them into an array of strings.
 	 *
 	 * @return array
 	 */

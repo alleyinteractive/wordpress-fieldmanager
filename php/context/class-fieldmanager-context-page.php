@@ -6,7 +6,7 @@
  */
 
 /**
- * Use fieldmanager on the public-facing theme.
+ * Use Fieldmanager on the public-facing theme.
  */
 class Fieldmanager_Context_Page extends Fieldmanager_Context {
 
