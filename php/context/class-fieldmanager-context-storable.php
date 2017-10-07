@@ -67,7 +67,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	/**
 	 * Save a single field.
 	 *
-	 * @throws FM_Developer_Exception Two fields saving to th same key.
+	 * @throws FM_Developer_Exception Two fields saving to the same key.
 	 *
 	 * @param object $field Fieldmanager field.
 	 * @param mixed  $data  Data to save.

@@ -21,7 +21,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	/**
 	 * What post types to render this meta box.
 	 *
-	 * @var string[]
+	 * @var array
 	 */
 	public $post_types = array();
 
