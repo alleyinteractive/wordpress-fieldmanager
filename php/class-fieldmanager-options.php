@@ -271,9 +271,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	/**
 	 * Presave hook to set taxonomy data, maybe.
 	 *
-	 * @param  int[] $values         The new values.
-	 * @param  int[] $current_values The current values.
-	 * @return int[] $values         Sanitized values.
+	 * @param  array $values         The new values.
+	 * @param  array $current_values The current values.
+	 * @return array $values         Sanitized values.
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
 		if ( ! empty( $this->datasource ) ) {
