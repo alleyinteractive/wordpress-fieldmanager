@@ -24,7 +24,6 @@
 	</rule>
 
 	<!-- New files must follow coding standards. These files are exempt, for now: -->
-	<exclude-pattern>php/class-fieldmanager-media.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-options.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-radios.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-richtextarea.php</exclude-pattern>
