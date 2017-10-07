@@ -23,7 +23,7 @@ class Fieldmanager_Datasource {
 	/**
 	 * Options callback.
 	 *
-	 * @var bool
+	 * @var string
 	 */
 	public $options_callback = null;
 
