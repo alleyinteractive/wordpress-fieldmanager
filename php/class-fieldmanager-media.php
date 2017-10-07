@@ -69,9 +69,8 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public $thumbnail_class = 'thumbnail';
 
 	/**
-	 * Which size a preview image should be.
-	 * Should be a string (e.g. "thumbnail", "large", or some size created with add_image_size)
-	 * You can use an array here.
+	 * Which size a preview image should be. e.g. "thumbnail", "large", or some
+	 * size created with add_image_size.
 	 *
 	 * @var string
 	 */
