@@ -347,9 +347,3 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		}
 	}
 }
-
-require_once( dirname( __FILE__ ) . '/class-fieldmanager-select.php' );
-
-require_once( dirname( __FILE__ ) . '/class-fieldmanager-radios.php' );
-
-require_once( dirname( __FILE__ ) . '/class-fieldmanager-checkboxes.php' );
