@@ -27,5 +27,4 @@
 
 	<!-- New files must follow coding standards. These files are exempt, for now: -->
 	<exclude-pattern>php/context/class-fieldmanager-context-user.php</exclude-pattern>
-	<exclude-pattern>templates/options-radios.php</exclude-pattern>
 </ruleset>
