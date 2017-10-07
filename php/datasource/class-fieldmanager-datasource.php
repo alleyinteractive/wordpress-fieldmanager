@@ -86,7 +86,7 @@ class Fieldmanager_Datasource {
 					/* translators: 1: property name, 2: current class name, 3: option name */
 					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
 					$k,
-					__CLASS__,
+					get_class(),
 					! empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
 				if ( ! Fieldmanager_Field::$debug ) {
