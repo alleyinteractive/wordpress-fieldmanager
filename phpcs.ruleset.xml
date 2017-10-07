@@ -13,15 +13,13 @@
 		<exclude-pattern>templates/</exclude-pattern>
 	</rule>
 
-	<rule ref="WordPress.VIP.RestrictedFunctions.get_page_by_path">
+	<rule ref="WordPress.VIP.RestrictedFunctions.get_page_by_path_get_page_by_path">
 		<!-- Avoid functional churn in Fieldmanager_Util_Term_Meta, which is deprecated. -->
 		<exclude-pattern>class-fieldmanager-util-term-meta.php</exclude-pattern>
 	</rule>
 
 	<!-- New files must follow coding standards. These files are exempt, for now: -->
-	<exclude-pattern>fieldmanager.php$</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-autocomplete.php</exclude-pattern>
-	<exclude-pattern>php/class-fieldmanager-checkbox.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-draggablepost.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-field.php</exclude-pattern>
 	<exclude-pattern>php/class-fieldmanager-grid.php</exclude-pattern>
