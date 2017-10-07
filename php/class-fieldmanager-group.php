@@ -100,7 +100,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	/**
 	 * Function that tells whether the group is empty or not. Gets an array of form values.
 	 *
-	 * @var callable|null
+	 * @var callable
 	 */
 	public $group_is_empty = null;
 

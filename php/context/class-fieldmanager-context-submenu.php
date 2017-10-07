@@ -49,7 +49,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	/**
 	 * Only used for options pages.
 	 *
-	 * @var string|Null
+	 * @var string
 	 */
 	public $submit_button_label = null;
 
@@ -57,7 +57,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * The "success" message displayed after options are saved. Defaults to
 	 * "Options updated".
 	 *
-	 * @var string|null
+	 * @var string
 	 */
 	public $updated_message = null;
 

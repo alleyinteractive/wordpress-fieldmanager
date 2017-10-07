@@ -78,7 +78,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	 * If not empty, set this object's ID as a value on the user. This is used to
 	 * establish two-way relationships.
 	 *
-	 * @var string|null
+	 * @var string
 	 */
 	public $reciprocal = null;
 

@@ -186,14 +186,14 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Data type this element is used in, generally set internally.
 	 *
-	 * @var string|null
+	 * @var string
 	 */
 	public $data_type = null;
 
 	/**
 	 * ID for $this->data_type, eg $post->ID, generally set internally.
 	 *
-	 * @var int|null
+	 * @var int
 	 */
 	public $data_id = null;
 
@@ -287,7 +287,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Function that parses an index value and returns an optionally modified value.
 	 *
-	 * @var callable|null
+	 * @var callable
 	 */
 	public $index_filter = null;
 
