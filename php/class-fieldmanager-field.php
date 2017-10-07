@@ -34,13 +34,10 @@ abstract class Fieldmanager_Field {
 	public $limit = 1;
 
 	/**
-	 * DEPREATED: How many of these fields to display initially, if $limit != 1.
-	 *
 	 * @deprecated This argument will have no impact. It only remains to avoid
 	 *             throwing exceptions in code that used it previously.
-	 * @var int
 	 */
-	public $starting_count = 1;
+	public $starting_count;
 
 	/**
 	 * How many of these fields to display at a minimum, if $limit != 1. If
