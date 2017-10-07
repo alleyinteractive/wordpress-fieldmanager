@@ -6,7 +6,7 @@
  */
 
 /**
- * Datasource to populate autocomplete and option fields with WordPress Terms.
+ * Datasource to populate autocomplete and option fields with WordPress terms.
  */
 class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
