@@ -112,14 +112,18 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 				<div class="updated success"><p><?php echo esc_html( $this->updated_message ); ?></p></div>
 			<?php endif ?>
 
-			<h1><?php echo esc_html( $this->page_title ) ?></h1>
+			<h1><?php echo esc_html( $this->page_title ); ?></h1>
 
-			<form method="POST" id="<?php echo esc_attr( $this->uniqid ) ?>">
+			<form method="POST" id="<?php echo esc_attr( $this->uniqid ); ?>">
 				<div class="fm-submenu-form-wrapper">
 					<input type="hidden" name="fm-options-action" value="<?php echo esc_attr( sanitize_title( $this->fm->name ) ); ?>" />
-					<?php $this->render_field( array( 'data' => $values ) ); ?>
+					<?php
+					$this->render_field( array(
+						'data' => $values,
+					) );
+					?>
 				</div>
-				<?php submit_button( $this->submit_button_label, 'primary', 'fm-submit' ) ?>
+				<?php submit_button( $this->submit_button_label, 'primary', 'fm-submit' ); ?>
 			</form>
 		</div>
 		<?php
@@ -148,7 +152,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		}
 
 		if ( $this->save_submenu_data() ) {
-			wp_safe_redirect( esc_url_raw( add_query_arg( array( 'msg' => 'success' ), $this->url() ) ) );
+			wp_safe_redirect( esc_url_raw( add_query_arg( 'msg', 'success', $this->url() ) ) );
 			exit;
 		}
 	}
