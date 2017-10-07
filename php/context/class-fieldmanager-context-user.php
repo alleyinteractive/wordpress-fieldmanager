@@ -57,7 +57,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 		echo '</div>';
 
 		// Check if any validation is required
-		$fm_validation = Fieldmanager_Util_Validation( 'your-profile', 'user' );
+		$fm_validation = fieldmanager_util_validation( 'your-profile', 'user' );
 		$fm_validation->add_field( $this->fm );
 	}
 

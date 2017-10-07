@@ -83,7 +83,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 		echo '</div>';
 
 		// Check if any validation is required.
-		$fm_validation = Fieldmanager_Util_Validation( $this->uniqid, 'page' );
+		$fm_validation = fieldmanager_util_validation( $this->uniqid, 'page' );
 		$fm_validation->add_field( $this->fm );
 	}
 

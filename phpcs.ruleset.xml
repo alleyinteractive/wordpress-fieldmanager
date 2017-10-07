@@ -33,7 +33,6 @@
 	<exclude-pattern>php/context/class-fieldmanager-context.php</exclude-pattern>
 	<exclude-pattern>php/datasource/class-fieldmanager-datasource-term.php</exclude-pattern>
 	<exclude-pattern>php/datasource/class-fieldmanager-datasource.php</exclude-pattern>
-	<exclude-pattern>php/util/class-fieldmanager-util-validation.php</exclude-pattern>
 	<exclude-pattern>templates/options-radios.php</exclude-pattern>
 	<exclude-pattern>templates/textfield.php</exclude-pattern>
 </ruleset>
