@@ -16,16 +16,16 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 
 	/**
 	 * Keyed array defining repository boxes and what their content should be. Keys are the machine names of the repositories. Each can include:
-	 *		- 'label' (string) the publicly displayed label of the box (eg 'News Artickes')
-	 *		- 'post_type' (string or array of strings) post type(s) to select for this box
-	 *		- 'length' (int) number of items to show in the box
-	 *	 	- 'orderby' (string) field to order the query by, as allowed by WP_Query
-	 *		- 'order' (string) ASC or DESC
-	 *		- 'taxonomy_args' (array) arguments to pass to WP_Query to filter by category (see https://codex.wordpress.
-	 *			org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy filtering will be performed.
-	 *		- 'callback' (callable) a custom function to call in lieu of WP_Query to retrieve posts for this repository. The function
-	 *			must have the signature callback($key, $data) and must return an array of post ids. If callback is set, all the above
-	 *			options (except label) will be overridden.
+	 *     - 'label' (string) the publicly displayed label of the box (eg 'News Artickes')
+	 *     - 'post_type' (string or array of strings) post type(s) to select for this box
+	 *     - 'length' (int) number of items to show in the box
+	 *     - 'orderby' (string) field to order the query by, as allowed by WP_Query
+	 *     - 'order' (string) ASC or DESC
+	 *     - 'taxonomy_args' (array) arguments to pass to WP_Query to filter by category (see https://codex.wordpress.
+	 *       org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy filtering will be performed.
+	 *     - 'callback' (callable) a custom function to call in lieu of WP_Query to retrieve posts for this repository. The function
+	 *       must have the signature callback($key, $data) and must return an array of post ids. If callback is set, all the above
+	 *       options (except label) will be overridden.
 	 *
 	 * @var array
 	 */
@@ -150,7 +150,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 
 		foreach ( $this->bins as $bin => $label ) {
 			$out .= sprintf( '<input type="hidden" value="%s" name="%s" id="%s" />',
-				empty( $value[ $bin ] ) ?  '' : implode( ',', $value[ $bin ] ),
+				empty( $value[ $bin ] ) ? '' : implode( ',', $value[ $bin ] ),
 				$this->get_form_name() . '[' . $bin . ']',
 				$bin
 			);
