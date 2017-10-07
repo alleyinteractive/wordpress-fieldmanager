@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_Util_Term_Meta.
+ * Class file for Fieldmanager_Util_Term_Meta
  *
  * @package Fieldmanager
  */
@@ -47,10 +47,7 @@ class Fieldmanager_Util_Term_Meta {
 	}
 
 	/**
-	 * Sets up the class
-	 *
-	 * @access public
-	 * @return void
+	 * Sets up the class.
 	 */
 	public function setup() {
 		add_action( 'init', array( $this, 'create_content_type' ) );
@@ -59,9 +56,7 @@ class Fieldmanager_Util_Term_Meta {
 	}
 
 	/**
-	 * Create the custom content type
-	 *
-	 * @return void
+	 * Create the custom content type.
 	 */
 	public function create_content_type() {
 		register_post_type( $this->post_type, array(

@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_Util_Assets.
+ * Class file for Fieldmanager_Util_Assets
  *
  * @package Fieldmanager
  */
@@ -34,7 +34,7 @@ class Fieldmanager_Util_Assets {
 	/**
 	 * Ensure that the enqueue method only gets hooked once.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $hooked = false;
 

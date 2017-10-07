@@ -1,22 +1,27 @@
 <?php
+/**
+ * Class file for Fieldmanager_Hidden
+ *
+ * @package Fieldmanager
+ */
 
 /**
  * Hidden input field.
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_Hidden extends Fieldmanager_Field {
 
 	/**
+	 * Override field_class.
+	 *
 	 * @var string
-	 * Override field_class
 	 */
 	public $field_class = 'hidden';
 
 	/**
-	 * Hidden form element
-	 * @param mixed $value
-	 * @return string HTML
+	 * Hidden form element.
+	 *
+	 * @param mixed $value The current value.
+	 * @return string HTML string.
 	 */
 	public function form_element( $value = '' ) {
 		return sprintf(
