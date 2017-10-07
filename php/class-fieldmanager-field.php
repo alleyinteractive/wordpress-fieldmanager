@@ -475,6 +475,7 @@ abstract class Fieldmanager_Field {
 	 * @param array $values The current values of this element, in a tree structure
 	 *                      if the element has children.
 	 * @return string HTML for all form elements.
+	 * @throws \FM_Developer_Exception If a field has both a display if src and selector.
 	 */
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
