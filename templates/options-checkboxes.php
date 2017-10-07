@@ -2,7 +2,7 @@
 /**
  * Default template for Fieldmanager_Checkboxes.
  *
- * @package Fieldmanager
+ * @package Fieldmanager\Template
  */
 
 $cb_id = $this->get_element_id() . '-' . sanitize_text_field( $data_row['value'] );
