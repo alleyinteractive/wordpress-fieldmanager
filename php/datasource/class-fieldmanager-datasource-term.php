@@ -412,7 +412,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 			// Cache the query.
 			$cache_key = 'fm_datasource_term_get_term_' . $term_id;
-			if ( false === $term = wp_cache_get( $cache_key ) ) {
+			$term = wp_cache_get( $cache_key );
+			if ( false === $term ) {
 				$term = $wpdb->get_row( $wpdb->prepare(
 					"SELECT t.*, tt.*
 					FROM $wpdb->terms AS t  INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
@@ -424,7 +425,11 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			}
 			return $term;
 		} else {
-			$terms = get_terms( $this->get_taxonomies(), array( 'hide_empty' => false, 'include' => array( $term_id ), 'number' => 1 ) );
+			$terms = get_terms( $this->get_taxonomies(), array(
+				'hide_empty' => false,
+				'include' => array( $term_id ),
+				'number' => 1,
+			) );
 			return ! empty( $terms[0] ) ? $terms[0] : null;
 		}
 	}
