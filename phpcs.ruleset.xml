@@ -8,6 +8,11 @@
 
 	<rule ref="WordPress" />
 
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<!-- Allow templates to put closing PHP tags immediately after the file header. -->
+		<exclude-pattern>fieldmanager.php</exclude-pattern>
+	</rule>
+
 	<rule ref="Squiz.Commenting.FileComment.SpacingAfterComment">
 		<!-- Allow templates to put closing PHP tags immediately after the file header. -->
 		<exclude-pattern>templates/</exclude-pattern>
