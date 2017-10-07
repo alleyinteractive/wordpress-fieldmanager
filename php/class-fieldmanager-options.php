@@ -29,7 +29,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 * Is the data grouped?
 	 * E.g. should we use <optgroup>
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $grouped = false;
 
@@ -43,7 +43,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	/**
 	 * Allow multiple selections?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $multiple = false;
 
@@ -57,7 +57,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	/**
 	 * Ensure that the datasource only runs once.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $has_built_data = false;
 

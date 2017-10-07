@@ -27,7 +27,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	/**
 	 * Sort taxonomy hierarchically and indent child categories with dashes?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $taxonomy_hierarchical = false;
 
@@ -41,7 +41,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	/**
 	 * Pass $append = true to wp_set_object_terms?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $append_taxonomy = false;
 
@@ -62,14 +62,14 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	/**
 	 * If true, store the term_taxonomy_id instead of the term_id.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $store_term_taxonomy_id = false;
 
 	/**
 	 * Build this datasource using AJAX.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $use_ajax = true;
 

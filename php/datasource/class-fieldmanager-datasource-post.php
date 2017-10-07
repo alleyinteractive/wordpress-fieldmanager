@@ -33,7 +33,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * Allow AJAX. If set to false, Autocomplete will pre-load get_items() with no fragment,
 	 * so False could cause performance problems.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $use_ajax = true;
 
@@ -48,7 +48,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	/**
 	 * Display the post publish date in the typeahead menu.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $show_date = false;
 
@@ -62,21 +62,21 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	/**
 	 * Publish the child post when/if the parent is published.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $publish_with_parent = false;
 
 	/**
 	 * Save to post parent.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $save_to_post_parent = false;
 
 	/**
 	 * Only save to post parent.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $only_save_to_post_parent = false;
 

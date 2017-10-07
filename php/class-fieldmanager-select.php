@@ -25,21 +25,21 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	/**
 	 * Should we support type-ahead? i.e. use chosen.js or not.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $type_ahead = false;
 
 	/**
 	 * Send an empty element first.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $first_empty = false;
 
 	/**
 	 * Tell FM to save multiple values.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $multiple = false;
 

@@ -88,7 +88,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	/**
 	 * Static variable so we only load media JS once.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public static $has_registered_media = false;
 

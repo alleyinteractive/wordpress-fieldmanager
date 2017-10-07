@@ -23,21 +23,21 @@ class Fieldmanager_Datasource {
 	/**
 	 * Options callback.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $options_callback = null;
 
 	/**
 	 * Whether or not to use AJAX.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $use_ajax = false;
 
 	/**
 	 * Allow option groups.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $allow_optgroups = true;
 
@@ -58,7 +58,7 @@ class Fieldmanager_Datasource {
 	/**
 	 * If true, group elements.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $grouped = false;
 

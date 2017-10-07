@@ -42,7 +42,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	/**
 	 * Provide "Use image?" checkbox for draggable divs?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $use_image_checkbox = false;
 

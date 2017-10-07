@@ -38,14 +38,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	/**
 	 * If true, this group can be collapsed by clicking its header.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $collapsible = false;
 
 	/**
 	 * If true, this group is collapsed by default.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $collapsed = false;
 
@@ -53,7 +53,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * Use tabbed groups. Currently supports "horizontal" or "vertical". Default
 	 * is false, which means that the group will not be tabbed.
 	 *
-	 * @var boolean|string
+	 * @var bool|string
 	 */
 	public $tabbed = false;
 
@@ -67,7 +67,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	/**
 	 * Persist the active tab on the group between sessions.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $persist_active_tab = true;
 
@@ -111,14 +111,14 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * If false, Fieldmanager will not check for collisions among the meta keys
 	 * created for this group's fields and other registered fields.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $add_to_prefix = true;
 
 	/**
 	 * Iterator value for how many children we have rendered.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $child_count = 0;
 
@@ -130,7 +130,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * automatically (for instance, where descendants are added after the group
 	 * has been constructed).
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $has_unserialized_descendants = false;
 

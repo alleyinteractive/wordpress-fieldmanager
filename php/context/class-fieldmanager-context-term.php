@@ -28,14 +28,14 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	/**
 	 * Whether or not to show the fields on the term add form.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $show_on_add = true;
 
 	/**
 	 * Whether or not to show the fields on the term edit form.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $show_on_edit = true;
 
@@ -62,7 +62,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * This should be false whenever possible to instead use core's built-in
 	 * term meta (introduced in WordPress 4.4).
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $use_fm_meta = false;
 

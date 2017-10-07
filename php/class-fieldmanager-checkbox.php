@@ -27,21 +27,21 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	/**
 	 * Override save_empty default for this element type.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $save_empty = true;
 
 	/**
 	 * Override inline_label.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $inline_label = true;
 
 	/**
 	 * Override label_after_element.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $label_after_element = true;
 

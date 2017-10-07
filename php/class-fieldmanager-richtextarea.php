@@ -20,7 +20,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	/**
 	 * Apply TinyMCE filters.
 	 *
-	 * @var boolean
+	 * @var bool
 	 * @deprecated
 	 */
 	public $apply_mce_filters = true;
@@ -45,7 +45,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	/**
 	 * Add code plugin.
 	 *
-	 * @var boolean
+	 * @var bool
 	 * @deprecated
 	 */
 	public $add_code_plugin = false;
@@ -90,7 +90,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * Indicates if we should be altering the tinymce config.
 	 *
 	 * @access protected
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $edit_config = false;
 

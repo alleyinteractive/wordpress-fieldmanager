@@ -49,7 +49,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	/**
 	 * Doing internal update.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private static $doing_internal_update = false;
 

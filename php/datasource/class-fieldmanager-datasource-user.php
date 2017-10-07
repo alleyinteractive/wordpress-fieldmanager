@@ -31,7 +31,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	 * Allow AJAX. If set to false, Autocomplete will pre-load get_items() with no fragment,
 	 * so False could cause performance problems.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $use_ajax = true;
 

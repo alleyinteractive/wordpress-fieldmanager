@@ -17,14 +17,14 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	/**
 	 * Require an exact match; e.g. prevent the user from entering free text
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $exact_match = true;
 
 	/**
 	 * Show the edit link.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $show_edit_link = false;
 
@@ -56,7 +56,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	/**
 	 * Override save_empty for this element type
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $save_empty = false;
 

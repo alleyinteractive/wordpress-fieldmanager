@@ -15,14 +15,14 @@ abstract class Fieldmanager_Field {
 	/**
 	 * If true, throw exceptions for illegal behavior.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public static $debug = FM_DEBUG;
 
 	/**
 	 * Indicate that the base FM assets have been enqueued so we only do it once.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public static $enqueued_base_assets = false;
 
@@ -84,14 +84,14 @@ abstract class Fieldmanager_Field {
 	 * If true, the label and the element will display on the same line. Some
 	 * elements may not support this.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $inline_label = false;
 
 	/**
 	 * If true, the label will be displayed after the element.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $label_after_element = false;
 
@@ -105,7 +105,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * If true, the description will be displayed after the element.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $description_after_element = true;
 
@@ -113,7 +113,7 @@ abstract class Fieldmanager_Field {
 	 * Extra HTML attributes to apply to the form element. Use boolean true to
 	 * apply a standalone attribute, e.g. 'required' => true.
 	 *
-	 * @var string|boolean|array
+	 * @var string|bool|array
 	 */
 	public $attributes = array();
 
@@ -127,14 +127,14 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Repeat the label for each element if $limit > 1.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $one_label_per_item = true;
 
 	/**
 	 * Allow draggable sorting if $limit > 1.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $sortable = false;
 
@@ -182,7 +182,7 @@ abstract class Fieldmanager_Field {
 	 * Makes the field required on WordPress context forms that already have built-in validation.
 	 * This is necessary only for the fields used with the term add context.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $required = false;
 
@@ -204,21 +204,21 @@ abstract class Fieldmanager_Field {
 	 * If true, save empty elements to DB (if $this->limit != 1; single elements
 	 * are always saved).
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $save_empty = false;
 
 	/**
 	 * Do not save this field (useful for fields which handle saving their own data)
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $skip_save = false;
 
 	/**
 	 * Save this field additionally to an index.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $index = false;
 
@@ -226,7 +226,7 @@ abstract class Fieldmanager_Field {
 	 * Save the fields to their own keys (only works in some contexts). Default
 	 * is true.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $serialize_data = true;
 
@@ -261,7 +261,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * If true, remove any default meta boxes that are overridden by Fieldmanager fields.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $remove_default_meta_boxes = false;
 
@@ -322,7 +322,7 @@ abstract class Fieldmanager_Field {
 	 * If $is_proto is true, we're rendering the prototype element for a field
 	 * that can have infinite instances.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $is_proto = false;
 
@@ -339,21 +339,21 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @todo Add extra wrapper info rather than this specific.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $is_tab = false;
 
 	/**
 	 * Have we added this field as a meta box yet?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	private $meta_box_actions_added = false;
 
 	/**
 	 * Whether or not this field is present on the attachment edit screen.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $is_attachment = false;
 

@@ -20,7 +20,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	/**
 	 * Was the form saved?
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $did_save = false;
 
