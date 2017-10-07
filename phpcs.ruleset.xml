@@ -24,7 +24,4 @@
 		<!-- Avoid functional churn in Fieldmanager_Util_Term_Meta, which is deprecated. -->
 		<exclude-pattern>class-fieldmanager-util-term-meta.php</exclude-pattern>
 	</rule>
-
-	<!-- New files must follow coding standards. These files are exempt, for now: -->
-	<exclude-pattern>php/context/class-fieldmanager-context-user.php</exclude-pattern>
 </ruleset>

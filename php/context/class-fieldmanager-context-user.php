@@ -1,23 +1,28 @@
 <?php
+/**
+ * Class file for Fieldmanager_Context_User.
+ *
+ * @package Fieldmanager_Context_Storable
+ */
 
 /**
  * Use fieldmanager on the user profile screen and save data primarily to user
  * meta.
- *
- * @package Fieldmanager_Context
  */
 class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 
 	/**
-	 * Group Title
+	 * Group Title.
+	 *
 	 * @var string
 	 */
 	public $title;
 
 	/**
-	 * Add fieldmanager to user form
-	 * @param string $title
-	 * @param Fieldmanager_Field $fm
+	 * Add fieldmanager to user form.
+	 *
+	 * @param string             $title The form title.
+	 * @param Fieldmanager_Field $fm    The base field.
 	 */
 	public function __construct( $title = '', $fm = null ) {
 		$this->title = $title;
@@ -42,21 +47,22 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	}
 
 	/**
-	 * Render the form on the user profile page
-	 * @return void
+	 * Render the form on the user profile page.
+	 *
+	 * @param WP_User $user The user.
 	 */
 	public function render_user_form( $user ) {
 		$this->fm->data_id = $user->ID;
 		$this->fm->data_type = 'user';
 
-		if ( !empty( $this->title ) ) {
+		if ( ! empty( $this->title ) ) {
 			echo '<h3>' . esc_html( $this->title ) . '</h3>';
 		}
 		echo '<div class="fm-user-form-wrapper">';
 		$this->render_field();
 		echo '</div>';
 
-		// Check if any validation is required
+		// Check if any validation is required.
 		$fm_validation = fieldmanager_util_validation( 'your-profile', 'user' );
 		$fm_validation->add_field( $this->fm );
 	}
@@ -64,7 +70,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	/**
 	 * Save user form.
 	 *
-	 * @param int $user_id
+	 * @param int $user_id The user ID.
 	 */
 	public function save_user_form( $user_id ) {
 		if ( ! $this->is_valid_nonce() ) {
@@ -82,7 +88,8 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	/**
 	 * Save data to user meta.
 	 *
-	 * @param  int $user_id
+	 * @param int   $user_id The user ID.
+	 * @param array $data    The user data.
 	 */
 	public function save_to_user_meta( $user_id, $data = null ) {
 		$this->fm->data_id = $user_id;
@@ -95,6 +102,10 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * Get user meta.
 	 *
 	 * @see get_user_meta().
+	 *
+	 * @param int    $user_id  The User ID.
+	 * @param string $meta_key The meta key for the user meta data.
+	 * @param bool   $single   Only return a single value or all values.
 	 */
 	protected function get_data( $user_id, $meta_key, $single = false ) {
 		return call_user_func(
@@ -122,6 +133,11 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * Add user meta.
 	 *
 	 * @see add_user_meta().
+	 *
+	 * @param int    $user_id    The User ID.
+	 * @param string $meta_key   The meta key for the user meta data.
+	 * @param mixed  $meta_value The meta data.
+	 * @param bool   $unique     Only save it to a single option.
 	 */
 	protected function add_data( $user_id, $meta_key, $meta_value, $unique = false ) {
 		return call_user_func(
@@ -151,6 +167,11 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * Update user meta.
 	 *
 	 * @see update_user_meta().
+	 *
+	 * @param int    $user_id         The User ID.
+	 * @param string $meta_key        The meta key for the user meta data.
+	 * @param mixed  $meta_value      The meta data.
+	 * @param mixed  $data_prev_value The previous meta data.
 	 */
 	protected function update_data( $user_id, $meta_key, $meta_value, $data_prev_value = '' ) {
 		return call_user_func(
@@ -180,6 +201,10 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * Delete user meta.
 	 *
 	 * @see delete_user_meta().
+	 *
+	 * @param int    $user_id         The User ID.
+	 * @param string $meta_key        The meta key for the user meta data.
+	 * @param mixed  $meta_value      The meta data.
 	 */
 	protected function delete_data( $user_id, $meta_key, $meta_value = '' ) {
 		return call_user_func(
