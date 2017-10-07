@@ -241,8 +241,8 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Field name and value on which to display element. Sample:
 	 * $element->display_if = array(
-	 *	'src' => 'display-if-src-element',
-	 *	'value' => 'display-if-src-value'
+	 *     'src' => 'display-if-src-element',
+	 *     'value' => 'display-if-src-value',
 	 * );
 	 *
 	 * @var array[]
@@ -431,8 +431,11 @@ abstract class Fieldmanager_Field {
 				$this->$key = $value;
 			} elseif ( self::$debug ) {
 				$message = sprintf(
+					/* translators: 1: option key, 2: field class, 3: field name */
 					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
-					$key, get_class( $this ), ! empty( $options['name'] ) ? $options['name'] : 'NULL'
+					$key,
+					get_class( $this ),
+					! empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
 				throw new FM_Developer_Exception( esc_html( $message ) );
 			}
@@ -604,7 +607,7 @@ abstract class Fieldmanager_Field {
 
 		$out .= sprintf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 
-		$label = $this->get_element_label( );
+		$label = $this->get_element_label();
 		$render_label_after = false;
 		/**
 		 * Hide the label if it is empty or if this is a tab since it would duplicate
@@ -818,6 +821,7 @@ abstract class Fieldmanager_Field {
 				return;
 			}
 
+			/* translators: %d: field limit */
 			$this->_unauthorized_access( sprintf( __( '$values should be an array because $limit is %d', 'fieldmanager' ), $this->limit ) );
 		}
 
@@ -833,6 +837,7 @@ abstract class Fieldmanager_Field {
 		// If $this->limit is not 0 or 1, and $values has more than $limit, that could also be an attack...
 		if ( $this->limit > 1 && count( $values ) > $this->limit ) {
 			$this->_unauthorized_access(
+				/* translators: 1: value count, 2: field limit */
 				sprintf( __( 'submitted %1$d values against a limit of %2$d', 'fieldmanager' ), count( $values ), $this->limit )
 			);
 		}
@@ -977,6 +982,7 @@ abstract class Fieldmanager_Field {
 		foreach ( $this->validate as $func ) {
 			if ( ! call_user_func( $func, $value ) ) {
 				$this->_failed_validation( sprintf(
+					/* translators: 1: field value, 2: field label */
 					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
 					(string) $value,
 					$this->label
