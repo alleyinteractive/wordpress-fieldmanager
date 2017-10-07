@@ -12,5 +12,7 @@
 	name="<?php echo esc_attr( $this->get_form_name() ); ?>"
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
 	value="<?php echo esc_attr( $value ); ?>"
-	<?php echo $this->get_element_attributes(); // Escaped internally. WPCS XSS okay. ?>
+	<?php
+	echo $this->get_element_attributes(); // Escaped internally. WPCS XSS okay.
+	?>
 />

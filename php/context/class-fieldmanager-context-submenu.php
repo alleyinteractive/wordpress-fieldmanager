@@ -108,9 +108,11 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		$values = get_option( $this->fm->name, null );
 		?>
 		<div class="wrap">
-			<?php if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) : // WPCS: input var okay. ?>
+			<?php
+			if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) : // WPCS: input var okay.
+				?>
 				<div class="updated success"><p><?php echo esc_html( $this->updated_message ); ?></p></div>
-			<?php endif ?>
+			<?php endif; ?>
 
 			<h1><?php echo esc_html( $this->page_title ); ?></h1>
 
