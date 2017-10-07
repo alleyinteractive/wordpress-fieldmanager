@@ -34,8 +34,11 @@ abstract class Fieldmanager_Field {
 	public $limit = 1;
 
 	/**
+	 * This is no longer used.
+	 *
 	 * @deprecated This argument will have no impact. It only remains to avoid
 	 *             throwing exceptions in code that used it previously.
+	 * @var int
 	 */
 	public $starting_count;
 
@@ -607,6 +610,7 @@ abstract class Fieldmanager_Field {
 
 		$label = $this->get_element_label();
 		$render_label_after = false;
+
 		/*
 		 * Hide the label if it is empty or if this is a tab since it would duplicate
 		 * the title from the tab label.
