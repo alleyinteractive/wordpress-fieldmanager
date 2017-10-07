@@ -148,7 +148,7 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Function to use to sanitize input.
 	 *
-	 * @var callback
+	 * @var callable
 	 */
 	public $sanitize = 'sanitize_text_field';
 

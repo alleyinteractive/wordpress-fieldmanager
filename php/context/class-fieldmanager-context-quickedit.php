@@ -29,7 +29,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 * QuickEdit fields are tied to custom columns in the list of posts. This callback should return a value to
 	 * display in a custom column.
 	 *
-	 * @var callback
+	 * @var callable
 	 */
 	public $column_display_callback = null;
 
@@ -54,8 +54,8 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 *
 	 * @param string             $title                   Title of the form.
 	 * @param mixed              $post_types              Post types to show form on.
-	 * @param callback           $column_display_callback Display callback.
-	 * @param callback           $column_title            Column title.
+	 * @param callable           $column_display_callback Display callback.
+	 * @param callable           $column_title            Column title.
 	 * @param Fieldmanager_Field $fm                      The base field.
 	 */
 	public function __construct( $title, $post_types, $column_display_callback, $column_title = '', $fm = null ) {
