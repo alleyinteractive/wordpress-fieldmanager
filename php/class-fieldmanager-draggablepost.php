@@ -231,7 +231,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		}
 		$result = array();
 		foreach ( $value as $key => $array ) {
-			if ( '_image_flags' == $key ) {
+			if ( '_image_flags' === $key ) {
 				continue;
 			}
 			$result = array_merge( $result, $value[ $key ] );
