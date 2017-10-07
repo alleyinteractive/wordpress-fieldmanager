@@ -16,10 +16,10 @@ $cb_id = $this->get_element_id() . '-' . esc_attr( sanitize_text_field( $data_ro
 		name="<?php echo esc_attr( $this->get_form_name() ); ?>"
 		id="<?php echo esc_attr( $cb_id ); ?>"
 		<?php
-		echo $this->get_element_attributes(); // Escaped in fuction call WPCS: XSS okay.
+		echo $this->get_element_attributes(); // Escaped interally. xss ok.
 		?>
 		<?php
-		echo $this->option_selected( $data_row['value'], $value, 'checked' ); // Escaped in fuction call WPCS: XSS okay.
+		echo $this->option_selected( $data_row['value'], $value, 'checked' ); // Escaped interally. xss ok.
 		?>
 	/>
 	<label for="<?php echo esc_attr( $cb_id ); ?>" class="fm-option-label">
