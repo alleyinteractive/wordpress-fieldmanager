@@ -29,7 +29,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$context = $this->get_context( $name );
 		$html = $this->get_html( $context, $name );
 
-		$this->assertContains( '<h2>Tools Meta Fields</h2>', $html );
+		$this->assertContains( '<h1>Tools Meta Fields</h1>', $html );
 		$this->assertRegExp( '/<input type="hidden"[^>]+name="fieldmanager-' . $name . '-nonce"/', $html );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[name\]"[^>]+value=""/', $html );
 		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[email\]"[^>]+value=""/', $html );
@@ -122,6 +122,35 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertEquals( admin_url( 'edit.php?post_type=page&page=' . $name_2 ), $context_2->url() );
 		$this->assertEquals( admin_url( 'admin.php?page=' . $name_3 ), $context_3->url() );
 		$this->assertEquals( admin_url( 'admin.php?page=' . $name_4 ), $context_4->url() );
+	}
+
+	public function test_skip_save() {
+		$name = 'skip_save';
+		fm_register_submenu_page( $name, 'tools.php', 'Skip Save Fields' );
+		// Should save the first time
+		$context = $this->get_context( 'skip_save' );
+		$data = array(
+			'name'      => 'Foo',
+			'email'     => 'foo@alleyinteractive.com',
+			'remember'  => true,
+			'number'    => 11,
+			'group'     => array( 'preferences' => '' ),
+		);
+		$this->assertTrue( $context->save_submenu_data( $data ) );
+		$this->assertEquals( $data, get_option( 'skip_save' ) );
+		// Shouldn't save the second time
+		$context->fm->skip_save = true;
+		delete_option( 'skip_save' );
+		$this->assertFalse( get_option( 'skip_save' ) );
+		$this->assertTrue( $context->save_submenu_data( $data ) );
+		$this->assertFalse( get_option( 'skip_save' ) );
+		// Permit saving the group, but not an individual field
+		$context->fm->skip_save = false;
+		$context->fm->children['name']->skip_save = true;
+		$this->assertTrue( $context->save_submenu_data( $data ) );
+		$option = get_option( 'skip_save' );
+		$this->assertFalse( isset( $option['name'] ) );
+		$this->assertEquals( 'foo@alleyinteractive.com', $option['email'] );
 	}
 
 	/**
@@ -222,6 +251,17 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	public function presave_alter_number( $values, $context ) {
 		$values['number'] = 11;
 		return $values;
+	}
+
+	public function test_updated_message() {
+		$name = 'message_customization';
+		$updated_message = rand_str();
+		fm_register_submenu_page( $name, 'tools.php', 'Message Customization' );
+		$context = $this->get_context( $name );
+		$context->updated_message = $updated_message;
+		$html = $this->get_html( $context, $name );
+		$this->build_post( $html, $name );
+		$this->assertContains( "<div class=\"updated success\"><p>{$updated_message}</p></div>", $this->get_html( $context, $name ) );
 	}
 
 }

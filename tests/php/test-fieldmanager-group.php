@@ -32,7 +32,7 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 	 *
 	 * @param  object $field     Some Fieldmanager_Field object.
 	 * @param  array  $test_data Data to save (and use when rendering)
-	 * @return string            Rendered HTML
+	 * @return string Rendered HTML.
 	 */
 	private function _get_html_for( $field, $test_data = null ) {
 		ob_start();
@@ -907,5 +907,113 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		//indicates add another button is at the top (add_another_position = top).
 		$this->assertTrue( $add_another_occurrence < $text_field_occurrence );
 
+	}
+
+	public function test_textfield_zero_input_in_group() {
+		$group = new Fieldmanager_Group( array(
+			'name' => 'group',
+			'children' => array(
+				'a' => new Fieldmanager_Textfield(),
+			),
+		) );
+
+		$group_data = array(
+			'a' => 0,
+		);
+
+		$context = $group->add_meta_box( 'group', $this->post );
+		$context->save_to_post_meta( $this->post->ID, $group_data );
+		$this->assertEquals( array( 'a' => 0 ), get_post_meta( $this->post->ID, 'group', true ) );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertContains( 'value="0"', $html );
+
+		$group_data = array(
+			'a' => '',
+		);
+		$context->save_to_post_meta( $this->post->ID, $group_data );
+		$this->assertEquals( array( 'a' => '' ), get_post_meta( $this->post->ID, 'group', true ) );
+	}
+
+	public function test_obey_skip_save_inside_groups() {
+		$group = new Fieldmanager_Group( array(
+			'name' => 'group',
+			'children' => array(
+				'a' => new Fieldmanager_Textfield( array(
+					'label' => 'a',
+					'skip_save' => true,
+				) ),
+				'b' => new Fieldmanager_Textfield( array(
+					'label' => 'b',
+					'skip_save' => false,
+				) ),
+			),
+		) );
+
+		$skip = rand_str();
+		$save = rand_str();
+
+		$group_data = array(
+			'a' => $skip,
+			'b' => $save,
+		);
+
+		$context = $group->add_meta_box( 'group', $this->post );
+		$context->save_to_post_meta( $this->post->ID, $group_data );
+		$meta = get_post_meta( $this->post->ID, 'group', true );
+
+		$this->assertTrue( ! isset( $meta['a'] ) );
+		$this->assertEquals( $meta['b'], $save );
+
+		ob_start();
+		$context->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+
+		$this->assertNotContains( $skip, $html );
+		$this->assertContains( $save, $html );
+	}
+
+	public function test_textfield_zero_input_in_repeating_group() {
+		$save_data = array(
+			array( 'a' => '1' ),
+			array( 'a' => '0' ),
+			array( 'a' => '' ),
+			array( 'a' => '2' ),
+		);
+		$stored_data = array(
+			array( 'a' => '1' ),
+			array( 'a' => '0' ),
+			array( 'a' => '2' ),
+		);
+
+		$group = new Fieldmanager_Group( array(
+			'name' => 'group',
+			'limit' => 0,
+			'children' => array(
+				'a' => new Fieldmanager_Textfield(),
+			),
+		) );
+		$group->add_meta_box( 'group', $this->post->ID )->save_to_post_meta( $this->post->ID, $save_data );
+		$this->assertEquals( $stored_data, get_post_meta( $this->post->ID, 'group', true ) );
+	}
+
+	public function test_collapsed_group() {
+		$args = array(
+			'name' => 'base_group',
+			'label' => 'Testing Collapsed',
+			'children' => array(
+				'test_basic' => new Fieldmanager_TextField(),
+			),
+		);
+
+		$base = new Fieldmanager_Group( $args );
+		$this->assertNotContains( 'fmjs-collapsible-handle closed"', $this->_get_html_for( $base ) );
+
+		$args['collapsed'] = true;
+		$base = new Fieldmanager_Group( $args );
+		$this->assertContains( 'fmjs-collapsible-handle closed"', $this->_get_html_for( $base ) );
 	}
 }

@@ -19,17 +19,37 @@ var FieldmanagerGroupTabs;
 		 */
 		bindEvents: function() {
 
-			$( '.fm-tab-bar a' ).on( 'click', $.proxy( function( e ) {
-				e.preventDefault();
-				this.selectTab( $( e.currentTarget ) );
+			$('.fm-tab-bar').each( $.proxy( function( k, el ) {
+				this.bindClickEvents( $( el ) );
 			}, this ) );
-			$( '.fm-tab-bar li' ).on( 'click', $.proxy( function( e ) {
-				e.preventDefault();
-				this.selectTab( $( e.currentTarget ).children('a') );
+			$( document ).on( 'fm_added_element', $.proxy( function( e ) {
+				var el = $( e.target );
+				if ( ! $( '.fm-tab-bar a', el ).length ) {
+					return;
+				}
+				counter = el.parent().data( 'fm-group-counter' );
+				if ( ! counter ) {
+					counter = el.siblings( '.fm-item' ).length - 1;
+				} else {
+					counter++;
+				}
+				el.parent().data( 'fm-group-counter', counter );
+				var replaceProto = function( el, attr ) {
+					el.attr( attr, el.attr( attr ).replace( '-proto-', '-' + counter + '-' ) );
+				};
+
+				// We also need to set these unique IDs, because FM doesn't do it for us.
+				$( '.fm-tab-bar a', el ).each( function() {
+					replaceProto( $( this ), 'href' );
+				});
+				$( '.wp-tabs-panel', el ).each( function() {
+					replaceProto( $( this ), 'id' );
+				});
+				this.bindClickEvents( el );
 			}, this ) );
 
 			if ( this.supportsLocalStorage() ) {
-				$('.fm-tab-bar .fm-tab a').on('click', function(){
+				$('.fm-tab-bar.fm-persist-active-tab .fm-tab a').on('click', function(){
 					var el = $(this);
 					var id = el.closest('.fm-tab-bar').attr('id');
 					localStorage[ id ] = el.attr('href');
@@ -84,6 +104,20 @@ var FieldmanagerGroupTabs;
 		},
 
 		/**
+		 * Bind tab item click events
+		 */
+		bindClickEvents: function( el ) {
+			$( 'a', el ).on( 'click.fm-select-tab', $.proxy( function( e ) {
+				e.preventDefault();
+				this.selectTab( $( e.currentTarget ) );
+			}, this ) );
+			$( 'li', el ).on( 'click.fm-select-tab', $.proxy( function( e ) {
+				e.preventDefault();
+				this.selectTab( $( e.currentTarget ).children('a') );
+			}, this ) );
+		},
+
+		/**
 		 * Select a given tab
 		 */
 		selectTab: function( $element ) {
@@ -105,7 +139,7 @@ var FieldmanagerGroupTabs;
 				return;
 			}
 
-			$('.fm-tab-bar').each( function(){
+			$('.fm-tab-bar.fm-persist-active-tab').each( function(){
 				var el = $(this);
 				var id = el.attr('id');
 				if ( localStorage[ id ] ) {

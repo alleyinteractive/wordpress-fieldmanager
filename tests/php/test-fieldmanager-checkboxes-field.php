@@ -28,7 +28,7 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 	 *
 	 * @param  object $field     Some Fieldmanager_Field object.
 	 * @param  array  $test_data Data to save (and use when rendering)
-	 * @return string            Rendered HTML
+	 * @return string Rendered HTML.
 	 */
 	private function _get_html_for( $field, $test_data = null ) {
 		ob_start();
@@ -167,6 +167,27 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 		foreach ( $this->months as $month ) {
 			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month, true ), $html );
 		}
+	}
+
+	public function test_repeatable_checkboxes_save() {
+		$fm = new Fieldmanager_Checkboxes( array(
+			'name' => 'base_field',
+			'multiple' => true,
+			'limit' => 0,
+			'options' => array( 'one', 'two', 'three' ),
+		) );
+
+		$fm->add_meta_box( 'base_field', $this->post->post_type )->save_to_post_meta( $this->post->ID, array( 'two' ) );
+		$saved_value = get_post_meta( $this->post->ID, 'base_field', true );
+		$this->assertSame( array( 'two' ), $saved_value );
+
+		$fm->add_meta_box( 'base_field', $this->post->post_type )->save_to_post_meta( $this->post->ID, array( 'two', 'three' ) );
+		$saved_value = get_post_meta( $this->post->ID, 'base_field', true );
+		$this->assertSame( array( 'two', 'three' ), $saved_value );
+
+		$fm->add_meta_box( 'base_field', $this->post->post_type )->save_to_post_meta( $this->post->ID, '' );
+		$saved_value = get_post_meta( $this->post->ID, 'base_field', true );
+		$this->assertEquals( null, $saved_value );
 	}
 
 }

@@ -1,24 +1,34 @@
 <?php
-
 /**
- * Use the WordPress Editor in Fieldmanager.
+ * Class file for Fieldmanager_RichTextArea
  *
  * @package Fieldmanager
+ */
+
+/**
+ * WordPress visual editor (TinyMCE) which submits HTML.
  */
 class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 
 	/**
+	 * Override field_class.
+	 *
 	 * @var string
-	 * Override field_class
 	 */
 	public $field_class = 'richtext';
 
 	/**
+	 * Apply TinyMCE filters.
+	 *
+	 * @var bool
 	 * @deprecated
 	 */
 	public $apply_mce_filters = true;
 
 	/**
+	 * Initialization options.
+	 *
+	 * @var array
 	 * @deprecated
 	 * @see Fieldmanager_RichTextArea::$editor_settings
 	 */
@@ -26,36 +36,44 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 
 	/**
 	 * Arguments passed to wp_editor()'s `$settings` parameter.
+	 *
 	 * @see http://codex.wordpress.org/Function_Reference/wp_editor#Arguments
 	 * @var array
 	 */
 	public $editor_settings = array();
 
 	/**
+	 * Add code plugin.
+	 *
+	 * @var bool
 	 * @deprecated
 	 */
 	public $add_code_plugin = false;
 
 	/**
-	 * First row of buttons for the tinymce toolbar
+	 * First row of buttons for the tinymce toolbar.
+	 *
 	 * @var array
 	 */
 	public $buttons_1;
 
 	/**
-	 * Second row of buttons for the tinymce toolbar
+	 * Second row of buttons for the tinymce toolbar.
+	 *
 	 * @var array
 	 */
 	public $buttons_2;
 
 	/**
-	 * Third row of buttons for the tinymce toolbar
+	 * Third row of buttons for the tinymce toolbar.
+	 *
 	 * @var array
 	 */
 	public $buttons_3;
 
 	/**
-	 * Fourth row of buttons for the tinymce toolbar
+	 * Fourth row of buttons for the tinymce toolbar.
+	 *
 	 * @var array
 	 */
 	public $buttons_4;
@@ -63,26 +81,28 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	/**
 	 * External stylesheet(s) to include in the editor. Multiple files can be included
 	 * delimited by commas.
+	 *
 	 * @var string
 	 */
 	public $stylesheet;
 
 	/**
 	 * Indicates if we should be altering the tinymce config.
+	 *
 	 * @access protected
-	 * @var boolean
+	 * @var bool
 	 */
 	protected $edit_config = false;
 
 	/**
 	 * Construct defaults for this field.
 	 *
-	 * @param string $label title of form field
-	 * @param array $options with keys matching vars of the field in use.
+	 * @param string $label   Title of form field.
+	 * @param array  $options With keys matching vars of the field in use.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->sanitize = array( $this, 'sanitize' );
-		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery' ), '1.0.7' );
+		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery', 'fieldmanager_script' ), '1.0.8' );
 
 		parent::__construct( $label, $options );
 	}
@@ -100,8 +120,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	/**
 	 * Render the form element, which is a textarea by default.
 	 *
-	 * @param mixed $value
-	 * @return string HTML
+	 * @param mixed $value The current value.
+	 * @return string HTML string.
 	 */
 	public function form_element( $value = '' ) {
 		$proto = $this->has_proto();
@@ -112,7 +132,9 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 		$settings = $this->array_merge_deep( $this->editor_settings, array(
 			'textarea_name'  => $this->get_form_name(),
 			'editor_class'   => 'fm-element fm-richtext',
-			'tinymce'        => array( 'wp_skip_init' => true ),
+			'tinymce'        => array(
+				'wp_skip_init' => true,
+			),
 		) );
 
 		if ( $proto ) {
@@ -126,7 +148,9 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 				$settings['default_editor'] = 'tinymce';
 			} else {
 				$cookie_value = '';
-				if ( $user = wp_get_current_user() ) { // look for cookie
+				// look for cookie.
+				$user = wp_get_current_user();
+				if ( $user ) {
 					$setting_key = str_replace( '-', '_', $this->get_element_id() );
 					$setting_key = preg_replace( '/[^a-z0-9_]/i', '', $setting_key );
 					$cookie_value = get_user_setting( 'editor_' . $setting_key, 'tinymce' );
@@ -150,7 +174,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 			remove_filter( 'the_editor', array( $this, 'add_proto_id' ) );
 		}
 
-		// Add classes to the wrapper if needed
+		// Add classes to the wrapper if needed.
 		if ( ! empty( $wrapper_classes ) ) {
 			$content = str_replace( 'wp-core-ui wp-editor-wrap', 'wp-core-ui wp-editor-wrap ' . implode( ' ', $wrapper_classes ), $content );
 		}
@@ -162,7 +186,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * Before generating the editor, manipualte the settings as needed.
 	 */
 	protected function prep_editor_config() {
-		// Attempt to maintain some backwards compatibility for $init_options
+		// Attempt to maintain some backwards compatibility for $init_options.
 		if ( ! empty( $this->init_options ) ) {
 			if ( ! isset( $this->stylesheet ) && ! empty( $this->init_options['content_css'] ) ) {
 				$this->stylesheet = $this->init_options['content_css'];
@@ -198,10 +222,17 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public function customize_buttons( $buttons ) {
 		switch ( current_filter() ) {
 			case 'teeny_mce_buttons':
-			case 'mce_buttons'      : return $this->buttons_1;
-			case 'mce_buttons_2'    : return $this->buttons_2;
-			case 'mce_buttons_3'    : return $this->buttons_3;
-			case 'mce_buttons_4'    : return $this->buttons_4;
+			case 'mce_buttons':
+				return $this->buttons_1;
+
+			case 'mce_buttons_2':
+				return $this->buttons_2;
+
+			case 'mce_buttons_3':
+				return $this->buttons_3;
+
+			case 'mce_buttons_4':
+				return $this->buttons_4;
 		}
 		return $buttons;
 	}
@@ -209,16 +240,16 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	/**
 	 * Make final tweaks to the editor config.
 	 *
-	 * @param  array $mceInit The raw settings passed to TinyMCE.
+	 * @param  array $mce_init The raw settings passed to TinyMCE.
 	 * @return array The raw settings passed to TinyMCE.
 	 */
-	public function editor_config( $mceInit ) {
+	public function editor_config( $mce_init ) {
 		if ( isset( $this->stylesheet ) ) {
 			$this->stylesheet = explode( ',', $this->stylesheet );
 			$this->stylesheet = array_map( 'esc_url_raw', $this->stylesheet );
-			$mceInit['content_css'] = implode( ',', $this->stylesheet );
+			$mce_init['content_css'] = implode( ',', $this->stylesheet );
 		}
-		return $mceInit;
+		return $mce_init;
 	}
 
 	/**
@@ -268,17 +299,16 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	}
 
 	/**
-	 * array_merge_recursive as it should have been done. Modeled on the
-	 * similarly named function in drupal. This differs from
+	 * Modeled on the similarly named function in drupal. This differs from
 	 * array_merge_recursive in that if it sees two strings, it doesn't merge
-	 * them into an array of strings. That's dumb.
+	 * them into an array of strings.
 	 *
 	 * @return array
 	 */
 	protected function array_merge_deep() {
 		$result = array();
 		foreach ( func_get_args() as $array ) {
-			foreach ( $array as $key => $value) {
+			foreach ( $array as $key => $value ) {
 				if ( is_integer( $key ) ) {
 					// Renumber integer keys as array_merge_recursive() does. Note that PHP
 					// automatically converts array keys that are integer strings (e.g., '1')

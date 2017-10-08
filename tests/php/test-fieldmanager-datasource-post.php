@@ -40,6 +40,24 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Helper which returns the post meta box HTML for a given field;
+	 *
+	 * @param  object $field Some Fieldmanager_Field object.
+	 * @param  object $post A WP_Post object.
+	 * @param  array  $test_data Data to save (and use when rendering)
+	 * @return string Rendered HTML.
+	 */
+	private function _get_html_for( $field, $post, $test_data = null ) {
+		ob_start();
+		$context = $field->add_meta_box( 'test meta box', $post );
+		if ( $test_data ) {
+			$context->save_to_post_meta( $post->ID, $test_data );
+		}
+		$context->render_meta_box( $post );
+		return ob_get_clean();
+	}
+
+	/**
 	 * Set up the request environment values and save the data.
 	 *
 	 * @param Fieldmanager_Field $field
@@ -242,8 +260,8 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 	 * Test save_to_post_parent logic
 	 */
 	public function test_post_parent() {
-		$test_data = $this->child_post_a->ID;
-		$children = new Fieldmanager_Autocomplete( array(
+		$test_data = $this->parent_post->ID;
+		$fm = new Fieldmanager_Autocomplete( array(
 			'name' => 'test_parent',
 			'datasource' => new Fieldmanager_Datasource_Post( array(
 				'query_args' => array(
@@ -252,18 +270,24 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 				'save_to_post_parent' => true,
 			) ),
 		) );
-		$this->save_values( $children, $this->parent_post, $test_data );
-		$parent = get_post( $this->parent_post->ID );
-		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
-		$this->assertEquals( get_post_meta( $this->parent_post->ID, 'test_parent', true ), $this->child_post_a->ID );
+		$html = $this->_get_html_for( $fm, $this->child_post_a );
+		$this->assertContains( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="" />', $html );
+		$html = $this->_get_html_for( $fm, $this->child_post_a, $test_data );
+		// Reload the post
+		$this->child_post_a = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $test_data, $this->child_post_a->post_parent );
+		$this->assertEquals( $test_data, get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+		$this->assertContains(
+			sprintf( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="%d" />', $test_data ),
+			$html
+		);
 	}
-
 	/**
 	 * Test save_to_post_parent logic
 	 */
 	public function test_post_parent_nested() {
-		$test_data = array( 'parent' => $this->child_post_a->ID );
-		$children = new Fieldmanager_Group( array(
+		$test_data = array( 'parent' => $this->parent_post->ID );
+		$fm = new Fieldmanager_Group( array(
 			'name' => 'test_parent',
 			'children' => array(
 				'parent' => new Fieldmanager_Autocomplete( 'Post Parent', array(
@@ -277,17 +301,24 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 				) ),
 			),
 		) );
-		$this->save_values( $children, $this->parent_post, $test_data );
-		$parent = get_post( $this->parent_post->ID );
-		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
+		$html = $this->_get_html_for( $fm, $this->child_post_a );
+		$this->assertContains( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent[parent]" value="" />', $html );
+		$html = $this->_get_html_for( $fm, $this->child_post_a, $test_data );
+		// Reload the post
+		$this->child_post_a = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $this->parent_post->ID, $this->child_post_a->post_parent );
+		$this->assertEquals( '', get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+		$this->assertContains(
+			sprintf( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent[parent]" value="%d" />', $this->parent_post->ID ),
+			$html
+		);
 	}
-
 	/**
 	 * Test save_to_post_parent_only logic
 	 */
 	public function test_post_parent_only() {
-		$test_data = $this->child_post_a->ID;
-		$children = new Fieldmanager_Autocomplete( array(
+		$test_data = $this->parent_post->ID;
+		$fm = new Fieldmanager_Autocomplete( array(
 			'name' => 'test_parent',
 			'datasource' => new Fieldmanager_Datasource_Post( array(
 				'query_args' => array(
@@ -297,10 +328,17 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 				'only_save_to_post_parent' => true,
 			) ),
 		) );
-		$this->save_values( $children, $this->parent_post, $test_data );
-		$parent = get_post( $this->parent_post->ID );
-		$this->assertEquals( $parent->post_parent, $this->child_post_a->ID );
-		$this->assertEmpty( get_post_meta( $this->parent_post->ID, 'test_parent', true ) );
+		$html = $this->_get_html_for( $fm, $this->child_post_a );
+		$this->assertContains( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="" />', $html );
+		$html = $this->_get_html_for( $fm, $this->child_post_a, $test_data );
+		// Reload the post
+		$this->child_post_a = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $test_data, $this->child_post_a->post_parent );
+		$this->assertEquals( '', get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+		$this->assertContains(
+			sprintf( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="%d" />', $test_data ),
+			$html
+		);
 	}
 
 	/**
@@ -325,5 +363,112 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		wp_set_current_user( $this->author );
 
 		$this->save_values( $children, $this->parent_post, $test_data );
+	}
+
+	public function test_post_parent_render() {
+		$fm = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_parent',
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'only_save_to_post_parent' => true,
+				'query_args' => array(
+					'post_type' => 'post'
+				),
+			) ),
+		) );
+
+		ob_start();
+		$fm->add_meta_box( 'Test Autocomplete', 'post' )->render_meta_box( $this->child_post_a, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp( '/<input[^>]+type=[\'"]hidden[\'"][^>]+value=[\'"]{2}/', $html );
+
+		$this->save_values( $fm, $this->child_post_a, $this->parent_post->ID );
+		$child = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $this->parent_post->ID, $child->post_parent );
+		$this->assertEquals( '', get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+
+		ob_start();
+		$fm->add_meta_box( 'Test Autocomplete', 'post' )->render_meta_box( $this->child_post_a, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp( "/<input[^>]+type=['\"]hidden['\"][^>]+value=['\"]{$this->parent_post->ID}['\"]/", $html );
+	}
+
+	public function test_options_post_parent_render() {
+		$fm = new Fieldmanager_Select( array(
+			'name' => 'test_parent',
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'only_save_to_post_parent' => true,
+				'query_args' => array(
+					'post_type' => 'post',
+					'post_status' => 'draft',
+				),
+			) ),
+		) );
+
+		ob_start();
+		$fm->add_meta_box( 'Test Select', 'post' )->render_meta_box( $this->child_post_a, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp(
+			sprintf( '#<option\s*value="%s"\s*>%s</option>#i', $this->parent_post->ID, $this->parent_post->post_title ),
+			$html
+		);
+
+		$this->save_values( $fm, $this->child_post_a, $this->parent_post->ID );
+		$child = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $this->parent_post->ID, $child->post_parent );
+		$this->assertEquals( '', get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
+
+		ob_start();
+		$fm->add_meta_box( 'Test Select', 'post' )->render_meta_box( $this->child_post_a, array() );
+		$html = ob_get_clean();
+		$this->assertRegExp(
+			sprintf( '#<option\s*value="%s"\s*selected(?:\s*=\s*"selected")?\s*>%s</option>#i', $this->parent_post->ID, $this->parent_post->post_title ),
+			$html
+		);
+	}
+
+	/**
+	 * @expectedIncorrectUsage Fieldmanager_Datasource_Post::$save_to_post_parent
+	 */
+	public function test_repeatable_post_parent_invalid() {
+		$fm = new Fieldmanager_Autocomplete( array(
+			'name'       => 'test_limitless_datasource',
+			'limit'      => 0,
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'only_save_to_post_parent' => true,
+				'query_args' => array( 'post_type' => 'post' ),
+			) ),
+		) );
+	}
+
+	/**
+	 * @expectedIncorrectUsage Fieldmanager_Datasource_Post::$save_to_post_parent
+	 */
+	public function test_repeatable_options_post_parent_invalid() {
+		$fm = new Fieldmanager_Select( array(
+			'name'       => 'test_limitless_datasource',
+			'limit'      => 0,
+			'datasource' => new Fieldmanager_Datasource_Post( array(
+				'only_save_to_post_parent' => true,
+				'query_args' => array( 'post_type' => 'post' ),
+			) ),
+		) );
+	}
+
+	/**
+	 * @expectedIncorrectUsage Fieldmanager_Datasource_Post::$save_to_post_parent
+	 */
+	public function test_inherited_repeatable_post_parent_invalid() {
+		$fm = new Fieldmanager_Group( array(
+			'name'     => 'test_limitless_datasource',
+			'limit'    => 0,
+			'children' => array(
+				'field' => new Fieldmanager_Autocomplete( array(
+					'datasource'     => new Fieldmanager_Datasource_Post( array(
+						'only_save_to_post_parent' => true,
+						'query_args' => array( 'post_type' => 'post' ),
+					) ),
+				) ),
+			),
+		) );
 	}
 }

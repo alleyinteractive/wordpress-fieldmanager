@@ -1,35 +1,44 @@
 <?php
+/**
+ * Class file for Fieldmanager_Grid
+ *
+ * @package Fieldmanager
+ */
 
 /**
- * Fieldmanager plugin for Handsontable Grid view, packaged with main
- * Fieldmanager implemenation to demonstrate advanced custom functionality, and
- * a field which overrides presave.
- * @package Fieldmanager
+ * Data grid (spreadsheet) field.
+ *
+ * This field uses {@link https://github.com/handsontable/handsontable/
+ * Handsontable} to provide a grid interface.
  */
 class Fieldmanager_Grid extends Fieldmanager_Field {
 
 	/**
+	 * Override field class.
+	 *
 	 * @var string
-	 * Override field clas
 	 */
 	public $field_class = 'grid';
 
 	/**
+	 * Sort a grid before rendering (takes entire grid as a parameter).
+	 *
 	 * @var callable
-	 * Sort a grid before rendering (takes entire grid as a parameter)
 	 */
-	public $grid_sort = Null;
+	public $grid_sort = null;
 
 	/**
-	 * @var string[]
-	 * Options to pass to grid manager
+	 * Options to pass to grid manager.
+	 *
+	 * @var array
 	 */
 	public $js_options = array();
 
 	/**
-	 * Constructor which adds several scrips and CSS
-	 * @param string $label
-	 * @param array $options
+	 * Constructor which adds several scrips and CSS.
+	 *
+	 * @param string $label   The form label.
+	 * @param array  $options The form options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->attributes = array(
@@ -38,7 +47,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 		parent::__construct( $label, $options );
 		$this->sanitize = function( $row, $col, $values ) {
 			foreach ( $values as $k => $val ) {
-				$values[$k] = sanitize_text_field( $val );
+				$values[ $k ] = sanitize_text_field( $val );
 			}
 			return $values;
 		};
@@ -52,52 +61,46 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Render HTML for Grid element
-	 * @param array $value
-	 * @return string
+	 * Render HTML for Grid element.
+	 *
+	 * @param array $value The current value.
+	 * @return string The HTML string.
 	 */
 	public function form_element( $value = '' ) {
-		$grid_activate_id = 'grid-activate-' . uniqid();
-		if ( !empty( $value ) && is_callable( $this->grid_sort ) ) {
+		$grid_activate_id = 'grid-activate-' . uniqid( true );
+		if ( ! empty( $value ) && is_callable( $this->grid_sort ) ) {
 			$value = call_user_func( $this->grid_sort, $value );
 		}
 		$out = sprintf(
 			'<div class="grid-toggle-wrapper">
-				<div class="fm-grid" id="%2$s" data-fm-grid-name="%1$s"></div>
-				<input name="%1$s" class="fm-element" type="hidden" value="%3$s" />
-				<p><a href="#" class="grid-activate" id="%6$s" data-with-grid-title="%5$s">%4$s</a></p>
+				<div class="fm-grid" id="%2$s" data-fm-grid-name="%1$s" data-fm-grid-opts="%3$s"></div>
+				<input name="%1$s" class="fm-element" type="hidden" value="%4$s" />
+				<p><a href="#" class="grid-activate" id="%7$s" data-with-grid-title="%6$s">%5$s</a></p>
 			</div>',
 			esc_attr( $this->get_form_name() ),
-			esc_attr( 'hot-grid-id-' . uniqid() ), // handsontable must have an ID, but we don't care what it is.
-			esc_attr( json_encode( $value ) ),
+			esc_attr( 'hot-grid-id-' . uniqid( true ) ), // handsontable must have an ID, but we don't care what it is.
+			esc_attr( wp_json_encode( $this->js_options ) ),
+			esc_attr( wp_json_encode( $value ) ),
 			esc_attr__( 'Show Data Grid', 'fieldmanager' ),
 			esc_attr__( 'Hide Data Grid', 'fieldmanager' ),
 			esc_attr( $grid_activate_id )
-		);
-		$out .= sprintf("
-			<script type=\"text/javascript\">
-				jQuery( document ).ready( function() {
-					jQuery( '#%s' ).one( 'click', function( e ) {
-						e.preventDefault();
-						var grid = jQuery( this ).parents( '.grid-toggle-wrapper' ).find( '.fm-grid' )[0];
-						jQuery( grid ).fm_grid( %s );
-					} );
-				} );
-			</script>",
-			esc_attr( $grid_activate_id ),
-			json_encode( $this->js_options )
 		);
 		return $out;
 	}
 
 	/**
-	 * Override presave, using the sanitize function per cell
-	 * @param string $value
-	 * @return array sanitized row/col matrix
+	 * Override presave, using the sanitize function per cell.
+	 *
+	 * @param  array $value         The new value.
+	 * @param  array $current_value The current values.
+	 * @return array Sanitized row/col matrix.
 	 */
 	public function presave( $value, $current_value = array() ) {
-		$rows = json_decode( stripslashes( $value ), TRUE );
-		if ( !is_array( $rows ) ) return array();
+		$rows = json_decode( stripslashes( $value ), true );
+		if ( ! is_array( $rows ) ) {
+			return array();
+		}
+
 		foreach ( $rows as $i => $cells ) {
 			foreach ( $cells as $k => $cell ) {
 				$cell = call_user_func( $this->sanitize, $i, $k, $cell );
