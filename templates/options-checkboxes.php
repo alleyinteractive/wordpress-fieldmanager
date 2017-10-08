@@ -1,6 +1,6 @@
 <?php
 /**
- * Default template for Fieldmanager_Checkboxes.
+ * Default template for Fieldmanager_Checkboxes
  *
  * @package Fieldmanager
  */
