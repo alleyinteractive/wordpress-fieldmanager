@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_TextArea.
+ * Class file for Fieldmanager_TextArea
  *
- * @package Fieldmanager_Field
+ * @package Fieldmanager
  */
 
 /**
@@ -39,7 +39,7 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 	 * Form element.
 	 *
 	 * @param mixed $value Field value.
-	 * @return string HTML
+	 * @return string HTML.
 	 */
 	public function form_element( $value = '' ) {
 		return sprintf(
