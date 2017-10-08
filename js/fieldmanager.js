@@ -207,6 +207,12 @@ $( document ).ready( function () {
 		// triggers. Also don't use autocomplete inputs as triggers, because the
 		// value is in their sibling hidden fields (which this still matches).
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete' );
+
+		// Sanity check before calling `val()` or `split()`.
+		if ( 0 === trigger.length ) {
+			return;
+		}
+
 		if ( trigger.is( ':checkbox' ) ) {
 			if ( trigger.is( ':checked' ) ) {
 				// If checked, use the checkbox value.
