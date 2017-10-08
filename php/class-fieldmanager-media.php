@@ -154,9 +154,9 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function form_element( $value = array() ) {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
-			// open the preview wrapper
+			// Open the preview wrapper.
 			$preview = '<div class="media-file-preview">';
-			$file_label = ''; // the uploaded file label - image or file
+			$file_label = ''; // The uploaded file label - image or file.
 			$dashicon_class = '';
 
 			if ( $attachment->post_mime_type ) {
@@ -173,7 +173,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 
 				$dashicon_class = apply_filters( 'fieldmanager_media_preview_icon', $dashicon_class, $attachment->post_mime_type );
 
-				// If the preview is an image display the image, otherwise use a media icon
+				// If the preview is an image display the image, otherwise use a media icon.
 				if ( false === $image_type ) {
 					$file_label = $this->selected_file_label;
 					if ( '' !== $dashicon_class ) {
