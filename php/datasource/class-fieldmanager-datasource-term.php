@@ -250,7 +250,13 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @return array $values The sanitized values.
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-		return empty( $value ) ? $value : intval( $value );
+		/*
+		 * Sanitize the value using intval and cast it to string in order
+		 * to make sure the strict comparison in update_post_meta/update_option
+		 * won't run into false-negative.
+		 * See https://core.trac.wordpress.org/ticket/22192
+		 */
+		return empty( $value ) ? $value : (string) intval( $value );
 	}
 
 	/**
