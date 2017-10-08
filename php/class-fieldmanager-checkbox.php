@@ -53,7 +53,7 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	 */
 	public function form_element( $value = null ) {
 		return sprintf(
-			'<input type="hidden" name="%1$s" value="%6$s" /><input class="fm-element" type="checkbox" name="%1$s" value="%2$s" %3$s %4$s id="%5$s" />',
+			'<input type="hidden" name="%1$s" value="%6$s" class="fm-incrementable" /><input class="fm-element" type="checkbox" name="%1$s" value="%2$s" %3$s %4$s id="%5$s" />',
 			esc_attr( $this->get_form_name() ),
 			esc_attr( (string) $this->checked_value ),
 			$this->get_element_attributes(),
