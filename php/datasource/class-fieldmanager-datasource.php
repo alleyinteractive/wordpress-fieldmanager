@@ -1,93 +1,117 @@
 <?php
+/**
+ * Class file for Fieldmanager_Datasource
+ *
+ * @package Fieldmanager
+ */
 
 /**
  * Datasource base class to populate autocomplete and option fields.
  *
- * Datasources provide data to populate autocomplete and option fields.
- *
  * This class can be used as an arbitrary data source for static options, or it
  * can be extended to provide custom data sources.
- *
- * @package Fieldmanager_Datasource
  */
 class Fieldmanager_Datasource {
 
 	/**
+	 * The datasource options.
+	 *
 	 * @var array
 	 */
 	public $options = array();
 
 	/**
-	 * @var boolean
+	 * Options callback.
+	 *
+	 * @var string
 	 */
-	public $options_callback = Null;
+	public $options_callback = null;
 
 	/**
-	 * @var boolean
+	 * Whether or not to use Ajax.
+	 *
+	 * @var bool
 	 */
-	public $use_ajax = False;
+	public $use_ajax = false;
 
 	/**
-	 * @var boolean
+	 * Allow option groups.
+	 *
+	 * @var bool
 	 */
-	public $allow_optgroups = True;
+	public $allow_optgroups = true;
 
 	/**
+	 * The Ajax action.
+	 *
 	 * @var string
 	 */
 	public $ajax_action = '';
 
 	/**
+	 * Counter to create uniquely named Ajax actions.
+	 *
 	 * @var int
-	 * Counter to create uniquely named AJAX actions.
 	 */
 	public static $counter = 0;
 
 	/**
-	 * @var boolean
-	 * If true, group elements
+	 * If true, group elements.
+	 *
+	 * @var bool
 	 */
-	public $grouped = False;
+	public $grouped = false;
 
 	/**
-	 * Constructor
+	 * Constructor.
+	 *
+	 * @throws FM_Developer_Exception If the property isn't public, don't set it (rare).
+	 *
+	 * @param array $options The datasource options.
 	 */
 	public function __construct( $options = array() ) {
 
 		foreach ( $options as $k => $v ) {
 			try {
-				$reflection = new ReflectionProperty( $this, $k ); // Would throw a ReflectionException if item doesn't exist (developer error)
-				if ( $reflection->isPublic() ) $this->$k = $v;
-				else throw new FM_Developer_Exception; // If the property isn't public, don't set it (rare)
+				// Would throw a ReflectionException if item doesn't exist (developer error).
+				$reflection = new ReflectionProperty( $this, $k );
+				if ( $reflection->isPublic() ) {
+					$this->$k = $v;
+				} else {
+					// If the property isn't public, don't set it (rare).
+					throw new FM_Developer_Exception();
+				}
 			} catch ( Exception $e ) {
 				$message = sprintf(
+					/* translators: 1: property name, 2: current class name, 3: option name */
 					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
-					$k, __CLASS__, !empty( $options['name'] ) ? $options['name'] : 'NULL'
+					$k,
+					get_class(),
+					! empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
-				$title = esc_html__( 'Nonexistant or invalid option' );
-				if ( !Fieldmanager_Field::$debug ) {
-					wp_die( esc_html( $message ), $title );
+				if ( ! Fieldmanager_Field::$debug ) {
+					wp_die( esc_html( $message ), esc_html__( 'Nonexistant or invalid option' ) );
 				} else {
 					throw new FM_Developer_Exception( esc_html( $message ) );
 				}
 			}
 		}
 
-		if ( get_class( $this ) == __CLASS__ && empty( $options ) ) {
-			$message = esc_html__( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' );
+		if ( get_class( $this ) === __CLASS__ && empty( $options ) ) {
+			$message = __( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' );
 			if ( Fieldmanager_Field::$debug ) {
 				throw new FM_Developer_Exception( $message );
 			} else {
-				wp_die( $message, esc_html__( 'Invalid Datasource Options', 'fieldmanager' ) );
+				wp_die( esc_html( $message ), esc_html__( 'Invalid Datasource Options', 'fieldmanager' ) );
 			}
 		}
 
-		if ( !empty( $this->options ) ) {
+		if ( ! empty( $this->options ) ) {
 			$keys = array_keys( $this->options );
 			if ( ( array_keys( $keys ) === $keys ) ) {
 				foreach ( $this->options as $k => $v ) {
-					$this->options[$v] = $v;
-					unset( $this->options[$k] );
+					$this->options[ $v ] = $v;
+					unset( $this->options[ $k ] );
 				}
 			}
 		}
@@ -100,25 +124,29 @@ class Fieldmanager_Datasource {
 	/**
 	 * Get the value of an item; most clearly used by Post and Term, which
 	 * take database IDs and return user-friendly titles.
-	 * @param int $id
-	 * @return string value
+	 *
+	 * @param int $id The ID of the object.
+	 * @return string The value.
 	 */
 	public function get_value( $id ) {
 		return isset( $this->options[ $id ] ) ? $this->options[ $id ] : '';
 	}
 
 	/**
-	 * Get available options, optionally filtering by a fragment (e.g. for Autocomplete)
-	 * @param string $fragment optional fragment to filter by
-	 * @return array, key => value of available options
+	 * Get available options, optionally filtering by a fragment (e.g. for Autocomplete).
+	 *
+	 * @param string $fragment Optional fragment to filter by.
+	 * @return array The key => value of available options.
 	 */
-	public function get_items( $fragment = Null ) {
-		if ( !$fragment ) {
+	public function get_items( $fragment = null ) {
+		if ( ! $fragment ) {
 			return $this->options;
 		}
 		$ret = array();
 		foreach ( $this->options as $k => $v ) {
-			if ( strpos( $v, $fragment ) !== False ) $ret[$k] = $v;
+			if ( strpos( $v, $fragment ) !== false ) {
+				$ret[ $k ] = $v;
+			}
 		}
 		return $ret;
 	}
@@ -126,39 +154,46 @@ class Fieldmanager_Datasource {
 	/**
 	 * Get an action to register by hashing (non cryptographically for speed)
 	 * the options that make this datasource unique.
-	 * @return string ajax action
+	 *
+	 * @return string Ajax action.
 	 */
 	public function get_ajax_action() {
-		if ( !empty( $this->ajax_action ) ) return $this->ajax_action;
-		return 'fm_datasource_' . crc32( 'base' . json_encode( $this->options ) . $this->options_callback );
+		if ( ! empty( $this->ajax_action ) ) {
+			return $this->ajax_action;
+		}
+		return 'fm_datasource_' . crc32( 'base' . wp_json_encode( $this->options ) . $this->options_callback );
 	}
 
 	/**
-	 * Format items for use in AJAX.
+	 * Format items for use in Ajax.
 	 *
-	 * @param string|null $fragment to search
+	 * @param string|null $fragment Search string.
 	 */
 	public function get_items_for_ajax( $fragment = null ) {
 		$items = $this->get_items( $fragment );
 		$return = array();
 
 		foreach ( $items as $id => $label ) {
-			$return[] = array( 'label' => $label, 'value' => $id );
+			$return[] = array(
+				'label' => $label,
+				'value' => $id,
+			);
 		}
 
 		return $return;
 	}
 
 	/**
-	 * AJAX callback to find posts
-	 * @return void, causes process to exit.
+	 * Ajax callback to find posts.
 	 */
 	public function autocomplete_search() {
-		// Check the nonce before we do anything
+		// Check the nonce before we do anything.
 		check_ajax_referer( 'fm_search_nonce', 'fm_search_nonce' );
-		$items = $this->get_items_for_ajax( sanitize_text_field( $_POST['fm_autocomplete_search'] ) );
+		if ( isset( $_POST['fm_autocomplete_search'] ) ) { // WPCS: input var okay.
+			$items = $this->get_items_for_ajax( sanitize_text_field( wp_unslash( $_POST['fm_autocomplete_search'] ) ) ); // WPCS: input var okay.
+		}
 
-		// See if any results were returned and return them as an array
+		// See if any results were returned and return them as an array.
 		if ( ! empty( $items ) ) {
 			wp_send_json( $items );
 		} else {
@@ -167,11 +202,12 @@ class Fieldmanager_Datasource {
 	}
 
 	/**
-	 * Trigger to handle actions needed before saving data
-	 * @param Fieldmanager_Field $field
-	 * @param string|int $value
-	 * @param string|int|null $current_value
-	 * @return string cleaned value
+	 * Trigger to handle actions needed before saving data.
+	 *
+	 * @param  Fieldmanager_Field $field          Base field.
+	 * @param  mixed              $values         New value.
+	 * @param  mixed              $current_values Current value.
+	 * @return string $values Cleaned value.
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
 		// nothing here, but some child classes need this method.
@@ -179,21 +215,23 @@ class Fieldmanager_Datasource {
 	}
 
 	/**
-	 * Modify values before rendering editor
-	 * @param Fieldmanager_Field $field
-	 * @param array $values
-	 * @return array $values loaded up, if applicable.
+	 * Modify values before rendering editor.
+	 *
+	 * @param  Fieldmanager_Field $field  Base field.
+	 * @param  mixed              $values New values.
+	 * @return array $values Loaded up, if applicable.
 	 */
 	public function preload_alter_values( Fieldmanager_Field $field, $values ) {
 		return $values;
 	}
 
 	/**
-	 * Datasource handles sanitization and validation
-	 * @param Fieldmanager_Field $field
-	 * @param string|int $value
-	 * @param string|int|null $current_value
-	 * @return string cleaned value
+	 * Datasource handles sanitization and validation.
+	 *
+	 * @param  Fieldmanager_Field $field         Base field.
+	 * @param  mixed              $value         New value.
+	 * @param  mixed              $current_value Current value.
+	 * @return string $values Cleaned value.
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
 		if ( is_array( $value ) ) {
@@ -203,18 +241,20 @@ class Fieldmanager_Datasource {
 	}
 
 	/**
-	 * Get view link, not used here but meant for override
-	 * @param int|string $value
-	 * @return string
+	 * Get view link, not used here but meant for override.
+	 *
+	 * @param mixed $value The current value.
+	 * @return string HTML string.
 	 */
 	public function get_view_link( $value ) {
 		return '';
 	}
 
 	/**
-	 * Get edit link, not used here but meant for override
-	 * @param int|string $value
-	 * @return string
+	 * Get edit link, not used here but meant for override.
+	 *
+	 * @param int|string $value The current value.
+	 * @return string HTML string.
 	 */
 	public function get_edit_link( $value ) {
 		return '';
