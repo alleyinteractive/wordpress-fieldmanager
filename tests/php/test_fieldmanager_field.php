@@ -87,8 +87,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Get a set of elements
-	 * @return Fieldmanager_Field[]
+	 * Get a set of elements to be used as children for a Fieldmanager_Group object.
+	 *
+	 * @return array Fieldmanager_Field objects.
 	 */
 	private function _get_elements() {
 		return array(
@@ -162,7 +163,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 *
 	 * @param  object $field     Some Fieldmanager_Field object.
 	 * @param  array  $test_data Data to save (and use when rendering)
-	 * @return string            Rendered HTML
+	 * @return string Rendered HTML.
 	 */
 	private function _get_html_for( $field, $test_data = null ) {
 		ob_start();

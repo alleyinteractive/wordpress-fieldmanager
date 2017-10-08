@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_Util_Assets.
+ * Class file for Fieldmanager_Util_Assets
  *
  * @package Fieldmanager
  */
@@ -34,7 +34,7 @@ class Fieldmanager_Util_Assets {
 	/**
 	 * Ensure that the enqueue method only gets hooked once.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $hooked = false;
 
@@ -50,7 +50,7 @@ class Fieldmanager_Util_Assets {
 	 */
 	public static function instance() {
 		if ( ! isset( self::$instance ) ) {
-			self::$instance = new Fieldmanager_Util_Assets;
+			self::$instance = new Fieldmanager_Util_Assets();
 		}
 		return self::$instance;
 	}
@@ -62,7 +62,7 @@ class Fieldmanager_Util_Assets {
 		/**
 		 * Filters the script argument arrays for Fieldmanager_Util_Assets::enqueue_script().
 		 *
-		 * @var array Arrays of script arguments. @see Fieldmanager_Util_Assets::add_script().
+		 * @param array $scripts Arrays of script arguments. @see Fieldmanager_Util_Assets::add_script().
 		 */
 		$enqueue_scripts = apply_filters( 'fm_enqueue_scripts', array_values( $this->scripts ) );
 		foreach ( $enqueue_scripts as $args ) {
@@ -73,7 +73,7 @@ class Fieldmanager_Util_Assets {
 		/**
 		 * Filters the stylesheet argument arrays for Fieldmanager_Util_Assets::enqueue_style().
 		 *
-		 * @var array Arrays of stylesheet arguments. @see Fieldmanager_Util_Assets::add_style().
+		 * @param array $styles Arrays of stylesheet arguments. @see Fieldmanager_Util_Assets::add_style().
 		 */
 		$enqueue_styles = apply_filters( 'fm_enqueue_styles', array_values( $this->styles ) );
 		foreach ( $enqueue_styles as $args ) {
