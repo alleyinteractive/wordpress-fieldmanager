@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Checkboxes.
+ * Class file for Fieldmanager_Checkboxes
  *
- * @package Fieldmanager_Field
+ * @package Fieldmanager
  */
 
 /**
