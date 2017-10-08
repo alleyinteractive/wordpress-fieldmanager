@@ -124,4 +124,12 @@
 		assert.equal( $( '[name="mytest[2][mysubtest][0]"]' ).text(), 'Delta', "Corresponding name attributes and text values in the reordered top-level group" );
 	});
 
+	QUnit.module( 'Colorpicker', function ( hooks ) {
+		// This test helps ensure the Colorpicker "clear" event includes the correct element.
+		QUnit.test( 'Colorpicker input and "Clear" button are children of the same parent', function ( assert ) {
+			var clearButton = document.querySelector( '#colorpicker-dom input.wp-picker-clear' );
+			assert.ok( clearButton.parentNode.querySelector( '.fm-colorpicker-popup' ) );
+		});
+	});
+
 })( window.QUnit, window.jQuery );
