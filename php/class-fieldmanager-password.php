@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Password.
+ * Class file for Fieldmanager_Password
  *
- * @package Fieldmanager_Field
+ * @package Fieldmanager
  */
 
 /**
