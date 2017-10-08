@@ -5,28 +5,45 @@ language: php
 matrix:
   include:
     - php: 5.3
-      env: WP_VERSION=4.4.4
+      env: WP_VERSION=4.4.11
+      dist: precise
     - php: 5.3
       env: WP_VERSION=latest
+      dist: precise
     - php: 5.6
       env: WP_VERSION=latest
-    - php: 7.0
-      env: WP_VERSION=latest
-    - php: 5.6
-      env: WP_VERSION=nightly
     - php: 5.6
       env: WP_TRAVISCI=phpcs
+    - php: 7.0
+      env: WP_VERSION=latest
+    - php: 7.0
+      env: WP_VERSION=nightly
+    - php: 7.1
+      env: WP_VERSION=latest
+    - php: 7.2
+      env: WP_VERSION=latest
   fast_finish: true
+  allow_failures:
+    - php: 7.2
 
 branches:
   only:
     - master
 
 before_script:
+  # Turn off Xdebug. See https://core.trac.wordpress.org/changeset/40138.
+  - phpenv config-rm xdebug.ini || echo "Xdebug not available"
+
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       npm install
+      export PATH="$HOME/.composer/vendor/bin:$PATH"
+      if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
+        composer global require "phpunit/phpunit=5.7.*"
+      else
+        composer global require "phpunit/phpunit=4.8.*"
+      fi
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
