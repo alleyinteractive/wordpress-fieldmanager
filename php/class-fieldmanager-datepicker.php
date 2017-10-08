@@ -1,8 +1,8 @@
 <?php
 /**
- * Class file for Fieldmanager_Datepicker.
+ * Class file for Fieldmanager_Datepicker
  *
- * @package Fieldmanager_Field
+ * @package Fieldmanager
  */
 
 /**
