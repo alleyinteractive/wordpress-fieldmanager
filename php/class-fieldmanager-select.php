@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class file for Fieldmanager_Select
+ *
+ * @package Fieldmanager
+ */
 
 /**
  * Select dropdown or multi-select field.
@@ -7,48 +12,53 @@
  * options (values) via an array or via a dynamic
  * {@link Fieldmanager_Datasource}, like {@link Fieldmanager_Datasource_Post},
  * {@link Fieldmanager_Datasource_Term}, or {@link Fieldmanager_Datasource_User}.
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_Select extends Fieldmanager_Options {
 
 	/**
+	 * Override $field_class.
+	 *
 	 * @var string
-	 * Override $field_class
 	 */
 	public $field_class = 'select';
 
 	/**
-	 * @var boolean
-	 * Should we support type-ahead? i.e. use chosen.js or not
+	 * Should we support type-ahead? i.e. use chosen.js or not.
+	 *
+	 * @var bool
 	 */
-	public $type_ahead = False;
+	public $type_ahead = false;
 
 	/**
-	 * @var boolean
-	 * Send an empty element first
+	 * Send an empty element first.
+	 *
+	 * @var bool
 	 */
-	public $first_empty = False;
+	public $first_empty = false;
 
 	/**
-	 * @var boolean
-	 * Tell FM to save multiple values
+	 * Tell FM to save multiple values.
+	 *
+	 * @var bool
 	 */
 	public $multiple = false;
 
 	/**
-	 * Override constructor to add chosen.js maybe
-	 * @param string $label
-	 * @param array $options
+	 * Override constructor to add chosen.js maybe.
+	 *
+	 * @param string $label   The form label.
+	 * @param array  $options The form options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 
 		$this->attributes = array(
-			'size' => '1'
+			'size' => '1',
 		);
 
-		// Add the Fieldmanager Select javascript library
-		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.2', false, 'fm_select', array( 'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ) ) );
+		// Add the Fieldmanager Select Javascript library.
+		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.2', false, 'fm_select', array(
+			'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ),
+		) );
 
 		parent::__construct( $label, $options );
 
@@ -61,7 +71,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			$this->attributes['multiple'] = 'multiple';
 		}
 
-		// Add the chosen library for type-ahead capabilities
+		// Add the chosen library for type-ahead capabilities.
 		if ( $this->type_ahead ) {
 			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
 			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
@@ -70,32 +80,33 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	}
 
 	/**
-	 * Form element
-	 * @param array $value
-	 * @return string HTML
+	 * Form element.
+	 *
+	 * @param array $value The current value.
+	 * @return string HTML string.
 	 */
 	public function form_element( $value = array() ) {
 
 		$select_classes = array( 'fm-element' );
 
-		// If this is a multiple select, need to handle differently
+		// If this is a multiple select, need to handle differently.
 		$do_multiple = '';
 		if ( $this->multiple ) {
-			$do_multiple = "[]";
+			$do_multiple = '[]';
 		}
 
-		// Handle type-ahead based fields using the chosen library
+		// Handle type-ahead based fields using the chosen library.
 		if ( $this->type_ahead ) {
 			$select_classes[] = 'chzn-select';
-			if ( !isset( $GLOBALS['fm_chosen_initialized'] ) ) {
+			if ( ! isset( $GLOBALS['fm_chosen_initialized'] ) ) {
 				add_action( 'admin_footer', array( $this, 'chosen_init' ) );
 				$GLOBALS['fm_chosen_initialized'] = true;
 			}
 
 			if ( $this->grouped ) {
-				$select_classes[] = "fm-options-grouped";
+				$select_classes[] = 'fm-options-grouped';
 			} else {
-				$select_classes[] = "fm-options";
+				$select_classes[] = 'fm-options';
 			}
 		}
 
@@ -107,7 +118,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		return sprintf(
 			'<select class="%s" name="%s" id="%s" %s>%s</select>',
-			esc_attr( implode( " ", $select_classes ) ),
+			esc_attr( implode( ' ', $select_classes ) ),
 			esc_attr( $this->get_form_name( $do_multiple ) ),
 			esc_attr( $this->get_element_id() ),
 			$this->get_element_attributes(),
@@ -116,16 +127,17 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	}
 
 	/**
-	 * Single data element (<option>)
-	 * @param array $data_row
-	 * @param array $value
-	 * @return string HTML
+	 * Single data element (<option>).
+	 *
+	 * @param  array $data_row The data row.
+	 * @param  array $value    The option value.
+	 * @return string HTML string.
 	 */
 	public function form_data_element( $data_row, $value = array() ) {
 
-		// For taxonomy-based selects, only return selected options if taxonomy preload is disabled
-		// Additional terms will be provided by AJAX for typeahead to avoid overpopulating the select for large taxonomies
-		$option_selected = $this->option_selected( $data_row['value'], $value, "selected" );
+		// For taxonomy-based selects, only return selected options if taxonomy preload is disabled.
+		// Additional terms will be provided by Ajax for typeahead to avoid overpopulating the select for large taxonomies.
+		$option_selected = $this->option_selected( $data_row['value'], $value, 'selected' );
 
 		return sprintf(
 			'<option value="%s" %s>%s</option>',
@@ -137,9 +149,10 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	}
 
 	/**
-	 * Start an <optgroup>
-	 * @param string $label
-	 * @return string HTML
+	 * Start an <optgroup>.
+	 *
+	 * @param string $label Optgroup label.
+	 * @return string HTML string.
 	 */
 	public function form_data_start_group( $label ) {
 		return sprintf(
@@ -149,16 +162,16 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	}
 
 	/**
-	 * End an <optgroup>
-	 * @return string HTML
+	 * End an <optgroup>.
+	 *
+	 * @return string HTML string.
 	 */
 	public function form_data_end_group() {
 		return '</optgroup>';
 	}
 
 	/**
-	 * Init chosen.js
-	 * @return string HTML
+	 * Init chosen.js.
 	 */
 	public function chosen_init() {
 		?>

@@ -44,13 +44,13 @@ fm_reset_chosen = function( $fm_text_field, fm_text_field_val ) {
 
 $( document ).ready( function() {
 
-	// Track changes to the chosen text field linked to the select in order to update options via AJAX
+	// Track changes to the chosen text field linked to the select in order to update options via Ajax
 	// Used for taxonomy-based fields where preload is disabled
 	$('.fm-wrapper').on( 'keyup', '.fm-item .chzn-choices input,.fm-item .chzn-search input', function( e ) {
 		// Do not execute this function for arrow key presses
 		if( e.keyCode >= 37 && e.keyCode <= 40 ) return;
 
-		// Get the corresponding Fieldmanager select field to access data attributes needed for the AJAX call
+		// Get the corresponding Fieldmanager select field to access data attributes needed for the Ajax call
 		$fm_select_field = $(this).parents('.chzn-container').siblings('select');
 		$fm_text_field = $(this);
 
