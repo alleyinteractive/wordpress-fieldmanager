@@ -166,7 +166,7 @@ fm_add_another = function( $element ) {
 }
 
 fm_remove = function( $element ) {
-	$wrapper = $( this ).parents( '.fm-wrapper' ).first();
+	$wrapper = $element.parents( '.fm-wrapper' ).first();
 	$element.parents( '.fm-item' ).first().remove();
 	fm_renumber( $wrapper );
 }
