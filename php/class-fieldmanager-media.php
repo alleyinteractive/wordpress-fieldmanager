@@ -1,76 +1,118 @@
 <?php
+/**
+ * Class file for Fieldmanager_Media
+ *
+ * @package Fieldmanager
+ */
 
 /**
- * Media field
- * @package Fieldmanager
+ * A field to select an attachment via the WordPress Media Manager.
+ *
+ * This field submits the selected attachment as an attachment ID (post ID).
  */
 class Fieldmanager_Media extends Fieldmanager_Field {
 
 	/**
+	 * Override field_class.
+	 *
 	 * @var string
-	 * Override field_class
 	 */
 	public $field_class = 'media';
 
 	/**
+	 * Button Label.
+	 *
 	 * @var string
-	 * Button Label
 	 */
 	public $button_label;
 
 	/**
+	 * Button label in the media modal popup.
+	 *
 	 * @var string
-	 * Button label in the media modal popup
 	 */
 	public $modal_button_label;
 
 	/**
+	 * Title of the media modal popup.
+	 *
 	 * @var string
-	 * Title of the media modal popup
 	 */
 	public $modal_title;
 
 	/**
+	 * Label for the preview of the selected image attachment.
+	 *
 	 * @var string
-	 * Class to attach to thumbnail media display
+	 */
+	public $selected_image_label;
+
+	/**
+	 * Label for the preview of the selected non-image attachment.
+	 *
+	 * @var string
+	 */
+	public $selected_file_label;
+
+	/**
+	 * Text of the link that deselects the currently selected attachment.
+	 *
+	 * @var string
+	 */
+	public $remove_media_label;
+
+	/**
+	 * Class to attach to thumbnail media display.
+	 *
+	 * @var string
 	 */
 	public $thumbnail_class = 'thumbnail';
 
 	/**
+	 * Which size a preview image should be. e.g. "thumbnail", "large", or some
+	 * size created with add_image_size.
+	 *
 	 * @var string
-	 * Which size a preview image should be.
-	 * Should be a string (e.g. "thumbnail", "large", or some size created with add_image_size)
-	 * You can use an array here
 	 */
 	public $preview_size = 'thumbnail';
 
 	/**
-	 * @var string
 	 * What mime types are available to choose from.
 	 * Valid options are "all" or a partial or full mimetype (e.g. "image" or
 	 * "application/pdf").
+	 *
+	 * @var string
 	 */
 	public $mime_type = 'all';
 
 	/**
-	 * @var boolean
-	 * Static variable so we only load media JS once
+	 * Static variable so we only load media JS once.
+	 *
+	 * @var bool
 	 */
 	public static $has_registered_media = false;
 
 	/**
-	 * Construct default attributes
-	 * @param string $label
-	 * @param array $options
+	 * Construct default attributes.
+	 *
+	 * @param string $label   The form label.
+	 * @param array  $options The form options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		$this->button_label       = __( 'Attach a File', 'fieldmanager' );
-		$this->modal_button_label = __( 'Select Attachment', 'fieldmanager' );
-		$this->modal_title        = __( 'Choose an Attachment', 'fieldmanager' );
+		$this->button_label         = __( 'Attach a File', 'fieldmanager' );
+		$this->modal_button_label   = __( 'Select Attachment', 'fieldmanager' );
+		$this->modal_title          = __( 'Choose an Attachment', 'fieldmanager' );
+		$this->selected_image_label = __( 'Uploaded image:', 'fieldmanager' );
+		$this->selected_file_label  = __( 'Uploaded file:', 'fieldmanager' );
+		$this->remove_media_label   = __( 'remove', 'fieldmanager' );
 
-		add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
 		if ( ! self::$has_registered_media ) {
-			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), '1.0.3' );
+			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), '1.0.4' );
+			if ( did_action( 'admin_print_scripts' ) ) {
+				$this->admin_print_scripts();
+			} else {
+				add_action( 'admin_print_scripts', array( $this, 'admin_print_scripts' ) );
+			}
 			self::$has_registered_media = true;
 		}
 		parent::__construct( $label, $options );
@@ -83,38 +125,45 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function admin_print_scripts() {
 		$post = get_post();
 		$args = array();
-		if ( isset( $post ) && $post->ID ) {
+		if ( ! empty( $post->ID ) ) {
 			$args['post'] = $post->ID;
 		}
 		wp_enqueue_media( $args ); // generally on post pages this will not have an impact.
 	}
 
 	/**
-	 * Presave; ensure that the value is an absolute integer
+	 * Presave; ensure that the value is an absolute integer.
+	 *
+	 * @param  int   $value         The new value.
+	 * @param  array $current_value The current value.
+	 * @return int The sanitized value.
 	 */
 	public function presave( $value, $current_value = array() ) {
-		if ( $value == 0 || !is_numeric( $value ) ) {
-			return NULL;
+		if ( 0 == $value || ! is_numeric( $value ) ) {
+			return null;
 		}
 		return absint( $value );
 	}
 
 	/**
-	 * Form element
-	 * @param mixed $value
-	 * @return string HTML
+	 * Form element.
+	 *
+	 * @param mixed $value The current value.
+	 * @return string HTML string.
 	 */
 	public function form_element( $value = array() ) {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
 			if ( strpos( $attachment->post_mime_type, 'image/' ) === 0 ) {
-				$preview = esc_html__( 'Uploaded image:', 'fieldmanager' ) . '<br />';
-				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array( 'class' => $this->thumbnail_class ) ) . '</a>';
+				$preview = esc_html( $this->selected_image_label ) . '<br />';
+				$preview .= '<a href="#">' . wp_get_attachment_image( $value, $this->preview_size, false, array(
+					'class' => $this->thumbnail_class,
+				) ) . '</a>';
 			} else {
-				$preview = esc_html__( 'Uploaded file:', 'fieldmanager' ) . '&nbsp;';
-				$preview .= wp_get_attachment_link( $value, $this->preview_size, True, True, $attachment->post_title );
+				$preview = esc_html( $this->selected_file_label ) . '&nbsp;';
+				$preview .= wp_get_attachment_link( $value, $this->preview_size, true, true, $attachment->post_title );
 			}
-			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', esc_html__( 'remove', 'fieldmanager' ) );
+			$preview .= sprintf( '<br /><a href="#" class="fm-media-remove fm-delete">%s</a>', esc_html( $this->remove_media_label ) );
 			$preview = apply_filters( 'fieldmanager_media_preview', $preview, $value, $attachment );
 		} else {
 			$preview = '';
