@@ -87,8 +87,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Get a set of elements
-	 * @return Fieldmanager_Field[]
+	 * Get a set of elements to be used as children for a Fieldmanager_Group object.
+	 *
+	 * @return array Fieldmanager_Field objects.
 	 */
 	private function _get_elements() {
 		return array(
@@ -162,7 +163,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 *
 	 * @param  object $field     Some Fieldmanager_Field object.
 	 * @param  array  $test_data Data to save (and use when rendering)
-	 * @return string            Rendered HTML
+	 * @return string Rendered HTML.
 	 */
 	private function _get_html_for( $field, $test_data = null ) {
 		ob_start();
@@ -1050,5 +1051,17 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertEquals( 10, has_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment') ) );
 		remove_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment' ) );
 		$this->assertTrue( $fm_3->is_attachment );
+	}
+
+	public function test_zero_in_repeating_field() {
+		$save_data = array( '1', '0', '', '2' );
+		$stored_data = array( '1', '0', '2' );
+		$fm = new Fieldmanager_Textfield( array(
+			'name' => 'repeating_text_field',
+			'limit' => 0,
+		) );
+		$fm->add_meta_box( 'Repeating Text Field', 'post' )->save_to_post_meta( $this->post_id, $save_data );;
+
+		$this->assertSame( $stored_data, get_post_meta( $this->post_id, 'repeating_text_field', true ) );
 	}
 }

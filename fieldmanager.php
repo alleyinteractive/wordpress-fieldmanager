@@ -3,22 +3,22 @@
  * Fieldmanager Base Plugin File.
  *
  * @package Fieldmanager
- * @version 1.0.0
+ * @version 1.2.0-alpha
  */
 
 /*
 Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
-Description: Add fields to content types programatically.
-Author: Austin Smith
-Version: 1.0.0
-Author URI: http://www.alleyinteractive.com/
+Description: Add fields to WordPress programatically.
+Author: Alley Interactive
+Version: 1.2.0-alpha
+Author URI: https://www.alleyinteractive.com/
 */
 
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.0.0' );
+define( 'FM_VERSION', '1.2.0-alpha' );
 
 /**
  * Filesystem path to Fieldmanager.
@@ -33,7 +33,7 @@ define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 /**
  * Whether to display debugging information. Default is value of WP_DEBUG.
  */
-if ( !defined( 'FM_DEBUG' ) ) {
+if ( ! defined( 'FM_DEBUG' ) ) {
 	define( 'FM_DEBUG', WP_DEBUG );
 }
 
@@ -57,18 +57,23 @@ function fieldmanager_load_class( $class ) {
 	$class_id = strtolower( substr( $class, strrpos( $class, '_' ) + 1 ) );
 
 	if ( 0 === strpos( $class, 'Fieldmanager_Context' ) ) {
-		if ( 'context' == $class_id ) {
+		if ( 'context' === $class_id ) {
 			return fieldmanager_load_file( 'context/class-fieldmanager-context.php' );
 		}
 		return fieldmanager_load_file( 'context/class-fieldmanager-context-' . $class_id . '.php' );
 	}
 
 	if ( 0 === strpos( $class, 'Fieldmanager_Datasource' ) ) {
-		if ( 'datasource' == $class_id ) {
+		if ( 'datasource' === $class_id ) {
 			return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource.php' );
 		}
 		return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource-' . $class_id . '.php' );
 	}
+
+	if ( 0 === strpos( $class, 'Fieldmanager_Util' ) ) {
+		return fieldmanager_load_file( 'util/class-fieldmanager-util-' . $class_id . '.php' );
+	}
+
 	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );
 }
 
@@ -80,31 +85,21 @@ if ( function_exists( 'spl_autoload_register' ) ) {
 /**
  * Load a Fieldmanager file.
  *
- * @throws FM_Class_Not_Found_Exception.
+ * @throws FM_Class_Not_Found_Exception The Class is not found.
  *
- * @param string $file File to load.
+ * @param  string $file File to load.
  */
 function fieldmanager_load_file( $file ) {
 	$file = FM_BASE_DIR . '/php/' . $file;
-	if ( !file_exists( $file ) ) {
+	if ( ! file_exists( $file ) ) {
 		throw new FM_Class_Not_Found_Exception( $file );
 	}
 	require_once( $file );
 }
 
-// Load utility classes with helper functions.
+// Load utility classes with helper functions. These can't be autoloaded.
 fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
 fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
-
-/**
- * Enqueue CSS and JS in the Dashboard.
- */
-function fieldmanager_enqueue_scripts() {
-	wp_enqueue_script( 'fieldmanager_script', fieldmanager_get_baseurl() . 'js/fieldmanager.js', array( 'jquery' ), '1.0.7' );
-	wp_enqueue_style( 'fieldmanager_style', fieldmanager_get_baseurl() . 'css/fieldmanager.css', array(), '1.0.4' );
-	wp_enqueue_script( 'jquery-ui-sortable' );
-}
-add_action( 'admin_enqueue_scripts', 'fieldmanager_enqueue_scripts' );
 
 /**
  * Tell Fieldmanager that it has a base URL somewhere other than the plugins URL.
@@ -145,72 +140,44 @@ function fieldmanager_get_template( $tpl_slug ) {
 }
 
 /**
- * Enqueue a script with a closure, optionally localizing data to it.
+ * Enqueue a script, optionally localizing data to it.
  *
- * @see wp_enqueue_script() for detail about $handle, $deps, $ver, and $in_footer.
- * @see wp_localize_script() for detail about $data_object and $data.
- * @see FM_GLOBAL_ASSET_VERSION for detail about the fallback value of $ver.
- * @see fieldmanager_get_baseurl() for detail about the fallback value of $plugin_dir.
+ * @see Fieldmanager_Util_Assets::add_script().
  *
- * @param string $handle Script name.
- * @param string $path The path to the file inside $plugin_dir.
- * @param array $deps Script dependencies. Default empty array.
- * @param string|bool $ver Script version. Default none.
- * @param bool $in_footer Whether to render the script in the footer. Default false.
- * @param string $data_object The $object_name in wp_localize_script(). Default none.
- * @param array $data The $l10n in wp_localize_script(). Default empty array.
- * @param string $plugin_dir The base URL to the directory with the script. Default none.
- * @param bool $admin Unused.
+ * @param string      $handle      Script handle.
+ * @param string|bool $path        Optional. The path to the file inside $plugin_dir.
+ *                                 Default false.
+ * @param array       $deps        Optional. Script dependencies. Default empty array.
+ * @param string|bool $ver         Optional. Script version. Default none.
+ * @param bool        $in_footer   Optional. Whether to render the script in the footer.
+ *                                 Default false.
+ * @param string      $data_object Optional. The $object_name in wp_localize_script().
+ *                                 Default none.
+ * @param array       $data        Optional. The $l10n in wp_localize_script(). Default empty
+ *                                 array.
+ * @param string      $plugin_dir  The base URL to the directory with the script.
+ *                                 Default none.
+ * @param bool        $admin       Deprecated.
  */
-function fm_add_script( $handle, $path, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
-	if ( !is_admin() ) {
-		return;
-	}
-	if ( !$ver ) {
-		$ver = FM_GLOBAL_ASSET_VERSION;
-	}
-	if ( '' == $plugin_dir ) {
-		$plugin_dir = fieldmanager_get_baseurl(); // allow overrides for child plugins
-	}
-	$add_script = function() use ( $handle, $path, $deps, $ver, $in_footer, $data_object, $data, $plugin_dir ) {
-		wp_enqueue_script( $handle, $plugin_dir . $path, $deps, $ver, $in_footer );
-		if ( !empty( $data_object ) && !empty( $data ) ) {
-			wp_localize_script( $handle, $data_object, $data );
-		}
-	};
-
-	add_action( 'admin_enqueue_scripts', $add_script );
-	add_action( 'wp_enqueue_scripts', $add_script );
+function fm_add_script( $handle, $path = false, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
+	Fieldmanager_Util_Assets::instance()->add_script( compact( 'handle', 'path', 'deps', 'ver', 'in_footer', 'data_object', 'data', 'plugin_dir' ) );
 }
 
 /**
- * Register and enqueue a style with a closure.
+ * Register and enqueue a style.
  *
- * @see wp_enqueue_script() for detail about $handle, $path, $deps, $ver, and $media.
- * @see FM_GLOBAL_ASSET_VERSION for detail about the fallback value of $ver.
- * @see fieldmanager_get_baseurl() for detail about base URL.
+ * @see Fieldmanager_Util_Assets::add_style().
  *
- * @param string $handle Stylesheet name.
- * @param string $path Path to the file inside of the Fieldmanager base URL.
- * @param array $deps Stylesheet dependencies. Default empty array.
- * @param string|bool Stylesheet version. Default none.
- * @param string $media Media for this stylesheet. Default 'all'.
- * @param bool $admin Unused.
+ * @param string      $handle Stylesheet name.
+ * @param string|bool $path   Optional. Path to the file inside of the Fieldmanager
+ *                            base URL. Default false.
+ * @param array       $deps   Optional. Stylesheet dependencies. Default empty array.
+ * @param string|bool $ver    Optional. Stylesheet version. Default none.
+ * @param string      $media  Optional. Media for this stylesheet. Default 'all'.
+ * @param bool        $admin  Deprecated.
  */
-function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
-	if( !is_admin() ) {
-		return;
-	}
-	if ( !$ver ) {
-		$ver = FM_GLOBAL_ASSET_VERSION;
-	}
-	$add_script = function() use ( $handle, $path, $deps, $ver, $media ) {
-		wp_register_style( $handle, fieldmanager_get_baseurl() . $path, $deps, $ver, $media );
-        wp_enqueue_style( $handle );
-	};
-
-	add_action( 'admin_enqueue_scripts', $add_script );
-	add_action( 'wp_enqueue_scripts', $add_script );
+function fm_add_style( $handle, $path = false, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
+	Fieldmanager_Util_Assets::instance()->add_style( compact( 'handle', 'path', 'deps', 'ver', 'media' ) );
 }
 
 /**
@@ -218,14 +185,15 @@ function fm_add_style( $handle, $path, $deps = array(), $ver = false, $media = '
  *
  * Keeps the globals out.
  *
- * @param string $var The variable name to set.
- * @param mixed $val The value to store for $var. Default null.
+ * @param  string $var The variable name to set.
+ * @param  mixed  $val The value to store for $var. Default null.
  * @return mixed The stored value of $var if $val is null, or false if $val is
- *     null and $var was not set in the registry, or void if $val is being set.
+ *               null and $var was not set in the registry, or void if $val is
+ *               being set.
  */
 function _fieldmanager_registry( $var, $val = null ) {
 	static $registry;
-	if ( !is_array( $registry ) ) {
+	if ( ! is_array( $registry ) ) {
 		$registry = array();
 	}
 	if ( null === $val ) {
@@ -281,9 +249,27 @@ function fm_get_context( $recalculate = false ) {
  * }
  */
 function fm_calculate_context() {
+	$calculated_context = array( null, null );
+
 	// Safe to use at any point in the load process, and better than URL matching.
-	if ( is_admin() ) {
-		$script = substr( $_SERVER['PHP_SELF'], strrpos( $_SERVER['PHP_SELF'], '/' ) + 1 );
+	if ( is_admin() && ! empty( $_SERVER['PHP_SELF'] ) ) {  // WPCS: input var okay.
+		$php_self = sanitize_text_field( wp_unslash( $_SERVER['PHP_SELF'] ) );  // WPCS: input var okay.
+		$script = substr( $php_self, strrpos( $php_self, '/' ) + 1 );
+
+		$get_post_type = '';
+		if ( ! empty( $_GET['post_type'] ) ) {  // WPCS: input var okay.
+			$get_post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) ); // WPCS: input var okay.
+		}
+
+		$get_page = '';
+		if ( ! empty( $_GET['page'] ) ) {  // WPCS: input var okay.
+			$get_page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); // WPCS: input var okay.
+		}
+
+		$post_action = '';
+		if ( ! empty( $_POST['action'] ) ) {  // WPCS: input var okay. CSRF ok.
+			$post_action = sanitize_text_field( wp_unslash( $_POST['action'] ) ); // WPCS: input var okay. CSRF ok.
+		}
 
 		/*
 		 * Calculate a submenu context.
@@ -295,81 +281,82 @@ function fm_calculate_context() {
 		 *
 		 * @see fm_register_submenu_page() for detail about $submenu array values.
 		 */
-		if ( ! empty( $_GET['page'] ) ) {
-			$page = sanitize_text_field( $_GET['page'] );
+		if ( ! empty( $get_page ) ) {
 			$submenus = _fieldmanager_registry( 'submenus' );
 
-			if ( isset( $_GET['post_type'] ) ) {
-				$post_type = sanitize_text_field( $_GET['post_type'] );
-				if ( post_type_exists( $post_type ) ) {
-					$script .= "?post_type={$post_type}";
+			if ( ! empty( $get_post_type ) ) {
+				if ( post_type_exists( $get_post_type ) ) {
+					$script .= "?post_type={$get_post_type}";
 				}
 			}
 
 			if ( $submenus ) {
 				foreach ( $submenus as $submenu ) {
-					if ( $script == $submenu[0] || ( 'admin.php' == $script && $page == $submenu[4] ) ) {
-						return array( 'submenu', $page );
+					if ( $script === $submenu[0] || ( 'admin.php' === $script && $get_page === $submenu[4] ) ) {
+						$calculated_context = array( 'submenu', $get_page );
 					}
 				}
 			}
 		}
 
-		switch ( $script ) {
-			// Context = "post".
-			case 'post.php':
-				if ( !empty( $_POST['action'] ) && ( 'editpost' === $_POST['action'] || 'newpost' === $_POST['action'] ) ) {
-					$calculated_context = array( 'post', sanitize_text_field( $_POST['post_type'] ) );
-				} elseif ( !empty( $_GET['post'] ) ) {
-					$calculated_context = array( 'post', get_post_type( intval( $_GET['post'] ) ) );
-				}
-				break;
-			case 'post-new.php':
-				$calculated_context = array( 'post', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
-				break;
-			// Context = "user".
-			case 'profile.php':
-			case 'user-edit.php':
-				$calculated_context = array( 'user', null );
-				break;
-			// Context = "quickedit".
-			case 'edit.php':
-				$calculated_context = array( 'quickedit', !empty( $_GET['post_type'] ) ? sanitize_text_field( $_GET['post_type'] ) : 'post' );
-				break;
-			case 'admin-ajax.php':
-				// Passed in via an Ajax form.
-				if ( !empty( $_POST['fm_context'] ) ) {
-					$subcontext = !empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( $_POST['fm_subcontext'] ) : null;
-					$calculated_context = array( sanitize_text_field( $_POST['fm_context'] ), $subcontext );
-				} elseif ( !empty( $_POST['screen'] ) && !empty( $_POST['action'] ) ) {
-					if ( 'edit-post' === $_POST['screen'] && 'inline-save' === $_POST['action'] ) {
-						$calculated_context = array( 'quickedit', sanitize_text_field( $_POST['post_type'] ) );
-					// Context = "term".
-					} elseif ( 'add-tag' === $_POST['action'] && !empty( $_POST['taxonomy'] ) ) {
-						$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
+		if ( empty( $calculated_context[0] ) ) {
+			switch ( $script ) {
+				// Context = "post".
+				case 'post.php':
+					if ( ! empty( $post_action ) && ( 'editpost' === $post_action || 'newpost' === $post_action ) ) {
+						$calculated_context = array( 'post', sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ); // WPCS: input var okay. CSRF ok.
+					} elseif ( ! empty( $_GET['post'] ) ) { // WPCS: input var okay.
+						$calculated_context = array( 'post', get_post_type( intval( $_GET['post'] ) ) ); // WPCS: input var okay.
 					}
+					break;
+				case 'post-new.php':
+					$calculated_context = array( 'post', ! empty( $get_post_type ) ? $get_post_type : 'post' );
+					break;
+				// Context = "user".
+				case 'profile.php':
+				case 'user-edit.php':
+					$calculated_context = array( 'user', null );
+					break;
 				// Context = "quickedit".
-				} elseif ( !empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) {
-					$calculated_context = array( 'quickedit', sanitize_text_field( $_GET['post_type'] ) );
-				}
-				break;
-			// Context = "term".
-			case 'edit-tags.php':
-			case 'term.php': // As of 4.5-alpha; see https://core.trac.wordpress.org/changeset/36308
-				if ( !empty( $_POST['taxonomy'] ) ) {
-					$calculated_context = array( 'term', sanitize_text_field( $_POST['taxonomy'] ) );
-				} elseif ( !empty( $_GET['taxonomy'] ) ) {
-					$calculated_context = array( 'term', sanitize_text_field( $_GET['taxonomy'] ) );
-				}
-				break;
+				case 'edit.php':
+					$calculated_context = array( 'quickedit', ! empty( $get_post_type ) ? $get_post_type : 'post' );
+					break;
+				case 'admin-ajax.php':
+					// Passed in via an Ajax form.
+					if ( ! empty( $_POST['fm_context'] ) ) { // WPCS: input var okay. CSRF ok.
+						$subcontext = ! empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( wp_unslash( $_POST['fm_subcontext'] ) ) : null; // WPCS: input var okay. CSRF ok.
+						$calculated_context = array( sanitize_text_field( wp_unslash( $_POST['fm_context'] ) ), $subcontext ); // WPCS: input var okay. CSRF ok.
+					} elseif ( ! empty( $_POST['screen'] ) && ! empty( $post_action ) ) { // WPCS: input var okay. CSRF ok.
+						if ( 'edit-post' === $_POST['screen'] && 'inline-save' === $post_action ) { // WPCS: input var okay. CSRF ok.
+							$calculated_context = array( 'quickedit', sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ); // WPCS: input var okay. CSRF ok.
+						} elseif ( 'add-tag' === $post_action && ! empty( $_POST['taxonomy'] ) ) { // WPCS: input var okay. CSRF ok.
+							// Context = "term".
+							$calculated_context = array( 'term', sanitize_text_field( wp_unslash( $_POST['taxonomy'] ) ) ); // WPCS: input var okay. CSRF ok.
+						}
+					} elseif ( ! empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) { // WPCS: input var okay.
+						// Context = "quickedit".
+						$calculated_context = array( 'quickedit', sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ); // WPCS: input var okay.
+					}
+					break;
+				// Context = "term".
+				case 'edit-tags.php':
+				case 'term.php': // As of 4.5-alpha; see https://core.trac.wordpress.org/changeset/36308
+					if ( ! empty( $_POST['taxonomy'] ) ) { // WPCS: input var okay. CSRF ok.
+						$calculated_context = array( 'term', sanitize_text_field( wp_unslash( $_POST['taxonomy'] ) ) ); // WPCS: input var okay. CSRF ok.
+					} elseif ( ! empty( $_GET['taxonomy'] ) ) { // WPCS: input var okay.
+						$calculated_context = array( 'term', sanitize_text_field( wp_unslash( $_GET['taxonomy'] ) ) ); // WPCS: input var okay.
+					}
+					break;
+			}
 		}
 	}
 
-	if ( empty( $calculated_context ) ) {
-		$calculated_context = array( null, null );
-	}
-
-	return $calculated_context;
+	/**
+	 * Filters the Fieldmanager context calculated for the current request.
+	 *
+	 * @param array $calculated_context Array of context and 'type' information.
+	 */
+	return apply_filters( 'fm_calculated_context', $calculated_context );
 }
 
 /**
@@ -378,26 +365,27 @@ function fm_calculate_context() {
  * @see fm_get_context() for detail about the array values this function tries
  *     to match.
  *
- * @param string $context The Fieldmanager context to check for.
- * @param string|array $type Type or types to check for. Default null.
+ * @param  string       $context The Fieldmanager context to check for.
+ * @param  string|array $type    Type or types to check for. Default null.
  * @return bool True if $context is "form". If $type is null, true if $context
- *     matches the first value of fm_get_context(). If $type is a string or
- *     array, true if the second value of fm_get_context() matches the string or
- *     is in the array and the first value matches $context. False otherwise.
+ *              matches the first value of fm_get_context(). If $type is a
+ *              string or array, true if the second value of fm_get_context()
+ *              matches the string or is in the array and the first value
+ *              matches $context. False otherwise.
  */
 function fm_match_context( $context, $type = null ) {
-	if ( 'form' == $context ) {
+	if ( 'form' === $context ) {
 		// Nothing to check, since forms can be anywhere.
 		return true;
 	}
 
 	$calculated_context = fm_get_context();
-	if ( $calculated_context[0] == $context ) {
+	if ( $calculated_context[0] === $context ) {
 		if ( null !== $type ) {
 			if ( is_array( $type ) ) {
-				return in_array( $calculated_context[1], $type );
+				return in_array( $calculated_context[1], $type, true );
 			}
-			return ( $calculated_context[1] == $type );
+			return ( $calculated_context[1] === $type );
 		}
 		return true;
 	}
@@ -453,7 +441,7 @@ add_action( 'init', 'fm_trigger_context_action', 99 );
  * @see Fieldmanager_Context_Submenu for detail about $parent_slug, $page_title,
  *     $menu_title, $capability, and $menu_slug.
  *
- * @throws FM_Duplicate_Submenu_Name_Exception.
+ * @throws FM_Duplicate_Submenu_Name_Exception The Duplicate submenu name exception.
  *
  * @param string $group_name A slug to register the submenu page under.
  * @param string $parent_slug Parent menu slug name or admin page file name.
@@ -465,14 +453,15 @@ add_action( 'init', 'fm_trigger_context_action', 99 );
  */
 function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu_title = null, $capability = 'manage_options', $menu_slug = null ) {
 	$submenus = _fieldmanager_registry( 'submenus' );
-	if ( !$submenus ) {
+	if ( ! $submenus ) {
 		$submenus = array();
 	}
 	if ( isset( $submenus[ $group_name ] ) ) {
+		/* translators: %s: group name */
 		throw new FM_Duplicate_Submenu_Name_Exception( sprintf( esc_html__( '%s is already in use as a submenu name', 'fieldmanager' ), $group_name ) );
 	}
 
-	if ( !$menu_title ) {
+	if ( ! $menu_title ) {
 		$menu_title = $page_title;
 	}
 
@@ -492,11 +481,11 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
  *
  * @see _fm_add_submenus().
  *
- * @throws FM_Submenu_Not_Initialized_Exception.
+ * @throws FM_Submenu_Not_Initialized_Exception The submenu is not initialized exception.
  */
 function _fm_submenu_render() {
 	$context = _fieldmanager_registry( 'active_submenu' );
-	if ( !is_object( $context ) ) {
+	if ( ! is_object( $context ) ) {
 		throw new FM_Submenu_Not_Initialized_Exception( esc_html__( 'The Fieldmanger context for this submenu was not initialized', 'fieldmanager' ) );
 	}
 	$context->render_submenu_page();
@@ -507,7 +496,7 @@ function _fm_submenu_render() {
  */
 function _fm_add_submenus() {
 	$submenus = _fieldmanager_registry( 'submenus' );
-	if ( !is_array( $submenus ) ) {
+	if ( ! is_array( $submenus ) ) {
 		return;
 	}
 	foreach ( $submenus as $s ) {

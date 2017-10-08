@@ -28,6 +28,8 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 	}
 
 	public function tearDown() {
+		parent::tearDown();
+
 		$meta = fm_get_term_meta( $this->term_id, $this->taxonomy );
 		foreach ( $meta as $key => $value ) {
 			fm_delete_term_meta( $this->term_id, $this->taxonomy, $key );
