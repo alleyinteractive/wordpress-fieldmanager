@@ -1,48 +1,56 @@
 <?php
 /**
+ * Class file for Fieldmanager_DraggablePost
+ *
+ * @package Fieldmanager
+ */
+
+/**
  * An interface for dragging posts from a repository to assorted buckets.
  *
  * This field might be deprecated in a future version of Fieldmanager. It is
  * preferable to use {@link https://github.com/alleyinteractive/fm-zones}
  * instead.
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 
 	/**
-	 * @var array
 	 * Keyed array defining repository boxes and what their content should be. Keys are the machine names of the repositories. Each can include:
-	 *		- 'label' (string) the publicly displayed label of the box (eg 'News Artickes')
-	 *		- 'post_type' (string or array of strings) post type(s) to select for this box
-	 *		- 'length' (int) number of items to show in the box
-	 *	 	- 'orderby' (string) field to order the query by, as allowed by WP_Query
-	 *		- 'order' (string) ASC or DESC
-	 *		- 'taxonomy_args' (array) arguments to pass to WP_Query to filter by category (see https://codex.wordpress.
-	 *			org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy filtering will be performed.
-	 *		- 'callback' (callable) a custom function to call in lieu of WP_Query to retrieve posts for this repository. The function
-	 *			must have the signature callback($key, $data) and must return an array of post ids. If callback is set, all the above
-	 *			options (except label) will be overridden.
+	 *     - 'label' (string) the publicly displayed label of the box (eg 'News Artickes')
+	 *     - 'post_type' (string or array of strings) post type(s) to select for this box
+	 *     - 'length' (int) number of items to show in the box
+	 *     - 'orderby' (string) field to order the query by, as allowed by WP_Query
+	 *     - 'order' (string) ASC or DESC
+	 *     - 'taxonomy_args' (array) arguments to pass to WP_Query to filter by category (see https://codex.wordpress.
+	 *       org/Class_Reference/WP_Query#Taxonomy_Parameters). If omitted, no taxonomy filtering will be performed.
+	 *     - 'callback' (callable) a custom function to call in lieu of WP_Query to retrieve posts for this repository. The function
+	 *       must have the signature callback($key, $data) and must return an array of post ids. If callback is set, all the above
+	 *       options (except label) will be overridden.
+	 *
+	 * @var array
 	 */
 	public $repositories = array();
 
 	/**
+	 * Keyed array defining the bins (destination droppable locations) for the
+	 * draggable items. Keys are machine names, values are labels.
+	 *
 	 * @var array
-	 * Keyed array defining the bins (destination droppable locations) for the draggable items. Keys are machine names, values are labels.
 	 */
 	public $bins = array();
 
 	/**
-	 * @var boolean
 	 * Provide "Use image?" checkbox for draggable divs?
+	 *
+	 * @var bool
 	 */
-	public $use_image_checkbox = False;
-
+	public $use_image_checkbox = false;
 
 	/**
 	 * Add scripts and styles and other setup tasks.
-	 * @param string $label
-	 * @param array $options
+	 *
+	 * @param string $label   The label.
+	 * @param array  $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		parent::__construct( $label, $options );
@@ -53,17 +61,18 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		fm_add_style( 'fm_draggablepost_css', 'css/fieldmanager-draggablepost.css' );
 	}
 
-
 	/**
-	 * Massage form data into proper storage format..
-	 * @param array $value
-	 * @return array $value
+	 * Massage form data into proper storage format.
+	 *
+	 * @param  array $value          The new value.
+	 * @param  array $current_values The current value.
+	 * @return array $value The new value.
 	 */
 	public function presave( $value, $current_values = array() ) {
 
 		foreach ( $this->bins as $bin => $name ) {
-			if ( isset( $value[$bin] ) ) {
-				$value[$bin] = explode(',', $value[$bin]);
+			if ( isset( $value[ $bin ] ) ) {
+				$value[ $bin ] = explode( ',', $value[ $bin ] );
 			}
 		}
 
@@ -79,9 +88,10 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Render form element
-	 * @param mixed $value
-	 * @return string HTML
+	 * Render form element.
+	 *
+	 * @param  mixed $value The current value.
+	 * @return string HTML.
 	 */
 	public function form_element( $value ) {
 		// Avoid null array errors later.
@@ -93,24 +103,23 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 			$out .= sprintf( '<h2>%s</h2><ul class="post-repository sortables">', $repo['label'] );
 			if ( isset( $repo['callback'] ) ) {
 				$ids = call_user_func( $repo['callback'], $name, $repo );
-				if ( !empty( $ids ) ) {
+				if ( ! empty( $ids ) ) {
 					// Return value here should be all numeric post ids, but we'll tolerate non-numerics if they show up.
 					foreach ( $ids as $id ) {
-						if ( !is_numeric( $id ) || in_array( $id, $all ) ) {
+						if ( ! is_numeric( $id ) || in_array( $id, $all ) ) {
 							continue;
 						}
 						$out .= $this->draggable_item_html( $id );
 					}
 				}
-			}
-			else {
+			} else {
 				$query_args = array(
 					'post_type' => $repo['post_type'],
 					'post_status' => 'publish',
 					'posts_per_page' => $repo['length'],
 					'orderby' => $repo['orderby'],
 					'order' => $repo['order'],
-					'tax_query' => array($repo['taxonomy_args']),
+					'tax_query' => array( $repo['taxonomy_args'] ),
 				);
 				$q = new WP_Query( $query_args );
 				while ( $q->have_posts() ) {
@@ -121,57 +130,57 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 					$out .= $this->draggable_item_html( get_the_ID() );
 				}
 			}
-			$out .= "</ul>";
+			$out .= '</ul>';
 		}
-		$out .= "</div>";
+		$out .= '</div>';
 		$out .= '<div class="post-bin-wrapper">';
 		foreach ( $this->bins as $name => $bin ) {
 			$out .= sprintf( '<h2>%s</h2>', $bin );
 			$out .= sprintf( '<ul class="post-bin sortables" id="%s-bin"><em class="empty-message">%s</em>', esc_attr( $name ), esc_attr__( 'drop posts here', 'fieldmanager' ) );
-			if ( isset( $value[$name] ) ) {
-				foreach ( $value[$name] as $id ) {
-					if ( !$id ) {
+			if ( isset( $value[ $name ] ) ) {
+				foreach ( $value[ $name ] as $id ) {
+					if ( ! $id ) {
 						continue;
 					}
 					$out .= $this->draggable_item_html( $id, in_array( $id, $value['_image_flags'] ) );
 				}
 			}
-		    $out .= "</ul>";
+			$out .= '</ul>';
 		}
 
 		foreach ( $this->bins as $bin => $label ) {
 			$out .= sprintf( '<input type="hidden" value="%s" name="%s" id="%s" />',
-						empty( $value[$bin] ) ?  '' : implode( ',', $value[$bin] ),
-						$this->get_form_name() . '[' . $bin . ']',
-						$bin
-					);
+				empty( $value[ $bin ] ) ? '' : implode( ',', $value[ $bin ] ),
+				$this->get_form_name() . '[' . $bin . ']',
+				$bin
+			);
 		}
 		$out .= '</div></div>';
 		return $out;
 	}
 
 	/**
-	 * Generate the html for a single draggable item
-	 * @param int $post_id
-	 * @param boolean $use_image_checked if true, render this item with the "use image" checkbox checked (if enabled)
-	 * @return string containing the li element.
+	 * Generate the HTML for a single draggable item.
+	 *
+	 * @param  int  $post_id           The post ID.
+	 * @param  bool $use_image_checked If true, render this item with the "use image"
+	 *                                 checkbox checked (if enabled).
+	 * @return string Containing the li element.
 	 */
 	protected function draggable_item_html( $post_id, $use_image_checked = false ) {
 		$post = get_post( $post_id );
 		$bylines = array();
 		if ( is_plugin_active( 'co-authors-plus/co-authors-plus.php' ) ) {
 			$authors = get_coauthors( $post_id );
-			foreach ($authors as $author) {
+			foreach ( $authors as $author ) {
 				$bylines[] = $author->display_name;
 			}
 			if ( empty( $bylines ) ) {
 				$authorstr = esc_html__( '(no authors)', 'fieldmanager' );
+			} else {
+				$authorstr = implode( ', ', $bylines );
 			}
-			else {
-				$authorstr = implode(', ', $bylines);
-			}
-		}
-		else {
+		} else {
 			$author = get_userdata( $post->post_author );
 			$authorstr = $author->display_name;
 		}
@@ -181,9 +190,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		$permalink = get_permalink( $post_id );
 
 		if ( isset( $image_meta[0] ) ) {
-			$image = wp_get_attachment_image( $image_meta[0], array(32,32) );
-		}
-		else{
+			$image = wp_get_attachment_image( $image_meta[0], array( 32, 32 ) );
+		} else {
 			$image = '';
 		}
 
@@ -209,20 +217,24 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Helper to convert the value passed to form_element into a non-hierarchical list of post_ids so we know which posts are already assigned to a bin and thus should be skipped in rendering.
-	 * @param array $value as passed to form_element()
-	 * @return array containing post_ids in any subarray, except the one attached to key '_image_flags'.
+	 * Helper to convert the value passed to form_element into a non-hierarchical
+	 * list of post_ids so we know which posts are already assigned to a bin and
+	 * thus should be skipped in rendering.
+	 *
+	 * @param array $value As passed to form_element().
+	 * @return array Containing post_ids in any subarray, except the one
+	 *               attached to key '_image_flags'.
 	 */
 	protected function flatten_arrays( $value ) {
-		if ( empty ( $value ) ) {
+		if ( empty( $value ) ) {
 			return array();
 		}
 		$result = array();
 		foreach ( $value as $key => $array ) {
-			if ( $key == '_image_flags' ) {
+			if ( '_image_flags' === $key ) {
 				continue;
 			}
-			$result = array_merge( $result, $value[$key] );
+			$result = array_merge( $result, $value[ $key ] );
 		}
 		$return = array();
 		foreach ( $result as $id ) {
