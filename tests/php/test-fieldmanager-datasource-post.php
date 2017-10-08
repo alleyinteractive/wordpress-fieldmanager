@@ -45,7 +45,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 	 * @param  object $field Some Fieldmanager_Field object.
 	 * @param  object $post A WP_Post object.
 	 * @param  array  $test_data Data to save (and use when rendering)
-	 * @return string            Rendered HTML
+	 * @return string Rendered HTML.
 	 */
 	private function _get_html_for( $field, $post, $test_data = null ) {
 		ob_start();
