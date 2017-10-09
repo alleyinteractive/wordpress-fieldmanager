@@ -1153,7 +1153,6 @@ abstract class Fieldmanager_Field {
 		/*
 		 * This is displayed alongside the button so it can be in the same place
 		 * whether the button is above or below the fields.
-		 *
 		 * @see Fieldmanager_Field::add_more_position.
 		 *
 		 * The .wp-ui-text-notification class shows a notification in the user's
