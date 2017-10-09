@@ -1129,11 +1129,6 @@ abstract class Fieldmanager_Field {
 		$out = '<div class="fm-add-another-wrapper">';
 
 		$out .= sprintf(
-			'<p id="%s" class="fm-add-another-limit-reached-message error-message"></p>',
-			esc_attr( 'fm-' . $this->name . '-add-another-limit-reached-message' )
-		);
-
-		$out .= sprintf(
 			'<input
 				type="button"
 				class="%s"
@@ -1152,8 +1147,23 @@ abstract class Fieldmanager_Field {
 			esc_attr( $this->add_more_position ),
 			intval( $this->limit ),
 			esc_attr( wp_json_encode( $this->add_more_label ) ),
-			esc_attr( 'fm-' . $this->name . '-add-another-limit-reached-message' )
+			esc_attr( 'fm-' . $this->name . '-add-another-limit-reached-label' )
 		);
+
+		/*
+		 * This is displayed alongside the button so it can be in the same place
+		 * whether the button is above or below the fields.
+		 *
+		 * @see Fieldmanager_Field::add_more_position.
+		 *
+		 * The .wp-ui-text-notification class shows a notification in the user's
+		 * admin color scheme.
+		 */
+		$out .= sprintf(
+			'<span id="%s" class="fm-add-another-limit-reached-label wp-ui-text-notification"></span>',
+			esc_attr( 'fm-' . $this->name . '-add-another-limit-reached-label' )
+		);
+
 		$out .= '</div>';
 		return $out;
 	}
