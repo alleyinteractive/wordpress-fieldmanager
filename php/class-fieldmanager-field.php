@@ -1090,13 +1090,26 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Generates HTML for the "Add Another" button.
 	 *
+	 * Accepted keys for the `add_more_label` array:
+	 *
+	 * - `add_first`, used as the button text when no items have been added.
+	 *   Default is 'Add field' or 'Add group'.
+	 *
+	 * - `add_another`, used as the button text when at least one item has been
+	 *   added. Default is 'Add field' or 'Add group'.
+	 *
+	 * - `limit_reached`, displayed alongside the button when no more items can
+	 *   be added. Default is none for better backwards-compatibility with
+	 *   existing fields that might already specify the limit in the field's
+	 *   label or description.
+	 *
 	 * @return string Button HTML.
 	 */
 	public function add_another() {
 		$default_labels = array(
 			'add_another' => $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' ),
 			'add_first' => $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' ),
-			'limit_reached' => __( 'Limit reached', 'fieldmanager' ),
+			'limit_reached' => '',
 		);
 
 		// Compatibility with passing just the "Add Another" label as a string.
