@@ -60,9 +60,13 @@ abstract class Fieldmanager_Field {
 	public $extra_elements = 1;
 
 	/**
-	 * Text for add more button.
+	 * Labels associated with the "Add Another" button.
 	 *
-	 * @var string
+	 * @since 1.2.0 Converted from a single label to an array of labels.
+	 *
+	 * @see Fieldmanager_Field::add_another().
+	 *
+	 * @var array
 	 */
 	public $add_more_label = array();
 
