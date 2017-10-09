@@ -87,8 +87,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Get a set of elements
-	 * @return Fieldmanager_Field[]
+	 * Get a set of elements to be used as children for a Fieldmanager_Group object.
+	 *
+	 * @return array Fieldmanager_Field objects.
 	 */
 	private function _get_elements() {
 		return array(
@@ -162,7 +163,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 *
 	 * @param  object $field     Some Fieldmanager_Field object.
 	 * @param  array  $test_data Data to save (and use when rendering)
-	 * @return string            Rendered HTML
+	 * @return string Rendered HTML.
 	 */
 	private function _get_html_for( $field, $test_data = null ) {
 		ob_start();
@@ -1167,5 +1168,19 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				12345,
 			),
 		);
+	}
+
+	public function test_element_markup_filters() {
+		$name = rand_str();
+		$fm = new Fieldmanager_TextField( array( 'name' => $name ) );
+
+		$ma = new MockAction();
+		add_filter( 'fm_element_markup_start', array( $ma, 'filter' ) );
+		add_filter( 'fm_element_markup_end', array( $ma, 'filter' ) );
+		add_filter( "fm_element_markup_start_{$name}", array( $ma, 'filter' ) );
+		add_filter( "fm_element_markup_end_{$name}", array( $ma, 'filter' ) );
+
+		$fm->element_markup( rand_str() );
+		$this->assertSame( 4, $ma->get_call_count(), 'Missing calls to element-markup filters' );
 	}
 }

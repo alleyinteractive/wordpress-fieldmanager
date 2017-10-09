@@ -1,4 +1,9 @@
 <?php
+/**
+ * Class file for Fieldmanager_Colorpicker
+ *
+ * @package Fieldmanager
+ */
 
 /**
  * Color picker field which submits a 6-character hex code with the hash mark.
@@ -7,8 +12,6 @@
  * e.g. `#ffffff`. This field uses the
  * {@link https://make.wordpress.org/core/2012/11/30/new-color-picker-in-wp-3-5/
  * WordPress core color picker introduced in WordPress 3.5}.
- *
- * @package Fieldmanager_Field
  */
 class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 
@@ -29,8 +32,8 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	/**
 	 * Build the colorpicker object and enqueue assets.
 	 *
-	 * @param string $label
-	 * @param array $options
+	 * @param string $label   The label to use.
+	 * @param array  $options The options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', array( 'jquery', 'wp-color-picker' ), '1.0', true );
@@ -50,8 +53,8 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	/**
 	 * Form element.
 	 *
-	 * @param mixed $value
-	 * @return string HTML
+	 * @param  mixed $value The current value.
+	 * @return string HTML.
 	 */
 	public function form_element( $value = '' ) {
 		return sprintf(
@@ -72,7 +75,7 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	 * This was copied from core; sanitize_hex_color() is not available outside
 	 * of the customizer. {@see https://core.trac.wordpress.org/ticket/27583}.
 	 *
-	 * @param string $color
+	 * @param  string $color The current color.
 	 * @return string
 	 */
 	function sanitize_hex_color( $color ) {
