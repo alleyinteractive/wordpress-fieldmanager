@@ -410,7 +410,7 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	}
 
 	public function test_multiple_taxonomies_with_ajax() {
-		$terms = [];
+		$terms = array();
 		// Create a Post Tag
 		$terms[] = $this->factory->tag->create( array( 'name' => 'test tag' ) );
 		// Create a Category
