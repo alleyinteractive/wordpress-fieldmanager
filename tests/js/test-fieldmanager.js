@@ -89,6 +89,15 @@
 		$( '.fm-test-displayif-radio' ).find( 'input[value=c]' ).prop( 'checked', true ).trigger( 'change' );
 		assert.notOk( $( '#di-when-displayif-radio-b:visible' ).length, "hide 'b' when 'c' selected" );
 
+		// Test the field that is hidden or shown based on a selector.
+		assert.notOk( $( '#di-show-when-selector-is-b:visible' ).length, "hide 'b' when custom selector is ''" );
+		$( '#test-displayif-selector' ).val( 'a' ).trigger( 'change' );
+		assert.notOk( $( '#di-show-when-selector-is-b:visible' ).length, "hide 'b' when custom selector is 'a'" );
+		$( '#test-displayif-selector' ).val( 'b' ).trigger( 'change' );
+		assert.ok( $( '#di-show-when-selector-is-b:visible' ).length, "show 'b' when custom selector is 'b'" );
+		$( '#test-displayif-selector' ).val( 'c' ).trigger( 'change' );
+		assert.notOk( $( '#di-show-when-selector-is-b:visible' ).length, "hide 'b' when custom selector is 'c'" );
+
 		// Test when a wrapper has a class that qualifies as a display trigger but has no eligible siblings.
 		assert.ok( ! $( '#di-when-trigger-length-is-zero' ).hasClass( 'display-trigger' ) );
 	});

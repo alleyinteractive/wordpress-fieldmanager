@@ -200,13 +200,20 @@ $( document ).ready( function () {
 
 	// Initializes triggers to conditionally hide or show fields
 	fm.init_display_if = function() {
-		var val;
-		var src = $( this ).data( 'display-src' );
-		var values = getCompareValues( this );
-		// Wrapper divs sometimes receive .fm-element, but don't use them as
-		// triggers. Also don't use autocomplete inputs as triggers, because the
-		// value is in their sibling hidden fields (which this still matches).
-		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete' );
+		var val, src, values, trigger;
+
+		src = $( this ).data( 'display-src' );
+
+		if ( src ) {
+			// Wrapper divs sometimes receive .fm-element, but don't use them as
+			// triggers. Also don't use autocomplete inputs as triggers, because the
+			// value is in their sibling hidden fields (which this still matches).
+			trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete' );
+		} else {
+			trigger = $( $( this ).data( 'display-selector' ) );
+		}
+
+		values = getCompareValues( this );
 
 		// Sanity check before calling `val()` or `split()`.
 		if ( 0 === trigger.length ) {
@@ -218,8 +225,10 @@ $( document ).ready( function () {
 				// If checked, use the checkbox value.
 				val = trigger.val();
 			} else {
-				// Otherwise, use the hidden sibling field with the "unchecked" value.
-				val = trigger.siblings( 'input[type=hidden][name="' + trigger.attr( 'name' ) + '"]' ).val();
+				if ( src ) {
+					// Otherwise, use the hidden sibling field with the "unchecked" value.
+					val = trigger.siblings( 'input[type=hidden][name="' + trigger.attr( 'name' ) + '"]' ).val();
+				}
 			}
 		} else if ( trigger.is( ':radio' ) ) {
 			if ( trigger.filter( ':checked' ).length ) {
@@ -240,32 +249,52 @@ $( document ).ready( function () {
 
 	// Controls the trigger to show or hide fields
 	fm.trigger_display_if = function() {
-		var val;
-		var $this = $( this );
-		var name = $this.attr( 'name' );
-		if ( $this.is( ':checkbox' ) ) {
-			if ( $this.is( ':checked' ) ) {
-				val = $this.val();
-			} else {
-				val = $this.siblings( 'input[type=hidden][name="' + name + '"]' ).val();
+		var val, $trigger, name, $closestFmWrapper, affectedFields;
+
+		$trigger = $( this );
+		name = $trigger.attr( 'name' );
+		$closestFmWrapper = $trigger.closest( '.fm-wrapper' );
+
+		if ( $trigger.is( ':checkbox' ) ) {
+			if ( $trigger.is( ':checked' ) ) {
+				val = $trigger.val();
+			} else if ( $closestFmWrapper.length ) {
+				// Assume an FM wrapper indicates this hidden checkbox value exists.
+				val = $trigger.siblings( 'input[type=hidden][name="' + name + '"]' ).val();
 			}
-		} else if ( $this.is( ':radio' ) ) {
-			val = $this.filter( ':checked' ).val();
+		} else if ( $trigger.is( ':radio' ) ) {
+			val = $trigger.filter( ':checked' ).val();
 		} else {
-			val = $this.val().split( ',' );
+			val = $trigger.val().split( ',' );
 		}
-		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
+
+		affectedFields = [];
+
+		$closestFmWrapper.siblings().each( function() {
 			if ( $( this ).hasClass( 'display-if' ) ) {
 				if ( name && name.match( $( this ).data( 'display-src' ) ) != null ) {
-					if ( match_value( getCompareValues( this ), val ) ) {
-						$( this ).show();
-					} else {
-						$( this ).hide();
-					}
-					$( this ).trigger( 'fm_displayif_toggle' );
+					affectedFields.push( this );
 				}
 			}
 		} );
+
+		$( '[data-display-selector]' ).each(function ( index, field ) {
+			if ( $trigger.is( $( field ).data( 'display-selector' ) ) ) {
+				affectedFields.push( field );
+			}
+		});
+
+		affectedFields.forEach(function ( field ) {
+			var $field = $( field );
+
+			if ( match_value( getCompareValues( field ), val ) ) {
+				$field.show();
+			} else {
+				$field.hide();
+			}
+
+			$field.trigger( 'fm_displayif_toggle' );
+		});
 	};
 	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
 
