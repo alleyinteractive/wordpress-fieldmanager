@@ -310,14 +310,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 *                                Default empty.
 	 */
 	protected function update_data( $post_id, $meta_key, $meta_value, $data_prev_value = '' ) {
-		/*
-		 * Meta is always stored as a string, so if this is a scalar value, cast
-		 * it as a string to ensure that `update_metadata()` is able to correctly
-		 * compare the current value against the previous value.
-		 */
-		if ( is_scalar( $meta_value ) && ! is_string( $meta_value ) ) {
-			$meta_value = strval( $meta_value );
-		}
+		$meta_value = $this->sanitize_scalar_value( $meta_value );
 		return update_post_meta( $post_id, $meta_key, $meta_value, $data_prev_value );
 	}
 
