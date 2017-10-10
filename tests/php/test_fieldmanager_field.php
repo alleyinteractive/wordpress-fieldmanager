@@ -1064,4 +1064,18 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		$this->assertSame( $stored_data, get_post_meta( $this->post_id, 'repeating_text_field', true ) );
 	}
+
+	public function test_element_markup_filters() {
+		$name = rand_str();
+		$fm = new Fieldmanager_TextField( array( 'name' => $name ) );
+
+		$ma = new MockAction();
+		add_filter( 'fm_element_markup_start', array( $ma, 'filter' ) );
+		add_filter( 'fm_element_markup_end', array( $ma, 'filter' ) );
+		add_filter( "fm_element_markup_start_{$name}", array( $ma, 'filter' ) );
+		add_filter( "fm_element_markup_end_{$name}", array( $ma, 'filter' ) );
+
+		$fm->element_markup( rand_str() );
+		$this->assertSame( 4, $ma->get_call_count(), 'Missing calls to element-markup filters' );
+	}
 }

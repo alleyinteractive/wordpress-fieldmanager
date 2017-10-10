@@ -29,6 +29,7 @@ matrix:
 branches:
   only:
     - master
+    - dev
 
 before_script:
   # Turn off Xdebug. See https://core.trac.wordpress.org/changeset/40138.
