@@ -174,6 +174,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param mixed  $data_prev_value The previous meta data.
 	 */
 	protected function update_data( $user_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		$meta_value = $this->sanitize_scalar_value( $meta_value );
 		return call_user_func(
 			/**
 			 * Filters function used to update user meta. This improves compatibility with

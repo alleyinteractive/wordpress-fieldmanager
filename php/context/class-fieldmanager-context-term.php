@@ -384,6 +384,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @param bool   $meta_prev_value The previous meta value.
 	 */
 	protected function update_data( $term_id, $meta_key, $meta_value, $meta_prev_value = '' ) {
+		$meta_value = $this->sanitize_scalar_value( $meta_value );
 		if ( $this->use_fm_meta ) {
 			return fm_update_term_meta( $term_id, $this->current_taxonomy, $meta_key, $meta_value, $meta_prev_value );
 		} else {

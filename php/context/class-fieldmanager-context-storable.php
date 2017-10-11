@@ -164,6 +164,23 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	}
 
 	/**
+	 * Meta and options are always stored as strings, so it's best to ensure
+	 * that scalar values get cast as strings to ensure that `update_metadata()`
+	 * and `update_option()` are able to correctly compare the current value
+	 * against the previous value.
+	 *
+	 * @param  mixed $value Value being stored.
+	 * @return string|array If $value is scalar, a string is returned. Otherwise,
+	 *                      $value returns untouched.
+	 */
+	public static function sanitize_scalar_value( $value ) {
+		if ( is_scalar( $value ) && ! is_string( $value ) ) {
+			return strval( $value );
+		}
+		return $value;
+	}
+
+	/**
 	 * Method to get data from the context's storage engine.
 	 *
 	 * @param int    $data_id  The ID of the object holding the data, e.g. Post ID.
