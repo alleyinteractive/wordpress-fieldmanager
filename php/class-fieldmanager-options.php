@@ -272,6 +272,10 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	/**
 	 * Presave hook to set taxonomy data, maybe.
 	 *
+	 * @since 1.2.0 Passes the new values through
+	 *              Fieldmanager_Field::presave_alter_values() before saving,
+	 *              including the 'fm_presave_alter_values' filter.
+	 *
 	 * @param  array $values         The new values.
 	 * @param  array $current_values The current values.
 	 * @return array $values Sanitized values.
