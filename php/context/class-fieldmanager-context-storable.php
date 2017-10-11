@@ -169,6 +169,8 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * and `update_option()` are able to correctly compare the current value
 	 * against the previous value.
 	 *
+	 * @since  1.2.0
+	 *
 	 * @param  mixed $value Value being stored.
 	 * @return string|array If $value is scalar, a string is returned. Otherwise,
 	 *                      $value returns untouched.
