@@ -1092,7 +1092,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertSame( call_user_func( $filter ), $field->presave_alter_values( '123' ) );
 
 		/*
-		 * Additional processing can occurs when a datasource or an object ID is
+		 * Additional processing can occur when a datasource or an object ID is
 		 * present; make sure the filter is still applied afterwards.
 		 */
 		$field->datasource = new Fieldmanager_Datasource_Post;
