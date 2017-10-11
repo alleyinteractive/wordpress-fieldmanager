@@ -305,7 +305,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		if ( $this->taxonomy_hierarchical ) {
 			$tax_args = $this->taxonomy_args;
 			$tax_args['parent'] = 0;
-			$parent_terms = get_terms( $this->get_taxonomies(), $tax_args );
+			$tax_args['taxonomy'] = $this->get_taxonomies();
+			$parent_terms = get_terms( $tax_args );
 			return $this->build_hierarchical_term_data( $parent_terms, $this->taxonomy_args, 0, $fragment );
 		}
 
@@ -313,7 +314,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		if ( ! empty( $fragment ) ) {
 			$tax_args['search'] = $fragment;
 		}
-		$terms = get_terms( $this->get_taxonomies(), $tax_args );
+		$tax_args['taxonomy'] = $this->get_taxonomies();
+		$terms = get_terms( $tax_args );
 
 		// If the taxonomy list was an array and group display is set, ensure all terms are grouped by taxonomy.
 		// Use the order of the taxonomy array list for sorting the groups to make this controllable for developers.

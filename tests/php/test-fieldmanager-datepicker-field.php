@@ -122,6 +122,20 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '13 Mar 2014 2:37am' ), $saved_data['test_datetime_field'] );
 
+		// Empty value; shouldn't be cast to an integer.
+		$test_data = array(
+			'test_datetime_group' => array(
+				'test_datetime_field' => array(
+					'date'      => '',
+					'hour'      => '',
+					'minute'    => '',
+					'ampm'      => '',
+					),
+				),
+			);
+		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
+		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
+		$this->assertEquals( '', $saved_data['test_datetime_field'] );
 	}
 
 	/**

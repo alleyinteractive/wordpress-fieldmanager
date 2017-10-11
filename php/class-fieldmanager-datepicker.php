@@ -132,6 +132,15 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 			$time_to_parse .= ':' . str_pad( $minute, 2, '0', STR_PAD_LEFT );
 			$time_to_parse .= ' ' . sanitize_text_field( $value['ampm'] );
 		}
+
+		if ( empty( $time_to_parse ) ) {
+			/*
+			 * Return before converting to an integer for compatibility with
+			 * Fieldmanager's checks for empty values. See #563.
+			 */
+			return $time_to_parse;
+		}
+
 		if ( $this->store_local_time ) {
 			return get_gmt_from_date( $time_to_parse, 'U' );
 		} else {
