@@ -73,8 +73,8 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// Add the chosen library for type-ahead capabilities.
 		if ( $this->type_ahead ) {
-			fm_add_script( 'fm_chosen', 'js/chosen/chosen.jquery.js', array( 'jquery' ), '1.5.1' );
-			fm_add_style( 'fm_chosen_css', 'js/chosen/chosen.css', array(), '1.5.1' );
+			fm_add_script( 'fm_chosen', 'js/chosen/chosen.jquery.min.js', array( 'jquery' ), '1.8.2' );
+			fm_add_style( 'fm_chosen_css', 'js/chosen/chosen.min.css', array(), '1.8.2' );
 		}
 
 	}
