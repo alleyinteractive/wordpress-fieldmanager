@@ -164,7 +164,7 @@ fm_add_another = function( $element ) {
 	init_label_macros();
 	init_sortable();
 	// reload chosen on show
-    $( '.chosen-select', $new_element ).chosen( 'destroy' ).chosen();
+	$( '.chosen-select', $new_element ).chosen( 'destroy' ).chosen();
 }
 
 fm_remove = function( $element ) {
