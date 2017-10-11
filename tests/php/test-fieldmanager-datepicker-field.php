@@ -33,7 +33,6 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 	 * Test behavior when using the time support for datepicker
 	 *
 	 * @dataProvider data_date_field
-	 * @group 1111
 	 *
 	 * @param string $date_field The key in the array of submitted data with the date.
 	 * @param string $date       The submitted date.
@@ -172,8 +171,8 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
 	public function data_presave_altfield_value() {
 		return array(
-			array( '', 0 ),
-			array( 0, 0 ),
+			array( '', '' ),
+			array( 0, '0' ),
 			array( '2000-01-01', strtotime( '2000-01-01' ) ),
 		);
 	}
@@ -197,7 +196,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
 	public function data_render_altfield_for_js_opts() {
 		return array(
-			array( array(), true),
+			array( array(), true ),
 			array( array( 'dateFormat' => 'abc' ), true ),
 			array( array( 'altField' => 'abc' ), false ),
 			array( array( 'altFormat' => 'abc' ), false ),
