@@ -239,6 +239,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @return bool Option updated successfully.
 	 */
 	protected function update_data( $data_id, $option_name, $option_value, $option_prev_value = '' ) {
+		$option_value = $this->sanitize_scalar_value( $option_value );
 		return update_option( $option_name, $option_value );
 	}
 
