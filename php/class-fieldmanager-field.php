@@ -1170,6 +1170,8 @@ abstract class Fieldmanager_Field {
 	 * @param string $uniqid A unique identifier for this form.
 	 */
 	public function add_page_form( $uniqid ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		$this->require_base();
 		return new Fieldmanager_Context_Page( $uniqid, $this );
 	}
