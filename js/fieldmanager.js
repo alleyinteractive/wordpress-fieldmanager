@@ -69,6 +69,7 @@ var init_label_macros = function() {
 }
 
 var fm_renumber = function( $wrappers ) {
+	var fmtemp = parseInt( Math.random() * 100000, 10 );
 	$wrappers.each( function() {
 		var level_pos = $( this ).data( 'fm-array-position' ) - 0;
 		var order = 0;
@@ -85,7 +86,8 @@ var fm_renumber = function( $wrappers ) {
 						if ( parts[ level_pos ] != order ) {
 							parts[ level_pos ] = order;
 							var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
-							$( this ).attr( 'name', new_fname );
+							// Rename the field and add a temporary prefix to prevent name collisions.
+							$( this ).attr( 'name', 'fmtemp_' + ( ++fmtemp ).toString() + '_' + new_fname );
 							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
 								$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
 								if ( $( this ).parent().hasClass( 'fm-option' ) ) {
@@ -111,6 +113,11 @@ var fm_renumber = function( $wrappers ) {
 		}
 		$( this ).find( '.fm-wrapper' ).each( function() {
 			fm_renumber( $( this ) );
+		} );
+
+		// Remove temporary name prefix in renumbered fields.
+		$( '.fm-element[name^="fmtemp_"], .fm-incrementable[name^="fmtemp_"]' ).each( function() {
+			$( this ).attr( 'name', $( this ).attr( 'name' ).replace( /^fmtemp_\d+_/, '' ) );
 		} );
 	} );
 }
