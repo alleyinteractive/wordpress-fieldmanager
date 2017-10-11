@@ -153,6 +153,30 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertEquals( 'foo@alleyinteractive.com', $option['email'] );
 	}
 
+	public function test_autoloading() {
+		global $wpdb;
+
+		$name = 'autoloading';
+		fm_register_submenu_page( $name, 'foo.php', 'Autoloading' );
+		$context = $this->get_context( $name );
+		$html = $this->get_html( $context, $name );
+		$this->build_post( $html, $name );
+
+		$context->wp_option_autoload = true;
+		$context->save_submenu_data();
+		$actual = $wpdb->get_row( $wpdb->prepare( "SELECT autoload FROM $wpdb->options WHERE option_name = %s LIMIT 1", $name ) );
+		$this->assertSame( 'yes', $actual->autoload );
+
+		// Change the value so update_option() doesn't bail.
+		$_POST[ $name ]['email'] = '123456';
+
+		// Test the ability to change the setting.
+		$context->wp_option_autoload = false;
+		$context->save_submenu_data();
+		$actual = $wpdb->get_row( $wpdb->prepare( "SELECT autoload FROM $wpdb->options WHERE option_name = %s LIMIT 1", $name ) );
+		$this->assertSame( 'no', $actual->autoload );
+	}
+
 	/**
 	 * Build a html from the default context and fields.
 	 *

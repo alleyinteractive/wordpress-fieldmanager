@@ -8,6 +8,13 @@ Fieldmanager is a comprehensive toolkit for building forms, metaboxes, and custo
 
 Fieldmanager is a powerful library which can make the development of sophisticated features a breeze. To get started, simply [download](#downloads-and-versioning) and install this plugin into your plugins directory and activate it on the plugins screen. To learn how to use Fieldmanager's API, visit the project's official website at [Fieldmanager.org](http://fieldmanager.org). There is also [a demo plugin](https://github.com/alleyinteractive/fieldmanager-demos) which illustrates a lot of what you can do with Fieldmanager.
 
+## Requirements
+
+* WordPress: 4.7+
+* PHP: 7.0+
+
+Fieldmanager is tested down to and works on PHP 5.3-5.6, but we don't officially support PHP5. We strongly encourage using PHP7.
+
 ## Downloads and Versioning.
 
 You can view [Fieldmanager's official releases here](https://github.com/alleyinteractive/wordpress-fieldmanager/releases).
