@@ -164,7 +164,7 @@ fm_add_another = function( $element ) {
 	init_label_macros();
 	init_sortable();
 	// reload chosen on show
-    $(".chzn-select", $new_element ).chosen('destroy').chosen();
+    $( '.chosen-select', $new_element ).chosen( 'destroy' ).chosen();
 }
 
 fm_remove = function( $element ) {
@@ -269,7 +269,7 @@ $( document ).ready( function () {
 			}
 		} );
 		// check if chosen not loaded due to being hidden and load if found
-		$( '.chzn-select' ).not( '.chzn-done' ).chosen().trigger( 'chosen:updated' );
+		$( '.chosen-select' ).not( '.chosen-done' ).chosen().trigger( 'chosen:updated' );
 	};
 	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
 
