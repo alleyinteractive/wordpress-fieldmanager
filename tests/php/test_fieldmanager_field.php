@@ -1078,4 +1078,46 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$fm->element_markup( rand_str() );
 		$this->assertSame( 4, $ma->get_call_count(), 'Missing calls to element-markup filters' );
 	}
+
+	/**
+	 * See #523.
+	 *
+	 * @dataProvider data_fields_overriding_presave_alter_values
+	 */
+	public function test_apply_presave_alter_values_filter( $field ) {
+		$filter = '__return_empty_array';
+
+		add_filter( 'fm_presave_alter_values', $filter );
+
+		$this->assertSame( call_user_func( $filter ), $field->presave_alter_values( '123' ) );
+
+		/*
+		 * Additional processing can occurs when a datasource or an object ID is
+		 * present; make sure the filter is still applied afterwards.
+		 */
+		$field->datasource = new Fieldmanager_Datasource_Post;
+		$this->assertSame( call_user_func( $filter ), $field->presave_alter_values( '123' ) );
+
+		$field->data_id = 987;
+		$this->assertSame( call_user_func( $filter ), $field->presave_alter_values( '123' ) );
+
+		remove_filter( 'fm_presave_alter_values', $filter );
+	}
+
+	/**
+	 * Returns each field class that was subject to #523 and so should be tested
+	 * to ensure values pass through 'fm_presave_alter_values' by default.
+	 */
+	public function data_fields_overriding_presave_alter_values() {
+		return array(
+			array(
+				$this->getMockForAbstractClass( 'Fieldmanager_Options' ),
+			),
+			array(
+				new Fieldmanager_Autocomplete( array(
+					'datasource' => new Fieldmanager_Datasource_Post,
+				) ),
+			),
+		);
+	}
 }
