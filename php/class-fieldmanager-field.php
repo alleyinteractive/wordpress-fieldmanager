@@ -240,10 +240,18 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Field name and value on which to display element. Sample:
-	 * $element->display_if = array(
-	 *     'src' => 'display-if-src-element',
-	 *     'value' => 'display-if-src-value',
-	 * );
+	 *
+	 *     $element->display_if = array(
+	 *         'src' => 'display-if-src-element',
+	 *         'value' => 'display-if-src-value',
+	 *     );
+	 *
+	 * Multiple values are allowed if comma-separated. Sample:
+	 *
+	 *     $element->display_if = array(
+	 *         'src' => 'display-if-src-element',
+	 *         'value' => 'display-if-src-value1,display-if-src-value2'
+	 *     );
 	 *
 	 * @var array
 	 */
@@ -494,11 +502,6 @@ abstract class Fieldmanager_Field {
 			);
 		}
 
-		// For lists of items where $one_label_per_item = False, the label should go outside the wrapper.
-		if ( ! empty( $this->label ) && ! $this->one_label_per_item ) {
-			$out .= $this->get_element_label( array( 'fm-label-for-list' ) );
-		}
-
 		// Find the array position of the "counter" (e.g. in element[0], [0] is the counter, thus the position is 1).
 		$html_array_position = 0; // default is no counter; i.e. if $this->limit = 0.
 		if ( 1 != $this->limit ) {
@@ -531,8 +534,36 @@ abstract class Fieldmanager_Field {
 			$fm_wrapper_attr_string
 		);
 
-		// After starting the field, apply a filter to allow other plugins to append functionality.
+		// For lists of items where $one_label_per_item = False, the label should go before the elements.
+		if ( ! empty( $this->label ) && ! $this->one_label_per_item ) {
+			$out .= $this->get_element_label( array( 'fm-label-for-list' ) );
+		}
+
+		/**
+		 * Filters field markup before adding markup for its form elements.
+		 *
+		 * @since 0.1.0
+		 * @since 1.0.0 The `$values` parameter was added.
+		 *
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
+		 */
 		$out = apply_filters( 'fm_element_markup_start', $out, $this, $values );
+
+		/**
+		 * Filters a specific field's markup before adding markup for its form elements.
+		 *
+		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
+		 */
+		$out = apply_filters( "fm_element_markup_start_{$this->name}", $out, $this, $values );
+
 		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'top' == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
@@ -553,8 +584,30 @@ abstract class Fieldmanager_Field {
 			$out .= $this->add_another();
 		}
 
-		// Before closing the field, apply a filter to allow other plugins to append functionality.
+		/**
+		 * Filters field markup after adding markup for its form elements.
+		 *
+		 * @since 0.1.0
+		 * @since 1.0.0 The `$values` parameter was added.
+		 *
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
+		 */
 		$out = apply_filters( 'fm_element_markup_end', $out, $this, $values );
+
+		/**
+		 * Filters a specific field's markup after adding markup for its form elements.
+		 *
+		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
+		 *
+		 * @since 1.1.0
+		 *
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
+		 */
+		$out = apply_filters( "fm_element_markup_end_{$this->name}", $out, $this, $values );
 
 		$out .= '</div>';
 
@@ -1117,6 +1170,8 @@ abstract class Fieldmanager_Field {
 	 * @param string $uniqid A unique identifier for this form.
 	 */
 	public function add_page_form( $uniqid ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		$this->require_base();
 		return new Fieldmanager_Context_Page( $uniqid, $this );
 	}

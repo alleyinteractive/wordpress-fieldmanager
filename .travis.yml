@@ -5,7 +5,7 @@ language: php
 matrix:
   include:
     - php: 5.3
-      env: WP_VERSION=4.4.11
+      env: WP_VERSION=4.7.6
       dist: precise
     - php: 5.3
       env: WP_VERSION=latest
@@ -29,6 +29,7 @@ matrix:
 branches:
   only:
     - master
+    - dev
 
 before_script:
   # Turn off Xdebug. See https://core.trac.wordpress.org/changeset/40138.

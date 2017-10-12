@@ -310,6 +310,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 *                                Default empty.
 	 */
 	protected function update_data( $post_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		$meta_value = $this->sanitize_scalar_value( $meta_value );
 		return update_post_meta( $post_id, $meta_key, $meta_value, $data_prev_value );
 	}
 
