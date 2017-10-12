@@ -409,8 +409,8 @@ abstract class Fieldmanager_Field {
 
 		// Only enqueue base assets once, and only when we have a field.
 		if ( ! self::$enqueued_base_assets ) {
-			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'jquery', 'jquery-ui-sortable' ), '1.0.8' );
-			fm_add_style( 'fieldmanager_style', 'css/fieldmanager.css', array(), '1.0.4' );
+			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'jquery', 'jquery-ui-sortable' ), '1.2.0' );
+			fm_add_style( 'fieldmanager_style', 'css/fieldmanager.css', array(), '1.2.0' );
 			self::$enqueued_base_assets = true;
 		}
 	}
