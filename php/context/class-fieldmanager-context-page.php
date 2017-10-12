@@ -7,6 +7,8 @@
 
 /**
  * Use Fieldmanager on the public-facing theme.
+ *
+ * @deprecated 1.2.0
  */
 class Fieldmanager_Context_Page extends Fieldmanager_Context {
 
@@ -31,6 +33,8 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	 * @param Fieldmanager_Field $fm     The field instance.
 	 */
 	public function __construct( $uniqid, $fm ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		$this->fm = $fm;
 		self::$forms[ $uniqid ] = $this;
 		$this->uniqid = $uniqid;
@@ -45,6 +49,8 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	 * Action to save the form.
 	 */
 	public function save_page_form() {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		if (
 			isset( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ] ) // WPCS: input var okay.
 			&& ! wp_verify_nonce( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ], 'fieldmanager-save-' . $this->fm->name )  // WPCS: input var okay. sanitization ok.
@@ -71,6 +77,8 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	 * Output HTML for the form.
 	 */
 	public function render_page_form() {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		$current = apply_filters( 'fm_' . $this->uniqid . '_load', array(), $this->fm );
 		echo '<form method="POST" id="' . esc_attr( $this->uniqid ) . '">';
 		echo '<div class="fm-page-form-wrapper">';
@@ -94,6 +102,8 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	 * @return Fieldmanager_Context_Page The page form.
 	 */
 	public static function get_form( $uniqid ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		return self::$forms[ $uniqid ];
 	}
 
@@ -105,6 +115,8 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
  * @param string $uniqid Unique form ID.
  */
 function fm_the_page_form( $uniqid ) {
+	_deprecated_function( __FUNCTION__, '1.2.0' );
+
 	Fieldmanager_Context_Page::get_form( $uniqid )->render_page_form();
 }
 
@@ -114,5 +126,7 @@ function fm_the_page_form( $uniqid ) {
  * @param string $uniqid Unique form ID.
  */
 function fm_page_form_did_save( $uniqid ) {
+	_deprecated_function( __FUNCTION__, '1.2.0' );
+
 	return Fieldmanager_Context_Page::get_form( $uniqid )->did_save;
 }

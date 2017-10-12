@@ -6,7 +6,7 @@ fm_select_clear_terms = function( $fm_field, $fm_options, debug ) {
 	$fm_field.find( 'option:not(:selected)' ).remove();
 
 	// Inform chosen the list has been updated
-	$fm_field.trigger("liszt:updated");
+	$fm_field.trigger("chosen:updated");
 }
 
 fm_append_options = function( $append_to, $options, selected ) {
@@ -35,8 +35,8 @@ fm_reset_chosen = function( $fm_text_field, fm_text_field_val ) {
 
 	// Display optgroup labels for matched elements
 	// chosen.js does not do this for dynamic changes while the dropdown is open
-	$fm_text_field.parents(".chzn-choices").siblings(".chzn-drop").find("li.group-result").hide();
-	$fm_text_field.parents(".chzn-choices").siblings(".chzn-drop").find("li.active-result").each( function( index, element ) {
+	$fm_text_field.parents(".chosen-choices").siblings(".chosen-drop").find("li.group-result").hide();
+	$fm_text_field.parents(".chosen-choices").siblings(".chosen-drop").find("li.active-result").each( function( index, element ) {
 		$(element).prevUntil(".group-result").prev(".group-result").show();
 		$(element).prev(".group-result").show();
 	} );
@@ -46,12 +46,12 @@ $( document ).ready( function() {
 
 	// Track changes to the chosen text field linked to the select in order to update options via Ajax
 	// Used for taxonomy-based fields where preload is disabled
-	$('.fm-wrapper').on( 'keyup', '.fm-item .chzn-choices input,.fm-item .chzn-search input', function( e ) {
+	$('.fm-wrapper').on( 'keyup', '.fm-item .chosen-choices input,.fm-item .chosen-search input', function( e ) {
 		// Do not execute this function for arrow key presses
 		if( e.keyCode >= 37 && e.keyCode <= 40 ) return;
 
 		// Get the corresponding Fieldmanager select field to access data attributes needed for the Ajax call
-		$fm_select_field = $(this).parents('.chzn-container').siblings('select');
+		$fm_select_field = $(this).parents('.chosen-container').siblings('select');
 		$fm_text_field = $(this);
 
 		if( $fm_select_field.data("taxonomy") != "" && $fm_select_field.data("taxonomyPreload") == false ) {
@@ -61,7 +61,7 @@ $( document ).ready( function() {
 				// Clear any non-selected terms before proceeding
 				fm_text_field_val = $fm_text_field.val();
 				fm_select_clear_terms( $fm_select_field, "", false );
-				$fm_select_field.trigger("liszt:updated");
+				$fm_select_field.trigger("chosen:updated");
 				fm_reset_chosen( $fm_text_field, fm_text_field_val );
 
 				if( result != "" ) {
@@ -85,7 +85,7 @@ $( document ).ready( function() {
 				}
 
 				// Inform chosen this field has been updated to populate these options in the typeahead dropdown
-				$fm_select_field.trigger("liszt:updated");
+				$fm_select_field.trigger("chosen:updated");
 
 				// Restore the search term since chosen automatically clears it on the update trigger above
 				fm_reset_chosen( $fm_text_field, fm_text_field_val );
@@ -94,9 +94,9 @@ $( document ).ready( function() {
 	} );
 
 	// Clear the non-selected options when entering or exiting the typeahead text field
-	$('.fm-wrapper').on( 'click', '.fm-item .chzn-choices input', function( e ) {
-		var $this_select_field = $(this).parents('.chzn-container').siblings('select');
-		if( $this_select_field.data("taxonomy") != "" && $this_select_field.data("taxonomyPreload") == false ) fm_select_clear_terms( $this_select_field, $(this).parents('.chzn-choices'), true );
+	$('.fm-wrapper').on( 'click', '.fm-item .chosen-choices input', function( e ) {
+		var $this_select_field = $(this).parents('.chosen-container').siblings('select');
+		if( $this_select_field.data("taxonomy") != "" && $this_select_field.data("taxonomyPreload") == false ) fm_select_clear_terms( $this_select_field, $(this).parents('.chosen-choices'), true );
 	} );
 
 } );
