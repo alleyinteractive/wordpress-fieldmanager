@@ -145,7 +145,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 			// If not found, bail out.
 			if ( empty( $terms ) || is_wp_error( $terms ) ) {
-				return [];
+				return array();
 			}
 
 			// Attempt to sort the list by term_order.
