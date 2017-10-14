@@ -116,7 +116,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * @return string sanitized content.
 	 */
 	public function sanitize( $value ) {
-		return wp_filter_post_kses( wpautop( $value ) ); // run through wpautop first to preserve breaks.
+		// Run through wpautop first to preserve breaks.
+		return sanitize_post_field( 'post_content', wpautop( $value ), 0, 'db' );
 	}
 
 	/**
