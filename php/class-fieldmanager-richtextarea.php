@@ -112,6 +112,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	/**
 	 * Default sanitization function for RichTextAreas.
 	 *
+	 * @since 1.2.0 Uses `sanitize_post_field()` by default.
+	 *
 	 * @param  string $value Raw content for this field.
 	 * @return string sanitized content.
 	 */
