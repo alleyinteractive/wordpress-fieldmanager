@@ -464,7 +464,7 @@ abstract class Fieldmanager_Field {
 	 * Generates all markup needed for all form elements in this field.
 	 * Could be called directly by a plugin or theme.
 	 *
-	 * @since 1.2.0 Added the 'fm-display-if' class for fields using display-if.
+	 * @since 1.3.0 Added the 'fm-display-if' class for fields using display-if.
 	 *
 	 * @param array $values The current values of this element, in a tree structure
 	 *                      if the element has children.
