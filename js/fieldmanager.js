@@ -236,7 +236,7 @@ $( document ).ready( function () {
 			$( this ).hide();
 		}
 	};
-	$( '.display-if' ).each( fm.init_display_if );
+	$( '.fm-display-if' ).each( fm.init_display_if );
 
 	// Controls the trigger to show or hide fields
 	fm.trigger_display_if = function() {
@@ -255,7 +255,7 @@ $( document ).ready( function () {
 			val = $this.val().split( ',' );
 		}
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
-			if ( $( this ).hasClass( 'display-if' ) ) {
+			if ( $( this ).hasClass( 'fm-display-if' ) ) {
 				if ( name && name.match( $( this ).data( 'display-src' ) ) != null ) {
 					if ( match_value( getCompareValues( this ), val ) ) {
 						$( this ).show();
