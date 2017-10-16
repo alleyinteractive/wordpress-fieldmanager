@@ -143,8 +143,13 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$taxonomies = $this->get_taxonomies();
 			$terms = get_the_terms( $field->data_id, $taxonomies[0] );
 
+			// If not found, bail out.
+			if ( empty( $terms ) || is_wp_error( $terms ) ) {
+				return array();
+			}
+
 			// Attempt to sort the list by term_order.
-			$terms = usort( $terms, array( $this, 'sort_terms' ) );
+			usort( $terms, array( $this, 'sort_terms' ) );
 
 			if ( count( $terms ) > 0 ) {
 				if ( 1 == $field->limit && empty( $field->multiple ) ) {
