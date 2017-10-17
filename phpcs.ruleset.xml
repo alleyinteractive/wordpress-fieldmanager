@@ -16,6 +16,12 @@
 		<type>error</type>
 	</rule>
 
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" value="fieldmanager" />
+		</properties>
+	</rule>
+
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
 		<exclude-pattern>fieldmanager.php</exclude-pattern>
 	</rule>
