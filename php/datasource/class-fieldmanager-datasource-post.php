@@ -354,7 +354,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 function fm_url_to_post_id( $url ) {
 	global $wp_rewrite;
 
-	$url = apply_filters( 'url_to_postid', $url );
+	$url = apply_filters( 'url_to_postid', $url ); // See #532. prefix ok.
 
 	// First, check to see if there is a 'p=N' or 'page_id=N' to match against.
 	if ( preg_match( '#[?&](p|page_id|attachment_id)=(\d+)#', $url, $values ) ) {
