@@ -22,6 +22,12 @@
 		</properties>
 	</rule>
 
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array" value="fm,_fm,fieldmanager,_fieldmanager,Fieldmanager" />
+		</properties>
+	</rule>
+
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
 		<exclude-pattern>fieldmanager.php</exclude-pattern>
 	</rule>
