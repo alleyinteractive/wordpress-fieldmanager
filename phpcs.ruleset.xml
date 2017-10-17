@@ -28,6 +28,24 @@
 		</properties>
 	</rule>
 
+	<rule ref="WordPress.WP.DeprecatedFunctions">
+		<properties>
+			<property name="minimum_supported_version" value="4.7" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WP.DeprecatedClasses">
+		<properties>
+			<property name="minimum_supported_version" value="4.7" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WP.DeprecatedParameters">
+		<properties>
+			<property name="minimum_supported_version" value="4.7" />
+		</properties>
+	</rule>
+
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
 		<exclude-pattern>fieldmanager.php</exclude-pattern>
 	</rule>
