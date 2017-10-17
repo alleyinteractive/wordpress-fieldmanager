@@ -12,7 +12,6 @@
 	</rule>
 
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
-		<!-- Allow templates to put closing PHP tags immediately after the file header. -->
 		<exclude-pattern>fieldmanager.php</exclude-pattern>
 	</rule>
 
