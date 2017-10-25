@@ -141,6 +141,20 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
 	}
 
+	public function test_context_render_add_form_with_parent_zero() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
+		$base = $this->_get_elements();
+		ob_start();
+		$base->add_term_meta_box( 'test meta box', $this->taxonomy, true, false, 0 )->add_term_fields( $this->taxonomy );
+		$str = ob_get_clean();
+
+		// When a parent is specified, the form is suppressed on add as we don't know the parent.
+		$this->assertEquals( '', $str );
+	}
+
 	public function test_context_render_edit_form() {
 		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
 			return $this->_skip_tests_because_version( 4.4 );
@@ -149,6 +163,24 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$base = $this->_get_elements();
 		ob_start();
 		$base->add_term_meta_box( 'test meta box', $this->taxonomy )->edit_term_fields( $this->term, $this->taxonomy );
+		$str = ob_get_clean();
+		// we can't really care about the structure of the HTML, but we can make sure that all fields are here
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_basic\]"/', $str );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_textfield\]"/', $str );
+		$this->assertRegExp( '/<textarea[^>]+name="base_group\[test_htmlfield\]"/', $str );
+		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
+		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
+	}
+
+	public function test_context_render_edit_form_with_parent_zero() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
+		$base = $this->_get_elements();
+		ob_start();
+		$base->add_term_meta_box( 'test meta box', $this->taxonomy, false, true, 0 )->edit_term_fields( $this->term, $this->taxonomy );
 		$str = ob_get_clean();
 		// we can't really care about the structure of the HTML, but we can make sure that all fields are here
 		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
