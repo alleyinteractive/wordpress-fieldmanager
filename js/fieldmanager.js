@@ -29,8 +29,10 @@ var init_sortable = function() {
 			init_sortable_container( this );
 		} else {
 			var sortable = this;
-			$( sortable ).parents( '.fm-group' ).first().bind( 'fm_collapsible_toggle', function() {
-				init_sortable_container( sortable );
+			$( sortable ).parents( '.fm-group' ).bind( 'fm_collapsible_toggle', function() {
+				if ( $( sortable ).is( ':visible' ) ) {
+					init_sortable_container( sortable );
+				}
 			} );
 		}
 	} );
