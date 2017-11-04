@@ -427,8 +427,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				$term = $wpdb->get_row( $wpdb->prepare(
 					"SELECT t.*, tt.*
 					FROM $wpdb->terms AS t  INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
-					WHERE tt.term_taxonomy_id = %d LIMIT 1"
-					, $term_id
+					WHERE tt.term_taxonomy_id = %d LIMIT 1",
+					$term_id
 				) ); // WPCS: db call ok.
 
 				wp_cache_set( $cache_key, $term );
@@ -451,17 +451,16 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @return string HTML string.
 	 */
 	public function get_view_link( $value ) {
-		if ( function_exists( 'wpcom_vip_get_term_link' ) ) {
-			$term_link = wpcom_vip_get_term_link( $this->get_term( $value ) );
-		} else {
-			$term_link = get_term_link( $this->get_term( $value ) );
+		$term_link = get_term_link( $this->get_term( $value ) );
+		if ( is_string( $term_link ) ) {
+			return sprintf(
+				' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
+				empty( $value ) ? 'fm-hidden' : '',
+				empty( $value ) ? '#' : esc_url( $term_link ),
+				esc_html__( 'View', 'fieldmanager' )
+			);
 		}
-		return sprintf(
-			' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
-			empty( $value ) ? 'fm-hidden' : '',
-			empty( $value ) ? '#' : esc_url( $term_link ),
-			esc_html__( 'View', 'fieldmanager' )
-		);
+		return '';
 	}
 
 	/**

@@ -404,7 +404,7 @@ function fm_url_to_post_id( $url ) {
 	} else {
 		// Chop off /path/to/blog.
 		$home_path = wp_parse_url( home_url() );
-		$home_path = isset( $home_path['path'] ) ? $home_path['path'] : '' ;
+		$home_path = isset( $home_path['path'] ) ? $home_path['path'] : '';
 		$url = str_replace( $home_path, '', $url );
 	}
 
@@ -421,7 +421,7 @@ function fm_url_to_post_id( $url ) {
 			$request_match = $url . '/' . $request;
 		}
 
-		if ( preg_match( "!^$match!" , $request_match, $matches ) ) {
+		if ( preg_match( "!^$match!", $request_match, $matches ) ) {
 			// Got a match.
 			// Trim the query of everything up to the '?'.
 			$query = preg_replace( '!^.+\?!', '', $query );
