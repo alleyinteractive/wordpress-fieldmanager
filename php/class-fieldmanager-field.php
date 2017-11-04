@@ -556,7 +556,7 @@ abstract class Fieldmanager_Field {
 		 *
 		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
 		 *
-		 * @since 1.1.0
+		 * @since 1.2.0
 		 *
 		 * @param string             $out    Field markup.
 		 * @param Fieldmanager_Field $this   Field instance.
@@ -601,7 +601,7 @@ abstract class Fieldmanager_Field {
 		 *
 		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
 		 *
-		 * @since 1.1.0
+		 * @since 1.2.0
 		 *
 		 * @param string             $out    Field markup.
 		 * @param Fieldmanager_Field $this   Field instance.
