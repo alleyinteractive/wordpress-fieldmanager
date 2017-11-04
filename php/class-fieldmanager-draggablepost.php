@@ -8,9 +8,7 @@
 /**
  * An interface for dragging posts from a repository to assorted buckets.
  *
- * This field might be deprecated in a future version of Fieldmanager. It is
- * preferable to use {@link https://github.com/alleyinteractive/fm-zones}
- * instead.
+ * @deprecated 1.2.0 Consider using {@link https://github.com/alleyinteractive/fm-zones} instead.
  */
 class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 
@@ -53,6 +51,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @param array  $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		parent::__construct( $label, $options );
 		// Refuse to allow more than one instance of this field type.
 		$this->limit = 1;
@@ -69,6 +69,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @return array $value The new value.
 	 */
 	public function presave( $value, $current_values = array() ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
 
 		foreach ( $this->bins as $bin => $name ) {
 			if ( isset( $value[ $bin ] ) ) {
@@ -94,6 +95,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @return string HTML.
 	 */
 	public function form_element( $value ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		// Avoid null array errors later.
 		$value['_image_flags'] = isset( $value['_image_flags'] ) ? $value['_image_flags'] : array();
 
@@ -168,6 +171,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @return string Containing the li element.
 	 */
 	protected function draggable_item_html( $post_id, $use_image_checked = false ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		$post = get_post( $post_id );
 		$bylines = array();
 		if ( is_plugin_active( 'co-authors-plus/co-authors-plus.php' ) ) {
@@ -226,6 +231,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 *               attached to key '_image_flags'.
 	 */
 	protected function flatten_arrays( $value ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		if ( empty( $value ) ) {
 			return array();
 		}

@@ -27,6 +27,6 @@ class Test_Fieldmanager_Context_Storable extends WP_UnitTestCase {
 	 * @param  mixed $expected Expected values.
 	 */
 	public function test_sanitize_scalar_values( $test, $expected ) {
-		$this->assertSame( $expected, \Fieldmanager_Context_Post::sanitize_scalar_value( $test ) );
+		$this->assertSame( $expected, \Fieldmanager_Context_Storable::sanitize_scalar_value( $test ) );
 	}
 }
