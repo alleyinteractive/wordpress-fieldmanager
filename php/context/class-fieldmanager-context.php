@@ -109,9 +109,9 @@ abstract class Fieldmanager_Context {
 				/**
 				 * Determine whether this field should be shown within the REST API.
 				 *
-				 * @param object The current FM object.
+				 * @param object The current Context object.
 				 */
-				|| apply_filters( 'fm_register_rest_field', false, $this->fm )
+				|| apply_filters( 'fm_register_rest_field', false, $this )
 			)
 		) {
 			register_rest_field(
@@ -120,7 +120,12 @@ abstract class Fieldmanager_Context {
 				array(
 					'get_callback'    => array( $this, 'rest_get_callback' ),
 					'update_callback' => array( $this, 'rest_update_callback' ),
-					'schema'          => apply_filters( 'fm_rest_api_schema', $this->fm->get_schema(), $this ),
+					/**
+					 * Filter the REST API schema for this fm field.
+					 *
+					 * @param object The current Context object.
+					 */
+					'schema' => apply_filters( 'fm_rest_api_schema', $this->fm->get_schema(), $this ),
 				)
 			);
 		}

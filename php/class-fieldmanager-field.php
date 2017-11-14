@@ -306,15 +306,6 @@ abstract class Fieldmanager_Field {
 	 * Whether or not to register this field in the REST API.  If this value is
 	 * set to `true`, then Fieldmanager will automatically add this field to the
 	 * REST API for the respective context.
-	 *
-	 * However, you must make sure that if the `rest_base` of the object for this
-	 * field is different then its type (i.e a Post object is of type `post`,
-	 * but has a `rest_base` of `posts`), then you must add a new add_action hook.
-	 *
-	 * For example, adding a field to the `post` object repsonse would look like:
-	 *
-	 * add_action( 'fm_post_post', 'my_function' );
-	 * add_action( 'fm_post_posts', 'my_function' );
 	 */
 	public $show_in_rest = false;
 
