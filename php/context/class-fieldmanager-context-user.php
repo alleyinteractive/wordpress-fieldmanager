@@ -33,7 +33,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 		add_action( 'edit_user_profile_update', array( $this, 'save_user_form' ) );
 		add_filter( 'fm_context_after_presave_data', array( $this, 'legacy_presave_filter' ) );
 
-		// Register fields for the REST API
+		// Register fields for the REST API.
 		$this->register_rest_field( 'user' );
 	}
 
