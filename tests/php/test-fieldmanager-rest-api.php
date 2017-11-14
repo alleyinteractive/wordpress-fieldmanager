@@ -51,8 +51,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 */
 		function test_fieldmanager_rest_api_post_get() {
 			// Add actions for post context.
-			add_action( 'fm_post_posts', array( $this, '_fm_post_test_fields' ) );
-			add_action( 'fm_post_posts', array( $this, '_fm_post_test_fields' ) );
+			add_action( 'fm_post_post', array( $this, '_fm_post_test_fields' ) );
 
 			// Create the post.
 			$post_id = $this->factory->post->create();
@@ -74,8 +73,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 */
 		function test_fieldmanager_rest_api_post_update() {
 			// Add actions for post context.
-			add_action( 'fm_post_posts', array( $this, '_fm_post_test_fields' ) );
-			add_action( 'fm_post_posts', array( $this, '_fm_post_test_fields' ) );
+			add_action( 'fm_post_post', array( $this, '_fm_post_test_fields' ) );
 
 			// Create the post.
 			$post_id = $this->factory->post->create();
@@ -99,8 +97,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 */
 		function test_fieldmanager_no_rest_api_post_get() {
 			// Add actions for post context.
-			add_action( 'fm_post_posts', array( $this, '_fm_no_post_test_fields' ) );
-			add_action( 'fm_post_posts', array( $this, '_fm_no_post_test_fields' ) );
+			add_action( 'fm_post_post', array( $this, '_fm_no_post_test_fields' ) );
 
 			// Create the post.
 			$post_id = $this->factory->post->create();
@@ -118,12 +115,37 @@ if ( function_exists( 'register_rest_field' ) ) :
 		}
 
 		/**
+		 * Test the post context with a field that should not be in the response.
+		 */
+		function test_fieldmanager_global_rest_api_post_get() {
+			// Add actions for post context.
+			add_action( 'fm_post_post', array( $this, '_fm_no_post_test_fields' ) );
+
+			add_filter( 'fm_register_rest_field', '__return_true' );
+
+			// Create the post.
+			$post_id = $this->factory->post->create();
+
+			// Add data.
+			$test_data = rand_str();
+			update_post_meta( $post_id, $this->test_field, $test_data );
+
+			// Process the REST API call.
+			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
+			$response = $this->server->dispatch( $request );
+			$data = $response->get_data();
+
+			$this->assertArrayHasKey( $this->test_field, $data );
+
+			add_filter( 'fm_register_rest_field', '__return_false' );
+		}
+
+		/**
 		 * Test the post context with a filter
 		 */
 		function test_fieldmanager_rest_api_post_get_filter() {
 			// Add actions for post context.
-			add_action( 'fm_post_posts', array( $this, '_fm_post_test_fields' ) );
-			add_action( 'fm_post_posts', array( $this, '_fm_post_test_fields' ) );
+			add_action( 'fm_post_post', array( $this, '_fm_post_test_fields' ) );
 			add_action( 'fm_rest_get', array( $this, '_fm_post_get_test_fields_filter' ), 10, 5 );
 
 			// Create the post.
@@ -146,8 +168,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 */
 		function test_fieldmanager_rest_api_post_update_filter() {
 			// Add actions for post context.
-			add_action( 'fm_post_posts', array( $this, '_fm_post_test_fields' ) );
-			add_action( 'fm_post_posts', array( $this, '_fm_post_test_fields' ) );
+			add_action( 'fm_post_post', array( $this, '_fm_post_test_fields' ) );
 			add_action( 'fm_rest_update', array( $this, '_fm_post_update_test_fields_filter' ), 10, 5 );
 
 			// Create the post.
@@ -172,7 +193,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 		function test_fieldmanager_rest_api_term_get() {
 			// Add actions for term context.
 			add_action( 'fm_term_category', array( $this, '_fm_term_test_fields' ) );
-			add_action( 'fm_term_categories', array( $this, '_fm_term_test_fields' ) );
 
 			// Create the term.
 			$term_id = $this->factory->category->create();
@@ -195,7 +215,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 		function test_fieldmanager_rest_api_term_update() {
 			// Add actions for term context.
 			add_action( 'fm_term_category', array( $this, '_fm_term_test_fields' ) );
-			add_action( 'fm_term_categories', array( $this, '_fm_term_test_fields' ) );
 
 			// Create the term.
 			$term_id = $this->factory->category->create();
@@ -220,7 +239,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 		function test_fieldmanager_rest_api_user_get() {
 			// Add actions for user context.
 			add_action( 'fm_user', array( $this, '_fm_user_test_fields' ) );
-			add_action( 'fm_users', array( $this, '_fm_user_test_fields' ) );
 
 			// Create the user.
 			$user_id = $this->factory->user->create();
@@ -243,7 +261,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 		function test_fieldmanager_rest_api_user_update() {
 			// Add actions for user context.
 			add_action( 'fm_user', array( $this, '_fm_user_test_fields' ) );
-			add_action( 'fm_users', array( $this, '_fm_user_test_fields' ) );
 
 			// Create the user.
 			$user_id = $this->factory->user->create();

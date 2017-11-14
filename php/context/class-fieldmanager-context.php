@@ -102,7 +102,18 @@ abstract class Fieldmanager_Context {
 	 */
 	public function register_rest_field( $object_type ) {
 		// Ensure the REST API is active and the field wants to be shown in REST.
-		if ( function_exists( 'register_rest_field' ) && true === $this->fm->show_in_rest ) {
+		if (
+			function_exists( 'register_rest_field' )
+			&& (
+				true === $this->fm->show_in_rest
+				/**
+				 * Determine whether this field should be shown within the REST API.
+				 *
+				 * @param object The current FM object.
+				 */
+				|| apply_filters( 'fm_register_rest_field', false, $this->fm )
+			)
+		) {
 			register_rest_field(
 				$object_type,
 				$this->fm->name,

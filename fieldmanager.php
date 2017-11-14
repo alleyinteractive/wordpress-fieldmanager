@@ -427,7 +427,7 @@ add_action( 'init', 'fm_trigger_context_action', 99 );
  *
  * @param mixed           $result  Response to replace the requested version with. Can be anything
  *                                 a normal endpoint can return, or null to not hijack the request.
- * @param WP_REST_Server  $server    Server instance.
+ * @param WP_REST_Server  $server  Server instance.
  * @param WP_REST_Request $request Request used to generate the response.
  */
 function fm_trigger_rest_context_action( $result, $server, $request ) {
@@ -448,11 +448,11 @@ function fm_trigger_rest_context_action( $result, $server, $request ) {
 
 	// Use regexes to find the right context.
 	if ( ! empty( $post_type_endpoints )
-		&& preg_match( '/\/wp\/v2\/(' . implode( '|', $post_type_endpoints ) . ')(\/?)(.*?)/', $route, $matches ) ) {
-		do_action( "fm_post_{$matches[1]}" );
+		&& preg_match( '/\/wp\/v2\/(' . implode( '|', array_keys( $post_type_endpoints ) ) . ')(\/?)(.*?)/', $route, $matches ) ) {
+		do_action( "fm_post_{$post_type_endpoints[ $matches[1] ]}" );
 	} elseif ( ! empty( $taxonomy_endpoints )
-		&& preg_match( '/\/wp\/v2\/(' . implode( '|', $taxonomy_endpoints ) . ')(\/?)(.*?)/', $route, $matches ) ) {
-		do_action( "fm_term_{$matches[1]}" );
+		&& preg_match( '/\/wp\/v2\/(' . implode( '|', array_keys( $taxonomy_endpoints ) ) . ')(\/?)(.*?)/', $route, $matches ) ) {
+		do_action( "fm_term_{$taxonomy_endpoints[ $matches[1] ]}" );
 	} elseif ( preg_match( '/\/wp\/v2\/users(\/?)(.*?)/', $route, $matches ) ) {
 		do_action( 'fm_user' );
 	}
@@ -465,8 +465,8 @@ add_filter( 'rest_pre_dispatch', 'fm_trigger_rest_context_action', 10, 3 );
  * Gets the REST API base for all registered WordPress objects of a certain type.
  * Currently works for post types and taxonomies.
  *
- * @param string $type	Either 'post_types' or 'taxonomies'.
- * @return array		A list of all the rest bases for the object type.
+ * @param  string $type Either 'post_types' or 'taxonomies'.
+ * @return array        A list of all the rest bases for the object type.
  */
 function fm_get_registered_object_rest_base( $type ) {
 	$rest_bases = array();
@@ -489,8 +489,10 @@ function fm_get_registered_object_rest_base( $type ) {
 
 	// Extract the rest base for each.
 	foreach ( $objects as $object ) {
-		$rest_bases[] = ( empty( $object->rest_base ) ) ? $object->name : $object->rest_base;
+		$rest_base = ( empty( $object->rest_base ) ? $object->name : $object->rest_base );
+		$rest_bases[ $rest_base ] = $object->name;
 	}
+
 	return $rest_bases;
 }
 
