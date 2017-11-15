@@ -280,6 +280,45 @@ if ( function_exists( 'register_rest_field' ) ) :
 		}
 
 		/**
+		 * Test retrieving data from the submenu context.
+		 */
+		function test_fieldmanager_rest_api_submenu_get() {
+			$field_name = 'custom_field';
+			if ( function_exists( 'fm_register_submenu_page' ) ) {
+				fm_register_submenu_page( $field_name, 'tools.php', 'Custom Field' );
+			}
+
+			add_action( 'fm_submenu_' . $field_name, function() use ( $field_name ){
+				$fm = new Fieldmanager_Group( array(
+					'name'         => $field_name,
+					'show_in_rest' => true,
+					'children'     => array(
+						'data'  => new Fieldmanager_TextField(),
+						'data2' => new Fieldmanager_TextField(),
+						'data3' => new Fieldmanager_TextField(),
+					),
+				) );
+				$fm->activate_submenu_page();
+			} );
+
+			// Add data.
+			$test_data = array(
+				'data'  => rand_str(),
+				'data2' => rand_str(),
+				'data3' => rand_str(),
+			);
+
+			update_option( $field_name, $test_data );
+
+			// Process the REST API call.
+			$request = new WP_REST_Request( 'GET', '/' . FM_REST_API_ENDPOINT . '/submenu-settings/' . $field_name );
+			$response = $this->server->dispatch( $request );
+			$data = $response->get_data();
+
+			$this->assertEquals( $data, $test_data );
+		}
+
+		/**
 		 * Add post fields.
 		 */
 		function _fm_post_test_fields() {
