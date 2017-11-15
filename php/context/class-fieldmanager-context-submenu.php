@@ -92,6 +92,9 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
 		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
+
+		// Register fields for the REST API.
+		$this->register_rest_field();
 	}
 
 	/**
@@ -196,6 +199,64 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		} else {
 			return admin_url( 'admin.php?page=' . $this->menu_slug );
 		}
+	}
+
+	/**
+	 * Register a new REST API endpoint to expose the field's data.
+	 *
+	 * @param string $type The fm field type.
+	 */
+	public function register_rest_field( $type = 'submenu' ) {
+		if (
+			function_exists( 'register_rest_route' )
+			&& did_action( 'rest_api_init' )
+			&& (
+				true === $this->fm->show_in_rest
+				/**
+				 * Determine whether this field should be shown within the REST API.
+				 *
+				 * @param object The current Context object.
+				 */
+				|| apply_filters( 'fm_register_rest_field', false, $this )
+			)
+		) {
+			register_rest_route(
+				FM_REST_API_ENDPOINT,
+				"/submenu-settings/{$this->fm->name}",
+				array(
+					'callback' => array( $this, 'rest_callback' ),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Callback function for the REST repsonse.
+	 *
+	 * @return mixed The fm field data.
+	 */
+	public function rest_callback() {
+		// Get the data.
+		$data = (array) $this->get_data( 0, $this->fm->name );
+
+		/**
+		 * Filter a single field's data to the REST API.
+		 *
+		 * @param array  $data The field data.
+		 * @param object $this The current context object.
+		 */
+		$data = apply_filters( 'fm_rest_get_submenu_' . $this->fm->name, $data, $this );
+
+		/**
+		 * Filter all data passed to the REST API.
+		 *
+		 * @param array  $data The field data.
+		 * @param array  $data The field name.
+		 * @param string $this The current context object.
+		 */
+		$data = apply_filters( 'fm_rest_get_submenu', $data, $this->fm->name, $this );
+
+		return rest_ensure_response( $data );
 	}
 
 	/**
