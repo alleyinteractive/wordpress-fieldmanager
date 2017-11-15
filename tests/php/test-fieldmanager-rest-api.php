@@ -311,7 +311,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_option( $field_name, $test_data );
 
 			// Process the REST API call.
-			$request = new WP_REST_Request( 'GET', '/' . FM_REST_API_ENDPOINT . '/submenu-settings/' . $field_name );
+			$request = new WP_REST_Request( 'GET', '/' . FM_REST_API_DOMAIN . '/submenu-settings/' . $field_name );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
 

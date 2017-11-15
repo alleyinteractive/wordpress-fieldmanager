@@ -221,7 +221,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 			)
 		) {
 			register_rest_route(
-				FM_REST_API_ENDPOINT,
+				FM_REST_API_DOMAIN,
 				"/submenu-settings/{$this->fm->name}",
 				array(
 					'callback' => array( $this, 'rest_callback' ),

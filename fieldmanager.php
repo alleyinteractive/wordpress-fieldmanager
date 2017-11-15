@@ -33,7 +33,7 @@ define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 /**
  * Current REST API endpoint of Fieldmanager.
  */
-define( 'FM_REST_API_ENDPOINT', 'fm/v1' );
+define( 'FM_REST_API_DOMAIN', 'fm/v1' );
 
 /**
  * Whether to display debugging information. Default is value of WP_DEBUG.
@@ -476,7 +476,7 @@ function fm_trigger_rest_context_action( $result, $server, $request ) {
 		do_action( "fm_term_{$taxonomy_endpoints[ $matches[1] ]}" );
 	} elseif ( preg_match( '/\/wp\/v2\/users(\/?)(.*?)/', $route, $matches ) ) {
 		do_action( 'fm_user' );
-	} elseif ( preg_match( '/' . preg_quote( '/' . FM_REST_API_ENDPOINT . '/submenu-settings/', '/' ) . '(.*)/', $route, $matches ) ) {
+	} elseif ( preg_match( '/' . preg_quote( '/' . FM_REST_API_DOMAIN . '/submenu-settings/', '/' ) . '(.*)/', $route, $matches ) ) {
 		do_action( "fm_submenu_{$matches[1]}" );
 	}
 
