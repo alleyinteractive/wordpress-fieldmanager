@@ -468,15 +468,23 @@ function fm_trigger_rest_context_action( $result, $server, $request ) {
 	$matches = array();
 
 	// Use regexes to find the right context.
-	if ( ! empty( $post_type_endpoints )
-		&& preg_match( '/\/wp\/v2\/(' . implode( '|', array_keys( $post_type_endpoints ) ) . ')(\/?)(.*?)/', $route, $matches ) ) {
+	if (
+		! empty( $post_type_endpoints )
+		&& preg_match( '/\/wp\/v2\/(' . implode( '|', array_keys( $post_type_endpoints ) ) . ')(\/?)(.*?)/', $route, $matches )
+	) {
+		// Post Types.
 		do_action( "fm_post_{$post_type_endpoints[ $matches[1] ]}" );
-	} elseif ( ! empty( $taxonomy_endpoints )
-		&& preg_match( '/\/wp\/v2\/(' . implode( '|', array_keys( $taxonomy_endpoints ) ) . ')(\/?)(.*?)/', $route, $matches ) ) {
+	} elseif (
+		! empty( $taxonomy_endpoints )
+		&& preg_match( '/\/wp\/v2\/(' . implode( '|', array_keys( $taxonomy_endpoints ) ) . ')(\/?)(.*?)/', $route, $matches )
+	) {
+		// Taxonomies.
 		do_action( "fm_term_{$taxonomy_endpoints[ $matches[1] ]}" );
 	} elseif ( preg_match( '/\/wp\/v2\/users(\/?)(.*?)/', $route, $matches ) ) {
+		// User.
 		do_action( 'fm_user' );
 	} elseif ( preg_match( '/' . preg_quote( '/' . FM_REST_API_DOMAIN . '/submenu-settings/', '/' ) . '(.*)/', $route, $matches ) ) {
+		// Submenu.
 		do_action( "fm_submenu_{$matches[1]}" );
 	}
 

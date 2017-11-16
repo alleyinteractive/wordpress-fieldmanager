@@ -210,15 +210,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		if (
 			function_exists( 'register_rest_route' )
 			&& did_action( 'rest_api_init' )
-			&& (
-				true === $this->fm->show_in_rest
-				/**
-				 * Determine whether this field should be shown within the REST API.
-				 *
-				 * @param object The current Context object.
-				 */
-				|| apply_filters( 'fm_register_rest_field', false, $this )
-			)
+			&& $this->fm->can_show_in_rest()
 		) {
 			register_rest_route(
 				FM_REST_API_DOMAIN,

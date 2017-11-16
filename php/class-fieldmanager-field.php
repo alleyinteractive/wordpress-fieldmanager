@@ -1440,4 +1440,22 @@ abstract class Fieldmanager_Field {
 		$this->schema['description'] = ( ! empty( $this->description ) ) ? $this->description : $this->label;
 		$this->schema['context'] = array( 'view', 'edit' );
 	}
+
+	/**
+	 * Determine if this field can be shown in the REST API.
+	 *
+	 * @return bool True or False if the field can be shown in the rest api.
+	 */
+	public function can_show_in_rest() {
+		$show_in_rest = $this->show_in_rest;
+
+		/**
+		 * Determine whether this field should be shown within the REST API.
+		 *
+		 * @param Fieldmanager_Field The current field object.
+		 */
+		$show_in_rest = apply_filters( 'fm_can_show_in_rest', $show_in_rest, $this );
+
+		return $show_in_rest;
+	}
 }

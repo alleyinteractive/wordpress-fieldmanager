@@ -121,7 +121,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 			// Add actions for post context.
 			add_action( 'fm_post_post', array( $this, '_fm_no_post_test_fields' ) );
 
-			add_filter( 'fm_register_rest_field', '__return_true' );
+			add_filter( 'fm_can_show_in_rest', '__return_true' );
 
 			// Create the post.
 			$post_id = $this->factory->post->create();
@@ -137,7 +137,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 
 			$this->assertArrayHasKey( $this->test_field, $data );
 
-			add_filter( 'fm_register_rest_field', '__return_false' );
+			add_filter( 'fm_can_show_in_rest', '__return_false' );
 		}
 
 		/**
@@ -327,7 +327,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 				fm_register_submenu_page( $field_name, 'tools.php', 'Custom Field' );
 			}
 
-			add_action( 'fm_submenu_' . $field_name, function() use ( $field_name ){
+			add_action( 'fm_submenu_' . $field_name, function() use ( $field_name ) {
 				$fm = new Fieldmanager_Group( array(
 					'name'         => $field_name,
 					'show_in_rest' => true,
