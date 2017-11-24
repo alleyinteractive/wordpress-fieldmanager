@@ -882,8 +882,8 @@ abstract class Fieldmanager_Field {
 				return;
 			}
 
-			/* translators: 1: `$values`, 2: `$limit`, 3: `limit` property value */
 			$this->_unauthorized_access( sprintf(
+				/* translators: 1: `$values`, 2: `$limit`, 3: `limit` property value */
 				__( '%1$s should be an array because %2$s is %3$d.', 'fieldmanager' ),
 				'`$values`',
 				'`$limit`',
