@@ -101,7 +101,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 				/* translators: used between list items, there is a space after the comma */
 				implode( __( ', ', 'fieldmanager' ), array_map(
 					function ( $property ) {
-						return sprintf( _x( '`%s`', 'property name like `user_nicename`', 'fieldmanager' ), $property );
+						return "`{$property}`";
 					},
 					$this->allowed_store_properties
 				) )
@@ -127,7 +127,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 				/* translators: used between list items, there is a space after the comma */
 				implode( __( ', ', 'fieldmanager' ), array_map(
 					function ( $property ) {
-						return sprintf( _x( '`%s`', 'property name like `user_nicename`', 'fieldmanager' ), $property );
+						return "`{$property}`";
 					},
 					$this->allowed_display_properties
 				) )
