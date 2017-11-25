@@ -11,8 +11,42 @@
 		<exclude name="WordPress.VIP.RestrictedFunctions.get_term_by_get_term_by" />
 	</rule>
 
+	<rule ref="Generic.Arrays.DisallowShortArraySyntax.Found">
+		<!-- See #659. -->
+		<type>error</type>
+	</rule>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" value="fieldmanager" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array" value="fm,_fm,fieldmanager,_fieldmanager,Fieldmanager" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WP.DeprecatedFunctions">
+		<properties>
+			<property name="minimum_supported_version" value="4.7" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WP.DeprecatedClasses">
+		<properties>
+			<property name="minimum_supported_version" value="4.7" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.WP.DeprecatedParameters">
+		<properties>
+			<property name="minimum_supported_version" value="4.7" />
+		</properties>
+	</rule>
+
 	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
-		<!-- Allow templates to put closing PHP tags immediately after the file header. -->
 		<exclude-pattern>fieldmanager.php</exclude-pattern>
 	</rule>
 

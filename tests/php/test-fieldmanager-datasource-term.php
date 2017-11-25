@@ -408,4 +408,54 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->assertSame( '', get_user_meta( $user_id, 'test_terms', true ) );
 		$this->assertSame( array( $term['term_id'] ), wp_get_object_terms( $user_id, 'user-tax', array( 'fields' => 'ids' ) ) );
 	}
+
+	public function test_multiple_taxonomies_with_ajax() {
+		$terms = array();
+		// Create a Post Tag
+		$terms[] = $this->factory->tag->create( array( 'name' => 'test tag' ) );
+		// Create a Category
+		$terms[] = $this->factory->category->create( array( 'name' => 'test category' ) );
+
+		// A Term Datasource that queries both Post Tag and Category Taxonomies
+		$datasource = new Fieldmanager_Datasource_Term( array(
+			'taxonomy' => array( 'category', 'post_tag' ),
+			'taxonomy_save_to_terms' => false,
+		) );
+		$items = $datasource->get_items_for_ajax( 'test' );
+		$this->assertEqualSets( $terms, wp_list_pluck( $items, 'value' ) );
+	}
+
+	public function test_parent_restrictions_with_ajax() {
+		$terms = array();
+		$terms[0] = $this->factory->category->create( array( 'name' => 'test category' ) );
+		$terms[1] = $this->factory->category->create( array( 'name' => 'test category child', 'parent' => $terms[0] ) );
+
+		$datasource = new Fieldmanager_Datasource_Term( array(
+			'taxonomy' => array( 'category' ),
+			'taxonomy_args' => array(
+				'parent' => $terms[0],
+			)
+		) );
+
+		$items = $datasource->get_items_for_ajax( 'test' );
+
+		$this->assertEquals( $terms[1], $items[0]['value'] );
+	}
+
+	public function test_child_of_restrictions_with_ajax() {
+		$terms = array();
+		$terms[0] = $this->factory->category->create( array( 'name' => 'test category' ) );
+		$terms[1] = $this->factory->category->create( array( 'name' => 'test category child', 'parent' => $terms[0] ) );
+
+		$datasource = new Fieldmanager_Datasource_Term( array(
+			'taxonomy' => array( 'category' ),
+			'taxonomy_args' => array(
+				'child_of' => $terms[0],
+			)
+		) );
+
+		$items = $datasource->get_items_for_ajax( 'test' );
+
+		$this->assertEquals( $terms[1], $items[0]['value'] );
+	}
 }
