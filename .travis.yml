@@ -21,7 +21,7 @@ matrix:
     - php: 7.1
       env: WP_VERSION=latest
     - php: 7.2
-      env: WP_VERSION=latest
+      env: WP_VERSION=latest WP_TRAVISCI=qunit
   fast_finish: true
   allow_failures:
     - php: 7.2
@@ -63,8 +63,8 @@ script:
       phpunit -c multisite.xml
     fi
   - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      grunt qunit:specific --wp=$WP_VERSION
+    if [[ "$WP_TRAVISCI" == "qunit" ]] ; then
+      grunt qunit:recent
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
