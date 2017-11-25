@@ -1128,7 +1128,6 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				$this->assertSame( $actual[ $key ], $labels[ $key ] );
 			} else {
 				// Testing only that there are strings, not that the strings match a specific default value.
-				$this->assertNotEmpty( $actual[ $key ] );
 				$this->assertInternalType( 'string', $actual[ $key ] );
 			}
 		}
