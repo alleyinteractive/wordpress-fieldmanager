@@ -200,6 +200,24 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	}
 
 	/**
+	 * Override the default HTML form name to allow denoting arrays.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @return string Form name.
+	 */
+	public function get_form_name( $multiple = '' ) {
+		// Don't override anything passed to subclasses before this was implemented.
+		if ( ! $multiple ) {
+			if ( $this->multiple ) {
+				$multiple = '[]';
+			}
+		}
+
+		return parent::get_form_name( $multiple );
+	}
+
+	/**
 	 * Helper for output functions to toggle a selected options.
 	 *
 	 * @param  string $current_option This option.
