@@ -204,6 +204,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 *
 	 * @since 1.3.0
 	 *
+	 * @param string $multiple Text to append to the form name.
 	 * @return string Form name.
 	 */
 	public function get_form_name( $multiple = '' ) {
