@@ -188,6 +188,60 @@ if ( function_exists( 'register_rest_field' ) ) :
 		}
 
 		/**
+		 * Test retrieving serialized data from the post context.
+		 */
+		function test_fieldmanager_rest_api_post_serialized_get() {
+			// Add actions for post context.
+			add_action( 'fm_post_post', array( $this, '_fm_post_group_serialized_test_fields' ) );
+
+			// Create the post.
+			$post_id = $this->factory->post->create();
+
+			// Add data.
+			$test_data = array(
+				'field_1' => rand_str(),
+				'field_2' => rand_str(),
+				'field_3' => rand_str(),
+			);
+			update_post_meta( $post_id, $this->test_field, $test_data );
+
+			// Process the REST API call.
+			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
+			$response = $this->server->dispatch( $request );
+			$data = $response->get_data();
+
+			$this->assertEquals( $data[ $this->test_field ], $test_data );
+		}
+
+		/**
+		 * Test retrieving serialized data from the post context.
+		 */
+		function test_fieldmanager_rest_api_post_not_serialized_get() {
+			// Add actions for post context.
+			add_action( 'fm_post_post', array( $this, '_fm_post_group_not_serialized_test_fields' ) );
+
+			// Create the post.
+			$post_id = $this->factory->post->create();
+
+			// Add data.
+			$test_data = array(
+				'field_1' => rand_str(),
+				'field_2' => rand_str(),
+				'field_3' => rand_str(),
+			);
+			update_post_meta( $post_id, $this->test_field . '_field_1', $test_data['field_1'] );
+			update_post_meta( $post_id, $this->test_field . '_field_2', $test_data['field_2'] );
+			update_post_meta( $post_id, $this->test_field . '_field_3', $test_data['field_3'] );
+
+			// Process the REST API call.
+			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
+			$response = $this->server->dispatch( $request );
+			$data = $response->get_data();
+
+			$this->assertEquals( $data[ $this->test_field ], $test_data );
+		}
+
+		/**
 		 * Test retrieving data from the quickedit context.
 		 */
 		function test_fieldmanager_rest_api_quickedit_post_get() {
@@ -442,6 +496,40 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$fm_post = new Fieldmanager_TextField( array(
 				'name' => $this->test_field,
 				'show_in_rest' => true,
+			) );
+			$fm_post->add_meta_box( __( 'Test Fields', 'fieldmanager' ), array( 'post' ), 'side' );
+		}
+
+		/**
+		 * Add post group with serialize_data set to false.
+		 */
+		function _fm_post_group_serialized_test_fields() {
+			$fm_post = new Fieldmanager_Group( array(
+				'name' => $this->test_field,
+				'serialize_data' => true,
+				'show_in_rest' => true,
+				'children' => array(
+					'field_1' => new Fieldmanager_TextField(),
+					'field_2' => new Fieldmanager_TextField(),
+					'field_3' => new Fieldmanager_TextField(),
+				),
+			) );
+			$fm_post->add_meta_box( __( 'Test Fields', 'fieldmanager' ), array( 'post' ), 'side' );
+		}
+
+		/**
+		 * Add post group with serialize_data set to false.
+		 */
+		function _fm_post_group_not_serialized_test_fields() {
+			$fm_post = new Fieldmanager_Group( array(
+				'name' => $this->test_field,
+				'serialize_data' => false,
+				'show_in_rest' => true,
+				'children' => array(
+					'field_1' => new Fieldmanager_TextField(),
+					'field_2' => new Fieldmanager_TextField(),
+					'field_3' => new Fieldmanager_TextField(),
+				),
 			) );
 			$fm_post->add_meta_box( __( 'Test Fields', 'fieldmanager' ), array( 'post' ), 'side' );
 		}
