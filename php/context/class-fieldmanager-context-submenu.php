@@ -205,6 +205,8 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * Register a new REST API endpoint to expose the field's data.
 	 *
 	 * @since 1.3.0
+	 *
+	 * @param string $object_type Not used, but added since the overriden function has it declared.
 	 */
 	public function register_rest_field( $object_type = 'submenu' ) {
 		if (
