@@ -479,6 +479,9 @@ function fm_trigger_rest_context_action( $result, $server, $request ) {
 	) {
 		// Post Types.
 		do_action( "fm_post_{$post_type_endpoints[ $matches[1] ]}" );
+
+		// Quickedit.
+		do_action( "fm_quickedit_{$post_type_endpoints[ $matches[1] ]}" );
 	} elseif (
 		! empty( $taxonomy_endpoints )
 		&& preg_match( '#/wp/v2/(' . implode( '|', array_keys( $taxonomy_endpoints ) ) . ')(/?)(.*?)/#i', $route, $matches )

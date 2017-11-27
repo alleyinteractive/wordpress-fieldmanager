@@ -188,6 +188,74 @@ if ( function_exists( 'register_rest_field' ) ) :
 		}
 
 		/**
+		 * Test retrieving data from the quickedit context.
+		 */
+		function test_fieldmanager_rest_api_quickedit_post_get() {
+			// Add actions for post context.
+			add_action( 'fm_quickedit_post', array( $this, '_fm_post_test_fields' ) );
+
+			// Create the post.
+			$post_id = $this->factory->post->create();
+
+			// Add data.
+			$test_data = rand_str();
+			update_post_meta( $post_id, $this->test_field, $test_data );
+
+			// Process the REST API call.
+			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
+			$response = $this->server->dispatch( $request );
+			$data = $response->get_data();
+
+			$this->assertEquals( $data[ $this->test_field ], $test_data );
+		}
+
+		/**
+		 * Test the quickedit context with a field that should not be in the response.
+		 */
+		function test_fieldmanager_no_rest_api_quickedit_post_get() {
+			// Add actions for post context.
+			add_action( 'fm_quickedit_post', array( $this, '_fm_no_post_test_fields' ) );
+
+			// Create the post.
+			$post_id = $this->factory->post->create();
+
+			// Add data.
+			$test_data = rand_str();
+			update_post_meta( $post_id, $this->test_field, $test_data );
+
+			// Process the REST API call.
+			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
+			$response = $this->server->dispatch( $request );
+			$data = $response->get_data();
+
+			$this->assertArrayNotHasKey( $this->test_field, $data );
+		}
+
+		/**
+		 * Test updating from the quickedit context.
+		 */
+		function test_fieldmanager_rest_api_quickedit_post_update() {
+			// Add actions for post context.
+			add_action( 'fm_quickedit_post', array( $this, '_fm_post_test_fields' ) );
+
+			// Create the post.
+			$post_id = $this->factory->post->create();
+
+			// Add data.
+			$test_data = rand_str();
+
+			// Process the REST API call.
+			$request = new WP_REST_Request( 'POST', '/wp/v2/posts/' . $post_id );
+			$request->set_body_params( array(
+				$this->test_field => $test_data,
+			) );
+			$response = $this->server->dispatch( $request );
+			$data = $response->get_data();
+
+			$this->assertEquals( $data[ $this->test_field ], $test_data );
+		}
+
+		/**
 		 * Test retrieving data from the term context.
 		 */
 		function test_fieldmanager_rest_api_term_get() {
