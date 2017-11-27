@@ -177,7 +177,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @see http://json-schema.org/draft-04/schema#
 	 */
 	protected function create_schema() {
-		// Add the required schema properties.
+		// Add the required JSON Schema properties.
 		parent::create_schema();
 
 		// Add the date-time format.

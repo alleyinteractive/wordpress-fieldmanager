@@ -32,8 +32,11 @@ define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 
 /**
  * Current REST API endpoint of Fieldmanager.
+ *
+ * @since 1.3.0
+ * @var string The REST API namespace.
  */
-define( 'FM_REST_API_DOMAIN', 'fm/v1' );
+define( 'FM_REST_API_NAMESPACE', 'fm/v1' );
 
 /**
  * Whether to display debugging information. Default is value of WP_DEBUG.
@@ -446,6 +449,8 @@ add_action( 'init', 'fm_trigger_context_action', 99 );
  * This is separate from fm_trigger_context_action since rest_pre_dispatch fires on parse_request
  * and is too late to be part of the existing context hooks.
  *
+ * @since 1.3.0
+ *
  * @param mixed           $result  Response to replace the requested version with. Can be anything
  *                                 a normal endpoint can return, or null to not hijack the request.
  * @param WP_REST_Server  $server  Server instance.
@@ -470,20 +475,20 @@ function fm_trigger_rest_context_action( $result, $server, $request ) {
 	// Use regexes to find the right context.
 	if (
 		! empty( $post_type_endpoints )
-		&& preg_match( '/\/wp\/v2\/(' . implode( '|', array_keys( $post_type_endpoints ) ) . ')(\/?)(.*?)/', $route, $matches )
+		&& preg_match( '#/wp/v2/(' . implode( '|', array_keys( $post_type_endpoints ) ) . ')(/?)(.*?)/#i', $route, $matches )
 	) {
 		// Post Types.
 		do_action( "fm_post_{$post_type_endpoints[ $matches[1] ]}" );
 	} elseif (
 		! empty( $taxonomy_endpoints )
-		&& preg_match( '/\/wp\/v2\/(' . implode( '|', array_keys( $taxonomy_endpoints ) ) . ')(\/?)(.*?)/', $route, $matches )
+		&& preg_match( '#/wp/v2/(' . implode( '|', array_keys( $taxonomy_endpoints ) ) . ')(/?)(.*?)/#i', $route, $matches )
 	) {
 		// Taxonomies.
 		do_action( "fm_term_{$taxonomy_endpoints[ $matches[1] ]}" );
-	} elseif ( preg_match( '/\/wp\/v2\/users(\/?)(.*?)/', $route, $matches ) ) {
+	} elseif ( preg_match( '#/wp/v2/users(/?)(.*?)/#i', $route ) ) {
 		// User.
 		do_action( 'fm_user' );
-	} elseif ( preg_match( '/' . preg_quote( '/' . FM_REST_API_DOMAIN . '/submenu-settings/', '/' ) . '(.*)/', $route, $matches ) ) {
+	} elseif ( preg_match( '#/' . FM_REST_API_NAMESPACE . '/submenu-settings/(.*)#i', $route, $matches ) ) {
 		// Submenu.
 		do_action( "fm_submenu_{$matches[1]}" );
 	}
@@ -496,8 +501,10 @@ add_filter( 'rest_pre_dispatch', 'fm_trigger_rest_context_action', 10, 3 );
  * Gets the REST API base for all registered WordPress objects of a certain type.
  * Currently works for post types and taxonomies.
  *
- * @param  string $type Either 'post_types' or 'taxonomies'.
- * @return array        A list of all the rest bases for the object type.
+ * @since 1.3.0
+ *
+ * @param string $type Either 'post_types' or 'taxonomies'.
+ * @return array $rest_bases A list of all the rest bases for the object type.
  */
 function fm_get_registered_object_rest_base( $type ) {
 	$rest_bases = array();

@@ -366,19 +366,19 @@ abstract class Fieldmanager_Field {
 	public $is_attachment = false;
 
 	/**
-	 * Whether or not to register this field in the REST API.  If this value is
+	 * Whether or not to register this field in the REST API. If this value is
 	 * set to `true`, then Fieldmanager will automatically add this field to the
 	 * REST API for the respective context.
 	 *
-	 * @var boolean
+	 * @var bool
 	 */
 	public $show_in_rest = false;
 
 	/**
-	 * JSON schema for the field.
+	 * JSON Schema for the field.
 	 *
-	 * @var array
 	 * @see http://json-schema.org/draft-04/schema#
+	 * @var array
 	 */
 	protected $schema = array();
 
@@ -1420,7 +1420,10 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Gets the JSON Schema for the field.
 	 *
+	 * @since 1.3.0
+	 *
 	 * @see http://json-schema.org/draft-04/schema#
+	 *
 	 * @return array The JSON schema, represented as a PHP array.
 	 */
 	public function get_schema() {
@@ -1431,31 +1434,36 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Creates the JSON Schema for the field.
 	 *
+	 * @since 1.3.0
+	 *
 	 * @see http://json-schema.org/draft-04/schema#
 	 */
 	protected function create_schema() {
-		// Set properties that map directly to JSON schema properties.
-		// or that are required by the REST API.
+		/*
+		 * Set properties that map directly to JSON Schema properties or that are
+		 * required by the REST API.
+		 */
 		$this->schema['type'] = 'object';
-		$this->schema['description'] = ( ! empty( $this->description ) ) ? $this->description : $this->label;
+		$this->schema['description'] = $this->description;
 		$this->schema['context'] = array( 'view', 'edit' );
 	}
 
 	/**
 	 * Determine if this field can be shown in the REST API.
 	 *
-	 * @return bool True or False if the field can be shown in the rest api.
+	 * @since 1.3.0
+	 *
+	 * @return bool True or false if the field can be shown in the REST API.
 	 */
 	public function can_show_in_rest() {
-		$show_in_rest = $this->show_in_rest;
-
 		/**
 		 * Determine whether this field should be shown within the REST API.
 		 *
-		 * @param Fieldmanager_Field The current field object.
+		 * @since 1.3.0
+		 *
+		 * @param bool               $this->show_in_rest The current show in rest boolean.
+		 * @param Fieldmanager_Field                     The current field object.
 		 */
-		$show_in_rest = apply_filters( 'fm_can_show_in_rest', $show_in_rest, $this );
-
-		return $show_in_rest;
+		return apply_filters( 'fm_can_show_in_rest', $this->show_in_rest, $this );
 	}
 }

@@ -348,14 +348,15 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		}
 	}
 
-
 	/**
 	 * Creates the JSON Schema for all options fields.
+	 *
+	 * @since 1.3.0
 	 *
 	 * @see http://json-schema.org/draft-04/schema#
 	 */
 	protected function create_schema() {
-		// Add the required schema properties.
+		// Add the required Schema properties.
 		parent::create_schema();
 
 		// Build data from the datasource, which is needed by the schema.
@@ -364,8 +365,10 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			$this->has_built_data = true;
 		}
 
-		// Add option values for validation, if set.
-		// Option labels or hierarchical display aren't valid in this context.
+		/*
+		 * If set, add option values for validation. Option labels or hierarchical
+		 * display aren't valid in this context.
+		 */
 		if ( ! empty( $this->data ) ) {
 			$this->schema['enum'] = wp_list_pluck( array_values( $this->data ), 'value' );
 		}

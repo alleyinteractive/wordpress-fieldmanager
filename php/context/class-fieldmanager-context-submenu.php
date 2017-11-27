@@ -204,16 +204,15 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	/**
 	 * Register a new REST API endpoint to expose the field's data.
 	 *
-	 * @param string $type The fm field type.
+	 * @since 1.3.0
 	 */
-	public function register_rest_field( $type = 'submenu' ) {
+	public function register_rest_field( $object_type = 'submenu' ) {
 		if (
-			function_exists( 'register_rest_route' )
-			&& did_action( 'rest_api_init' )
+			did_action( 'rest_api_init' )
 			&& $this->fm->can_show_in_rest()
 		) {
 			register_rest_route(
-				FM_REST_API_DOMAIN,
+				FM_REST_API_NAMESPACE,
 				"/submenu-settings/{$this->fm->name}",
 				array(
 					'callback' => array( $this, 'rest_callback' ),
@@ -225,14 +224,18 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	/**
 	 * Callback function for the REST repsonse.
 	 *
+	 * @since 1.3.0
+	 *
 	 * @return mixed The fm field data.
 	 */
 	public function rest_callback() {
 		// Get the data.
-		$data = (array) $this->get_data( 0, $this->fm->name );
+		$data = $this->get_data( 0, $this->fm->name );
 
 		/**
-		 * Filter a single field's data to the REST API.
+		 * Filters a single field's data to the REST API.
+		 *
+		 * @since 1.3.0
 		 *
 		 * @param array  $data The field data.
 		 * @param object $this The current context object.
@@ -240,7 +243,9 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		$data = apply_filters( 'fm_rest_get_submenu_' . $this->fm->name, $data, $this );
 
 		/**
-		 * Filter all data passed to the REST API.
+		 * Filters all data passed to the REST API.
+		 *
+		 * @since 1.3.0
 		 *
 		 * @param array  $data The field data.
 		 * @param array  $data The field name.
