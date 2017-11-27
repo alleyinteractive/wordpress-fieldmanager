@@ -370,12 +370,16 @@ abstract class Fieldmanager_Field {
 	 * set to `true`, then Fieldmanager will automatically add this field to the
 	 * REST API for the respective context.
 	 *
+	 * @since 1.3.0
+	 *
 	 * @var bool
 	 */
 	public $show_in_rest = false;
 
 	/**
 	 * JSON Schema for the field.
+	 *
+	 * @since 1.3.0
 	 *
 	 * @see http://json-schema.org/draft-04/schema#
 	 * @var array
