@@ -235,23 +235,23 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		$data = $this->get_data( 0, $this->fm->name );
 
 		/**
-		 * Filters a single field's data to the REST API.
+		 * Filters a single field's data passed to the REST API.
 		 *
 		 * @since 1.3.0
 		 *
-		 * @param array  $data The field data.
-		 * @param object $this The current context object.
+		 * @param mixed                $data The field data.
+		 * @param Fieldmanager_Context $this The current context object.
 		 */
 		$data = apply_filters( 'fm_rest_get_submenu_' . $this->fm->name, $data, $this );
 
 		/**
-		 * Filters all data passed to the REST API.
+		 * Filters all submenu context data passed to the REST API.
 		 *
 		 * @since 1.3.0
 		 *
-		 * @param array  $data The field data.
-		 * @param array  $data The field name.
-		 * @param string $this The current context object.
+		 * @param mixed                $data The field data.
+		 * @param string               $name The field name.
+		 * @param Fieldmanager_Context $this The current context object.
 		 */
 		$data = apply_filters( 'fm_rest_get_submenu', $data, $this->fm->name, $this );
 

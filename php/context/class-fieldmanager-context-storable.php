@@ -201,27 +201,30 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		$data = $this->load();
 
 		/**
-		 * Filters a single field's data to the REST API.
+		 * Filters a single field's data passed to the REST API.
 		 *
 		 * @since 1.3.0
 		 *
-		 * @param  array           $object      The REST API object.
-		 * @param  string          $field_name  The REST API field name.
-		 * @param  WP_REST_Request $request     The full request object from the REST API.
-		 * @param  string          $object_type The REST API object type
-		 * @param  object          $fm          The base fm object.
+		 * @param mixed                $data        The current data to tbe retrieved.
+		 * @param array                $object      The REST API object.
+		 * @param string               $field_name  The REST API field name.
+		 * @param WP_REST_Request      $request     The full request object from the REST API.
+		 * @param string               $object_type The REST API object type
+		 * @param Fieldmanager_Context $fm          The current FM context object.
 		 */
 		$data = apply_filters( 'fm_rest_get_' . $field_name, $data, $object, $field_name, $request, $object_type, $this );
 
 		/**
-		 * Filters all data passed to the REST API.
+		 * Filters all post, term, and user context data passed to the REST API.
 		 *
 		 * @since 1.3.0
 		 *
-		 * @param  array           $object      The REST API object.
-		 * @param  string          $field_name  The REST API field name.
-		 * @param  WP_REST_Request $request     The full request object from the REST API.
-		 * @param  string          $object_type The REST API object type
+		 * @param mixed                $data        The current data to tbe retrieved.
+		 * @param array                $object      The REST API object.
+		 * @param string               $field_name  The REST API field name.
+		 * @param WP_REST_Request      $request     The full request object from the REST API.
+		 * @param string               $object_type The REST API object type
+		 * @param Fieldmanager_Context $fm          The current FM context object.
 		 */
 		$data = apply_filters( 'fm_rest_get', $data, $object, $field_name, $request, $object_type, $this );
 
@@ -241,26 +244,30 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 */
 	public function rest_update_callback( $data, $object, $field_name, $request, $object_type ) {
 		/**
-		 * Filters a single field's data to the REST API.
+		 * Filters a single field's data ingested by the REST API.
 		 *
 		 * @since 1.3.0
 		 *
-		 * @param  array           $object      The REST API object.
-		 * @param  string          $field_name  The REST API field name.
-		 * @param  WP_REST_Request $request     The full request object from the REST API.
-		 * @param  string          $object_type The REST API object type
+		 * @param mixed                $data        The current data to be updated.
+		 * @param array                $object      The REST API object.
+		 * @param string               $field_name  The REST API field name.
+		 * @param WP_REST_Request      $request     The full request object from the REST API.
+		 * @param string               $object_type The REST API object type
+		 * @param Fieldmanager_Context $fm          The current FM context object.
 		 */
 		$data = apply_filters( 'fm_rest_update_' . $field_name, $data, $object, $field_name, $request, $object_type, $this );
 
 		/**
-		 * Filters all data passed to the REST API.
+		 * Filters all post, term, and user context data ingested by the REST API.
 		 *
 		 * @since 1.3.0
 		 *
-		 * @param  array           $object      The REST API object.
-		 * @param  string          $field_name  The REST API field name.
-		 * @param  WP_REST_Request $request     The full request object from the REST API.
-		 * @param  string          $object_type The REST API object type
+		 * @param mixed                $data        The current data to be updated.
+		 * @param array                $object      The REST API object.
+		 * @param string               $field_name  The REST API field name.
+		 * @param WP_REST_Request      $request     The full request object from the REST API.
+		 * @param string               $object_type The REST API object type
+		 * @param Fieldmanager_Context $fm          The current FM context object.
 		 */
 		$data = apply_filters( 'fm_rest_update', $data, $object, $field_name, $request, $object_type, $this );
 

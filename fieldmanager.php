@@ -477,22 +477,22 @@ function fm_trigger_rest_context_action( $result, $server, $request ) {
 		! empty( $post_type_endpoints )
 		&& preg_match( '#/wp/v2/(' . implode( '|', array_keys( $post_type_endpoints ) ) . ')(/?)(.*?)/#i', $route, $matches )
 	) {
-		// Post Types.
+		/** This action is documented in /fieldmanager.php */
 		do_action( "fm_post_{$post_type_endpoints[ $matches[1] ]}" );
 
-		// Quickedit.
+		/** This action is documented in /fieldmanager.php */
 		do_action( "fm_quickedit_{$post_type_endpoints[ $matches[1] ]}" );
 	} elseif (
 		! empty( $taxonomy_endpoints )
 		&& preg_match( '#/wp/v2/(' . implode( '|', array_keys( $taxonomy_endpoints ) ) . ')(/?)(.*?)/#i', $route, $matches )
 	) {
-		// Taxonomies.
+		/** This action is documented in /fieldmanager.php */
 		do_action( "fm_term_{$taxonomy_endpoints[ $matches[1] ]}" );
 	} elseif ( preg_match( '#/wp/v2/users(/?)(.*?)/#i', $route ) ) {
-		// User.
+		/** This action is documented in /fieldmanager.php */
 		do_action( 'fm_user' );
 	} elseif ( preg_match( '#/' . FM_REST_API_NAMESPACE . '/submenu-settings/(.*)#i', $route, $matches ) ) {
-		// Submenu.
+		/** This action is documented in /fieldmanager.php */
 		do_action( "fm_submenu_{$matches[1]}" );
 	}
 

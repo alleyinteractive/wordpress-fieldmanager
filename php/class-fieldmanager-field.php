@@ -1461,12 +1461,12 @@ abstract class Fieldmanager_Field {
 	 */
 	public function can_show_in_rest() {
 		/**
-		 * Determine whether this field should be shown within the REST API.
+		 * Filters the show_in_rest attribute for a FM field.
 		 *
 		 * @since 1.3.0
 		 *
-		 * @param bool               $this->show_in_rest The current show in rest boolean.
-		 * @param Fieldmanager_Field                     The current field object.
+		 * @param bool               $show_in_rest The current show in rest boolean.
+		 * @param Fieldmanager_Field               The current field object.
 		 */
 		return apply_filters( 'fm_can_show_in_rest', $this->show_in_rest, $this );
 	}
