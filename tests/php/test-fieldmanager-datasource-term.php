@@ -424,4 +424,38 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$items = $datasource->get_items_for_ajax( 'test' );
 		$this->assertEqualSets( $terms, wp_list_pluck( $items, 'value' ) );
 	}
+
+	public function test_parent_restrictions_with_ajax() {
+		$terms = array();
+		$terms[0] = $this->factory->category->create( array( 'name' => 'test category' ) );
+		$terms[1] = $this->factory->category->create( array( 'name' => 'test category child', 'parent' => $terms[0] ) );
+
+		$datasource = new Fieldmanager_Datasource_Term( array(
+			'taxonomy' => array( 'category' ),
+			'taxonomy_args' => array(
+				'parent' => $terms[0],
+			)
+		) );
+
+		$items = $datasource->get_items_for_ajax( 'test' );
+
+		$this->assertEquals( $terms[1], $items[0]['value'] );
+	}
+
+	public function test_child_of_restrictions_with_ajax() {
+		$terms = array();
+		$terms[0] = $this->factory->category->create( array( 'name' => 'test category' ) );
+		$terms[1] = $this->factory->category->create( array( 'name' => 'test category child', 'parent' => $terms[0] ) );
+
+		$datasource = new Fieldmanager_Datasource_Term( array(
+			'taxonomy' => array( 'category' ),
+			'taxonomy_args' => array(
+				'child_of' => $terms[0],
+			)
+		) );
+
+		$items = $datasource->get_items_for_ajax( 'test' );
+
+		$this->assertEquals( $terms[1], $items[0]['value'] );
+	}
 }
