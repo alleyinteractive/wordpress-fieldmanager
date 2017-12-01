@@ -182,7 +182,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 */
 	public function add_term_fields( $taxonomy ) {
 		// If the parent is set, do nothing because we don't know what the parent term is yet.
-		if ( ! empty( $this->parent ) ) {
+		if ( 0 !== strlen( $this->parent ) ) {
 			return;
 		}
 
@@ -207,7 +207,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 */
 	public function edit_term_fields( $term, $taxonomy ) {
 		// Check if this term's parent matches the specified term if it is set.
-		if ( ! empty( $this->parent ) && $this->parent != $term->parent ) {
+		if ( 0 !== strlen( $this->parent ) && $this->parent != $term->parent ) {
 			return;
 		}
 

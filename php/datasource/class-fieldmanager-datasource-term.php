@@ -143,8 +143,13 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$taxonomies = $this->get_taxonomies();
 			$terms = get_the_terms( $field->data_id, $taxonomies[0] );
 
+			// If not found, bail out.
+			if ( empty( $terms ) || is_wp_error( $terms ) ) {
+				return array();
+			}
+
 			// Attempt to sort the list by term_order.
-			$terms = usort( $terms, array( $this, 'sort_terms' ) );
+			usort( $terms, array( $this, 'sort_terms' ) );
 
 			if ( count( $terms ) > 0 ) {
 				if ( 1 == $field->limit && empty( $field->multiple ) ) {
@@ -304,7 +309,12 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		// If taxonomy_hierarchical is set, assemble recursive term list, then bail out.
 		if ( $this->taxonomy_hierarchical ) {
 			$tax_args = $this->taxonomy_args;
-			$tax_args['parent'] = 0;
+
+			// If no part of the hierarchy requested, return everything.
+			if ( ! isset( $tax_args['parent'] ) && ! isset( $tax_args['child_of'] ) ) {
+				$tax_args['parent'] = 0;
+			}
+
 			$tax_args['taxonomy'] = $this->get_taxonomies();
 			$parent_terms = get_terms( $tax_args );
 			return $this->build_hierarchical_term_data( $parent_terms, $this->taxonomy_args, 0, $fragment );
@@ -417,8 +427,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				$term = $wpdb->get_row( $wpdb->prepare(
 					"SELECT t.*, tt.*
 					FROM $wpdb->terms AS t  INNER JOIN $wpdb->term_taxonomy AS tt ON t.term_id = tt.term_id
-					WHERE tt.term_taxonomy_id = %d LIMIT 1"
-					, $term_id
+					WHERE tt.term_taxonomy_id = %d LIMIT 1",
+					$term_id
 				) ); // WPCS: db call ok.
 
 				wp_cache_set( $cache_key, $term );
@@ -441,17 +451,16 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @return string HTML string.
 	 */
 	public function get_view_link( $value ) {
-		if ( function_exists( 'wpcom_vip_get_term_link' ) ) {
-			$term_link = wpcom_vip_get_term_link( $this->get_term( $value ) );
-		} else {
-			$term_link = get_term_link( $this->get_term( $value ) );
+		$term_link = get_term_link( $this->get_term( $value ) );
+		if ( is_string( $term_link ) ) {
+			return sprintf(
+				' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
+				empty( $value ) ? 'fm-hidden' : '',
+				empty( $value ) ? '#' : esc_url( $term_link ),
+				esc_html__( 'View', 'fieldmanager' )
+			);
 		}
-		return sprintf(
-			' <a target="_new" class="fm-autocomplete-view-link %s" href="%s">%s</a>',
-			empty( $value ) ? 'fm-hidden' : '',
-			empty( $value ) ? '#' : esc_url( $term_link ),
-			esc_html__( 'View', 'fieldmanager' )
-		);
+		return '';
 	}
 
 	/**

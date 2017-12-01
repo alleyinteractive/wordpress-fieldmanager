@@ -29,8 +29,10 @@ var init_sortable = function() {
 			init_sortable_container( this );
 		} else {
 			var sortable = this;
-			$( sortable ).parents( '.fm-group' ).first().bind( 'fm_collapsible_toggle', function() {
-				init_sortable_container( sortable );
+			$( sortable ).parents( '.fm-group' ).bind( 'fm_collapsible_toggle', function() {
+				if ( $( sortable ).is( ':visible' ) ) {
+					init_sortable_container( sortable );
+				}
 			} );
 		}
 	} );
@@ -236,7 +238,7 @@ $( document ).ready( function () {
 			$( this ).hide();
 		}
 	};
-	$( '.display-if' ).each( fm.init_display_if );
+	$( '.fm-display-if' ).each( fm.init_display_if );
 
 	// Controls the trigger to show or hide fields
 	fm.trigger_display_if = function() {
@@ -255,7 +257,7 @@ $( document ).ready( function () {
 			val = $this.val().split( ',' );
 		}
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
-			if ( $( this ).hasClass( 'display-if' ) ) {
+			if ( $( this ).hasClass( 'fm-display-if' ) ) {
 				if ( name && name.match( $( this ).data( 'display-src' ) ) != null ) {
 					if ( match_value( getCompareValues( this ), val ) ) {
 						$( this ).show();

@@ -409,7 +409,7 @@ abstract class Fieldmanager_Field {
 
 		// Only enqueue base assets once, and only when we have a field.
 		if ( ! self::$enqueued_base_assets ) {
-			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'jquery', 'jquery-ui-sortable' ), '1.0.8' );
+			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'jquery', 'jquery-ui-sortable' ), '1.0.9' );
 			fm_add_style( 'fieldmanager_style', 'css/fieldmanager.css', array(), '1.0.4' );
 			self::$enqueued_base_assets = true;
 		}
@@ -463,6 +463,8 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Generates all markup needed for all form elements in this field.
 	 * Could be called directly by a plugin or theme.
+	 *
+	 * @since 1.3.0 Added the 'fm-display-if' class for fields using display-if.
 	 *
 	 * @param array $values The current values of this element, in a tree structure
 	 *                      if the element has children.
@@ -520,7 +522,11 @@ abstract class Fieldmanager_Field {
 
 		// Checks to see if element has display_if data values, and inserts the data attributes if it does.
 		if ( isset( $this->display_if ) && ! empty( $this->display_if ) ) {
+			$classes[] = 'fm-display-if';
+
+			// For backwards compatibility.
 			$classes[] = 'display-if';
+
 			$fm_wrapper_attrs['data-display-src'] = $this->display_if['src'];
 			$fm_wrapper_attrs['data-display-value'] = $this->display_if['value'];
 		}
@@ -556,7 +562,7 @@ abstract class Fieldmanager_Field {
 		 *
 		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
 		 *
-		 * @since 1.1.0
+		 * @since 1.2.0
 		 *
 		 * @param string             $out    Field markup.
 		 * @param Fieldmanager_Field $this   Field instance.
@@ -601,7 +607,7 @@ abstract class Fieldmanager_Field {
 		 *
 		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
 		 *
-		 * @since 1.1.0
+		 * @since 1.2.0
 		 *
 		 * @param string             $out    Field markup.
 		 * @param Fieldmanager_Field $this   Field instance.
