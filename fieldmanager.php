@@ -436,6 +436,30 @@ function fm_trigger_context_action() {
 add_action( 'init', 'fm_trigger_context_action', 99 );
 
 /**
+ * Add the Fieldmanager context to the global FM JavaScript object.
+ *
+ * @since 1.3.0
+ *
+ * @param array $scripts Arrays of script arguments.
+ * @return array Updated arrays.
+ */
+function fm_localize_context( $scripts ) {
+	$index = array_search( 'fieldmanager_script', wp_list_pluck( $scripts, 'handle' ) );
+
+	if ( false === $index ) {
+		return $scripts;
+	}
+
+	list(
+		$scripts[ $index ]['data']['context']['context'],
+		$scripts[ $index ]['data']['context']['type']
+	) = fm_calculate_context();
+
+	return $scripts;
+}
+add_filter( 'fm_enqueue_scripts', 'fm_localize_context' );
+
+/**
  * Add data about a submenu page to the Fieldmanager registry under a slug.
  *
  * @see Fieldmanager_Context_Submenu for detail about $parent_slug, $page_title,
