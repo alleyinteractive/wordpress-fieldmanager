@@ -174,19 +174,21 @@ fm_remove = function( $element ) {
 }
 
 $( document ).ready( function () {
-	$( document ).on( 'click', '.fm-add-another', function( e ) {
+	var $document = $( document );
+
+	$document.on( 'click', '.fm-add-another', function( e ) {
 		e.preventDefault();
 		fm_add_another( $( this ) );
 	} );
 
 	// Handle remove events
-	$( document ).on( 'click', '.fmjs-remove', function( e ) {
+	$document.on( 'click', '.fmjs-remove', function( e ) {
 		e.preventDefault();
 		fm_remove( $( this ) );
 	} );
 
 	// Handle collapse events
-	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
+	$document.on( 'click', '.fmjs-collapsible-handle', function() {
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
@@ -269,12 +271,12 @@ $( document ).ready( function () {
 			}
 		} );
 	};
-	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
+	$document.on( 'change', '.display-trigger', fm.trigger_display_if );
 
 	init_label_macros();
 	init_sortable();
 
-	$( document ).on( 'fm_activate_tab', init_sortable );
+	$document.on( 'fm_activate_tab', init_sortable );
 } );
 
 } )( jQuery );
