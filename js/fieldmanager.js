@@ -1,4 +1,4 @@
-var fm = {};
+var fm = window.fm || {};
 
 ( function( $ ) {
 
