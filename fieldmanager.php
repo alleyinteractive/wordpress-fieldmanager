@@ -336,6 +336,11 @@ function fm_calculate_context() {
 					} elseif ( ! empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) { // WPCS: input var okay.
 						// Context = "quickedit".
 						$calculated_context = array( 'quickedit', sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ); // WPCS: input var okay.
+					} elseif ( isset( $_POST['action'] ) && 'heartbeat' === $_POST['action'] && isset( $_POST['data']['fm_context'] ) ) {
+						$calculated_context = array(
+							sanitize_text_field( wp_unslash( $_POST['data']['fm_context'] ) ),
+							isset( $_POST['data']['fm_subcontext'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['fm_subcontext'] ) ) : null
+						);
 					}
 					break;
 				// Context = "term".

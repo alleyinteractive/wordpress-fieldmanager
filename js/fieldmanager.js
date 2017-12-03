@@ -273,6 +273,18 @@ $( document ).ready( function () {
 	};
 	$document.on( 'change', '.display-trigger', fm.trigger_display_if );
 
+	$document
+		/**
+		 * Include the current context and type with heartbeat request data.
+		 *
+		 * @param {Event}  event Event object.
+		 * @param {Object} data  Heartbeat request data.
+		 */
+		.on( 'heartbeat-send', function ( event, data ) {
+			data['fm_context'] = fm.context.context;
+			data['fm_subcontext'] = fm.context.type;
+		});
+
 	init_label_macros();
 	init_sortable();
 
