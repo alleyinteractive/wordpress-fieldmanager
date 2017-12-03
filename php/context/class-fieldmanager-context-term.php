@@ -171,6 +171,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 				add_action( 'delete_term', array( $this, 'delete_term_fields' ), 10, 4 );
 			}
 		}
+
+		parent::__construct();
 	}
 
 	/**

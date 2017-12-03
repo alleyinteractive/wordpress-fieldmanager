@@ -95,6 +95,8 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		if ( in_array( $post_type, $this->post_types ) ) {
 			fm_add_script( 'quickedit-js', 'js/fieldmanager-quickedit.js' );
 		}
+
+		parent::__construct();
 	}
 
 	/**

@@ -283,6 +283,21 @@ $( document ).ready( function () {
 		.on( 'heartbeat-send', function ( event, data ) {
 			data['fm_context'] = fm.context.context;
 			data['fm_subcontext'] = fm.context.type;
+		})
+		/**
+		 * Replace nonce input values with new nonces from heartbeat responses.
+		 *
+		 * @param {Event}  event Event object.
+		 * @param {Object} data  Heartbeat response data.
+		 */
+		.on( 'heartbeat-tick', function ( event, data ) {
+			var nonces = data.fmRefreshNonces;
+
+			if ( nonces && nonces.replace ) {
+				$.each( nonces.replace, function ( selector, newNonce ) {
+					$( '#' + selector ).val( newNonce );
+				});
+			}
 		});
 
 	init_label_macros();

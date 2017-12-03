@@ -92,6 +92,8 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
 		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
+
+		parent::__construct();
 	}
 
 	/**
