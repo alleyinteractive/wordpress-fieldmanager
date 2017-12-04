@@ -104,7 +104,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 * @param  array $columns The custom columns.
 	 * @return array $columns The custom columns.
 	 */
-	function add_custom_columns( $columns ) {
+	public function add_custom_columns( $columns ) {
 		$columns[ $this->fm->name ] = $this->column_title;
 		return $columns;
 	}
