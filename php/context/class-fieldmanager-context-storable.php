@@ -132,7 +132,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		if ( $this->fm->serialize_data ) {
 			$fm_meta[ $this->fm->get_element_key() ] = $this->load_field( $this->fm, $this->fm->data_id );
 		} else {
-			$fm_meta = array_merge( $fm_meta, $this->load_walk_children( $this->fm, $this->fm->data_id ) );
+			$fm_meta = array_merge( $fm_meta, $this->load_rest_api_walk_children( $this->fm, $this->fm->data_id ) );
 		}
 
 		return $fm_meta;
@@ -186,6 +186,25 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	}
 
 	/**
+	 * Walk group children to load when serialize_data => false.
+	 *
+	 * @param  object $field Fieldmanager field for which to load data.
+	 * @return mixed Data stored for a singular field with serialized data, or
+	 *               array of data for a groups's children.
+	 */
+	protected function load_rest_api_walk_children( $field ) {
+		if ( $field->serialize_data || ! $field->is_group() ) {
+			return $this->load_field( $field );
+		} else {
+			$return = array();
+			foreach ( $field->children as $child ) {
+				$return[ $child->get_element_key() ] = $this->load_walk_children( $child );
+			}
+			return $return;
+		}
+	}
+
+	/**
 	 * Meta and options are always stored as strings, so it's best to ensure
 	 * that scalar values get cast as strings to ensure that `update_metadata()`
 	 * and `update_option()` are able to correctly compare the current value
@@ -217,9 +236,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * @return mixed           $data        The field data.
 	 */
 	public function get_meta( $fm_meta, $object, $field_name, $request, $object_type ) {
-		error_log( 'get_meta' );
 		if ( $this->fm->can_show_in_rest() ) {
-			error_log( '$this->fm->can_show_in_rest()' );
 			// Set the current ID.
 			$this->fm->data_id = $object['id'];
 
