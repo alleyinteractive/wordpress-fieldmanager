@@ -63,6 +63,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 * @param Fieldmanager_Field $fm         Current field.
 	 */
 	public function __construct( $title, $post_types, $context = 'normal', $priority = 'default', $fm = null ) {
+		parent::__construct();
 
 		// Populate the list of post types for which to add this meta box with the given settings.
 		if ( ! is_array( $post_types ) ) {
@@ -85,9 +86,6 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		if ( $this->fm && ! empty( $this->fm->meta_boxes_to_remove ) ) {
 			add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 100 );
 		}
-
-		// Register fields for the REST API.
-		$this->register_rest_field( $post_types );
 	}
 
 	/**

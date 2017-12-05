@@ -115,6 +115,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @param Fieldmanager_Field $fm           Optional. Deprecated.
 	 */
 	public function __construct( $args, $taxonomies = array(), $show_on_add = true, $show_on_edit = true, $parent = '', $fm = null ) {
+		parent::__construct();
+
 		if ( is_array( $args ) ) {
 			$args = wp_parse_args( $args, array(
 				'show_on_add'  => true,
@@ -152,9 +154,6 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			$this->use_fm_meta  = true;
 			$this->fm           = $fm;
 		}
-
-		// Register fields for the REST API.
-		$this->register_rest_field( $this->taxonomies );
 
 		// Iterate through the taxonomies and add the fields to the requested forms.
 		// Also add handlers for saving the fields and which forms to validate (if enabled).

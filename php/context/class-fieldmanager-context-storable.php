@@ -18,6 +18,13 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	public $taxonomies_to_save = array();
 
 	/**
+	 * Setup the class.
+	 */
+	public function __construct() {
+		add_filter( 'fm_rest_api_get_meta', array( $this, 'get_meta' ), 10, 5 );
+	}
+
+	/**
 	 * Render the field.
 	 *
 	 * @param array $args {
@@ -115,6 +122,21 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		}
 	}
 
+	/**
+	 * Handle loading data within the REST API.
+	 *
+	 * @param array $fm_meta The global fm meta for this specific context.
+	 * @return mixed The loaded data.
+	 */
+	protected function load_rest_data( array $fm_meta ) : array {
+		if ( $this->fm->serialize_data ) {
+			$fm_meta[ $this->fm->get_element_key() ] = $this->load_field( $this->fm, $this->fm->data_id );
+		} else {
+			$fm_meta = array_merge( $fm_meta, $this->load_walk_children( $this->fm, $this->fm->data_id ) );
+		}
+
+		return $fm_meta;
+	}
 
 	/**
 	 * Handle loading data for any context.
@@ -183,6 +205,32 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	}
 
 	/**
+	 * Sets up the proper triggers to show fm data within the REST API.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param  array           $fm_meta     The current FM meta data.
+	 * @param  array           $object      The REST API object.
+	 * @param  string          $field_name  The REST API field name.
+	 * @param  WP_REST_Request $request     The full request object from the REST API.
+	 * @param  string          $object_type The REST API object type.
+	 * @return mixed           $data        The field data.
+	 */
+	public function get_meta( $fm_meta, $object, $field_name, $request, $object_type ) {
+		error_log( 'get_meta' );
+		if ( $this->fm->can_show_in_rest() ) {
+			error_log( '$this->fm->can_show_in_rest()' );
+			// Set the current ID.
+			$this->fm->data_id = $object['id'];
+
+			// Get the data.
+			$fm_meta = $this->load_rest_data( $fm_meta );
+		}
+
+		return $fm_meta;
+	}
+
+	/**
 	 * Handles getting field data for the REST API.
 	 *
 	 * @since 1.3.0
@@ -193,7 +241,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * @param  string          $object_type The REST API object type.
 	 * @return mixed           $data        The field data.
 	 */
-	public function rest_get_callback( $object, $field_name, $request, $object_type ) {
+	public function rest_get_callback_dep( $object, $field_name, $request, $object_type ) {
 		// Set the current ID.
 		$this->fm->data_id = $object['id'];
 
@@ -242,7 +290,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * @param WP_REST_Request $request     The full request object from the REST API.
 	 * @param string          $object_type The REST API object type.
 	 */
-	public function rest_update_callback( $data, $object, $field_name, $request, $object_type ) {
+	public function rest_update_callback_dep( $data, $object, $field_name, $request, $object_type ) {
 		/**
 		 * Filters a single field's data ingested by the REST API.
 		 *

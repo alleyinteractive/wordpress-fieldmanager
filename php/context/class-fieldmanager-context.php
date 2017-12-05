@@ -99,34 +99,4 @@ abstract class Fieldmanager_Context {
 			return $nonce . $field;
 		}
 	}
-
-	/**
-	 * Register a field for use with the REST API.
-	 *
-	 * @since 1.3.0
-	 *
-	 * @param string|array $object_type Required. The object type in the REST API where this field will be available.
-	 */
-	public function register_rest_field( $object_type ) {
-		// Ensure the REST API is active and the field wants to be shown in REST.
-		if ( $this->fm->can_show_in_rest() ) {
-			register_rest_field(
-				$object_type,
-				$this->fm->name,
-				array(
-					'get_callback'    => array( $this, 'rest_get_callback' ),
-					'update_callback' => array( $this, 'rest_update_callback' ),
-					/**
-					 * Filters the REST API Schema for this FM field.
-					 *
-					 * @since 1.3.0
-					 *
-					 * @param array The current JSON Schema.
-					 * @param object The current Context object.
-					 */
-					'schema' => apply_filters( 'fm_rest_api_schema', $this->fm->get_schema(), $this ),
-				)
-			);
-		}
-	}
 }
