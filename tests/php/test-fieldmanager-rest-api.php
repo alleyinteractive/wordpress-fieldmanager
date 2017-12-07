@@ -77,8 +77,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 * Test updating from the post context.
 		 */
 		function test_fieldmanager_rest_api_post_update() {
-			$this->markTestSkipped( 'Skipping for now since the update callback is not complete' );
-
 			// Add actions for post context.
 			add_action( 'fm_post_post', array( $this, '_fm_post_test_fields' ) );
 			add_action( 'fm_rest_api_post_post', array( $this, '_fm_post_test_fields' ) );
@@ -90,9 +88,12 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
+			$this->_fm_post_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/posts/' . $post_id );
 			$request->set_body_params( array(
-				$this->test_field => $test_data,
+				'fm-meta' => array(
+					$this->test_field => $test_data,
+				),
 			) );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -153,12 +154,10 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 * Test updating post data with the update filter.
 		 */
 		function test_fieldmanager_rest_api_post_update_filter() {
-			$this->markTestSkipped( 'Skipping for now since the update callback is not complete' );
-
 			// Add actions for post context.
 			add_action( 'fm_post_post', array( $this, '_fm_post_test_fields' ) );
 			add_action( 'fm_rest_api_post_post', array( $this, '_fm_post_test_fields' ) );
-			add_action( 'fm_rest_update', array( $this, '_fm_post_update_test_fields_filter' ), 10, 5 );
+			add_action( 'fm_rest_api_update', array( $this, '_fm_post_update_test_fields_filter' ), 10, 5 );
 
 			// Create the post.
 			$post_id = $this->factory->post->create();
@@ -167,9 +166,12 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
+			$this->_fm_post_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/posts/' . $post_id );
 			$request->set_body_params( array(
-				$this->test_field => $test_data,
+				'fm-meta' => array(
+					$this->test_field => $test_data,
+				),
 			) );
 			$response = $this->server->dispatch( $request );
 
@@ -288,8 +290,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 * Test updating from the quickedit context.
 		 */
 		function test_fieldmanager_rest_api_quickedit_post_update() {
-			$this->markTestSkipped( 'Skipping for now since the update callback is not complete' );
-
 			// Add actions for post context.
 			add_action( 'fm_quickedit_post', array( $this, '_fm_post_test_fields' ) );
 			add_action( 'fm_rest_api_post_post', array( $this, '_fm_post_test_fields' ) );
@@ -301,9 +301,12 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
+			$this->_fm_post_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/posts/' . $post_id );
 			$request->set_body_params( array(
-				$this->test_field => $test_data,
+				'fm-meta' => array(
+					$this->test_field => $test_data,
+				),
 			) );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -339,8 +342,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 * Test updating from the term context.
 		 */
 		function test_fieldmanager_rest_api_term_update() {
-			$this->markTestSkipped( 'Skipping for now since the update callback is not complete' );
-
 			// Add actions for term context.
 			add_action( 'fm_term_category', array( $this, '_fm_term_test_fields' ) );
 			add_action( 'fm_rest_api_term_category', array( $this, '_fm_term_test_fields' ) );
@@ -352,9 +353,12 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
+			$this->_fm_term_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/categories/' . $term_id );
 			$request->set_body_params( array(
-				$this->test_field => $test_data,
+				'fm-meta' => array(
+					$this->test_field => $test_data,
+				),
 			) );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -390,8 +394,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 * Test updating from the user context.
 		 */
 		function test_fieldmanager_rest_api_user_update() {
-			$this->markTestSkipped( 'Skipping for now since the update callback is not complete' );
-
 			// Add actions for user context.
 			add_action( 'fm_user', array( $this, '_fm_user_test_fields' ) );
 			add_action( 'fm_rest_api_user', array( $this, '_fm_user_test_fields' ) );
@@ -403,9 +405,12 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
+			$this->_fm_user_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/users/' . $user_id );
 			$request->set_body_params( array(
-				$this->test_field => $test_data,
+				'fm-meta' => array(
+					$this->test_field => $test_data,
+				),
 			) );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();

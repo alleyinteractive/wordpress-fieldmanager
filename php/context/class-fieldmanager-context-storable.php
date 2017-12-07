@@ -22,6 +22,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 */
 	public function __construct() {
 		add_filter( 'fm_rest_api_get_meta', array( $this, 'get_meta' ), 10, 5 );
+		add_filter( 'fm_rest_api_update_meta', array( $this, 'update_meta' ), 10, 5 );
 	}
 
 	/**
@@ -283,17 +284,34 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	}
 
 	/**
-	 * Handles updating field data from the REST API.
+	 * Saves the fm meta data ingested by the REST API.
 	 *
 	 * @since 1.3.0
 	 *
-	 * @param mixed           $data        The value to be updated for the field from the request.
-	 * @param object          $object      The REST API object.
-	 * @param string          $field_name  The REST API field name.
-	 * @param WP_REST_Request $request     The full request object from the REST API.
-	 * @param string          $object_type The REST API object type.
+	 * @param  array           $fm_meta     The current FM meta data.
+	 * @param  array           $object      The REST API object.
+	 * @param  string          $field_name  The REST API field name.
+	 * @param  WP_REST_Request $request     The full request object from the REST API.
+	 * @param  string          $object_type The REST API object type.
+	 * @return mixed           $data        The field data.
 	 */
-	public function rest_update_callback_dep( $data, $object, $field_name, $request, $object_type ) {
+	public function update_meta( $fm_meta, $object, $field_name, $request, $object_type ) {
+		// Do not allow fields to be updated that are not shown within the REST API.
+		if ( ! $this->fm->can_show_in_rest() ) {
+			return false;
+		}
+
+		// Update the field name to the current FM object element key.
+		$field_name = $this->fm->get_element_key();
+
+		// No data was passed in the REST API.
+		if ( ! isset( $fm_meta[ $field_name ] ) ) {
+			return false;
+		}
+
+		// Get the field data from the `fm-meta` array.
+		$data = $fm_meta[ $field_name ];
+
 		/**
 		 * Filters a single field's data ingested by the REST API.
 		 *
@@ -306,7 +324,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		 * @param string               $object_type The REST API object type
 		 * @param Fieldmanager_Context $fm          The current FM context object.
 		 */
-		$data = apply_filters( 'fm_rest_update_' . $field_name, $data, $object, $field_name, $request, $object_type, $this );
+		$data = apply_filters( 'fm_rest_api_update_' . $field_name, $data, $object, $field_name, $request, $object_type, $this );
 
 		/**
 		 * Filters all post, term, and user context data ingested by the REST API.
@@ -320,7 +338,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		 * @param string               $object_type The REST API object type
 		 * @param Fieldmanager_Context $fm          The current FM context object.
 		 */
-		$data = apply_filters( 'fm_rest_update', $data, $object, $field_name, $request, $object_type, $this );
+		$data = apply_filters( 'fm_rest_api_update', $data, $object, $field_name, $request, $object_type, $this );
 
 		// Set the current ID.
 		if ( $object instanceof \WP_Post || $object instanceof \WP_User ) {

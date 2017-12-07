@@ -609,7 +609,8 @@ function fm_add_rest_api_meta_field() {
 		array_values( $post_type_endpoints ),
 		'fm-meta',
 		array(
-			'get_callback' => 'fm_add_rest_api_meta_field_callback',
+			'get_callback'    => 'fm_add_rest_api_meta_field_get_callback',
+			'update_callback' => 'fm_add_rest_api_meta_field_update_callback',
 		)
 	);
 
@@ -619,7 +620,8 @@ function fm_add_rest_api_meta_field() {
 		array_values( $taxonomy_endpoints ),
 		'fm-meta',
 		array(
-			'get_callback' => 'fm_add_rest_api_meta_field_callback',
+			'get_callback'    => 'fm_add_rest_api_meta_field_get_callback',
+			'update_callback' => 'fm_add_rest_api_meta_field_update_callback',
 		)
 	);
 
@@ -628,7 +630,8 @@ function fm_add_rest_api_meta_field() {
 		'user',
 		'fm-meta',
 		array(
-			'get_callback' => 'fm_add_rest_api_meta_field_callback',
+			'get_callback'    => 'fm_add_rest_api_meta_field_get_callback',
+			'update_callback' => 'fm_add_rest_api_meta_field_update_callback',
 		)
 	);
 }
@@ -645,7 +648,7 @@ add_filter( 'rest_api_init', 'fm_add_rest_api_meta_field' );
  * @param  string          $object_type The REST API object type.
  * @return mixed           $data        The field data.
  */
-function fm_add_rest_api_meta_field_callback( $object, $field_name, $request, $object_type ) {
+function fm_add_rest_api_meta_field_get_callback( $object, $field_name, $request, $object_type ) {
 	/**
 	 * Filters all post, term, and user context data passed to the REST API.
 	 *
@@ -659,6 +662,35 @@ function fm_add_rest_api_meta_field_callback( $object, $field_name, $request, $o
 	 * @param Fieldmanager_Context $fm          The current FM context object.
 	 */
 	return apply_filters( 'fm_rest_api_get_meta', array(), $object, $field_name, $request, $object_type );
+}
+
+/**
+ * Handles updating field data from the REST API.
+ *
+ * @since 1.3.0
+ *
+ * @param mixed           $data        The value to be updated for the field from the request.
+ * @param object          $object      The REST API object.
+ * @param string          $field_name  The REST API field name.
+ * @param WP_REST_Request $request     The full request object from the REST API.
+ * @param string          $object_type The REST API object type.
+ */
+function fm_add_rest_api_meta_field_update_callback( $data, $object, $field_name, $request, $object_type ) {
+	/**
+	 * Filters all post, term, and user context data ingested by the REST API.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param mixed                $data        The current data to be updated.
+	 * @param array                $object      The REST API object.
+	 * @param string               $field_name  The REST API field name.
+	 * @param WP_REST_Request      $request     The full request object from the REST API.
+	 * @param string               $object_type The REST API object type
+	 */
+	$result = apply_filters( 'fm_rest_api_update_meta', $data, $object, $field_name, $request, $object_type );
+
+	// The result of the update.
+	return $result;
 }
 
 /**
