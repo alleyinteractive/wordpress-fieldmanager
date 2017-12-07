@@ -65,7 +65,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_post_meta( $post_id, $this->test_field, $test_data );
 
 			// Process the REST API call.
-			$this->_fm_post_test_fields();
 			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -88,7 +87,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
-			$this->_fm_post_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/posts/' . $post_id );
 			$request->set_body_params( array(
 				'fm-meta' => array(
@@ -117,7 +115,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_post_meta( $post_id, $this->test_field, $test_data );
 
 			// Process the REST API call.
-			$this->_fm_no_post_test_fields();
 			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -142,7 +139,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_post_meta( $post_id, $this->test_field, $test_data );
 
 			// Process the REST API call.
-			$this->_fm_post_test_fields();
 			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -166,7 +162,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
-			$this->_fm_post_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/posts/' . $post_id );
 			$request->set_body_params( array(
 				'fm-meta' => array(
@@ -198,7 +193,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_post_meta( $post_id, $this->test_field, $test_data );
 
 			// Process the REST API call.
-			$this->_fm_post_group_serialized_test_fields();
 			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -228,7 +222,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_post_meta( $post_id, $this->test_field . '_field_3', $test_data['field_3'] );
 
 			// Process the REST API call.
-			$this->_fm_post_group_not_serialized_test_fields();
 			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -254,7 +247,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_post_meta( $post_id, $this->test_field, $test_data );
 
 			// Process the REST API call.
-			$this->_fm_post_test_fields();
 			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -278,7 +270,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_post_meta( $post_id, $this->test_field, $test_data );
 
 			// Process the REST API call.
-			$this->_fm_no_post_test_fields();
 			$request = new WP_REST_Request( 'GET', '/wp/v2/posts/' . $post_id );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -301,7 +292,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
-			$this->_fm_post_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/posts/' . $post_id );
 			$request->set_body_params( array(
 				'fm-meta' => array(
@@ -330,7 +320,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_term_meta( $term_id, $this->test_field, $test_data );
 
 			// Process the REST API call.
-			$this->_fm_term_test_fields();
 			$request = new WP_REST_Request( 'GET', '/wp/v2/categories/' . $term_id );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -353,7 +342,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
-			$this->_fm_term_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/categories/' . $term_id );
 			$request->set_body_params( array(
 				'fm-meta' => array(
@@ -382,7 +370,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_metadata( 'user', $user_id, $this->test_field, $test_data );
 
 			// Process the REST API call.
-			$this->_fm_user_test_fields();
 			$request = new WP_REST_Request( 'GET', '/wp/v2/users/' . $user_id );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -405,7 +392,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			$test_data = rand_str();
 
 			// Process the REST API call.
-			$this->_fm_user_test_fields();
 			$request = new WP_REST_Request( 'POST', '/wp/v2/users/' . $user_id );
 			$request->set_body_params( array(
 				'fm-meta' => array(
@@ -427,6 +413,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 			}
 
 			add_action( 'fm_submenu_' . $this->submenu_field, array( $this, '_fm_submenu_test_fields' ) );
+			add_action( 'fm_rest_api_submenu_' . $this->submenu_field, array( $this, '_fm_submenu_test_fields' ) );
 
 			// Add data.
 			$test_data = array(
@@ -438,7 +425,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			update_option( $this->submenu_field, $test_data );
 
 			// Process the REST API call.
-			$this->_fm_submenu_test_fields();
 			$request = new WP_REST_Request( 'GET', '/' . FM_REST_API_NAMESPACE . '/submenu-settings/' . $this->submenu_field );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
@@ -455,6 +441,7 @@ if ( function_exists( 'register_rest_field' ) ) :
 			}
 
 			add_action( 'fm_submenu_' . $this->submenu_field, array( $this, '_fm_submenu_test_fields' ) );
+			add_action( 'fm_rest_api_submenu_' . $this->submenu_field, array( $this, '_fm_submenu_test_fields' ) );
 
 			// Add data.
 			$test_data = array(
@@ -477,7 +464,6 @@ if ( function_exists( 'register_rest_field' ) ) :
 			}, 10, 3 );
 
 			// Process the REST API call.
-			$this->_fm_submenu_test_fields();
 			$request = new WP_REST_Request( 'GET', '/' . FM_REST_API_NAMESPACE . '/submenu-settings/' . $this->submenu_field );
 			$response = $this->server->dispatch( $request );
 			$data = $response->get_data();
