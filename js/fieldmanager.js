@@ -208,7 +208,7 @@ $( document ).ready( function () {
 		// Wrapper divs sometimes receive .fm-element, but don't use them as
 		// triggers. Also don't use autocomplete inputs as triggers, because the
 		// value is in their sibling hidden fields (which this still matches).
-		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete' );
+		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete, .fm-checkbox-hidden' );
 
 		// Sanity check before calling `val()` or `split()`.
 		if ( 0 === trigger.length ) {
