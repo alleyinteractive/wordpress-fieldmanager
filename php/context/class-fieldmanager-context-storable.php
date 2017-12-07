@@ -125,17 +125,33 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	/**
 	 * Handle loading data within the REST API.
 	 *
-	 * @param array $fm_meta The global fm meta for this specific context.
 	 * @return mixed The loaded data.
 	 */
-	protected function load_rest_data( array $fm_meta ) : array {
+	protected function load_rest_data() {
 		if ( $this->fm->serialize_data ) {
-			$fm_meta[ $this->fm->get_element_key() ] = $this->load_field( $this->fm, $this->fm->data_id );
+			return $this->load_field( $this->fm, $this->fm->data_id );
 		} else {
-			$fm_meta = array_merge( $fm_meta, $this->load_rest_api_walk_children( $this->fm, $this->fm->data_id ) );
+			return $this->load_rest_api_walk_children( $this->fm, $this->fm->data_id );
 		}
+	}
 
-		return $fm_meta;
+	/**
+	 * Walk group children to load when serialize_data => false.
+	 *
+	 * @param  object $field Fieldmanager field for which to load data.
+	 * @return mixed Data stored for a singular field with serialized data, or
+	 *               array of data for a groups's children.
+	 */
+	protected function load_rest_api_walk_children( $field ) {
+		if ( $field->serialize_data || ! $field->is_group() ) {
+			return $this->load_field( $field );
+		} else {
+			$return = array();
+			foreach ( $field->children as $child ) {
+				$return[ $child->get_element_key() ] = $this->load_walk_children( $child );
+			}
+			return $return;
+		}
 	}
 
 	/**
@@ -186,25 +202,6 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	}
 
 	/**
-	 * Walk group children to load when serialize_data => false.
-	 *
-	 * @param  object $field Fieldmanager field for which to load data.
-	 * @return mixed Data stored for a singular field with serialized data, or
-	 *               array of data for a groups's children.
-	 */
-	protected function load_rest_api_walk_children( $field ) {
-		if ( $field->serialize_data || ! $field->is_group() ) {
-			return $this->load_field( $field );
-		} else {
-			$return = array();
-			foreach ( $field->children as $child ) {
-				$return[ $child->get_element_key() ] = $this->load_walk_children( $child );
-			}
-			return $return;
-		}
-	}
-
-	/**
 	 * Meta and options are always stored as strings, so it's best to ensure
 	 * that scalar values get cast as strings to ensure that `update_metadata()`
 	 * and `update_option()` are able to correctly compare the current value
@@ -237,63 +234,52 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 */
 	public function get_meta( $fm_meta, $object, $field_name, $request, $object_type ) {
 		if ( $this->fm->can_show_in_rest() ) {
+			// Update the field name to the current FM object element key.
+			$field_name = $this->fm->get_element_key();
+
 			// Set the current ID.
 			$this->fm->data_id = $object['id'];
 
 			// Get the data.
-			$fm_meta = $this->load_rest_data( $fm_meta );
+			$data = $this->load_rest_data();
+
+			/**
+			 * Filters a single field's data passed to the REST API.
+			 *
+			 * @since 1.3.0
+			 *
+			 * @param mixed                $data        The current data to tbe retrieved.
+			 * @param array                $object      The REST API object.
+			 * @param string               $field_name  The REST API field name.
+			 * @param WP_REST_Request      $request     The full request object from the REST API.
+			 * @param string               $object_type The REST API object type
+			 * @param Fieldmanager_Context $fm          The current FM context object.
+			 */
+			$data = apply_filters( 'fm_rest_api_get_' . $field_name, $data, $object, $field_name, $request, $object_type, $this );
+
+			/**
+			 * Filters all post, term, and user context data passed to the REST API.
+			 *
+			 * @since 1.3.0
+			 *
+			 * @param mixed                $data        The current data to tbe retrieved.
+			 * @param array                $object      The REST API object.
+			 * @param string               $field_name  The REST API field name.
+			 * @param WP_REST_Request      $request     The full request object from the REST API.
+			 * @param string               $object_type The REST API object type
+			 * @param Fieldmanager_Context $fm          The current FM context object.
+			 */
+			$data = apply_filters( 'fm_rest_api_get', $data, $object, $field_name, $request, $object_type, $this );
+
+			// Add the data to the response.
+			if ( $this->fm->serialize_data ) {
+				$fm_meta[ $this->fm->get_element_key() ] = $data;
+			} else {
+				$fm_meta = array_merge( $fm_meta, $data );
+			}
 		}
 
 		return $fm_meta;
-	}
-
-	/**
-	 * Handles getting field data for the REST API.
-	 *
-	 * @since 1.3.0
-	 *
-	 * @param  array           $object      The REST API object.
-	 * @param  string          $field_name  The REST API field name.
-	 * @param  WP_REST_Request $request     The full request object from the REST API.
-	 * @param  string          $object_type The REST API object type.
-	 * @return mixed           $data        The field data.
-	 */
-	public function rest_get_callback_dep( $object, $field_name, $request, $object_type ) {
-		// Set the current ID.
-		$this->fm->data_id = $object['id'];
-
-		// Get the data.
-		$data = $this->load();
-
-		/**
-		 * Filters a single field's data passed to the REST API.
-		 *
-		 * @since 1.3.0
-		 *
-		 * @param mixed                $data        The current data to tbe retrieved.
-		 * @param array                $object      The REST API object.
-		 * @param string               $field_name  The REST API field name.
-		 * @param WP_REST_Request      $request     The full request object from the REST API.
-		 * @param string               $object_type The REST API object type
-		 * @param Fieldmanager_Context $fm          The current FM context object.
-		 */
-		$data = apply_filters( 'fm_rest_get_' . $field_name, $data, $object, $field_name, $request, $object_type, $this );
-
-		/**
-		 * Filters all post, term, and user context data passed to the REST API.
-		 *
-		 * @since 1.3.0
-		 *
-		 * @param mixed                $data        The current data to tbe retrieved.
-		 * @param array                $object      The REST API object.
-		 * @param string               $field_name  The REST API field name.
-		 * @param WP_REST_Request      $request     The full request object from the REST API.
-		 * @param string               $object_type The REST API object type
-		 * @param Fieldmanager_Context $fm          The current FM context object.
-		 */
-		$data = apply_filters( 'fm_rest_get', $data, $object, $field_name, $request, $object_type, $this );
-
-		return $data;
 	}
 
 	/**

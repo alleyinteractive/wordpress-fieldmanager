@@ -128,12 +128,10 @@ if ( function_exists( 'register_rest_field' ) ) :
 		 * Test the post context with a filter
 		 */
 		function test_fieldmanager_rest_api_post_get_filter() {
-			$this->markTestSkipped( 'Skipping for now since the get filter is not complete' );
-
 			// Add actions for post context.
 			add_action( 'fm_post_post', array( $this, '_fm_post_test_fields' ) );
 			add_action( 'fm_rest_api_post_post', array( $this, '_fm_post_test_fields' ) );
-			add_action( 'fm_rest_get', array( $this, '_fm_post_get_test_fields_filter' ), 10, 5 );
+			add_action( 'fm_rest_api_get', array( $this, '_fm_post_get_test_fields_filter' ), 10, 5 );
 
 			// Create the post.
 			$post_id = $this->factory->post->create();
