@@ -1083,12 +1083,12 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$name     = rand_str();
 		$template = 'toaster.php';
 
-		$fm = new Fieldmanager_TextField( [
+		$fm = new Fieldmanager_TextField( array(
 			'name' => $name,
-			'display_if' => [
+			'display_if' => array(
 				'page_template' => $template,
-			],
-		] );
+			),
+		) );
 
 		$html = $this->_get_html_for( $fm );
 
@@ -1104,13 +1104,13 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$source = 'random_thing';
 		$value  = 'another random thing';
 
-		$fm = new Fieldmanager_TextField( [
+		$fm = new Fieldmanager_TextField( array(
 			'name'       => $name,
-			'display_if' => [
+			'display_if' => array(
 				'src'   => $source,
 				'value' => $value,
-			],
-		] );
+			),
+		) );
 
 		$html = $this->_get_html_for( $fm );
 
