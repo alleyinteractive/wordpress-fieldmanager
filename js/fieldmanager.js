@@ -206,9 +206,10 @@ $( document ).ready( function () {
 		var src = $( this ).data( 'display-src' );
 		var values = getCompareValues( this );
 		// Wrapper divs sometimes receive .fm-element, but don't use them as
-		// triggers. Also don't use autocomplete inputs as triggers, because the
-		// value is in their sibling hidden fields (which this still matches).
-		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete' );
+		// triggers. Also don't use autocomplete inputs or a checkbox's hidden
+		// sibling as triggers, because the value is in their sibling fields
+		// (which this still matches).
+		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete, .fm-checkbox-hidden' );
 
 		// Sanity check before calling `val()` or `split()`.
 		if ( 0 === trigger.length ) {
