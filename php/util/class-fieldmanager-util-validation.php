@@ -159,6 +159,7 @@ class Fieldmanager_Util_Validation {
 				$messages['required'] = $fm->validation_messages;
 			}
 		} else {
+		    $messages = [];
 			// Verify each rule defined in the array is valid and also check for any messages that were defined for each.
 			foreach ( $fm->validation_rules as $validation_key => $validation_rule ) {
 				if ( ! in_array( $validation_key, $this->valid_rules ) ) {
