@@ -142,7 +142,7 @@ class Fieldmanager_Util_Validation {
 
 		// Determine if the rules are a string or an array and ensure they are valid.
 		// Also aggregate any messages that were set for the rules, ignoring any messages that don't match a rule.
-		$messages = '';
+		$messages = array();
 		if ( ! is_array( $fm->validation_rules ) ) {
 			// If a string, the only acceptable value is "required".
 			if ( ! is_string( $fm->validation_rules ) || 'required' !== $fm->validation_rules ) {
@@ -159,7 +159,6 @@ class Fieldmanager_Util_Validation {
 				$messages['required'] = $fm->validation_messages;
 			}
 		} else {
-			$messages = array();
 			// Verify each rule defined in the array is valid and also check for any messages that were defined for each.
 			foreach ( $fm->validation_rules as $validation_key => $validation_rule ) {
 				if ( ! in_array( $validation_key, $this->valid_rules ) ) {
