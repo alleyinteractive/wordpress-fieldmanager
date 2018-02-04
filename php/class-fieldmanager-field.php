@@ -1066,7 +1066,7 @@ abstract class Fieldmanager_Field {
 	public function get_element_attributes( $attr = '', $attr_exclude = array() ) {
 
 		if ( ! empty( $attr ) ) {
-			return array_key_exists( $attr, $this->attributes ) ? ' ' . esc_attr( $this->attributes[$attr] ) : '';
+			return array_key_exists( $attr, $this->attributes ) ? ' ' . esc_attr( $this->attributes[ $attr ] ) : '';
 		}
 
 		$attr_exclude = array_merge( is_array( $attr_exclude ) ? $attr_exclude : array(), array( 'class', 'type', 'name', 'id', 'value', 'checked' ) );

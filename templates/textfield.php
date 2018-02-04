@@ -7,7 +7,7 @@
 
 ?>
 <input
-	class="fm-element<?php echo $this->get_element_attributes( 'class' ); ?>"
+	class="fm-element<?php echo $this->get_element_attributes( 'class' ); /* Escaped internally. WPCS XSS okay. */ ?>"
 	type="<?php echo esc_attr( $this->input_type ); ?>"
 	name="<?php echo esc_attr( $this->get_form_name() ); ?>"
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
