@@ -338,4 +338,32 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$html = $this->render( $group, $this->post );
 		$this->assertNotContains( 'checked', $html );
 	}
+
+	/**
+	 * Test element attributes
+	 */
+	public function test_attributes () {
+		$checkbox = new Fieldmanager_Checkbox( array(
+			'name' => 'test_checkbox',
+			'attributes' => array(
+				'id' => 'foo',
+				'class' => 'baz',
+				'name' => 'foo',
+				'value' => 10,
+				'type' => 'text',
+				'checked' => true,
+				'data-bar' => 'bar'
+			),
+		) );
+		$html = $this->render( $checkbox, $this->post );
+		$this->assertNotContains( 'id="foo"', $html );
+		$this->assertNotContains( 'class="baz"', $html );
+		$this->assertNotContains( 'name="foo"', $html );
+		$this->assertNotContains( 'value="10"', $html );
+		$this->assertNotContains( 'type="text"', $html );
+		$this->assertNotContains( 'checked', $html );
+		$this->assertRegExp( '/class="[^"]+baz"/', $html );
+		$this->assertContains( 'data-bar="bar"', $html );
+	}
+
 }

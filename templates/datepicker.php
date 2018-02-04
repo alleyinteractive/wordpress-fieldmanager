@@ -8,7 +8,7 @@
 ?>
 
 <input
-	class="fm-element fm-datepicker-popup"
+	class="fm-element fm-datepicker-popup<?php echo $this->get_element_attributes( 'class' ); ?>"
 	type="text"
 	data-datepicker-opts="<?php echo esc_attr( json_encode( $this->js_opts ) ); ?>"
 	name="<?php echo esc_attr( $this->get_form_name( '[date]' ) ); ?>"
@@ -24,11 +24,11 @@
 <?php if ( $this->use_time ) : ?>
 	<span class="fm-datepicker-time-wrapper">
 		@
-		<input class="fm-element fm-datepicker-time" type="text" value="<?php echo esc_attr( $this->get_hour( $value ) ); ?>" name="<?php echo esc_attr( $this->get_form_name( '[hour]' ) ); ?>" />
+		<input class="fm-element fm-datepicker-time<?php echo $this->get_element_attributes( 'class' ); ?>" type="text" value="<?php echo esc_attr( $this->get_hour( $value ) ); ?>" name="<?php echo esc_attr( $this->get_form_name( '[hour]' ) ); ?>" />
 		:
-		<input class="fm-element fm-datepicker-time" type="text" value="<?php echo esc_attr( $this->get_minute( $value ) ); ?>" name="<?php echo esc_attr( $this->get_form_name( '[minute]' ) ); ?>" />
+		<input class="fm-element fm-datepicker-time<?php echo $this->get_element_attributes( 'class' ); ?>" type="text" value="<?php echo esc_attr( $this->get_minute( $value ) ); ?>" name="<?php echo esc_attr( $this->get_form_name( '[minute]' ) ); ?>" />
 		<?php if ( $this->use_am_pm ) : ?>
-			<select class="fm-element" name="<?php echo esc_attr( $this->get_form_name( '[ampm]' ) ); ?>">
+			<select class="fm-element<?php echo $this->get_element_attributes( 'class' ); ?>" name="<?php echo esc_attr( $this->get_form_name( '[ampm]' ) ); ?>">
 				<option value="am"<?php selected( $this->get_am_pm( $value ), 'am' ); ?>>A.M.</option>
 				<option value="pm"<?php selected( $this->get_am_pm( $value ), 'pm' ); ?>>P.M.</option>
 			</select>

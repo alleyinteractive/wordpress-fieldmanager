@@ -136,11 +136,12 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		}
 
 		$element = sprintf(
-			'<input class="fm-autocomplete fm-element fm-incrementable" type="text" id="%s" value="%s"%s %s />',
+			'<input class="fm-autocomplete fm-element fm-incrementable%s" type="text" id="%s" value="%s"%s %s />',
+			$this->get_element_attributes( 'class' ),
 			esc_attr( $this->get_element_id() ),
 			esc_attr( $display_value ),
 			( ! empty( $this->custom_args_js_event ) ) ? ' data-custom-args-js-event="' . esc_attr( $this->custom_args_js_event ) . '"' : '',
-			$this->get_element_attributes()
+			$this->get_element_attributes( '', array( 'data-custom-args-js-event' ) )
 		);
 
 		$element .= sprintf(
