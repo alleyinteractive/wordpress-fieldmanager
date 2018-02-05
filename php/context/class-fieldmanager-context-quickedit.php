@@ -73,14 +73,16 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 			$post_types = array( $post_types );
 		}
 
-		$this->post_types = $post_types;
+		$this->post_types = array_map( function( $value ) {
+			return is_string( $value ) ? sanitize_key( $value ) : $value;
+		}, $post_types );
 		$this->title = $title;
 		$this->column_title = ! empty( $column_title ) ? $column_title : $title;
 		$this->column_display_callback = $column_display_callback;
 		$this->fm = $fm;
 
 		if ( is_callable( $column_display_callback ) ) {
-			foreach ( $post_types as $post_type ) {
+			foreach ( $this->post_types as $post_type ) {
 				add_action( 'manage_' . $post_type . '_posts_columns', array( $this, 'add_custom_columns' ) );
 			}
 			add_action( 'manage_posts_custom_column', array( $this, 'manage_custom_columns' ), 10, 2 );

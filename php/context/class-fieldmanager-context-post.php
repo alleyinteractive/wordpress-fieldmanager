@@ -69,7 +69,9 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 			$post_types = array( $post_types );
 		}
 
-		$this->post_types = $post_types;
+		$this->post_types = array_map( function( $value ) {
+			return is_string( $value ) ? sanitize_key( $value ) : $value;
+		}, $post_types );
 		$this->title = $title;
 		$this->context = $context;
 		$this->priority = $priority;

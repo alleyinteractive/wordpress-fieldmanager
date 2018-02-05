@@ -153,6 +153,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			$this->fm           = $fm;
 		}
 
+		$this->taxonomies = array_map( 'sanitize_key', $this->taxonomies );
+
 		// Iterate through the taxonomies and add the fields to the requested forms.
 		// Also add handlers for saving the fields and which forms to validate (if enabled).
 		foreach ( $this->taxonomies as $taxonomy ) {
