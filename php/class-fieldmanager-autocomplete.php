@@ -65,7 +65,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 *
 	 * @var bool
 	 */
-	public $highlight = True;
+	public $highlight = true;
 
 	/**
 	 * Add libraries for autocomplete.
@@ -111,7 +111,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 */
 	public function preload_alter_values( $values ) {
 		if ( $this->datasource ) {
-			 return $this->datasource->preload_alter_values( $this, $values );
+			return $this->datasource->preload_alter_values( $this, $values );
 		}
 		return $values;
 	}
@@ -129,7 +129,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		}
 
 		if ( $this->highlight ) {
-			$this->attributes['data-autocomplete-highlight'] = True;
+			$this->attributes['data-autocomplete-highlight'] = true;
 		}
 
 		if ( $this->datasource->use_ajax ) {
