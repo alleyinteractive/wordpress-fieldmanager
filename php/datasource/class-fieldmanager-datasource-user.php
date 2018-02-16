@@ -171,7 +171,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 			$ret[ $u->{$this->store_property} ] = $u->{$this->display_property};
 		}
 
-		return $ret;
+		return apply_filters( 'fm_datasource_user_get_items', $ret, $users, $this, $fragment );
 	}
 
 	/**

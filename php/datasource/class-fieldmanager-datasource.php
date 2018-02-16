@@ -148,7 +148,7 @@ class Fieldmanager_Datasource {
 				$ret[ $k ] = $v;
 			}
 		}
-		return $ret;
+		return apply_filters( 'fm_datasource_get_items', $ret, $this->options, $this, $fragment );
 	}
 
 	/**

@@ -178,7 +178,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			}
 			$ret[ $p->ID ] = $p->post_title . $date_pad;
 		}
-		return $ret;
+		return apply_filters( 'fm_datasource_post_get_items', $ret, $posts, $this, $fragment );
 	}
 
 	/**
