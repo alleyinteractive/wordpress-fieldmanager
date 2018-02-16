@@ -180,7 +180,7 @@ class Fieldmanager_Datasource {
 			);
 		}
 
-		return $return;
+		return apply_filters( 'fm_datasource_get_items_for_ajax', $return, $items, $this, $fragment );
 	}
 
 	/**
