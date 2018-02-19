@@ -350,6 +350,15 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$key = $this->store_term_taxonomy_id ? $term->term_taxonomy_id : $term->term_id;
 			$stack[ $key ] = $term->name;
 		}
+
+		/**
+		 * Filter items to be returned
+		 *
+		 * @param array $stack Term list, filtered by fragment.
+		 * @param array $terms Found terms.
+		 * @param object $this Datasource object.
+		 * @param string $fragment Search term.
+		 */
 		return apply_filters( 'fm_datasource_term_get_items', $stack, $terms, $this, $fragment );
 	}
 

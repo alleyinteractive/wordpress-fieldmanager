@@ -178,6 +178,15 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			}
 			$ret[ $p->ID ] = $p->post_title . $date_pad;
 		}
+
+		/**
+		 * Filter items to be returned
+		 *
+		 * @param array $ret Available options, filtered by fragment.
+		 * @param array $posts Found posts.
+		 * @param object $this Datasource object.
+		 * @param string $fragment Search term.
+		 */
 		return apply_filters( 'fm_datasource_post_get_items', $ret, $posts, $this, $fragment );
 	}
 

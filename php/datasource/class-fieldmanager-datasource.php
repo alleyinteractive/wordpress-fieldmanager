@@ -148,6 +148,15 @@ class Fieldmanager_Datasource {
 				$ret[ $k ] = $v;
 			}
 		}
+
+		/**
+		 * Filter items to be returned
+		 *
+		 * @param array $ret Available options, filtered by fragment.
+		 * @param array $this->options All available options.
+		 * @param object $this Datasource object.
+		 * @param string $fragment Search term.
+		 */
 		return apply_filters( 'fm_datasource_get_items', $ret, $this->options, $this, $fragment );
 	}
 
