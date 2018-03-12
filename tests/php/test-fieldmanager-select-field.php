@@ -186,6 +186,14 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
 		$saved_value = get_post_meta( $this->post->ID, $fm->name, true );
 		$this->assertSame( array( 'one', 'two' ), $saved_value );
+
+		$_POST = array(
+			'post_ID' => $this->post->ID,
+			'post_type' => $this->post->post_type,
+		);
+		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
+		$saved_value = get_post_meta( $this->post->ID, $fm->name, true );
+		$this->assertSame( null, $saved_value );
 	}
 
 	public function test_repeatable_render() {
