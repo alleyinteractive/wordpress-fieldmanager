@@ -170,7 +170,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		$this->assertEquals( null, $saved_value );
 	}
 
-	public function test_multiselect_save_empty() {
+	public function test_multiselect_save_datasource_term() {
 		$fm = new Fieldmanager_Select( array(
 			'name' => 'base_field',
 			'multiple' => true,
