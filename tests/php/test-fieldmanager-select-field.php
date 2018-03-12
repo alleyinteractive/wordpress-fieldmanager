@@ -176,6 +176,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 			'multiple' => true,
 			'limit' => 0,
 			'options' => array( 'one', 'two', 'three' ),
+			'serialize_data' => false,
 		) );
 
 		$_POST = array(
