@@ -127,16 +127,21 @@ function fieldmanager_get_baseurl() {
 /**
  * Get the path to a field template.
  *
- * @param string $tpl_slug The name of a template file inside the "templates/"
+ * @param string $tpl_dir The template directory.
+ * @param string $tpl_slug The name of a template file inside the template
  *     directory, excluding ".php".
  * @return string The template path, or the path to "textfield.php" if the
  *     requested template is not found.
  */
-function fieldmanager_get_template( $tpl_slug ) {
-	if ( ! file_exists( plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php' ) ) {
+function fieldmanager_get_template( $tpl_slug, $tpl_dir = '' ) {
+	$template_directory = plugin_dir_path( __FILE__ ) . 'templates';
+	if ( ! empty( $tpl_dir ) && file_exists( $tpl_dir ) ) {
+		$template_directory = $tpl_dir;
+	}
+	if ( ! file_exists( trailingslashit( $template_directory ) . $tpl_slug . '.php' ) ) {
 		$tpl_slug = 'textfield';
 	}
-	return plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php';
+	return trailingslashit( $template_directory ) . $tpl_slug . '.php';
 }
 
 /**
