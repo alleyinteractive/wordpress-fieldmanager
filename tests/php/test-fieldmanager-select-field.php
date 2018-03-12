@@ -170,6 +170,26 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		$this->assertEquals( null, $saved_value );
 	}
 
+	public function test_multiselect_save_empty() {
+		$fm = new Fieldmanager_Select( array(
+			'name' => 'base_field',
+			'multiple' => true,
+			'limit' => 0,
+			'options' => array( 'one', 'two', 'three' ),
+		) );
+
+		$_POST = array(
+			'post_ID' => $post->ID,
+			'action' => 'editpost',
+			'post_type' => $post->post_type,
+			"fieldmanager-{$fm->name}-nonce" => wp_create_nonce( "fieldmanager-{$fm->name}_field" ),
+			$fm->name => $array( 'one', 'two' ),
+		);
+		$fm->add_meta_box( $fm->name, $post->post_type )->save_fields_for_post( $post->ID );
+		$saved_value = get_post_meta( $this->post->ID, $fm->name, true );
+		$this->assertSame( array( 'one', 'two' ), $saved_value );
+	}
+
 	public function test_repeatable_render() {
 		$fm = new Fieldmanager_Select( array(
 			'name' => 'base_field',
