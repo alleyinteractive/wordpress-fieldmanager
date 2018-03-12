@@ -180,12 +180,10 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 
 		$_POST = array(
 			'post_ID' => $this->post->ID,
-			'action' => 'editpost',
 			'post_type' => $this->post->post_type,
-			"fieldmanager-{$fm->name}-nonce" => wp_create_nonce( "fieldmanager-{$fm->name}_field" ),
 			$fm->name => array( 'one', 'two' ),
 		);
-		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_fields_for_post( $this->post->ID );
+		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
 		$saved_value = get_post_meta( $this->post->ID, $fm->name, true );
 		$this->assertSame( array( 'one', 'two' ), $saved_value );
 	}
