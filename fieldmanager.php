@@ -127,9 +127,9 @@ function fieldmanager_get_baseurl() {
 /**
  * Get the path to a field template.
  *
- * @param string $tpl_dir The template directory.
  * @param string $tpl_slug The name of a template file inside the template
  *     directory, excluding ".php".
+ * @param string $tpl_dir The template directory.
  * @return string The template path, or the path to "textfield.php" if the
  *     requested template is not found.
  */
