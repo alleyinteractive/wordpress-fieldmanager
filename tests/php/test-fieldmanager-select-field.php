@@ -181,7 +181,6 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 					'multiple' => true,
 					'limit' => 0,
 					'options' => array( 'one', 'two', 'three' ),
-					'serialize_data' => false,
 				) )
             ],
         ]);
@@ -189,7 +188,9 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		$_POST = array(
 			'post_ID' => $this->post->ID,
 			'post_type' => $this->post->post_type,
-			$field_name => array( 'one', 'two' ),
+			'fm_group' => array(
+				$field_name => array( 'one', 'two' ),
+			),
 		);
 		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
 		$saved_value = get_post_meta( $this->post->ID, $field_name, true );
