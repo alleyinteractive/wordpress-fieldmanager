@@ -117,7 +117,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		$opts .= $this->form_data_elements( $value );
 
 		return sprintf(
-			'<select class="%s" name="%s" id="%s" %s>%s</select>',
+			'<input type="hidden" name="%2$s" value="" /><select class="%1$s" name="%2$s" id="%3$s" %4$s>%5$s</select>',
 			esc_attr( implode( ' ', $select_classes ) ),
 			esc_attr( $this->get_form_name( $do_multiple ) ),
 			esc_attr( $this->get_element_id() ),
