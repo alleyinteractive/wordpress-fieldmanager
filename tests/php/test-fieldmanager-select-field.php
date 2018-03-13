@@ -181,6 +181,11 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 					'multiple' => true,
 					'limit' => 0,
 					'options' => array( 'one', 'two', 'three' ),
+					'datasource' => new Fieldmanager_Datasource_Term( array(
+                        'taxonomy' => ['taxonomy_name'],
+                        'only_save_to_taxonomy' => false,
+                        'taxonomy_hierarchical' => true, 
+                    ) )
 				) )
             ],
         ]);
