@@ -55,7 +55,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 				$data = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : array(); // WPCS: input var okay. CSRF okay. Sanitization okay.
 
 				// Multiple select and radio fields with no values chosen are left out of the post request altogether.
-				if ( isset( $this->fm->children ) ) {
+				/*if ( isset( $this->fm->children ) ) {
 					foreach ( $this->fm->children as $child ) {
 						$is_multi_select = ( $child instanceof Fieldmanager_Select ) && ( true === $child->multiple );
 						$is_radio = ( $child instanceof Fieldmanager_Radios );
@@ -63,7 +63,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 							$data[ $child->name ] = array();
 						}
 					}
-				}
+				}*/
 			}
 			$this->save_walk_children( $this->fm, $data );
 		}
