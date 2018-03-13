@@ -189,7 +189,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		$fm = new Fieldmanager_Group([
             'name' => 'fm_group',
             'serialize_data' => false,
-            'children' => [
+            'children' => array(
                 $field_name => new Fieldmanager_Select( array(
 					'name' => $field_name,
 					'multiple' => true,
@@ -200,7 +200,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
                         'only_save_to_taxonomy' => true,
                     ) )
 				) )
-            ],
+            ),
         ]);
 
 		$_POST = array(
