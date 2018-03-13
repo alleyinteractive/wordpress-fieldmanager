@@ -211,7 +211,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		);
 		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
 		$saved_term_ids = array();
-        foreach (wp_get_post_terms( $post_id, $taxonomy ) as $term) {
+        foreach ( wp_get_post_terms( $this->post->ID, $taxonomy ) as $term ) {
             $saved_term_ids[] = $term->term_id;
         }
 		$this->assertSame( $term_ids, $saved_term_ids );
@@ -222,7 +222,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		);
 		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
 		$saved_term_ids = array();
-        foreach (wp_get_post_terms( $post_id, $taxonomy ) as $term) {
+        foreach ( wp_get_post_terms( $this->post->ID, $taxonomy ) as $term ) {
             $saved_term_ids[] = $term->term_id;
         }
 		$this->assertSame( array(), $saved_term_ids );
