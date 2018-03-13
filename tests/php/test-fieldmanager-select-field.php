@@ -192,7 +192,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 			$field_name => array( 'one', 'two' ),
 		);
 		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
-		$saved_value = get_post_meta( $this->post->ID, $fm->name, true );
+		$saved_value = get_post_meta( $this->post->ID, $field_name, true );
 		$this->assertSame( array( 'one', 'two' ), $saved_value );
 
 		$_POST = array(
@@ -200,7 +200,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 			'post_type' => $this->post->post_type,
 		);
 		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
-		$saved_value = get_post_meta( $this->post->ID, $fm->name, true );
+		$saved_value = get_post_meta( $this->post->ID, $field_name, true );
 		$this->assertSame( null, $saved_value );
 	}
 
