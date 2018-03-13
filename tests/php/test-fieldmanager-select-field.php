@@ -182,7 +182,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 					'limit' => 0,
 					'options' => array( 'one', 'two', 'three' ),
 					'serialize_data' => false,
-				)
+				) )
             ],
         ]);
 
