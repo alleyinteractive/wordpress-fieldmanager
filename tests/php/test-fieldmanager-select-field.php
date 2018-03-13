@@ -176,7 +176,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
             'name' => 'fm_group',
             'serialize_data' => false,
             'children' => [
-                'child_1' => new Fieldmanager_Select( array(
+                $field_name => new Fieldmanager_Select( array(
 					'name' => $field_name,
 					'multiple' => true,
 					'limit' => 0,
