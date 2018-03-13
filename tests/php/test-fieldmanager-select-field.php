@@ -176,7 +176,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 
         register_taxonomy( $taxonomy, $this->post->post_type );
 
-        $term_ids = [];
+        $term_ids = array();
         foreach ( array( "One", "Two", "Three" ) as $term ) {
             $result = term_exists( $term, $taxonomy );
             if ( ! $result ) {
