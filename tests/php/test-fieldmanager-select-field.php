@@ -171,7 +171,20 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 	}
 
 	public function test_multiselect_save_empty() {
+		$taxonomy = 'tax_multiselect_test';
 		$field_name = 'base_field';
+
+        register_taxonomy( $taxonomy, $this->post->post_type );
+
+        $term_ids = [];
+        foreach ( array( "One", "Two", "Three" ) as $term ) {
+            $result = term_exists( $term, $taxonomy );
+            if ( ! $result ) {
+                $result = wp_insert_term( $term, $taxonomy );
+            }
+            $term_ids[] = $result['term_id'];
+        }
+
 		$fm = new Fieldmanager_Group([
             'name' => 'fm_group',
             'serialize_data' => false,
@@ -180,11 +193,10 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 					'name' => $field_name,
 					'multiple' => true,
 					'limit' => 0,
-					'options' => array( 'one', 'two', 'three' ),
+					'options' => $term_ids,
 					'datasource' => new Fieldmanager_Datasource_Term( array(
-                        'taxonomy' => ['taxonomy_name'],
-                        'only_save_to_taxonomy' => false,
-                        'taxonomy_hierarchical' => true, 
+                        'taxonomy' => array( $taxonomy ),
+                        'only_save_to_taxonomy' => true,
                     ) )
 				) )
             ],
@@ -194,20 +206,26 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 			'post_ID' => $this->post->ID,
 			'post_type' => $this->post->post_type,
 			'fm_group' => array(
-				$field_name => array( 'one', 'two' ),
+				$field_name => $term_ids,
 			),
 		);
 		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
-		$saved_value = get_post_meta( $this->post->ID, $field_name, true );
-		$this->assertSame( array( 'one', 'two' ), $saved_value );
+		$saved_term_ids = array();
+        foreach (wp_get_post_terms( $post_id, $taxonomy ) as $term) {
+            $saved_term_ids[] = $term->term_id;
+        }
+		$this->assertSame( $term_ids, $saved_term_ids );
 
 		$_POST = array(
 			'post_ID' => $this->post->ID,
 			'post_type' => $this->post->post_type,
 		);
 		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
-		$saved_value = get_post_meta( $this->post->ID, $field_name, true );
-		$this->assertSame( null, $saved_value );
+		$saved_term_ids = array();
+        foreach (wp_get_post_terms( $post_id, $taxonomy ) as $term) {
+            $saved_term_ids[] = $term->term_id;
+        }
+		$this->assertSame( array(), $saved_term_ids );
 	}
 
 	public function test_repeatable_render() {
