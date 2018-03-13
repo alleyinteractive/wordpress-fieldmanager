@@ -184,6 +184,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
             }
             $term_ids[] = $result['term_id'];
         }
+        sort( $term_ids );
 
 		$fm = new Fieldmanager_Group([
             'name' => 'fm_group',
@@ -214,7 +215,8 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
         foreach ( wp_get_post_terms( $this->post->ID, $taxonomy ) as $term ) {
             $saved_term_ids[] = $term->term_id;
         }
-		$this->assertSame( sort( $term_ids ), sort( $saved_term_ids ) );
+        sort( $saved_term_ids );
+		$this->assertSame( $term_ids, $saved_term_ids );
 
 		$_POST = array(
 			'post_ID' => $this->post->ID,
