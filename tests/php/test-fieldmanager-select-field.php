@@ -186,7 +186,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
         }
         sort( $term_ids );
 
-		$fm = new Fieldmanager_Group([
+		$fm = new Fieldmanager_Group( array(
             'name' => 'fm_group',
             'serialize_data' => false,
             'children' => array(
@@ -201,7 +201,7 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
                     ) )
 				) )
             ),
-        ]);
+        ) );
 
 		$_POST = array(
 			'post_ID' => $this->post->ID,
