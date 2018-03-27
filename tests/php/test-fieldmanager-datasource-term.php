@@ -349,6 +349,29 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->assertTrue( $wp_taxonomies['post_tag']->sort );
 	}
 
+	public function test_sortable_terms_retrieved_in_order() {
+		$taxonomy = $this->term->taxonomy;
+
+		$fm = new \Fieldmanager_Autocomplete( array(
+			'name' => 'sortable_terms',
+			'limit' => 0,
+			'sortable' => true,
+			'datasource' => new \Fieldmanager_Datasource_Term( array(
+				'taxonomy'              => $taxonomy,
+				'only_save_to_taxonomy' => true,
+			) ),
+		) );
+		$context = $fm->add_meta_box( 'Sortable Terms', 'post' );
+
+		$order = array( $this->term_2->term_id, $this->term->term_id );
+		$context->save_to_post_meta( $this->post->ID, $order );
+		$this->assertSame( $order, $fm->preload_alter_values( array() ) );
+
+		$order = array( $this->term->term_id, $this->term_2->term_id );
+		$context->save_to_post_meta( $this->post->ID, $order );
+		$this->assertSame( $order, $fm->preload_alter_values( array() ) );
+	}
+
 	public function test_append_true_after_first_save() {
 		$fm = new Fieldmanager_Group( array(
 			'name'     => 'author_data',
