@@ -141,14 +141,17 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 * @param array  $values      The current values.
 	 */
 	public function add_quickedit_box( $column_name, $post_type, $values = array() ) {
-		if ( $column_name != $this->fm->name ) {
+		if ( $column_name !== $this->fm->name ) {
 			return;
 		}
 		?>
 		<fieldset class="inline-edit-col-left fm-quickedit" id="fm-quickedit-<?php echo esc_attr( $column_name ); ?>" data-fm-post-type="<?php echo esc_attr( $post_type ); ?>">
+			<?php if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) : ?>
 			<div class="inline-edit-col">
 				<?php if ( ! empty( $this->title ) ) : ?>
-					<h4><?php echo esc_html( $this->title ); ?></h4>
+				<span class="title">
+					<?php echo esc_html( $this->title ); ?>
+				</span>
 				<?php endif ?>
 
 				<?php
@@ -157,6 +160,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 				) );
 				?>
 			</div>
+			<?php endif; ?>
 		</fieldset>
 		<?php
 	}
