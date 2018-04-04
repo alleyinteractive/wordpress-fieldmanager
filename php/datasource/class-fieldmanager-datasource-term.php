@@ -170,7 +170,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	/**
 	 * Sort function for `get_the_terms` result set.
 	 *
-	 * @deprecated 1.x.y Handled with get_terms() in Fieldmanager_Datasource_Term::preload_alter_values().
+	 * @deprecated 1.2.2 Handled with get_terms() in Fieldmanager_Datasource_Term::preload_alter_values().
 	 *
 	 * @param  WP_Term $term_a First term.
 	 * @param  WP_Term $term_b Second term.
