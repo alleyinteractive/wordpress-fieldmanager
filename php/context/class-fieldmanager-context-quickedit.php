@@ -261,12 +261,11 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 *
 	 * @param int     $post_id Post ID.
 	 * @param WP_Post $post Post object.
-	 * @throws FM_Exception
+	 * @throws FM_Exception User cannot edit post
 	 */
 	public function save_fields_for_bulk_edit( $post_id, $post ) {
 		$post_type = get_post_type( $post );
 
-		// TODO: why often revision passed first?
 		if (
 			! isset( $_REQUEST['bulk_edit'] ) ||
 			'Update' !== $_REQUEST['bulk_edit'] ||

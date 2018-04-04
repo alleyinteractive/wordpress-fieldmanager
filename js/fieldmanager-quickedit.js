@@ -16,7 +16,7 @@
 			}
 
 			if ( post_id > 0 ) {
-				$( '.fm-quickedit' ).each( function() {
+				$( '.inline-edit-row .fm-quickedit' ).each( function() {
 					var self = this;
 					var id = $( this ).attr( 'id' );
 					if ( id.substring( 0, 12 ) != 'fm-quickedit' ) {
@@ -34,7 +34,7 @@
 		inlineEditPost.setBulk = function() {
 			wp_inline_bulk_edit.apply( this );
 
-			$( '.fm-quickedit' ).each( function() {
+			$( '#bulk-edit .fm-quickedit' ).each( function() {
 				var self = this;
 				var id = $( this ).attr( 'id' );
 				if ( id.substring( 0, 12 ) != 'fm-quickedit' ) {
@@ -43,8 +43,9 @@
 				var column_name = id.substring( 13 );
 				$.get( ajaxurl, { action: 'fm_quickedit_render', 'column_name': column_name, 'post_id': 'bulk_edit', 'post_type': $( self ).data( 'fm-post-type' ) }, function( resp ) {
 					var temp = $( resp );
-					var dest = $( 'select', temp );
+					$( 'input[name=_wp_http_referer]', temp ).remove();
 
+					var dest = $( 'select', temp );
 					if ( dest ) {
 						var label = '&mdash; ' + window.fm_quickedit_opts.i18n.no_change + ' &mdash;';
 						var noChange = $('<option />').val( id ).html( label ).attr( 'selected', 'selected' );
