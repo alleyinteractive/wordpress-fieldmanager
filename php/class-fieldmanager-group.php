@@ -350,6 +350,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			}
 		}
 
+		// Handle empty groups.
+		if ( empty( $values ) ) {
+			$values = [];
+		}
+
 		// Then, dispatch them for sanitization to the children.
 		$skip_save_all = true;
 		foreach ( $this->children as $k => $element ) {
