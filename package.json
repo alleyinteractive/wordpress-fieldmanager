@@ -1,7 +1,7 @@
 {
   "name": "Fieldmanager",
   "description": "Fieldmanager is a comprehensive toolkit for building forms, metaboxes, and custom admin screens for WordPress.",
-  "version": "1.2.0-alpha",
+  "version": "1.2.1",
   "repository" : {
     "type" : "git",
     "url" : "https://github.com/alleyinteractive/wordpress-fieldmanager"
