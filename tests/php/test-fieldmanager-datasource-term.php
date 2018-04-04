@@ -367,6 +367,9 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$context->save_to_post_meta( $this->post->ID, $order );
 		$this->assertSame( $order, $fm->preload_alter_values( array() ) );
 
+		// Clear caches.
+		$context->save_to_post_meta( $this->post->ID, [] );
+
 		$order = array( $this->term->term_id, $this->term_2->term_id );
 		$context->save_to_post_meta( $this->post->ID, $order );
 		$this->assertSame( $order, $fm->preload_alter_values( array() ) );
