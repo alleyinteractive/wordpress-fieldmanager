@@ -45,6 +45,25 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test saving multiple select in a group.
+	 */
+	public function test_multiple_select_in_group() {
+		$fm = new Fieldmanager_Group( [
+			'name' => 'group_with_multiple',
+			'children' => [
+				'field' => new Fieldmanager_Select( [
+					'options' => [ 'One', 'Two', 'Three' ],
+					'multiple' => true,
+				] ),
+			],
+		] );
+		$data = [ 'field' => [ 'Two', 'Three' ] ];
+		$fm->add_meta_box( 'Test meta box', $this->post )->save_to_post_meta( $this->post->ID, $data );
+		$saved_value = get_post_meta( $this->post->ID, 'group_with_multiple', true );
+		$this->assertEquals( $saved_value, $data );
+	}
+
+	/**
 	 * Test what happens when setting and changing values in a nested repeatable group.
 	 */
 	public function test_repeat_subgroups() {
