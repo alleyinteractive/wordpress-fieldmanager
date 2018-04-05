@@ -352,7 +352,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// Handle empty groups.
 		if ( empty( $values ) ) {
-			$values = [];
+			$values = array();
 		}
 
 		// Then, dispatch them for sanitization to the children.
