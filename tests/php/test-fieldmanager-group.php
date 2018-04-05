@@ -48,16 +48,30 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 	 * Test saving multiple select in a group.
 	 */
 	public function test_multiple_select_in_group() {
-		$fm = new Fieldmanager_Group( [
+		$fm = new Fieldmanager_Group( array(
 			'name' => 'group_with_multiple',
-			'children' => [
-				'field' => new Fieldmanager_Select( [
-					'options' => [ 'One', 'Two', 'Three' ],
+			'children' => array(
+				'field' => new Fieldmanager_Select( array(
+					'options' => array( 'One', 'Two', 'Three' ),
 					'multiple' => true,
-				] ),
-			],
-		] );
-		$data = [ 'field' => [ 'Two', 'Three' ] ];
+				) ),
+			),
+		) );
+
+		// Test Multiple Selections
+		$data = array( 'field' => array( 'Two', 'Three' ) );
+		$fm->add_meta_box( 'Test meta box', $this->post )->save_to_post_meta( $this->post->ID, $data );
+		$saved_value = get_post_meta( $this->post->ID, 'group_with_multiple', true );
+		$this->assertEquals( $saved_value, $data );
+
+		// Test One Selection
+		$data = array( 'field' => array( 'Two' ) );
+		$fm->add_meta_box( 'Test meta box', $this->post )->save_to_post_meta( $this->post->ID, $data );
+		$saved_value = get_post_meta( $this->post->ID, 'group_with_multiple', true );
+		$this->assertEquals( $saved_value, $data );
+
+		// Test No Selections
+		$data = array( 'field' => array() );
 		$fm->add_meta_box( 'Test meta box', $this->post )->save_to_post_meta( $this->post->ID, $data );
 		$saved_value = get_post_meta( $this->post->ID, 'group_with_multiple', true );
 		$this->assertEquals( $saved_value, $data );
