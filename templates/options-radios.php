@@ -5,7 +5,7 @@
  * @package Fieldmanager
  */
 
-$cb_id = $this->get_element_id() . '-' . esc_attr( sanitize_text_field( $data_row['value'] ) );
+$fm_cb_id = $this->get_element_id() . '-' . esc_attr( sanitize_text_field( $data_row['value'] ) );
 ?>
 
 <div class="fm-option">
@@ -14,7 +14,7 @@ $cb_id = $this->get_element_id() . '-' . esc_attr( sanitize_text_field( $data_ro
 		type="radio"
 		value="<?php echo esc_attr( $data_row['value'] ); ?>"
 		name="<?php echo esc_attr( $this->get_form_name() ); ?>"
-		id="<?php echo esc_attr( $cb_id ); ?>"
+		id="<?php echo esc_attr( $fm_cb_id ); ?>"
 		<?php
 		echo $this->get_element_attributes(); // Escaped interally. xss ok.
 		?>
@@ -22,7 +22,7 @@ $cb_id = $this->get_element_id() . '-' . esc_attr( sanitize_text_field( $data_ro
 		echo $this->option_selected( $data_row['value'], $value, 'checked' ); // Escaped interally. xss ok.
 		?>
 	/>
-	<label for="<?php echo esc_attr( $cb_id ); ?>" class="fm-option-label">
+	<label for="<?php echo esc_attr( $fm_cb_id ); ?>" class="fm-option-label">
 		<?php echo esc_html( $data_row['name'] ); ?>
 	</label>
 </div>

@@ -349,6 +349,32 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->assertTrue( $wp_taxonomies['post_tag']->sort );
 	}
 
+	public function test_sortable_terms_retrieved_in_order() {
+		$taxonomy = $this->term->taxonomy;
+
+		$fm = new \Fieldmanager_Autocomplete( array(
+			'name' => 'sortable_terms',
+			'limit' => 0,
+			'sortable' => true,
+			'datasource' => new \Fieldmanager_Datasource_Term( array(
+				'taxonomy'              => $taxonomy,
+				'only_save_to_taxonomy' => true,
+			) ),
+		) );
+		$context = $fm->add_meta_box( 'Sortable Terms', 'post' );
+
+		$order = array( $this->term_2->term_id, $this->term->term_id );
+		$context->save_to_post_meta( $this->post->ID, $order );
+		$this->assertSame( $order, $fm->preload_alter_values( array() ) );
+
+		// Clear caches.
+		$context->save_to_post_meta( $this->post->ID, array() );
+
+		$order = array( $this->term->term_id, $this->term_2->term_id );
+		$context->save_to_post_meta( $this->post->ID, $order );
+		$this->assertSame( $order, $fm->preload_alter_values( array() ) );
+	}
+
 	public function test_append_true_after_first_save() {
 		$fm = new Fieldmanager_Group( array(
 			'name'     => 'author_data',
@@ -407,5 +433,55 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 
 		$this->assertSame( '', get_user_meta( $user_id, 'test_terms', true ) );
 		$this->assertSame( array( $term['term_id'] ), wp_get_object_terms( $user_id, 'user-tax', array( 'fields' => 'ids' ) ) );
+	}
+
+	public function test_multiple_taxonomies_with_ajax() {
+		$terms = array();
+		// Create a Post Tag
+		$terms[] = $this->factory->tag->create( array( 'name' => 'test tag' ) );
+		// Create a Category
+		$terms[] = $this->factory->category->create( array( 'name' => 'test category' ) );
+
+		// A Term Datasource that queries both Post Tag and Category Taxonomies
+		$datasource = new Fieldmanager_Datasource_Term( array(
+			'taxonomy' => array( 'category', 'post_tag' ),
+			'taxonomy_save_to_terms' => false,
+		) );
+		$items = $datasource->get_items_for_ajax( 'test' );
+		$this->assertEqualSets( $terms, wp_list_pluck( $items, 'value' ) );
+	}
+
+	public function test_parent_restrictions_with_ajax() {
+		$terms = array();
+		$terms[0] = $this->factory->category->create( array( 'name' => 'test category' ) );
+		$terms[1] = $this->factory->category->create( array( 'name' => 'test category child', 'parent' => $terms[0] ) );
+
+		$datasource = new Fieldmanager_Datasource_Term( array(
+			'taxonomy' => array( 'category' ),
+			'taxonomy_args' => array(
+				'parent' => $terms[0],
+			)
+		) );
+
+		$items = $datasource->get_items_for_ajax( 'test' );
+
+		$this->assertEquals( $terms[1], $items[0]['value'] );
+	}
+
+	public function test_child_of_restrictions_with_ajax() {
+		$terms = array();
+		$terms[0] = $this->factory->category->create( array( 'name' => 'test category' ) );
+		$terms[1] = $this->factory->category->create( array( 'name' => 'test category child', 'parent' => $terms[0] ) );
+
+		$datasource = new Fieldmanager_Datasource_Term( array(
+			'taxonomy' => array( 'category' ),
+			'taxonomy_args' => array(
+				'child_of' => $terms[0],
+			)
+		) );
+
+		$items = $datasource->get_items_for_ajax( 'test' );
+
+		$this->assertEquals( $terms[1], $items[0]['value'] );
 	}
 }

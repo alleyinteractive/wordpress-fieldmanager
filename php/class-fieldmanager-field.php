@@ -240,10 +240,18 @@ abstract class Fieldmanager_Field {
 
 	/**
 	 * Field name and value on which to display element. Sample:
-	 * $element->display_if = array(
-	 *     'src' => 'display-if-src-element',
-	 *     'value' => 'display-if-src-value',
-	 * );
+	 *
+	 *     $element->display_if = array(
+	 *         'src' => 'display-if-src-element',
+	 *         'value' => 'display-if-src-value',
+	 *     );
+	 *
+	 * Multiple values are allowed if comma-separated. Sample:
+	 *
+	 *     $element->display_if = array(
+	 *         'src' => 'display-if-src-element',
+	 *         'value' => 'display-if-src-value1,display-if-src-value2'
+	 *     );
 	 *
 	 * @var array
 	 */
@@ -401,7 +409,7 @@ abstract class Fieldmanager_Field {
 
 		// Only enqueue base assets once, and only when we have a field.
 		if ( ! self::$enqueued_base_assets ) {
-			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'jquery', 'jquery-ui-sortable' ), '1.0.8' );
+			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'jquery', 'jquery-ui-sortable' ), '1.2.1' );
 			fm_add_style( 'fieldmanager_style', 'css/fieldmanager.css', array(), '1.0.4' );
 			self::$enqueued_base_assets = true;
 		}
@@ -456,6 +464,8 @@ abstract class Fieldmanager_Field {
 	 * Generates all markup needed for all form elements in this field.
 	 * Could be called directly by a plugin or theme.
 	 *
+	 * @since 1.3.0 Added the 'fm-display-if' class for fields using display-if.
+	 *
 	 * @param array $values The current values of this element, in a tree structure
 	 *                      if the element has children.
 	 * @return string HTML for all form elements.
@@ -463,7 +473,16 @@ abstract class Fieldmanager_Field {
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
 		if ( 1 != $this->limit ) {
-			$max = max( $this->minimum_count, count( $values ) + $this->extra_elements );
+			// count() generates a warning when passed non-countable values in PHP 7.2.
+			if ( is_scalar( $values ) ) {
+				$count_values = 1;
+			} elseif ( ! is_array( $values ) && ! ( $values instanceof \Countable ) ) {
+				$count_values = 0;
+			} else {
+				$count_values = count( $values );
+			}
+
+			$max = max( $this->minimum_count, $count_values + $this->extra_elements );
 
 			// Ensure that we don't display more fields than we can save.
 			if ( $this->limit > 1 && $max > $this->limit ) {
@@ -512,7 +531,11 @@ abstract class Fieldmanager_Field {
 
 		// Checks to see if element has display_if data values, and inserts the data attributes if it does.
 		if ( isset( $this->display_if ) && ! empty( $this->display_if ) ) {
+			$classes[] = 'fm-display-if';
+
+			// For backwards compatibility.
 			$classes[] = 'display-if';
+
 			$fm_wrapper_attrs['data-display-src'] = $this->display_if['src'];
 			$fm_wrapper_attrs['data-display-value'] = $this->display_if['value'];
 		}
@@ -531,8 +554,31 @@ abstract class Fieldmanager_Field {
 			$out .= $this->get_element_label( array( 'fm-label-for-list' ) );
 		}
 
-		// After starting the field, apply a filter to allow other plugins to append functionality.
+		/**
+		 * Filters field markup before adding markup for its form elements.
+		 *
+		 * @since 0.1.0
+		 * @since 1.0.0 The `$values` parameter was added.
+		 *
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
+		 */
 		$out = apply_filters( 'fm_element_markup_start', $out, $this, $values );
+
+		/**
+		 * Filters a specific field's markup before adding markup for its form elements.
+		 *
+		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
+		 *
+		 * @since 1.2.0
+		 *
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
+		 */
+		$out = apply_filters( "fm_element_markup_start_{$this->name}", $out, $this, $values );
+
 		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'top' == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
@@ -553,8 +599,30 @@ abstract class Fieldmanager_Field {
 			$out .= $this->add_another();
 		}
 
-		// Before closing the field, apply a filter to allow other plugins to append functionality.
+		/**
+		 * Filters field markup after adding markup for its form elements.
+		 *
+		 * @since 0.1.0
+		 * @since 1.0.0 The `$values` parameter was added.
+		 *
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
+		 */
 		$out = apply_filters( 'fm_element_markup_end', $out, $this, $values );
+
+		/**
+		 * Filters a specific field's markup after adding markup for its form elements.
+		 *
+		 * The dynamic portion of the hook name, `$this->name`, refers to the field's `$name` property.
+		 *
+		 * @since 1.2.0
+		 *
+		 * @param string             $out    Field markup.
+		 * @param Fieldmanager_Field $this   Field instance.
+		 * @param mixed              $values Current element values.
+		 */
+		$out = apply_filters( "fm_element_markup_end_{$this->name}", $out, $this, $values );
 
 		$out .= '</div>';
 
@@ -1133,6 +1201,8 @@ abstract class Fieldmanager_Field {
 	 * @param string $uniqid A unique identifier for this form.
 	 */
 	public function add_page_form( $uniqid ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		$this->require_base();
 		return new Fieldmanager_Context_Page( $uniqid, $this );
 	}
