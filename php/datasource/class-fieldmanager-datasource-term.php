@@ -320,7 +320,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 			$tax_args['taxonomy'] = $this->get_taxonomies();
 			$parent_terms = get_terms( $tax_args );
-			return $this->build_hierarchical_term_data( $parent_terms, $this->taxonomy_args, 0, $fragment );
+
+			return $this->build_hierarchical_term_data( $parent_terms, $this->taxonomy_args, 0, array(), $fragment );
 		}
 
 		$tax_args = $this->taxonomy_args;
@@ -362,7 +363,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	 * @param  array  $parent_terms The parent terms.
 	 * @param  array  $tax_args     As used in top-level get_terms() call.
 	 * @param  int    $depth        Current recursive depth level.
-	 * @param  string $stack        Current stack.
+	 * @param  array  $stack        Current stack.
 	 * @param  string $pattern      Optional matching pattern.
 	 * @return array $stack Stack of terms or false if no children found.
 	 */
@@ -370,7 +371,6 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 		// Walk through each term passed, add it (at current depth) to the data stack.
 		foreach ( $parent_terms as $term ) {
-			$taxonomy_data = get_taxonomy( $term->taxonomy );
 			$prefix = '';
 
 			// Prefix term based on depth. For $depth = 0, prefix will remain empty.
@@ -384,7 +384,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			// Find child terms of this. If any, recurse on this function.
 			$tax_args['parent'] = $term->term_id;
 			if ( ! empty( $pattern ) ) {
-				$tax_args['search'] = $fragment;
+				$tax_args['search'] = $pattern;
 			}
 			$child_terms = get_terms( $this->get_taxonomies(), $tax_args );
 			if ( 0 == $this->taxonomy_hierarchical_depth || $depth + 1 < $this->taxonomy_hierarchical_depth ) {
