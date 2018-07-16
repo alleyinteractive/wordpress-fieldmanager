@@ -307,7 +307,7 @@ $( document ).ready( function () {
 	 * @returns {boolean} - True if part of a proto block, false if not.
    */
 	fm.is_proto_field = function ( elem ) {
-		return ( null !== elem.closest( '.fjjs-proto' ) );
+		return ( null !== elem.closest( '.fmjs-proto' ) );
 	};
 
 	init_label_macros();
