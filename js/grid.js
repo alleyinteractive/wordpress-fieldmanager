@@ -12,10 +12,13 @@ $.fm_grid_init = function() {
 
 $.fn.fm_grid_serialize = function() {
 	var rows = [], row_counter = 0, self = this, bottom_row_with_data = 0;
-	if ( this.find( 'tbody:visible' ).length === 0 ) {
-		return;
-	}
-	this.find( 'tbody tr:visible' ).each( function() {
+	this.find( 'tbody tr' ).each( function() {
+
+		// Do not apply to a field in a prototype block.
+		if ( fm.is_proto_field( this ) ) {
+			return;
+		}
+
 		var row = [];
 		$( this ).find( 'td' ).each( function() {
 			var to_save = {
@@ -63,7 +66,12 @@ $.fn.fm_grid = function( opts ) {
 		}
 	}
 	hot.setDataAtCell( data_to_set );
-	this.find( 'tbody tr:visible' ).each( function() {
+	this.find( 'tbody tr' ).each( function() {
+		// Do not apply to a field in a prototype block.
+		if ( fm.is_proto_field( this ) ) {
+			return;
+		}
+
 		var base_name = self.data( 'fm-grid-name' );
 		var col = 0;
 		if ( !rows || typeof( rows[row] ) === 'undefined' ) return false;

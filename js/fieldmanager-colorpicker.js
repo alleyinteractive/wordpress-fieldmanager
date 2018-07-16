@@ -2,7 +2,14 @@
 
 	fm.colorpicker = {
 		init: function() {
-			$( '.fm-colorpicker-popup:visible' ).wpColorPicker();
+			$( '.fm-colorpicker-popup' ).each( function() {
+				// Do not apply to a field in a prototype block.
+				if ( fm.is_proto_field( this ) ) {
+					return;
+				}
+
+				$( this ).wpColorPicker();
+			} );
 		}
 	}
 

@@ -9,7 +9,13 @@ fm.autocomplete = {
 	},
 
 	enable_autocomplete: function() {
-		$( 'input.fm-autocomplete:visible' ).each( function() {
+		$( 'input.fm-autocomplete' ).each( function() {
+			// Do not apply to a field in a prototype block.
+			if ( fm.is_proto_field( this ) ) {
+				return;
+			}
+
+			// Do not apply if the autocomplete has already been bound.
 			if ( !$( this ).hasClass( 'fm-autocomplete-enabled' ) ) {
 				var ac_params = {};
 				var $el = $( this );

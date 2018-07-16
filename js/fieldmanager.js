@@ -272,6 +272,23 @@ $( document ).ready( function () {
 	};
 	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
 
+  /**
+	 * A helper function to determine if a node is a field in a proto block.
+   * @param {Element} elem - The field element to check.
+	 * @returns {boolean} - True if part of a proto block, false if not.
+   */
+	fm.is_proto_field = function ( elem ) {
+		let current = elem;
+		while ( current ) {
+			if ( current.classList.contains( 'fmjs-proto' ) ) {
+				return true;
+			}
+			current = elem.parentNode;
+		}
+
+		return false;
+	};
+
 	init_label_macros();
 	init_sortable();
 

@@ -1,7 +1,12 @@
 ( function( $ ) {
 	fm.richtextarea = {
 		add_rte_to_visible_textareas: function() {
-			$( 'textarea.fm-richtext:visible' ).each( function() {
+			$( 'textarea.fm-richtext' ).each( function() {
+				// Do not apply to a field in a prototype block.
+				if ( fm.is_proto_field( this ) ) {
+					return;
+				}
+
 				if ( ! $( this ).hasClass( 'fm-tinymce' ) ) {
 					var init, ed_id, mce_options, qt_options, proto_id;
 					$( this ).addClass( 'fm-tinymce' );
