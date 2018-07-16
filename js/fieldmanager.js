@@ -4,7 +4,7 @@ var fm = {};
  * Polyfill Element.matches, if necessary.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
  */
-if (!Element.prototype.matches) {
+if ( ! Element.prototype.matches ) {
 	Element.prototype.matches = Element.prototype.msMatchesSelector ||
 		Element.prototype.webkitMatchesSelector;
 }
@@ -13,8 +13,8 @@ if (!Element.prototype.matches) {
  * Polyfill Element.closest, if necessary.
  * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
  */
-if (!Element.prototype.closest) {
-	Element.prototype.closest = function( s ) {
+if ( ! Element.prototype.closest ) {
+	Element.prototype.closest = function ( s ) {
 		var el = this;
 		if ( ! document.documentElement.contains( el ) ) {
 			return null;
