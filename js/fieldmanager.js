@@ -1,5 +1,34 @@
 var fm = {};
 
+/**
+ * Polyfill Element.matches, if necessary.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
+ */
+if (!Element.prototype.matches) {
+	Element.prototype.matches = Element.prototype.msMatchesSelector ||
+		Element.prototype.webkitMatchesSelector;
+}
+
+/**
+ * Polyfill Element.closest, if necessary.
+ * @see https://developer.mozilla.org/en-US/docs/Web/API/Element/closest#Polyfill
+ */
+if (!Element.prototype.closest) {
+	Element.prototype.closest = function( s ) {
+		var el = this;
+		if ( ! document.documentElement.contains( el ) ) {
+			return null;
+    }
+		do {
+			if ( el.matches( s ) ) {
+				return el;
+      }
+			el = el.parentElement || el.parentNode;
+		} while ( el !== null && el.nodeType === 1 );
+		return null;
+	};
+}
+
 ( function( $ ) {
 
 var dynamic_seq = 0;
@@ -278,15 +307,7 @@ $( document ).ready( function () {
 	 * @returns {boolean} - True if part of a proto block, false if not.
    */
 	fm.is_proto_field = function ( elem ) {
-		let current = elem;
-		while ( current ) {
-			if ( current.classList.contains( 'fmjs-proto' ) ) {
-				return true;
-			}
-			current = elem.parentNode;
-		}
-
-		return false;
+		return ( null !== elem.closest( '.fjjs-proto' ) );
 	};
 
 	init_label_macros();
