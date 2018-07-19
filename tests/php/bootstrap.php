@@ -38,3 +38,7 @@ function _fm_phpunit_is_wp_at_least( $min_version ) {
 
 // Load custom `UnitTestCase` classes
 require_once( __DIR__ . '/includes/class-fieldmanager-assets-unit-test-case.php' );
+
+// REST API helper classes.
+require_once( __DIR__ . '/includes/wp-api/class-wp-test-spy-rest-server.php' );
+require_once( __DIR__ . '/includes/wp-api/class-fieldmanager-rest-controller.php' );

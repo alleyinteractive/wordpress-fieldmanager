@@ -99,5 +99,4 @@ abstract class Fieldmanager_Context {
 			return $nonce . $field;
 		}
 	}
-
 }

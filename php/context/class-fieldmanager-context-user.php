@@ -25,6 +25,8 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param Fieldmanager_Field $fm    The base field.
 	 */
 	public function __construct( $title = '', $fm = null ) {
+		parent::__construct();
+
 		$this->title = $title;
 		$this->fm = $fm;
 		add_action( 'show_user_profile', array( $this, 'render_user_form' ) );

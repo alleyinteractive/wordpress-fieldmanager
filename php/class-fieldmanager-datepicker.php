@@ -171,4 +171,18 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 		return ! empty( $value ) ? date( 'a', $value ) : '';
 	}
 
+	/**
+	 * Creates the JSON Schema for the Datepicker field.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @see http://json-schema.org/draft-04/schema#
+	 */
+	protected function create_schema() {
+		// Add the required JSON Schema properties.
+		parent::create_schema();
+
+		// Add the date-time format.
+		$this->schema['format'] = 'date-time';
+	}
 }

@@ -59,10 +59,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 * @param Fieldmanager_Field $fm                      The base field.
 	 */
 	public function __construct( $title, $post_types, $column_display_callback, $column_title = '', $fm = null ) {
-
-		if ( ! fm_match_context( 'quickedit' ) ) {
-			return; // make sure we only load up our JS if we're in a quickedit form.
-		}
+		parent::__construct();
 
 		if ( FM_DEBUG && ! is_callable( $column_display_callback ) ) {
 			throw new FM_Developer_Exception( esc_html__( 'You must set a valid column display callback.', 'fieldmanager' ) );
@@ -78,6 +75,10 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		$this->column_title = ! empty( $column_title ) ? $column_title : $title;
 		$this->column_display_callback = $column_display_callback;
 		$this->fm = $fm;
+
+		if ( ! fm_match_context( 'quickedit' ) ) {
+			return; // make sure we only load up our JS if we're in a quickedit form.
+		}
 
 		if ( is_callable( $column_display_callback ) ) {
 			foreach ( $post_types as $post_type ) {

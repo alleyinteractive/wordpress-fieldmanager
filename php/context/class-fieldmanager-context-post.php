@@ -63,6 +63,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 * @param Fieldmanager_Field $fm         Current field.
 	 */
 	public function __construct( $title, $post_types, $context = 'normal', $priority = 'default', $fm = null ) {
+		parent::__construct();
 
 		// Populate the list of post types for which to add this meta box with the given settings.
 		if ( ! is_array( $post_types ) ) {
@@ -327,5 +328,4 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
 		return delete_post_meta( $post_id, $meta_key, $meta_value );
 	}
-
 }

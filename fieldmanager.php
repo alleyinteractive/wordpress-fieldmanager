@@ -31,6 +31,14 @@ define( 'FM_BASE_DIR', dirname( __FILE__ ) );
 define( 'FM_GLOBAL_ASSET_VERSION', 1 );
 
 /**
+ * Current REST API endpoint of Fieldmanager.
+ *
+ * @since 1.3.0
+ * @var string The REST API namespace.
+ */
+define( 'FM_REST_API_NAMESPACE', 'fm/v1' );
+
+/**
  * Whether to display debugging information. Default is value of WP_DEBUG.
  */
 if ( ! defined( 'FM_DEBUG' ) ) {
@@ -100,6 +108,9 @@ function fieldmanager_load_file( $file ) {
 // Load utility classes with helper functions. These can't be autoloaded.
 fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
 fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
+
+// Load REST API file.
+fieldmanager_load_file( 'rest-api.php' );
 
 /**
  * Tell Fieldmanager that it has a base URL somewhere other than the plugins URL.
