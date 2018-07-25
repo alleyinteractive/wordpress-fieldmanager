@@ -1078,4 +1078,46 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$fm->element_markup( rand_str() );
 		$this->assertSame( 4, $ma->get_call_count(), 'Missing calls to element-markup filters' );
 	}
+
+	public function test_display_if_markup_for_page_template() {
+		$name     = rand_str();
+		$template = 'toaster.php';
+
+		$fm = new Fieldmanager_TextField( array(
+			'name' => $name,
+			'display_if' => array(
+				'page_template' => $template,
+			),
+		) );
+
+		$html = $this->_get_html_for( $fm );
+
+		$this->assertContains( 'fm-display-if-page-template', $html );
+		$this->assertContains( $template, $html );
+		$this->assertNotContains( 'data-display-src', $html );
+		$this->assertContains( 'data-display-value', $html );
+	}
+
+	public function test_display_if_markup_for_standard_use() {
+		$name = rand_str();
+
+		$source = 'random_thing';
+		$value  = 'another random thing';
+
+		$fm = new Fieldmanager_TextField( array(
+			'name'       => $name,
+			'display_if' => array(
+				'src'   => $source,
+				'value' => $value,
+			),
+		) );
+
+		$html = $this->_get_html_for( $fm );
+
+		$this->assertNotContains( 'fm-display-if-page-template', $html );
+		$this->assertContains( $source, $html );
+		$this->assertContains( $value, $html );
+		$this->assertContains( 'data-display-src', $html );
+		$this->assertContains( 'data-display-value', $html );
+	}
 }

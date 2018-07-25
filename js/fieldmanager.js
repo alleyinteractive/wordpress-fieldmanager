@@ -241,6 +241,16 @@ $( document ).ready( function () {
 	};
 	$( '.fm-display-if' ).each( fm.init_display_if );
 
+	// Initialize triggers to conditionally show/hide fields based on chosen page template.
+	var pageTemplate = $( '#page_template' ).val();
+	$( '.fm-display-if-page-template' ).each( function() {
+		if ( match_value( getCompareValues( this ), pageTemplate ) ) {
+			$( this ).show();
+		} else {
+			$( this ).hide();
+		}
+	} );
+
 	// Controls the trigger to show or hide fields
 	fm.trigger_display_if = function() {
 		var val;
@@ -271,6 +281,21 @@ $( document ).ready( function () {
 		} );
 	};
 	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
+
+	// Trigger show/hide of conditional fields when page template changes.
+	$( document ).on( 'change', '#page_template', function() {
+		var val = $( this ).val();
+
+		$( '.fm-display-if-page-template' ).each( function() {
+			if ( match_value( getCompareValues( this ), val ) ) {
+				$( this ).show();
+			} else {
+				$( this ).hide();
+			}
+
+			$( this ).trigger( 'fm_displayif_toggle' );
+		} );
+	} );
 
 	init_label_macros();
 	init_sortable();

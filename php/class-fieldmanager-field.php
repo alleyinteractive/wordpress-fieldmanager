@@ -531,13 +531,18 @@ abstract class Fieldmanager_Field {
 
 		// Checks to see if element has display_if data values, and inserts the data attributes if it does.
 		if ( isset( $this->display_if ) && ! empty( $this->display_if ) ) {
-			$classes[] = 'fm-display-if';
+			if ( isset( $this->display_if['page_template'] ) ) {
+				$classes[]                              = 'fm-display-if-page-template';
+				$fm_wrapper_attrs['data-display-value'] = $this->display_if['page_template'];
+			} else {
+				$classes[] = 'fm-display-if';
 
-			// For backwards compatibility.
-			$classes[] = 'display-if';
+				// For backwards compatibility.
+				$classes[] = 'display-if';
 
-			$fm_wrapper_attrs['data-display-src'] = $this->display_if['src'];
-			$fm_wrapper_attrs['data-display-value'] = $this->display_if['value'];
+				$fm_wrapper_attrs['data-display-src']   = $this->display_if['src'];
+				$fm_wrapper_attrs['data-display-value'] = $this->display_if['value'];
+			}
 		}
 		$fm_wrapper_attr_string = '';
 		foreach ( $fm_wrapper_attrs as $attr => $val ) {
