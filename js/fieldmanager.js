@@ -158,11 +158,14 @@ fm_add_another = function( $element ) {
 	var $new_element = $( '.fmjs-proto.fm-' + el_name, $element.closest( '.fm-wrapper' ) ).first().clone();
 
 	$new_element.removeClass( 'fmjs-proto' );
-	$new_element = add_more_position == "bottom" ? $new_element.insertBefore( $element.parent() ) :
-						$new_element.insertAfter( $element.parent() )	;
+	if ( add_more_position == 'bottom' ) {
+		$new_element.insertBefore( $element.parent() );
+	} else {
+		$new_element.insertAfter( $element.parent() );
+	}
 	fm_renumber( $element.parents( '.fm-wrapper' ) );
 	// Trigger for subclasses to do any post-add event handling for the new element
-	$element.parent().siblings().last().trigger( 'fm_added_element' );
+	$new_element.trigger( 'fm_added_element' );
 	init_label_macros();
 	init_sortable();
 }
