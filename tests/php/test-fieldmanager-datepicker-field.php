@@ -23,6 +23,40 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 	}
 
 	/**
+	 * Test before 1970s date.
+	 */
+	public function test_before_1970s_date() {
+
+		$date_picker = new Fieldmanager_Datepicker( array(
+			'date_format' => 'm/d/Y',
+		) );
+
+		$base = new Fieldmanager_Group( array(
+			'name'     => 'test_date_group',
+			'children' => array(
+				'test_date_field' => $date_picker,
+			),
+		) );
+
+		// Date before 1970s
+		$test_date = '04/23/1940';
+		$test_data = array(
+			'test_date_group' => array(
+				'test_date_field' => array(
+					'date' => $test_date,
+				),
+			),
+		);
+
+		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_date_group'] );
+
+		$saved_data    = get_post_meta( $this->post_id, 'test_date_group', true );
+		$input_element = $date_picker->form_element( $saved_data['test_date_field'] );
+
+		$this->assertRegExp( sprintf( '#[^*]value="%s"[^*]#', $test_date ), $input_element );
+	}
+
+	/**
 	 * Test behavior when using the time support for datepicker
 	 *
 	 * @group 1111
