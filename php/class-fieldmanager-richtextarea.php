@@ -126,18 +126,20 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 * @return string HTML string.
 	 */
 	public function form_element( $value = '' ) {
-		$proto = $this->has_proto();
+		$proto           = $this->has_proto();
 		$wrapper_classes = array();
 
 		$this->prep_editor_config();
 
-		$settings = $this->array_merge_deep( $this->editor_settings, array(
-			'textarea_name'  => $this->get_form_name(),
-			'editor_class'   => 'fm-element fm-richtext',
-			'tinymce'        => array(
-				'wp_skip_init' => true,
-			),
-		) );
+		$settings = $this->array_merge_deep(
+			$this->editor_settings, array(
+				'textarea_name' => $this->get_form_name(),
+				'editor_class'  => 'fm-element fm-richtext',
+				'tinymce'       => array(
+					'wp_skip_init' => true,
+				),
+			)
+		);
 
 		if ( $proto ) {
 			add_filter( 'the_editor', array( $this, 'add_proto_id' ) );
@@ -153,8 +155,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 				// look for cookie.
 				$user = wp_get_current_user();
 				if ( $user ) {
-					$setting_key = str_replace( '-', '_', $this->get_element_id() );
-					$setting_key = preg_replace( '/[^a-z0-9_]/i', '', $setting_key );
+					$setting_key  = str_replace( '-', '_', $this->get_element_id() );
+					$setting_key  = preg_replace( '/[^a-z0-9_]/i', '', $setting_key );
 					$cookie_value = get_user_setting( 'editor_' . $setting_key, 'tinymce' );
 				}
 
@@ -247,8 +249,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	 */
 	public function editor_config( $mce_init ) {
 		if ( isset( $this->stylesheet ) ) {
-			$this->stylesheet = explode( ',', $this->stylesheet );
-			$this->stylesheet = array_map( 'esc_url_raw', $this->stylesheet );
+			$this->stylesheet        = explode( ',', $this->stylesheet );
+			$this->stylesheet        = array_map( 'esc_url_raw', $this->stylesheet );
 			$mce_init['content_css'] = implode( ',', $this->stylesheet );
 		}
 		return $mce_init;
