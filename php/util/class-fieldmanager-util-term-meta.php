@@ -59,10 +59,12 @@ class Fieldmanager_Util_Term_Meta {
 	 * Create the custom content type.
 	 */
 	public function create_content_type() {
-		register_post_type( $this->post_type, array(
-			'rewrite' => false,
-			'label'   => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
-		) );
+		register_post_type(
+			$this->post_type, array(
+				'rewrite' => false,
+				'label'   => __( 'Fieldmanager Term Metadata', 'fieldmanager' ),
+			)
+		);
 	}
 
 	/**
@@ -225,10 +227,12 @@ class Fieldmanager_Util_Term_Meta {
 		$term_meta_post_id = wp_cache_get( $cache_key );
 		if ( false === $term_meta_post_id ) {
 			// Check if a post exists for this term.
-			$query = new WP_Query( array(
-				'name' => $this->post_slug( $term_id, $taxonomy ),
-				'post_type' => $this->post_type,
-			) );
+			$query = new WP_Query(
+				array(
+					'name'      => $this->post_slug( $term_id, $taxonomy ),
+					'post_type' => $this->post_type,
+				)
+			);
 
 			// Return the post ID if it exists, otherwise false.
 			if ( $query->have_posts() ) {
@@ -278,9 +282,9 @@ class Fieldmanager_Util_Term_Meta {
 		// Add the skeleton post to store meta data for this taxonomy term.
 		$result = wp_insert_post(
 			array(
-				'post_name' => $this->post_slug( $term_id, $taxonomy ),
-				'post_title' => $this->post_slug( $term_id, $taxonomy ),
-				'post_type' => $this->post_type,
+				'post_name'   => $this->post_slug( $term_id, $taxonomy ),
+				'post_title'  => $this->post_slug( $term_id, $taxonomy ),
+				'post_type'   => $this->post_type,
 				'post_status' => 'publish',
 			)
 		);
@@ -320,11 +324,13 @@ class Fieldmanager_Util_Term_Meta {
 	public function split_shared_term( $old_term_id, $new_term_id, $term_taxonomy_id, $taxonomy ) {
 		$post_id = $this->get_term_meta_post_id( $old_term_id, $taxonomy );
 		if ( false != $post_id ) {
-			wp_update_post( array(
-				'ID' => $post_id,
-				'post_name' => $this->post_slug( $new_term_id, $taxonomy ),
-				'post_title' => $this->post_slug( $new_term_id, $taxonomy ),
-			) );
+			wp_update_post(
+				array(
+					'ID'         => $post_id,
+					'post_name'  => $this->post_slug( $new_term_id, $taxonomy ),
+					'post_title' => $this->post_slug( $new_term_id, $taxonomy ),
+				)
+			);
 			$this->delete_term_meta_post_id_cache( $old_term_id, $taxonomy );
 		}
 	}

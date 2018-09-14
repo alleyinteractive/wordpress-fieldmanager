@@ -2,6 +2,8 @@
 <ruleset name="Fieldmanager">
 	<description>Sniffs for the coding standards of the Fieldmanager plugin</description>
 
+	<arg value="sp"/> <!-- Show sniff and progress -->
+
 	<file>fieldmanager.php</file>
 	<file>php/</file>
 	<file>templates/</file>
