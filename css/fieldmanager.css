@@ -278,9 +278,13 @@ div.fm-group-label-wrapper .fmjs-remove {
 	color: #333;
 }
 
-.chzn-container-multi .chzn-choices .search-field input {
+/* Chosen.js overrides */
+.chosen-container-multi .chosen-choices .search-field input {
 	height: 21px !important;
 }
+.chosen-search input {
+ 	min-width: 100%;
+ }
 
 /* Grid editor CSS */
 .grid-toggle-wrapper {

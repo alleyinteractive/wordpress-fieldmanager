@@ -356,7 +356,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 function fm_url_to_post_id( $url ) {
 	global $wp_rewrite;
 
-	$url = apply_filters( 'url_to_postid', $url );
+	$url = apply_filters( 'url_to_postid', $url ); // See #532. prefix ok.
 
 	// First, check to see if there is a 'p=N' or 'page_id=N' to match against.
 	if ( preg_match( '#[?&](p|page_id|attachment_id)=(\d+)#', $url, $values ) ) {
@@ -406,7 +406,7 @@ function fm_url_to_post_id( $url ) {
 	} else {
 		// Chop off /path/to/blog.
 		$home_path = wp_parse_url( home_url() );
-		$home_path = isset( $home_path['path'] ) ? $home_path['path'] : '' ;
+		$home_path = isset( $home_path['path'] ) ? $home_path['path'] : '';
 		$url = str_replace( $home_path, '', $url );
 	}
 
@@ -423,7 +423,7 @@ function fm_url_to_post_id( $url ) {
 			$request_match = $url . '/' . $request;
 		}
 
-		if ( preg_match( "!^$match!" , $request_match, $matches ) ) {
+		if ( preg_match( "!^$match!", $request_match, $matches ) ) {
 			// Got a match.
 			// Trim the query of everything up to the '?'.
 			$query = preg_replace( '!^.+\?!', '', $query );
