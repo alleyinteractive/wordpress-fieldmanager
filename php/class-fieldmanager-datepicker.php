@@ -90,6 +90,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @return string HTML for the element.
 	 */
 	public function form_element( $value ) {
+		$value     = (int) $value;
 		$old_value = $value;
 		// If we're storing the local time, in order to make the form work as expected, we have
 		// to alter the timestamp. This isn't ideal, but there currently isn't a good way around
