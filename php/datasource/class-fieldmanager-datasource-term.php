@@ -141,15 +141,16 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 	public function preload_alter_values( Fieldmanager_Field $field, $values ) {
 		if ( $this->only_save_to_taxonomy ) {
 			$taxonomies = $this->get_taxonomies();
-			$terms = get_the_terms( $field->data_id, $taxonomies[0] );
+			$terms = get_terms( array(
+				'object_ids' => array( $field->data_id ),
+				'orderby' => 'term_order',
+				'taxonomy' => array( $taxonomies[0] ),
+			) );
 
 			// If not found, bail out.
 			if ( empty( $terms ) || is_wp_error( $terms ) ) {
 				return array();
 			}
-
-			// Attempt to sort the list by term_order.
-			usort( $terms, array( $this, 'sort_terms' ) );
 
 			if ( count( $terms ) > 0 ) {
 				if ( 1 == $field->limit && empty( $field->multiple ) ) {
@@ -168,6 +169,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 	/**
 	 * Sort function for `get_the_terms` result set.
+	 *
+	 * @deprecated 1.2.2 Handled with get_terms() in Fieldmanager_Datasource_Term::preload_alter_values().
 	 *
 	 * @param  WP_Term $term_a First term.
 	 * @param  WP_Term $term_b Second term.
