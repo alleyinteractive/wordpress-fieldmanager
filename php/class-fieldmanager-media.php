@@ -86,6 +86,13 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public $mime_type = 'all';
 
 	/**
+	 * Query arguments to pass to wp.media window.
+	 *
+	 * @var array
+	 */
+	public $queryargs = array();
+
+	/**
 	 * Static variable so we only load media JS once.
 	 *
 	 * @var bool
@@ -174,7 +181,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$preview = '';
 		}
 		return sprintf(
-			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" data-preview-size="%6$s" data-mime-type="%9$s" %10$s />
+			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" data-preview-size="%6$s" data-queryargs="%9$s" data-mime-type="%10$s" %11$s />
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
 			<div class="media-wrapper">%5$s</div>',
 			esc_attr( $this->get_element_id() ),
@@ -185,6 +192,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			esc_attr( $this->preview_size ),
 			esc_attr( $this->modal_title ),
 			esc_attr( $this->modal_button_label ),
+			esc_attr( wp_json_encode( $this->queryargs ) ),
 			esc_attr( $this->mime_type ),
 			$this->get_element_attributes()
 		);
