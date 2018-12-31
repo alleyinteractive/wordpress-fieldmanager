@@ -76,7 +76,7 @@ class Test_Fieldmanager_Autocomplete_Field extends WP_UnitTestCase {
 	/**
 	 * Test searching for post with a phrase that contains an apostrophe.
 	 */
-	public function test_searchphreas_with_apostrophe() {
+	public function test_search_with_apostrophe() {
 		$datasource = new Fieldmanager_Datasource_Post();
 
 		$fm = new Fieldmanager_Autocomplete( array(
