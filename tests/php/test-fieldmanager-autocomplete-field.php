@@ -19,6 +19,7 @@ class Test_Fieldmanager_Autocomplete_Field extends WP_UnitTestCase {
 			$this->factory->post->create_and_get( array( 'post_title' => 'test ' . rand_str(), 'post_date' => '2009-07-02 00:00:00' ) ),
 			$this->factory->post->create_and_get( array( 'post_title' => 'test ' . rand_str(), 'post_date' => '2009-07-03 00:00:00' ) ),
 			$this->factory->post->create_and_get( array( 'post_title' => 'test ' . rand_str(), 'post_date' => '2009-07-04 00:00:00' ) ),
+			$this->factory->post->create_and_get( array( 'post_title' => "Arby's" . rand_str(), 'post_date' => '2009-07-04 00:00:00' ) ),
 		);
 
 		$this->custom_datasource = new Fieldmanager_Datasource( array(
@@ -72,4 +73,19 @@ class Test_Fieldmanager_Autocomplete_Field extends WP_UnitTestCase {
 		$this->assertSame( $this->data_posts[2]->ID, $items[0]['value'] );
 	}
 
+	/**
+	 * Test searching for post with a phrase that contains an apostrophe.
+	 */
+	public function test_search_with_apostrophe() {
+		$datasource = new Fieldmanager_Datasource_Post();
+
+		$fm = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_autocomplete',
+			'datasource' => $datasource,
+		) );
+
+		$items = $datasource->get_items_for_ajax( "Arby's" );
+
+		$this->assertSame( 1, count( $items ) );
+	}
 }
