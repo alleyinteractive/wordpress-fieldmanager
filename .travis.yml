@@ -23,8 +23,6 @@ matrix:
     - php: 7.2
       env: WP_VERSION=latest
   fast_finish: true
-  allow_failures:
-    - php: 7.2
 
 branches:
   only:
@@ -50,6 +48,7 @@ before_script:
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
       npm install
       composer install
+      export PATH=$PATH:`pwd`/vendor/bin/
     fi
 
 script:
