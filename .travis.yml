@@ -54,8 +54,6 @@ before_script:
   # For debugging.
   - which phpunit
   - phpunit --version
-  - which phpcs
-  - phpcs --version
   - pwd
   - echo $PATH
 
