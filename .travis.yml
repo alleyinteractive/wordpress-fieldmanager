@@ -49,14 +49,14 @@ before_script:
 
   - |
     if [[ ${TRAVIS_PHP_VERSION:0:2} == "7." ]]; then
+      cd $TRAVIS_BUILD_DIR
       composer global require "phpunit/phpunit=5.7.*"
     else
+      cd $TRAVIS_BUILD_DIR
       composer global require "phpunit/phpunit=4.8.*"
     fi
 
   # For debugging.
-  - which phpunit
-  - phpunit --version
   - pwd
   - echo $PATH
 
@@ -64,12 +64,12 @@ script:
   - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      which phpunit
-      phpunit -v
+      $TRAVIS_BUILD_DIR/vendor/bin/phpunit --version
       $TRAVIS_BUILD_DIR/vendor/bin/phpunit
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
+      $TRAVIS_BUILD_DIR/vendor/bin/phpunit --version
       $TRAVIS_BUILD_DIR/vendor/bin/phpunit -c multisite.xml
     fi
   - |
