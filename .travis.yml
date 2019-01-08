@@ -30,6 +30,7 @@ branches:
 before_script:
   # Turn off Xdebug. See https://core.trac.wordpress.org/changeset/40138.
   - phpenv config-rm xdebug.ini || echo "Xdebug not available"
+  - export OG_DIR="$(pwd)"
 
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
@@ -71,9 +72,11 @@ script:
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
+      cd $OG_DIR
       grunt qunit:specific --wp=$WP_VERSION
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
+      cd $OG_DIR
       grunt phpcs
     fi
