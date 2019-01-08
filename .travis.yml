@@ -51,7 +51,6 @@ before_script:
     if [[ ! -z "$WP_VERSION" ]] ; then
       bash bin/install-wp-tests.sh wordpress_test root '' localhost $WP_VERSION
       npm install
-      export PATH="$HOME/.composer/vendor/bin:$PATH"
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then
@@ -72,13 +71,9 @@ script:
   - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      $TRAVIS_BUILD_DIR/vendor/bin/phpunit --version
-      $TRAVIS_BUILD_DIR/vendor/bin/phpunit
-    fi
-  - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      $TRAVIS_BUILD_DIR/vendor/bin/phpunit --version
-      $TRAVIS_BUILD_DIR/vendor/bin/phpunit -c multisite.xml
+      phpunit --version
+      phpunit
+      phpunit -c multisite.xml
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
