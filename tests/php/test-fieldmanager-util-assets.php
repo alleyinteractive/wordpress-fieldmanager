@@ -18,7 +18,7 @@ class Test_Fieldmanager_Util_Assets extends Fieldmanager_Assets_Unit_Test_Case {
 		$this->assertFalse( wp_scripts()->query( 'fieldmanager_script', 'to_do' ) );
 		$this->assertFalse( wp_scripts()->query( 'fieldmanager_script', 'done' ) );
 
-		$field = new Fieldmanager_TextField;
+		$field = new Fieldmanager_TextField();
 		do_action( 'admin_enqueue_scripts' );
 		$this->assertNotFalse( wp_scripts()->query( 'fieldmanager_script' ) );
 		$this->assertTrue( wp_scripts()->query( 'fieldmanager_script', 'enqueued' ) );
@@ -33,7 +33,7 @@ class Test_Fieldmanager_Util_Assets extends Fieldmanager_Assets_Unit_Test_Case {
 	 */
 	public function test_delayed_enqueue() {
 		$this->assertFalse( wp_scripts()->query( 'fieldmanager_script' ) );
-		$field = new Fieldmanager_TextField;
+		$field = new Fieldmanager_TextField();
 		$this->assertFalse( wp_scripts()->query( 'fieldmanager_script' ) );
 		do_action( 'admin_enqueue_scripts' );
 		$this->assertNotFalse( wp_scripts()->query( 'fieldmanager_script' ) );
@@ -46,7 +46,7 @@ class Test_Fieldmanager_Util_Assets extends Fieldmanager_Assets_Unit_Test_Case {
 	public function test_late_enqueue() {
 		do_action( 'admin_enqueue_scripts' );
 		$this->assertFalse( wp_scripts()->query( 'fieldmanager_script' ) );
-		$field = new Fieldmanager_TextField;
+		$field = new Fieldmanager_TextField();
 		$this->assertNotFalse( wp_scripts()->query( 'fieldmanager_script' ) );
 	}
 }

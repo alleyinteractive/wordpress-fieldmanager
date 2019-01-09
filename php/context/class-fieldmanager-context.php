@@ -69,7 +69,7 @@ abstract class Fieldmanager_Context {
 			$new_value = isset( $_POST[ $this->fm->name ] ) ? wp_unslash( $_POST[ $this->fm->name ] ) : ''; // WPCS: input var okay. CSRF okay. Sanitization okay.
 		}
 		$new_value = apply_filters( 'fm_context_before_presave_data', $new_value, $old_value, $this, $fm );
-		$data = $fm->presave_all( $new_value, $old_value );
+		$data      = $fm->presave_all( $new_value, $old_value );
 		return apply_filters( 'fm_context_after_presave_data', $data, $old_value, $this, $fm );
 	}
 

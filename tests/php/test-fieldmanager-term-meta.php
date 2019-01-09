@@ -31,8 +31,8 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 	 * Set up the request environment values and save the data.
 	 *
 	 * @param Fieldmanager_Field $field
-	 * @param WP_Post $post
-	 * @param mixed $values
+	 * @param WP_Post            $post
+	 * @param mixed              $values
 	 */
 	public function save_values( $field, $term, $values ) {
 		$field->add_term_form( $field->name, $term->taxonomy )->save_to_term_meta( $term->term_id, $term->taxonomy, $values );
@@ -47,9 +47,11 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_save_term_meta() {
-		$term_option = new Fieldmanager_Textfield( array(
-			'name'  => 'term_option',
-		) );
+		$term_option = new Fieldmanager_Textfield(
+			array(
+				'name' => 'term_option',
+			)
+		);
 
 		// check normal save and fetch behavior
 		$text = rand_str();
@@ -94,9 +96,11 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
 	 */
 	public function test_garbage_collection() {
-		$term_option = new Fieldmanager_Textfield( array(
-			'name'  => 'term_option',
-		) );
+		$term_option = new Fieldmanager_Textfield(
+			array(
+				'name' => 'term_option',
+			)
+		);
 
 		// check normal save and fetch behavior
 		$text = rand_str();
@@ -138,7 +142,7 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 		$t1 = wp_insert_term( 'Joined Term', 'category' );
 
 		// Add term meta to the term
-		$value = rand_str();
+		$value     = rand_str();
 		$term_id_1 = $t1['term_id'];
 		fm_add_term_meta( $term_id_1, 'category', 'split_test', $value );
 
@@ -160,9 +164,13 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 		$this->assertEquals( $value, fm_get_term_meta( $term_id_1, 'category', 'split_test', true ) );
 
 		// Update the term to cause it to split
-		$new_t1 = wp_update_term( $term_id_1, 'category', array(
-			'name' => 'Split Term',
-		) );
+		$new_t1 = wp_update_term(
+			$term_id_1,
+			'category',
+			array(
+				'name' => 'Split Term',
+			)
+		);
 
 		// Verify that the term updated and split
 		$this->assertTrue( isset( $new_t1['term_id'] ) );
