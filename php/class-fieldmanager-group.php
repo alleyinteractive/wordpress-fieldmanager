@@ -354,7 +354,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			}
 		}
 
-		// Handle empty groups.
+		// This can happen when an FM Group has FM Selects in it.
 		if ( empty( $values ) ) {
 			$values = array();
 		}
