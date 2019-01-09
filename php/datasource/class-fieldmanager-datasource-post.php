@@ -205,8 +205,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 */
 	public function title_like( $where, $wp_query ) {
 		global $wpdb;
-		$like = $wpdb->esc_like( $this->_fragment );
-		$where .= " AND {$wpdb->posts}.post_title LIKE '%{$like}%' ";
+		$where .= $wpdb->prepare( " AND {$wpdb->posts}.post_title LIKE %s", '%' . $wpdb->esc_like( $this->_fragment ) . '%' );
 		return $where;
 	}
 
