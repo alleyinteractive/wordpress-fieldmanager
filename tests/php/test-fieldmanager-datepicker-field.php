@@ -10,12 +10,12 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		Fieldmanager_Field::$debug = TRUE;
+		Fieldmanager_Field::$debug = true;
 
 		$this->post = array(
-			'post_status' => 'publish',
+			'post_status'  => 'publish',
 			'post_content' => rand_str(),
-			'post_title' => rand_str(),
+			'post_title'   => rand_str(),
 		);
 
 		// insert a post
@@ -29,24 +29,26 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 	 */
 	public function test_time_feature() {
 
-		$base = new Fieldmanager_Group( array(
-			'name'       => 'test_datetime_group',
-			'children'   => array(
-				'test_datetime_field' => new Fieldmanager_Datepicker( array( 'use_time' => true ) ),
+		$base = new Fieldmanager_Group(
+			array(
+				'name'     => 'test_datetime_group',
+				'children' => array(
+					'test_datetime_field' => new Fieldmanager_Datepicker( array( 'use_time' => true ) ),
 				),
-			) );
+			)
+		);
 
 		// No time fields set
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'      => '',
-					'hour'      => '',
-					'minute'    => '',
-					'ampm'      => 'am',
-					),
+					'date'   => '',
+					'hour'   => '',
+					'minute' => '',
+					'ampm'   => 'am',
 				),
-			);
+			),
+		);
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEmpty( $saved_data['test_datetime_field'] );
@@ -55,13 +57,13 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'      => '13 Mar 2014',
-					'hour'      => '',
-					'minute'    => '',
-					'ampm'      => 'am',
-					),
+					'date'   => '13 Mar 2014',
+					'hour'   => '',
+					'minute' => '',
+					'ampm'   => 'am',
 				),
-			);
+			),
+		);
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '13 Mar 2014' ), $saved_data['test_datetime_field'] );
@@ -70,13 +72,13 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'      => '',
-					'hour'      => '2',
-					'minute'    => '37',
-					'ampm'      => 'am',
-					),
+					'date'   => '',
+					'hour'   => '2',
+					'minute' => '37',
+					'ampm'   => 'am',
 				),
-			);
+			),
+		);
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '2:37 am' ), $saved_data['test_datetime_field'] );
@@ -85,13 +87,13 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'      => '13 Mar 2014',
-					'hour'      => '2',
-					'minute'    => '',
-					'ampm'      => 'am',
-					),
+					'date'   => '13 Mar 2014',
+					'hour'   => '2',
+					'minute' => '',
+					'ampm'   => 'am',
 				),
-			);
+			),
+		);
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '13 Mar 2014 2:00am' ), $saved_data['test_datetime_field'] );
@@ -100,13 +102,13 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'      => '13 Mar 2014',
-					'hour'      => '2',
-					'minute'    => '37',
-					'ampm'      => 'am',
-					),
+					'date'   => '13 Mar 2014',
+					'hour'   => '2',
+					'minute' => '37',
+					'ampm'   => 'am',
 				),
-			);
+			),
+		);
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '13 Mar 2014 2:37am' ), $saved_data['test_datetime_field'] );
@@ -115,13 +117,13 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'      => '',
-					'hour'      => '',
-					'minute'    => '',
-					'ampm'      => '',
-					),
+					'date'   => '',
+					'hour'   => '',
+					'minute' => '',
+					'ampm'   => '',
 				),
-			);
+			),
+		);
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( '', $saved_data['test_datetime_field'] );
@@ -130,8 +132,19 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 	public function test_local_time() {
 		update_option( 'timezone_string', 'America/New_York' );
 
-		$gmt_base = new Fieldmanager_Datepicker( array( 'name' => 'test_gmt_time', 'use_time' => true ) );
-		$local_base = new Fieldmanager_Datepicker( array( 'name' => 'test_local_time', 'use_time' => true, 'store_local_time' => true ) );
+		$gmt_base   = new Fieldmanager_Datepicker(
+			array(
+				'name'     => 'test_gmt_time',
+				'use_time' => true,
+			)
+		);
+		$local_base = new Fieldmanager_Datepicker(
+			array(
+				'name'             => 'test_local_time',
+				'use_time'         => true,
+				'store_local_time' => true,
+			)
+		);
 
 		$test_data = array(
 			'date'   => '13 Mar 2014',
