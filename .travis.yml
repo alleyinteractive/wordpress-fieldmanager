@@ -38,7 +38,7 @@ before_script:
   - |
     case "$TRAVIS_PHP_VERSION" in
       7.*)
-        echo "Using PHPUnit 5.7"
+        echo "Using PHPUnit 6.1"
         composer global require "phpunit/phpunit=5.7.*"
         ;;
       *)
