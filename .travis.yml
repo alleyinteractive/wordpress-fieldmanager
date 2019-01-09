@@ -71,9 +71,9 @@ script:
   - find . -path ./vendor -prune -o -type "f" -iname "*.php" | xargs -L "1" php -l
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
-      phpunit --version
-      phpunit
-      phpunit -c multisite.xml
+      $HOME/.composer/vendor/bin/phpunit --version
+      $HOME/.composer/vendor/bin/phpunit
+      $HOME/.composer/vendor/bin/phpunit -c multisite.xml
     fi
   - |
     if [[ ! -z "$WP_VERSION" ]] ; then
