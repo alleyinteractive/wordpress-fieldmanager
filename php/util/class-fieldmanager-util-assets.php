@@ -184,15 +184,18 @@ class Fieldmanager_Util_Assets {
 			return;
 		}
 
-		$args = wp_parse_args( $args, array(
-			'path'        => false,
-			'deps'        => array(),
-			'ver'         => false,
-			'in_footer'   => false,
-			'data_object' => '',
-			'data'        => array(),
-			'plugin_dir'  => '',
-		) );
+		$args = wp_parse_args(
+			$args,
+			array(
+				'path'        => false,
+				'deps'        => array(),
+				'ver'         => false,
+				'in_footer'   => false,
+				'data_object' => '',
+				'data'        => array(),
+				'plugin_dir'  => '',
+			)
+		);
 
 		// Bail if we don't have a handle and a path.
 		if ( ! isset( $args['handle'] ) ) {
@@ -242,13 +245,16 @@ class Fieldmanager_Util_Assets {
 			return;
 		}
 
-		$args = wp_parse_args( $args, array(
-			'path'       => false,
-			'deps'       => array(),
-			'ver'        => false,
-			'media'      => 'all',
-			'plugin_dir' => '',
-		) );
+		$args = wp_parse_args(
+			$args,
+			array(
+				'path'       => false,
+				'deps'       => array(),
+				'ver'        => false,
+				'media'      => 'all',
+				'plugin_dir' => '',
+			)
+		);
 
 		// Bail if we don't have a handle and a path.
 		if ( ! isset( $args['handle'] ) ) {

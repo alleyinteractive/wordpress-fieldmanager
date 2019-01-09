@@ -11,7 +11,7 @@
  * @package Fieldmanager
  */
 
-$_tests_dir = getenv('WP_TESTS_DIR');
+$_tests_dir = getenv( 'WP_TESTS_DIR' );
 if ( ! $_tests_dir ) {
 	$_tests_dir = '/tmp/wordpress-tests-lib';
 }
@@ -37,4 +37,4 @@ function _fm_phpunit_is_wp_at_least( $min_version ) {
 }
 
 // Load custom `UnitTestCase` classes
-require_once( __DIR__ . '/includes/class-fieldmanager-assets-unit-test-case.php' );
+require_once __DIR__ . '/includes/class-fieldmanager-assets-unit-test-case.php';

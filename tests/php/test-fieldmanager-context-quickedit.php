@@ -12,9 +12,9 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = array(
-			'post_status' => 'publish',
+			'post_status'  => 'publish',
 			'post_content' => rand_str(),
-			'post_title' => rand_str(),
+			'post_title'   => rand_str(),
 		);
 
 		// insert a post
@@ -27,15 +27,16 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 	/**
 	 * Get valid test data.
 	 * Several tests transform this data to somehow be invalid.
+	 *
 	 * @return array valid test data
 	 */
 	private function _get_valid_test_data() {
 		return array(
 			'base_group' => array(
-				'test_basic' => 'lorem ipsum<script>alert(/hacked!/);</script>',
+				'test_basic'     => 'lorem ipsum<script>alert(/hacked!/);</script>',
 				'test_textfield' => 'alley interactive',
 				'test_htmlfield' => '<b>Hello</b> world',
-				'test_extended' => array(
+				'test_extended'  => array(
 					array(
 						'extext' => array( 'first' ),
 					),
@@ -58,44 +59,55 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 
 		// The QuickEdit context absolutely requires we be in the edit.php
 		// context, so we have to kind of fake it.
-		$context->post_types = array( 'post' );
-		$context->title = 'test meta box';
-		$context->column_title = 'Custom Column';
+		$context->post_types              = array( 'post' );
+		$context->title                   = 'test meta box';
+		$context->column_title            = 'Custom Column';
 		$context->column_display_callback = array( $this, '_quickedit_column' );
-		$context->fm = $fm;
+		$context->fm                      = $fm;
 
 		return $context;
 	}
 
 	/**
 	 * Get a set of elements
+	 *
 	 * @return Fieldmanager_Group
 	 */
 	private function _get_elements() {
-		return new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => array(
-				'test_basic' => new Fieldmanager_TextField(),
-				'test_textfield' => new Fieldmanager_TextField( array(
-					'index' => '_test_index',
-				) ),
-				'test_htmlfield' => new Fieldmanager_Textarea( array(
-					'sanitize' => 'wp_kses_post',
-				) ),
-				'test_extended' => new Fieldmanager_Group( array(
-					'limit' => 4,
-					'children' => array(
-						'extext' => new Fieldmanager_TextField( array(
-							'limit' => 0,
-							'name' => 'extext',
-							'one_label_per_item' => False,
-							'sortable' => True,
-							'index' => '_extext_index',
-						) ),
+		return new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => array(
+					'test_basic'     => new Fieldmanager_TextField(),
+					'test_textfield' => new Fieldmanager_TextField(
+						array(
+							'index' => '_test_index',
+						)
 					),
-				) ),
-			),
-		) );
+					'test_htmlfield' => new Fieldmanager_Textarea(
+						array(
+							'sanitize' => 'wp_kses_post',
+						)
+					),
+					'test_extended'  => new Fieldmanager_Group(
+						array(
+							'limit'    => 4,
+							'children' => array(
+								'extext' => new Fieldmanager_TextField(
+									array(
+										'limit'    => 0,
+										'name'     => 'extext',
+										'one_label_per_item' => false,
+										'sortable' => true,
+										'index'    => '_extext_index',
+									)
+								),
+							),
+						)
+					),
+				),
+			)
+		);
 	}
 
 	private function _get_html_for( $field, $test_data = null ) {
@@ -104,7 +116,7 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		if ( $test_data ) {
 			$context->save_to_post_meta( $this->post_id, $test_data );
 		}
-		$get = $_GET;
+		$get  = $_GET;
 		$_GET = array(
 			'action'      => 'fm_quickedit_render',
 			'post_id'     => $this->post_id,
@@ -116,7 +128,7 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 	}
 
 	public function test_context_render() {
-		$base = $this->_get_elements();
+		$base    = $this->_get_elements();
 		$context = $this->_get_context( $base );
 
 		ob_start();
@@ -134,7 +146,7 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 	}
 
 	public function test_title() {
-		$context = $this->_get_context( $this->_get_elements() );
+		$context        = $this->_get_context( $this->_get_elements() );
 		$context->title = rand_str();
 
 		ob_start();
@@ -152,14 +164,14 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 	}
 
 	public function test_context_save() {
-		$base = $this->_get_elements();
+		$base      = $this->_get_elements();
 		$test_data = $this->_get_valid_test_data();
 
 		$context = $this->_get_context( $base );
 		$context->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 
 		$saved_value = get_post_meta( $this->post_id, 'base_group', true );
-		$saved_index = get_post_meta( $this->post_id, '_test_index', TRUE );
+		$saved_index = get_post_meta( $this->post_id, '_test_index', true );
 
 		$this->assertEquals( $saved_value['test_basic'], 'lorem ipsum' );
 		$this->assertEquals( $saved_index, $saved_value['test_textfield'] );
@@ -182,11 +194,13 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_single_field() {
-		$base = new Fieldmanager_TextField( array(
-			'name'           => 'base_field',
-			'limit'          => 0,
-			'serialize_data' => false,
-		) );
+		$base = new Fieldmanager_TextField(
+			array(
+				'name'           => 'base_field',
+				'limit'          => 0,
+				'serialize_data' => false,
+			)
+		);
 		$html = $this->_get_html_for( $base );
 		$this->assertContains( 'name="base_field[0]"', $html );
 		$this->assertNotContains( 'name="base_field[3]"', $html );
@@ -208,11 +222,13 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$item_1 = rand_str();
 		$item_2 = rand_str();
 		$item_3 = rand_str();
-		$base = new Fieldmanager_TextField( array(
-			'name'           => 'base_field',
-			'limit'          => 0,
-			'serialize_data' => false,
-		) );
+		$base   = new Fieldmanager_TextField(
+			array(
+				'name'           => 'base_field',
+				'limit'          => 0,
+				'serialize_data' => false,
+			)
+		);
 
 		// Test as 1, 2, 3
 		$data = array( $item_1, $item_2, $item_3 );
@@ -235,36 +251,42 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_tabbed() {
-		$base = new Fieldmanager_Group( array(
-			'name'           => 'base_group',
-			'tabbed'         => true,
-			'serialize_data' => false,
-			'add_to_prefix'  => false,
-			'children'       => array(
-				'tab-1' => new Fieldmanager_Group( array(
-					'label'          => 'Tab One',
-					'serialize_data' => false,
-					'add_to_prefix'  => false,
-					'children'       => array(
-						'test_text' => new Fieldmanager_TextField( 'Text Field' ),
-					)
-				) ),
-				'tab-2' => new Fieldmanager_Group( array(
-					'label'          => 'Tab Two',
-					'serialize_data' => false,
-					'add_to_prefix'  => false,
-					'children'       => array(
-						'test_textarea' => new Fieldmanager_TextArea( 'TextArea' ),
-					)
-				) ),
+		$base = new Fieldmanager_Group(
+			array(
+				'name'           => 'base_group',
+				'tabbed'         => true,
+				'serialize_data' => false,
+				'add_to_prefix'  => false,
+				'children'       => array(
+					'tab-1' => new Fieldmanager_Group(
+						array(
+							'label'          => 'Tab One',
+							'serialize_data' => false,
+							'add_to_prefix'  => false,
+							'children'       => array(
+								'test_text' => new Fieldmanager_TextField( 'Text Field' ),
+							),
+						)
+					),
+					'tab-2' => new Fieldmanager_Group(
+						array(
+							'label'          => 'Tab Two',
+							'serialize_data' => false,
+							'add_to_prefix'  => false,
+							'children'       => array(
+								'test_textarea' => new Fieldmanager_TextArea( 'TextArea' ),
+							),
+						)
+					),
+				),
 			)
-		) );
+		);
 		$data = array(
 			'tab-1' => array(
-				'test_text' => rand_str()
+				'test_text' => rand_str(),
 			),
 			'tab-2' => array(
-				'test_textarea' => rand_str()
+				'test_textarea' => rand_str(),
 			),
 		);
 
@@ -281,24 +303,28 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_mixed_depth() {
-		$base = new Fieldmanager_Group( array(
-			'name'           => 'base_group',
-			'serialize_data' => false,
-			'children'       => array(
-				'test_text' => new Fieldmanager_TextField,
-				'test_group' => new Fieldmanager_Group( array(
-					'serialize_data' => false,
-					'children'       => array(
-						'deep_text' => new Fieldmanager_TextArea,
-					)
-				) ),
+		$base = new Fieldmanager_Group(
+			array(
+				'name'           => 'base_group',
+				'serialize_data' => false,
+				'children'       => array(
+					'test_text'  => new Fieldmanager_TextField(),
+					'test_group' => new Fieldmanager_Group(
+						array(
+							'serialize_data' => false,
+							'children'       => array(
+								'deep_text' => new Fieldmanager_TextArea(),
+							),
+						)
+					),
+				),
 			)
-		) );
+		);
 
 		$data = array(
-			'test_text' => rand_str(),
+			'test_text'  => rand_str(),
 			'test_group' => array(
-				'deep_text' => rand_str()
+				'deep_text' => rand_str(),
 			),
 		);
 
