@@ -45,7 +45,6 @@ class Test_Fieldmanager_Autocomplete_Field extends WP_UnitTestCase {
 					'post_date'  => '2009-07-04 00:00:00',
 				)
 			),
-			$this->factory->post->create_and_get( array( 'post_title' => "Arby's" . rand_str(), 'post_date' => '2009-07-04 00:00:00' ) ),
 		);
 
 		$this->custom_datasource = new Fieldmanager_Datasource(
