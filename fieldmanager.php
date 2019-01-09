@@ -94,7 +94,7 @@ function fieldmanager_load_file( $file ) {
 	if ( ! file_exists( $file ) ) {
 		throw new FM_Class_Not_Found_Exception( $file );
 	}
-	require_once( $file );
+	require_once $file;
 }
 
 // Load utility classes with helper functions. These can't be autoloaded.
@@ -254,7 +254,7 @@ function fm_calculate_context() {
 	// Safe to use at any point in the load process, and better than URL matching.
 	if ( is_admin() && ! empty( $_SERVER['PHP_SELF'] ) ) {  // WPCS: input var okay.
 		$php_self = sanitize_text_field( wp_unslash( $_SERVER['PHP_SELF'] ) );  // WPCS: input var okay.
-		$script = substr( $php_self, strrpos( $php_self, '/' ) + 1 );
+		$script   = substr( $php_self, strrpos( $php_self, '/' ) + 1 );
 
 		$get_post_type = '';
 		if ( ! empty( $_GET['post_type'] ) ) {  // WPCS: input var okay.
@@ -324,7 +324,7 @@ function fm_calculate_context() {
 				case 'admin-ajax.php':
 					// Passed in via an Ajax form.
 					if ( ! empty( $_POST['fm_context'] ) ) { // WPCS: input var okay. CSRF ok.
-						$subcontext = ! empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( wp_unslash( $_POST['fm_subcontext'] ) ) : null; // WPCS: input var okay. CSRF ok.
+						$subcontext         = ! empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( wp_unslash( $_POST['fm_subcontext'] ) ) : null; // WPCS: input var okay. CSRF ok.
 						$calculated_context = array( sanitize_text_field( wp_unslash( $_POST['fm_context'] ) ), $subcontext ); // WPCS: input var okay. CSRF ok.
 					} elseif ( ! empty( $_POST['screen'] ) && ! empty( $post_action ) ) { // WPCS: input var okay. CSRF ok.
 						if ( 'edit-post' === $_POST['screen'] && 'inline-save' === $post_action ) { // WPCS: input var okay. CSRF ok.

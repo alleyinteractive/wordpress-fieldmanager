@@ -54,7 +54,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	public $reserved_fields = array( 'name', 'slug', 'description' );
 
 	/**
-	 * Use FM term meta or WordPres core term meta. The default is a bit
+	 * Use FM term meta or WordPress core term meta. The default is a bit
 	 * confusing: technically, it's to use core's term meta, but if the class is
 	 * instantiated using the now-deprecated separated arguments, this gets set
 	 * to true for backwards-compatibility purposes.
@@ -116,13 +116,16 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 */
 	public function __construct( $args, $taxonomies = array(), $show_on_add = true, $show_on_edit = true, $parent = '', $fm = null ) {
 		if ( is_array( $args ) ) {
-			$args = wp_parse_args( $args, array(
-				'show_on_add'  => true,
-				'show_on_edit' => true,
-				'parent'       => '',
-				'use_fm_meta'  => false,
-				'field'        => null,
-			) );
+			$args = wp_parse_args(
+				$args,
+				array(
+					'show_on_add'  => true,
+					'show_on_edit' => true,
+					'parent'       => '',
+					'use_fm_meta'  => false,
+					'field'        => null,
+				)
+			);
 			if ( ! isset( $args['title'], $args['taxonomies'] ) ) {
 				throw new FM_Developer_Exception( esc_html__( '"title" and "taxonomies" are required values for Fieldmanager_Context_Term', 'fieldmanager' ) );
 			}
@@ -240,8 +243,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		}
 
 		// Set the data type and ID.
-		$this->fm->data_type = 'term';
-		$this->fm->data_id = is_object( $term ) ? $term->term_id : null;
+		$this->fm->data_type    = 'term';
+		$this->fm->data_id      = is_object( $term ) ? $term->term_id : null;
 		$this->current_taxonomy = $taxonomy;
 
 		// Create the display label if one is set.
@@ -255,9 +258,11 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			$label = '';
 		}
 
-		$field = $this->render_field( array(
-			'echo' => false,
-		) );
+		$field = $this->render_field(
+			array(
+				'echo' => false,
+			)
+		);
 
 		// Create the markup and return it.
 		return sprintf(
@@ -307,8 +312,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 */
 	public function save_to_term_meta( $term_id, $taxonomy, $data = null ) {
 		// Set the data ID and type.
-		$this->fm->data_id = $term_id;
-		$this->fm->data_type = 'term';
+		$this->fm->data_id      = $term_id;
+		$this->fm->data_type    = 'term';
 		$this->current_taxonomy = $taxonomy;
 
 		$this->save( $data );
