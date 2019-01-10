@@ -354,6 +354,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			}
 		}
 
+		// This can happen when an FM Group has FM Selects in it.
+		if ( empty( $values ) ) {
+			$values = array();
+		}
+
 		// Then, dispatch them for sanitization to the children.
 		$skip_save_all = true;
 		foreach ( $this->children as $k => $element ) {
