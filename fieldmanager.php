@@ -10,9 +10,9 @@
 Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to WordPress programatically.
-Author: Alley Interactive
+Author: Alley
 Version: 1.2.4
-Author URI: https://www.alleyinteractive.com/
+Author URI: https://www.alley.co/
 */
 
 /**
