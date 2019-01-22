@@ -383,3 +383,30 @@ a.fm-delete:hover {
 .form-field .fm-checkbox label {
 	display: inline;
 }
+
+/* character counter */
+.fm-character-counter {
+	position: relative;
+	display: inline;
+}
+
+.fm-character-counter span {
+	position: absolute;
+	right: 10px;
+	top: -1px;
+	opacity: 1;
+	color: #aaa;
+	font-size: 0.9rem;
+}
+
+.fm-character-counter-padding {
+	padding-right: 35px !important;
+}
+
+span.fm-character-counter-top {
+	top: inherit;
+}
+
+.fm-character-counter-block {
+	display: block;
+}
