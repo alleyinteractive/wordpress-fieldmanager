@@ -182,7 +182,9 @@ $( document ).ready( function () {
 	// Handle remove events
 	$( document ).on( 'click', '.fmjs-remove', function( e ) {
 		e.preventDefault();
-		fm_remove( $( this ) );
+		if (confirm('Do you want to delete?')){
+			fm_remove( $( this ) );
+		}
 	} );
 
 	// Handle collapse events
