@@ -188,7 +188,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			var chosenOpts = {
 				allow_single_deselect: true,
 				disable_search_threshold: -1,
-				width: '350px'
+				max_width: '100%'
 			}
 			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
 				$(".chosen-select",this).chosen(chosenOpts)
