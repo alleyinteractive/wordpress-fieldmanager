@@ -191,9 +191,9 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 				width: '350px'
 			}
 			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
-				$(".chosen-select:visible",this).chosen(chosenOpts)
+				$(".chosen-select",this).chosen(chosenOpts)
 			});
-			$(".chosen-select:visible").chosen(chosenOpts);
+			$(".chosen-select").chosen(chosenOpts);
 		});
 		</script>
 		<?php
