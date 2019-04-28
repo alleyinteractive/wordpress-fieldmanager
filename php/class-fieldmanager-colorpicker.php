@@ -36,13 +36,7 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	 * @param array  $options The options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		$js_deps = [ 'jquery', 'wp-color-picker' ];
-		// On gutenberg pages we want to load our JS after the editor has fully loaded.
-		if ( Fieldmanager_Util_Gutenberg::is_gutenberg_active() ) {
-			$js_deps[] = 'wp-edit-post';
-		}
-
-		fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', $js_deps, '1.0', true );
+		fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', array( 'jquery', 'wp-color-picker' ), '1.0', true );
 		fm_add_style( 'wp-color-picker' );
 
 		$this->sanitize = 'sanitize_hex_color';

@@ -74,16 +74,10 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		);
 		parent::__construct( $label, $options );
 
-		$js_deps = [ 'fieldmanager_script', 'jquery-ui-autocomplete' ];
-		// On gutenberg pages we want to load our JS after the editor has fully loaded.
-		if ( Fieldmanager_Util_Gutenberg::is_gutenberg_active() ) {
-			$js_deps[] =  'wp-edit-post';
-		}
-
 		fm_add_script(
 			'fm_autocomplete_js',
 			'js/fieldmanager-autocomplete.js',
-			$js_deps,
+			array( 'fieldmanager_script', 'jquery-ui-autocomplete' ),
 			'1.0.6',
 			false,
 			'fm_search',

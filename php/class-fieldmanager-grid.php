@@ -52,16 +52,10 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 			return $values;
 		};
 
-		$js_deps = [];
-		// On gutenberg pages we want to load our JS after the editor has fully loaded.
-		if ( Fieldmanager_Util_Gutenberg::is_gutenberg_active() ) {
-			$js_deps[] =  'wp-edit-post';
-		}
-
 		fm_add_script( 'handsontable', 'js/grid/jquery.handsontable.js' );
 		fm_add_script( 'contextmenu', 'js/grid/lib/jQuery-contextMenu/jquery.contextMenu.js' );
 		fm_add_script( 'ui_position', 'js/grid/lib/jQuery-contextMenu/jquery.ui.position.js' );
-		fm_add_script( 'grid', 'js/grid.js', $js_deps );
+		fm_add_script( 'grid', 'js/grid.js' );
 		fm_add_style( 'context_menu_css', 'js/grid/lib/jQuery-contextMenu/jquery.contextMenu.css' );
 		fm_add_style( 'handsontable_css', 'js/grid/jquery.handsontable.css' );
 	}

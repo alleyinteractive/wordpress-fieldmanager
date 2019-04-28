@@ -103,14 +103,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	public function __construct( $label = '', $options = array() ) {
 		$this->sanitize = array( $this, 'sanitize' );
 
-		$js_deps = [ 'jquery', 'fieldmanager_script', 'utils' ];
-		// On gutenberg pages we want to load our JS after the editor has fully loaded.
-		if ( Fieldmanager_Util_Gutenberg::is_gutenberg_active() ) {
-			$js_deps[] =  'wp-edit-post';
-		}
-
 		// 'utils' provides getUserSetting().
-		fm_add_script( 'fm_richtext', 'js/richtext.js', $js_deps, '1.0.8' );
+		fm_add_script( 'fm_richtext', 'js/richtext.js', array( 'jquery', 'fieldmanager_script', 'utils' ), '1.0.8' );
 
 		parent::__construct( $label, $options );
 	}

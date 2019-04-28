@@ -69,15 +69,8 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @param array  $options Associative array of class property values. @see Fieldmanager_Field::__construct().
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		$js_deps = [ 'fieldmanager_script', 'jquery-ui-datepicker' ];
-		// On gutenberg pages we want to load our JS after the editor has fully loaded.
-		if ( Fieldmanager_Util_Gutenberg::is_gutenberg_active() ) {
-			$js_deps[] = 'wp-edit-post';
-		}
-
-		fm_add_script( 'fm_datepicker', 'js/fieldmanager-datepicker.js', $js_deps );
 		fm_add_style( 'fm-jquery-ui', 'css/jquery-ui/jquery-ui-1.10.2.custom.min.css' );
-
+		fm_add_script( 'fm_datepicker', 'js/fieldmanager-datepicker.js', array( 'fieldmanager_script', 'jquery-ui-datepicker' ) );
 		parent::__construct( $label, $options );
 
 		if ( empty( $this->js_opts ) ) {
