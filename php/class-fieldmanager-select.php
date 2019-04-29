@@ -55,11 +55,17 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			'size' => '1',
 		);
 
+		$js_deps = [];
+		// On gutenberg pages we want to load our JS after the editor has fully loaded.
+		if ( Fieldmanager_Util_Gutenberg::is_gutenberg_active() ) {
+			$js_deps[] =  'wp-edit-post';
+		}
+
 		// Add the Fieldmanager Select Javascript library.
 		fm_add_script(
 			'fm_select_js',
 			'js/fieldmanager-select.js',
-			array(),
+			$js_deps,
 			'1.0.2',
 			false,
 			'fm_select',
@@ -81,7 +87,8 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// Add the chosen library for type-ahead capabilities.
 		if ( $this->type_ahead ) {
-			fm_add_script( 'fm_chosen', 'js/chosen/chosen.jquery.min.js', array( 'jquery' ), '1.8.2' );
+			$js_deps[] =  'jquery';
+			fm_add_script( 'fm_chosen', 'js/chosen/chosen.jquery.min.js', $js_deps, '1.8.2' );
 			fm_add_style( 'fm_chosen_css', 'js/chosen/chosen.min.css', array(), '1.8.2' );
 		}
 
