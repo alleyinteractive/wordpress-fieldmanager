@@ -820,9 +820,10 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_element_key() {
-		$el  = $this;
-		$key = $el->name;
-		while ( $el = $el->parent ) {
+		$el     = $this;
+		$key    = $el->name;
+		$parent = $el->parent;
+		while ( $parent ) {
 			if ( $el->add_to_prefix ) {
 				$key = "{$el->name}_{$key}";
 			}
