@@ -122,7 +122,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 					'posts_per_page' => $repo['length'],
 					'orderby'        => $repo['orderby'],
 					'order'          => $repo['order'],
-					'tax_query'      => array( $repo['taxonomy_args'] ),
+					'tax_query'      => array( $repo['taxonomy_args'] ), // phpcs:ignore WordPress.VIP.SlowDBQuery.slow_db_query_tax_query
 				);
 				$q          = new WP_Query( $query_args );
 				while ( $q->have_posts() ) {

@@ -521,7 +521,7 @@ abstract class Fieldmanager_Field {
 				$parent = $this->parent;
 				while ( $parent ) {
 					$html_array_position++; // one more for having a parent (e.g. parent[this][0]).
-					if ( 1 != $parent->limit ) { // and another for the parent having multiple (e.g. parent[0][this][0]).
+					if ( 1 != $parent->limit ) { // phpcs: ignore and another for the parent having multiple (e.g. parent[0][this][0]) .
 						$html_array_position++;
 					}
 					$parent = $parent->parent; // parent's parent; root element has null parent which breaks while loop.

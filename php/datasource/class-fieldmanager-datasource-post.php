@@ -88,7 +88,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	public function __construct( $options = array() ) {
 		parent::__construct( $options );
 
-		// Infer $save_to_post_parent if $only_save_to_post_parent.
+		// phpcs: ignore Infer $save_to_post_parent if $only_save_to_post_parent.
 		if ( $this->only_save_to_post_parent ) {
 			$this->save_to_post_parent = true;
 		}

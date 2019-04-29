@@ -109,7 +109,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		?>
 		<div class="wrap">
 			<?php
-			if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) : // WPCS: input var okay.
+			if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) : // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification, input var okay
 				?>
 				<div class="updated success"><p><?php echo esc_html( $this->updated_message ); ?></p></div>
 			<?php endif; ?>
@@ -141,7 +141,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * Save a submenu page
 	 */
 	public function handle_submenu_save() {
-		if ( empty( $_GET['page'] ) || $_GET['page'] != $this->menu_slug ) { // WPCS: input var okay.
+		if ( empty( $_GET['page'] ) || $_GET['page'] != $this->menu_slug ) { // phpcs:ignore WordPress.Security.NonceVerification.NoNonceVerification, input var okay
 			return;
 		}
 
