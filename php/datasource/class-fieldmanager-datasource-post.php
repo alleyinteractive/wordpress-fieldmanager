@@ -131,7 +131,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			$exact_post = null;
 			if ( preg_match( '/^https?\:/i', $fragment ) ) {
 				$url       = esc_url( $fragment );
-				$url_parts = parse_url( $url );
+				$url_parts = wp_parse_url( $url );
 
 				if ( ! empty( $url_parts['query'] ) ) {
 					$get_vars = array();
@@ -191,7 +191,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		if ( ! empty( $this->ajax_action ) ) {
 			return $this->ajax_action;
 		}
-		$unique_key  = json_encode( $this->query_args );
+		$unique_key  = wp_json_encode( $this->query_args );
 		$unique_key .= (string) $this->query_callback;
 		return 'fm_datasource_post' . crc32( $unique_key );
 	}
