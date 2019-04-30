@@ -17,7 +17,9 @@ class Fieldmanager_Util_Gutenberg {
 	}
 
 	/**
-	 * Shim to ensure proper load order with Fieldmanager Deps within the context of Gutenberg.
+	 * Shim for fields loaded inside of Gutenberg editor.
+	 *
+	 * Adds JS dependency to all fm scripts to ensure proper load order.
 	 *
 	 * @param array $scripts
 	 * @return array
@@ -33,12 +35,10 @@ class Fieldmanager_Util_Gutenberg {
 
 		// Fallback if we don't have access to `current_screen`.
 		if ( ! $is_gutenberg_editor ) {
-			// Go into globals for post ID on new auto-draft posts.
-			$post_id = get_the_ID() ? get_the_ID() : $GLOBALS['post_ID'];
+			$post_id = false !== get_the_ID() ? get_the_ID() : $GLOBALS['post_ID'];
 			$is_gutenberg_editor = use_block_editor_for_post( $post_id );
 		}
 
-		// If we are working within the context of the block editor, we should ensure required deps are loaded.
 		if ( $is_gutenberg_editor ) {
 			foreach ( $scripts as $index => $script ) {
 				$scripts[ $index ]['deps'][] = 'wp-edit-post';
