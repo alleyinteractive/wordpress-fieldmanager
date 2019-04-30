@@ -9,33 +9,31 @@
  * Gutenberg helpers.
  */
 class Fieldmanager_Util_Gutenberg {
+	public function __construct() {
+		add_filter( 'fm_enqueue_scripts', [ $this, 'add_gutenberg_js_deps' ], 99 );
+
+		// Gutenberg sidebar polyfill.
+		fm_add_script( 'fieldmanager-gutenberg-polyfill', 'js/fieldmanager-gutenberg-support.js' );
+	}
+
 	/**
-	 * Check if Gutenberg is active on Site.
-	 * @see	https://gist.github.com/mihdan/8ba1a70d8598460421177c7d31202908
+	 * Shim to ensure proper load order with Fieldmanager Deps within the context of Gutenberg.
 	 *
-	 * @return bool
+	 * @param array $scripts
+	 * @return array
 	 */
-	public static function is_gutenberg_active() {
-		$gutenberg    = false;
-		$block_editor = false;
+	public function add_gutenberg_js_deps( $scripts ) {
+		$screen = get_current_screen();
 
-		if ( has_filter( 'replace_editor', 'gutenberg_init' ) ) {
-			$gutenberg = true;
+		// If we are working within the context of the block editor, we should ensure required deps are loaded.
+		if ( $screen->is_block_editor ) {
+			foreach ( $scripts as $index => $script ) {
+				$scripts[ $index ]['deps'][] = 'wp-edit-post';
+			}
 		}
 
-		if ( version_compare( $GLOBALS['wp_version'], '5.0-beta', '>' ) ) {
-			$block_editor = true;
-		}
-
-		if ( ! $gutenberg && ! $block_editor ) {
-			return false;
-		}
-
-		include_once ABSPATH . 'wp-admin/includes/plugin.php';
-		if ( ! is_plugin_active( 'classic-editor/classic-editor.php' ) ) {
-			return true;
-		}
-
-		return ( get_option( 'classic-editor-replace' ) === 'no-replace' );
+		return $scripts;
 	}
 }
+
+new Fieldmanager_Util_Gutenberg();
