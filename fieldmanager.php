@@ -100,6 +100,7 @@ function fieldmanager_load_file( $file ) {
 // Load utility classes with helper functions. These can't be autoloaded.
 fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
 fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
+fieldmanager_load_file( 'util/class-fieldmanager-util-gutenberg.php' );
 
 /**
  * Tell Fieldmanager that it has a base URL somewhere other than the plugins URL.
