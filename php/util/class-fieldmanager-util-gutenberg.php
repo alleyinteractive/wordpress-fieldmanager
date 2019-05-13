@@ -9,8 +9,12 @@
  * Gutenberg helpers.
  */
 class Fieldmanager_Util_Gutenberg {
+
+	/**
+	 * Add libraries for gutenberg support.
+	 */
 	public function __construct() {
-		add_filter( 'fm_enqueue_scripts', [ $this, 'add_gutenberg_js_deps' ], 99 );
+		add_filter( 'fm_enqueue_scripts', array( $this, 'add_gutenberg_js_deps' ), 99 );
 
 		// Gutenberg sidebar polyfill.
 		fm_add_script( 'fieldmanager-gutenberg-polyfill', 'js/fieldmanager-gutenberg-support.js' );
@@ -21,7 +25,7 @@ class Fieldmanager_Util_Gutenberg {
 	 *
 	 * Adds JS dependency to all fm scripts to ensure proper load order.
 	 *
-	 * @param array $scripts
+	 * @param array $scripts array of scripts.
 	 * @return array
 	 */
 	public function add_gutenberg_js_deps( $scripts ) {
