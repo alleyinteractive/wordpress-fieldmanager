@@ -39,7 +39,15 @@ class Fieldmanager_Util_Gutenberg {
 
 		// Fallback if we don't have access to `current_screen`.
 		if ( ! $is_gutenberg_editor ) {
-			$post_id = false !== get_the_ID() ? get_the_ID() : $GLOBALS['post_ID'];
+			if ( false !== get_the_ID() ) {
+				$post_id = get_the_ID();
+			} elseif ( isset( $GLOBALS['post_ID'] ) ) {
+			        // Sanatize superglobal.
+				$_GET['post_ID'] = filter_input(INPUT_GET, 'post_ID', FILTER_SANITIZE_STRING);
+				$post_id = $GLOBALS['post_ID'];
+			} else {
+				$post_id = null;
+			}
 			$is_gutenberg_editor = use_block_editor_for_post( $post_id );
 		}
 
