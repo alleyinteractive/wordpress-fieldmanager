@@ -34,7 +34,7 @@ class Fieldmanager_Util_Gutenberg {
 		// Do we have access to current screen?
 		if ( did_action( 'current_screen' ) === 1 ) {
 			$current_screen = get_current_screen();
-			$is_gutenberg_editor = $current_screen instanceof WP_Screen ? $current_screen->is_block_editor : false;
+			$is_gutenberg_editor = $current_screen instanceof WP_Screen && property_exists( $current_screen, 'is_block_editor' ) ? $current_screen->is_block_editor : false;
 		}
 
 		// Fallback if we don't have access to `current_screen`.
