@@ -41,10 +41,10 @@ class Fieldmanager_Util_Gutenberg {
 		if ( ! $is_gutenberg_editor ) {
 			if ( false !== get_the_ID() ) {
 				$post_id = get_the_ID();
-			} elseif ( isset( $GLOBALS['post_ID'] ) ) {
+			} elseif ( isset( $GLOBALS['post'] ) && $GLOBALS['post'] instanceof WP_Post ) {
 				// Sanatize superglobal.
-				$_GET['post_ID'] = filter_input(INPUT_GET, 'post_ID', FILTER_SANITIZE_STRING);
-				$post_id = $GLOBALS['post_ID'];
+				$GLOBALS['post'] = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
+				$post_id = intval( $GLOBALS['post'] );
 			} else {
 				$post_id = null;
 			}
