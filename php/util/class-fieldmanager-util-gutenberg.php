@@ -41,12 +41,10 @@ class Fieldmanager_Util_Gutenberg {
 		if ( ! $is_gutenberg_editor ) {
 			if ( false !== get_the_ID() ) {
 				$post_id = get_the_ID();
-			} elseif ( isset( $GLOBALS['post'] ) && $GLOBALS['post'] instanceof WP_Post ) {
-				// Sanatize superglobal.
-				$GLOBALS['post'] = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
-				$post_id = intval( $GLOBALS['post'] );
+			} elseif ( isset( $_GET['post'] ) ) { // WPCS: CSRF ok.
+				$post_id = absint( $_GET['post'] );
 			} else {
-				$post_id = null;
+				$post_id = 0;
 			}
 			$is_gutenberg_editor = use_block_editor_for_post( $post_id );
 		}
