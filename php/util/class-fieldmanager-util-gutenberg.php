@@ -46,7 +46,7 @@ class Fieldmanager_Util_Gutenberg {
 			} else {
 				$post_id = 0;
 			}
-			$is_gutenberg_editor = use_block_editor_for_post( $post_id );
+			$is_gutenberg_editor = function_exists( 'use_block_editor_for_post' ) ? use_block_editor_for_post( $post_id ) : false;
 		}
 
 		if ( $is_gutenberg_editor ) {
