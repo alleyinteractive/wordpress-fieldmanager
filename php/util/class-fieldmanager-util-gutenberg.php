@@ -31,8 +31,8 @@ class Fieldmanager_Util_Gutenberg {
 	public function add_gutenberg_js_deps( $scripts ) {
 		$is_gutenberg_editor = false;
 
-		 // Do we have access to current screen?
-		if ( did_action( 'current_screen' ) ) {
+		// Do we have access to current screen?
+		if ( did_action( 'current_screen' ) ===  1 ) {
 			$current_screen = get_current_screen();
 			$is_gutenberg_editor = $current_screen instanceof WP_Screen ? $current_screen->is_block_editor : false;
 		}
