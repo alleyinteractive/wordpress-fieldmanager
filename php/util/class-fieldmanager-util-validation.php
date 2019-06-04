@@ -222,9 +222,11 @@ class Fieldmanager_Util_Validation {
 			}
 
 			// Fields that should always be ignored.
+			$ignore = array();
 			$ignore[] = "input[type='button']";
-			// Let autocomplete validate by allowing its associated hidden field.
-			$ignore[] = ':not(\'.fm-autocomplete\') + :hidden';
+
+			// Fields that contain hidden inputs and still need to be verified, ie: image fields
+			$ignore[] = ':not(\'.fm-media-button, .fm-autocomplete\') + :hidden';
 
 			// Certain fields need to be ignored depending on the context.
 			switch ( $this->context ) {
