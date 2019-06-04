@@ -2,7 +2,7 @@ language: php
 
 matrix:
   include:
-    - php: 5.1
+    - php: 5.3
       env: WP_VERSION=4.7.6
       dist: precise
     - php: 5.6
