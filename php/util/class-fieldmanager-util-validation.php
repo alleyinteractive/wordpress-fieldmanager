@@ -225,7 +225,7 @@ class Fieldmanager_Util_Validation {
 			$ignore = array();
 			$ignore[] = "input[type='button']";
 
-			// Fields that contain hidden inputs and still need to be verified, ie: image fields
+			// Fields that contain hidden inputs and still need to be verified, ie: image fields.
 			$ignore[] = ':not(\'.fm-media-button, .fm-autocomplete\') + :hidden';
 
 			// Certain fields need to be ignored depending on the context.
