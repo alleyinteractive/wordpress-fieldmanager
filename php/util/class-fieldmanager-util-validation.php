@@ -222,7 +222,7 @@ class Fieldmanager_Util_Validation {
 			}
 
 			// Fields that should always be ignored.
-			$ignore = array();
+			$ignore = [];
 			$ignore[] = "input[type='button']";
 
 			// Fields that contain hidden inputs and still need to be verified, ie: image fields.
