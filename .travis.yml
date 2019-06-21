@@ -89,3 +89,11 @@ script:
       cd $OG_DIR
       grunt phpcs
     fi
+
+# Xenial image has PHP versions 5.6,7.1,7.2 pre-installed
+dist: xenial
+
+# Xenial does not start mysql by default
+services:
+  - mysql
+  - memcached
