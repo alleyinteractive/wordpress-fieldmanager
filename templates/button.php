@@ -6,7 +6,7 @@
  */
 ?>
 <input
-	class="fm-button-element button-secondary <?php echo esc_attr( $this->options['classnames'] ); ?>"
+	class="fm-button-element button-secondary <?php echo esc_attr( $this->field_class ); ?>"
 	type="button"
 	name="<?php echo esc_attr( $this->get_form_name() ); ?>"
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
