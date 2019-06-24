@@ -925,6 +925,29 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertContains( $description_html, $html );
 	}
 
+	public function test_button_content_escaping() {
+		$id                  = 'button-id';
+		$button_content_raw  = 'button content test string';
+		$button_content_html = "<strong id='{$id}'>{$button_content_raw}</strong>";
+		$args                = array(
+			'name'           => 'button_content_escape_testing',
+			'button_content' => $button_content_html,
+		);
+
+		// Ensure that, by default, the description is present without the HTML
+		$field = new Fieldmanager_Button( $args );
+		$html  = $this->_get_html_for( $field );
+		$this->assertContains( $button_content_raw, $html );
+		$this->assertNotContains( $button_content_html, $html );
+
+		// Ensure that the description has HTML when we change the escaping
+		$args['escape'] = array( 'button_content' => 'wp_kses_post' );
+		$field          = new Fieldmanager_Button( $args );
+		$html           = $this->_get_html_for( $field );
+		$this->assertContains( $button_content_html, $html );
+	}
+
+
 	/**
 	 * @group serialize_data
 	 */
