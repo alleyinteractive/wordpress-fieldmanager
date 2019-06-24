@@ -4,12 +4,18 @@
  *
  * @package Fieldmanager
  */
+
+// Add additional classnames, if they exist.
+$classnames = array_key_exists( 'class', $this->attributes ) ? $this->attributes['class'] : '';
 ?>
-<input
-	class="fm-button-element button-secondary <?php echo esc_attr( $this->field_class ); ?>"
-	type="button"
-	name="<?php echo esc_attr( $this->get_form_name() ); ?>"
+
+<button
+	class="fm-button-element <?php echo esc_attr( $classnames ); ?>"
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
-	value="<?php echo esc_attr( $this->attributes['button_text'] ); ?>"
+	name="<?php echo esc_attr( $this->get_form_name() ); ?>"
+	role="<?php echo esc_attr( $this->input_type ); ?>"
+	type="<?php echo esc_attr( $this->input_type ); ?>"
 	<?php echo $this->get_element_attributes(); // Escaped interally. xss ok. ?>
-/>
+>
+	<?php echo $this->escape( 'button_content' ); // Escaped interally. xss ok.  ?>
+</button>
