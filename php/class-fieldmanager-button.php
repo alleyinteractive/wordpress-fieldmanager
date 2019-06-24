@@ -6,7 +6,7 @@
  */
 
 /**
- * Button Field
+ * Button Field.
  */
 class Fieldmanager_Button extends Fieldmanager_Options {
 	/**
@@ -20,7 +20,7 @@ class Fieldmanager_Button extends Fieldmanager_Options {
 	 * Setup Button Template and Type.
 	 *
 	 * @param string $label   Field label.
-	 * @param array  $options The form options.
+	 * @param array  $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->input_type     = 'button';
