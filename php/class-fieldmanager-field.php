@@ -96,6 +96,20 @@ abstract class Fieldmanager_Field {
 	public $label_after_element = false;
 
 	/**
+	 * Button content for the form element.
+	 *
+	 * @var string
+	 */
+	public $button_content = '';
+
+	/**
+	 * If true, the button content will be displayed after the element.
+	 *
+	 * @var bool
+	 */
+	public $button_content_after_element = true;
+
+	/**
 	 * Description for the form element.
 	 *
 	 * @var string
@@ -692,6 +706,10 @@ abstract class Fieldmanager_Field {
 			} else {
 				$render_label_after = true;
 			}
+		}
+
+		if ( isset( $this->button_content ) && ! empty( $this->button_content ) && ! $this->button_content_after_element ) {
+			$out .= sprintf( '<div class="fm-item-button_content">%s</div>', $this->escape( 'button_content' ) );
 		}
 
 		if ( isset( $this->description ) && ! empty( $this->description ) && ! $this->description_after_element ) {
