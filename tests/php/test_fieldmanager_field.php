@@ -935,14 +935,14 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		);
 
 		// Ensure that, by default, the description is present without the HTML
-		$field = new Fieldmanager_TextField( $args );
+		$field = new Fieldmanager_Button( $args );
 		$html  = $this->_get_html_for( $field );
 		$this->assertContains( $button_content_raw, $html );
 		$this->assertNotContains( $button_content_html, $html );
 
 		// Ensure that the description has HTML when we change the escaping
 		$args['escape'] = array( 'button_content' => 'wp_kses_post' );
-		$field          = new Fieldmanager_TextField( $args );
+		$field          = new Fieldmanager_Button( $args );
 		$html           = $this->_get_html_for( $field );
 		$this->assertContains( $button_content_html, $html );
 	}
