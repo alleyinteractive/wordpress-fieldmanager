@@ -930,8 +930,8 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$button_content_raw  = 'button content test string';
 		$button_content_html = "<strong id='{$id}'>{$button_content_raw}</strong>";
 		$args                = array(
-			'name'        => 'button_content_escape_testing',
-			'description' => $button_content_html,
+			'name'           => 'button_content_escape_testing',
+			'button_content' => $button_content_html,
 		);
 
 		// Ensure that, by default, the description is present without the HTML
