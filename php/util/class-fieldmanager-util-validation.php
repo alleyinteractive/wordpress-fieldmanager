@@ -210,7 +210,6 @@ class Fieldmanager_Util_Validation {
 				}
 			}
 		}
-
 		// Create final rule string.
 		if ( ! empty( $rules ) ) {
 			$rules_js    = $this->array_to_js( $rules, 'rules' );
@@ -358,8 +357,8 @@ class Fieldmanager_Util_Validation {
 	 * @return string The field name with quotes added if necessary
 	 */
 	private function quote_field_name( $field ) {
-		// Check if the field name is alphanumeric (underscores and dashes are allowed).
-		if ( ctype_alnum( str_replace( array( '_', '-' ), '', $field ) ) ) {
+		// Check if the field name is alphanumeric (underscores are allowed).
+		if ( ctype_alnum( str_replace( array( '_' ), '', $field ) ) ) {
 			return $field;
 		} else {
 			return '"' . esc_js( $field ) . '"';
