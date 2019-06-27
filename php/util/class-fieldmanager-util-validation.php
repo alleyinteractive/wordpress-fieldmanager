@@ -222,8 +222,9 @@ class Fieldmanager_Util_Validation {
 
 			// Fields that should always be ignored.
 			$ignore[] = "input[type='button']";
-
-			// Fields that contain hidden inputs and still need to be verified, ie: image fields.
+			// Ignore hidden fields with no previous selector.
+			$ignore[] = ":hidden:first-child";
+			// Don't ignore hidden fields preceded by these classes.
 			$ignore[] = ":not('.fm-media-button, .fm-autocomplete') + :hidden";
 
 			// Certain fields need to be ignored depending on the context.
