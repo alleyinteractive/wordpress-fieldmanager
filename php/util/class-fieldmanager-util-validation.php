@@ -221,11 +221,10 @@ class Fieldmanager_Util_Validation {
 			}
 
 			// Fields that should always be ignored.
-			$ignore = array();
 			$ignore[] = "input[type='button']";
 
 			// Fields that contain hidden inputs and still need to be verified, ie: image fields.
-			$ignore[] = ':not(\'.fm-media-button, .fm-autocomplete\') + :hidden';
+			$ignore[] = ":not('.fm-media-button, .fm-autocomplete') + :hidden";
 
 			// Certain fields need to be ignored depending on the context.
 			switch ( $this->context ) {
@@ -358,7 +357,7 @@ class Fieldmanager_Util_Validation {
 	 */
 	private function quote_field_name( $field ) {
 		// Check if the field name is alphanumeric (underscores are allowed).
-		if ( ctype_alnum( str_replace( array( '_' ), '', $field ) ) ) {
+		if ( ctype_alnum( str_replace( '_' ), '', $field ) ) ) {
 			return $field;
 		} else {
 			return '"' . esc_js( $field ) . '"';
