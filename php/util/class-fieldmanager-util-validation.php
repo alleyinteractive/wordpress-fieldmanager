@@ -223,7 +223,7 @@ class Fieldmanager_Util_Validation {
 			// Fields that should always be ignored.
 			$ignore[] = "input[type='button']";
 			// Ignore hidden fields with no previous selector.
-			$ignore[] = ":hidden:first-child";
+			$ignore[] = ':hidden:first-child';
 			// Don't ignore hidden fields preceded by these classes.
 			$ignore[] = ":not('.fm-media-button, .fm-autocomplete') + :hidden";
 
