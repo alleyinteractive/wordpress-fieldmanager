@@ -358,7 +358,7 @@ class Fieldmanager_Util_Validation {
 	 */
 	private function quote_field_name( $field ) {
 		// Check if the field name is alphanumeric (underscores are allowed).
-		if ( ctype_alnum( str_replace( '_' ), '', $field ) ) {
+		if ( ctype_alnum( str_replace( '_', '', $field ) ) ) {
 			return $field;
 		} else {
 			return '"' . esc_js( $field ) . '"';
