@@ -13,7 +13,7 @@
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
 	value="<?php echo esc_attr( $value ); ?>"
 	<?php
-    if ( 'password' === $this->input_type ) {
+	if ( 'password' === $this->input_type ) {
 		echo " readonly onfocus=\"this.removeAttribute('readonly');\" ";
 	}
 	?>
