@@ -16,12 +16,12 @@ class Fieldmanager_Assets_Unit_Test_Case extends WP_UnitTestCase {
 		// Re-init scripts. @see Tests_Dependencies_Scripts.
 		$this->old_wp_scripts = isset( $GLOBALS['wp_scripts'] ) ? $GLOBALS['wp_scripts'] : null;
 		remove_action( 'wp_default_scripts', 'wp_default_scripts' );
-		$GLOBALS['wp_scripts'] = new WP_Scripts();
+		$GLOBALS['wp_scripts']                  = new WP_Scripts();
 		$GLOBALS['wp_scripts']->default_version = get_bloginfo( 'version' );
 
 		// Some fields will only register a script once, so hack around that.
-		Fieldmanager_Field::$enqueued_base_assets = false;
-		Fieldmanager_Media::$has_registered_media = false;
+		Fieldmanager_Field::$enqueued_base_assets    = false;
+		Fieldmanager_Media::$has_registered_media    = false;
 		Fieldmanager_Util_Assets::instance()->hooked = false;
 	}
 

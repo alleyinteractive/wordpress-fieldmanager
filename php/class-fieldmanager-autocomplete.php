@@ -122,9 +122,9 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		}
 
 		if ( $this->datasource->use_ajax ) {
-			$this->attributes['data-action'] = $this->datasource->get_ajax_action( $this->name );
-			list ( $context, $subcontext ) = fm_get_context();
-			$this->attributes['data-context'] = $context;
+			$this->attributes['data-action']     = $this->datasource->get_ajax_action( $this->name );
+			list ( $context, $subcontext )       = fm_get_context();
+			$this->attributes['data-context']    = $context;
 			$this->attributes['data-subcontext'] = $subcontext;
 		} else {
 			$this->attributes['data-options'] = htmlspecialchars( wp_json_encode( $this->datasource->get_items() ) );
@@ -218,7 +218,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 					}
 
 					$meta_boxes[ $id ] = array(
-						'id' => $id,
+						'id'      => $id,
 						'context' => 'side',
 					);
 				}
