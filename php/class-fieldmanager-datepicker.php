@@ -70,7 +70,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		fm_add_style( 'fm-jquery-ui', 'css/jquery-ui/jquery-ui-1.10.2.custom.min.css' );
-		fm_add_script( 'fm_datepicker', 'js/fieldmanager-datepicker.js', array( 'fm_loader', 'fieldmanager_script', 'jquery-ui-datepicker' ), FM_VERSION );
+		fm_add_script( 'fm_datepicker', 'js/fieldmanager-datepicker.js', array( 'fm_loader', 'fieldmanager_script', 'jquery-ui-datepicker' ), FM_VERSION, true );
 		parent::__construct( $label, $options );
 
 		if ( empty( $this->js_opts ) ) {

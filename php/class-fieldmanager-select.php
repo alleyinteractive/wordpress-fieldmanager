@@ -61,7 +61,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 			'js/fieldmanager-select.js',
 			array( 'fm_loader' ),
 			FM_VERSION,
-			false,
+			true,
 			'fm_select',
 			array(
 				'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ),
