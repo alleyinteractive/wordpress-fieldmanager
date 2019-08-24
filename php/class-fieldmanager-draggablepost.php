@@ -57,7 +57,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		// Refuse to allow more than one instance of this field type.
 		$this->limit = 1;
 
-		fm_add_script( 'fm_draggablepost_js', 'js/fieldmanager-draggablepost.js', array( 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable' ), FM_VERSION );
+		fm_add_script( 'fm_draggablepost_js', 'js/fieldmanager-draggablepost.js', array( 'fm_loader', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable' ), FM_VERSION, true );
 		fm_add_style( 'fm_draggablepost_css', 'css/fieldmanager-draggablepost.css', array(), FM_VERSION );
 	}
 

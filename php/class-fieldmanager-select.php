@@ -59,7 +59,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		fm_add_script(
 			'fm_select_js',
 			'js/fieldmanager-select.js',
-			array(),
+			array( 'fm_loader' ),
 			FM_VERSION,
 			false,
 			'fm_select',

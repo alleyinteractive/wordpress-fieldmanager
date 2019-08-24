@@ -164,10 +164,5 @@ var FieldmanagerGroupTabs;
 
 	};
 
-	$(document).ready( function(){
-
-		FieldmanagerGroupTabs.init();
-
-	});
-
+	fmLoadModule( FieldmanagerGroupTabs.init );
 } )( jQuery );

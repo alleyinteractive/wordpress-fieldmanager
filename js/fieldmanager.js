@@ -278,11 +278,6 @@ var fm_init = function () {
 	$( document ).on( 'fm_activate_tab', init_sortable );
 };
 
-// Use the wp.domReady helper, if it is available.
-if (wp && wp.domReady) {
-	wp.domReady(fm_init);
-} else {
-	$(document).ready(fm_init);
-}
+fmLoadModule( fm_init );
 
 } )( jQuery );
