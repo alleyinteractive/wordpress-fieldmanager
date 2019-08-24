@@ -1,5 +1,5 @@
 (function($) {
-	$(document).ready(function() {
+	fm_domready(function() {
 		resetEmptyMessages();
 		$('.sortables').sortable({
 			connectWith: '.sortables',

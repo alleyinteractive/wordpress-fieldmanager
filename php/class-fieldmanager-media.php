@@ -107,7 +107,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		$this->remove_media_label   = __( 'remove', 'fieldmanager' );
 
 		if ( ! self::$has_registered_media ) {
-			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), FM_VERSION );
+			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'fieldmanager_script', 'jquery' ), FM_VERSION );
 			if ( did_action( 'admin_print_scripts' ) ) {
 				$this->admin_print_scripts();
 			} else {

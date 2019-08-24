@@ -12,7 +12,7 @@ var fm_show_post_type = function( $element, post_type ) {
 var fm_show_post_date = function( $element, post_date ) {
 	if ( $element.data( 'showPostDate' ) == 1 ) {
 		$element.parent().siblings('.fmjs-post-date').remove();
-		$element.parent().siblings(".fmjs-remove, .fmjs-clear").after('<div class="fmjs-post-date">' + post_date + '</div>');	
+		$element.parent().siblings(".fmjs-remove, .fmjs-clear").after('<div class="fmjs-post-date">' + post_date + '</div>');
 	}
 }
 
@@ -35,22 +35,22 @@ var fm_typeahead_action = function( $element ) {
 				});
 			}
 		},
-		updater: function ( item ) {		
+		updater: function ( item ) {
 			// Get the post ID and post type and store them in data attributes
 			$element.data( 'id', fm_typeahead_results[item]['id'] );
 			$element.data( 'postType', fm_typeahead_results[item]['post_type'] );
 			$element.data( 'postDate', fm_typeahead_results[item]['post_date'] );
-			
+
 			// If the clear handle is enabled, show it
 			$element.parent().siblings('.fmjs-clear').show();
-			
+
 			// Show the selected post type and/or date after the clear/remove handle
 			fm_show_post_type($element, fm_typeahead_results[item]['post_type']);
 			fm_show_post_date($element, fm_typeahead_results[item]['post_date']);
-			
+
 			// Trigger that the update happened in case any other functions want to execute something here
 			$element.trigger( 'fm_post_update', [item, fm_typeahead_results[item]] );
-			
+
 			// Remove the post type and/or date from the title and return the title for the text field
 			return fm_typeahead_results[item]['post_title'];
 		},
@@ -58,24 +58,24 @@ var fm_typeahead_action = function( $element ) {
 	} );
 }
 
-$( document ).ready( function () {
+fm_domready( function () {
 	$( '.fm-post-element' ).each( function( index ) {
 		// Enable typeahead for each post field
     	fm_typeahead_action( $( this ) );
-    	
+
     	// Show the post type, date and/or clear handle (if exists) if the field is not empty and those fields are specified for display
-    	if ( $( this ).data('postType') != '' ) { 
+    	if ( $( this ).data('postType') != '' ) {
     		fm_show_post_type( $( this ), $( this ).data('postType') );
     	}
-    	
-    	if ( $( this ).data('postDate') != '' ) { 
+
+    	if ( $( this ).data('postDate') != '' ) {
     		fm_show_post_date( $( this ), $( this ).data('postDate') );
     	}
-    	
-    	if ( $( this ).data('id') != '' ) { 
+
+    	if ( $( this ).data('id') != '' ) {
     		$( this ).parent().siblings('.fmjs-clear').show();
     	}
-    	
+
 	} );
 	$( "#post" ).submit( function( e ) {
 		$( '.fm-post-element' ).each( function( index ) {

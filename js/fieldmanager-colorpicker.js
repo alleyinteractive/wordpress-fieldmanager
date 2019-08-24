@@ -6,7 +6,7 @@
 		}
 	}
 
-	$( document ).ready( fm.colorpicker.init );
+	fm_domready( fm.colorpicker.init );
 	$( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle fm_activate_tab', fm.colorpicker.init );
 
 } )( jQuery );

@@ -1,6 +1,6 @@
 ( function( $ ) {
 
-	$( document ).ready( function() {
+	fm_domready( function() {
 		if ( typeof( inlineEditPost ) == 'undefined' ) {
 			return;
 		}

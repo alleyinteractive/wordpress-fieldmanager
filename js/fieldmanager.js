@@ -278,11 +278,19 @@ var fm_init = function () {
 	$( document ).on( 'fm_activate_tab', init_sortable );
 };
 
-// Use the wp.domReady helper, if it is available.
-if (wp && wp.domReady) {
-	wp.domReady(fm_init);
-} else {
-	$(document).ready(fm_init);
+/**
+ * A wrapper for either wp.domReady or jQuery's ready function.
+ * @param {function} callback - A callback function to execute on DOM ready.
+ */
+var fm_domready = function ( callback ) {
+	if ( wp && wp.domReady ) {
+		wp.domReady( callback );
+	} else {
+		$( document ).ready( callback );
+	}
 }
+
+// Initialize Fieldmanager when the DOM is ready.
+fm_domready( fm_init );
 
 } )( jQuery );
