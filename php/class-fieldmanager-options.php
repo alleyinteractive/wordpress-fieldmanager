@@ -76,7 +76,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		}
 
 		// Add the options CSS.
-		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css' );
+		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css', array(), FM_VERSION );
 	}
 
 	/**
