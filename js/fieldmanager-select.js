@@ -42,7 +42,7 @@ fm_reset_chosen = function( $fm_text_field, fm_text_field_val ) {
 	} );
 }
 
-fm_domready( function() {
+$( document ).ready( function() {
 
 	// Track changes to the chosen text field linked to the select in order to update options via Ajax
 	// Used for taxonomy-based fields where preload is disabled

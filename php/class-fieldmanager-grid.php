@@ -55,7 +55,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 		fm_add_script( 'handsontable', 'js/grid/jquery.handsontable.js' );
 		fm_add_script( 'contextmenu', 'js/grid/lib/jQuery-contextMenu/jquery.contextMenu.js' );
 		fm_add_script( 'ui_position', 'js/grid/lib/jQuery-contextMenu/jquery.ui.position.js' );
-		fm_add_script( 'grid', 'js/grid.js', array( 'fieldmanager_script', 'handsontable', 'contextmenu', 'ui_position' ), FM_VERSION );
+		fm_add_script( 'grid', 'js/grid.js', array( 'handsontable', 'contextmenu', 'ui_position' ), FM_VERSION );
 		fm_add_style( 'context_menu_css', 'js/grid/lib/jQuery-contextMenu/jquery.contextMenu.css' );
 		fm_add_style( 'handsontable_css', 'js/grid/jquery.handsontable.css' );
 	}

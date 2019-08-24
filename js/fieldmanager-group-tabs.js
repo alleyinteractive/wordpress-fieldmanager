@@ -164,7 +164,7 @@ var FieldmanagerGroupTabs;
 
 	};
 
-	fm_domready( function(){
+	$(document).ready( function(){
 
 		FieldmanagerGroupTabs.init();
 
