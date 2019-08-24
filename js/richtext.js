@@ -151,10 +151,12 @@
 	 * On document.load, init the editors and make the global meta box drag-drop
 	 * event reload the editors.
 	 */
-	$( function() {
-		fm.richtextarea.add_rte_to_visible_textareas();
-		$( '.meta-box-sortables' ).on( 'sortstop', function( e, obj ) {
-			fm.richtextarea.reload_editors( e, obj.item[0] );
-		} );
-	} );
+	fmLoadModule(
+		function() {
+			fm.richtextarea.add_rte_to_visible_textareas();
+			$( '.meta-box-sortables' ).on( 'sortstop', function( e, obj ) {
+				fm.richtextarea.reload_editors( e, obj.item[0] );
+			} );
+		}
+	);
 } ) ( jQuery );

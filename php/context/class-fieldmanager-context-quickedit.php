@@ -93,7 +93,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		$post_type = ! isset( $_GET['post_type'] ) ? 'post' : sanitize_text_field( wp_unslash( $_GET['post_type'] ) ); // WPCS: input var okay.
 
 		if ( in_array( $post_type, $this->post_types ) ) {
-			fm_add_script( 'quickedit-js', 'js/fieldmanager-quickedit.js', array( 'fm_loader' ), FM_VERSION, true );
+			fm_add_script( 'quickedit-js', 'js/fieldmanager-quickedit.js', array( 'fm_loader' ), FM_VERSION );
 		}
 	}
 

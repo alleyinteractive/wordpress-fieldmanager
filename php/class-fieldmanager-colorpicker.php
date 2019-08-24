@@ -36,7 +36,7 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	 * @param array  $options The options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', array( 'fm_loader', 'jquery', 'wp-color-picker' ), FM_VERSION, true );
+		fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', array( 'fm_loader', 'jquery', 'wp-color-picker' ), FM_VERSION );
 		fm_add_style( 'wp-color-picker' );
 
 		$this->sanitize = 'sanitize_hex_color';

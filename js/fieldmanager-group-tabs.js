@@ -8,9 +8,9 @@ var FieldmanagerGroupTabs;
 		 */
 		init: function() {
 
-			this.bindEvents();
+			FieldmanagerGroupTabs.bindEvents();
 
-			this.restoreSelectedTabs();
+			FieldmanagerGroupTabs.restoreSelectedTabs();
 
 		},
 
