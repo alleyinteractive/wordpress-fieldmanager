@@ -16,6 +16,7 @@ function fmLoadModule( callback ) {
 			document.readyState === 'interactive' // DOMContentLoaded fires at this point, so we call directly.
 		) {
 			callback();
+			return;
 		}
 
 		// DOMContentLoaded has not fired yet, delay callback until then.
