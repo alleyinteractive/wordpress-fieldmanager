@@ -33,15 +33,15 @@ class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Cas
 	 */
 	public function script_data() {
 		return array(
-			array( 'fieldmanager_script', array( 'jquery', 'jquery-ui-sortable' ) ),
-			array( 'fm_autocomplete_js', array( 'fieldmanager_script', 'jquery-ui-autocomplete' ) ),
-			array( 'fm_datepicker', array( 'fieldmanager_script', 'jquery-ui-datepicker' ) ),
-			array( 'fm_group_tabs_js', array( 'jquery', 'jquery-hoverintent' ) ),
+			array( 'fieldmanager_script', array( 'fm_loader', 'jquery', 'jquery-ui-sortable' ) ),
+			array( 'fm_autocomplete_js', array( 'fm_loader', 'fieldmanager_script', 'jquery-ui-autocomplete' ) ),
+			array( 'fm_datepicker', array( 'fm_loader', 'fieldmanager_script', 'jquery-ui-datepicker' ) ),
+			array( 'fm_group_tabs_js', array( 'fm_loader', 'jquery', 'jquery-hoverintent' ) ),
 			array( 'fm_media', array( 'jquery' ) ),
-			array( 'fm_richtext', array( 'jquery', 'fieldmanager_script', 'utils' ) ),
-			array( 'fm_select_js', array() ),
-			array( 'grid', array() ),
-			array( 'fm_colorpicker', array( 'jquery', 'wp-color-picker' ) ),
+			array( 'fm_richtext', array( 'fm_loader', 'jquery', 'fieldmanager_script', 'utils' ) ),
+			array( 'fm_select_js', array( 'fm_loader' ) ),
+			array( 'grid', array( 'fm_loader', 'handsontable', 'contextmenu', 'ui_position' ) ),
+			array( 'fm_colorpicker', array( 'fm_loader', 'jquery', 'wp-color-picker' ) ),
 		);
 	}
 
