@@ -18,10 +18,10 @@ matrix:
       env: WP_VERSION=latest
     - php: '7.2'
       env: WP_VERSION=latest
-	- php: '7.3'
-	  env: WP_VERSION=latest
-	- php: '7.3'
-	  env: WP_VERSION=nightly
+    - php: '7.3'
+      env: WP_VERSION=latest
+    - php: '7.3'
+      env: WP_VERSION=nightly
   fast_finish: true
 
 branches:
