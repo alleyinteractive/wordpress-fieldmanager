@@ -12,14 +12,8 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
-		$this->post = array(
-			'post_status'  => 'publish',
-			'post_content' => rand_str(),
-			'post_title'   => rand_str(),
-		);
-
 		// insert a post
-		$this->post_id = wp_insert_post( $this->post );
+		$this->post_id = self::factory()->post->create();
 	}
 
 	/**
@@ -48,7 +42,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 			),
 		);
 
-		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_date_group'] );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data['test_date_group'] );
 
 		$saved_data    = get_post_meta( $this->post_id, 'test_date_group', true );
 		$input_element = $date_picker->form_element( $saved_data['test_date_field'] );
@@ -83,7 +77,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 				),
 			),
 		);
-		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEmpty( $saved_data['test_datetime_field'] );
 
@@ -98,7 +92,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 				),
 			),
 		);
-		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '13 Mar 2014' ), $saved_data['test_datetime_field'] );
 
@@ -113,7 +107,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 				),
 			),
 		);
-		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '2:37 am' ), $saved_data['test_datetime_field'] );
 
@@ -128,7 +122,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 				),
 			),
 		);
-		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '13 Mar 2014 2:00am' ), $saved_data['test_datetime_field'] );
 
@@ -143,7 +137,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 				),
 			),
 		);
-		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( strtotime( '13 Mar 2014 2:37am' ), $saved_data['test_datetime_field'] );
 
@@ -158,7 +152,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 				),
 			),
 		);
-		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data['test_datetime_group'] );
 		$saved_data = get_post_meta( $this->post_id, 'test_datetime_group', true );
 		$this->assertEquals( '', $saved_data['test_datetime_field'] );
 	}
@@ -187,15 +181,57 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 			'ampm'   => 'am',
 		);
 
-		$gmt_base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data );
+		$gmt_base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data );
 		$gmt_stamp = get_post_meta( $this->post_id, 'test_gmt_time', true );
 		$this->assertEquals( strtotime( '2014-03-13 02:37:00' ), intval( $gmt_stamp ) );
 
-		$local_base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data );
+		$local_base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data );
 		$local_stamp = get_post_meta( $this->post_id, 'test_local_time', true );
 		$this->assertEquals( get_gmt_from_date( '2014-03-13 02:37:00', 'U' ), intval( $local_stamp ) );
 		$this->assertEquals( strtotime( '2014-03-13 02:37:00 America/New_York' ), intval( $local_stamp ) );
 
 		$this->assertEquals( $gmt_stamp - $local_stamp, -4 * HOUR_IN_SECONDS );
+	}
+
+	public function test_local_time_after_time_change() {
+		update_option( 'timezone_string', 'America/New_York' );
+
+		$local_base = new Fieldmanager_Datepicker(
+			array(
+				'name'             => 'test_local_time',
+				'use_time'         => true,
+				'store_local_time' => true,
+			)
+		);
+
+		// Determine when the next time shift is.
+		$tz          = new DateTimeZone( 'America/New_York' );
+		$transitions = $tz->getTransitions( time(), strtotime( '+1 year' ) );
+		// Add a day to the time change timestamp for the test timestamp.
+		$test_timestamp = $transitions[1]['ts'] + DAY_IN_SECONDS;
+
+		// Create a DateTime object for noon of the day after the change, in ET.
+		$test_time = new \DateTime( "@{$test_timestamp}" );
+		$test_time->setTimezone( $tz );
+		$test_time->setTime( 12, 0 );
+
+		$test_data = array(
+			'date'   => $test_time->format('j M Y' ),
+			'hour'   => '12',
+			'minute' => '00',
+			'ampm'   => 'pm',
+		);
+
+		// Save the data and ensure that it converts properly.
+		$local_base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data );
+		$local_stamp = get_post_meta( $this->post_id, 'test_local_time', true );
+		$this->assertSame( $test_time->getTimestamp(), (int) $local_stamp );
+
+		// Load the markup and ensure that the time converted back properly.
+		$markup = $local_base->form_element( $local_stamp );
+		$this->assertContains(
+			'<input class="fm-element fm-datepicker-time" type="text" value="12" name="test_local_time[hour]" />',
+			$markup
+		);
 	}
 }
