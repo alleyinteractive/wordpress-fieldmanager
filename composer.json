@@ -1,6 +1,7 @@
 {
   "name": "alleyinteractive/wordpress-fieldmanager",
   "type": "wordpress-plugin",
+  "license": "GPL-2.0-only"
   "keywords": ["wordpress", "plugin"],
   "authors": [
     {
