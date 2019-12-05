@@ -5,7 +5,7 @@
  * @param {function} callback - The callback function to execute when the DOM is ready.
  */
 function fmLoadModule( callback ) {
-	if ( wp && wp.domReady ) {
+	if ( 'object' === typeof wp && 'function' === typeof wp.domReady ) {
 		wp.domReady( callback );
 	} else if ( jQuery ) {
 		jQuery( document ).ready( callback );
