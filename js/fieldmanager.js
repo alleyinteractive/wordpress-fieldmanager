@@ -54,16 +54,22 @@ var init_sortable_container = function( el ) {
 
 var init_sortable = function() {
 	$( '.fmjs-sortable' ).each( function() {
-		if ( $( this ).is( ':visible' ) ) {
-			init_sortable_container( this );
-		} else {
-			var sortable = this;
-			$( sortable ).parents( '.fm-group' ).bind( 'fm_collapsible_toggle', function() {
-				if ( $( sortable ).is( ':visible' ) ) {
-					init_sortable_container( sortable );
-				}
-			} );
+		// Do not apply to a field in a prototype block.
+		if ( fm.is_proto_field( this ) ) {
+			return;
 		}
+
+		init_sortable_container( this );
+
+		var sortable = this;
+		$( sortable ).parents( '.fm-group' ).bind( 'fm_collapsible_toggle', function() {
+			// Do not apply to a field in a prototype block.
+			if ( fm.is_proto_field( this ) ) {
+				return;
+			}
+
+			init_sortable_container( sortable );
+		} );
 	} );
 }
 
