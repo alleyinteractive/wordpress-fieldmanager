@@ -1,5 +1,5 @@
 (function($) {
-	$(document).ready(function() {
+	function draggablePostInit() {
 		resetEmptyMessages();
 		$('.sortables').sortable({
 			connectWith: '.sortables',
@@ -19,7 +19,7 @@
 				setTimeout(function() { resetEmptyMessages(); populateHiddenElements(); }, 10);
 			}
 		});
-	});
+	}
 	function resetEmptyMessages() {
 		$('.post-bin').each(function(i) {
 			if ($(this).find('.draggable-post').length > 0) {
@@ -40,4 +40,6 @@
 			$('#' + input_name).val(post_ids.join(','));
 		});
 	}
+
+	fmLoadModule( draggablePostInit );
 })(jQuery);

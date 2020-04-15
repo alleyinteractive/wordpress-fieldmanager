@@ -3,7 +3,7 @@
  * Fieldmanager Base Plugin File.
  *
  * @package Fieldmanager
- * @version 1.2.4
+ * @version 1.2.5-beta2
  */
 
 /*
@@ -11,14 +11,14 @@ Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to WordPress programatically.
 Author: Alley
-Version: 1.2.4
+Version: 1.2.5-beta2
 Author URI: https://www.alley.co/
 */
 
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.2.4' );
+define( 'FM_VERSION', '1.2.5-beta2' );
 
 /**
  * Filesystem path to Fieldmanager.
@@ -160,6 +160,17 @@ function fieldmanager_get_template( $tpl_slug ) {
  * @param bool        $admin       Deprecated.
  */
 function fm_add_script( $handle, $path = false, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
+	// Ensure the Fieldmanager loader has been enqueued.
+	Fieldmanager_Util_Assets::instance()->add_script(
+		array(
+			'handle' => 'fm_loader',
+			'path'   => 'js/fieldmanager-loader.js',
+			'deps'   => array( 'jquery' ),
+			'ver'    => FM_VERSION,
+		)
+	);
+
+	// Enqueue the requested script.
 	Fieldmanager_Util_Assets::instance()->add_script( compact( 'handle', 'path', 'deps', 'ver', 'in_footer', 'data_object', 'data', 'plugin_dir' ) );
 }
 

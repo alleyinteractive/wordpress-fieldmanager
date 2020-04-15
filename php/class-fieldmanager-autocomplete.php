@@ -77,9 +77,9 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		fm_add_script(
 			'fm_autocomplete_js',
 			'js/fieldmanager-autocomplete.js',
-			array( 'fieldmanager_script', 'jquery-ui-autocomplete' ),
-			'1.0.6',
-			false,
+			array( 'fm_loader', 'fieldmanager_script', 'jquery-ui-autocomplete' ),
+			FM_VERSION,
+			true,
 			'fm_search',
 			array(
 				'nonce' => wp_create_nonce( 'fm_search_nonce' ),

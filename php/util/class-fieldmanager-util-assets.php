@@ -93,7 +93,10 @@ class Fieldmanager_Util_Assets {
 	 */
 	protected function pre_enqueue_script( $args ) {
 		if ( did_action( 'admin_enqueue_scripts' ) || did_action( 'wp_enqueue_scripts' ) ) {
-			$this->enqueue_script( $args );
+			// Ensure the script isn't already enqueued before performing the enqueue action.
+			if ( ! wp_script_is( $args['handle'], 'enqueued' ) ) {
+				$this->enqueue_script( $args );
+			}
 		} else {
 			$this->scripts[ $args['handle'] ] = $args;
 			$this->hook_enqueue();
