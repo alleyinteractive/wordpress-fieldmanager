@@ -161,16 +161,14 @@ function fieldmanager_get_template( $tpl_slug ) {
  */
 function fm_add_script( $handle, $path = false, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
 	// Ensure the Fieldmanager loader has been enqueued.
-	if ( ! wp_script_is( 'fm_loader', 'enqueued' ) ) {
-		Fieldmanager_Util_Assets::instance()->add_script(
-			array(
-				'handle' => 'fm_loader',
-				'path'   => 'js/fieldmanager-loader.js',
-				'deps'   => array( 'jquery' ),
-				'ver'    => FM_VERSION,
-			)
-		);
-	}
+	Fieldmanager_Util_Assets::instance()->add_script(
+		array(
+			'handle' => 'fm_loader',
+			'path'   => 'js/fieldmanager-loader.js',
+			'deps'   => array( 'jquery' ),
+			'ver'    => FM_VERSION,
+		)
+	);
 
 	// Enqueue the requested script.
 	Fieldmanager_Util_Assets::instance()->add_script( compact( 'handle', 'path', 'deps', 'ver', 'in_footer', 'data_object', 'data', 'plugin_dir' ) );
