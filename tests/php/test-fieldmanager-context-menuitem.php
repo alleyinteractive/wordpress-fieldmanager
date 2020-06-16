@@ -1,5 +1,12 @@
 <?php
 
+global $wp_version;
+
+// Only run these tests for WP versions above 5.4.0.
+if ( version_compare( $wp_version, '5.4.0', '<' ) ) {
+	return;
+}
+
 /**
  * Tests the Menu Item context
  *
