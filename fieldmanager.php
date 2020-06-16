@@ -358,6 +358,10 @@ function fm_calculate_context() {
 						$calculated_context = array( 'term', sanitize_text_field( wp_unslash( $_GET['taxonomy'] ) ) ); // WPCS: input var okay.
 					}
 					break;
+				// Context = "nav-menu".
+				case 'nav-menus.php':
+					$calculated_context = array( 'nav_menu', null );
+					break;
 			}
 		}
 	}
