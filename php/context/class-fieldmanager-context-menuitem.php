@@ -121,7 +121,7 @@ class Fieldmanager_Context_MenuItem extends Fieldmanager_Context_Storable {
 
 		// Make sure the current user can save this post.
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			$this->fm->_unauthorized_access( __( 'User cannot edit this menu item', 'newsnet' ) );
+			$this->fm->_unauthorized_access( __( 'User cannot edit this menu item', 'fieldmanager' ) );
 			return;
 		}
 
