@@ -38,6 +38,13 @@ class Fieldmanager_Context_MenuItem extends Fieldmanager_Context_Storable {
 	 * @param Fieldmanager_Field $fm The base field.
 	 */
 	public function __construct( $fm = null ) {
+		global $wp_version;
+
+		// Needs WP version 5.4.0 or greater.
+		if ( version_compare( $wp_version, '5.4.0', '<' ) ) {
+			return;
+		}
+
 		$this->fm = $fm;
 
 		$this->fm->data_type = 'post';
