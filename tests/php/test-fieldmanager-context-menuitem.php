@@ -1,12 +1,5 @@
 <?php
 
-global $wp_version;
-
-// Only run these tests for WP versions above 5.4.0.
-if ( version_compare( $wp_version, '5.4.0', '<' ) ) {
-	return;
-}
-
 /**
  * Tests the Menu Item context
  *
@@ -105,6 +98,13 @@ class Test_Fieldmanager_Context_Menuitem extends WP_UnitTestCase {
 	}
 
 	public function test_context_render() {
+		global $wp_version;
+
+		// Only run these tests for WP versions above 5.4.0.
+		if ( version_compare( $wp_version, '5.4.0', '<' ) ) {
+			return;
+		}
+
 		$base = $this->_get_elements();
 		ob_start();
 		$base->add_nav_menu_fields()->add_fields( $this->post->ID );
@@ -119,6 +119,13 @@ class Test_Fieldmanager_Context_Menuitem extends WP_UnitTestCase {
 	}
 
 	public function test_context_save() {
+		global $wp_version;
+
+		// Only run these tests for WP versions above 5.4.0.
+		if ( version_compare( $wp_version, '5.4.0', '<' ) ) {
+			return;
+		}
+
 		$base      = $this->_get_elements();
 		$test_data = $this->_get_valid_test_data();
 
@@ -141,6 +148,13 @@ class Test_Fieldmanager_Context_Menuitem extends WP_UnitTestCase {
 	}
 
 	public function test_programmatic_save_posts() {
+		global $wp_version;
+
+		// Only run these tests for WP versions above 5.4.0.
+		if ( version_compare( $wp_version, '5.4.0', '<' ) ) {
+			return;
+		}
+
 		$base = $this->_get_elements();
 		$base->add_nav_menu_fields();
 
