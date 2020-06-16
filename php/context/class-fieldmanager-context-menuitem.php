@@ -84,10 +84,10 @@ class Fieldmanager_Context_MenuItem extends Fieldmanager_Context_Storable {
 		$parts = explode( '_fm-menu-item-id-', $form_name );
 
 		if ( ! empty( $parts[0] ) && ! empty( $parts[1] ) ) {
-			return [
+			return array(
 				'name' => $parts[0],
 				'id'   => absint( $parts[1] ),
-			];
+			);
 		}
 
 		return false;
