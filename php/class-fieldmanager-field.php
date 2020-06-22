@@ -1294,6 +1294,14 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Add this group to an nav menu.
+	 */
+	public function add_nav_menu_fields() {
+		$this->require_base();
+		return new Fieldmanager_Context_MenuItem( $this );
+	}
+
+	/**
 	 * Add this group to an options page.
 	 *
 	 * @param string $parent_slug The parent slug for the menu.

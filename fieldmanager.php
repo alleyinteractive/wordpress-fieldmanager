@@ -3,7 +3,7 @@
  * Fieldmanager Base Plugin File.
  *
  * @package Fieldmanager
- * @version 1.2.6
+ * @version 1.3.0
  */
 
 /*
@@ -11,14 +11,14 @@ Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to WordPress programatically.
 Author: Alley
-Version: 1.2.6
+Version: 1.3.0
 Author URI: https://www.alley.co/
 */
 
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.2.6' );
+define( 'FM_VERSION', '1.3.0' );
 
 /**
  * Filesystem path to Fieldmanager.
@@ -357,6 +357,10 @@ function fm_calculate_context() {
 					} elseif ( ! empty( $_GET['taxonomy'] ) ) { // WPCS: input var okay.
 						$calculated_context = array( 'term', sanitize_text_field( wp_unslash( $_GET['taxonomy'] ) ) ); // WPCS: input var okay.
 					}
+					break;
+				// Context = "nav-menu".
+				case 'nav-menus.php':
+					$calculated_context = array( 'nav_menu', null );
 					break;
 			}
 		}
