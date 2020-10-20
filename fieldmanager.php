@@ -98,6 +98,7 @@ function fieldmanager_load_file( $file ) {
 }
 
 // Load utility classes with helper functions. These can't be autoloaded.
+fieldmanager_load_file( 'libraries/parsedown/Parsedown.php' );
 fieldmanager_load_file( 'util/class-fieldmanager-util-term-meta.php' );
 fieldmanager_load_file( 'util/class-fieldmanager-util-validation.php' );
 
