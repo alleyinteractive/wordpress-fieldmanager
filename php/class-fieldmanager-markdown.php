@@ -15,7 +15,7 @@ class Fieldmanager_Markdown extends Fieldmanager_Field {
 	 *
 	 * @var string
 	 */
-	public $field_class = 'content';
+	public $field_class = 'markdown';
 
 	/**
 	 * Content to render.
