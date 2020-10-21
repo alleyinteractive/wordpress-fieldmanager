@@ -5,10 +5,12 @@
  * @package Fieldmanager
  */
 
+use Fieldmanager\Libraries\Parsedown;
+
 /**
  * Static markdown field.
  */
-class Fieldmanager_Markdown extends Fieldmanager_Field {
+class Fieldmanager_Markdown extends Fieldmanager_Content {
 
 	/**
 	 * Override field_class.
@@ -18,26 +20,12 @@ class Fieldmanager_Markdown extends Fieldmanager_Field {
 	public $field_class = 'markdown';
 
 	/**
-	 * Content to render.
-	 *
-	 * @var string
-	 */
-	public $content = '';
-
-	/**
-	 * Do not save this field. This class is purely informational.
-	 *
-	 * @var bool
-	 */
-	public $skip_save = true;
-
-	/**
-	 * Render content.
+	 * Render content as html from parsed markdown.
 	 *
 	 * @param mixed $value Unused value.
 	 * @return string Rendered content.
 	 */
-	public function form_element( $value = '' ) {
-		return ( new Fieldmanager_Parsedown() )->text( $this->content );
+	public function render_content( string $content ): string {
+		return ( new Parsedown\Parsedown() )->text( $content );
 	}
 }

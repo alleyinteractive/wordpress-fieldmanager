@@ -43,7 +43,7 @@ class Test_Fieldmanager_Markup_Field extends WP_UnitTestCase {
 	/**
 	 * Test the Fieldmanager_Markup field.
 	 */
-	public function test_plaintext() {
+	public function test_markup() {
 		$plaintext = new Fieldmanager_Markup(
 			[
 				'name'    => 'plaintext_content',

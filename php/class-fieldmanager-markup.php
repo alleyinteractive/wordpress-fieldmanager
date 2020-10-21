@@ -8,7 +8,7 @@
 /**
  * Static markup field.
  */
-class Fieldmanager_Markup extends Fieldmanager_Field {
+class Fieldmanager_Markup extends Fieldmanager_Content {
 
 	/**
 	 * Override field_class.
@@ -18,26 +18,12 @@ class Fieldmanager_Markup extends Fieldmanager_Field {
 	public $field_class = 'markup';
 
 	/**
-	 * Content to render.
-	 *
-	 * @var string
-	 */
-	public $content = '';
-
-	/**
-	 * Do not save this field. This class is purely informational.
-	 *
-	 * @var bool
-	 */
-	public $skip_save = true;
-
-	/**
-	 * Render content.
+	 * Render content using `wp_kses_post()`.
 	 *
 	 * @param mixed $value Unused value.
 	 * @return string Rendered content.
 	 */
-	public function form_element( $value = '' ) {
-		return wp_kses_post( $this->content );
+	public function render_content( string $content = '' ): string {
+		return wp_kses_post( $content );
 	}
 }

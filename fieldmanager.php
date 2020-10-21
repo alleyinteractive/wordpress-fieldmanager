@@ -74,16 +74,10 @@ function fieldmanager_load_class( $class ) {
 		return fieldmanager_load_file( 'util/class-fieldmanager-util-' . $class_id . '.php' );
 	}
 
-	/**
-	 * Autoload support for Parsedown.
-	 *
-	 * This is done specifically for Parsedown because it's a third party
-	 * library, which presents a different folder structure than other
-	 * autoloads. If other libraries are introduced in the future, please
-	 * abstract/refecator/generalize this functionality as needed.
-	 */
-	if ( 'Fieldmanager_Parsedown' === $class ) {
-		return fieldmanager_load_file( 'libraries/parsedown/class-fieldmanager-parsedown.php' );
+	if ( 0 === strpos( $class, 'Fieldmanager\Libraries' ) ) {
+		$classes  = explode( '\\', $class );
+		$class_id = strtolower( array_pop( $classes ) );
+		return fieldmanager_load_file( 'libraries/' . $class_id . '/class-' . $class_id . '.php' );
 	}
 
 	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );

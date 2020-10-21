@@ -7,6 +7,8 @@
  * @package Fieldmanager
  */
 
+namespace Fieldmanager\Libraries\Parsedown;
+
 #
 #
 # Parsedown
@@ -20,7 +22,7 @@
 #
 #
 
-class Fieldmanager_Parsedown
+class Parsedown
 {
     # ~
 

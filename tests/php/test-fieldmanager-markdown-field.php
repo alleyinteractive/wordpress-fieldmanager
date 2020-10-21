@@ -5,6 +5,9 @@
  * @group field
  * @group content
  */
+
+use Fieldmanager\Libraries\Parsedown;
+
 class Test_Fieldmanager_Markdown_Field extends WP_UnitTestCase {
 
 	/**
@@ -43,7 +46,7 @@ class Test_Fieldmanager_Markdown_Field extends WP_UnitTestCase {
 	/**
 	 * Test the Fieldmanager_Markdown field.
 	 */
-	public function test_plaintext() {
+	public function test_markdown() {
 		$plaintext = new Fieldmanager_Markdown(
 			[
 				'name'    => 'plaintext_content',
@@ -67,19 +70,19 @@ class Test_Fieldmanager_Markdown_Field extends WP_UnitTestCase {
 
 		$this->assertEquals(
 			$plaintext->form_element(),
-			( new Fieldmanager_Parsedown() )->text( $this->plaintext ),
+			( new Parsedown\Parsedown() )->text( $this->plaintext ),
 			'Failed escaping plaintext to markdown.'
 		);
 
 		$this->assertEquals(
 			$markup->form_element(),
-			( new Fieldmanager_Parsedown() )->text( $this->markup ),
+			( new Parsedown\Parsedown() )->text( $this->markup ),
 			'Failed escaping html to markdown.'
 		);
 
 		$this->assertEquals(
 			$markdown->form_element(),
-			( new Fieldmanager_Parsedown() )->text( $this->markdown ),
+			( new Parsedown\Parsedown() )->text( $this->markdown ),
 			'Failed escaping markdown to markdown.'
 		);
 
