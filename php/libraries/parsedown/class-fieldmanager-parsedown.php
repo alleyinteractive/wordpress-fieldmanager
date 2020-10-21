@@ -1,4 +1,11 @@
 <?php
+/**
+ * Fork of Parsedown for inclusion and use in Fieldmanager.
+ *
+ * Only the class name and this docblock has been changed.
+ *
+ * @package Fieldmanager
+ */
 
 #
 #
@@ -13,7 +20,7 @@
 #
 #
 
-class Parsedown
+class Fieldmanager_Parsedown
 {
     # ~
 

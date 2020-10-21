@@ -54,7 +54,7 @@ class Fieldmanager_Content extends Fieldmanager_Field {
 				return wp_kses_post( $this->content );
 
 			case 'markdown':
-				return ( new Parsedown() )->text( $this->content );
+				return ( new Fieldmanager_Parsedown() )->text( $this->content );
 		}
 	}
 }
