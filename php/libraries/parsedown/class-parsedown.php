@@ -2,7 +2,7 @@
 /**
  * Fork of Parsedown for inclusion and use in Fieldmanager.
  *
- * Only the class name and this docblock has been changed.
+ * Only the namespace and this docblock has been changed.
  *
  * @package Fieldmanager
  */

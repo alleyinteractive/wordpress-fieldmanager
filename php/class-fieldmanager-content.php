@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_Content
+ * Abstract class file for Fieldmanager_Content
  *
  * @package Fieldmanager
  */
