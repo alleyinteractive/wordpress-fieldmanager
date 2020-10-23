@@ -23,7 +23,7 @@ class Fieldmanager_Plaintext extends Fieldmanager_Content {
 	 * @param mixed $value Unused value.
 	 * @return string Rendered content.
 	 */
-	public function render_content( string $content = '' ): string {
+	public function render_content( $content = '' ) {
 		return esc_html( $content );
 	}
 }

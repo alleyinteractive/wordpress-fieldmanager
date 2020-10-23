@@ -47,5 +47,5 @@ abstract class Fieldmanager_Content extends Fieldmanager_Field {
 	 * @param string $content Content to render.
 	 * @return string Rendered content.
 	 */
-	abstract protected function render_content( string $content ): string;
+	abstract public function render_content( $content );
 }
