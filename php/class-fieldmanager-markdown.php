@@ -25,7 +25,7 @@ class Fieldmanager_Markdown extends Fieldmanager_Content {
 	 * @param mixed $value Unused value.
 	 * @return string Rendered content.
 	 */
-	public function render_content( string $content ): string {
+	public function render_content( $content ) {
 		return ( new Parsedown\Parsedown() )->text( $content );
 	}
 }
