@@ -6,7 +6,7 @@
  */
 
 /**
- * Static markdown field.
+ * Abstract content field for rendering content.
  */
 abstract class Fieldmanager_Content extends Fieldmanager_Field {
 
@@ -32,7 +32,7 @@ abstract class Fieldmanager_Content extends Fieldmanager_Field {
 	public $skip_save = true;
 
 	/**
-	 * Render content.
+	 * Render the element.
 	 *
 	 * @param mixed $value Unused value.
 	 * @return string Rendered content.

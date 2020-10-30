@@ -6,7 +6,7 @@
  */
 
 /**
- * Static plaintext field.
+ * Content field which renders escaped plaintext.
  */
 class Fieldmanager_Plaintext extends Fieldmanager_Content {
 

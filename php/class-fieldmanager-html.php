@@ -1,21 +1,21 @@
 <?php
 /**
- * Class file for Fieldmanager_Markup
+ * Class file for Fieldmanager_HTML
  *
  * @package Fieldmanager
  */
 
 /**
- * Static markup field.
+ * Content field which renders HTML using wp_kses_post().
  */
-class Fieldmanager_Markup extends Fieldmanager_Content {
+class Fieldmanager_HTML extends Fieldmanager_Content {
 
 	/**
 	 * Override field_class.
 	 *
 	 * @var string
 	 */
-	public $field_class = 'markup';
+	public $field_class = 'html';
 
 	/**
 	 * Render content using `wp_kses_post()`.
