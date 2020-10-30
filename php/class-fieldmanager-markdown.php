@@ -26,6 +26,6 @@ class Fieldmanager_Markdown extends Fieldmanager_Content {
 	 * @return string Rendered content.
 	 */
 	public function render_content( $content ) {
-		return wp_kses_post( ( new Parsedown\Parsedown() )->text( $content ) );
+		return wp_kses_post( Parsedown\Parsedown::instance()->text( $content ) );
 	}
 }
