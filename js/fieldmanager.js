@@ -168,7 +168,7 @@ fm_add_another = function( $element ) {
 }
 
 fm_remove = function( $element ) {
-	if (window.confirm('Do you want to delete this field?')) {
+	if ( window.confirm( fmTranslationStrings.confirmString ) ) {
 		$wrapper = $element.parents( '.fm-wrapper' ).first();
 		$element.parents( '.fm-item' ).first().remove();
 		fm_renumber( $wrapper );
@@ -189,7 +189,7 @@ var fm_init = function () {
 
 	// Handle collapse events
 	$( document ).on( 'click', '.fmjs-collapsible-handle', function(event) {
-		if ($(event.target).hasClass('fmjs-remove')) {
+		if ( $( event.target ).hasClass( 'fmjs-remove' ) ) {
 			return;
 		}
 
