@@ -26,7 +26,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 */
 	public function __construct( $title = '', $fm = null ) {
 		$this->title = $title;
-		$this->fm = $fm;
+		$this->fm    = $fm;
 		add_action( 'show_user_profile', array( $this, 'render_user_form' ) );
 		add_action( 'edit_user_profile', array( $this, 'render_user_form' ) );
 		add_action( 'personal_options_update', array( $this, 'save_user_form' ) );
@@ -52,7 +52,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param WP_User $user The user.
 	 */
 	public function render_user_form( $user ) {
-		$this->fm->data_id = $user->ID;
+		$this->fm->data_id   = $user->ID;
 		$this->fm->data_type = 'user';
 
 		if ( ! empty( $this->title ) ) {
@@ -92,7 +92,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param array $data    The user data.
 	 */
 	public function save_to_user_meta( $user_id, $data = null ) {
-		$this->fm->data_id = $user_id;
+		$this->fm->data_id   = $user_id;
 		$this->fm->data_type = 'user';
 
 		$this->save( $data );
@@ -174,6 +174,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param mixed  $data_prev_value The previous meta data.
 	 */
 	protected function update_data( $user_id, $meta_key, $meta_value, $data_prev_value = '' ) {
+		$meta_value = $this->sanitize_scalar_value( $meta_value );
 		return call_user_func(
 			/**
 			 * Filters function used to update user meta. This improves compatibility with

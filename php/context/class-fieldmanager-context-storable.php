@@ -73,7 +73,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 * @param mixed  $data  Data to save.
 	 */
 	protected function save_field( $field, $data ) {
-		$field->data_id = $this->fm->data_id;
+		$field->data_id   = $this->fm->data_id;
 		$field->data_type = $this->fm->data_type;
 
 		if ( isset( $this->save_keys[ $field->get_element_key() ] ) ) {
@@ -84,7 +84,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		}
 
 		$current = $this->get_data( $this->fm->data_id, $field->get_element_key(), $field->serialize_data );
-		$data = $this->prepare_data( $current, $data, $field );
+		$data    = $this->prepare_data( $current, $data, $field );
 		if ( ! $field->skip_save ) {
 			if ( $field->serialize_data ) {
 				$this->update_data( $this->fm->data_id, $field->get_element_key(), $data );
@@ -161,6 +161,25 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 			}
 			return $return;
 		}
+	}
+
+	/**
+	 * Meta and options are always stored as strings, so it's best to ensure
+	 * that scalar values get cast as strings to ensure that `update_metadata()`
+	 * and `update_option()` are able to correctly compare the current value
+	 * against the previous value.
+	 *
+	 * @since  1.2.0
+	 *
+	 * @param  mixed $value Value being stored.
+	 * @return string|array If $value is scalar, a string is returned. Otherwise,
+	 *                      $value returns untouched.
+	 */
+	public static function sanitize_scalar_value( $value ) {
+		if ( is_scalar( $value ) && ! is_string( $value ) ) {
+			return strval( $value );
+		}
+		return $value;
 	}
 
 	/**

@@ -90,7 +90,7 @@ class Fieldmanager_Datasource {
 					! empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
 				if ( ! Fieldmanager_Field::$debug ) {
-					wp_die( esc_html( $message ), esc_html__( 'Nonexistant or invalid option' ) );
+					wp_die( esc_html( $message ), esc_html__( 'Nonexistant or invalid option', 'fieldmanager' ) );
 				} else {
 					throw new FM_Developer_Exception( esc_html( $message ) );
 				}
@@ -170,7 +170,7 @@ class Fieldmanager_Datasource {
 	 * @param string|null $fragment Search string.
 	 */
 	public function get_items_for_ajax( $fragment = null ) {
-		$items = $this->get_items( $fragment );
+		$items  = $this->get_items( $fragment );
 		$return = array();
 
 		foreach ( $items as $id => $label ) {

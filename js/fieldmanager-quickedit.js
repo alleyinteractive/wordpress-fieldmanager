@@ -1,6 +1,6 @@
 ( function( $ ) {
 
-	$( document ).ready( function() {
+	function fm_quickedit_init() {
 		if ( typeof( inlineEditPost ) == 'undefined' ) {
 			return;
 		}
@@ -29,6 +29,7 @@
 				} );
 			}
 		}
-	} );
+	}
 
+	fmLoadModule( fm_quickedit_init );
 } )( jQuery );

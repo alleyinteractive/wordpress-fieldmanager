@@ -8,9 +8,7 @@
 /**
  * An interface for dragging posts from a repository to assorted buckets.
  *
- * This field might be deprecated in a future version of Fieldmanager. It is
- * preferable to use {@link https://github.com/alleyinteractive/fm-zones}
- * instead.
+ * @deprecated 1.2.0 Consider using {@link https://github.com/alleyinteractive/fm-zones} instead.
  */
 class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 
@@ -53,12 +51,14 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @param array  $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		parent::__construct( $label, $options );
 		// Refuse to allow more than one instance of this field type.
 		$this->limit = 1;
 
-		fm_add_script( 'fm_draggablepost_js', 'js/fieldmanager-draggablepost.js', array( 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable' ) );
-		fm_add_style( 'fm_draggablepost_css', 'css/fieldmanager-draggablepost.css' );
+		fm_add_script( 'fm_draggablepost_js', 'js/fieldmanager-draggablepost.js', array( 'fm_loader', 'jquery-ui-draggable', 'jquery-ui-droppable', 'jquery-ui-sortable' ), FM_VERSION, true );
+		fm_add_style( 'fm_draggablepost_css', 'css/fieldmanager-draggablepost.css', array(), FM_VERSION );
 	}
 
 	/**
@@ -69,6 +69,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @return array $value The new value.
 	 */
 	public function presave( $value, $current_values = array() ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
 
 		foreach ( $this->bins as $bin => $name ) {
 			if ( isset( $value[ $bin ] ) ) {
@@ -94,6 +95,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @return string HTML.
 	 */
 	public function form_element( $value ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		// Avoid null array errors later.
 		$value['_image_flags'] = isset( $value['_image_flags'] ) ? $value['_image_flags'] : array();
 
@@ -114,14 +117,14 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 				}
 			} else {
 				$query_args = array(
-					'post_type' => $repo['post_type'],
-					'post_status' => 'publish',
+					'post_type'      => $repo['post_type'],
+					'post_status'    => 'publish',
 					'posts_per_page' => $repo['length'],
-					'orderby' => $repo['orderby'],
-					'order' => $repo['order'],
-					'tax_query' => array( $repo['taxonomy_args'] ),
+					'orderby'        => $repo['orderby'],
+					'order'          => $repo['order'],
+					'tax_query'      => array( $repo['taxonomy_args'] ),
 				);
-				$q = new WP_Query( $query_args );
+				$q          = new WP_Query( $query_args );
 				while ( $q->have_posts() ) {
 					$q->the_post();
 					if ( in_array( get_the_ID(), $all ) ) {
@@ -149,7 +152,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		}
 
 		foreach ( $this->bins as $bin => $label ) {
-			$out .= sprintf( '<input type="hidden" value="%s" name="%s" id="%s" />',
+			$out .= sprintf(
+				'<input type="hidden" value="%s" name="%s" id="%s" />',
 				empty( $value[ $bin ] ) ? '' : implode( ',', $value[ $bin ] ),
 				$this->get_form_name() . '[' . $bin . ']',
 				$bin
@@ -168,7 +172,9 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 * @return string Containing the li element.
 	 */
 	protected function draggable_item_html( $post_id, $use_image_checked = false ) {
-		$post = get_post( $post_id );
+		_deprecated_function( __METHOD__, '1.2.0' );
+
+		$post    = get_post( $post_id );
 		$bylines = array();
 		if ( is_plugin_active( 'co-authors-plus/co-authors-plus.php' ) ) {
 			$authors = get_coauthors( $post_id );
@@ -181,7 +187,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 				$authorstr = implode( ', ', $bylines );
 			}
 		} else {
-			$author = get_userdata( $post->post_author );
+			$author    = get_userdata( $post->post_author );
 			$authorstr = $author->display_name;
 		}
 
@@ -195,8 +201,9 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 			$image = '';
 		}
 
-		$li = sprintf( '<li class="draggable-post" id="draggable-post-%d" post_id="%d">', $post_id, $post_id );
-		$li_inner = sprintf('<strong><a href="%s" target="_new">%s</a></strong><br />
+		$li       = sprintf( '<li class="draggable-post" id="draggable-post-%d" post_id="%d">', $post_id, $post_id );
+		$li_inner = sprintf(
+			'<strong><a href="%s" target="_new">%s</a></strong><br />
 							<small>%s &mdash; %s</small><br />
 							<small><em>%s %s</em></small>',
 			$permalink,
@@ -208,7 +215,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 		);
 
 		if ( $this->use_image_checkbox && $image ) {
-			$checked = $use_image_checked ? 'checked' : '';
+			$checked   = $use_image_checked ? 'checked' : '';
 			$li_inner .= sprintf( '<small><input type="checkbox" value="1" name="%s[_image_flags][%d]" %s /> Use image?</small>', $this->get_form_name(), $post_id, $checked );
 		}
 
@@ -226,6 +233,8 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 	 *               attached to key '_image_flags'.
 	 */
 	protected function flatten_arrays( $value ) {
+		_deprecated_function( __METHOD__, '1.2.0' );
+
 		if ( empty( $value ) ) {
 			return array();
 		}

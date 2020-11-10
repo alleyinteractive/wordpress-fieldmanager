@@ -93,7 +93,10 @@ class Fieldmanager_Util_Assets {
 	 */
 	protected function pre_enqueue_script( $args ) {
 		if ( did_action( 'admin_enqueue_scripts' ) || did_action( 'wp_enqueue_scripts' ) ) {
-			$this->enqueue_script( $args );
+			// Ensure the script isn't already enqueued before performing the enqueue action.
+			if ( ! wp_script_is( $args['handle'], 'enqueued' ) ) {
+				$this->enqueue_script( $args );
+			}
 		} else {
 			$this->scripts[ $args['handle'] ] = $args;
 			$this->hook_enqueue();
@@ -184,15 +187,18 @@ class Fieldmanager_Util_Assets {
 			return;
 		}
 
-		$args = wp_parse_args( $args, array(
-			'path'        => false,
-			'deps'        => array(),
-			'ver'         => false,
-			'in_footer'   => false,
-			'data_object' => '',
-			'data'        => array(),
-			'plugin_dir'  => '',
-		) );
+		$args = wp_parse_args(
+			$args,
+			array(
+				'path'        => false,
+				'deps'        => array(),
+				'ver'         => false,
+				'in_footer'   => false,
+				'data_object' => '',
+				'data'        => array(),
+				'plugin_dir'  => '',
+			)
+		);
 
 		// Bail if we don't have a handle and a path.
 		if ( ! isset( $args['handle'] ) ) {
@@ -242,13 +248,16 @@ class Fieldmanager_Util_Assets {
 			return;
 		}
 
-		$args = wp_parse_args( $args, array(
-			'path'       => false,
-			'deps'       => array(),
-			'ver'        => false,
-			'media'      => 'all',
-			'plugin_dir' => '',
-		) );
+		$args = wp_parse_args(
+			$args,
+			array(
+				'path'       => false,
+				'deps'       => array(),
+				'ver'        => false,
+				'media'      => 'all',
+				'plugin_dir' => '',
+			)
+		);
 
 		// Bail if we don't have a handle and a path.
 		if ( ! isset( $args['handle'] ) ) {
