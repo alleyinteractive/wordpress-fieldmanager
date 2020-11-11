@@ -177,8 +177,8 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		}
 
 		$default_args = array();
-		$user_args = array_merge( $default_args, $this->query_args );
-		$ret = array();
+		$user_args    = array_merge( $default_args, $this->query_args );
+		$ret          = array();
 
 		if ( $fragment ) {
 			$user_args['search'] = '*' . $fragment . '*';
@@ -202,7 +202,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		if ( ! empty( $this->ajax_action ) ) {
 			return $this->ajax_action;
 		}
-		$unique_key = wp_json_encode( $this->query_args );
+		$unique_key  = wp_json_encode( $this->query_args );
 		$unique_key .= $this->display_property;
 		$unique_key .= (string) $this->query_callback;
 		return 'fm_datasource_post' . crc32( $unique_key );
@@ -265,14 +265,14 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		$return_single = false;
 		if ( ! is_array( $value ) ) {
 			$return_single = true;
-			$value = array( $value );
+			$value         = array( $value );
 		}
 
 		foreach ( $value as $i => $v ) {
 			$value[ $i ] = $this->sanitize_value( $v );
 			if ( ! current_user_can( $this->capability, $v ) ) {
-				/* translators: %s: property name */
-				wp_die( esc_html( sprintf( __( 'Tried to refer to user %s which current user cannot edit.', 'fieldmanager' ), "`{$v}`" ) ) );
+				/* translators: %s: user id */
+				wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
 			}
 			if ( $this->reciprocal && 'ID' == $this->store_property ) {
 				call_user_func(

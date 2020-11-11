@@ -9,12 +9,12 @@
 class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
-		Fieldmanager_Field::$debug = TRUE;
+		Fieldmanager_Field::$debug = true;
 
 		$this->post = array(
-			'post_status' => 'publish',
+			'post_status'  => 'publish',
 			'post_content' => rand_str(),
-			'post_title' => rand_str(),
+			'post_title'   => rand_str(),
 		);
 
 		// insert a post
@@ -33,6 +33,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	/**
 	 * Get valid test data.
 	 * Several tests transform this data to somehow be invalid.
+	 *
 	 * @return array valid test data
 	 */
 	private function _get_valid_test_data() {
@@ -40,9 +41,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 			'base_group' => array(
 				'test_textfield' => 'alley interactive',
 				'test_checkbox2' => 'yes',
-				'test_numfield' => 1234,
+				'test_numfield'  => 1234,
 				'test_htmlfield' => '<b>Hello</b> world',
-				'test_extended' => array(
+				'test_extended'  => array(
 					array(
 						'extext' => array( 'first' ),
 					),
@@ -62,18 +63,20 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 	/**
 	 * Get some simple test data for a single entry of a repeatable field
+	 *
 	 * @return array
 	 */
 	private function _get_simple_test_data_single() {
 		return array(
 			'test_element' => array(
 				array( 'text' => 'a' ),
-			)
+			),
 		);
 	}
 
 	/**
 	 * Get some simple test data for three entries of a repeatable field
+	 *
 	 * @return array
 	 */
 	private function _get_simple_test_data_multiple() {
@@ -82,7 +85,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				array( 'text' => 'a' ),
 				array( 'text' => 'b' ),
 				array( 'text' => 'c' ),
-			)
+			),
 		);
 	}
 
@@ -93,46 +96,60 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 */
 	private function _get_elements() {
 		return array(
-			'test_textfield' => new Fieldmanager_TextField( array(
-				'name' => 'test_textfield',
-				'validate' => array(
-					function( $value ) {
-						return strlen( $value ) > 2;
-					}
-				),
-				'index' => '_test_index',
-			) ),
-			'test_htmlfield' => new Fieldmanager_Textarea( array(
-				'name' => 'test_htmlfield',
-				'sanitize' => 'wp_kses_post',
-			) ),
-			'test_numfield' => new Fieldmanager_TextField( array(
-				'name' => 'test_numfield',
-				'input_type' => 'number',
-				'validate' => array( 'is_numeric' ),
-			) ),
-			'test_pwfield' => new Fieldmanager_Password,
-			'test_checkbox' => new Fieldmanager_Checkbox( array(
-				'name' => 'test_checkbox',
-			) ),
-			'test_checkbox2' => new Fieldmanager_Checkbox( array(
-				'name' => 'test_checkbox2',
-				'checked_value' => 'yes',
-				'unchecked_value' => 'no',
-			) ),
-			'test_extended' => new Fieldmanager_Group( array(
-				'limit' => 4,
-				'name' => 'test_extended',
-				'children' => array(
-					'extext' => new Fieldmanager_TextField( array(
-						'limit' => 0,
-						'name' => 'extext',
-						'one_label_per_item' => False,
-						'sortable' => True,
-						'index' => '_extext_index',
-					) ),
-				),
-			) ),
+			'test_textfield' => new Fieldmanager_TextField(
+				array(
+					'name'     => 'test_textfield',
+					'validate' => array(
+						function( $value ) {
+							return strlen( $value ) > 2;
+						},
+					),
+					'index'    => '_test_index',
+				)
+			),
+			'test_htmlfield' => new Fieldmanager_Textarea(
+				array(
+					'name'     => 'test_htmlfield',
+					'sanitize' => 'wp_kses_post',
+				)
+			),
+			'test_numfield'  => new Fieldmanager_TextField(
+				array(
+					'name'       => 'test_numfield',
+					'input_type' => 'number',
+					'validate'   => array( 'is_numeric' ),
+				)
+			),
+			'test_pwfield'   => new Fieldmanager_Password(),
+			'test_checkbox'  => new Fieldmanager_Checkbox(
+				array(
+					'name' => 'test_checkbox',
+				)
+			),
+			'test_checkbox2' => new Fieldmanager_Checkbox(
+				array(
+					'name'            => 'test_checkbox2',
+					'checked_value'   => 'yes',
+					'unchecked_value' => 'no',
+				)
+			),
+			'test_extended'  => new Fieldmanager_Group(
+				array(
+					'limit'    => 4,
+					'name'     => 'test_extended',
+					'children' => array(
+						'extext' => new Fieldmanager_TextField(
+							array(
+								'limit'              => 0,
+								'name'               => 'extext',
+								'one_label_per_item' => false,
+								'sortable'           => true,
+								'index'              => '_extext_index',
+							)
+						),
+					),
+				)
+			),
 		);
 	}
 
@@ -145,15 +162,20 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 */
 	private function _get_html_for_extra_element_args( $args, $test_data = null ) {
 		delete_post_meta( $this->post_id, 'base_group' );
-		$args = wp_parse_args( $args, array(
-			'children' => array( 'text' => new Fieldmanager_TextField( false ) )
-		) );
-		$field = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => array(
-				'test_element' => new Fieldmanager_Group( $args )
+		$args  = wp_parse_args(
+			$args,
+			array(
+				'children' => array( 'text' => new Fieldmanager_TextField( false ) ),
 			)
-		) );
+		);
+		$field = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => array(
+					'test_element' => new Fieldmanager_Group( $args ),
+				),
+			)
+		);
 
 		return $this->_get_html_for( $field, $test_data );
 	}
@@ -179,17 +201,19 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * Test that basic save functions work properly
 	 */
 	public function test_save_fields() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
-		$test_str = rand_str();
+		$elements  = $this->_get_elements();
+		$base      = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
+		$test_str  = rand_str();
 		$test_data = $this->_get_valid_test_data();
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
-		$saved_value = get_post_meta( $this->post_id, 'base_group', TRUE );
+		$saved_value = get_post_meta( $this->post_id, 'base_group', true );
 
-		$saved_index = get_post_meta( $this->post_id, '_test_index', TRUE );
+		$saved_index = get_post_meta( $this->post_id, '_test_index', true );
 		$this->assertEquals( $saved_index, $saved_value['test_textfield'] );
 
 		$this->assertEquals( $saved_value['test_textfield'], 'alley interactive' );
@@ -209,52 +233,54 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * Test that index functions work properly
 	 */
 	public function test_save_indices() {
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $this->_get_elements(),
-		) );
+		$base      = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $this->_get_elements(),
+			)
+		);
 		$test_data = $this->_get_valid_test_data();
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
-		$saved_value = get_post_meta( $this->post_id, 'base_group', TRUE );
+		$saved_value = get_post_meta( $this->post_id, 'base_group', true );
 
-		$saved_index = get_post_meta( $this->post_id, '_test_index', TRUE );
+		$saved_index = get_post_meta( $this->post_id, '_test_index', true );
 		$this->assertEquals( $saved_value['test_textfield'], $saved_index );
 
-		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', FALSE );
+		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', false );
 		$this->assertEquals( array( 'first', 'second1', 'second2', 'second3', 'third', 'fourth' ), $repeat_indices );
 
 		// Test updating the data.
 		$test_data['base_group']['test_textfield'] = rand_str();
-		$test_data['base_group']['test_extended'] = array( array( 'extext' => array( rand_str() ) ) );
+		$test_data['base_group']['test_extended']  = array( array( 'extext' => array( rand_str() ) ) );
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 
-		$saved_value = get_post_meta( $this->post_id, 'base_group', TRUE );
+		$saved_value = get_post_meta( $this->post_id, 'base_group', true );
 		$this->assertEquals( $test_data['base_group']['test_textfield'], $saved_value['test_textfield'] );
 
 		// Test single field index.
-		$saved_index = get_post_meta( $this->post_id, '_test_index', TRUE );
+		$saved_index = get_post_meta( $this->post_id, '_test_index', true );
 		$this->assertEquals( $saved_value['test_textfield'], $saved_index );
 
 		$this->assertEquals( $test_data['base_group']['test_extended'][0]['extext'], $saved_value['test_extended'][0]['extext'] );
 
 		// Test repeated field index.
-		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', FALSE );
+		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', false );
 		$this->assertEquals( $saved_value['test_extended'][0]['extext'], $repeat_indices );
 
 		// Test empty repeated field index.
 		$test_data['base_group']['test_extended'] = array( array( 'extext' => array() ) );
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 
-		$saved_value = get_post_meta( $this->post_id, 'base_group', TRUE );
+		$saved_value = get_post_meta( $this->post_id, 'base_group', true );
 		$this->assertEmpty( $saved_value['test_extended'] );
 
-		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', FALSE );
+		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', false );
 		$this->assertEmpty( $repeat_indices );
 
 		// Test filtered field index.
-		$replace_me = rand_str();
+		$replace_me      = rand_str();
 		$dont_replace_me = rand_str();
-		$filter_value = rand_str();
+		$filter_value    = rand_str();
 		$base->children['test_extended']->children['extext']->index_filter = function( $value ) use ( $replace_me, $filter_value ) {
 			return $value == $replace_me ? $filter_value : $value;
 		};
@@ -262,22 +288,25 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$test_data['base_group']['test_extended'] = array( array( 'extext' => array( $replace_me, $dont_replace_me ) ) );
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 
-		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', FALSE );
+		$repeat_indices = get_post_meta( $this->post_id, '_extext_index', false );
 		$this->assertEquals( array( $filter_value, $dont_replace_me ), $repeat_indices );
 	}
 
 	/**
 	 * Test that a closure validator works properly
 	 * Specifically verifies that callables of various types work.
+	 *
 	 * @expectedException FM_Validation_Exception
 	 */
 	public function test_invalid_closure() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
-		$test_data = $this->_get_valid_test_data();
+		$elements                                  = $this->_get_elements();
+		$base                                      = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
+		$test_data                                 = $this->_get_valid_test_data();
 		$test_data['base_group']['test_textfield'] = 'a'; // Violate test_textfield's validator which checks strlen > 2
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 	}
@@ -285,17 +314,26 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	/**
 	 * Test that using is_numeric as a validator works properly
 	 * Verifies that the framework hasn't been refactored to something that expects a result other than true/false
+	 *
 	 * @expectedException FM_Validation_Exception
 	 */
 	public function test_invalid_php_callback() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
-		$test_data = $this->_get_valid_test_data();
+		$elements                                 = $this->_get_elements();
+		$base                                     = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
+		$test_data                                = $this->_get_valid_test_data();
 		$test_data['base_group']['test_numfield'] = rand_str(); // Violate test_numfield's is_numeric validater
-		$test_data = array( 'base_group' => array( 'test_textfield' => rand_str(), 'test_numfield' => rand_str(), 'test_checkbox2' => 'yes' ) );
+		$test_data                                = array(
+			'base_group' => array(
+				'test_textfield' => rand_str(),
+				'test_numfield'  => rand_str(),
+				'test_checkbox2' => 'yes',
+			),
+		);
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 	}
 
@@ -305,11 +343,13 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 */
 	public function test_invalid_option() {
 		Fieldmanager_Field::$debug = false;
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'fake' => 'field',
-			'meta_box_actions_added' => 'foobar',
-		) );
+		$base                      = new Fieldmanager_Group(
+			array(
+				'name'                   => 'base_group',
+				'fake'                   => 'field',
+				'meta_box_actions_added' => 'foobar',
+			)
+		);
 		$this->assertFalse( isset( $base->fake ) );
 		Fieldmanager_Field::$debug = true;
 	}
@@ -322,53 +362,64 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 */
 	public function test_invalid_option_debug() {
 		Fieldmanager_Field::$debug = true;
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'fake' => 'field',
-			'meta_box_actions_added' => 'foobar',
-		) );
+		$base                      = new Fieldmanager_Group(
+			array(
+				'name'                   => 'base_group',
+				'fake'                   => 'field',
+				'meta_box_actions_added' => 'foobar',
+			)
+		);
 	}
 
 	/**
 	 * Test that submitting a form with an undefined key will throw an exception.
+	 *
 	 * @expectedException FM_Exception
 	 */
 	public function test_invalid_key() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
-		$test_data = $this->_get_valid_test_data();
+		$elements                       = $this->_get_elements();
+		$base                           = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
+		$test_data                      = $this->_get_valid_test_data();
 		$test_data['base_group']['hax'] = 'all ur base'; // this bit of data is not in the group.
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 	}
 
 	/**
 	 * Test that submitting a multi-dimensional array with $limit = 1 will throw an exception.
+	 *
 	 * @expectedException FM_Exception
 	 */
 	public function test_unexpected_array() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
-		$test_data = $this->_get_valid_test_data();
+		$elements                                  = $this->_get_elements();
+		$base                                      = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
+		$test_data                                 = $this->_get_valid_test_data();
 		$test_data['base_group']['test_textfield'] = array( 'alley interactive' ); // should not be multi-dimensional.
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 	}
 
 	/**
 	 * Test that submitting a single value with $limit != 1 will throw an exception.
+	 *
 	 * @expectedException FM_Exception
 	 */
 	public function test_unexpected_not_array() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
+		$elements  = $this->_get_elements();
+		$base      = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
 		$test_data = $this->_get_valid_test_data();
 		$test_data['base_group']['test_extended'][0]['extext'] = 'first'; // should be multi-dimensional.
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
@@ -376,29 +427,35 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 	/**
 	 * Test that submitting more values than the limit will throw an exception.
+	 *
 	 * @expectedException FM_Exception
 	 */
 	public function test_unexpected_too_many_elements() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
-		$test_data = $this->_get_valid_test_data();
+		$elements                                   = $this->_get_elements();
+		$base                                       = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
+		$test_data                                  = $this->_get_valid_test_data();
 		$test_data['base_group']['test_extended'][] = array( 'extext' => array( 'fifth' ) ); // Limit is 4.
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 	}
 
 	/**
 	 * Test that submitting a non-numeric key with multiple elements will throw an exception.
+	 *
 	 * @expectedException FM_Exception
 	 */
 	public function test_unexpected_non_numeric_key() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
+		$elements  = $this->_get_elements();
+		$base      = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
 		$test_data = $this->_get_valid_test_data();
 		unset( $test_data['base_group']['test_extended'][3] ); // keep the limit legal.
 		$test_data['base_group']['test_extended']['f0urth'] = array( 'extext' => array( 'fifth' ) ); // non-numeric keys aren't allowed.
@@ -409,11 +466,13 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * Test that the default sanitizer will strip HTML, and that wp_kses_post will allow it through.
 	 */
 	public function test_sanitize() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
+		$elements  = $this->_get_elements();
+		$base      = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
 		$test_data = $this->_get_valid_test_data();
 
 		// some unwanted HTML which should be stripped by the default sanitizer.
@@ -421,7 +480,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$test_data['base_group']['test_htmlfield'] = '<a href="#">alley interactive</a>';
 
 		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
-		$saved_value = get_post_meta( $this->post_id, 'base_group', TRUE );
+		$saved_value = get_post_meta( $this->post_id, 'base_group', true );
 		$this->assertEquals( $saved_value['test_textfield'], 'alley interactive' );
 		$this->assertEquals( $saved_value['test_htmlfield'], '<a href="#">alley interactive</a>' );
 	}
@@ -430,11 +489,13 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * Test the form output
 	 */
 	public function test_form_output() {
-		$elements = $this->_get_elements();
-		$base = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => $elements
-		) );
+		$elements  = $this->_get_elements();
+		$base      = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => $elements,
+			)
+		);
 		$test_data = $this->_get_valid_test_data();
 		ob_start();
 		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
@@ -451,13 +512,15 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	public function test_multi_tools_in_group_without_label() {
-		$label = rand_str();
+		$label  = rand_str();
 		$button = rand_str();
 
-		$field = new Fieldmanager_Group( array(
-			'name' => 'multi_tools',
-			'children' => array( 'text' => new Fieldmanager_TextField ),
-		) );
+		$field = new Fieldmanager_Group(
+			array(
+				'name'     => 'multi_tools',
+				'children' => array( 'text' => new Fieldmanager_TextField() ),
+			)
+		);
 
 		// Ensure that, by default, no multitools are present
 		$html = $this->_get_html_for( $field );
@@ -468,7 +531,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
-		$html = $this->_get_html_for( $field );
+		$html         = $this->_get_html_for( $field );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertNotContains( 'fmjs-drag', $html );
@@ -476,7 +539,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
-		$html = $this->_get_html_for( $field );
+		$html            = $this->_get_html_for( $field );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertContains( 'fmjs-drag', $html );
@@ -485,7 +548,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// Ensure collapsible tools are present, even though this doesn't
 		// work (there's nothing to collapse to)
 		$field->collapsible = true;
-		$html = $this->_get_html_for( $field );
+		$html               = $this->_get_html_for( $field );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertContains( 'fmjs-drag', $html );
@@ -493,7 +556,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure everything still works without one_label_per_item
 		$field->one_label_per_item = false;
-		$html = $this->_get_html_for( $field );
+		$html                      = $this->_get_html_for( $field );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertContains( 'fmjs-drag', $html );
@@ -501,26 +564,28 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
-		$html = $this->_get_html_for( $field );
+		$html                  = $this->_get_html_for( $field );
 		$this->assertContains( $button, $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
 		// minimum count of 5
 		$field->minimum_count = 5;
-		$html = $this->_get_html_for( $field );
+		$html                 = $this->_get_html_for( $field );
 		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
 	public function test_multi_tools_in_group_with_label() {
-		$label = rand_str();
+		$label  = rand_str();
 		$button = rand_str();
 
-		$field = new Fieldmanager_Group( array(
-			'name' => 'multi_tools',
-			'label' => $label,
-			'children' => array( 'text' => new Fieldmanager_TextField ),
-		) );
+		$field = new Fieldmanager_Group(
+			array(
+				'name'     => 'multi_tools',
+				'label'    => $label,
+				'children' => array( 'text' => new Fieldmanager_TextField() ),
+			)
+		);
 
 		// Ensure that, by default, no multitools are present
 		$html = $this->_get_html_for( $field );
@@ -532,7 +597,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
-		$html = $this->_get_html_for( $field );
+		$html         = $this->_get_html_for( $field );
 		$this->assertContains( $label, $html );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
@@ -541,7 +606,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
-		$html = $this->_get_html_for( $field );
+		$html            = $this->_get_html_for( $field );
 		$this->assertContains( $label, $html );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
@@ -550,7 +615,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure collapsible tools are present
 		$field->collapsible = true;
-		$html = $this->_get_html_for( $field );
+		$html               = $this->_get_html_for( $field );
 		$this->assertContains( $label, $html );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
@@ -559,7 +624,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure everything still works without one_label_per_item
 		$field->one_label_per_item = false;
-		$html = $this->_get_html_for( $field );
+		$html                      = $this->_get_html_for( $field );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertContains( 'fmjs-drag', $html );
@@ -567,25 +632,27 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
-		$html = $this->_get_html_for( $field );
+		$html                  = $this->_get_html_for( $field );
 		$this->assertContains( $label, $html );
 		$this->assertContains( $button, $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
 		// minimum count of 5
 		$field->minimum_count = 5;
-		$html = $this->_get_html_for( $field );
+		$html                 = $this->_get_html_for( $field );
 		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
 	public function test_multi_tools_in_field_without_label() {
-		$label = rand_str();
+		$label  = rand_str();
 		$button = rand_str();
 
-		$field = new Fieldmanager_TextField( array(
-			'name' => 'multi_tools',
-		) );
+		$field = new Fieldmanager_TextField(
+			array(
+				'name' => 'multi_tools',
+			)
+		);
 
 		// Ensure that, by default, no multitools are present
 		$html = $this->_get_html_for( $field );
@@ -595,46 +662,48 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
-		$html = $this->_get_html_for( $field );
+		$html         = $this->_get_html_for( $field );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertNotContains( 'fmjs-drag', $html );
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
-		$html = $this->_get_html_for( $field );
+		$html            = $this->_get_html_for( $field );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertContains( 'fmjs-drag', $html );
 
 		// Ensure everything still works without one_label_per_item
 		$field->one_label_per_item = false;
-		$html = $this->_get_html_for( $field );
+		$html                      = $this->_get_html_for( $field );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertContains( 'fmjs-drag', $html );
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
-		$html = $this->_get_html_for( $field );
+		$html                  = $this->_get_html_for( $field );
 		$this->assertContains( $button, $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
 		// minimum count of 5
 		$field->minimum_count = 5;
-		$html = $this->_get_html_for( $field );
+		$html                 = $this->_get_html_for( $field );
 		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
 
 	public function test_multi_tools_in_field_with_label() {
-		$label = rand_str();
+		$label  = rand_str();
 		$button = rand_str();
 
-		$field = new Fieldmanager_TextField( array(
-			'name' => 'multi_tools',
-			'label' => $label,
-		) );
+		$field = new Fieldmanager_TextField(
+			array(
+				'name'  => 'multi_tools',
+				'label' => $label,
+			)
+		);
 
 		// Ensure that, by default, no multitools are present
 		$html = $this->_get_html_for( $field );
@@ -645,7 +714,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
-		$html = $this->_get_html_for( $field );
+		$html         = $this->_get_html_for( $field );
 		$this->assertContains( $label, $html );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
@@ -653,7 +722,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
-		$html = $this->_get_html_for( $field );
+		$html            = $this->_get_html_for( $field );
 		$this->assertContains( $label, $html );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
@@ -661,13 +730,13 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
-		$html = $this->_get_html_for( $field );
+		$html                  = $this->_get_html_for( $field );
 		$this->assertContains( $label, $html );
 		$this->assertContains( $button, $html );
 
 		// Ensure everything still works without one_label_per_item
 		$field->one_label_per_item = false;
-		$html = $this->_get_html_for( $field );
+		$html                      = $this->_get_html_for( $field );
 		$this->assertContains( 'fmjs-remove', $html );
 		$this->assertContains( 'fm-add-another', $html );
 		$this->assertContains( 'fmjs-drag', $html );
@@ -675,7 +744,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
 		// minimum count of 5
 		$field->minimum_count = 5;
-		$html = $this->_get_html_for( $field );
+		$html                 = $this->_get_html_for( $field );
 		$this->assertEquals( 6, substr_count( $html, '<a href="#" class="fmjs-remove" title="Remove"><span class="screen-reader-text">Remove</span></a>' ) );
 		$this->assertEquals( 6, substr_count( $html, 'fmjs-drag-icon' ) );
 	}
@@ -703,7 +772,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				if ( 1 != $extra_elements ) {
 					$args['extra_elements'] = $extra_elements;
 				}
-				foreach ( array( 0, 1, 2, 3, 5) as $minimum_count ) {
+				foreach ( array( 0, 1, 2, 3, 5 ) as $minimum_count ) {
 					unset( $args['minimum_count'] );
 					if ( $minimum_count > 0 ) {
 						$args['minimum_count'] = $minimum_count;
@@ -718,7 +787,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 						}
 
 						$test_conditions = json_encode( array_merge( $args, array( 'data' => $data ) ) );
-						$str = $this->_get_html_for_extra_element_args( $args, $test_data );
+						$str             = $this->_get_html_for_extra_element_args( $args, $test_data );
 
 						// There should always be a prototype
 						$this->assertContains( 'name="base_group[test_element][proto][text]"', $str, "Attempted to assert that the prototype is present when: {$test_conditions}" );
@@ -737,7 +806,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 							if ( $ceiling > 1 ) {
 								// Ensure that the absolute ceiling is present
-								$this->assertContains( 'name="base_group[test_element][' . ( $ceiling - 1 ) . '][text]"', $str, "Attempted to assert that field " . ( $ceiling - 1 ) . " is present when: {$test_conditions}" );
+								$this->assertContains( 'name="base_group[test_element][' . ( $ceiling - 1 ) . '][text]"', $str, 'Attempted to assert that field ' . ( $ceiling - 1 ) . " is present when: {$test_conditions}" );
 							}
 
 							// Ensure that the field after the ceiling is absent
@@ -772,31 +841,37 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 				array( 'text' => 'c' ),
 				array( 'text' => 'd' ),
 				array( 'text' => 'e' ),
-			)
+			),
 		);
 
-		$field = new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => array(
-				'test_element' => new Fieldmanager_Group( array(
-					'limit' => 3,
-					'children' => array( 'text' => new Fieldmanager_TextField( false ) ),
-				) )
+		$field   = new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => array(
+					'test_element' => new Fieldmanager_Group(
+						array(
+							'limit'    => 3,
+							'children' => array( 'text' => new Fieldmanager_TextField( false ) ),
+						)
+					),
+				),
 			)
-		) );
+		);
 		$context = $field->add_meta_box( 'test meta box', $this->post );
 		$context->save_to_post_meta( $this->post_id, $test_data_too_many );
 	}
 
-	public function test_attributes(){
-		$fm = new Fieldmanager_Textfield( array(
-			'name' => 'test_attributes',
-			'attributes' => array(
-				'required' => true,
-				'data-foo' => 'bar',
-				'data-UPPER' => 'lower'
+	public function test_attributes() {
+		$fm = new Fieldmanager_Textfield(
+			array(
+				'name'       => 'test_attributes',
+				'attributes' => array(
+					'required'   => true,
+					'data-foo'   => 'bar',
+					'data-UPPER' => 'lower',
+				),
 			)
-		) );
+		);
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
@@ -807,46 +882,46 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	public function test_label_escaping() {
-		$id = rand_str();
-		$label_raw = rand_str();
+		$id         = rand_str();
+		$label_raw  = rand_str();
 		$label_html = "<strong id='{$id}'>{$label_raw}</strong>";
-		$args = array(
-			'name' => 'label_escape_testing',
+		$args       = array(
+			'name'  => 'label_escape_testing',
 			'label' => $label_html,
 		);
 
 		// Ensure that, by default, the label is present without the HTML
 		$field = new Fieldmanager_TextField( $args );
-		$html = $this->_get_html_for( $field );
+		$html  = $this->_get_html_for( $field );
 		$this->assertContains( $label_raw, $html );
 		$this->assertNotContains( $label_html, $html );
 
 		// Ensure that the label has HTML when we change the escaping
 		$args['escape'] = array( 'label' => 'wp_kses_post' );
-		$field = new Fieldmanager_TextField( $args );
-		$html = $this->_get_html_for( $field );
+		$field          = new Fieldmanager_TextField( $args );
+		$html           = $this->_get_html_for( $field );
 		$this->assertContains( $label_html, $html );
 	}
 
 	public function test_description_escaping() {
-		$id = rand_str();
-		$description_raw = rand_str();
+		$id               = rand_str();
+		$description_raw  = rand_str();
 		$description_html = "<strong id='{$id}'>{$description_raw}</strong>";
-		$args = array(
-			'name' => 'description_escape_testing',
+		$args             = array(
+			'name'        => 'description_escape_testing',
 			'description' => $description_html,
 		);
 
 		// Ensure that, by default, the description is present without the HTML
 		$field = new Fieldmanager_TextField( $args );
-		$html = $this->_get_html_for( $field );
+		$html  = $this->_get_html_for( $field );
 		$this->assertContains( $description_raw, $html );
 		$this->assertNotContains( $description_html, $html );
 
 		// Ensure that the description has HTML when we change the escaping
 		$args['escape'] = array( 'description' => 'wp_kses_post' );
-		$field = new Fieldmanager_TextField( $args );
-		$html = $this->_get_html_for( $field );
+		$field          = new Fieldmanager_TextField( $args );
+		$html           = $this->_get_html_for( $field );
 		$this->assertContains( $description_html, $html );
 	}
 
@@ -911,11 +986,13 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_single_field_save() {
-		$base = new Fieldmanager_TextField( array(
-			'name'           => 'base_field',
-			'limit'          => 0,
-			'serialize_data' => false,
-		) );
+		$base = new Fieldmanager_TextField(
+			array(
+				'name'           => 'base_field',
+				'limit'          => 0,
+				'serialize_data' => false,
+			)
+		);
 		$data = array( rand_str(), rand_str(), rand_str() );
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 
@@ -926,14 +1003,16 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_single_field_sorting() {
-		$item_1 = rand_str();
-		$item_2 = rand_str();
-		$item_3 = rand_str();
-		$base = new Fieldmanager_TextField( array(
-			'name'           => 'base_field',
-			'limit'          => 0,
-			'serialize_data' => false,
-		) );
+		$item_1  = rand_str();
+		$item_2  = rand_str();
+		$item_3  = rand_str();
+		$base    = new Fieldmanager_TextField(
+			array(
+				'name'           => 'base_field',
+				'limit'          => 0,
+				'serialize_data' => false,
+			)
+		);
 		$context = $base->add_meta_box( 'test meta box', 'post' );
 
 		// Test as 1, 2, 3
@@ -968,10 +1047,12 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * @group serialize_data
 	 */
 	public function test_unserialize_data_limit_1_no_impact() {
-		$base = new Fieldmanager_TextField( array(
-			'name'           => 'base_field',
-			'serialize_data' => false,
-		) );
+		$base = new Fieldmanager_TextField(
+			array(
+				'name'           => 'base_field',
+				'serialize_data' => false,
+			)
+		);
 		$data = rand_str();
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 
@@ -983,26 +1064,30 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_unserialize_data_single_field_index() {
-		new Fieldmanager_TextField( array(
-			'name'           => 'test',
-			'limit'          => 0,
-			'serialize_data' => false,
-			'index'          => true,
-		) );
+		new Fieldmanager_TextField(
+			array(
+				'name'           => 'test',
+				'limit'          => 0,
+				'serialize_data' => false,
+				'index'          => true,
+			)
+		);
 	}
 
 	public function test_removing_item_from_repeatable() {
-		$field = new Fieldmanager_Textfield( array(
-			'name' => 'removing_items_testing',
-			'sortable' => true,
-			'extra_elements' => 0,
-			'limit' => 0,
-		) );
+		$field = new Fieldmanager_Textfield(
+			array(
+				'name'           => 'removing_items_testing',
+				'sortable'       => true,
+				'extra_elements' => 0,
+				'limit'          => 0,
+			)
+		);
 
 		$context = $field->add_meta_box( 'removing_items_testing', $this->post );
 
 		$to_remove = rand_str();
-		$to_save = array( $to_remove, rand_str(), rand_str() );
+		$to_save   = array( $to_remove, rand_str(), rand_str() );
 
 		$context->save_to_post_meta( $this->post_id, $to_save );
 
@@ -1028,46 +1113,54 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	}
 
 	public function test_attachment_detection() {
-		$fm_1 = new Fieldmanager_Textfield( array(
-			'name' => 'test_attachment_detection',
-		) );
+		$fm_1      = new Fieldmanager_Textfield(
+			array(
+				'name' => 'test_attachment_detection',
+			)
+		);
 		$context_1 = $fm_1->add_meta_box( 'Test Attachment Detection', 'post' );
 		$this->assertFalse( $fm_1->is_attachment );
 
 		// Ensure attachment sets $is_attachment
-		$fm_2 = new Fieldmanager_Textfield( array(
-			'name' => 'test_attachment_detection',
-		) );
+		$fm_2      = new Fieldmanager_Textfield(
+			array(
+				'name' => 'test_attachment_detection',
+			)
+		);
 		$context_2 = $fm_2->add_meta_box( 'Test Attachment Detection', 'attachment' );
-		$this->assertEquals( 10, has_filter( 'attachment_fields_to_save', array( $context_2, 'save_fields_for_attachment') ) );
+		$this->assertEquals( 10, has_filter( 'attachment_fields_to_save', array( $context_2, 'save_fields_for_attachment' ) ) );
 		remove_filter( 'attachment_fields_to_save', array( $context_2, 'save_fields_for_attachment' ) );
 		$this->assertTrue( $fm_2->is_attachment );
 
 		// Ensure attachment is read from an array
-		$fm_3 = new Fieldmanager_Textfield( array(
-			'name' => 'test_attachment_detection',
-		) );
+		$fm_3      = new Fieldmanager_Textfield(
+			array(
+				'name' => 'test_attachment_detection',
+			)
+		);
 		$context_3 = $fm_3->add_meta_box( 'Test Attachment Detection', array( 'post', 'attachment' ) );
-		$this->assertEquals( 10, has_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment') ) );
+		$this->assertEquals( 10, has_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment' ) ) );
 		remove_filter( 'attachment_fields_to_save', array( $context_3, 'save_fields_for_attachment' ) );
 		$this->assertTrue( $fm_3->is_attachment );
 	}
 
 	public function test_zero_in_repeating_field() {
-		$save_data = array( '1', '0', '', '2' );
+		$save_data   = array( '1', '0', '', '2' );
 		$stored_data = array( '1', '0', '2' );
-		$fm = new Fieldmanager_Textfield( array(
-			'name' => 'repeating_text_field',
-			'limit' => 0,
-		) );
-		$fm->add_meta_box( 'Repeating Text Field', 'post' )->save_to_post_meta( $this->post_id, $save_data );;
+		$fm          = new Fieldmanager_Textfield(
+			array(
+				'name'  => 'repeating_text_field',
+				'limit' => 0,
+			)
+		);
+		$fm->add_meta_box( 'Repeating Text Field', 'post' )->save_to_post_meta( $this->post_id, $save_data );
 
 		$this->assertSame( $stored_data, get_post_meta( $this->post_id, 'repeating_text_field', true ) );
 	}
 
 	public function test_element_markup_filters() {
 		$name = rand_str();
-		$fm = new Fieldmanager_TextField( array( 'name' => $name ) );
+		$fm   = new Fieldmanager_TextField( array( 'name' => $name ) );
 
 		$ma = new MockAction();
 		add_filter( 'fm_element_markup_start', array( $ma, 'filter' ) );

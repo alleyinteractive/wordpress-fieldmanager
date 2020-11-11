@@ -109,11 +109,11 @@ class Fieldmanager_Util_Validation {
 		if ( 'page' == $context ) {
 			// Currently only the page context outputs to the frontend.
 			$action = 'wp_footer';
-			$admin = false;
+			$admin  = false;
 		} else {
 			// All other contexts are used only on the admin side.
 			$action = 'admin_footer';
-			$admin = true;
+			$admin  = true;
 		}
 
 		// Hook the action.
@@ -142,7 +142,7 @@ class Fieldmanager_Util_Validation {
 
 		// Determine if the rules are a string or an array and ensure they are valid.
 		// Also aggregate any messages that were set for the rules, ignoring any messages that don't match a rule.
-		$messages = '';
+		$messages = array();
 		if ( ! is_array( $fm->validation_rules ) ) {
 			// If a string, the only acceptable value is "required".
 			if ( ! is_string( $fm->validation_rules ) || 'required' !== $fm->validation_rules ) {
@@ -183,9 +183,9 @@ class Fieldmanager_Util_Validation {
 		}
 
 		// If we have reached this point, there were no errors so store the field and the corresponding rules and messages.
-		$name = $fm->get_form_name();
-		$this->fields[] = $name;
-		$this->rules[ $name ] = $fm->validation_rules;
+		$name                    = $fm->get_form_name();
+		$this->fields[]          = $name;
+		$this->rules[ $name ]    = $fm->validation_rules;
 		$this->messages[ $name ] = $messages;
 	}
 
@@ -196,7 +196,7 @@ class Fieldmanager_Util_Validation {
 	 */
 	public function add_validation() {
 		// Iterate through the fields and output the required Javascript.
-		$rules = array();
+		$rules    = array();
 		$messages = array();
 		foreach ( $this->fields as $field ) {
 			// Add the rule string to an array.
@@ -214,7 +214,7 @@ class Fieldmanager_Util_Validation {
 
 		// Create final rule string.
 		if ( ! empty( $rules ) ) {
-			$rules_js = $this->array_to_js( $rules, 'rules' );
+			$rules_js    = $this->array_to_js( $rules, 'rules' );
 			$messages_js = $this->array_to_js( $messages, 'messages' );
 
 			// Add a comma and newline if messages is not empty.

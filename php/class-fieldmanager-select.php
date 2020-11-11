@@ -56,9 +56,17 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		);
 
 		// Add the Fieldmanager Select Javascript library.
-		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.2', false, 'fm_select', array(
-			'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ),
-		) );
+		fm_add_script(
+			'fm_select_js',
+			'js/fieldmanager-select.js',
+			array( 'fm_loader' ),
+			FM_VERSION,
+			true,
+			'fm_select',
+			array(
+				'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ),
+			)
+		);
 
 		parent::__construct( $label, $options );
 
