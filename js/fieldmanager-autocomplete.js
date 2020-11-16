@@ -80,9 +80,10 @@ fm.autocomplete = {
 			}
 		} );
 	}
-}
+};
 
-$( document ).ready( fm.autocomplete.enable_autocomplete );
+fmLoadModule( fm.autocomplete.enable_autocomplete );
+
 $( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle fm_activate_tab', fm.autocomplete.enable_autocomplete );
 
 } ) ( jQuery );

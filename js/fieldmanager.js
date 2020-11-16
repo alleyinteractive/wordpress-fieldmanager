@@ -173,7 +173,7 @@ fm_remove = function( $element ) {
 	fm_renumber( $wrapper );
 }
 
-$( document ).ready( function () {
+var fm_init = function () {
 	$( document ).on( 'click', '.fm-add-another', function( e ) {
 		e.preventDefault();
 		fm_add_another( $( this ) );
@@ -276,6 +276,8 @@ $( document ).ready( function () {
 	init_sortable();
 
 	$( document ).on( 'fm_activate_tab', init_sortable );
-} );
+};
+
+fmLoadModule( fm_init );
 
 } )( jQuery );

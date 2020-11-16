@@ -381,7 +381,7 @@ abstract class Fieldmanager_Field {
 	 */
 	public function form_element( $value ) {
 		if ( ! $this->template ) {
-			$tpl_slug = strtolower( str_replace( 'Fieldmanager_', '', get_class( $this ) ) );
+			$tpl_slug       = strtolower( str_replace( 'Fieldmanager_', '', get_class( $this ) ) );
 			$this->template = fieldmanager_get_template( $tpl_slug );
 		}
 		ob_start();
@@ -403,14 +403,14 @@ abstract class Fieldmanager_Field {
 		// it's repeatable, we're doing it wrong.
 		if ( $this->datasource && ! empty( $this->datasource->save_to_post_parent ) && $this->is_repeatable() ) {
 			_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', esc_html__( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ), '1.0.0' );
-			$this->datasource->save_to_post_parent = false;
+			$this->datasource->save_to_post_parent      = false;
 			$this->datasource->only_save_to_post_parent = false;
 		}
 
 		// Only enqueue base assets once, and only when we have a field.
 		if ( ! self::$enqueued_base_assets ) {
-			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'jquery', 'jquery-ui-sortable' ), '1.2.1' );
-			fm_add_style( 'fieldmanager_style', 'css/fieldmanager.css', array(), '1.0.4' );
+			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'fm_loader', 'jquery', 'jquery-ui-sortable' ), FM_VERSION );
+			fm_add_style( 'fieldmanager_style', 'css/fieldmanager.css', array(), FM_VERSION );
 			self::$enqueued_base_assets = true;
 		}
 	}
@@ -492,7 +492,7 @@ abstract class Fieldmanager_Field {
 			$max = 1;
 		}
 
-		$classes = array( 'fm-wrapper', 'fm-' . $this->name . '-wrapper' );
+		$classes          = array( 'fm-wrapper', 'fm-' . $this->name . '-wrapper' );
 		$fm_wrapper_attrs = array();
 		if ( $this->sortable ) {
 			$classes[] = 'fmjs-sortable';
@@ -536,14 +536,15 @@ abstract class Fieldmanager_Field {
 			// For backwards compatibility.
 			$classes[] = 'display-if';
 
-			$fm_wrapper_attrs['data-display-src'] = $this->display_if['src'];
+			$fm_wrapper_attrs['data-display-src']   = $this->display_if['src'];
 			$fm_wrapper_attrs['data-display-value'] = $this->display_if['value'];
 		}
 		$fm_wrapper_attr_string = '';
 		foreach ( $fm_wrapper_attrs as $attr => $val ) {
 			$fm_wrapper_attr_string .= sprintf( '%s="%s" ', sanitize_key( $attr ), esc_attr( $val ) );
 		}
-		$out .= sprintf( '<div class="%s" data-fm-array-position="%d" %s>',
+		$out .= sprintf(
+			'<div class="%s" data-fm-array-position="%d" %s>',
 			esc_attr( implode( ' ', $classes ) ),
 			absint( $html_array_position ),
 			$fm_wrapper_attr_string
@@ -649,7 +650,7 @@ abstract class Fieldmanager_Field {
 		if ( $is_proto ) {
 			$this->is_proto = true;
 		}
-		$out = '';
+		$out     = '';
 		$classes = array( 'fm-item', 'fm-' . $this->name );
 
 		self::$global_seq++;
@@ -687,7 +688,7 @@ abstract class Fieldmanager_Field {
 
 		$out .= sprintf( '<div class="%s">', esc_attr( implode( ' ', $classes ) ) );
 
-		$label = $this->get_element_label();
+		$label              = $this->get_element_label();
 		$render_label_after = false;
 
 		/*
@@ -755,6 +756,7 @@ abstract class Fieldmanager_Field {
 	 */
 	public function wrap_with_multi_tools( $html, $classes = array() ) {
 		$classes[] = 'fmjs-removable';
+		$out       = sprintf( '<div class="%s">', implode( ' ', $classes ) );
 		$handle = '';
 		if ( $this->sortable ) {
 			if ( ( $this->one_label_per_item || ! empty( $this->label ) ) && ! in_array( 'fmjs-removable-label', $classes ) && empty( $this->description ) ) {
@@ -762,7 +764,6 @@ abstract class Fieldmanager_Field {
 			}
 			$handle = $this->get_sort_handle();
 		}
-		$out = sprintf( '<div class="%s">', implode( ' ', $classes ) );
 		$out .= $handle;
 		$out .= '<div class="fmjs-removable-element">';
 		$out .= $html;
@@ -819,7 +820,7 @@ abstract class Fieldmanager_Field {
 	 * @return string ID for use in a form element.
 	 */
 	public function get_element_id() {
-		$el = $this;
+		$el       = $this;
 		$id_slugs = array();
 		while ( $el ) {
 			$slug = $el->is_proto ? 'proto' : $el->seq;
@@ -835,7 +836,7 @@ abstract class Fieldmanager_Field {
 	 * @return string
 	 */
 	public function get_element_key() {
-		$el = $this;
+		$el  = $this;
 		$key = $el->name;
 		while ( $el = $el->parent ) {
 			if ( $el->add_to_prefix ) {
@@ -954,13 +955,16 @@ abstract class Fieldmanager_Field {
 
 		if ( ! $this->save_empty ) {
 			// Remove empty values.
-			$values = array_filter( $values, function( $value ) {
-				if ( is_array( $value ) ) {
-					return ! empty( $value );
-				} else {
-					return strlen( $value );
+			$values = array_filter(
+				$values,
+				function( $value ) {
+					if ( is_array( $value ) ) {
+						return ! empty( $value );
+					} else {
+						return strlen( $value );
+					}
 				}
-			} );
+			);
 			// reindex the array after removing empty values.
 			$values = array_values( $values );
 		}
@@ -1067,12 +1071,14 @@ abstract class Fieldmanager_Field {
 		}
 		foreach ( $this->validate as $func ) {
 			if ( ! call_user_func( $func, $value ) ) {
-				$this->_failed_validation( sprintf(
-					/* translators: 1: field value, 2: field label */
-					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
-					(string) $value,
-					$this->label
-				) );
+				$this->_failed_validation(
+					sprintf(
+						/* translators: 1: field value, 2: field label */
+						__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
+						(string) $value,
+						$this->label
+					)
+				);
 			}
 		}
 		return call_user_func( $this->sanitize, $value );
@@ -1107,7 +1113,7 @@ abstract class Fieldmanager_Field {
 		$classes[] = 'fm-label-' . $this->name;
 		if ( $this->inline_label ) {
 			$this->label_element = 'span';
-			$classes[] = 'fm-label-inline';
+			$classes[]           = 'fm-label-inline';
 		}
 		if ( $this->label_after_element ) {
 			$classes[] = 'fm-label-after';
@@ -1133,7 +1139,7 @@ abstract class Fieldmanager_Field {
 			$this->add_more_label = $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
 		}
 
-		$out = '<div class="fm-add-another-wrapper">';
+		$out  = '<div class="fm-add-another-wrapper">';
 		$out .= sprintf(
 			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-add-more-position="%s" data-limit="%d" />',
 			esc_attr( implode( ' ', $classes ) ),
@@ -1222,16 +1228,18 @@ abstract class Fieldmanager_Field {
 	 */
 	public function add_term_form( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
 		$this->require_base();
-		return new Fieldmanager_Context_Term( array(
-			'title'        => $title,
-			'taxonomies'   => $taxonomies,
-			'show_on_add'  => $show_on_add,
-			'show_on_edit' => $show_on_edit,
-			'parent'       => $parent,
-			// Use the deprecated FM Term Meta instead of core's term meta.
-			'use_fm_meta'  => true,
-			'field'        => $this,
-		) );
+		return new Fieldmanager_Context_Term(
+			array(
+				'title'        => $title,
+				'taxonomies'   => $taxonomies,
+				'show_on_add'  => $show_on_add,
+				'show_on_edit' => $show_on_edit,
+				'parent'       => $parent,
+				// Use the deprecated FM Term Meta instead of core's term meta.
+				'use_fm_meta'  => true,
+				'field'        => $this,
+			)
+		);
 	}
 
 	/**
@@ -1253,15 +1261,17 @@ abstract class Fieldmanager_Field {
 		}
 
 		$this->require_base();
-		return new Fieldmanager_Context_Term( array(
-			'title'        => $title,
-			'taxonomies'   => $taxonomies,
-			'show_on_add'  => $show_on_add,
-			'show_on_edit' => $show_on_edit,
-			'parent'       => $parent,
-			'use_fm_meta'  => false,
-			'field'        => $this,
-		) );
+		return new Fieldmanager_Context_Term(
+			array(
+				'title'        => $title,
+				'taxonomies'   => $taxonomies,
+				'show_on_add'  => $show_on_add,
+				'show_on_edit' => $show_on_edit,
+				'parent'       => $parent,
+				'use_fm_meta'  => false,
+				'field'        => $this,
+			)
+		);
 	}
 
 	/**
@@ -1300,6 +1310,14 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
+	 * Add this group to an nav menu.
+	 */
+	public function add_nav_menu_fields() {
+		$this->require_base();
+		return new Fieldmanager_Context_MenuItem( $this );
+	}
+
+	/**
 	 * Add this group to an options page.
 	 *
 	 * @param string $parent_slug The parent slug for the menu.
@@ -1318,8 +1336,8 @@ abstract class Fieldmanager_Field {
 	 */
 	public function activate_submenu_page() {
 		$this->require_base();
-		$submenus = _fieldmanager_registry( 'submenus' );
-		$s = $submenus[ $this->name ];
+		$submenus       = _fieldmanager_registry( 'submenus' );
+		$s              = $submenus[ $this->name ];
 		$active_submenu = new Fieldmanager_Context_Submenu( $s[0], $s[1], $s[2], $s[3], $s[4], $this, true );
 		_fieldmanager_registry( 'active_submenu', $active_submenu );
 	}
@@ -1361,10 +1379,12 @@ abstract class Fieldmanager_Field {
 		if ( self::$debug ) {
 			throw new FM_Validation_Exception( $debug_message );
 		} else {
-			wp_die( esc_html(
-				$debug_message . "\n\n" .
-				__( "You may be able to use your browser's back button to resolve this error.", 'fieldmanager' )
-			) );
+			wp_die(
+				esc_html(
+					$debug_message . "\n\n" .
+					__( "You may be able to use your browser's back button to resolve this error.", 'fieldmanager' )
+				)
+			);
 		}
 	}
 
