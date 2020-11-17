@@ -20,10 +20,15 @@
 }
 
 .fm-wrapper input[type='text'],
-.fm-wrapper select,
 .fm-wrapper textarea {
 	margin: 1px;
-	padding: 6px 8px;
+	padding: 2px 8px;
+}
+
+.fm-wrapper select {
+	margin: 1px;
+	padding-top: 2px;
+	padding-bottom: 2px;
 }
 
 .fm-hidden {
