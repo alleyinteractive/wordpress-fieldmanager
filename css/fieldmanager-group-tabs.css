@@ -7,7 +7,6 @@
 	border-bottom: none;
 }
 .fm-tab-bar .fm-tab a:focus {
-	-webkit-box-shadow: none;
 	box-shadow: none;
 }
 
@@ -33,8 +32,6 @@
 }
 
 .fm-wrapper .fm-submenu * {
-	-webkit-user-select: none;
-	-moz-user-select: none;
 	user-select: none;
 }
 
@@ -49,15 +46,11 @@
 	border-width: 1px 1px 1px 0;
 	border-style: solid solid solid none;
 	position: relative;
-	-webkit-border-bottom-right-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 	border-top-right-radius: 3px;
 }
 
 .fm-wrapper .fm-submenu-wrap {
-	-moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-	-webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
 	box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
 }
 
@@ -93,22 +86,19 @@
 
 .fm-tabbed-vertical {
 	margin: -6px -12px -12px;
-	background: url(../images/vertical-tab-bg.png) 0 0 repeat-y;
 }
 .fm-tabbed-vertical:before,
 .fm-tabbed-vertical:after {
-  content: " ";
-  display: table;
+	content: " ";
+	display: table;
 }
 .fm-tabbed-vertical:after {
-  clear: both;
+	clear: both;
 }
 .fm-tabbed-vertical .fm-tab-bar {
 	width: 175px;
 	float: left;
 	margin: 0;
-	-moz-box-shadow: 0 1px 0px #dfdfdf;
-	-webkit-box-shadow: 0 1px 0px #dfdfdf;
 	box-shadow: 0 1px 0px #dfdfdf;
 }
 .fm-tabbed-vertical .fm-tab-bar li {
@@ -120,8 +110,6 @@
 .fm-tabbed-vertical .fm-tab-bar li a {
 	display: block;
 	outline: none;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
 	box-shadow: none;
 	padding: 7px 14px;
 	color: #999;
@@ -133,8 +121,6 @@
 	background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y5ZjlmOSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2VjZWNlYyIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
 	background-size: 100%;
 	background-image: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f6f6f6), color-stop(100%, #ececec));
-	background-image: -moz-linear-gradient(#f6f6f6, #ececec);
-	background-image: -webkit-linear-gradient(#f6f6f6, #ececec);
 	background-image: linear-gradient(#f6f6f6, #ececec);
 }
 .fm-tabbed-vertical .fm-tab-bar li:last-child a {
@@ -162,11 +148,9 @@
 	background: #ededed;
 }
 .fm-tabbed-vertical > .wp-tabs-panel > div > .fm-group {
-	-webkit-box-shadow: none;
 	box-shadow: none;
 }
 .fm-tabbed-vertical > .wp-tabs-panel > div > .fm-group > .fm-group-inner {
 	border: none;
-	-webkit-box-shadow: none;
 	box-shadow: none;
 }

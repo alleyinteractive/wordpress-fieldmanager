@@ -12,7 +12,9 @@ tests/php/tests
 todo.txt
 
 # Created by Apigen for logs
-
+/build
+!/build/css/*
+!/build/js/*
 
 /docs
 
