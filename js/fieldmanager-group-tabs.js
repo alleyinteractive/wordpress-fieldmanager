@@ -166,3 +166,5 @@ var FieldmanagerGroupTabs;
 
 	fmLoadModule( FieldmanagerGroupTabs.init );
 } )( jQuery );
+
+export default FieldmanagerGroupTabs;

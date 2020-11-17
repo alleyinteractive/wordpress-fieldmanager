@@ -76,7 +76,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 
 		fm_add_script(
 			'fm_autocomplete_js',
-			'js/fieldmanager-autocomplete.js',
+			'build/js/fieldmanager-autocomplete.bundle.min.js',
 			array( 'fm_loader', 'fieldmanager_script', 'jquery-ui-autocomplete' ),
 			FM_VERSION,
 			true,

@@ -1,3 +1,7 @@
+if ('undefined' === typeof fm) {
+	var fm = {};
+}
+
 ( function( $ ) {
 
 fm.autocomplete = {
