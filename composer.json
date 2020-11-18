@@ -9,11 +9,12 @@
     }
   ],
   "require": {
-    "composer/installers": "~1.0"
+	"php": "^7.0",
+    "composer/installers": "^1.0"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "2.*",
-    "wp-coding-standards/wpcs": "^1"
+    "squizlabs/php_codesniffer": "^2.0",
+    "wp-coding-standards/wpcs": "^1.0"
   },
   "scripts": {
     "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",
