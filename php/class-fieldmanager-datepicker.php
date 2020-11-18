@@ -84,6 +84,38 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	}
 
 	/**
+	 * Get the current site's local timezone as a DateTimeZone.
+	 *
+	 * This is a wrapper/shim for `wp_timezone()`, introduced in WordPress 5.3.
+	 *
+	 * @return \DateTimeZone
+	 */
+	protected function get_local_datetimezone() {
+		if ( function_exists( 'wp_timezone' ) ) {
+			return wp_timezone();
+		}
+
+		/* If wp_timezone() isn't available, shim it. */
+
+		$timezone_string = get_option( 'timezone_string' );
+
+		if ( $timezone_string ) {
+			return new \DateTimeZone( $timezone_string );
+		}
+
+		$offset  = (float) get_option( 'gmt_offset' );
+		$hours   = (int) $offset;
+		$minutes = ( $offset - $hours );
+
+		$sign      = ( $offset < 0 ) ? '-' : '+';
+		$abs_hour  = abs( $hours );
+		$abs_mins  = abs( $minutes * 60 );
+		$tz_offset = sprintf( '%s%02d:%02d', $sign, $abs_hour, $abs_mins );
+
+		return new \DateTimeZone( $tz_offset );
+	}
+
+	/**
 	 * Generate HTML for the form element itself. Generally should be just one tag, no wrappers.
 	 *
 	 * @param mixed $value The value of the element.
@@ -96,7 +128,8 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 		// to alter the timestamp. This isn't ideal, but there currently isn't a good way around
 		// it in WordPress.
 		if ( $this->store_local_time ) {
-			$value += get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
+			$tz = $this->get_local_datetimezone();
+			$value = $value + $tz->getOffset( new DateTime( "@{$value}" ) );
 		}
 		ob_start();
 		include fieldmanager_get_template( 'datepicker' );
