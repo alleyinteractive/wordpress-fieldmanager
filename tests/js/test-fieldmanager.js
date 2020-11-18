@@ -12,7 +12,7 @@
 		$( '#qunit-fixture' ).css( 'position', 'absolute' );
 	});
 
-	module( 'fieldmanager' );
+	QUnit.module( 'fieldmanager' );
 
 	QUnit.test( "Sortables", function( assert ) {
 		var $sortable = $( '#sortable' );
