@@ -34,6 +34,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 			'selected_file_label'  => rand_str(),
 			'remove_media_label'   => rand_str(),
 			'preview_size'         => rand_str(),
+			'queryargs'            => rand_str(),
 		);
 		$fm       = new Fieldmanager_Media( $args );
 		$context  = $fm->add_meta_box( 'Test Media', 'post' );
@@ -43,11 +44,12 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 		$this->assertRegExp(
 			sprintf(
-				'#<input type="button" class="[^"]*fm-media-button[^>]+value="%s" data-choose="%s" data-update="%s" data-preview-size="%s" data-mime-type="all" */>#',
+				'#<input type="button" class="[^"]*fm-media-button[^>]+value="%s" data-choose="%s" data-update="%s" data-preview-size="%s" data-queryargs="%s" data-mime-type="all" */>#',
 				$args['button_label'],
 				$args['modal_title'],
 				$args['modal_button_label'],
-				$args['preview_size']
+				$args['preview_size'],
+				$args['queryargs']
 			),
 			$html
 		);

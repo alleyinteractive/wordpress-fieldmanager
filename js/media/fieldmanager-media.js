@@ -28,6 +28,12 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		library.type = $el.data( 'mime-type' );
 	}
 
+	// Add query arguments to the media window request.
+	// Gives "data-mime-type" priority over "mime-type" defined in "data-queryargs".
+	if ( $el.data( 'queryargs' ) ) {
+		library = $.extend( {}, $el.data( 'queryargs' ), library );
+	}
+
 	// Create the media frame.
 	fm_media_frame[ $el.attr('id') ] = wp.media({
 		// Set the library attributes.
