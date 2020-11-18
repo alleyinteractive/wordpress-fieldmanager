@@ -29,5 +29,9 @@
   "engines": {
     "node": "14",
     "npm": "6"
-  }
+  },
+  "browserslist": [
+    "last 2 versions",
+    "IE 11"
+  ]
 }

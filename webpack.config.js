@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
@@ -52,13 +51,8 @@ module.exports = (env, argv) => {
               options: {
                 postcssOptions: {
                   plugins: [
-                    [
-                      // postcss-preset-env includes autoprefixer
-                      'postcss-preset-env',
-                      {
-                        browsers: 'last 2 versions',
-                      },
-                    ],
+                    // postcss-preset-env includes autoprefixer
+                    'postcss-preset-env',
                   ],
                 },
               },
@@ -74,10 +68,6 @@ module.exports = (env, argv) => {
             filename: 'css/[name].min.css',
           }),
           new CleanWebpackPlugin(),
-          new webpack.ProvidePlugin({
-            $: 'jquery',
-            jQuery: 'jquery',
-          }),
         ] : []
       ),
     ],
