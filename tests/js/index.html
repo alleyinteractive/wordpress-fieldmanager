@@ -17,9 +17,9 @@
 		against the scripts in WordPress X.Y.
 		 */
 		var versionMatch = /wp=(\d\.\d)/.exec( window.location.href );
-		var isTrunk = versionMatch && versionMatch[1];
+		var isVersioned = versionMatch && versionMatch[1];
 
-		if ( isTrunk ) {
+		if ( isVersioned ) {
 			svn = 'https://core.svn.wordpress.org/tags/' + versionMatch[1];
 		}
 
@@ -32,7 +32,7 @@
 			svn + '/wp-includes/js/jquery/ui/droppable.min.js',
 		];
 
-		if ( ! isTrunk ) {
+		if ( ! isVersioned ) {
 			scripts.push( svn + '/wp-includes/js/jquery/ui/widget.min.js' );
 		}
 
