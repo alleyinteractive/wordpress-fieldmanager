@@ -168,9 +168,11 @@ fm_add_another = function( $element ) {
 }
 
 fm_remove = function( $element ) {
-	$wrapper = $element.parents( '.fm-wrapper' ).first();
-	$element.parents( '.fm-item' ).first().remove();
-	fm_renumber( $wrapper );
+	if ( window.confirm( fmTranslationStrings.confirmString ) ) {
+		$wrapper = $element.parents( '.fm-wrapper' ).first();
+		$element.parents( '.fm-item' ).first().remove();
+		fm_renumber( $wrapper );
+	}
 }
 
 var fm_init = function () {
@@ -186,7 +188,11 @@ var fm_init = function () {
 	} );
 
 	// Handle collapse events
-	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
+	$( document ).on( 'click', '.fmjs-collapsible-handle', function(event) {
+		if ( $( event.target ).hasClass( 'fmjs-remove' ) ) {
+			return;
+		}
+
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
