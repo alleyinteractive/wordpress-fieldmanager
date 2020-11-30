@@ -24,6 +24,6 @@ class Fieldmanager_Plaintext extends Fieldmanager_Content {
 	 * @return string Rendered content.
 	 */
 	public function render_content( $content = '' ) {
-		return esc_html( $content );
+		return wpautop( esc_html( $content ) );
 	}
 }

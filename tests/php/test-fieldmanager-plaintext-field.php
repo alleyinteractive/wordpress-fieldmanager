@@ -65,8 +65,8 @@ class Test_Fieldmanager_Plaintext_Field extends WP_UnitTestCase {
 			]
 		);
 
-		$this->assertEquals( $plaintext->form_element(), esc_html( $this->plaintext ), 'Failed escaping plaintext to plaintext.' );
-		$this->assertEquals( $markup->form_element(), esc_html( $this->markup ), 'Failed escaping html to plaintext.' );
-		$this->assertEquals( $markdown->form_element(), esc_html( $this->markdown ), 'Failed escaping markdown to plaintext.' );
+		$this->assertEquals( $plaintext->form_element(), wpautop( esc_html( $this->plaintext ) ), 'Failed escaping plaintext to plaintext.' );
+		$this->assertEquals( $markup->form_element(), wpautop( esc_html( $this->markup ) ), 'Failed escaping html to plaintext.' );
+		$this->assertEquals( $markdown->form_element(), wpautop( esc_html( $this->markdown ) ), 'Failed escaping markdown to plaintext.' );
 	}
 }
