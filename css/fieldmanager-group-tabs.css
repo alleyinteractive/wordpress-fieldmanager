@@ -126,19 +126,6 @@
 }
 
 /* Vertical Tabs */
-#fm_meta_box_vertical_tabbed_meta_fields .inside {
-	margin-top: 0;
-	padding: 0;
-}
-
-#fm_meta_box_vertical_tabbed_meta_fields .fm-group-description {
-	padding: 0 12px 12px;
-}
-
-#fm_meta_box_vertical_tabbed_meta_fields .wp-tabs-panel > .fm-wrapper .fm-group-inner {
-	border-top: none;
-}
-
 .fm-tabbed-vertical:before,
 .fm-tabbed-vertical:after {
   content: " ";
