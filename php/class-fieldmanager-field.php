@@ -1035,6 +1035,13 @@ abstract class Fieldmanager_Field {
 	 * @return array The filtered values.
 	 */
 	protected function presave_alter_values( $values, $current_values = array() ) {
+		/**
+		 * Filters the new field value prior to saving.
+		 *
+		 * @param mixed              $values         New field value.
+		 * @param Fieldmanager_Field $this           Field object.
+		 * @param mixed              $current_values Current field value.
+		 */
 		return apply_filters( 'fm_presave_alter_values', $values, $this, $current_values );
 	}
 
