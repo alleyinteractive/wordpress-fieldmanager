@@ -42,7 +42,7 @@ fm_reset_chosen = function( $fm_text_field, fm_text_field_val ) {
 	} );
 }
 
-$( document ).ready( function() {
+function fm_select_init() {
 
 	// Track changes to the chosen text field linked to the select in order to update options via Ajax
 	// Used for taxonomy-based fields where preload is disabled
@@ -99,6 +99,8 @@ $( document ).ready( function() {
 		if( $this_select_field.data("taxonomy") != "" && $this_select_field.data("taxonomyPreload") == false ) fm_select_clear_terms( $this_select_field, $(this).parents('.chosen-choices'), true );
 	} );
 
-} );
+}
+
+fmLoadModule( fm_select_init );
 
 } )( jQuery );

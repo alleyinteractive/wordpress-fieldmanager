@@ -76,7 +76,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		}
 
 		// Add the options CSS.
-		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css' );
+		fm_add_style( 'fm_options_css', 'css/fieldmanager-options.css', array(), FM_VERSION );
 	}
 
 	/**
@@ -107,7 +107,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 				}
 			}
 		} else {
-			$keys = array_keys( $options );
+			$keys              = array_keys( $options );
 			$use_name_as_value = ( array_keys( $keys ) === $keys );
 			foreach ( $options as $k => $v ) {
 				$this->add_option_data( $v, ( $use_name_as_value ? $v : $k ) );
@@ -191,7 +191,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function form_data_element( $data_row, $value ) {
 		if ( ! $this->options_template ) {
-			$tpl_slug = 'options-' . strtolower( str_replace( 'Fieldmanager_', '', get_class( $this ) ) );
+			$tpl_slug               = 'options-' . strtolower( str_replace( 'Fieldmanager_', '', get_class( $this ) ) );
 			$this->options_template = fieldmanager_get_template( $tpl_slug );
 		}
 		ob_start();
@@ -246,12 +246,14 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		}
 		foreach ( $this->validate as $func ) {
 			if ( ! call_user_func( $func, $value ) ) {
-				$this->_failed_validation( sprintf(
-					/* translators: 1: Invalid value, 2: field label */
-					__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
-					(string) $value,
-					$this->label
-				) );
+				$this->_failed_validation(
+					sprintf(
+						/* translators: 1: Invalid value, 2: field label */
+						__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
+						(string) $value,
+						$this->label
+					)
+				);
 			}
 		}
 		return call_user_func( $this->sanitize, $value );
@@ -303,7 +305,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	protected function add_option_data( $name, $value, $group = null, $group_id = null ) {
 		$data = array(
-			'name' => $name,
+			'name'  => $name,
 			'value' => $value,
 		);
 		if ( isset( $group ) ) {
@@ -341,7 +343,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 					}
 
 					$meta_boxes[ $id ] = array(
-						'id' => $id,
+						'id'      => $id,
 						'context' => 'side',
 					);
 				}

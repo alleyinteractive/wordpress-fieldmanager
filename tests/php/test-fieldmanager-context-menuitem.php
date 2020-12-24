@@ -1,27 +1,20 @@
 <?php
 
 /**
- * Tests the Post context
+ * Tests the Menu Item context
  *
  * @group context
- * @group post
+ * @group menuitem
  */
-class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
+class Test_Fieldmanager_Context_Menuitem extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
-		$this->post = array(
+		$this->post = self::factory()->post->create_and_get( array(
+			'post_type'    => 'nav_menu_item',
 			'post_status'  => 'publish',
-			'post_content' => rand_str(),
-			'post_title'   => rand_str(),
-		);
-
-		// insert a post
-		$this->post_id = wp_insert_post( $this->post );
-
-		// reload as proper object
-		$this->post = get_post( $this->post_id );
+		) );
 	}
 
 	/**
@@ -97,27 +90,41 @@ class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
 	}
 
 	public function test_context_render() {
+		global $wp_version;
+
+		// Only run these tests for WP versions above 5.4.0.
+		if ( version_compare( $wp_version, '5.4.0', '<' ) ) {
+			return;
+		}
+
 		$base = $this->_get_elements();
 		ob_start();
-		$base->add_meta_box( 'test meta box', 'post' )->render_meta_box( $this->post, array() );
+		$base->add_nav_menu_fields()->add_fields( $this->post->ID );
 		$str = ob_get_clean();
 		// we can't really care about the structure of the HTML, but we can make sure that all fields are here
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
-		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_basic\]"/', $str );
-		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_textfield\]"/', $str );
-		$this->assertRegExp( '/<textarea[^>]+name="base_group\[test_htmlfield\]"/', $str );
-		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
-		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group_fm-menu-item-id-' . $this->post->ID . '-nonce"/', $str );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group_fm-menu-item-id-' . $this->post->ID . '\[test_basic\]"/', $str );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group_fm-menu-item-id-' . $this->post->ID . '\[test_textfield\]"/', $str );
+		$this->assertRegExp( '/<textarea[^>]+name="base_group_fm-menu-item-id-' . $this->post->ID . '\[test_htmlfield\]"/', $str );
+		$this->assertContains( 'name="base_group_fm-menu-item-id-' . $this->post->ID . '[test_extended][0][extext][proto]"', $str );
+		$this->assertContains( 'name="base_group_fm-menu-item-id-' . $this->post->ID . '[test_extended][0][extext][0]"', $str );
 	}
 
 	public function test_context_save() {
+		global $wp_version;
+
+		// Only run these tests for WP versions above 5.4.0.
+		if ( version_compare( $wp_version, '5.4.0', '<' ) ) {
+			return;
+		}
+
 		$base      = $this->_get_elements();
 		$test_data = $this->_get_valid_test_data();
 
-		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
+		$base->add_nav_menu_fields()->save_to_post_meta( $this->post->ID, $test_data['base_group'] );
 
-		$saved_value = get_post_meta( $this->post_id, 'base_group', true );
-		$saved_index = get_post_meta( $this->post_id, '_test_index', true );
+		$saved_value = get_post_meta( $this->post->ID, 'base_group', true );
+		$saved_index = get_post_meta( $this->post->ID, '_test_index', true );
 
 		$this->assertEquals( $saved_value['test_basic'], 'lorem ipsum' );
 		$this->assertEquals( $saved_index, $saved_value['test_textfield'] );
@@ -130,25 +137,5 @@ class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
 		$this->assertEquals( count( $saved_value['test_extended'][3]['extext'] ), 1 );
 		$this->assertEquals( $saved_value['test_extended'][1]['extext'], array( 'second1', 'second2', 'second3' ) );
 		$this->assertEquals( $saved_value['test_extended'][3]['extext'][0], 'fourth' );
-	}
-
-	public function test_programmatic_save_posts() {
-		$base = $this->_get_elements();
-		$base->add_meta_box( 'test meta box', 'post' );
-
-		$post_id = wp_insert_post(
-			array(
-				'post_type'  => 'post',
-				'post_name'  => 'test-post',
-				'post_title' => 'Test Post',
-				'post_date'  => '2012-10-25 12:34:56',
-			)
-		);
-		wp_update_post(
-			array(
-				'ID'           => $post_id,
-				'post_content' => 'Lorem ipsum dolor sit amet.',
-			)
-		);
 	}
 }
