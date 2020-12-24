@@ -163,12 +163,12 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	/**
 	 * Trigger datasource's presave_alter() event to allow it to handle reciprocal values.
 	 *
-	 * @since 1.2.0 By default, passes the new values through
-	 *              Fieldmanager_Field::presave_alter_values() before saving,
-	 *              including the 'fm_presave_alter_values' filter.
+	 * @since 1.4.0 Passes the new values through Fieldmanager_Field::presave_alter_values()
+	 *              before saving, including the 'fm_presave_alter_values' filter.
 	 *
 	 * @param array $values         New post values.
 	 * @param array $current_values Existing post values.
+	 * @return array The filtered values.
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
 		// Return if there is no data ID.
