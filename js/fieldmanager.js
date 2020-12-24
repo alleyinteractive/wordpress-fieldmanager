@@ -29,8 +29,10 @@ var init_sortable = function() {
 			init_sortable_container( this );
 		} else {
 			var sortable = this;
-			$( sortable ).parents( '.fm-group' ).first().bind( 'fm_collapsible_toggle', function() {
-				init_sortable_container( sortable );
+			$( sortable ).parents( '.fm-group' ).bind( 'fm_collapsible_toggle', function() {
+				if ( $( sortable ).is( ':visible' ) ) {
+					init_sortable_container( sortable );
+				}
 			} );
 		}
 	} );
@@ -178,7 +180,7 @@ fm_remove = function( $element ) {
 	fm_renumber( $wrapper );
 }
 
-$( document ).ready( function () {
+var fm_init = function () {
 	$( document ).on( 'click', '.fm-add-another', function( e ) {
 		e.preventDefault();
 		fm_add_another( $( this ) );
@@ -211,9 +213,10 @@ $( document ).ready( function () {
 		var src = $( this ).data( 'display-src' );
 		var values = getCompareValues( this );
 		// Wrapper divs sometimes receive .fm-element, but don't use them as
-		// triggers. Also don't use autocomplete inputs as triggers, because the
-		// value is in their sibling hidden fields (which this still matches).
-		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete' );
+		// triggers. Also don't use autocomplete inputs or a checkbox's hidden
+		// sibling as triggers, because the value is in their sibling fields
+		// (which this still matches).
+		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete, .fm-checkbox-hidden' );
 
 		// Sanity check before calling `val()` or `split()`.
 		if ( 0 === trigger.length ) {
@@ -243,7 +246,7 @@ $( document ).ready( function () {
 			$( this ).hide();
 		}
 	};
-	$( '.display-if' ).each( fm.init_display_if );
+	$( '.fm-display-if' ).each( fm.init_display_if );
 
 	// Controls the trigger to show or hide fields
 	fm.trigger_display_if = function() {
@@ -262,7 +265,7 @@ $( document ).ready( function () {
 			val = $this.val().split( ',' );
 		}
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
-			if ( $( this ).hasClass( 'display-if' ) ) {
+			if ( $( this ).hasClass( 'fm-display-if' ) ) {
 				if ( name && name.match( $( this ).data( 'display-src' ) ) != null ) {
 					if ( match_value( getCompareValues( this ), val ) ) {
 						$( this ).show();
@@ -280,6 +283,8 @@ $( document ).ready( function () {
 	init_sortable();
 
 	$( document ).on( 'fm_activate_tab', init_sortable );
-} );
+};
+
+fmLoadModule( fm_init );
 
 } )( jQuery );

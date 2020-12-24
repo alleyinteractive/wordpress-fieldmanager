@@ -12,26 +12,31 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		Fieldmanager_Field::$debug = TRUE;
+		Fieldmanager_Field::$debug = true;
 
 		// insert a post
-		$this->post = $this->factory->post->create_and_get( array( 'post_title' => rand_str(), 'post_date' => '2009-07-01 00:00:00' ) );
+		$this->post = $this->factory->post->create_and_get(
+			array(
+				'post_title' => rand_str(),
+				'post_date'  => '2009-07-01 00:00:00',
+			)
+		);
 	}
 
 	public function test_basic_render() {
 		$meta_key = 'test_media';
-		$args = array(
-			'name' => $meta_key,
-			'button_label' => rand_str(),
-			'modal_button_label' => rand_str(),
-			'modal_title' => rand_str(),
+		$args     = array(
+			'name'                 => $meta_key,
+			'button_label'         => rand_str(),
+			'modal_button_label'   => rand_str(),
+			'modal_title'          => rand_str(),
 			'selected_image_label' => rand_str(),
-			'selected_file_label' => rand_str(),
-			'remove_media_label' => rand_str(),
-			'preview_size' => rand_str(),
+			'selected_file_label'  => rand_str(),
+			'remove_media_label'   => rand_str(),
+			'preview_size'         => rand_str(),
 		);
-		$fm = new Fieldmanager_Media( $args );
-		$context = $fm->add_meta_box( 'Test Media', 'post' );
+		$fm       = new Fieldmanager_Media( $args );
+		$context  = $fm->add_meta_box( 'Test Media', 'post' );
 
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
@@ -50,22 +55,38 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		$this->assertRegExp( '#<div class="media-wrapper"></div>#', $html );
 
 		// Test $selected_image_label.
-		update_post_meta( $this->post->ID, 'test_media', self::factory()->attachment->create_object( 'image.jpg', 0, array(
-			'post_mime_type' => 'image/jpeg',
-			'post_type'      => 'attachment',
-			'post_status'    => 'inherit',
-		) ) );
+		update_post_meta(
+			$this->post->ID,
+			'test_media',
+			self::factory()->attachment->create_object(
+				'image.jpg',
+				0,
+				array(
+					'post_mime_type' => 'image/jpeg',
+					'post_type'      => 'attachment',
+					'post_status'    => 'inherit',
+				)
+			)
+		);
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 		$this->assertContains( $args['selected_image_label'], $html );
 
 		// Test $selected_file_label and $remove_media_label.
-		update_post_meta( $this->post->ID, 'test_media', self::factory()->attachment->create_object( 'foo.bar', 0, array(
-			'post_mime_type' => 'foo',
-			'post_type'      => 'attachment',
-			'post_status'    => 'inherit',
-		) ) );
+		update_post_meta(
+			$this->post->ID,
+			'test_media',
+			self::factory()->attachment->create_object(
+				'foo.bar',
+				0,
+				array(
+					'post_mime_type' => 'foo',
+					'post_type'      => 'attachment',
+					'post_status'    => 'inherit',
+				)
+			)
+		);
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
@@ -75,7 +96,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 
 	public function test_basic_save() {
 		$test_data = 3335444;
-		$fm = new Fieldmanager_Media( array( 'name' => 'test_media' ) );
+		$fm        = new Fieldmanager_Media( array( 'name' => 'test_media' ) );
 
 		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, $test_data );
 		$saved_data = get_post_meta( $this->post->ID, 'test_media', true );
@@ -97,7 +118,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 
 	public function test_attributes() {
 		$args = array(
-			'name'      => 'test_media',
+			'name'       => 'test_media',
 			'attributes' => array(
 				'data-test' => rand_str(),
 			),

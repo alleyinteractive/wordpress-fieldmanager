@@ -11,15 +11,15 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 
 	public function setUp() {
 		parent::setUp();
-		Fieldmanager_Field::$debug = TRUE;
+		Fieldmanager_Field::$debug = true;
 
 		$this->current_user = get_current_user_id();
 		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
 		$this->taxonomy = 'category';
-		$term = wp_insert_term( 'test', $this->taxonomy );
-		$this->term_id = $term['term_id'];
-		$this->tt_id = $term['term_taxonomy_id'];
+		$term           = wp_insert_term( 'test', $this->taxonomy );
+		$this->term_id  = $term['term_id'];
+		$this->tt_id    = $term['term_taxonomy_id'];
 
 		// reload as proper object
 		$this->term = get_term( $this->term_id, $this->taxonomy );
@@ -54,15 +54,16 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	/**
 	 * Get valid test data.
 	 * Several tests transform this data to somehow be invalid.
+	 *
 	 * @return array valid test data
 	 */
 	private function _get_valid_test_data() {
 		return array(
 			'base_group' => array(
-				'test_basic' => 'lorem ipsum<script>alert(/hacked!/);</script>',
+				'test_basic'     => 'lorem ipsum<script>alert(/hacked!/);</script>',
 				'test_textfield' => 'alley interactive',
 				'test_htmlfield' => '<b>Hello</b> world',
-				'test_extended' => array(
+				'test_extended'  => array(
 					array(
 						'extext' => array( 'first' ),
 					),
@@ -82,33 +83,44 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 
 	/**
 	 * Get a set of elements
+	 *
 	 * @return Fieldmanager_Group
 	 */
 	private function _get_elements() {
-		return new Fieldmanager_Group( array(
-			'name' => 'base_group',
-			'children' => array(
-				'test_basic' => new Fieldmanager_TextField(),
-				'test_textfield' => new Fieldmanager_TextField( array(
-					// 'index' => '_test_index',
-				) ),
-				'test_htmlfield' => new Fieldmanager_Textarea( array(
-					'sanitize' => 'wp_kses_post',
-				) ),
-				'test_extended' => new Fieldmanager_Group( array(
-					'limit' => 4,
-					'children' => array(
-						'extext' => new Fieldmanager_TextField( array(
-							'limit' => 0,
-							'name' => 'extext',
-							'one_label_per_item' => False,
-							'sortable' => True,
-							// 'index' => '_extext_index',
-						) ),
+		return new Fieldmanager_Group(
+			array(
+				'name'     => 'base_group',
+				'children' => array(
+					'test_basic'     => new Fieldmanager_TextField(),
+					'test_textfield' => new Fieldmanager_TextField(
+						array(
+						// 'index' => '_test_index',
+						)
 					),
-				) ),
-			),
-		) );
+					'test_htmlfield' => new Fieldmanager_Textarea(
+						array(
+							'sanitize' => 'wp_kses_post',
+						)
+					),
+					'test_extended'  => new Fieldmanager_Group(
+						array(
+							'limit'    => 4,
+							'children' => array(
+								'extext' => new Fieldmanager_TextField(
+									array(
+										'limit'    => 0,
+										'name'     => 'extext',
+										'one_label_per_item' => false,
+										'sortable' => true,
+									// 'index' => '_extext_index',
+									)
+								),
+							),
+						)
+					),
+				),
+			)
+		);
 	}
 
 	private function _get_html_for( $field, $test_data = null ) {
@@ -141,6 +153,20 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
 	}
 
+	public function test_context_render_add_form_with_parent_zero() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
+		$base = $this->_get_elements();
+		ob_start();
+		$base->add_term_meta_box( 'test meta box', $this->taxonomy, true, false, 0 )->add_term_fields( $this->taxonomy );
+		$str = ob_get_clean();
+
+		// When a parent is specified, the form is suppressed on add as we don't know the parent.
+		$this->assertEquals( '', $str );
+	}
+
 	public function test_context_render_edit_form() {
 		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
 			return $this->_skip_tests_because_version( 4.4 );
@@ -159,12 +185,30 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
 	}
 
-	public function test_context_save() {
+	public function test_context_render_edit_form_with_parent_zero() {
 		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
 			return $this->_skip_tests_because_version( 4.4 );
 		}
 
 		$base = $this->_get_elements();
+		ob_start();
+		$base->add_term_meta_box( 'test meta box', $this->taxonomy, false, true, 0 )->edit_term_fields( $this->term, $this->taxonomy );
+		$str = ob_get_clean();
+		// we can't really care about the structure of the HTML, but we can make sure that all fields are here
+		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_basic\]"/', $str );
+		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_textfield\]"/', $str );
+		$this->assertRegExp( '/<textarea[^>]+name="base_group\[test_htmlfield\]"/', $str );
+		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
+		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
+	}
+
+	public function test_context_save() {
+		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
+			return $this->_skip_tests_because_version( 4.4 );
+		}
+
+		$base      = $this->_get_elements();
 		$test_data = $this->_get_valid_test_data();
 
 		$base->add_term_meta_box( 'test meta box', $this->taxonomy )->save_to_term_meta( $this->term_id, $this->taxonomy, $test_data['base_group'] );
@@ -210,11 +254,13 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 			return $this->_skip_tests_because_version( 4.4 );
 		}
 
-		$base = new Fieldmanager_TextField( array(
-			'name'           => 'base_field',
-			'limit'          => 0,
-			'serialize_data' => false,
-		) );
+		$base = new Fieldmanager_TextField(
+			array(
+				'name'           => 'base_field',
+				'limit'          => 0,
+				'serialize_data' => false,
+			)
+		);
 		$html = $this->_get_html_for( $base );
 		$this->assertContains( 'name="base_field[0]"', $html );
 		$this->assertNotContains( 'name="base_field[3]"', $html );
@@ -240,11 +286,13 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$item_1 = rand_str();
 		$item_2 = rand_str();
 		$item_3 = rand_str();
-		$base = new Fieldmanager_TextField( array(
-			'name'           => 'base_field',
-			'limit'          => 0,
-			'serialize_data' => false,
-		) );
+		$base   = new Fieldmanager_TextField(
+			array(
+				'name'           => 'base_field',
+				'limit'          => 0,
+				'serialize_data' => false,
+			)
+		);
 
 		// Test as 1, 2, 3
 		$data = array( $item_1, $item_2, $item_3 );
@@ -271,36 +319,42 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 			return $this->_skip_tests_because_version( 4.4 );
 		}
 
-		$base = new Fieldmanager_Group( array(
-			'name'           => 'base_group',
-			'tabbed'         => true,
-			'serialize_data' => false,
-			'add_to_prefix'  => false,
-			'children'       => array(
-				'tab-1' => new Fieldmanager_Group( array(
-					'label'          => 'Tab One',
-					'serialize_data' => false,
-					'add_to_prefix'  => false,
-					'children'       => array(
-						'test_text' => new Fieldmanager_TextField( 'Text Field' ),
-					)
-				) ),
-				'tab-2' => new Fieldmanager_Group( array(
-					'label'          => 'Tab Two',
-					'serialize_data' => false,
-					'add_to_prefix'  => false,
-					'children'       => array(
-						'test_textarea' => new Fieldmanager_TextArea( 'TextArea' ),
-					)
-				) ),
+		$base = new Fieldmanager_Group(
+			array(
+				'name'           => 'base_group',
+				'tabbed'         => true,
+				'serialize_data' => false,
+				'add_to_prefix'  => false,
+				'children'       => array(
+					'tab-1' => new Fieldmanager_Group(
+						array(
+							'label'          => 'Tab One',
+							'serialize_data' => false,
+							'add_to_prefix'  => false,
+							'children'       => array(
+								'test_text' => new Fieldmanager_TextField( 'Text Field' ),
+							),
+						)
+					),
+					'tab-2' => new Fieldmanager_Group(
+						array(
+							'label'          => 'Tab Two',
+							'serialize_data' => false,
+							'add_to_prefix'  => false,
+							'children'       => array(
+								'test_textarea' => new Fieldmanager_TextArea( 'TextArea' ),
+							),
+						)
+					),
+				),
 			)
-		) );
+		);
 		$data = array(
 			'tab-1' => array(
-				'test_text' => rand_str()
+				'test_text' => rand_str(),
 			),
 			'tab-2' => array(
-				'test_textarea' => rand_str()
+				'test_textarea' => rand_str(),
 			),
 		);
 
@@ -321,24 +375,28 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 			return $this->_skip_tests_because_version( 4.4 );
 		}
 
-		$base = new Fieldmanager_Group( array(
-			'name'           => 'base_group',
-			'serialize_data' => false,
-			'children'       => array(
-				'test_text' => new Fieldmanager_TextField,
-				'test_group' => new Fieldmanager_Group( array(
-					'serialize_data' => false,
-					'children'       => array(
-						'deep_text' => new Fieldmanager_TextArea,
-					)
-				) ),
+		$base = new Fieldmanager_Group(
+			array(
+				'name'           => 'base_group',
+				'serialize_data' => false,
+				'children'       => array(
+					'test_text'  => new Fieldmanager_TextField(),
+					'test_group' => new Fieldmanager_Group(
+						array(
+							'serialize_data' => false,
+							'children'       => array(
+								'deep_text' => new Fieldmanager_TextArea(),
+							),
+						)
+					),
+				),
 			)
-		) );
+		);
 
 		$data = array(
-			'test_text' => rand_str(),
+			'test_text'  => rand_str(),
 			'test_group' => array(
-				'deep_text' => rand_str()
+				'deep_text' => rand_str(),
 			),
 		);
 

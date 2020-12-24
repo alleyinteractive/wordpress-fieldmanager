@@ -110,10 +110,21 @@
 			if ( 'html' === core_editor_state || 'tinymce' === core_editor_state ) {
 				setUserSetting( 'editor', core_editor_state );
 			}
+		},
+
+		should_readd_rte: function( e, el ) {
+			if (
+				! el.classList.contains( 'closed' ) &&
+				el.querySelector( 'textarea.fm-richtext') &&
+				! el.querySelector( 'textarea.fm-tinymce' )
+			) {
+				fm.richtextarea.add_rte_to_visible_textareas();
+			}
 		}
 	}
 	$( document ).on( 'fm_collapsible_toggle fm_added_element fm_activate_tab fm_displayif_toggle', fm.richtextarea.add_rte_to_visible_textareas );
 	$( document ).on( 'fm_sortable_drop', fm.richtextarea.reload_editors );
+	$( document ).on( 'postbox-toggled', fm.richtextarea.should_readd_rte );
 
 	$( document ).on( 'click', '.fm-richtext .wp-switch-editor', function() {
 		var aid = this.id,
@@ -151,10 +162,12 @@
 	 * On document.load, init the editors and make the global meta box drag-drop
 	 * event reload the editors.
 	 */
-	$( function() {
-		fm.richtextarea.add_rte_to_visible_textareas();
-		$( '.meta-box-sortables' ).on( 'sortstop', function( e, obj ) {
-			fm.richtextarea.reload_editors( e, obj.item[0] );
-		} );
-	} );
+	fmLoadModule(
+		function() {
+			fm.richtextarea.add_rte_to_visible_textareas();
+			$( '.meta-box-sortables' ).on( 'sortstop', function( e, obj ) {
+				fm.richtextarea.reload_editors( e, obj.item[0] );
+			} );
+		}
+	);
 } ) ( jQuery );
