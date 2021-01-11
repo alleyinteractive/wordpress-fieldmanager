@@ -39,7 +39,6 @@
 .fm-group-inner,
 .fm-group-label-wrapper {
 	border: solid 1px #dfdfdf;
-	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 }
 
@@ -247,15 +246,11 @@ div.fm-group-label-wrapper .fmjs-remove {
 	border-width: 1px 1px 1px 0;
 	border-style: solid solid solid none;
 	position: relative;
-	-webkit-border-bottom-right-radius: 3px;
-	-webkit-border-top-right-radius: 3px;
 	border-bottom-right-radius: 3px;
 	border-top-right-radius: 3px;
 }
 
 .fm-wrapper .fm-submenu-wrap {
-	-moz-box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
-	-webkit-box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
 	box-shadow: 2px 2px 5px rgba(0,0,0,0.4);
 }
 

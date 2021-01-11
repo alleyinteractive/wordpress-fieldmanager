@@ -1,3 +1,7 @@
+if ('undefined' === typeof fm) {
+	var fm = {};
+}
+
 ( function( $ ) {
 	fm.richtextarea = {
 		add_rte_to_visible_textareas: function() {

@@ -84,7 +84,7 @@ var fm_renumber = function( $wrappers ) {
 					var fname = $(this).attr( 'name' );
 					if ( fname ) {
 						fname = fname.replace( /\]/g, '' );
-						parts = fname.split( '[' );
+						var parts = fname.split( '[' );
 						if ( parts[ level_pos ] != order ) {
 							parts[ level_pos ] = order;
 							var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
@@ -152,7 +152,7 @@ var match_value = function( values, match_string ) {
 	return false;
 }
 
-fm_add_another = function( $element ) {
+var fm_add_another = function( $element ) {
 	var el_name = $element.data( 'related-element' )
 		, limit = $element.data( 'limit' ) - 0
 		, siblings = $element.parent().siblings( '.fm-item' ).not( '.fmjs-proto' )
@@ -174,8 +174,8 @@ fm_add_another = function( $element ) {
 	init_sortable();
 }
 
-fm_remove = function( $element ) {
-	$wrapper = $element.parents( '.fm-wrapper' ).first();
+var fm_remove = function( $element ) {
+	var $wrapper = $element.parents( '.fm-wrapper' ).first();
 	$element.parents( '.fm-item' ).first().remove();
 	fm_renumber( $wrapper );
 }
@@ -288,3 +288,5 @@ var fm_init = function () {
 fmLoadModule( fm_init );
 
 } )( jQuery );
+
+export default fm;

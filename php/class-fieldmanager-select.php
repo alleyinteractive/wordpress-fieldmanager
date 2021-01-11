@@ -58,7 +58,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		// Add the Fieldmanager Select Javascript library.
 		fm_add_script(
 			'fm_select_js',
-			'js/fieldmanager-select.js',
+			'build/js/fieldmanager-select.bundle.min.js',
 			array( 'fm_loader' ),
 			FM_VERSION,
 			true,
