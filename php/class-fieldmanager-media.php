@@ -157,42 +157,22 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			// Open the preview wrapper.
 			$preview = '<div class="media-file-preview">';
 			$file_label = ''; // The uploaded file label - image or file.
-			$dashicon_class = '';
 
-			if ( $attachment->post_mime_type ) {
-				$preview .= '<a href="#">';
-				$image_type = strpos( $attachment->post_mime_type, 'image/' );
-
-				if ( strpos( $attachment->post_mime_type, 'audio/' ) === 0 ) {
-					$dashicon_class = 'dashicons-media-audio';
-				} elseif ( strpos( $attachment->post_mime_type, 'video/' ) === 0 ) {
-					$dashicon_class = 'dashicons-media-video';
-				} else {
-					$dashicon_class = 'dashicons-media-document';
-				}
-
-				$dashicon_class = apply_filters( 'fieldmanager_media_preview_icon', $dashicon_class, $attachment->post_mime_type );
-
-				// If the preview is an image display the image, otherwise use a media icon.
-				if ( false === $image_type ) {
-					$file_label = $this->selected_file_label;
-					if ( '' !== $dashicon_class ) {
-						$preview .= "<span class='dashicons {$dashicon_class}'></span>";
-					}
-				} elseif ( 0 === $image_type ) {
-					$file_label = $this->selected_image_label;
-					$preview .= wp_get_attachment_image(
-						$value,
-						$this->preview_size,
-						false,
-						array(
-							'class' => $this->thumbnail_class,
-						)
-					);
-				}
-
-				$preview .= '</a>';
+			// If the preview is an image display the image label, otherwise use the file label.
+			if ( wp_attachment_is( 'image', $attachment ) ) {
+				$file_label = $this->selected_image_label;
+			} else {
+				$file_label = $this->selected_file_label;
 			}
+
+			$preview .= '<a href="#">' . wp_get_attachment_image(
+				$value,
+				$this->preview_size,
+				true,
+				array(
+					'class' => $this->thumbnail_class,
+				)
+			) . '</a>';
 
 			$preview .= sprintf( '<div class="fm-file-detail">%1$s<h4>%2$s</h4><span class="fm-file-type">%3$s</span></div>',
 				esc_html( $file_label ),
