@@ -759,7 +759,7 @@ abstract class Fieldmanager_Field {
 		$out       = sprintf( '<div class="%s">', implode( ' ', $classes ) );
 		$handle = '';
 		if ( $this->sortable ) {
-			if ( ( $this->one_label_per_item || ! empty( $this->label ) ) && ! in_array( 'fmjs-removable-label', $classes ) && empty( $this->description ) ) {
+			if ( ( $this->one_label_per_item || ! empty( $this->label ) ) && ! in_array( 'fmjs-removable-label', $classes, true ) && empty( $this->description ) ) {
 				$classes[] = 'fmjs-removable-sort';
 			}
 			$handle = $this->get_sort_handle();
