@@ -77,18 +77,16 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		props.link = 'custom';
 		props.linkUrl = '#';
 		props.caption = '';
+		// Set the display icon if this is not an image attachment.
+		if ( 'undefined' === typeof props.url && 'undefined' !== typeof attachment.icon && attachment.type !== 'image' ) {
+			props.url = attachment.icon;
+		}
 		$el.parent().find('.fm-media-id').val( attachment.id );
 		var preview = '<div class="media-file-preview">';
-		if ( attachment.type == 'image' ) {
+		if ( attachment.type === 'image' ) {
 			props.url = props.src;
-			preview += wp.media.string.image( props );
-		} else if ( attachment.type == 'audio' ) {
-			preview += '<a href="#"><span class="dashicons dashicons-media-audio"></span></a>';
-		} else if ( attachment.type == 'video' ) {
-			preview += '<a href="#"><span class="dashicons dashicons-media-video"></span></a>';
-		} else {
-			preview += '<a href="#"><span class="dashicons dashicons-media-document"></span></a>';
 		}
+		preview += wp.media.string.image( props );
 		preview += '<div class="fm-file-detail"><h4>' + attachment.name + '</h4><span class="fm-file-type">' + attachment.type + '</span></div>';
 		preview += '<a class="fm-media-edit" href="#"><span class="screen-reader-text">edit</span></a>';
 		preview += '<a class="fm-media-remove fm-delete fmjs-remove" href="#"><span class="screen-reader-text">remove</span></a>';
