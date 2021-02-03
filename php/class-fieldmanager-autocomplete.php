@@ -77,9 +77,9 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		fm_add_script(
 			'fm_autocomplete_js',
 			'js/fieldmanager-autocomplete.js',
-			array( 'fieldmanager_script', 'jquery-ui-autocomplete' ),
-			'1.0.6',
-			false,
+			array( 'fm_loader', 'fieldmanager_script', 'jquery-ui-autocomplete' ),
+			FM_VERSION,
+			true,
 			'fm_search',
 			array(
 				'nonce' => wp_create_nonce( 'fm_search_nonce' ),
@@ -122,9 +122,9 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		}
 
 		if ( $this->datasource->use_ajax ) {
-			$this->attributes['data-action'] = $this->datasource->get_ajax_action( $this->name );
-			list ( $context, $subcontext ) = fm_get_context();
-			$this->attributes['data-context'] = $context;
+			$this->attributes['data-action']     = $this->datasource->get_ajax_action( $this->name );
+			list ( $context, $subcontext )       = fm_get_context();
+			$this->attributes['data-context']    = $context;
 			$this->attributes['data-subcontext'] = $subcontext;
 		} else {
 			$this->attributes['data-options'] = htmlspecialchars( wp_json_encode( $this->datasource->get_items() ) );
@@ -161,16 +161,19 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Trigger datasource's presave_alter() event to allow it to handle reciprocal
-	 * values.
+	 * Trigger datasource's presave_alter() event to allow it to handle reciprocal values.
+	 *
+	 * @since 1.4.0 Passes the new values through Fieldmanager_Field::presave_alter_values()
+	 *              before saving, including the 'fm_presave_alter_values' filter.
 	 *
 	 * @param array $values         New post values.
 	 * @param array $current_values Existing post values.
+	 * @return array The filtered values.
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
-		// return if there is no data id.
+		// Return if there is no data ID.
 		if ( empty( $this->data_id ) ) {
-			return $values;
+			return parent::presave_alter_values( $values, $current_values );
 		}
 
 		if ( ! empty( $this->datasource->only_save_to_taxonomy ) ) {
@@ -179,7 +182,8 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 			$this->skip_save = true;
 		}
 
-		return $this->datasource->presave_alter_values( $this, $values, $current_values );
+		$values = $this->datasource->presave_alter_values( $this, $values, $current_values );
+		return parent::presave_alter_values( $values, $current_values );
 	}
 
 	/**
@@ -218,7 +222,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 					}
 
 					$meta_boxes[ $id ] = array(
-						'id' => $id,
+						'id'      => $id,
 						'context' => 'side',
 					);
 				}

@@ -10,10 +10,10 @@ class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		$this->screen    = get_current_screen();
-		$this->self      = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] : null;
-		$this->get       = $_GET;
-		$this->submenus  = _fieldmanager_registry( 'submenus' );
+		$this->screen   = get_current_screen();
+		$this->self     = isset( $_SERVER['PHP_SELF'] ) ? $_SERVER['PHP_SELF'] : null;
+		$this->get      = $_GET;
+		$this->submenus = _fieldmanager_registry( 'submenus' );
 
 		_fieldmanager_registry( 'submenus', array() );
 
@@ -106,7 +106,7 @@ class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
 		$submenu = rand_str();
 		fm_register_submenu_page( $submenu, $parent, 'Submenu Page' );
 		$_SERVER['PHP_SELF'] = $php_self ? $php_self : '/' . parse_url( $parent, PHP_URL_PATH );
-		$query = parse_url( $parent, PHP_URL_QUERY );
+		$query               = parse_url( $parent, PHP_URL_QUERY );
 		if ( ! empty( $query ) ) {
 			parse_str( $query, $_GET );
 		}
@@ -120,7 +120,7 @@ class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
 	 */
 	public function test_non_fm_submenu() {
 		$_SERVER['PHP_SELF'] = '/themes.php';
-		$_GET['page'] = rand_str();
+		$_GET['page']        = rand_str();
 		$this->assertEquals( array( null, null ), fm_calculate_context() );
 		$this->_context_action_assertions( null, null );
 	}
@@ -149,33 +149,45 @@ class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
 	 */
 	public function test_basic_contexts( $self_override, $get_override, $context, $type ) {
 		$_SERVER['PHP_SELF'] = $self_override;
-		$_GET = $get_override;
+		$_GET                = $get_override;
 		$this->assertEquals( array( $context, $type ), fm_calculate_context() );
 		$this->_context_action_assertions( $context, $type );
 	}
 
 	public function test_post_screen_context() {
 		$_SERVER['PHP_SELF'] = '/post.php';
-		$post_id = $this->factory->post->create( array( 'post_title' => rand_str(), 'post_date' => '2015-07-01 00:00:00', 'post_type' => 'page' ) );
-		$_GET = array( 'post' => strval( $post_id ) );
+		$post_id             = $this->factory->post->create(
+			array(
+				'post_title' => rand_str(),
+				'post_date'  => '2015-07-01 00:00:00',
+				'post_type'  => 'page',
+			)
+		);
+		$_GET                = array( 'post' => strval( $post_id ) );
 		$this->assertEquals( array( 'post', 'page' ), fm_calculate_context() );
 		$this->_context_action_assertions( 'post', 'page' );
 	}
 
 	public function test_post_save_screen_context() {
 		$_SERVER['PHP_SELF'] = '/post.php';
-		$_POST = array( 'action' => 'editpost', 'post_type' => 'page' );
+		$_POST               = array(
+			'action'    => 'editpost',
+			'post_type' => 'page',
+		);
 		$this->assertEquals( array( 'post', 'page' ), fm_calculate_context() );
 		$this->_context_action_assertions( 'post', 'page' );
 	}
 
 	public function test_ajax_direct_context() {
 		$_SERVER['PHP_SELF'] = '/admin-ajax.php';
-		$_POST = array( 'fm_context' => 'foo' );
+		$_POST               = array( 'fm_context' => 'foo' );
 		$this->assertEquals( array( 'foo', null ), fm_calculate_context() );
 		$this->_context_action_assertions( 'foo', null );
 
-		$_POST = array( 'fm_context' => 'foo', 'fm_subcontext' => 'bar' );
+		$_POST = array(
+			'fm_context'    => 'foo',
+			'fm_subcontext' => 'bar',
+		);
 		$this->assertEquals( array( 'foo', 'bar' ), fm_calculate_context() );
 		$this->_context_action_assertions( 'foo', 'bar' );
 	}

@@ -35,9 +35,9 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 	public function __construct( $uniqid, $fm ) {
 		_deprecated_function( __METHOD__, '1.2.0' );
 
-		$this->fm = $fm;
+		$this->fm               = $fm;
 		self::$forms[ $uniqid ] = $this;
-		$this->uniqid = $uniqid;
+		$this->uniqid           = $uniqid;
 
 		// since this should be set up in init, check for submit now.
 		if ( ! empty( $_POST ) && ! empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) { // WPCS: input var okay. CSRF ok. sanitization ok.
@@ -58,7 +58,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 		$this->fm->data_id = $user_id;
-		$value = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : ''; // WPCS: input var okay. sanitization ok.
+		$value             = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : ''; // WPCS: input var okay. sanitization ok.
 		if ( empty( $this->fm->data_type ) ) {
 			$this->fm->data_type = 'page';
 		}
@@ -66,9 +66,9 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 			$this->fm->data_id = $this->uniqid;
 		}
 		$current = apply_filters( 'fm_' . $this->uniqid . '_load', array(), $this->fm );
-		$data = apply_filters( 'fm_' . $this->uniqid . '_presave', $value, $this->fm );
-		$data = $this->fm->presave_all( $data, $current );
-		$data = apply_filters( 'fm_presave_data', $data, $this->fm );
+		$data    = apply_filters( 'fm_' . $this->uniqid . '_presave', $value, $this->fm );
+		$data    = $this->fm->presave_all( $data, $current );
+		$data    = apply_filters( 'fm_presave_data', $data, $this->fm );
 		do_action( 'fm_' . $this->uniqid . '_save', $data, $current, $this->fm );
 		$this->did_save = true;
 	}

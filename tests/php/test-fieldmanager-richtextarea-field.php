@@ -11,17 +11,17 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	public function setUp() {
 		parent::setUp();
 		add_filter( 'user_can_richedit', '__return_true' );
-		Fieldmanager_Field::$debug = TRUE;
+		Fieldmanager_Field::$debug = true;
 
 		$this->post = array(
-			'post_status' => 'publish',
+			'post_status'  => 'publish',
 			'post_content' => rand_str(),
-			'post_title' => rand_str(),
+			'post_title'   => rand_str(),
 		);
 
 		// insert a post
 		$this->post_id = wp_insert_post( $this->post );
-		$this->post = get_post( $this->post_id );
+		$this->post    = get_post( $this->post_id );
 	}
 
 	public function tearDown() {
@@ -44,7 +44,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	 * @return bool true if set successfully/false if not.
 	 */
 	protected function _set_user_setting( $name, $value ) {
-		$all_user_settings = get_all_user_settings();
+		$all_user_settings          = get_all_user_settings();
 		$all_user_settings[ $name ] = $value;
 
 		return wp_set_all_user_settings( $all_user_settings );
@@ -81,10 +81,12 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	}
 
 	public function test_repeatable_render() {
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'limit' => 0,
-		) );
+		$fm = new Fieldmanager_RichTextArea(
+			array(
+				'name'  => 'test_richtextarea',
+				'limit' => 0,
+			)
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -103,7 +105,12 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
 	public function test_default_value() {
 		$value = "<h1>Lorem Ipsum</h1>\n<p>Dolor sit <a href='#'>amet</a></p>";
-		$fm = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea', 'default_value' => $value ) );
+		$fm    = new Fieldmanager_RichTextArea(
+			array(
+				'name'          => 'test_richtextarea',
+				'default_value' => $value,
+			)
+		);
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
@@ -114,7 +121,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 			add_filter( 'the_editor_content', 'format_for_editor', 10, 2 );
 		}
 
-		$this->assertRegExp( '/<textarea[^>]+>' . preg_quote( apply_filters( 'the_editor_content', $value, 'tinymce' ), '/' ) . "<\/textarea>/", $html );
+		$this->assertRegExp( '/<textarea[^>]+>' . preg_quote( apply_filters( 'the_editor_content', $value, 'tinymce' ), '/' ) . '<\/textarea>/', $html );
 
 		// WordPress 4.5 fixed an issue with multiple editors and this filter.
 		// _WP_Editors::editor() now removes it after use, which is what we'll
@@ -125,13 +132,15 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	}
 
 	public function test_custom_buttons() {
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'buttons_1' => array( 'bold', 'italic' ),
-			'buttons_2' => array( 'bullist', 'fieldmanager' ),
-			'buttons_3' => array( 'numlist' ),
-			'buttons_4' => array( 'link', 'unlink' ),
-		) );
+		$fm = new Fieldmanager_RichTextArea(
+			array(
+				'name'      => 'test_richtextarea',
+				'buttons_1' => array( 'bold', 'italic' ),
+				'buttons_2' => array( 'bullist', 'fieldmanager' ),
+				'buttons_3' => array( 'numlist' ),
+				'buttons_4' => array( 'link', 'unlink' ),
+			)
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -154,14 +163,16 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	}
 
 	public function test_teeny_custom_buttons() {
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'buttons_1' => array( 'bold', 'italic' ),
-			'buttons_2' => array( 'bullist', 'fieldmanager' ),
-			'buttons_3' => array( 'numlist' ),
-			'buttons_4' => array( 'link', 'unlink' ),
-			'editor_settings' => array( 'teeny' => true ),
-		) );
+		$fm = new Fieldmanager_RichTextArea(
+			array(
+				'name'            => 'test_richtextarea',
+				'buttons_1'       => array( 'bold', 'italic' ),
+				'buttons_2'       => array( 'bullist', 'fieldmanager' ),
+				'buttons_3'       => array( 'numlist' ),
+				'buttons_4'       => array( 'link', 'unlink' ),
+				'editor_settings' => array( 'teeny' => true ),
+			)
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -199,12 +210,14 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	}
 
 	public function test_tinymce_editor_mode() {
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'editor_settings' => array(
-				'default_editor' => 'tinymce',
+		$fm = new Fieldmanager_RichTextArea(
+			array(
+				'name'            => 'test_richtextarea',
+				'editor_settings' => array(
+					'default_editor' => 'tinymce',
+				),
 			)
-		) );
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -219,12 +232,14 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	}
 
 	public function test_html_editor_mode() {
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'editor_settings' => array(
-				'default_editor' => 'html',
+		$fm = new Fieldmanager_RichTextArea(
+			array(
+				'name'            => 'test_richtextarea',
+				'editor_settings' => array(
+					'default_editor' => 'html',
+				),
 			)
-		) );
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -242,12 +257,14 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$current_user = get_current_user_id();
 		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'editor_settings' => array(
-				'default_editor' => 'cookie',
+		$fm          = new Fieldmanager_RichTextArea(
+			array(
+				'name'            => 'test_richtextarea',
+				'editor_settings' => array(
+					'default_editor' => 'cookie',
+				),
 			)
-		) );
+		);
 		$setting_key = str_replace( '-', '_', $fm->get_element_id() );
 		$setting_key = 'editor_' . preg_replace( '/[^a-z0-9_]/i', '', $setting_key );
 
@@ -262,7 +279,6 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 			$this->assertNotContains( 'html-active', $html );
 		}
 
-
 		// Test that it becomes html when we set the user setting to 'html'
 		$this->_set_user_setting( $setting_key, 'html' );
 
@@ -275,7 +291,6 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 			$this->assertContains( 'html-active', $html );
 			$this->assertNotContains( 'tmce-active', $html );
 		}
-
 
 		// Test that it becomes tinymce again when we set the user setting to 'tinymce'
 		$this->_set_user_setting( $setting_key, 'tinymce' );
@@ -301,13 +316,15 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$current_user = get_current_user_id();
 		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
 
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'limit' => 0,
-			'editor_settings' => array(
-				'default_editor' => 'cookie',
+		$fm          = new Fieldmanager_RichTextArea(
+			array(
+				'name'            => 'test_richtextarea',
+				'limit'           => 0,
+				'editor_settings' => array(
+					'default_editor' => 'cookie',
+				),
 			)
-		) );
+		);
 		$setting_key = str_replace( '-', '_', $fm->get_element_id() );
 		$setting_key = 'editor_' . preg_replace( '/[^a-z0-9_]/i', '', $setting_key );
 
@@ -346,11 +363,11 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
 	public function test_editor_mode_conflicts() {
 		$args = array(
-			'name' => 'test_richtextarea_1',
-			'default_value' => '<p>some <strong>html</strong> content</p>',
+			'name'            => 'test_richtextarea_1',
+			'default_value'   => '<p>some <strong>html</strong> content</p>',
 			'editor_settings' => array(
 				'default_editor' => 'html',
-			)
+			),
 		);
 
 		$fm = new Fieldmanager_RichTextArea( $args );
@@ -358,16 +375,16 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html_1 = ob_get_clean();
 
-		$args['name'] = 'test_richtextarea_2';
+		$args['name']                              = 'test_richtextarea_2';
 		$args['editor_settings']['default_editor'] = 'tinymce';
-		$fm = new Fieldmanager_RichTextArea( $args );
+		$fm                                        = new Fieldmanager_RichTextArea( $args );
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html_2 = ob_get_clean();
 
-		$args['name'] = 'test_richtextarea_3';
+		$args['name']                              = 'test_richtextarea_3';
 		$args['editor_settings']['default_editor'] = 'html';
-		$fm = new Fieldmanager_RichTextArea( $args );
+		$fm                                        = new Fieldmanager_RichTextArea( $args );
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html_3 = ob_get_clean();
@@ -400,10 +417,12 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
 	public function test_css_override() {
 		$css_url = 'http://example.org/' . rand_str() . '.css';
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'stylesheet' => $css_url,
-		) );
+		$fm      = new Fieldmanager_RichTextArea(
+			array(
+				'name'       => 'test_richtextarea',
+				'stylesheet' => $css_url,
+			)
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -418,11 +437,13 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
 	public function test_teeny_css_override() {
 		$css_url = 'http://example.org/' . rand_str() . '.css';
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'stylesheet' => $css_url,
-			'editor_settings' => array( 'teeny' => true ),
-		) );
+		$fm      = new Fieldmanager_RichTextArea(
+			array(
+				'name'            => 'test_richtextarea',
+				'stylesheet'      => $css_url,
+				'editor_settings' => array( 'teeny' => true ),
+			)
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -437,16 +458,18 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
 	public function test_tinymce_overrides() {
 		$data = array(
-			'fm_test' => rand_str(),
-			rand( 100, 10000 ) => rand_str(),
+			'fm_test'                    => rand_str(),
+			rand( 100, 10000 )           => rand_str(),
 			strval( rand( 100, 10000 ) ) => rand( 100, 10000 ),
 		);
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'editor_settings' => array(
-				'tinymce' => $data,
-			),
-		) );
+		$fm   = new Fieldmanager_RichTextArea(
+			array(
+				'name'            => 'test_richtextarea',
+				'editor_settings' => array(
+					'tinymce' => $data,
+				),
+			)
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -456,7 +479,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		_WP_Editors::editor_js();
 		$js = ob_get_clean();
 
-		$i = 0;
+		$i      = 0;
 		$format = '%s:"%s"';
 		foreach ( $data as $key => $value ) {
 			if ( is_numeric( $key ) ) {
@@ -470,18 +493,20 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	 * This feature is deprecated, but we still try to support it.
 	 */
 	public function test_init_options() {
-		$value = rand_str();
-		$value_2 = rand_str();
-		$css_url = 'http://example.org/' . rand_str() . '.css';
+		$value     = rand_str();
+		$value_2   = rand_str();
+		$css_url   = 'http://example.org/' . rand_str() . '.css';
 		$css_url_2 = 'http://example.org/' . rand_str() . '.css';
 
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'init_options' => array(
-				'fm_test' => $value,
-				'content_css' => $css_url,
-			),
-		) );
+		$fm = new Fieldmanager_RichTextArea(
+			array(
+				'name'         => 'test_richtextarea',
+				'init_options' => array(
+					'fm_test'     => $value,
+					'content_css' => $css_url,
+				),
+			)
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -495,17 +520,19 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$this->assertContains( $css_url, $js );
 
 		// Now test that `editor_settings` and `stylesheet` take precedence
-		$fm = new Fieldmanager_RichTextArea( array(
-			'name' => 'test_richtextarea',
-			'init_options' => array(
-				'fm_test' => $value,
-				'content_css' => $css_url,
-			),
-			'stylesheet' => $css_url_2,
-			'editor_settings' => array(
-				'tinymce' => array( 'fm_test' => $value_2 )
+		$fm = new Fieldmanager_RichTextArea(
+			array(
+				'name'            => 'test_richtextarea',
+				'init_options'    => array(
+					'fm_test'     => $value,
+					'content_css' => $css_url,
+				),
+				'stylesheet'      => $css_url_2,
+				'editor_settings' => array(
+					'tinymce' => array( 'fm_test' => $value_2 ),
+				),
 			)
-		) );
+		);
 
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
@@ -523,7 +550,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
 	public function test_basic_save() {
 		$test_data = "<h1>Lorem Ipsum</h1>\n<p>Dolor sit <a href='#'>amet</a></p>";
-		$fm = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
+		$fm        = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
 
 		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data );
 		$saved_data = get_post_meta( $this->post_id, 'test_richtextarea', true );
@@ -534,7 +561,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	 * To attain code coverage 100%. Why not?
 	 */
 	public function test_customize_buttons_filter() {
-		$fm = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
+		$fm    = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
 		$value = rand_str();
 		$this->assertEquals( $value, $fm->customize_buttons( $value ) );
 	}
