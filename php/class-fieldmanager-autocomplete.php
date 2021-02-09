@@ -100,7 +100,8 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	/**
 	 * Alter values before rendering.
 	 *
-	 * @param array $values The values to load.
+	 * @param mixed|mixed[]|null $values The current value or values for this element, if any.
+	 * @return mixed|mixed[]|null The altered value.
 	 */
 	public function preload_alter_values( $values ) {
 		if ( $this->datasource ) {
