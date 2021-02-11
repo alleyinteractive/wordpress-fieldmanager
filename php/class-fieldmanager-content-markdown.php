@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_Markdown
+ * Class file for Fieldmanager_Content_Markdown
  *
  * @package Fieldmanager
  */
@@ -10,7 +10,7 @@ use Fieldmanager\Libraries\Parsedown;
 /**
  * Content field which renders Markdown using the Parsedown library.
  */
-class Fieldmanager_Markdown extends Fieldmanager_Content {
+class Fieldmanager_Content_Markdown extends Fieldmanager_Content {
 
 	/**
 	 * Override field_class.

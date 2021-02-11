@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_Plaintext
+ * Class file for Fieldmanager_Content_Plaintext
  *
  * @package Fieldmanager
  */
@@ -8,7 +8,7 @@
 /**
  * Content field which renders escaped plaintext.
  */
-class Fieldmanager_Plaintext extends Fieldmanager_Content {
+class Fieldmanager_Content_Plaintext extends Fieldmanager_Content {
 
 	/**
 	 * Override field_class.

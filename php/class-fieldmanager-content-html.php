@@ -1,6 +1,6 @@
 <?php
 /**
- * Class file for Fieldmanager_HTML
+ * Class file for Fieldmanager_Content_HTML
  *
  * @package Fieldmanager
  */
@@ -8,7 +8,7 @@
 /**
  * Content field which renders HTML using wp_kses_post().
  */
-class Fieldmanager_HTML extends Fieldmanager_Content {
+class Fieldmanager_Content_HTML extends Fieldmanager_Content {
 
 	/**
 	 * Override field_class.
