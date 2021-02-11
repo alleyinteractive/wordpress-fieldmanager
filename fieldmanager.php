@@ -63,6 +63,13 @@ function fieldmanager_load_class( $class ) {
 		return fieldmanager_load_file( 'context/class-fieldmanager-context-' . $class_id . '.php' );
 	}
 
+	if ( 0 === strpos( $class, 'Fieldmanager_Content' ) ) {
+		if ( 'content' === $class_id ) {
+			return fieldmanager_load_file( 'content/class-fieldmanager-content.php' );
+		}
+		return fieldmanager_load_file( 'content/class-fieldmanager-content-' . $class_id . '.php' );
+	}
+
 	if ( 0 === strpos( $class, 'Fieldmanager_Datasource' ) ) {
 		if ( 'datasource' === $class_id ) {
 			return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource.php' );
