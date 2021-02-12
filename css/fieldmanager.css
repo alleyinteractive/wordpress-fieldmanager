@@ -80,6 +80,14 @@
 	margin-bottom: 7px;
 }
 
+.fm-checkbox {
+	display: flex;
+}
+
+.fm-checkbox input[type='checkbox'] {
+	margin-top: 0;
+}
+
 /* Gallery */
 .fm-gallery .fm-item-description {
 	margin: 4px 0 10px;
