@@ -603,17 +603,6 @@ a.fm-delete:hover {
 	opacity: 0.95;
 }
 
-.media-file-preview span.dashicons {
-	font-size: 40px;
-	width: 40px;
-	height: 40px;
-	padding: 2px;
-	color: #ccc;
-	border: 1px solid #ececec;
-	border-radius: 3px;
-	background-color: white;
-}
-
 .media-file-preview .fm-media-edit {
 	right: 30px;
 	text-decoration: none;
