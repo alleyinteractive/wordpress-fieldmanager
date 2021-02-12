@@ -5,7 +5,7 @@
  * @group field
  * @group content
  */
-class Test_Fieldmanager_Plaintext_Field extends WP_UnitTestCase {
+class Test_Fieldmanager_Content_Plaintext_Field extends WP_UnitTestCase {
 
 	/**
 	 * Plaintext content to test with.
@@ -15,11 +15,11 @@ class Test_Fieldmanager_Plaintext_Field extends WP_UnitTestCase {
 	protected $plaintext = '';
 
 	/**
-	 * Markup content to test with.
+	 * HTML content to test with.
 	 *
 	 * @var string
 	 */
-	protected $markup = '';
+	protected $html = '';
 
 	/**
 	 * Markdown content to test with.
@@ -36,29 +36,29 @@ class Test_Fieldmanager_Plaintext_Field extends WP_UnitTestCase {
 		Fieldmanager_Field::$debug = true;
 
 		$this->plaintext = file_get_contents( __DIR__ . '/data/plaintext.txt' );
-		$this->markup    = file_get_contents( __DIR__ . '/data/markup.txt' );
+		$this->html    = file_get_contents( __DIR__ . '/data/html.txt' );
 		$this->markdown  = file_get_contents( __DIR__ . '/data/markdown.txt' );
 	}
 
 	/**
-	 * Test the Fieldmanager_Plaintext field.
+	 * Test the Fieldmanager_Content_Plaintext field.
 	 */
 	public function test_plaintext() {
-		$plaintext = new Fieldmanager_Plaintext(
+		$plaintext = new Fieldmanager_Content_Plaintext(
 			[
 				'name'    => 'plaintext_content',
 				'content' => $this->plaintext,
 			]
 		);
 
-		$markup = new Fieldmanager_Plaintext(
+		$html = new Fieldmanager_Content_Plaintext(
 			[
-				'name'    => 'markup_content',
-				'content' => $this->markup,
+				'name'    => 'html_content',
+				'content' => $this->html,
 			]
 		);
 
-		$markdown = new Fieldmanager_Plaintext(
+		$markdown = new Fieldmanager_Content_Plaintext(
 			[
 				'name'    => 'markdown_content',
 				'content' => $this->markdown,
@@ -66,7 +66,7 @@ class Test_Fieldmanager_Plaintext_Field extends WP_UnitTestCase {
 		);
 
 		$this->assertEquals( $plaintext->form_element(), wpautop( esc_html( $this->plaintext ) ), 'Failed escaping plaintext to plaintext.' );
-		$this->assertEquals( $markup->form_element(), wpautop( esc_html( $this->markup ) ), 'Failed escaping html to plaintext.' );
+		$this->assertEquals( $html->form_element(), wpautop( esc_html( $this->html ) ), 'Failed escaping html to plaintext.' );
 		$this->assertEquals( $markdown->form_element(), wpautop( esc_html( $this->markdown ) ), 'Failed escaping markdown to plaintext.' );
 	}
 }
