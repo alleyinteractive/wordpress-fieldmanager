@@ -5,7 +5,7 @@
  * @group field
  * @group content
  */
-class Test_Fieldmanager_Content_Markup_Field extends WP_UnitTestCase {
+class Test_Fieldmanager_Content_HTML_Field extends WP_UnitTestCase {
 
 	/**
 	 * Plaintext content to test with.
