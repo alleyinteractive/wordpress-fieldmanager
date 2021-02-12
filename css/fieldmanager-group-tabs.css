@@ -166,7 +166,7 @@
 	-webkit-box-shadow: none;
 	box-shadow: none;
 }
-.fm-tabbed-vertical > .wp-tabs-panel > div > .fm-group > .fm-group-inner {
+.fm-tabbed-vertical > .wp-tabs-panel > div > .fm-group > div > .fm-group-inner {
 	border: none;
 	-webkit-box-shadow: none;
 	box-shadow: none;
