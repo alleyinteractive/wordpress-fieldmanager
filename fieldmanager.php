@@ -63,6 +63,13 @@ function fieldmanager_load_class( $class ) {
 		return fieldmanager_load_file( 'context/class-fieldmanager-context-' . $class_id . '.php' );
 	}
 
+	if ( 0 === strpos( $class, 'Fieldmanager_Content' ) ) {
+		if ( 'content' === $class_id ) {
+			return fieldmanager_load_file( 'content/class-fieldmanager-content.php' );
+		}
+		return fieldmanager_load_file( 'content/class-fieldmanager-content-' . $class_id . '.php' );
+	}
+
 	if ( 0 === strpos( $class, 'Fieldmanager_Datasource' ) ) {
 		if ( 'datasource' === $class_id ) {
 			return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource.php' );
@@ -72,6 +79,23 @@ function fieldmanager_load_class( $class ) {
 
 	if ( 0 === strpos( $class, 'Fieldmanager_Util' ) ) {
 		return fieldmanager_load_file( 'util/class-fieldmanager-util-' . $class_id . '.php' );
+	}
+
+	if ( 0 === strpos( $class, 'Fieldmanager\Libraries' ) ) {
+
+		// Convert namespace to array.
+		$classes  = explode( '\\', $class );
+
+		// Drop the `Fieldmanager` namespace.
+		array_shift( $classes );
+
+		// Lowercase the namespace.
+		$classses = array_map( 'strtolower', $classes );
+
+		// Pop the last part to use as the filename.
+		$file_name = array_pop( $classes );
+
+		return fieldmanager_load_file( implode( '/', $classes ) . '/class-' . $file_name . '.php' );
 	}
 
 	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );
