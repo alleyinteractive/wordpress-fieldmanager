@@ -201,6 +201,13 @@ abstract class Fieldmanager_Field {
 	public $data_id = null;
 
 	/**
+	 * Fieldmanager context handling data submitted with this field. Generally set internally.
+	 *
+	 * @var ?Fieldmanager_Context
+	 */
+	public $current_context = null;
+
+	/**
 	 * If true, save empty elements to DB (if $this->limit != 1; single elements
 	 * are always saved).
 	 *
