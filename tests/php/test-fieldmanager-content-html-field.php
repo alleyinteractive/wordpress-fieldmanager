@@ -36,7 +36,7 @@ class Test_Fieldmanager_Content_HTML_Field extends WP_UnitTestCase {
 		Fieldmanager_Field::$debug = true;
 
 		$this->plaintext = file_get_contents( __DIR__ . '/data/plaintext.txt' );
-		$this->html    = file_get_contents( __DIR__ . '/data/html.txt' );
+		$this->html      = file_get_contents( __DIR__ . '/data/html.txt' );
 		$this->markdown  = file_get_contents( __DIR__ . '/data/markdown.txt' );
 	}
 
