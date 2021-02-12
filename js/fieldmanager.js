@@ -194,7 +194,7 @@ var fm_init = function () {
 
 	// Handle collapse events
 	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
-		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
+		$( this ).closest( '.fm-group' ).find( '> div > .fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
 		$( this ).toggleClass( 'closed' );
@@ -205,7 +205,7 @@ var fm_init = function () {
 		}
 	} );
 
-	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > .fm-group-inner' ).hide();
+	$( '.fm-collapsed > .fm-group:not(.fmjs-proto) > div > .fm-group-inner' ).hide();
 
 	// Initializes triggers to conditionally hide or show fields
 	fm.init_display_if = function() {

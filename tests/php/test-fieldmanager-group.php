@@ -205,6 +205,20 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_group_attributes() {
+		ob_start();
+		$key = rand_str();
+		$value = rand_str();
+		$field = new Fieldmanager_Group( array(
+			'name' => 'multi_tools',
+			'attributes' => array( "data-{$key}" => $value ),
+			'children' => array( 'text' => new Fieldmanager_TextField ),
+		) );
+		$context = $field->add_meta_box( 'test meta box', $this->post );
+		$context->render_meta_box( $this->post, array() );
+		$this->assertContains( "<div data-{$key}=\"$value\">", ob_get_clean() );
+	}
+
 	public function test_tabbed_group() {
 		$base = new Fieldmanager_Group(
 			array(

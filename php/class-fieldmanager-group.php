@@ -313,8 +313,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$tab_group .= $tab_group_submenu . '</ul>';
 		}
 
+
 		// Return the complete HTML.
-		return $tab_group . $out;
+		return sprintf( '<div %s>%s%s</div>', $this->get_element_attributes(), $tab_group, $out );
 	}
 
 	/**
