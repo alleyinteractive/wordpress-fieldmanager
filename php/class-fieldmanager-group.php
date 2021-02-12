@@ -175,7 +175,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			// it's repeatable, we're doing it wrong.
 			if ( $element->datasource && ! empty( $element->datasource->save_to_post_parent ) && $this->is_repeatable() ) {
 				_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', esc_html__( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ), '1.0.0' );
-				$element->datasource->save_to_post_parent = false;
+				$element->datasource->save_to_post_parent      = false;
 				$element->datasource->only_save_to_post_parent = false;
 			}
 
@@ -196,8 +196,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		// Add the tab JS and CSS if it is needed.
 		if ( $this->tabbed ) {
 			fm_add_script( 'jquery-hoverintent', 'js/jquery.hoverIntent.js', array( 'jquery' ), '1.8.1' );
-			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'jquery', 'jquery-hoverintent' ), '1.0.4' );
-			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), '1.0.5' );
+			fm_add_script( 'fm_group_tabs_js', 'js/fieldmanager-group-tabs.js', array( 'fm_loader', 'jquery', 'jquery-hoverintent' ), FM_VERSION, true );
+			fm_add_style( 'fm_group_tabs_css', 'css/fieldmanager-group-tabs.css', array(), FM_VERSION );
 		}
 	}
 
@@ -207,8 +207,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @param mixed $value The current value.
 	 */
 	public function form_element( $value = null ) {
-		$out = '';
-		$tab_group = '';
+		$out               = '';
+		$tab_group         = '';
 		$tab_group_submenu = '';
 
 		// We do not need the wrapper class for extra padding if no label is set for the group.
@@ -218,7 +218,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// If the display output for this group is set to tabs, build the tab group for navigation.
 		if ( $this->tabbed ) {
-			$tab_group = sprintf( '<ul class="fm-tab-bar wp-tab-bar %s" id="%s-tabs">',
+			$tab_group = sprintf(
+				'<ul class="fm-tab-bar wp-tab-bar %s" id="%s-tabs">',
 				$this->persist_active_tab ? 'fm-persist-active-tab' : '',
 				esc_attr( $this->get_element_id() )
 			);
@@ -233,24 +234,26 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			if ( $this->tabbed ) {
 
 				// Set default classes to display the first tab content and hide others.
-				$tab_classes = array( 'fm-tab' );
+				$tab_classes   = array( 'fm-tab' );
 				$tab_classes[] = ( 0 == $this->child_count ) ? 'wp-tab-active' : 'hide-if-no-js';
 
 				// Generate output for the tab. Depends on whether or not there is a tab limit in place.
 				if ( 0 == $this->tab_limit || $this->child_count < $this->tab_limit ) {
-					$tab_group .= sprintf( '<li class="%s"><a href="#%s-tab">%s</a></li>',
+					$tab_group .= sprintf(
+						'<li class="%s"><a href="#%s-tab">%s</a></li>',
 						esc_attr( implode( ' ', $tab_classes ) ),
 						esc_attr( $element->get_element_id() ),
 						$element->escape( 'label' )
 					);
 				} elseif ( 0 != $this->tab_limit && $this->child_count >= $this->tab_limit ) {
-					$submenu_item_classes = array( 'fm-submenu-item' );
+					$submenu_item_classes    = array( 'fm-submenu-item' );
 					$submenu_item_link_class = '';
 
 					// Create the More tab when first hitting the tab limit.
 					if ( $this->child_count == $this->tab_limit ) {
 						// Create the tab.
-						$tab_group_submenu .= sprintf( '<li class="fm-tab fm-has-submenu"><a href="#%s-tab">%s</a>',
+						$tab_group_submenu .= sprintf(
+							'<li class="fm-tab fm-has-submenu"><a href="#%s-tab">%s</a>',
 							esc_attr( $element->get_element_id() ),
 							esc_html__( 'More...', 'fieldmanager' )
 						);
@@ -262,12 +265,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 						);
 
 						// Make sure the first submenu item is designated.
-						$submenu_item_classes[] = 'fm-first-item';
+						$submenu_item_classes[]  = 'fm-first-item';
 						$submenu_item_link_class = 'class="fm-first-item"';
 					}
 
 					// Add this element to the More menu.
-					$tab_group_submenu .= sprintf( '<li class="%s"><a href="#%s-tab" %s>%s</a></li>',
+					$tab_group_submenu .= sprintf(
+						'<li class="%s"><a href="#%s-tab" %s>%s</a></li>',
 						esc_attr( implode( ' ', $submenu_item_classes ) ),
 						esc_attr( $element->get_element_id() ),
 						$submenu_item_link_class,
@@ -322,7 +326,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 	 * @param Fieldmanager_Field $child The child element.
 	 */
 	public function add_child( Fieldmanager_Field $child ) {
-		$child->parent = $this;
+		$child->parent                  = $this;
 		$this->children[ $child->name ] = $child;
 
 		// Catch errors when using serialize_data => false and index-> true.
@@ -351,10 +355,15 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			}
 		}
 
+		// This can happen when an FM Group has FM Selects in it.
+		if ( empty( $values ) ) {
+			$values = array();
+		}
+
 		// Then, dispatch them for sanitization to the children.
 		$skip_save_all = true;
 		foreach ( $this->children as $k => $element ) {
-			$element->data_id = $this->data_id;
+			$element->data_id   = $this->data_id;
 			$element->data_type = $this->data_type;
 			if ( ! isset( $values[ $element->name ] ) ) {
 				$values[ $element->name ] = null;
@@ -365,8 +374,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				continue;
 			}
 
-			$child_value = empty( $values[ $element->name ] ) ? null : $values[ $element->name ];
-			$current_child_value = ! isset( $current_values[ $element->name ] ) ? array() : $current_values[ $element->name ];
+			$child_value              = empty( $values[ $element->name ] ) ? null : $values[ $element->name ];
+			$current_child_value      = ! isset( $current_values[ $element->name ] ) ? array() : $current_values[ $element->name ];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
 			if ( ! $this->save_empty && 1 != $this->limit ) {
 				if ( is_array( $values[ $element->name ] ) ) {
@@ -419,7 +428,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		$collapse_handle = '';
 		if ( $this->collapsible ) {
 			$wrapper_classes[] = 'fmjs-collapsible-handle';
-			$collapse_handle = $this->get_collapse_handle();
+			$collapse_handle   = $this->get_collapse_handle();
 		}
 		if ( $this->collapsed ) {
 			$wrapper_classes[] = 'closed';
@@ -428,7 +437,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		$extra_attrs = '';
 		if ( $this->label_macro ) {
 			$this->label_format = $this->label_macro[0];
-			$this->label_token = sprintf( '.fm-%s .fm-element:input', $this->label_macro[1] );
+			$this->label_token  = sprintf( '.fm-%s .fm-element:input', $this->label_macro[1] );
 		}
 
 		if ( $this->label_format && $this->label_token ) {
@@ -437,7 +446,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				esc_attr( $this->label_format ),
 				esc_attr( $this->label_token )
 			);
-			$classes[] = 'fm-label-with-macro';
+			$classes[]   = 'fm-label-with-macro';
 		}
 
 		$remove = '';

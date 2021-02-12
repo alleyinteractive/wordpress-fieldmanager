@@ -56,9 +56,17 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		);
 
 		// Add the Fieldmanager Select Javascript library.
-		fm_add_script( 'fm_select_js', 'js/fieldmanager-select.js', array(), '1.0.2', false, 'fm_select', array(
-			'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ),
-		) );
+		fm_add_script(
+			'fm_select_js',
+			'js/fieldmanager-select.js',
+			array( 'fm_loader' ),
+			FM_VERSION,
+			true,
+			'fm_select',
+			array(
+				'nonce' => wp_create_nonce( 'fm_search_terms_nonce' ),
+			)
+		);
 
 		parent::__construct( $label, $options );
 
@@ -73,8 +81,8 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// Add the chosen library for type-ahead capabilities.
 		if ( $this->type_ahead ) {
-			fm_add_script( 'chosen', 'js/chosen/chosen.jquery.js' );
-			fm_add_style( 'chosen_css', 'js/chosen/chosen.css' );
+			fm_add_script( 'fm_chosen', 'js/chosen/chosen.jquery.min.js', array( 'jquery' ), '1.8.2' );
+			fm_add_style( 'fm_chosen_css', 'js/chosen/chosen.min.css', array(), '1.8.2' );
 		}
 
 	}
@@ -97,7 +105,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		// Handle type-ahead based fields using the chosen library.
 		if ( $this->type_ahead ) {
-			$select_classes[] = 'chzn-select';
+			$select_classes[] = 'chosen-select';
 			if ( ! isset( $GLOBALS['fm_chosen_initialized'] ) ) {
 				add_action( 'admin_footer', array( $this, 'chosen_init' ) );
 				$GLOBALS['fm_chosen_initialized'] = true;
@@ -177,10 +185,15 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		?>
 		<script type="text/javascript">
 		jQuery(function($){
+			var chosenOpts = {
+				allow_single_deselect: true,
+				disable_search_threshold: -1,
+				width: '350px'
+			}
 			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
-				$(".chzn-select:visible",this).chosen({allow_single_deselect:true})
+				$(".chosen-select:visible",this).chosen(chosenOpts)
 			});
-			$(".chzn-select:visible").chosen({allow_single_deselect:true});
+			$(".chosen-select:visible").chosen(chosenOpts);
 		});
 		</script>
 		<?php

@@ -27,7 +27,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$name = 'tools_meta_fields';
 		fm_register_submenu_page( $name, 'tools.php', 'Tools Meta Fields' );
 		$context = $this->get_context( $name );
-		$html = $this->get_html( $context, $name );
+		$html    = $this->get_html( $context, $name );
 
 		$this->assertContains( '<h1>Tools Meta Fields</h1>', $html );
 		$this->assertRegExp( '/<input type="hidden"[^>]+name="fieldmanager-' . $name . '-nonce"/', $html );
@@ -74,17 +74,18 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 	/**
 	 * Test nonce failure
+	 *
 	 * @expectedException FM_Exception
 	 */
 	public function test_nonce_failure() {
 		$name = 'edit_meta_fields';
 		fm_register_submenu_page( $name, 'edit.php', 'Edit Meta Fields' );
 		$context = $this->get_context( $name );
-		$html = $this->get_html( $context, $name );
+		$html    = $this->get_html( $context, $name );
 
 		$this->build_post( $html, $name );
-		$_GET['page'] = $name;
-		$_POST["fieldmanager-{$name}-nonce"] = 'abc123';
+		$_GET['page']                          = $name;
+		$_POST[ "fieldmanager-{$name}-nonce" ] = 'abc123';
 		$context->handle_submenu_save();
 	}
 
@@ -129,12 +130,12 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		fm_register_submenu_page( $name, 'tools.php', 'Skip Save Fields' );
 		// Should save the first time
 		$context = $this->get_context( 'skip_save' );
-		$data = array(
-			'name'      => 'Foo',
-			'email'     => 'foo@alleyinteractive.com',
-			'remember'  => true,
-			'number'    => 11,
-			'group'     => array( 'preferences' => '' ),
+		$data    = array(
+			'name'     => 'Foo',
+			'email'    => 'foo@alleyinteractive.com',
+			'remember' => true,
+			'number'   => 11,
+			'group'    => array( 'preferences' => '' ),
 		);
 		$this->assertTrue( $context->save_submenu_data( $data ) );
 		$this->assertEquals( $data, get_option( 'skip_save' ) );
@@ -145,12 +146,36 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$this->assertTrue( $context->save_submenu_data( $data ) );
 		$this->assertFalse( get_option( 'skip_save' ) );
 		// Permit saving the group, but not an individual field
-		$context->fm->skip_save = false;
+		$context->fm->skip_save                   = false;
 		$context->fm->children['name']->skip_save = true;
 		$this->assertTrue( $context->save_submenu_data( $data ) );
 		$option = get_option( 'skip_save' );
 		$this->assertFalse( isset( $option['name'] ) );
 		$this->assertEquals( 'foo@alleyinteractive.com', $option['email'] );
+	}
+
+	public function test_autoloading() {
+		global $wpdb;
+
+		$name = 'autoloading';
+		fm_register_submenu_page( $name, 'foo.php', 'Autoloading' );
+		$context = $this->get_context( $name );
+		$html    = $this->get_html( $context, $name );
+		$this->build_post( $html, $name );
+
+		$context->wp_option_autoload = true;
+		$context->save_submenu_data();
+		$actual = $wpdb->get_row( $wpdb->prepare( "SELECT autoload FROM $wpdb->options WHERE option_name = %s LIMIT 1", $name ) );
+		$this->assertSame( 'yes', $actual->autoload );
+
+		// Change the value so update_option() doesn't bail.
+		$_POST[ $name ]['email'] = '123456';
+
+		// Test the ability to change the setting.
+		$context->wp_option_autoload = false;
+		$context->save_submenu_data();
+		$actual = $wpdb->get_row( $wpdb->prepare( "SELECT autoload FROM $wpdb->options WHERE option_name = %s LIMIT 1", $name ) );
+		$this->assertSame( 'no', $actual->autoload );
 	}
 
 	/**
@@ -181,28 +206,42 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	 * @param  string $name The FM name.
 	 */
 	private function get_fields( $name ) {
-		return new Fieldmanager_Group( array(
-			'name' => $name,
-			'children' => array(
-				'name' => new Fieldmanager_Textfield( 'Name', array(
-					'validation_rules' => array( 'required' => true ),
-				) ),
-				'email' => new Fieldmanager_Textfield( 'Email' ),
-				'remember' => new Fieldmanager_Checkbox( 'Remember Me' ),
-				'number' => new Fieldmanager_Textfield( 'Number', array(
-					'sanitize' => function( $val ) {
-						return intval( $val );
-					}
-				) ),
-				'group' => new Fieldmanager_Group( 'Stupid Subgroup', array(
-					'children' => array(
-						'preferences' => new Fieldmanager_Radios( 'Food', array(
-							'options' => array( 'Apple', 'Banana', 'Orange' ),
-						) ),
-					)
-				) ),
-			),
-		) );
+		return new Fieldmanager_Group(
+			array(
+				'name'     => $name,
+				'children' => array(
+					'name'     => new Fieldmanager_Textfield(
+						'Name',
+						array(
+							'validation_rules' => array( 'required' => true ),
+						)
+					),
+					'email'    => new Fieldmanager_Textfield( 'Email' ),
+					'remember' => new Fieldmanager_Checkbox( 'Remember Me' ),
+					'number'   => new Fieldmanager_Textfield(
+						'Number',
+						array(
+							'sanitize' => function( $val ) {
+								return intval( $val );
+							},
+						)
+					),
+					'group'    => new Fieldmanager_Group(
+						'Stupid Subgroup',
+						array(
+							'children' => array(
+								'preferences' => new Fieldmanager_Radios(
+									'Food',
+									array(
+										'options' => array( 'Apple', 'Banana', 'Orange' ),
+									)
+								),
+							),
+						)
+					),
+				),
+			)
+		);
 	}
 
 	/**
@@ -213,16 +252,16 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	 */
 	private function build_post( $html, $name ) {
 		$_GET['page'] = $name;
-		$_GET['msg'] = 'success';
-		$_POST = array(
+		$_GET['msg']  = 'success';
+		$_POST        = array(
 			"fieldmanager-{$name}-nonce" => $this->extract_nonce( $html, $name ),
-			'fm-form-context' => 'test_form',
-			$name => array(
-				'email' => 'test@example.com',
-				'name' => 'Austin \\"Smith\\"<script type="text/javascript">alert(/HACKED/)</script>', // both the script and slashes should get auto-stripped
+			'fm-form-context'            => 'test_form',
+			$name                        => array(
+				'email'    => 'test@example.com',
+				'name'     => 'Austin \\"Smith\\"<script type="text/javascript">alert(/HACKED/)</script>', // both the script and slashes should get auto-stripped
 				'remember' => 1,
-				'number' => '7even', // will become 7 due to above sanitizer
-				'group' => array(
+				'number'   => '7even', // will become 7 due to above sanitizer
+				'group'    => array(
 					'preferences' => 'Apple',
 				),
 			),
@@ -244,7 +283,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	/**
 	 * Test altering a field in the presave action.
 	 *
-	 * @param  array $values Values being saved.
+	 * @param  array  $values Values being saved.
 	 * @param  object $context FM Context.
 	 * @return array
 	 */
@@ -254,12 +293,12 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 	}
 
 	public function test_updated_message() {
-		$name = 'message_customization';
+		$name            = 'message_customization';
 		$updated_message = rand_str();
 		fm_register_submenu_page( $name, 'tools.php', 'Message Customization' );
-		$context = $this->get_context( $name );
+		$context                  = $this->get_context( $name );
 		$context->updated_message = $updated_message;
-		$html = $this->get_html( $context, $name );
+		$html                     = $this->get_html( $context, $name );
 		$this->build_post( $html, $name );
 		$this->assertContains( "<div class=\"updated success\"><p>{$updated_message}</p></div>", $this->get_html( $context, $name ) );
 	}

@@ -107,8 +107,6 @@ $( document ).on( 'fm_collapsible_toggle fm_added_element fm_displayif_toggle fm
 	$.fm_grid_init();
 } );
 
-$( document ).ready( function() {
-	$.fm_grid_init();
-} );
+fmLoadModule( $.fm_grid_init );
 
 })( jQuery );

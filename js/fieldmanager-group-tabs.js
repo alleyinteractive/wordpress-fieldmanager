@@ -8,9 +8,9 @@ var FieldmanagerGroupTabs;
 		 */
 		init: function() {
 
-			this.bindEvents();
+			FieldmanagerGroupTabs.bindEvents();
 
-			this.restoreSelectedTabs();
+			FieldmanagerGroupTabs.restoreSelectedTabs();
 
 		},
 
@@ -164,10 +164,5 @@ var FieldmanagerGroupTabs;
 
 	};
 
-	$(document).ready( function(){
-
-		FieldmanagerGroupTabs.init();
-
-	});
-
+	fmLoadModule( FieldmanagerGroupTabs.init );
 } )( jQuery );
