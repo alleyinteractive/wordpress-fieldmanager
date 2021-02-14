@@ -73,11 +73,11 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 			$post_types = array( $post_types );
 		}
 
-		$this->post_types = $post_types;
-		$this->title = $title;
-		$this->column_title = ! empty( $column_title ) ? $column_title : $title;
+		$this->post_types              = $post_types;
+		$this->title                   = $title;
+		$this->column_title            = ! empty( $column_title ) ? $column_title : $title;
 		$this->column_display_callback = $column_display_callback;
-		$this->fm = $fm;
+		$this->fm                      = $fm;
 
 		if ( is_callable( $column_display_callback ) ) {
 			foreach ( $post_types as $post_type ) {
@@ -93,7 +93,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		$post_type = ! isset( $_GET['post_type'] ) ? 'post' : sanitize_text_field( wp_unslash( $_GET['post_type'] ) ); // WPCS: input var okay.
 
 		if ( in_array( $post_type, $this->post_types ) ) {
-			fm_add_script( 'quickedit-js', 'js/fieldmanager-quickedit.js' );
+			fm_add_script( 'quickedit-js', 'js/fieldmanager-quickedit.js', array( 'fm_loader' ), FM_VERSION, true );
 		}
 
 		parent::__construct();
@@ -121,7 +121,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		if ( $column_name != $this->fm->name ) {
 			return;
 		}
-		$data = get_post_meta( $post_id, $this->fm->name, true );
+		$data        = get_post_meta( $post_id, $this->fm->name, true );
 		$column_text = call_user_func( $this->column_display_callback, $post_id, $data );
 		echo $column_text; // WPCS: XSS ok.
 	}
@@ -147,9 +147,11 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 				<?php endif ?>
 
 				<?php
-				$this->render_field( array(
-					'data' => $values,
-				) );
+				$this->render_field(
+					array(
+						'data' => $values,
+					)
+				);
 				?>
 			</div>
 		</fieldset>
@@ -170,15 +172,15 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		}
 
 		$column_name = sanitize_text_field( wp_unslash( $_GET['column_name'] ) ); // WPCS: input var okay.
-		$post_id = intval( $_GET['post_id'] ); // WPCS: input var okay.
+		$post_id     = intval( $_GET['post_id'] ); // WPCS: input var okay.
 
 		if ( ! $post_id || $column_name != $this->fm->name ) {
 			return;
 		}
 
 		$this->fm->data_type = 'post';
-		$this->fm->data_id = $post_id;
-		$post_type = get_post_type( $post_id );
+		$this->fm->data_id   = $post_id;
+		$post_type           = get_post_type( $post_id );
 
 		$this->add_quickedit_box( $column_name, $post_type, $this->load() );
 		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
@@ -236,7 +238,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 * @param array $data    The post data.
 	 */
 	public function save_to_post_meta( $post_id, $data = null ) {
-		$this->fm->data_id = $post_id;
+		$this->fm->data_id   = $post_id;
 		$this->fm->data_type = 'post';
 
 		$this->save( $data );
