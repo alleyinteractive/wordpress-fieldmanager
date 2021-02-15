@@ -127,7 +127,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 		$unique_key .= wp_json_encode( $this->get_taxonomies() );
 		$unique_key .= (string) $this->taxonomy_hierarchical;
 		$unique_key .= (string) $this->taxonomy_hierarchical_depth;
-		return get_called_class() . crc32( $unique_key );
+		$unique_key .= get_called_class();
+		return 'fm_datasource_term_' . crc32( $unique_key );
 	}
 
 	/**

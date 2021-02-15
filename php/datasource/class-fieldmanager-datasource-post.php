@@ -193,7 +193,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		}
 		$unique_key  = json_encode( $this->query_args );
 		$unique_key .= (string) $this->query_callback;
-		return get_called_class() . crc32( $unique_key );
+		$unique_key .= get_called_class();
+		return 'fm_datasource_post_' . crc32( $unique_key );
 	}
 
 	/**
