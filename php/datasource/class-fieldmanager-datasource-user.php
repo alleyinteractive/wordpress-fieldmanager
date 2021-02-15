@@ -191,7 +191,8 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		$unique_key  = wp_json_encode( $this->query_args );
 		$unique_key .= $this->display_property;
 		$unique_key .= (string) $this->query_callback;
-		return 'fm_datasource_post' . crc32( $unique_key );
+		$unique_key .= get_called_class();
+		return 'fm_datasource_user_' . crc32( $unique_key );
 	}
 
 	/**
