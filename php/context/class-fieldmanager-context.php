@@ -35,6 +35,27 @@ abstract class Fieldmanager_Context {
 	public $save_keys = array();
 
 	/**
+	 * Instantiate this context.
+	 */
+	public function __construct() {
+		add_filter( 'wp_refresh_nonces', array( $this, 'refresh_nonce' ) );
+	}
+
+	/**
+	 * Include a fresh nonce for this field in a response with refreshed nonces.
+	 *
+	 * @since 1.3.0
+	 *
+	 * @param array $response Response data.
+	 * @return array Updated response data.
+	 */
+	public function refresh_nonce( $response ) {
+		$response['fieldmanager_refresh_nonces']['replace'][ 'fieldmanager-' . $this->fm->name . '-nonce' ] = wp_create_nonce( 'fieldmanager-save-' . $this->fm->name );
+
+		return $response;
+	}
+
+	/**
 	 * Check if the nonce is valid. Returns false if the nonce is missing and
 	 * throws an exception if it's invalid. If all goes well, returns true.
 	 *
@@ -51,7 +72,6 @@ abstract class Fieldmanager_Context {
 
 		return true;
 	}
-
 
 	/**
 	 * Prepare the data for saving.

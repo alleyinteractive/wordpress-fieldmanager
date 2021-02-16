@@ -85,6 +85,8 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		if ( $this->fm && ! empty( $this->fm->meta_boxes_to_remove ) ) {
 			add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 100 );
 		}
+
+		parent::__construct();
 	}
 
 	/**

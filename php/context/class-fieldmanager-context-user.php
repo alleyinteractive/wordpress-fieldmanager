@@ -32,6 +32,8 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 		add_action( 'personal_options_update', array( $this, 'save_user_form' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'save_user_form' ) );
 		add_filter( 'fm_context_after_presave_data', array( $this, 'legacy_presave_filter' ) );
+
+		parent::__construct();
 	}
 
 	/**
