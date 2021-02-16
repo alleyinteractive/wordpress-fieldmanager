@@ -298,7 +298,7 @@ var fm_init = function () {
 		 * @param {Object} data  Heartbeat response data.
 		 */
 		.on( 'heartbeat-tick', function ( event, data ) {
-			var nonces = data.fmRefreshNonces;
+			var nonces = data.fieldmanager_refresh_nonces;
 
 			if ( nonces && nonces.replace ) {
 				$.each( nonces.replace, function ( selector, newNonce ) {

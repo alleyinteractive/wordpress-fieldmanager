@@ -50,7 +50,8 @@ abstract class Fieldmanager_Context {
 	 * @return array Updated response data.
 	 */
 	public function refresh_nonce( $response ) {
-		$response['fmRefreshNonces']['replace'][ 'fieldmanager-' . $this->fm->name . '-nonce' ] = wp_create_nonce( 'fieldmanager-save-' . $this->fm->name );
+		$response['fieldmanager_refresh_nonces']['replace'][ 'fieldmanager-' . $this->fm->name . '-nonce' ] = wp_create_nonce( 'fieldmanager-save-' . $this->fm->name );
+
 		return $response;
 	}
 
