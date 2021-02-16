@@ -10,6 +10,8 @@
  *
  * This field uses {@link https://github.com/handsontable/handsontable/
  * Handsontable} to provide a grid interface.
+ *
+ * @deprecated 1.4.0
  */
 class Fieldmanager_Grid extends Fieldmanager_Field {
 
@@ -41,6 +43,8 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 * @param array  $options The form options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
+		_deprecated_function( __METHOD__, '1.4.0' );
+
 		$this->attributes = array(
 			'size' => '50',
 		);
@@ -67,6 +71,8 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 * @return string The HTML string.
 	 */
 	public function form_element( $value = '' ) {
+		_deprecated_function( __METHOD__, '1.4.0' );
+
 		$grid_activate_id = 'grid-activate-' . uniqid( true );
 		if ( ! empty( $value ) && is_callable( $this->grid_sort ) ) {
 			$value = call_user_func( $this->grid_sort, $value );
@@ -96,6 +102,8 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 	 * @return array Sanitized row/col matrix.
 	 */
 	public function presave( $value, $current_value = array() ) {
+		_deprecated_function( __METHOD__, '1.4.0' );
+
 		$rows = json_decode( stripslashes( $value ), true );
 		if ( ! is_array( $rows ) ) {
 			return array();
