@@ -508,7 +508,7 @@ add_action( 'admin_menu', '_fm_add_submenus', 15 );
 /**
  * Sanitize multi-line text.
  *
- * @deprecated 1.3.0 Use {@see sanitize_textarea_field()}.
+ * @deprecated 1.4.0 Use {@see sanitize_textarea_field()}.
  *
  * @param string $value Unsanitized text.
  * @return string Text with each line of $value passed through sanitize_text_field().
