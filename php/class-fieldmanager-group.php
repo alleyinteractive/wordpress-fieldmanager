@@ -210,16 +210,25 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		$out               = '';
 		$tab_group         = '';
 		$tab_group_submenu = '';
+		$before_desc = '';
 
 		// We do not need the wrapper class for extra padding if no label is set for the group.
 		if ( isset( $this->label ) && ! empty( $this->label ) ) {
 			$out .= '<div class="fm-group-inner">';
 		}
 
+		if ( ! empty( $this->description ) && ! $this->description_after_element ) {
+			$before_desc = '<p class="fm-group-description">' . $this->escape( 'description' ) . '</p>';
+			if ( ! $this->tabbed ) {
+				$out .= $before_desc;
+			}
+		}
+
 		// If the display output for this group is set to tabs, build the tab group for navigation.
 		if ( $this->tabbed ) {
 			$tab_group = sprintf(
-				'<ul class="fm-tab-bar wp-tab-bar %s" id="%s-tabs">',
+				'%1$s<ul class="fm-tab-bar wp-tab-bar %2$s" id="%3$s-tabs">',
+				$before_desc,
 				$this->persist_active_tab ? 'fm-persist-active-tab' : '',
 				esc_attr( $this->get_element_id() )
 			);
@@ -300,8 +309,12 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		}
 
+		if ( ! empty( $this->description ) && $this->description_after_element ) {
+			$out .= '<p class="fm-group-description">' . $this->escape( 'description' ) . '</p>';
+		}
+
 		// We do not need the wrapper class for extra padding if no label is set for the group.
-		if ( isset( $this->label ) && ! empty( $this->label ) ) {
+		if ( ! empty( $this->label ) ) {
 			$out .= '</div>';
 		}
 
@@ -364,6 +377,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $k => $element ) {
 			$element->data_id   = $this->data_id;
 			$element->data_type = $this->data_type;
+
 			if ( ! isset( $values[ $element->name ] ) ) {
 				$values[ $element->name ] = null;
 			}
@@ -454,8 +468,10 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		return sprintf(
-			'<div class="%1$s"><%2$s class="%3$s"%4$s>%5$s</%2$s>%6$s%7$s</div>',
+			'<div class="%1$s">%2$s%3$s<%4$s class="%5$s"%6$s>%7$s</%4$s></div>',
 			esc_attr( implode( ' ', $wrapper_classes ) ),
+			$collapse_handle,
+			$remove, // get_remove_handle() is sanitized html.
 			$this->label_element,
 			esc_attr( implode( ' ', $classes ) ),
 			$extra_attrs,

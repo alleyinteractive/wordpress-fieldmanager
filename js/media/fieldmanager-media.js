@@ -7,7 +7,7 @@ $( document ).on( 'click', '.fm-media-remove', function(e) {
 	$(this).parents( '.fm-item.fm-media' ).find( '.media-wrapper' ).html( '' );
 });
 
-$( document ).on( 'click', '.media-wrapper a', function( event ){
+$( document ).on( 'click', '.media-wrapper a, .fm-media-edit', function( event ){
 	event.preventDefault();
 	$(this).closest('.media-wrapper').siblings('.fm-media-button').click();
 } );
@@ -77,16 +77,20 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		props.link = 'custom';
 		props.linkUrl = '#';
 		props.caption = '';
-		$el.parent().find('.fm-media-id').val( attachment.id );
-		if ( attachment.type == 'image' ) {
-			props.url = props.src;
-			var preview = 'Uploaded file:<br />';
-			preview += wp.media.string.image( props );
-		} else {
-			var preview = 'Uploaded file:&nbsp;';
-			preview += wp.media.string.link( props );
+		// Set the display icon if this is not an image attachment.
+		if ( 'undefined' === typeof props.url && 'undefined' !== typeof attachment.icon && attachment.type !== 'image' ) {
+			props.url = attachment.icon;
 		}
-		preview += '<br /><a class="fm-media-remove fm-delete" href="#">remove</a>';
+		$el.parent().find('.fm-media-id').val( attachment.id );
+		var preview = '<div class="media-file-preview">';
+		if ( attachment.type === 'image' ) {
+			props.url = props.src;
+		}
+		preview += wp.media.string.image( props );
+		preview += '<div class="fm-file-detail"><h4>' + attachment.name + '</h4><span class="fm-file-type">' + attachment.type + '</span></div>';
+		preview += '<a class="fm-media-edit" href="#"><span class="screen-reader-text">edit</span></a>';
+		preview += '<a class="fm-media-remove fm-delete fmjs-remove" href="#"><span class="screen-reader-text">remove</span></a>';
+		preview += '</div>';
 		var $wrapper = $el.parent().find( '.media-wrapper' );
 		$wrapper.html( preview ).trigger( 'fieldmanager_media_preview', [ $wrapper, attachment, wp ] );
 	});
