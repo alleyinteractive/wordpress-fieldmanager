@@ -36,10 +36,10 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	 * @param array  $options The options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
-		fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', array( 'jquery', 'wp-color-picker' ), '1.0', true );
+		fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', array( 'fm_loader', 'jquery', 'wp-color-picker' ), FM_VERSION, true );
 		fm_add_style( 'wp-color-picker' );
 
-		$this->sanitize = array( $this, 'sanitize_hex_color' );
+		$this->sanitize = 'sanitize_hex_color';
 
 		parent::__construct( $label, $options );
 
@@ -65,26 +65,5 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 			esc_attr( $value ),
 			$this->get_element_attributes()
 		);
-	}
-
-	/**
-	 * Sanitizes a hex color.
-	 *
-	 * Returns either '', a 3 or 6 digit hex color (with #), or nothing.
-	 *
-	 * This was copied from core; sanitize_hex_color() is not available outside
-	 * of the customizer. {@see https://core.trac.wordpress.org/ticket/27583}.
-	 *
-	 * @param  string $color The current color.
-	 * @return string
-	 */
-	function sanitize_hex_color( $color ) {
-		$color = trim( $color );
-
-		if ( '' !== $color && preg_match( '|^#([A-Fa-f0-9]{3}){1,2}$|', $color ) ) {
-			return $color;
-		}
-
-		return '';
 	}
 }
