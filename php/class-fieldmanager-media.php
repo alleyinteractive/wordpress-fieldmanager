@@ -176,7 +176,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$preview = '';
 		}
 		return sprintf(
-			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" data-preview-size="%6$s" data-mime-type=\'%9$s\' %10$s />
+			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" data-preview-size="%6$s" data-mime-type="%9$s" %10$s />
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
 			<div class="media-wrapper">%5$s</div>',
 			esc_attr( $this->get_element_id() ),
@@ -187,7 +187,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			esc_attr( $this->preview_size ),
 			esc_attr( $this->modal_title ),
 			esc_attr( $this->modal_button_label ),
-			is_array( $this->mime_type ) ? wp_json_encode( $this->mime_type ) : esc_attr( $this->mime_type ),
+			esc_attr( wp_json_encode( (array) $this->mime_type ) ),
 			$this->get_element_attributes()
 		);
 	}
