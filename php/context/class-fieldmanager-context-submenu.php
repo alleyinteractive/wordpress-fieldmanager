@@ -80,18 +80,20 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @param bool               $already_registered Page already registered.
 	 */
 	public function __construct( $parent_slug, $page_title, $menu_title = null, $capability = 'manage_options', $menu_slug = null, $fm = null, $already_registered = false ) {
-		$this->fm = $fm;
-		$this->menu_slug = $menu_slug ?: $this->fm->name;
-		$this->menu_title = $menu_title ?: $page_title;
-		$this->parent_slug = $parent_slug;
-		$this->page_title = $page_title;
-		$this->capability = $capability;
+		$this->fm              = $fm;
+		$this->menu_slug       = $menu_slug ?: $this->fm->name;
+		$this->menu_title      = $menu_title ?: $page_title;
+		$this->parent_slug     = $parent_slug;
+		$this->page_title      = $page_title;
+		$this->capability      = $capability;
 		$this->updated_message = __( 'Options updated', 'fieldmanager' );
-		$this->uniqid = $this->fm->get_element_id() . '_form';
+		$this->uniqid          = $this->fm->get_element_id() . '_form';
 		if ( ! $already_registered ) {
 			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
 		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
+
+		parent::__construct();
 	}
 
 	/**
@@ -120,9 +122,11 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 				<div class="fm-submenu-form-wrapper">
 					<input type="hidden" name="fm-options-action" value="<?php echo esc_attr( sanitize_title( $this->fm->name ) ); ?>" />
 					<?php
-					$this->render_field( array(
-						'data' => $values,
-					) );
+					$this->render_field(
+						array(
+							'data' => $values,
+						)
+					);
 					?>
 				</div>
 				<?php submit_button( $this->submit_button_label, 'primary', 'fm-submit' ); ?>
@@ -166,11 +170,14 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @return bool True.
 	 */
 	public function save_submenu_data( $data = null ) {
-		$this->fm->data_id = $this->fm->name;
-		$this->fm->data_type = 'options';
+		$this->fm->data_id         = $this->fm->name;
+		$this->fm->data_type       = 'options';
+		$this->fm->current_context = $this;
+
 		$current = get_option( $this->fm->name, null );
-		$data = $this->prepare_data( $current, $data );
-		$data = apply_filters( 'fm_submenu_presave_data', $data, $this );
+		$data    = $this->prepare_data( $current, $data );
+		$data    = apply_filters( 'fm_submenu_presave_data', $data, $this );
+
 		if ( $this->fm->skip_save ) {
 			return true;
 		}

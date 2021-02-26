@@ -26,12 +26,14 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 */
 	public function __construct( $title = '', $fm = null ) {
 		$this->title = $title;
-		$this->fm = $fm;
+		$this->fm    = $fm;
 		add_action( 'show_user_profile', array( $this, 'render_user_form' ) );
 		add_action( 'edit_user_profile', array( $this, 'render_user_form' ) );
 		add_action( 'personal_options_update', array( $this, 'save_user_form' ) );
 		add_action( 'edit_user_profile_update', array( $this, 'save_user_form' ) );
 		add_filter( 'fm_context_after_presave_data', array( $this, 'legacy_presave_filter' ) );
+
+		parent::__construct();
 	}
 
 	/**
@@ -52,7 +54,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param WP_User $user The user.
 	 */
 	public function render_user_form( $user ) {
-		$this->fm->data_id = $user->ID;
+		$this->fm->data_id   = $user->ID;
 		$this->fm->data_type = 'user';
 
 		if ( ! empty( $this->title ) ) {
@@ -92,7 +94,7 @@ class Fieldmanager_Context_User extends Fieldmanager_Context_Storable {
 	 * @param array $data    The user data.
 	 */
 	public function save_to_user_meta( $user_id, $data = null ) {
-		$this->fm->data_id = $user_id;
+		$this->fm->data_id   = $user_id;
 		$this->fm->data_type = 'user';
 
 		$this->save( $data );

@@ -17,11 +17,13 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
-		$this->post = $this->factory->post->create_and_get( array(
-			'post_status' => 'draft',
-			'post_content' => rand_str(),
-			'post_title' => rand_str(),
-		) );
+		$this->post = $this->factory->post->create_and_get(
+			array(
+				'post_status'  => 'draft',
+				'post_content' => rand_str(),
+				'post_title'   => rand_str(),
+			)
+		);
 
 		$this->term   = $this->factory->tag->create_and_get( array( 'name' => rand_str() ) );
 		$this->term_2 = $this->factory->tag->create_and_get( array( 'name' => rand_str() ) );
@@ -31,8 +33,8 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	 * Save the data.
 	 *
 	 * @param Fieldmanager_Field $field
-	 * @param WP_Post $post
-	 * @param mixed $values
+	 * @param WP_Post            $post
+	 * @param mixed              $values
 	 */
 	public function save_values( $field, $post, $values ) {
 		$field->add_meta_box( $field->name, $post->post_type )->save_to_post_meta( $post->ID, $values );
@@ -42,12 +44,16 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	 * Test behavior when using the term datasource.
 	 */
 	public function test_datasource_term_save() {
-		$terms = new Fieldmanager_Autocomplete( array(
-			'name' => 'test_terms',
-			'datasource' => new Fieldmanager_Datasource_Term( array(
-				'taxonomy' => $this->term->taxonomy,
-			) ),
-		) );
+		$terms = new Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'test_terms',
+				'datasource' => new Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy' => $this->term->taxonomy,
+					)
+				),
+			)
+		);
 		$this->save_values( $terms, $this->post, $this->term->term_id );
 
 		$saved_value = get_post_meta( $this->post->ID, 'test_terms', true );
@@ -61,13 +67,17 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	 * Test behavior when only saving to taxonomy.
 	 */
 	public function test_datasource_term_save_only_tax() {
-		$terms = new Fieldmanager_Autocomplete( array(
-			'name' => 'test_terms',
-			'datasource' => new Fieldmanager_Datasource_Term( array(
-				'taxonomy' => $this->term->taxonomy,
-				'only_save_to_taxonomy' => true,
-			) ),
-		) );
+		$terms = new Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'test_terms',
+				'datasource' => new Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy'              => $this->term->taxonomy,
+						'only_save_to_taxonomy' => true,
+					)
+				),
+			)
+		);
 		$this->save_values( $terms, $this->post, $this->term->term_id );
 
 		$saved_value = get_post_meta( $this->post->ID, 'test_terms', true );
@@ -81,13 +91,17 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	 * Test behavior when saving multiple values.
 	 */
 	public function test_datasource_term_save_multi() {
-		$terms = new Fieldmanager_Autocomplete( array(
-			'name' => 'test_terms',
-			'limit' => 0,
-			'datasource' => new Fieldmanager_Datasource_Term( array(
-				'taxonomy' => $this->term->taxonomy,
-			) ),
-		) );
+		$terms = new Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'test_terms',
+				'limit'      => 0,
+				'datasource' => new Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy' => $this->term->taxonomy,
+					)
+				),
+			)
+		);
 
 		$term = $this->factory->tag->create_and_get( array( 'name' => rand_str() ) );
 
@@ -106,14 +120,18 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	 * Test behavior when saving multiple values only to taxonomy.
 	 */
 	public function test_datasource_term_save_multi_only_tax() {
-		$terms = new Fieldmanager_Autocomplete( array(
-			'name' => 'test_terms',
-			'limit' => 0,
-			'datasource' => new Fieldmanager_Datasource_Term( array(
-				'taxonomy' => $this->term->taxonomy,
-				'only_save_to_taxonomy' => true,
-			) ),
-		) );
+		$terms = new Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'test_terms',
+				'limit'      => 0,
+				'datasource' => new Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy'              => $this->term->taxonomy,
+						'only_save_to_taxonomy' => true,
+					)
+				),
+			)
+		);
 
 		$term = $this->factory->tag->create_and_get( array( 'name' => rand_str() ) );
 
@@ -132,15 +150,19 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	 * Test behavior when saving a new term (when exact match is not required).
 	 */
 	public function test_datasource_term_save_multi_only_tax_inexact() {
-		$terms = new Fieldmanager_Autocomplete( array(
-			'name' => 'test_terms',
-			'limit' => 0,
-			'exact_match' => false,
-			'datasource' => new Fieldmanager_Datasource_Term( array(
-				'taxonomy' => $this->term->taxonomy,
-				'only_save_to_taxonomy' => true,
-			) ),
-		) );
+		$terms = new Fieldmanager_Autocomplete(
+			array(
+				'name'        => 'test_terms',
+				'limit'       => 0,
+				'exact_match' => false,
+				'datasource'  => new Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy'              => $this->term->taxonomy,
+						'only_save_to_taxonomy' => true,
+					)
+				),
+			)
+		);
 
 		$new_term = rand_str();
 
@@ -181,12 +203,16 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	 * Test behavior when saving an empty value.
 	 */
 	public function test_datasource_term_save_empty() {
-		$terms = new Fieldmanager_Autocomplete( array(
-			'name' => 'test_terms',
-			'datasource' => new Fieldmanager_Datasource_Term( array(
-				'taxonomy' => $this->term->taxonomy,
-			) ),
-		) );
+		$terms = new Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'test_terms',
+				'datasource' => new Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy' => $this->term->taxonomy,
+					)
+				),
+			)
+		);
 
 		$this->save_values( $terms, $this->post, '' );
 
@@ -204,17 +230,21 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	 * However, this applies to all field types that can create this scenario.
 	 */
 	public function test_datasource_term_save_to_taxonomy_empty() {
-		$term_taxonomy = new Fieldmanager_Checkboxes( array(
-			'name' => 'test_terms',
-			'limit' => 0,
-			'datasource' => new Fieldmanager_Datasource_Term( array(
-				'taxonomy' => $this->term->taxonomy,
-				'only_save_to_taxonomy' => true,
-				'append_taxonomy' => false,
-			) ),
-		) );
+		$term_taxonomy = new Fieldmanager_Checkboxes(
+			array(
+				'name'       => 'test_terms',
+				'limit'      => 0,
+				'datasource' => new Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy'              => $this->term->taxonomy,
+						'only_save_to_taxonomy' => true,
+						'append_taxonomy'       => false,
+					)
+				),
+			)
+		);
 
-		$term = $this->factory->tag->create_and_get( array( 'name' => rand_str() ) );
+		$term  = $this->factory->tag->create_and_get( array( 'name' => rand_str() ) );
 		$terms = array( $this->term->term_id, $term->term_id );
 
 		$this->save_values( $term_taxonomy, $this->post, $terms );
@@ -244,17 +274,27 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 			'serialize_data' => false,
 			'sortable'       => true,
 			'limit'          => 0,
-			'datasource'     => new Fieldmanager_Datasource_Term( array(
-				'taxonomy'              => $this->term->taxonomy,
-				'only_save_to_taxonomy' => true,
-			) ),
+			'datasource'     => new Fieldmanager_Datasource_Term(
+				array(
+					'taxonomy'              => $this->term->taxonomy,
+					'only_save_to_taxonomy' => true,
+				)
+			),
 		);
 		$base = new Fieldmanager_Autocomplete( $args );
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, array( $this->term->term_id, $this->term_2->term_id ) );
 		$this->assertSame( '', get_post_meta( $this->post->ID, 'base_autocomplete', true ) );
 		$this->assertSame(
 			array( $this->term->term_id, $this->term_2->term_id ),
-			wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids', 'orderby' => 'term_order', 'order' => 'ASC' ) )
+			wp_get_post_terms(
+				$this->post->ID,
+				$this->term->taxonomy,
+				array(
+					'fields'  => 'ids',
+					'orderby' => 'term_order',
+					'order'   => 'ASC',
+				)
+			)
 		);
 
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, array( $this->term->term_id ) );
@@ -264,11 +304,19 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 			wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids' ) )
 		);
 
-		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, array( $this->term_2->term_id , $this->term->term_id ) );
+		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post->ID, array( $this->term_2->term_id, $this->term->term_id ) );
 		$this->assertSame( '', get_post_meta( $this->post->ID, 'base_autocomplete', true ) );
 		$this->assertSame(
 			array( $this->term_2->term_id, $this->term->term_id ),
-			wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'ids', 'orderby' => 'term_order', 'order' => 'ASC' ) )
+			wp_get_post_terms(
+				$this->post->ID,
+				$this->term->taxonomy,
+				array(
+					'fields'  => 'ids',
+					'orderby' => 'term_order',
+					'order'   => 'ASC',
+				)
+			)
 		);
 	}
 
@@ -285,17 +333,21 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 			'name'           => 'base_group',
 			'serialize_data' => false,
 			'children'       => array(
-				'test_basic' => new Fieldmanager_TextField(),
-				'test_datasource' => new Fieldmanager_Autocomplete( array(
-					'datasource' => new Fieldmanager_Datasource_Term( array(
-						'taxonomy' => $this->term->taxonomy,
-						'only_save_to_taxonomy' => true,
-					) ),
-				) ),
-			)
+				'test_basic'      => new Fieldmanager_TextField(),
+				'test_datasource' => new Fieldmanager_Autocomplete(
+					array(
+						'datasource' => new Fieldmanager_Datasource_Term(
+							array(
+								'taxonomy'              => $this->term->taxonomy,
+								'only_save_to_taxonomy' => true,
+							)
+						),
+					)
+				),
+			),
 		);
 		$data = array(
-			'test_basic'     => rand_str(),
+			'test_basic'      => rand_str(),
 			'test_datasource' => $this->term->term_id,
 		);
 		$base = new Fieldmanager_Group( $args );
@@ -333,13 +385,17 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		// Verify that our custom taxonomy is not sortable
 		$this->assertTrue( empty( $wp_taxonomies[ $taxonomy ]->sort ) );
 
-		new Fieldmanager_Autocomplete( array(
-			'name' => 'test_terms',
-			'datasource' => new Fieldmanager_Datasource_Term( array(
-				'taxonomy' => array( 'category', 'post_tag', $taxonomy ),
-				'taxonomy_save_to_terms' => true,
-			) ),
-		) );
+		new Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'test_terms',
+				'datasource' => new Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy'               => array( 'category', 'post_tag', $taxonomy ),
+						'taxonomy_save_to_terms' => true,
+					)
+				),
+			)
+		);
 
 		// Verify that the above datasource made our taxonomy sortable. Also,
 		// ensure that tags and categories are now sortable (even though they
@@ -349,26 +405,64 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->assertTrue( $wp_taxonomies['post_tag']->sort );
 	}
 
-	public function test_append_true_after_first_save() {
-		$fm = new Fieldmanager_Group( array(
-			'name'     => 'author_data',
-			'children' => array(
-				'school' => new Fieldmanager_Group(array(
-					'label' => 'School',
-					'add_more_label' => 'Add new',
-					'limit' => 0,
-					'children' => array(
-						'school_city' => new Fieldmanager_Autocomplete( array(
-							'label' => 'School city',
-							'datasource' => new Fieldmanager_Datasource_Term( array(
-								'taxonomy' => 'post_tag',
-								'taxonomy_save_to_terms' => true
-							))
-						)),
+	public function test_sortable_terms_retrieved_in_order() {
+		$taxonomy = $this->term->taxonomy;
+
+		$fm      = new \Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'sortable_terms',
+				'limit'      => 0,
+				'sortable'   => true,
+				'datasource' => new \Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy'              => $taxonomy,
+						'only_save_to_taxonomy' => true,
 					)
-				))
+				),
 			)
-		) );
+		);
+		$context = $fm->add_meta_box( 'Sortable Terms', 'post' );
+
+		$order = array( $this->term_2->term_id, $this->term->term_id );
+		$context->save_to_post_meta( $this->post->ID, $order );
+		$this->assertSame( $order, $fm->preload_alter_values( array() ) );
+
+		// Clear caches.
+		$context->save_to_post_meta( $this->post->ID, array() );
+
+		$order = array( $this->term->term_id, $this->term_2->term_id );
+		$context->save_to_post_meta( $this->post->ID, $order );
+		$this->assertSame( $order, $fm->preload_alter_values( array() ) );
+	}
+
+	public function test_append_true_after_first_save() {
+		$fm   = new Fieldmanager_Group(
+			array(
+				'name'     => 'author_data',
+				'children' => array(
+					'school' => new Fieldmanager_Group(
+						array(
+							'label'          => 'School',
+							'add_more_label' => 'Add new',
+							'limit'          => 0,
+							'children'       => array(
+								'school_city' => new Fieldmanager_Autocomplete(
+									array(
+										'label'      => 'School city',
+										'datasource' => new Fieldmanager_Datasource_Term(
+											array(
+												'taxonomy' => 'post_tag',
+												'taxonomy_save_to_terms' => true,
+											)
+										),
+									)
+								),
+							),
+						)
+					),
+				),
+			)
+		);
 		$data = array(
 			'school' => array(
 				array( 'school_city' => $this->term->term_id ),
@@ -393,16 +487,20 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 
 		// Create a user to which we'll save this data
 		$user_id = wp_create_user( rand_str(), rand_str(), 'admin@local.dev' );
-		$user = get_user_by( 'id', $user_id );
+		$user    = get_user_by( 'id', $user_id );
 
 		// Create the field and save the data
-		$field = new Fieldmanager_Autocomplete( array(
-			'name' => 'test_terms',
-			'datasource' => new Fieldmanager_Datasource_Term( array(
-				'taxonomy' => 'user-tax',
-				'only_save_to_taxonomy' => true,
-			) ),
-		) );
+		$field = new Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'test_terms',
+				'datasource' => new Fieldmanager_Datasource_Term(
+					array(
+						'taxonomy'              => 'user-tax',
+						'only_save_to_taxonomy' => true,
+					)
+				),
+			)
+		);
 		$field->add_user_form( 'test' )->save_to_user_meta( $user_id, array( 'test_terms' => $term['term_id'] ) );
 
 		$this->assertSame( '', get_user_meta( $user_id, 'test_terms', true ) );
@@ -417,25 +515,34 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$terms[] = $this->factory->category->create( array( 'name' => 'test category' ) );
 
 		// A Term Datasource that queries both Post Tag and Category Taxonomies
-		$datasource = new Fieldmanager_Datasource_Term( array(
-			'taxonomy' => array( 'category', 'post_tag' ),
-			'taxonomy_save_to_terms' => false,
-		) );
-		$items = $datasource->get_items_for_ajax( 'test' );
+		$datasource = new Fieldmanager_Datasource_Term(
+			array(
+				'taxonomy'               => array( 'category', 'post_tag' ),
+				'taxonomy_save_to_terms' => false,
+			)
+		);
+		$items      = $datasource->get_items_for_ajax( 'test' );
 		$this->assertEqualSets( $terms, wp_list_pluck( $items, 'value' ) );
 	}
 
 	public function test_parent_restrictions_with_ajax() {
-		$terms = array();
+		$terms    = array();
 		$terms[0] = $this->factory->category->create( array( 'name' => 'test category' ) );
-		$terms[1] = $this->factory->category->create( array( 'name' => 'test category child', 'parent' => $terms[0] ) );
-
-		$datasource = new Fieldmanager_Datasource_Term( array(
-			'taxonomy' => array( 'category' ),
-			'taxonomy_args' => array(
+		$terms[1] = $this->factory->category->create(
+			array(
+				'name'   => 'test category child',
 				'parent' => $terms[0],
 			)
-		) );
+		);
+
+		$datasource = new Fieldmanager_Datasource_Term(
+			array(
+				'taxonomy'      => array( 'category' ),
+				'taxonomy_args' => array(
+					'parent' => $terms[0],
+				),
+			)
+		);
 
 		$items = $datasource->get_items_for_ajax( 'test' );
 
@@ -443,16 +550,23 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 	}
 
 	public function test_child_of_restrictions_with_ajax() {
-		$terms = array();
+		$terms    = array();
 		$terms[0] = $this->factory->category->create( array( 'name' => 'test category' ) );
-		$terms[1] = $this->factory->category->create( array( 'name' => 'test category child', 'parent' => $terms[0] ) );
-
-		$datasource = new Fieldmanager_Datasource_Term( array(
-			'taxonomy' => array( 'category' ),
-			'taxonomy_args' => array(
-				'child_of' => $terms[0],
+		$terms[1] = $this->factory->category->create(
+			array(
+				'name'   => 'test category child',
+				'parent' => $terms[0],
 			)
-		) );
+		);
+
+		$datasource = new Fieldmanager_Datasource_Term(
+			array(
+				'taxonomy'      => array( 'category' ),
+				'taxonomy_args' => array(
+					'child_of' => $terms[0],
+				),
+			)
+		);
 
 		$items = $datasource->get_items_for_ajax( 'test' );
 

@@ -117,20 +117,20 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			return call_user_func( $this->query_callback, $fragment );
 		}
 		$default_args = array(
-			'numberposts' => 10,
-			'orderby' => 'post_date',
-			'order' => 'DESC',
-			'post_status' => 'publish',
-			'post_type' => 'any',
+			'numberposts'      => 10,
+			'orderby'          => 'post_date',
+			'order'            => 'DESC',
+			'post_status'      => 'publish',
+			'post_type'        => 'any',
 			'suppress_filters' => false,
 		);
-		$post_args = array_merge( $default_args, $this->query_args );
-		$ret = array();
+		$post_args    = array_merge( $default_args, $this->query_args );
+		$ret          = array();
 		if ( $fragment ) {
-			$post_id = null;
+			$post_id    = null;
 			$exact_post = null;
 			if ( preg_match( '/^https?\:/i', $fragment ) ) {
-				$url = esc_url( $fragment );
+				$url       = esc_url( $fragment );
 				$url_parts = parse_url( $url );
 
 				if ( ! empty( $url_parts['query'] ) ) {
@@ -191,9 +191,10 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		if ( ! empty( $this->ajax_action ) ) {
 			return $this->ajax_action;
 		}
-		$unique_key = json_encode( $this->query_args );
+		$unique_key  = json_encode( $this->query_args );
 		$unique_key .= (string) $this->query_callback;
-		return 'fm_datasource_post' . crc32( $unique_key );
+		$unique_key .= get_called_class();
+		return 'fm_datasource_post_' . crc32( $unique_key );
 	}
 
 	/**
@@ -205,8 +206,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 */
 	public function title_like( $where, $wp_query ) {
 		global $wpdb;
-		$like = $wpdb->esc_like( $this->_fragment );
-		$where .= " AND {$wpdb->posts}.post_title LIKE '%{$like}%'";
+		$where .= $wpdb->prepare( " AND {$wpdb->posts}.post_title LIKE %s", '%' . $wpdb->esc_like( $this->_fragment ) . '%' );
 		return $where;
 	}
 
@@ -261,7 +261,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			if ( ! wp_is_post_revision( $field->data_id ) ) {
 				Fieldmanager_Context_Post::safe_update_post(
 					array(
-						'ID' => $field->data_id,
+						'ID'          => $field->data_id,
 						'post_parent' => $value,
 					)
 				);
@@ -284,10 +284,12 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		// if this child post is in a post (or quickedit) context on a published post, publish the child also.
 		if ( $this->publish_with_parent && 'post' === $field->data_type && ! empty( $field->data_id ) && 'publish' === get_post_status( $field->data_id ) ) {
 			// use wp_update_post so that post_name is generated if it's not been already.
-			wp_update_post( array(
-				'ID' => $value,
-				'post_status' => 'publish',
-			) );
+			wp_update_post(
+				array(
+					'ID'          => $value,
+					'post_status' => 'publish',
+				)
+			);
 		}
 	}
 
@@ -374,11 +376,11 @@ function fm_url_to_post_id( $url ) {
 
 	// Get rid of the #anchor.
 	$url_split = explode( '#', $url );
-	$url = $url_split[0];
+	$url       = $url_split[0];
 
 	// Get rid of URL ?query=string.
 	$url_split = explode( '?', $url );
-	$url = $url_split[0];
+	$url       = $url_split[0];
 
 	// Add 'www.' if it is absent and should be there.
 	if (
@@ -405,7 +407,7 @@ function fm_url_to_post_id( $url ) {
 		// Chop off /path/to/blog.
 		$home_path = wp_parse_url( home_url() );
 		$home_path = isset( $home_path['path'] ) ? $home_path['path'] : '';
-		$url = str_replace( $home_path, '', $url );
+		$url       = str_replace( $home_path, '', $url );
 	}
 
 	// Trim leading and lagging slashes.
@@ -470,7 +472,7 @@ function fm_url_to_post_id( $url ) {
 
 					if ( isset( $post_type_query_vars[ $wpvar ] ) ) {
 						$query['post_type'] = $post_type_query_vars[ $wpvar ];
-						$query['name'] = $query[ $wpvar ];
+						$query['name']      = $query[ $wpvar ];
 					}
 				}
 			}

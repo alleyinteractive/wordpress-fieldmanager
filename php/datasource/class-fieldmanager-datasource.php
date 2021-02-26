@@ -161,7 +161,7 @@ class Fieldmanager_Datasource {
 		if ( ! empty( $this->ajax_action ) ) {
 			return $this->ajax_action;
 		}
-		return 'fm_datasource_' . crc32( 'base' . wp_json_encode( $this->options ) . $this->options_callback );
+		return 'fm_datasource_' . crc32( 'base' . wp_json_encode( $this->options ) . $this->options_callback . get_called_class() );
 	}
 
 	/**
@@ -170,7 +170,7 @@ class Fieldmanager_Datasource {
 	 * @param string|null $fragment Search string.
 	 */
 	public function get_items_for_ajax( $fragment = null ) {
-		$items = $this->get_items( $fragment );
+		$items  = $this->get_items( $fragment );
 		$return = array();
 
 		foreach ( $items as $id => $label ) {

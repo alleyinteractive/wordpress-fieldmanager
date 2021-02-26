@@ -70,10 +70,10 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		}
 
 		$this->post_types = $post_types;
-		$this->title = $title;
-		$this->context = $context;
-		$this->priority = $priority;
-		$this->fm = $fm;
+		$this->title      = $title;
+		$this->context    = $context;
+		$this->priority   = $priority;
+		$this->fm         = $fm;
 
 		add_action( 'admin_init', array( $this, 'meta_box_render_callback' ) );
 		// If this meta box is on an attachment page, add the appropriate filter hook to save the data.
@@ -85,6 +85,8 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		if ( $this->fm && ! empty( $this->fm->meta_boxes_to_remove ) ) {
 			add_action( 'add_meta_boxes', array( $this, 'remove_meta_boxes' ), 100 );
 		}
+
+		parent::__construct();
 	}
 
 	/**
@@ -114,7 +116,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 */
 	public function render_meta_box( $post, $form_struct = null ) {
 		$this->fm->data_type = 'post';
-		$this->fm->data_id = $post->ID;
+		$this->fm->data_id   = $post->ID;
 
 		$this->render_field();
 
@@ -235,7 +237,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		 * presave so that subclass handlers can process as necessary.
 		 */
 		$this->fm->skip_save = true;
-		$current = get_post_meta( $post_id, $this->fm->name, true );
+		$current             = get_post_meta( $post_id, $this->fm->name, true );
 		$this->save_to_post_meta( $post_id, $current );
 	}
 
@@ -249,7 +251,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
-		$this->fm->data_id = $post_id;
+		$this->fm->data_id   = $post_id;
 		$this->fm->data_type = 'post';
 
 		$this->save( $data );
@@ -264,7 +266,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 */
 	public static function safe_update_post( $args ) {
 		self::$doing_internal_update = true;
-		$ret = wp_update_post( $args );
+		$ret                         = wp_update_post( $args );
 		self::$doing_internal_update = false;
 		return $ret;
 	}
