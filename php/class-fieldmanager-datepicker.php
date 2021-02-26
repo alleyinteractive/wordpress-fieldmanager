@@ -73,15 +73,15 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		fm_add_style( 'fm-jquery-ui', 'css/jquery-ui/jquery-ui-1.10.2.custom.min.css' );
-		fm_add_script( 'fm_datepicker', 'js/fieldmanager-datepicker.js', array( 'fieldmanager_script', 'jquery-ui-datepicker' ) );
+		fm_add_script( 'fm_datepicker', 'js/fieldmanager-datepicker.js', array( 'fm_loader', 'fieldmanager_script', 'jquery-ui-datepicker' ), FM_VERSION, true );
 		parent::__construct( $label, $options );
 
 		if ( empty( $this->js_opts ) ) {
 			$this->js_opts = array(
-				'showButtonPanel' => true,
-				'showOtherMonths' => true,
+				'showButtonPanel'   => true,
+				'showOtherMonths'   => true,
 				'selectOtherMonths' => true,
-				'dateFormat' => 'd M yy',
+				'dateFormat'        => 'd M yy',
 			);
 		}
 	}
@@ -95,7 +95,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	public function form_element( $value ) {
 		global $wp_locale;
 
-		$value = absint( $value );
+		$value     = (int) $value;
 		$old_value = $value;
 		// If we're storing the local time, in order to make the form work as expected, we have
 		// to alter the timestamp. This isn't ideal, but there currently isn't a good way around
@@ -123,7 +123,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 
 		$time_to_parse = sanitize_text_field( $value[ $date_field ] );
 		if ( isset( $value['hour'] ) && is_numeric( $value['hour'] ) && $this->use_time ) {
-			$hour = intval( $value['hour'] );
+			$hour   = intval( $value['hour'] );
 			$minute = ( isset( $value['minute'] ) && is_numeric( $value['minute'] ) ) ? intval( $value['minute'] ) : 0;
 			if ( 0 === $hour && $this->use_am_pm ) {
 				$hour = 12;

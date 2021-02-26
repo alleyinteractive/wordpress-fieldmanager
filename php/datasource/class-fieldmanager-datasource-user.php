@@ -94,12 +94,14 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 
 		// Validate improper usage of store property.
 		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
-			throw new FM_Developer_Exception( sprintf(
-				/* translators: 1: stored property, 2: allowed store properties */
-				__( 'Store property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
-				$this->store_property,
-				implode( ', ', $this->allowed_store_properties )
-			) );
+			throw new FM_Developer_Exception(
+				sprintf(
+					/* translators: 1: stored property, 2: allowed store properties */
+					__( 'Store property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
+					$this->store_property,
+					implode( ', ', $this->allowed_store_properties )
+				)
+			);
 		}
 
 		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
@@ -108,12 +110,14 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 
 		// Validate improper usage of display property.
 		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
-			throw new FM_Developer_Exception( sprintf(
-				/* translators: 1: display property, 2: allowed display properties */
-				__( 'Display property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
-				$this->display_property,
-				implode( ', ', $this->allowed_display_properties )
-			) );
+			throw new FM_Developer_Exception(
+				sprintf(
+					/* translators: 1: display property, 2: allowed display properties */
+					__( 'Display property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
+					$this->display_property,
+					implode( ', ', $this->allowed_display_properties )
+				)
+			);
 		}
 	}
 
@@ -159,8 +163,8 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		}
 
 		$default_args = array();
-		$user_args = array_merge( $default_args, $this->query_args );
-		$ret = array();
+		$user_args    = array_merge( $default_args, $this->query_args );
+		$ret          = array();
 
 		if ( $fragment ) {
 			$user_args['search'] = '*' . $fragment . '*';
@@ -184,10 +188,11 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		if ( ! empty( $this->ajax_action ) ) {
 			return $this->ajax_action;
 		}
-		$unique_key = wp_json_encode( $this->query_args );
+		$unique_key  = wp_json_encode( $this->query_args );
 		$unique_key .= $this->display_property;
 		$unique_key .= (string) $this->query_callback;
-		return 'fm_datasource_post' . crc32( $unique_key );
+		$unique_key .= get_called_class();
+		return 'fm_datasource_user_' . crc32( $unique_key );
 	}
 
 	/**
@@ -247,7 +252,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		$return_single = false;
 		if ( ! is_array( $value ) ) {
 			$return_single = true;
-			$value = array( $value );
+			$value         = array( $value );
 		}
 
 		foreach ( $value as $i => $v ) {

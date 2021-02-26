@@ -20,7 +20,7 @@
 		<?php
 	endif;
 	echo $this->get_element_attributes(); // Escaped interally. xss ok.
-	?>
+?>
 />
 
 <?php
