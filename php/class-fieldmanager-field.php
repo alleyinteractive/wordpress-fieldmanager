@@ -201,6 +201,13 @@ abstract class Fieldmanager_Field {
 	public $data_id = null;
 
 	/**
+	 * Fieldmanager context handling data submitted with this field. Generally set internally.
+	 *
+	 * @var ?Fieldmanager_Context
+	 */
+	public $current_context = null;
+
+	/**
 	 * If true, save empty elements to DB (if $this->limit != 1; single elements
 	 * are always saved).
 	 *
@@ -409,7 +416,7 @@ abstract class Fieldmanager_Field {
 
 		// Only enqueue base assets once, and only when we have a field.
 		if ( ! self::$enqueued_base_assets ) {
-			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'fm_loader', 'jquery', 'jquery-ui-sortable' ), FM_VERSION );
+			fm_add_script( 'fieldmanager_script', 'js/fieldmanager.js', array( 'fm_loader', 'jquery', 'jquery-ui-sortable' ), FM_VERSION, false, 'fm' );
 			fm_add_style( 'fieldmanager_style', 'css/fieldmanager.css', array(), FM_VERSION );
 			self::$enqueued_base_assets = true;
 		}
@@ -466,8 +473,10 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @since 1.3.0 Added the 'fm-display-if' class for fields using display-if.
 	 *
-	 * @param array $values The current values of this element, in a tree structure
-	 *                      if the element has children.
+	 * @param mixed|mixed[]|null $values The current value or values for this
+	 *                                   element, or an associative array of
+	 *                                   the values of this element's children.
+	 *                                   Can be null if no value exists.
 	 * @return string HTML for all form elements.
 	 */
 	public function element_markup( $values = array() ) {
@@ -563,7 +572,7 @@ abstract class Fieldmanager_Field {
 		 *
 		 * @param string             $out    Field markup.
 		 * @param Fieldmanager_Field $this   Field instance.
-		 * @param mixed              $values Current element values.
+		 * @param mixed|mixed[]|null $values Current element value or values, if any.
 		 */
 		$out = apply_filters( 'fm_element_markup_start', $out, $this, $values );
 
@@ -576,7 +585,7 @@ abstract class Fieldmanager_Field {
 		 *
 		 * @param string             $out    Field markup.
 		 * @param Fieldmanager_Field $this   Field instance.
-		 * @param mixed              $values Current element values.
+		 * @param mixed|mixed[]|null $values Current element value or values, if any.
 		 */
 		$out = apply_filters( "fm_element_markup_start_{$this->name}", $out, $this, $values );
 
@@ -608,7 +617,7 @@ abstract class Fieldmanager_Field {
 		 *
 		 * @param string             $out    Field markup.
 		 * @param Fieldmanager_Field $this   Field instance.
-		 * @param mixed              $values Current element values.
+		 * @param mixed|mixed[]|null $values Current element value or values, if any.
 		 */
 		$out = apply_filters( 'fm_element_markup_end', $out, $this, $values );
 
@@ -621,7 +630,7 @@ abstract class Fieldmanager_Field {
 		 *
 		 * @param string             $out    Field markup.
 		 * @param Fieldmanager_Field $this   Field instance.
-		 * @param mixed              $values Current element values.
+		 * @param mixed|mixed[]|null $values Current element value or values, if any.
 		 */
 		$out = apply_filters( "fm_element_markup_end_{$this->name}", $out, $this, $values );
 
@@ -642,8 +651,9 @@ abstract class Fieldmanager_Field {
 	 * @see Fieldmanager_Field::element_markup()
 	 * @see Fieldmanager_Field::form_element()
 	 *
-	 * @param  mixed $value    The current value of this element.
-	 * @param  bool  $is_proto True to generate a prototype element for Javascript.
+	 * @param mixed|mixed[]|null $value    Single element value, if any.
+	 * @param bool               $is_proto True to generate a prototype element
+	 *                                     for Javascript.
 	 * @return string HTML for a single form element.
 	 */
 	public function single_element_markup( $value = null, $is_proto = false ) {
@@ -740,8 +750,8 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Alter values before rendering.
 	 *
-	 * @param  array $values The values to load.
-	 * @return array $values The loaded values.
+	 * @param mixed|mixed[]|null $values The current value or values for this element, if any.
+	 * @return mixed|mixed[]|null The altered value.
 	 */
 	public function preload_alter_values( $values ) {
 		return apply_filters( 'fm_preload_alter_values', $values, $this );
@@ -1051,6 +1061,13 @@ abstract class Fieldmanager_Field {
 	 * @return array The filtered values.
 	 */
 	protected function presave_alter_values( $values, $current_values = array() ) {
+		/**
+		 * Filters the new field value prior to saving.
+		 *
+		 * @param mixed              $values         New field value.
+		 * @param Fieldmanager_Field $this           Field object.
+		 * @param mixed              $current_values Current field value.
+		 */
 		return apply_filters( 'fm_presave_alter_values', $values, $this, $current_values );
 	}
 

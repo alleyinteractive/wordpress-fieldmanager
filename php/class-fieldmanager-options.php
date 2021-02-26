@@ -262,7 +262,8 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	/**
 	 * Alter values before rendering.
 	 *
-	 * @param array $values The current values.
+	 * @param mixed|mixed[]|null $values The current value or values for this element, if any.
+	 * @return mixed|mixed[]|null The altered value.
 	 */
 	public function preload_alter_values( $values ) {
 		if ( $this->datasource ) {
@@ -273,6 +274,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 
 	/**
 	 * Presave hook to set taxonomy data, maybe.
+	 *
+	 * @since 1.4.0 Passes the new values through Fieldmanager_Field::presave_alter_values()
+	 *              before saving, including the 'fm_presave_alter_values' filter.
 	 *
 	 * @param  array $values         The new values.
 	 * @param  array $current_values The current values.
@@ -285,9 +289,9 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 			} elseif ( ! empty( $this->datasource->only_save_to_post_parent ) ) {
 				$this->skip_save = true;
 			}
-			return $this->datasource->presave_alter_values( $this, $values, $current_values );
+			$values = $this->datasource->presave_alter_values( $this, $values, $current_values );
 		}
-		return $values;
+		return parent::presave_alter_values( $values, $current_values );
 	}
 
 

@@ -63,6 +63,13 @@ function fieldmanager_load_class( $class ) {
 		return fieldmanager_load_file( 'context/class-fieldmanager-context-' . $class_id . '.php' );
 	}
 
+	if ( 0 === strpos( $class, 'Fieldmanager_Content' ) ) {
+		if ( 'content' === $class_id ) {
+			return fieldmanager_load_file( 'content/class-fieldmanager-content.php' );
+		}
+		return fieldmanager_load_file( 'content/class-fieldmanager-content-' . $class_id . '.php' );
+	}
+
 	if ( 0 === strpos( $class, 'Fieldmanager_Datasource' ) ) {
 		if ( 'datasource' === $class_id ) {
 			return fieldmanager_load_file( 'datasource/class-fieldmanager-datasource.php' );
@@ -72,6 +79,23 @@ function fieldmanager_load_class( $class ) {
 
 	if ( 0 === strpos( $class, 'Fieldmanager_Util' ) ) {
 		return fieldmanager_load_file( 'util/class-fieldmanager-util-' . $class_id . '.php' );
+	}
+
+	if ( 0 === strpos( $class, 'Fieldmanager\Libraries' ) ) {
+
+		// Convert namespace to array.
+		$classes  = explode( '\\', $class );
+
+		// Drop the `Fieldmanager` namespace.
+		array_shift( $classes );
+
+		// Lowercase the namespace.
+		$classses = array_map( 'strtolower', $classes );
+
+		// Pop the last part to use as the filename.
+		$file_name = array_pop( $classes );
+
+		return fieldmanager_load_file( implode( '/', $classes ) . '/class-' . $file_name . '.php' );
 	}
 
 	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );
@@ -347,6 +371,11 @@ function fm_calculate_context() {
 					} elseif ( ! empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) { // WPCS: input var okay.
 						// Context = "quickedit".
 						$calculated_context = array( 'quickedit', sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ); // WPCS: input var okay.
+					} elseif ( isset( $_POST['action'] ) && 'heartbeat' === $_POST['action'] && isset( $_POST['data']['fm_context'] ) ) { // WPCS: CSRF ok.
+						$calculated_context = array(
+							sanitize_text_field( wp_unslash( $_POST['data']['fm_context'] ) ), // WPCS: CSRF ok.
+							isset( $_POST['data']['fm_subcontext'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['fm_subcontext'] ) ) : null, // WPCS: CSRF ok.
+						);
 					}
 					break;
 				// Context = "term".
@@ -449,6 +478,30 @@ function fm_trigger_context_action() {
 	do_action( "fm_{$context}", $type );
 }
 add_action( 'init', 'fm_trigger_context_action', 99 );
+
+/**
+ * Add the Fieldmanager context to the global FM JavaScript object.
+ *
+ * @since 1.3.0
+ *
+ * @param array $scripts Arrays of script arguments.
+ * @return array Updated arrays.
+ */
+function fm_localize_context( $scripts ) {
+	$index = array_search( 'fieldmanager_script', wp_list_pluck( $scripts, 'handle' ) );
+
+	if ( false === $index ) {
+		return $scripts;
+	}
+
+	list(
+		$scripts[ $index ]['data']['context']['context'],
+		$scripts[ $index ]['data']['context']['type']
+	) = fm_calculate_context();
+
+	return $scripts;
+}
+add_filter( 'fm_enqueue_scripts', 'fm_localize_context' );
 
 /**
  * Add data about a submenu page to the Fieldmanager registry under a slug.

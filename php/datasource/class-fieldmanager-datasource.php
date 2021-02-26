@@ -161,7 +161,7 @@ class Fieldmanager_Datasource {
 		if ( ! empty( $this->ajax_action ) ) {
 			return $this->ajax_action;
 		}
-		return 'fm_datasource_' . crc32( 'base' . wp_json_encode( $this->options ) . $this->options_callback );
+		return 'fm_datasource_' . crc32( 'base' . wp_json_encode( $this->options ) . $this->options_callback . get_called_class() );
 	}
 
 	/**

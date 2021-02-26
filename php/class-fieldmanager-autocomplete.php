@@ -100,7 +100,8 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	/**
 	 * Alter values before rendering.
 	 *
-	 * @param array $values The values to load.
+	 * @param mixed|mixed[]|null $values The current value or values for this element, if any.
+	 * @return mixed|mixed[]|null The altered value.
 	 */
 	public function preload_alter_values( $values ) {
 		if ( $this->datasource ) {
@@ -161,16 +162,19 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Trigger datasource's presave_alter() event to allow it to handle reciprocal
-	 * values.
+	 * Trigger datasource's presave_alter() event to allow it to handle reciprocal values.
+	 *
+	 * @since 1.4.0 Passes the new values through Fieldmanager_Field::presave_alter_values()
+	 *              before saving, including the 'fm_presave_alter_values' filter.
 	 *
 	 * @param array $values         New post values.
 	 * @param array $current_values Existing post values.
+	 * @return array The filtered values.
 	 */
 	public function presave_alter_values( $values, $current_values = array() ) {
-		// return if there is no data id.
+		// Return if there is no data ID.
 		if ( empty( $this->data_id ) ) {
-			return $values;
+			return parent::presave_alter_values( $values, $current_values );
 		}
 
 		if ( ! empty( $this->datasource->only_save_to_taxonomy ) ) {
@@ -179,7 +183,8 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 			$this->skip_save = true;
 		}
 
-		return $this->datasource->presave_alter_values( $this, $values, $current_values );
+		$values = $this->datasource->presave_alter_values( $this, $values, $current_values );
+		return parent::presave_alter_values( $values, $current_values );
 	}
 
 	/**

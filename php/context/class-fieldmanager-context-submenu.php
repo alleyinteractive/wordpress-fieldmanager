@@ -92,6 +92,8 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
 		}
 		add_action( 'admin_init', array( $this, 'handle_submenu_save' ) );
+
+		parent::__construct();
 	}
 
 	/**
@@ -168,11 +170,14 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * @return bool True.
 	 */
 	public function save_submenu_data( $data = null ) {
-		$this->fm->data_id   = $this->fm->name;
-		$this->fm->data_type = 'options';
-		$current             = get_option( $this->fm->name, null );
-		$data                = $this->prepare_data( $current, $data );
-		$data                = apply_filters( 'fm_submenu_presave_data', $data, $this );
+		$this->fm->data_id         = $this->fm->name;
+		$this->fm->data_type       = 'options';
+		$this->fm->current_context = $this;
+
+		$current = get_option( $this->fm->name, null );
+		$data    = $this->prepare_data( $current, $data );
+		$data    = apply_filters( 'fm_submenu_presave_data', $data, $this );
+
 		if ( $this->fm->skip_save ) {
 			return true;
 		}

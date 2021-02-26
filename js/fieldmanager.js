@@ -1,4 +1,4 @@
-var fm = {};
+var fm = window.fm || {};
 
 ( function( $ ) {
 
@@ -71,6 +71,7 @@ var init_label_macros = function() {
 }
 
 var fm_renumber = function( $wrappers ) {
+	var fmtemp = parseInt( Math.random() * 100000, 10 );
 	$wrappers.each( function() {
 		var level_pos = $( this ).data( 'fm-array-position' ) - 0;
 		var order = 0;
@@ -87,7 +88,8 @@ var fm_renumber = function( $wrappers ) {
 						if ( parts[ level_pos ] != order ) {
 							parts[ level_pos ] = order;
 							var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
-							$( this ).attr( 'name', new_fname );
+							// Rename the field and add a temporary prefix to prevent name collisions.
+							$( this ).attr( 'name', 'fmtemp_' + ( ++fmtemp ).toString() + '_' + new_fname );
 							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
 								$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
 								if ( $( this ).parent().hasClass( 'fm-option' ) ) {
@@ -113,6 +115,11 @@ var fm_renumber = function( $wrappers ) {
 		}
 		$( this ).find( '.fm-wrapper' ).each( function() {
 			fm_renumber( $( this ) );
+		} );
+
+		// Remove temporary name prefix in renumbered fields.
+		$( '.fm-element[name^="fmtemp_"], .fm-incrementable[name^="fmtemp_"]' ).each( function() {
+			$( this ).attr( 'name', $( this ).attr( 'name' ).replace( /^fmtemp_\d+_/, '' ) );
 		} );
 	} );
 }
@@ -174,19 +181,20 @@ fm_remove = function( $element ) {
 }
 
 var fm_init = function () {
-	$( document ).on( 'click', '.fm-add-another', function( e ) {
+	var $document = $( document );
+	$document.on( 'click', '.fm-add-another', function( e ) {
 		e.preventDefault();
 		fm_add_another( $( this ) );
 	} );
 
 	// Handle remove events
-	$( document ).on( 'click', '.fmjs-remove', function( e ) {
+	$document.on( 'click', '.fmjs-remove', function( e ) {
 		e.preventDefault();
 		fm_remove( $( this ) );
 	} );
 
 	// Handle collapse events
-	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
+	$document.on( 'click', '.fmjs-collapsible-handle', function() {
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
@@ -270,12 +278,39 @@ var fm_init = function () {
 			}
 		} );
 	};
-	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
+	$document.on( 'change', '.display-trigger', fm.trigger_display_if );
+
+	$document
+		/**
+		 * Include the current context and type with heartbeat request data.
+		 *
+		 * @param {Event}  event Event object.
+		 * @param {Object} data  Heartbeat request data.
+		 */
+		.on( 'heartbeat-send', function ( event, data ) {
+			data['fm_context'] = fm.context.context;
+			data['fm_subcontext'] = fm.context.type;
+		})
+		/**
+		 * Replace nonce input values with new nonces from heartbeat responses.
+		 *
+		 * @param {Event}  event Event object.
+		 * @param {Object} data  Heartbeat response data.
+		 */
+		.on( 'heartbeat-tick', function ( event, data ) {
+			var nonces = data.fieldmanager_refresh_nonces;
+
+			if ( nonces && nonces.replace ) {
+				$.each( nonces.replace, function ( selector, newNonce ) {
+					$( '#' + selector ).val( newNonce );
+				});
+			}
+		});
 
 	init_label_macros();
 	init_sortable();
 
-	$( document ).on( 'fm_activate_tab', init_sortable );
+	$document.on( 'fm_activate_tab', init_sortable );
 };
 
 fmLoadModule( fm_init );
