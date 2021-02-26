@@ -675,6 +675,17 @@ abstract class Fieldmanager_Field {
 			$classes[] = 'form-required';
 		}
 
+		if ( ! $this->is_group() && ! $this->is_tab ) {
+			$classes[] = 'fm-field';
+		}
+
+		if ( ! $this->is_group() && $this->sortable ) {
+			$classes[] = 'fm-sortable-field';
+			if ( ( ! $this->one_label_per_item || empty( $this->label ) ) && empty( $this->description ) ) {
+				$classes[] = 'fm-no-labels';
+			}
+		}
+
 		if ( $is_proto ) {
 			$classes[] = 'fmjs-proto';
 		}
@@ -704,7 +715,7 @@ abstract class Fieldmanager_Field {
 			}
 		}
 
-		if ( isset( $this->description ) && ! empty( $this->description ) && ! $this->description_after_element ) {
+		if ( ! empty( $this->description ) && ! $this->description_after_element && ! $this->is_group() ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
 		}
 
@@ -724,7 +735,7 @@ abstract class Fieldmanager_Field {
 			$out .= $label;
 		}
 
-		if ( isset( $this->description ) && ! empty( $this->description ) && $this->description_after_element ) {
+		if ( ! empty( $this->description ) && $this->description_after_element && ! $this->is_group() ) {
 			$out .= sprintf( '<div class="fm-item-description">%s</div>', $this->escape( 'description' ) );
 		}
 
@@ -756,9 +767,14 @@ abstract class Fieldmanager_Field {
 	public function wrap_with_multi_tools( $html, $classes = array() ) {
 		$classes[] = 'fmjs-removable';
 		$out       = sprintf( '<div class="%s">', implode( ' ', $classes ) );
+		$handle = '';
 		if ( $this->sortable ) {
-			$out .= $this->get_sort_handle();
+			if ( ( $this->one_label_per_item || ! empty( $this->label ) ) && ! in_array( 'fmjs-removable-label', $classes, true ) && empty( $this->description ) ) {
+				$classes[] = 'fmjs-removable-sort';
+			}
+			$handle = $this->get_sort_handle();
 		}
+		$out .= $handle;
 		$out .= '<div class="fmjs-removable-element">';
 		$out .= $html;
 		$out .= '</div>';
