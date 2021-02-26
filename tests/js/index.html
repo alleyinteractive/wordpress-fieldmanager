@@ -22,17 +22,19 @@
 		}
 
 		scripts = [
-			svn + '/wp-includes/js/jquery/jquery.js',
-			svn + '/wp-includes/js/jquery/ui/core.min.js',
-			svn + '/wp-includes/js/jquery/ui/widget.min.js',
-			svn + '/wp-includes/js/jquery/ui/mouse.min.js',
-			svn + '/wp-includes/js/jquery/ui/sortable.min.js',
-			svn + '/wp-includes/js/jquery/ui/draggable.min.js',
-			svn + '/wp-includes/js/jquery/ui/droppable.min.js',
+			svn + '/src/wp-includes/js/jquery/jquery.js',
+			svn + '/src/wp-includes/js/jquery/ui/core.js',
+			svn + '/src/wp-includes/js/jquery/ui/widget.js',
+			svn + '/src/wp-includes/js/jquery/ui/mouse.js',
+			svn + '/src/wp-includes/js/jquery/ui/sortable.js',
+			svn + '/src/wp-includes/js/jquery/ui/draggable.js',
+			svn + '/src/wp-includes/js/jquery/ui/droppable.js',
+			svn + '/src/wp-includes/js/jquery/ui/datepicker.js',
 		];
 
 		// Fieldmanager.
 		scripts.push( '../../js/fieldmanager.js' );
+		scripts.push( '../../js/fieldmanager-datepicker.js' );
 
 		// Tests.
 		scripts.push( 'test-fieldmanager.js' );
@@ -179,6 +181,8 @@
 			</div>
 			<span class="test-renumber fmjs-collapsible-handle"></span>
 		</div><!-- #renumbered-group -->
+
+		<div id="datepicker-altfield"></div><!-- #datepicker-altfield -->
 	</div><!-- #qunit-fixture -->
 
 </body>

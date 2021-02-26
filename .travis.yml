@@ -15,7 +15,7 @@ matrix:
     - php: '7.0'
       env: WP_VERSION=latest
     - php: '7.1'
-      env: WP_VERSION=latest
+      env: WP_VERSION=latest WP_TRAVISCI=qunit
     - php: '7.2'
       env: WP_VERSION=latest
     - php: '7.3'
@@ -80,9 +80,8 @@ script:
       phpunit -c multisite.xml
     fi
   - |
-    if [[ ! -z "$WP_VERSION" ]] ; then
-      cd $OG_DIR
-      grunt qunit:specific --wp=$WP_VERSION
+    if [[ "$WP_TRAVISCI" == "qunit" ]] ; then
+      grunt qunit:recent
     fi
   - |
     if [[ "$WP_TRAVISCI" == "phpcs" ]] ; then

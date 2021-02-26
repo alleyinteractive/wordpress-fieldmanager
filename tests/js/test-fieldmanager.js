@@ -124,4 +124,74 @@
 		assert.equal( $( '[name="mytest[2][mysubtest][0]"]' ).text(), 'Delta', "Corresponding name attributes and text values in the reordered top-level group" );
 	});
 
+	QUnit.module( 'Datepicker', function ( hooks ) {
+		QUnit.test( 'Instantiate with Fieldmanager altField and altFormat', function ( assert ) {
+			jQuery( '#datepicker-altfield' ).append([
+				jQuery( '<input />' )
+					.addClass( 'fm-datepicker-popup' )
+					.data( 'datepicker-opts', {} ),
+				jQuery( '<input />' )
+					.addClass( 'fm-datepicker-altfield' )
+			]);
+
+			fm.datepicker.add_datepicker();
+
+			$datepicker = $( '#datepicker-altfield .fm-datepicker-popup' );
+			assert.strictEqual( $datepicker.datepicker( 'option', 'altField' ), document.querySelector( '#datepicker-altfield .fm-datepicker-altfield' ) );
+			assert.strictEqual( $datepicker.datepicker( 'option', 'altFormat' ), 'yy-mm-dd' );
+			assert.ok( typeof $datepicker.datepicker( 'option', 'onClose' ) === 'function' );
+		});
+
+		QUnit.test( "Instantiate without Fieldmanager altField and altFormat when there is no altField input", function ( assert ) {
+			jQuery( '#datepicker-altfield' ).append([
+				jQuery( '<input />' )
+					.addClass( 'fm-datepicker-popup' )
+					.attr( 'type', 'text' )
+					.data( 'datepicker-opts', {} ),
+			]);
+
+			fm.datepicker.add_datepicker();
+
+			$datepicker = $( '#datepicker-altfield .fm-datepicker-popup' );
+			assert.strictEqual( $datepicker.datepicker( 'option', 'altField' ), '' );
+			assert.strictEqual( $datepicker.datepicker( 'option', 'altFormat' ), '' );
+			assert.notOk( typeof $datepicker.datepicker( 'option', 'onClose' ) === 'function' );
+		});
+
+		QUnit.test( "Instantiate with user-supplied altField and altFormat when they exist", function ( assert ) {
+			jQuery( '#datepicker-altfield' ).append([
+				jQuery( '<input />' )
+					.addClass( 'fm-datepicker-popup' )
+					.attr( 'type', 'text' )
+					.data( 'datepicker-opts', {
+						altField: 'Foo',
+						altFormat: 'Bar',
+					} ),
+			]);
+
+			fm.datepicker.add_datepicker();
+
+			$datepicker = $( '#datepicker-altfield .fm-datepicker-popup' );
+			assert.strictEqual( $datepicker.datepicker( 'option', 'altField' ), 'Foo' );
+			assert.strictEqual( $datepicker.datepicker( 'option', 'altFormat' ), 'Bar' );
+		});
+
+		QUnit.test( 'Clear altField value when date is removed', function ( assert ) {
+			jQuery( '#datepicker-altfield' ).append([
+				jQuery( '<input />' )
+					.addClass( 'fm-datepicker-popup' )
+					.data( 'datepicker-opts', {} ),
+				jQuery( '<input />' )
+					.addClass( 'fm-datepicker-altfield' )
+			]);
+
+			fm.datepicker.add_datepicker();
+
+			$datepicker = $( '#datepicker-altfield .fm-datepicker-popup' );
+			$datepicker.datepicker( 'option', 'altField' ).value = 'Foo';
+			$datepicker.datepicker( 'option', 'onClose' )( '' );
+			assert.strictEqual( $datepicker.datepicker( 'option', 'altField' ).value, '' );
+		})
+	});
+
 })( window.QUnit, window.jQuery );

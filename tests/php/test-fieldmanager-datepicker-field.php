@@ -22,6 +22,13 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$this->post_id = wp_insert_post( $this->post );
 	}
 
+	public function data_date_field() {
+		return array(
+			array( 'date', '13 Mar 2014' ),
+			array( 'date_altfield', '2014-03-13' ),
+		);
+	}
+
 	/**
 	 * Test before 1970s date.
 	 */
@@ -59,9 +66,12 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 	/**
 	 * Test behavior when using the time support for datepicker
 	 *
-	 * @group 1111
+	 * @dataProvider data_date_field
+	 *
+	 * @param string $date_field The key in the array of submitted data with the date.
+	 * @param string $date       The submitted date.
 	 */
-	public function test_time_feature() {
+	public function test_time_feature( $date_field, $date ) {
 
 		$base = new Fieldmanager_Group(
 			array(
@@ -76,10 +86,10 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'   => '',
-					'hour'   => '',
-					'minute' => '',
-					'ampm'   => 'am',
+					$date_field => '',
+					'hour'      => '',
+					'minute'    => '',
+					'ampm'      => 'am',
 				),
 			),
 		);
@@ -91,10 +101,10 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'   => '13 Mar 2014',
-					'hour'   => '',
-					'minute' => '',
-					'ampm'   => 'am',
+					$date_field => $date,
+					'hour'      => '',
+					'minute'    => '',
+					'ampm'      => 'am',
 				),
 			),
 		);
@@ -106,10 +116,10 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'   => '',
-					'hour'   => '2',
-					'minute' => '37',
-					'ampm'   => 'am',
+					$date_field => '',
+					'hour'      => '2',
+					'minute'    => '37',
+					'ampm'      => 'am',
 				),
 			),
 		);
@@ -121,10 +131,10 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'   => '13 Mar 2014',
-					'hour'   => '2',
-					'minute' => '',
-					'ampm'   => 'am',
+					$date_field => $date,
+					'hour'      => '2',
+					'minute'    => '',
+					'ampm'      => 'am',
 				),
 			),
 		);
@@ -136,10 +146,10 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$test_data = array(
 			'test_datetime_group' => array(
 				'test_datetime_field' => array(
-					'date'   => '13 Mar 2014',
-					'hour'   => '2',
-					'minute' => '37',
-					'ampm'   => 'am',
+					$date_field => $date,
+					'hour'      => '2',
+					'minute'    => '37',
+					'ampm'      => 'am',
 				),
 			),
 		);
@@ -163,7 +173,13 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$this->assertEquals( '', $saved_data['test_datetime_field'] );
 	}
 
-	public function test_local_time() {
+	/**
+	 * @dataProvider data_date_field
+	 *
+	 * @param string $date_field The key in the array of submitted data with the date.
+	 * @param string $date       The submitted date.
+	 */
+	public function test_local_time( $date_field, $date ) {
 		update_option( 'timezone_string', 'America/New_York' );
 
 		$gmt_base   = new Fieldmanager_Datepicker(
@@ -181,10 +197,10 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		);
 
 		$test_data = array(
-			'date'   => '13 Mar 2014',
-			'hour'   => '2',
-			'minute' => '37',
-			'ampm'   => 'am',
+			$date_field => $date,
+			'hour'      => '2',
+			'minute'    => '37',
+			'ampm'      => 'am',
 		);
 
 		$gmt_base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data );
@@ -197,5 +213,84 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$this->assertEquals( strtotime( '2014-03-13 02:37:00 America/New_York' ), intval( $local_stamp ) );
 
 		$this->assertEquals( $gmt_stamp - $local_stamp, -4 * HOUR_IN_SECONDS );
+	}
+
+
+	public function data_presave_altfield_value() {
+		return array(
+			array( '', '' ),
+			array( 0, '0' ),
+			array( '2000-01-01', strtotime( '2000-01-01' ) ),
+		);
+	}
+
+	/**
+	 * Test presave() for the expected Unix time for a given 'date_altfield' value.
+	 *
+	 * @dataProvider data_presave_altfield_value
+	 *
+	 * @param string $value    Date as YYYY-MM-DD.
+	 * @param int    $expected Expected Unix time from Fieldmanager_Datepicker::presave() given the $value.
+	 */
+	public function test_presave_date_for_altfield( $value, $expected ) {
+		$fm = new Fieldmanager_Datepicker();
+
+		$this->assertSame(
+			$expected,
+			$fm->presave( array( 'date_altfield' => $value ) )
+		);
+	}
+
+	public function data_render_altfield_for_js_opts() {
+		return array(
+			array( array(), true ),
+			array( array( 'dateFormat' => 'abc' ), true ),
+			array( array( 'altField' => 'abc' ), false ),
+			array( array( 'altFormat' => 'abc' ), false ),
+			array( array( 'altField' => 'abc', 'altFormat' => 'def' ), false ),
+		);
+	}
+
+	/**
+	 * Test that FM's altField input renders when no user-supplied altField or altFormat options exist.
+	 *
+	 * @dataProvider data_render_altfield_for_js_opts
+	 *
+	 * @param array $js_opts      Fieldmanager_Datepicker::js_opts property.
+	 * @param bool  $should_match Whether an altfield input should render given the $js_opts.
+	 */
+	public function test_render_altfield_for_js_opts( $js_opts, $should_match ) {
+		$fm = new Fieldmanager_Datepicker( array( 'js_opts' => $js_opts ) );
+
+		call_user_func(
+			array( $this, ( $should_match ) ? 'assertRegExp' : 'assertNotRegExp' ),
+			'/<input[^>]+?class="[^"]+?fm-datepicker-altfield/',
+			$fm->form_element( '' )
+		);
+	}
+
+	public function data_altfield_input_value() {
+		return array(
+			array( '', '' ),
+			array( 0, '' ),
+			array( strtotime( '2007-05-04' ), '2007-05-04' ),
+		);
+	}
+
+	/**
+	 * Test that the altField input includes the expected value attribute for a given field value.
+	 *
+	 * @dataProvider data_altfield_input_value
+	 *
+	 * @param int    $value    Field value.
+	 * @param string $expected Expected input attribute value.
+	 */
+	public function test_altfield_input_value( $value, $expected ) {
+		$fm = new Fieldmanager_Datepicker();
+
+		$this->assertRegExp(
+			sprintf( '/<input[^>]+?class="[^"]+?fm-datepicker-altfield[^>]+value="%s"/', preg_quote( $expected ) ),
+			$fm->form_element( $value )
+		);
 	}
 }
