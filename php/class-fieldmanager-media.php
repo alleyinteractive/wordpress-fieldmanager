@@ -79,12 +79,11 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	/**
 	 * The MIME type or MIME types available to choose from.
 	 *
-	 * Valid options are "all" or a partial or full mimetype (e.g. "image" or
-	 * "application/pdf").
+	 * Valid options are "all" or a partial or full mimetype (e.g. "image" or "application/pdf").
 	 *
-	 * @since 1.3.0 Accepts an array of types or a string type.
+	 * @since 1.4.0 Accepts an array of types.
 	 *
-	 * @var string|array
+	 * @var string|string[]
 	 */
 	public $mime_type = 'all';
 
