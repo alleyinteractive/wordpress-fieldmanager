@@ -514,7 +514,8 @@ add_action( 'admin_menu', '_fm_add_submenus', 15 );
  * @return string Text with each line of $value passed through sanitize_text_field().
  */
 function fm_sanitize_textarea( $value ) {
-	_deprecated_function( __FUNCTION__, '1.3.0', 'sanitize_textarea_field' );
+	_deprecated_function( __FUNCTION__, '1.4.0', 'sanitize_textarea_field' );
+	
 	return implode( "\n", array_map( 'sanitize_text_field', explode( "\n", $value ) ) );
 }
 
