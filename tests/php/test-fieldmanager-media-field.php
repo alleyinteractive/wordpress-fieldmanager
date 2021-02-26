@@ -43,7 +43,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 		$this->assertRegExp(
 			sprintf(
-				'#<input type="button" class="[^"]*fm-media-button[^>]+value="%s" data-choose="%s" data-update="%s" data-preview-size="%s" data-mime-type=\'all\' */>#',
+				'#<input type="button" class="[^"]*fm-media-button[^>]+value="%s" data-choose="%s" data-update="%s" data-preview-size="%s" data-mime-type="\[&quot;all&quot;\]" */>#',
 				$args['button_label'],
 				$args['modal_title'],
 				$args['modal_button_label'],
@@ -113,7 +113,10 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test Media', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( '/<input[^>]+type=[\'"]button[\'"][^>]+data-mime-type=\'image\'/', $html );
+
+		preg_match( '/data-mime-type="(.*?)"/', $html, $matches );
+
+		$this->assertSame( array( $args['mime_type'] ), json_decode( html_entity_decode( $matches[1] ) ) );
 	}
 
 	public function test_multiple_mime_types() {
@@ -129,9 +132,9 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test Media', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		preg_match( "/data-mime-type='(.*?)'/", $html, $matches );
+		preg_match( '/data-mime-type="(.*?)"/', $html, $matches );
 
-		$this->assertSame( $expected_types, json_decode( $matches[1] ) );
+		$this->assertSame( $expected_types, json_decode( html_entity_decode( $matches[1] ) ) );
 	}
 
 	public function test_attributes() {
