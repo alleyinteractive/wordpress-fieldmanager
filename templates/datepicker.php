@@ -16,7 +16,7 @@
 	<?php
 	if ( ! empty( $value ) ) :
 		?>
-		value="<?php echo esc_attr( date_i18n( $this->date_format, intval( $value ), true ) ); ?>"
+		value="<?php echo esc_attr( date_i18n( $this->date_format, (int) $value, true ) ); ?>"
 		<?php
 	endif;
 	echo $this->get_element_attributes(); // Escaped interally. xss ok.
