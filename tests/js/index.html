@@ -17,19 +17,27 @@
 		against the scripts in WordPress X.Y.
 		 */
 		var versionMatch = /wp=(\d\.\d)/.exec( window.location.href );
-		if ( versionMatch && versionMatch[1] ) {
+		var isTrunk = versionMatch && versionMatch[1];
+
+		if ( isTrunk ) {
 			svn = 'https://core.svn.wordpress.org/tags/' + versionMatch[1];
 		}
 
 		scripts = [
 			svn + '/wp-includes/js/jquery/jquery.js',
 			svn + '/wp-includes/js/jquery/ui/core.min.js',
-			svn + '/wp-includes/js/jquery/ui/widget.min.js',
 			svn + '/wp-includes/js/jquery/ui/mouse.min.js',
 			svn + '/wp-includes/js/jquery/ui/sortable.min.js',
 			svn + '/wp-includes/js/jquery/ui/draggable.min.js',
 			svn + '/wp-includes/js/jquery/ui/droppable.min.js',
 		];
+
+		if ( ! isTrunk ) {
+			scripts.push( svn + '/wp-includes/js/jquery/ui/widget.min.js' );
+		}
+
+		// Provide the fmLoadModule function to fieldmanager.js.
+		scripts.push( '../../js/fieldmanager-loader.js' );
 
 		// Fieldmanager.
 		scripts.push( '../../js/fieldmanager.js' );

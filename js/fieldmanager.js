@@ -1,4 +1,4 @@
-var fm = {};
+var fm = window.fm || {};
 
 ( function( $ ) {
 
@@ -181,19 +181,20 @@ fm_remove = function( $element ) {
 }
 
 var fm_init = function () {
-	$( document ).on( 'click', '.fm-add-another', function( e ) {
+	var $document = $( document );
+	$document.on( 'click', '.fm-add-another', function( e ) {
 		e.preventDefault();
 		fm_add_another( $( this ) );
 	} );
 
 	// Handle remove events
-	$( document ).on( 'click', '.fmjs-remove', function( e ) {
+	$document.on( 'click', '.fmjs-remove', function( e ) {
 		e.preventDefault();
 		fm_remove( $( this ) );
 	} );
 
 	// Handle collapse events
-	$( document ).on( 'click', '.fmjs-collapsible-handle', function() {
+	$document.on( 'click', '.fmjs-collapsible-handle', function() {
 		$( this ).parents( '.fm-group' ).first().children( '.fm-group-inner' ).slideToggle( 'fast' );
 		fm_renumber( $( this ).parents( '.fm-wrapper' ).first() );
 		$( this ).parents( '.fm-group' ).first().trigger( 'fm_collapsible_toggle' );
@@ -277,12 +278,39 @@ var fm_init = function () {
 			}
 		} );
 	};
-	$( document ).on( 'change', '.display-trigger', fm.trigger_display_if );
+	$document.on( 'change', '.display-trigger', fm.trigger_display_if );
+
+	$document
+		/**
+		 * Include the current context and type with heartbeat request data.
+		 *
+		 * @param {Event}  event Event object.
+		 * @param {Object} data  Heartbeat request data.
+		 */
+		.on( 'heartbeat-send', function ( event, data ) {
+			data['fm_context'] = fm.context.context;
+			data['fm_subcontext'] = fm.context.type;
+		})
+		/**
+		 * Replace nonce input values with new nonces from heartbeat responses.
+		 *
+		 * @param {Event}  event Event object.
+		 * @param {Object} data  Heartbeat response data.
+		 */
+		.on( 'heartbeat-tick', function ( event, data ) {
+			var nonces = data.fieldmanager_refresh_nonces;
+
+			if ( nonces && nonces.replace ) {
+				$.each( nonces.replace, function ( selector, newNonce ) {
+					$( '#' + selector ).val( newNonce );
+				});
+			}
+		});
 
 	init_label_macros();
 	init_sortable();
 
-	$( document ).on( 'fm_activate_tab', init_sortable );
+	$document.on( 'fm_activate_tab', init_sortable );
 };
 
 fmLoadModule( fm_init );
