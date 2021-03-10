@@ -193,6 +193,66 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		$this->assertEquals( null, $saved_value );
 	}
 
+	public function test_multiselect_save_datasource_term() {
+		$taxonomy = 'tax_multiselect_test';
+		$field_name = 'base_field';
+
+		register_taxonomy( $taxonomy, $this->post->post_type );
+
+		$term_ids = array();
+		foreach ( array( "One", "Two", "Three" ) as $term ) {
+			$result = term_exists( $term, $taxonomy );
+			if ( ! $result ) {
+				$result = wp_insert_term( $term, $taxonomy );
+			}
+			$term_ids[] = $result['term_id'];
+		}
+		sort( $term_ids );
+
+		$fm = new Fieldmanager_Group( array(
+			'name' => 'fm_group',
+			'serialize_data' => false,
+			'children' => array(
+				$field_name => new Fieldmanager_Select( array(
+					'name' => $field_name,
+					'multiple' => true,
+					'limit' => 0,
+					'options' => $term_ids,
+					'datasource' => new Fieldmanager_Datasource_Term( array(
+						'taxonomy' => array( $taxonomy ),
+						'only_save_to_taxonomy' => true,
+					) )
+				) )
+			),
+		) );
+
+		$_POST = array(
+			'post_ID' => $this->post->ID,
+			'post_type' => $this->post->post_type,
+			'fm_group' => array(
+				$field_name => $term_ids,
+			),
+		);
+		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
+		$saved_term_ids = array();
+		foreach ( wp_get_post_terms( $this->post->ID, $taxonomy ) as $term ) {
+			$saved_term_ids[] = $term->term_id;
+		}
+		sort( $saved_term_ids );
+		$this->assertSame( $term_ids, $saved_term_ids );
+
+		$_POST = array(
+			'post_ID' => $this->post->ID,
+			'post_type' => $this->post->post_type,
+		);
+		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
+		$saved_term_ids = array();
+		foreach ( wp_get_post_terms( $this->post->ID, $taxonomy ) as $term ) {
+			$saved_term_ids[] = $term->term_id;
+		}
+		$this->assertSame( array(), $saved_term_ids );
+	}
+
 	public function test_repeatable_render() {
 		$fm = new Fieldmanager_Select(
 			array(
