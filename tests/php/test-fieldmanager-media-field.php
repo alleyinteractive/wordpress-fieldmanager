@@ -130,4 +130,46 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 		$this->assertRegExp( '/<input[^>]+type=[\'"]button[\'"][^>]+data-test=[\'"]' . $args['attributes']['data-test'] . '[\'"]/', $html );
 	}
+
+	public function test_form_element_hooks() {
+
+		// Use a mock so we can verify the action function is called.
+		$pre_mock = $this->build_callback_mock( 'pre_form_element_function' );
+
+		// Add the hook.
+		add_action( 'fieldmanager_media_pre_form_element', array($pre_mock, 'pre_form_element_function'));
+
+		// Do the same for the post hook as above for the pre hook.
+		$post_mock = $this->build_callback_mock( 'post_form_element_function' );
+		add_action( 'fieldmanager_media_post_form_element', array($post_mock, 'post_form_element_function'));
+
+		$args = array(
+			'name' => 'test_media',
+		);
+
+		$attachment = self::factory()->attachment->create_object(
+			'image.jpg',
+			0,
+			array(
+				'post_mime_type' => 'image/jpeg',
+				'post_type'      => 'attachment',
+				'post_status'    => 'inherit',
+			)
+		);
+
+		$fm = new Fieldmanager_Media( $args );
+		$fm->form_element( $attachment );
+	}
+
+	private function build_callback_mock( $callback_name = 'callback_function', $expected_return = true ) {
+		$mock = $this->getMockBuilder('stdClass')
+			->setMethods(array( $callback_name ))
+			->getMock();
+
+		$mock->expects( $this->once() )
+			->method( $callback_name )
+			->willReturn( $expected_return );
+
+		return $mock;
+	}
 }
