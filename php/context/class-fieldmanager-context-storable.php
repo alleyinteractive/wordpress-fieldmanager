@@ -87,7 +87,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 		$data    = $this->prepare_data( $current, $data, $field );
 		if ( ! $field->skip_save ) {
 			if ( $field->serialize_data ) {
-				$this->update_data( $this->fm->data_id, $field->get_element_key(), $data );
+				$this->update_data( $this->fm->data_id, $field->get_element_key(), $data, $current );
 			} else {
 				$this->delete_data( $this->fm->data_id, $field->get_element_key() );
 				foreach ( $data as $value ) {
