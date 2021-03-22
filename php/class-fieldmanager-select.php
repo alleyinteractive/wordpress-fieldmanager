@@ -41,7 +41,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 *
 	 * @var string
 	 */
-	public $empty_string = '&nbsp;';
+	public $first_empty_label = '&nbsp;';
 
 	/**
 	 * Tell FM to save multiple values.
@@ -127,7 +127,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		$opts = '';
 		if ( $this->is_repeatable() || $this->first_empty ) {
-			$opts .= '<option value="">' . $this->empty_string . '</option>';
+			$opts .= '<option value="">' . $this->first_empty_label . '</option>';
 		}
 		$opts .= $this->form_data_elements( $value );
 
