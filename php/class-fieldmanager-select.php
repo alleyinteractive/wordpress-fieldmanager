@@ -127,7 +127,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		$opts = '';
 		if ( $this->is_repeatable() || $this->first_empty ) {
-			$opts .= '<option value="">' . $this->first_empty_label . '</option>';
+			$opts .= '<option value="">' . esc_html( $this->first_empty_label ) . '</option>';
 		}
 		$opts .= $this->form_data_elements( $value );
 
