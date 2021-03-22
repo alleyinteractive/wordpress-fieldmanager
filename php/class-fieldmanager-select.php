@@ -37,6 +37,13 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	public $first_empty = false;
 
 	/**
+	 * String to use for first empty element.
+	 *
+	 * @var string
+	 */
+	public $first_empty_label = '&nbsp;';
+
+	/**
 	 * Tell FM to save multiple values.
 	 *
 	 * @var bool
@@ -120,7 +127,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		$opts = '';
 		if ( $this->is_repeatable() || $this->first_empty ) {
-			$opts .= '<option value="">&nbsp;</option>';
+			$opts .= '<option value="">' . esc_html( $this->first_empty_label ) . '</option>';
 		}
 		$opts .= $this->form_data_elements( $value );
 

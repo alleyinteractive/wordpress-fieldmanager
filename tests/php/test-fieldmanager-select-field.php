@@ -276,6 +276,28 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_first_empty_label() {
+		$fm = new Fieldmanager_Select(
+			array(
+				'name'              => 'base_field',
+				'options'           => array( 'one', 'two', 'three' ),
+				'first_empty'       => true,
+				'first_empty_label' => '-- Empty --',
+			)
+		);
+
+		$html = $this->_get_html_for( $fm );
+		$this->assertRegExp(
+			'#<select[^>]+>'
+			. '\s*<option value="">-- Empty --</option>'
+			. '\s*<option value="one"\s*>one</option>'
+			. '\s*<option value="two"\s*>two</option>'
+			. '\s*<option value="three"\s*>three</option>'
+			. '\s*</select>#si',
+			$html
+		);
+	}
+
 	public function test_default_value() {
 		$fm = new Fieldmanager_Select(
 			array(
