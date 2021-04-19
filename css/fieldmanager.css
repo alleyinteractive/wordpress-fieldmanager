@@ -241,6 +241,15 @@ div.fm-group-label-wrapper {
 	margin: 15px 0;
 }
 
+.fm-add-another-limit-reached-label {
+	/* These sizes correspond to default button sizes in core. */
+	display: inline-block;
+	font-size: 13px;
+	height: 28px;
+	line-height: 26px;
+	margin: 0 10px;
+}
+
 .fmjs-proto {
 	display: none;
 }
