@@ -261,7 +261,7 @@ class Fieldmanager_Util_Validation {
 
 			// Add the ignore, rules and messages to final validate method with form ID, wrap in script tags and output.
 			echo sprintf( // WPCS: XSS ok.
-				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm_validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
+				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm_validation.submitHandler( form ); },\n\t\t\t\terrorPlacement: function ( label, element ) { var closestFmItem = element.closest( '.fm-item' ); if ( closestFmItem.length && ! closestFmItem.hasClass( 'fm-group' ) ) { label.appendTo( closestFmItem ); } else { label.insertAfter( element.get() ); } },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
 				esc_attr( $this->form_id ),
 				esc_js( $ignore_js ),
 				$rules_js, // Escaped in $this->array_to_js().

@@ -97,12 +97,6 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 
 		$select_classes = array( 'fm-element' );
 
-		// If this is a multiple select, need to handle differently.
-		$do_multiple = '';
-		if ( $this->multiple ) {
-			$do_multiple = '[]';
-		}
-
 		// Handle type-ahead based fields using the chosen library.
 		if ( $this->type_ahead ) {
 			$select_classes[] = 'chosen-select';
@@ -127,7 +121,7 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		return sprintf(
 			'<select class="%s" name="%s" id="%s" %s>%s</select>',
 			esc_attr( implode( ' ', $select_classes ) ),
-			esc_attr( $this->get_form_name( $do_multiple ) ),
+			esc_attr( $this->get_form_name() ),
 			esc_attr( $this->get_element_id() ),
 			$this->get_element_attributes(),
 			$opts
