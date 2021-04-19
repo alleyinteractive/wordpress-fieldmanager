@@ -86,7 +86,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		$this->parent_slug     = $parent_slug;
 		$this->page_title      = $page_title;
 		$this->capability      = $capability;
-		$this->updated_message = __( 'Options updated', 'fieldmanager' );
+		$this->updated_message = __( 'Options updated.', 'fieldmanager' );
 		$this->uniqid          = $this->fm->get_element_id() . '_form';
 		if ( ! $already_registered ) {
 			add_action( 'admin_menu', array( $this, 'register_submenu_page' ) );
@@ -153,7 +153,7 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		}
 
 		if ( ! current_user_can( $this->capability ) ) {
-			$this->fm->_unauthorized_access( __( 'Current user cannot edit this page', 'fieldmanager' ) );
+			$this->fm->_unauthorized_access( __( 'Current user cannot edit this page.', 'fieldmanager' ) );
 			return;
 		}
 

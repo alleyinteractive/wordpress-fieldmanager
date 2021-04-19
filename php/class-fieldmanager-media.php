@@ -102,9 +102,9 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		$this->button_label         = __( 'Attach a File', 'fieldmanager' );
 		$this->modal_button_label   = __( 'Select Attachment', 'fieldmanager' );
 		$this->modal_title          = __( 'Choose an Attachment', 'fieldmanager' );
-		$this->selected_image_label = __( 'Uploaded image:', 'fieldmanager' );
-		$this->selected_file_label  = __( 'Uploaded file:', 'fieldmanager' );
-		$this->remove_media_label   = __( 'remove', 'fieldmanager' );
+		$this->selected_image_label = __( 'Uploaded Image:', 'fieldmanager' );
+		$this->selected_file_label  = __( 'Uploaded File:', 'fieldmanager' );
+		$this->remove_media_label   = __( 'Remove', 'fieldmanager' );
 
 		if ( ! self::$has_registered_media ) {
 			fm_add_script( 'fm_media', 'js/media/fieldmanager-media.js', array( 'jquery' ), FM_VERSION, true );

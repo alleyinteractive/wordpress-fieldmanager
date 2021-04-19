@@ -223,7 +223,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		// Make sure the current user can save this post.
 		if ( 'post' == $_POST['post_type'] ) { // WPCS: input var okay. CSRF okay.
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
-				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
+				$this->fm->_unauthorized_access( __( 'Current user cannot edit this post.', 'fieldmanager' ) );
 				return;
 			}
 		}

@@ -13,6 +13,8 @@ Description: Add fields to WordPress programatically.
 Author: Alley
 Version: 1.3.0
 Author URI: https://www.alley.co/
+Text Domain: fieldmanager
+Domain Path: /languages
 */
 
 /**
@@ -162,6 +164,16 @@ function fieldmanager_get_template( $tpl_slug ) {
 	}
 	return plugin_dir_path( __FILE__ ) . 'templates/' . $tpl_slug . '.php';
 }
+
+/**
+ * Load Fieldmanager's translated strings.
+ *
+ * @return bool @see load_plugin_textdomain().
+ */
+function fm_load_textdomain() {
+	return load_plugin_textdomain( 'fieldmanager', false, plugin_basename( FM_BASE_DIR ) . '/languages/' );
+}
+add_action( 'init', 'fm_load_textdomain' );
 
 /**
  * Enqueue a script, optionally localizing data to it.
@@ -526,7 +538,7 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
 	}
 	if ( isset( $submenus[ $group_name ] ) ) {
 		/* translators: %s: group name */
-		throw new FM_Duplicate_Submenu_Name_Exception( sprintf( esc_html__( '%s is already in use as a submenu name', 'fieldmanager' ), $group_name ) );
+		throw new FM_Duplicate_Submenu_Name_Exception( sprintf( esc_html__( '%s is already in use as a submenu name.', 'fieldmanager' ), $group_name ) );
 	}
 
 	if ( ! $menu_title ) {
@@ -554,7 +566,7 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
 function _fm_submenu_render() {
 	$context = _fieldmanager_registry( 'active_submenu' );
 	if ( ! is_object( $context ) ) {
-		throw new FM_Submenu_Not_Initialized_Exception( esc_html__( 'The Fieldmanger context for this submenu was not initialized', 'fieldmanager' ) );
+		throw new FM_Submenu_Not_Initialized_Exception( esc_html__( 'The Fieldmanger context for this submenu was not initialized.', 'fieldmanager' ) );
 	}
 	$context->render_submenu_page();
 }

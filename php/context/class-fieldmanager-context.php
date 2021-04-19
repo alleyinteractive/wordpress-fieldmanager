@@ -67,7 +67,7 @@ abstract class Fieldmanager_Context {
 		}
 
 		if ( ! wp_verify_nonce( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ], 'fieldmanager-save-' . $this->fm->name ) ) { // WPCS: input var okay. Sanitization okay.
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
+			$this->fm->_unauthorized_access( __( 'Nonce validation failed.', 'fieldmanager' ) );
 		}
 
 		return true;

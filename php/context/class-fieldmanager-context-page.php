@@ -55,7 +55,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 			isset( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ] ) // WPCS: input var okay.
 			&& ! wp_verify_nonce( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ], 'fieldmanager-save-' . $this->fm->name )  // WPCS: input var okay. sanitization ok.
 		) {
-			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
+			$this->fm->_unauthorized_access( __( 'Nonce validation failed.', 'fieldmanager' ) );
 		}
 		$this->fm->data_id = $user_id;
 		$value             = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : ''; // WPCS: input var okay. sanitization ok.

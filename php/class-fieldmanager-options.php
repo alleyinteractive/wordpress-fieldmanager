@@ -249,7 +249,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 				$this->_failed_validation(
 					sprintf(
 						/* translators: 1: Invalid value, 2: field label */
-						__( 'Input "%1$s" is not valid for field "%2$s" ', 'fieldmanager' ),
+						__( 'Input "%1$s" is not valid for field "%2$s".', 'fieldmanager' ),
 						(string) $value,
 						$this->label
 					)

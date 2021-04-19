@@ -94,30 +94,44 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 
 		// Validate improper usage of store property.
 		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
-			throw new FM_Developer_Exception(
-				sprintf(
-					/* translators: 1: stored property, 2: allowed store properties */
-					__( 'Store property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
-					$this->store_property,
-					implode( ', ', $this->allowed_store_properties )
-				)
-			);
+			throw new FM_Developer_Exception( sprintf(
+				/* translators: 1: invalid property name, 2: list of valid property names */
+				__( 'Store property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
+				"`{$this->store_property}`",
+				/* translators: used between list items, there is a space after the comma */
+				implode( __( ', ', 'fieldmanager' ), array_map(
+					function ( $property ) {
+						return "`{$property}`";
+					},
+					$this->allowed_store_properties
+				) )
+			) );
 		}
 
 		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
-			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID.', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( sprintf(
+				/* translators: 1: `Fieldmanager_Datasource_User`, 2: `store_property`, 3: `ID` */
+				__( 'You cannot use reciprocal relationships with %1$s if %2$s is not set to %3$s.', 'fieldmanager' ),
+				'`Fieldmanager_Datasource_User`',
+				'`store_property`',
+				'`ID`'
+			) );
 		}
 
 		// Validate improper usage of display property.
 		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
-			throw new FM_Developer_Exception(
-				sprintf(
-					/* translators: 1: display property, 2: allowed display properties */
-					__( 'Display property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
-					$this->display_property,
-					implode( ', ', $this->allowed_display_properties )
-				)
-			);
+			throw new FM_Developer_Exception( sprintf(
+				/* translators: 1: invalid property name, 2: list of valid property names */
+				__( 'Display property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
+				"`{$this->display_property}`",
+				/* translators: used between list items, there is a space after the comma */
+				implode( __( ', ', 'fieldmanager' ), array_map(
+					function ( $property ) {
+						return "`{$property}`";
+					},
+					$this->allowed_display_properties
+				) )
+			) );
 		}
 	}
 

@@ -214,7 +214,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		// Make sure the current user is authorized to save this post.
 		if ( isset( $_POST['post_type'] ) && 'post' == $_POST['post_type'] ) { // WPCS: input var okay. CSRF ok.
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
-				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
+				$this->fm->_unauthorized_access( __( 'Current user cannot edit this post.', 'fieldmanager' ) );
 				return;
 			}
 		}

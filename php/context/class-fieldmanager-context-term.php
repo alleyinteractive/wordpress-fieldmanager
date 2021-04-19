@@ -127,7 +127,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 				)
 			);
 			if ( ! isset( $args['title'], $args['taxonomies'] ) ) {
-				throw new FM_Developer_Exception( esc_html__( '"title" and "taxonomies" are required values for Fieldmanager_Context_Term', 'fieldmanager' ) );
+				throw new FM_Developer_Exception( esc_html( sprintf(
+					/* translators: 1: `title`, 2: `taxonomies`, 3: `Fieldmanager_Context_Term` */
+					__( '%1$s and %2$s are required values for %3$s.', 'fieldmanager' ),
+					'`title`',
+					'`taxonomies`',
+					'`Fieldmanager_Context_Term`'
+				) ) );
 			}
 
 			$this->title        = $args['title'];
@@ -138,7 +144,13 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			$this->use_fm_meta  = $args['use_fm_meta'];
 			$this->fm           = $args['field'];
 		} elseif ( empty( $taxonomies ) ) {
-			throw new FM_Developer_Exception( esc_html__( '"title" and "taxonomies" are required values for Fieldmanager_Context_Term', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html( sprintf(
+				/* translators: 1: `title`, 2: `taxonomies`, 3: `Fieldmanager_Context_Term` */
+				__( '%1$s and %2$s are required values for %3$s.', 'fieldmanager' ),
+				'`title`',
+				'`taxonomies`',
+				'`Fieldmanager_Context_Term`'
+			) ) );
 		} else {
 			/**
 			 * Instantiating Fieldmanager_Context_Term using individual
@@ -241,7 +253,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		// Make sure the user hasn't specified a field name we can't use.
 		if ( in_array( $this->fm->name, $this->reserved_fields ) ) {
 			/* translators: %s: field name */
-			$this->fm->_invalid_definition( sprintf( __( 'The field name "%s" is reserved for WordPress on the term form.', 'fieldmanager' ), $this->fm->name ) );
+			$this->fm->_invalid_definition( sprintf( __( 'The field name %s is reserved for WordPress on the term form.', 'fieldmanager' ), "`{$this->fm->name}`" ) );
 		}
 
 		// Set the data type and ID.
@@ -297,7 +309,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		// Make sure the current user can save this post.
 		$tax_obj = get_taxonomy( $taxonomy );
 		if ( ! current_user_can( $tax_obj->cap->manage_terms ) ) {
-			$this->fm->_unauthorized_access( __( 'User cannot edit this term', 'fieldmanager' ) );
+			$this->fm->_unauthorized_access( __( 'Current user cannot edit this term.', 'fieldmanager' ) );
 			return;
 		}
 

@@ -1,58 +1,56 @@
 module.exports = function( grunt ) {
-	if ( ! grunt.option( 'wp' ) ) {
-		grunt.option( 'wp', 'master' );
-	}
 
-	grunt.initConfig({
-		connect: {
-			server: {
-				options: {
-					base: '.'
-				}
-			}
-		},
-		qunit: {
+	'use strict';
+
+	// Project configuration
+	grunt.initConfig( {
+
+		pkg: grunt.file.readJSON( 'package.json' ),
+
+		addtextdomain: {
 			options: {
-				timeout: 7000
+				textdomain: 'fieldmanager',
 			},
-			latest: {
+			update_all_domains: {
 				options: {
-					urls: ['http://localhost:8000/tests/js/index.html']
+					updateDomains: true
+				},
+				src: [ '*.php', '**/*.php', '!\.git/**/*', '!bin/**/*', '!node_modules/**/*', '!tests/**/*' ]
+			}
+		},
+
+		wp_readme_to_markdown: {
+			your_target: {
+				files: {
+					'README.md': 'readme.txt'
 				}
 			},
-			recent: {
+		},
+
+		makepot: {
+			target: {
 				options: {
-					urls: [
-						'http://localhost:8000/tests/js/index.html',
-						'http://localhost:8000/tests/js/index.html?wp=4.9',
-						'http://localhost:8000/tests/js/index.html?wp=4.8'
-					]
-				}
-			},
-			specific: {
-				options: {
-					urls: [ 'http://localhost:8000/tests/js/index.html?wp=' + grunt.option( 'wp' ) ]
+					domainPath: '/languages',
+					exclude: [ '\.git/*', 'bin/*', 'node_modules/*', 'tests/*' ],
+					mainFile: 'fieldmanager.php',
+					potFilename: 'fieldmanager.pot',
+					potHeaders: {
+						poedit: true,
+						'x-poedit-keywordslist': true
+					},
+					type: 'wp-plugin',
+					updateTimestamp: true
 				}
 			}
 		},
-		phpcs: {
-			plugin: {},
-			options: {
-				bin: "vendor/bin/phpcs",
-				showSniffCodes: true,
-				standard: "phpcs.ruleset.xml",
-				verbose: true,
-				warningSeverity: 0,
-			}
-		},
-	});
+	} );
 
+	grunt.loadNpmTasks( 'grunt-wp-i18n' );
+	grunt.loadNpmTasks( 'grunt-wp-readme-to-markdown' );
+	grunt.registerTask( 'default', [ 'i18n','readme' ] );
+	grunt.registerTask( 'i18n', ['addtextdomain', 'makepot'] );
+	grunt.registerTask( 'readme', ['wp_readme_to_markdown'] );
 
-	grunt.loadNpmTasks( 'grunt-contrib-connect' );
-	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
-	grunt.loadNpmTasks( 'grunt-phpcs' );
+	grunt.util.linefeed = '\n';
 
-	grunt.task.run( 'connect' );
-
-	grunt.registerTask( 'default', ['qunit:latest'] );
 };

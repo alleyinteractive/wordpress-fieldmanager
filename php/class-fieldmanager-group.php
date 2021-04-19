@@ -149,7 +149,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		// Repeatable groups cannot used unserialized data.
 		$is_repeatable = ( 1 != $this->limit );
 		if ( ! $this->serialize_data && $is_repeatable ) {
-			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with repeating groups', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html( sprintf(
+				/* translators: %s: `'serialize_data' => false` */
+				__( 'You cannot use %s with repeating groups.', 'fieldmanager' ),
+				"`'serialize_data' => false`"
+			) ) );
 		}
 
 		// If this is collapsed, collapsibility is implied.
@@ -161,21 +165,28 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		foreach ( $this->children as $name => $element ) {
 			// if the array key is not an int, and the name attr is set, and they don't match, we got a problem.
 			if ( $element->name && ! is_int( $name ) && $element->name != $name ) {
-				throw new FM_Developer_Exception( esc_html__( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name );
+				/* translators: 1: group child name, 2: group child name */
+				throw new FM_Developer_Exception( sprintf( esc_html__( 'Group child name conflict: %1$s / %2$s.', 'fieldmanager' ), "`{$name}`", "`{$element->name}`" ) );
 			} elseif ( ! $element->name ) {
 				$element->name = $name;
 			}
 
 			// Catch errors when using serialize_data => false and index => true.
 			if ( ! $this->serialize_data && $element->index ) {
-				throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
+				throw new FM_Developer_Exception( esc_html( sprintf(
+					/* translators: 1: `'serialize_data' => false`, 2: `'index' => true` */
+					__( 'You cannot use %1$s with %2$s.', 'fieldmanager' ),
+					"`'serialize_data' => false`",
+					"`'index' => true`"
+				) ) );
 			}
 
 			// A post can only have one parent, so if this saves to post_parent and
 			// it's repeatable, we're doing it wrong.
 			if ( $element->datasource && ! empty( $element->datasource->save_to_post_parent ) && $this->is_repeatable() ) {
-				_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', esc_html__( 'A post can only have one parent, therefore you cannot store to post_parent in repeatable fields.', 'fieldmanager' ), '1.0.0' );
-				$element->datasource->save_to_post_parent      = false;
+				/* translators: %s: `post_parent` */
+				_doing_it_wrong( 'Fieldmanager_Datasource_Post::$save_to_post_parent', sprintf( esc_html__( 'A post can only have one parent, therefore you cannot store to %s in repeatable fields.', 'fieldmanager' ), '`post_parent`' ), '1.0.0' );
+				$element->datasource->save_to_post_parent = false;
 				$element->datasource->only_save_to_post_parent = false;
 			}
 
@@ -190,7 +201,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// Check for invalid usage of repeatables and serialize_data.
 		if ( $is_repeatable && $this->has_unserialized_descendants ) {
-			throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with repeating groups', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html( sprintf(
+				/* translators: %s: `'serialize_data' => false` */
+				__( 'You cannot use %s with repeating groups.', 'fieldmanager' ),
+				"`'serialize_data' => false`"
+			) ) );
 		}
 
 		// Add the tab JS and CSS if it is needed.
@@ -343,7 +358,12 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 		// Catch errors when using serialize_data => false and index-> true.
 		if ( ! $this->serialize_data && $child->index ) {
-			throw new FM_Developer_Exception( esc_html__( 'You cannot use `serialize_data => false` with `index => true`', 'fieldmanager' ) );
+			throw new FM_Developer_Exception( esc_html( sprintf(
+				/* translators: 1: `'serialize_data' => false`, 2: `'index' => true` */
+				__( 'You cannot use %1$s with %2$s.', 'fieldmanager' ),
+				"`'serialize_data' => false`",
+				"`'index' => true`"
+			) ) );
 		}
 	}
 
@@ -361,8 +381,8 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				if ( ! isset( $this->children[ $key ] ) ) {
 					// If we're here, it means that the input, generally $_POST, contains a value that doesn't belong,
 					// and thus one which we cannot sanitize and must not save. This might be an attack.
-					/* translators: 1: key attempting to be saved */
-					$this->_unauthorized_access( sprintf( __( 'Found "%1$s" in data but not in children', 'fieldmanager' ), $key ) );
+					/* translators: %s: key attempting to be saved */
+					$this->_unauthorized_access( sprintf( __( 'Found %s in data but not in children.', 'fieldmanager' ), "`{$key}`" ) );
 				}
 			}
 		}
