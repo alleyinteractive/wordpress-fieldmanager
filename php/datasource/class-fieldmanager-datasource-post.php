@@ -143,7 +143,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 				} elseif ( ! empty( $get_vars['p'] ) ) {
 					$post_id = intval( $get_vars['p'] );
 				} else {
-					$post_id = fm_url_to_post_id( $fragment );
+					$post_id = url_to_postid( $fragment );
 				}
 			} elseif ( is_numeric( $fragment ) ) {
 				$post_id = intval( $fragment );
@@ -348,13 +348,17 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
  * Post URLs to IDs function, supports custom post types.
  * Borrowed and modified from url_to_postid() in wp-includes/rewrite.php.
  *
+ * @deprecated 1.4.0 Use core's {@see url_to_postid()}.
+ *
  * @author http://betterwp.net/
  *
  * @param  string $url The post URL.
- * @return int|boolean Post ID on success, false on failure
+ * @return int Post ID on success, 0 on failure.
  */
 function fm_url_to_post_id( $url ) {
 	global $wp_rewrite;
+
+	_deprecated_function( __FUNCTION__, '1.4.0', 'url_to_postid' );
 
 	$url = apply_filters( 'url_to_postid', $url ); // See #532. prefix ok.
 
