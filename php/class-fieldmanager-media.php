@@ -77,11 +77,13 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public $preview_size = 'thumbnail';
 
 	/**
-	 * What mime types are available to choose from.
-	 * Valid options are "all" or a partial or full mimetype (e.g. "image" or
-	 * "application/pdf").
+	 * The MIME type or MIME types available to choose from.
 	 *
-	 * @var string
+	 * Valid options are "all" or a partial or full mimetype (e.g. "image" or "application/pdf").
+	 *
+	 * @since 1.4.0 Accepts an array of types.
+	 *
+	 * @var string|string[]
 	 */
 	public $mime_type = 'all';
 
@@ -212,7 +214,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			esc_attr( $this->preview_size ),
 			esc_attr( $this->modal_title ),
 			esc_attr( $this->modal_button_label ),
-			esc_attr( $this->mime_type ),
+			esc_attr( wp_json_encode( (array) $this->mime_type ) ),
 			$this->get_element_attributes()
 		);
 	}

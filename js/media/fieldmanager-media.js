@@ -22,8 +22,7 @@ $( document ).on( 'click', '.fm-media-button', function( event ) {
 		return;
 	}
 
-	// If mime type has been restricted, make sure the library only shows that
-	// type.
+	// If mime type has been restricted, make sure the library only shows that type.
 	if ( $el.data( 'mime-type' ) && 'all' !== $el.data( 'mime-type' ) ) {
 		library.type = $el.data( 'mime-type' );
 	}
