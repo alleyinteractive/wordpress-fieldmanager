@@ -140,7 +140,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 */
 	public function presave( $value, $current_value = array() ) {
 		if ( 0 == $value || ! is_numeric( $value ) ) {
-			return null;
+			return 0;
 		}
 		return absint( $value );
 	}
