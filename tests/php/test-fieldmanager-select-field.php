@@ -170,6 +170,56 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 		);
 	}
 
+	public function test_multiselect_save_datasource_term() {
+		$taxonomy   = 'tax_multiselect_test';
+		$field_name = 'base_field';
+
+		register_taxonomy( $taxonomy, $this->post->post_type );
+
+		$term_ids = static::factory()->term->create_many( 3, array( 'taxonomy' => $taxonomy ) );
+		sort( $term_ids );
+
+		$fm = new Fieldmanager_Group(
+			array(
+				'name'           => 'fm_group',
+				'serialize_data' => false,
+				'children'       => array(
+					$field_name => new Fieldmanager_Select(
+						array(
+							'multiple'   => true,
+							'options'    => $term_ids,
+							'datasource' => new Fieldmanager_Datasource_Term(
+								array(
+									'taxonomy'              => array( $taxonomy ),
+									'only_save_to_taxonomy' => true,
+								)
+							),
+						)
+					),
+				),
+			)
+		);
+
+		$_POST = array(
+			'post_ID'   => $this->post->ID,
+			'post_type' => $this->post->post_type,
+			'fm_group'  => array(
+				$field_name => $term_ids,
+			),
+		);
+		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
+
+		$saved_term_ids = wp_list_pluck( wp_get_post_terms( $this->post->ID, $taxonomy ), 'term_id' );
+		sort( $saved_term_ids );
+		$this->assertSame( $term_ids, $saved_term_ids );
+
+		unset( $_POST['fm_group'] );
+		$fm->add_meta_box( $fm->name, $this->post->post_type )->save_to_post_meta( $this->post->ID );
+
+		$saved_term_ids = wp_list_pluck( wp_get_post_terms( $this->post->ID, $taxonomy ), 'term_id' );
+		$this->assertEmpty( array_intersect( $term_ids, $saved_term_ids ) );
+	}
+
 	public function test_repeatable_multiselect_save() {
 		$fm = new Fieldmanager_Select(
 			array(
