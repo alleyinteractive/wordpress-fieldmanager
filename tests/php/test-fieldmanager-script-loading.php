@@ -39,7 +39,6 @@ class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Cas
 			array( 'fm_media', array( 'jquery' ) ),
 			array( 'fm_richtext', array( 'fm_loader', 'jquery', 'fieldmanager_script', 'utils' ) ),
 			array( 'fm_select_js', array( 'fm_loader' ) ),
-			array( 'grid', array( 'fm_loader', 'handsontable', 'contextmenu', 'ui_position' ) ),
 			array( 'fm_colorpicker', array( 'fm_loader', 'jquery', 'wp-color-picker' ) ),
 		);
 	}
