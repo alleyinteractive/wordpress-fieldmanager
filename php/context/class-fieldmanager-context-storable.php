@@ -49,13 +49,45 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 
 		$this->fm->current_context = $this;
 		if ( $this->fm->serialize_data ) {
-			$this->save_field( $this->fm, $data, $this->fm->data_id );
+			$this->save_field( $this->fm, $data );
 		} else {
 			if ( null === $data ) {
-				$data = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : ''; // WPCS: input var okay. CSRF okay. Sanitization okay.
+				if ( isset( $_POST[ $this->fm->name ] ) ) { // WPCS: input var okay. CSRF okay. Sanitization okay.
+					$data = $_POST[ $this->fm->name ]; // WPCS: input var okay. CSRF okay. Sanitization okay.
+				} elseif ( $this->fm->is_group() ) {
+					$data = array();
+				} else {
+					$data = '';
+				}
+
+				if ( false === $this->fm->serialize_data && $this->fm->is_group() ) {
+					/*
+					 * Hardcoded exceptions for scenarios involving bundled
+					 * fields that are omitted from $_POST when empty.
+					 *
+					 * @see https://github.com/alleyinteractive/wordpress-fieldmanager/issues/685
+					 * @see https://github.com/alleyinteractive/wordpress-fieldmanager/issues/764
+					 */
+					foreach ( $this->fm->children as $child ) {
+						if ( array_key_exists( $child->name, $data ) ) {
+							continue;
+						}
+
+						$type = get_class( $child );
+
+						if (
+							( Fieldmanager_Select::class === $type && true === $child->multiple )
+							|| Fieldmanager_Checkboxes::class === $type
+						) {
+							$data[ $child->name ] = array();
+						}
+					}
+				}
 			}
-			$this->save_walk_children( $this->fm, $data, $this->fm->data_id );
+
+			$this->save_walk_children( $this->fm, $data );
 		}
+
 		if ( ! empty( $this->taxonomies_to_save ) ) {
 			foreach ( $this->taxonomies_to_save as $taxonomy => $data ) {
 				wp_set_object_terms( $this->fm->data_id, $data['term_ids'], $taxonomy, $data['append'] );
