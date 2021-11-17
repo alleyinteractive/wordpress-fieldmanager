@@ -35,22 +35,11 @@ module.exports = function( grunt ) {
 				}
 			}
 		},
-		phpcs: {
-			plugin: {},
-			options: {
-				bin: "vendor/bin/phpcs",
-				showSniffCodes: true,
-				standard: "phpcs.ruleset.xml",
-				verbose: true,
-				warningSeverity: 0,
-			}
-		},
 	});
 
 
 	grunt.loadNpmTasks( 'grunt-contrib-connect' );
 	grunt.loadNpmTasks( 'grunt-contrib-qunit' );
-	grunt.loadNpmTasks( 'grunt-phpcs' );
 
 	grunt.task.run( 'connect' );
 

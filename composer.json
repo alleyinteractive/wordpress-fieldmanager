@@ -5,18 +5,17 @@
   "authors": [
     {
       "name": "Alley Interactive",
-      "email": "noreply@alleyinteractive.com"
+      "email": "noreply@alley.co"
     }
   ],
   "require": {
     "composer/installers": "~1.0"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "2.*",
-    "wp-coding-standards/wpcs": "^1"
+    "phpunit/phpunit": "7.5.*",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "scripts": {
-    "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",
-    "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+    "phpunit": "vendor/bin/phpunit"
   }
 }
