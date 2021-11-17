@@ -90,7 +90,7 @@ function fieldmanager_load_class( $class ) {
 		array_shift( $classes );
 
 		// Lowercase the namespace.
-		$classses = array_map( 'strtolower', $classes );
+		$classes = array_map( 'strtolower', $classes );
 
 		// Pop the last part to use as the filename.
 		$file_name = array_pop( $classes );
