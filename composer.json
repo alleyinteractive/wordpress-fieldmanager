@@ -1,7 +1,9 @@
 {
   "name": "alleyinteractive/wordpress-fieldmanager",
+  "description": "A library to build forms and admin screens for WordPress",
   "type": "wordpress-plugin",
   "keywords": ["wordpress", "plugin"],
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Alley Interactive",
