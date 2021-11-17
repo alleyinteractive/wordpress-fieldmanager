@@ -98,7 +98,7 @@ function fieldmanager_load_class( $class ) {
 		return fieldmanager_load_file( implode( '/', $classes ) . '/class-' . $file_name . '.php' );
 	}
 
-	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php', $class );
+	return fieldmanager_load_file( 'class-fieldmanager-' . $class_id . '.php' );
 }
 
 
