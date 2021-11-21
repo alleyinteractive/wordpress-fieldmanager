@@ -91,7 +91,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		add_action( 'wp_ajax_fm_quickedit_render', array( $this, 'render_ajax_form' ), 10, 2 );
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
-		$post_type = ! isset( $_GET['post_type'] ) ? 'post' : sanitize_text_field( wp_unslash( $_GET['post_type'] ) ); // WPCS: input var okay.
+		$post_type = ! isset( $_GET['post_type'] ) ? 'post' : sanitize_text_field( wp_unslash( $_GET['post_type'] ) );
 
 		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( in_array( $post_type, $this->post_types ) ) {
@@ -126,8 +126,8 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		}
 		$data        = get_post_meta( $post_id, $this->fm->name, true );
 		$column_text = call_user_func( $this->column_display_callback, $post_id, $data );
-		// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
-		echo $column_text; // WPCS: XSS ok.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- baseline
+		echo $column_text;
 	}
 
 	/**
@@ -169,19 +169,19 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 */
 	public function render_ajax_form() {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
-		if ( ! isset( $_GET['action'], $_GET['post_id'], $_GET['column_name'] ) ) { // WPCS: input var okay.
+		if ( ! isset( $_GET['action'], $_GET['post_id'], $_GET['column_name'] ) ) {
 			return;
 		}
 
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Recommended -- baseline
-		if ( 'fm_quickedit_render' != $_GET['action'] ) { // WPCS: input var okay.
+		if ( 'fm_quickedit_render' != $_GET['action'] ) {
 			return;
 		}
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
-		$column_name = sanitize_text_field( wp_unslash( $_GET['column_name'] ) ); // WPCS: input var okay.
+		$column_name = sanitize_text_field( wp_unslash( $_GET['column_name'] ) );
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
-		$post_id = intval( $_GET['post_id'] ); // WPCS: input var okay.
+		$post_id = intval( $_GET['post_id'] );
 
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( ! $post_id || $column_name != $this->fm->name ) {
@@ -207,19 +207,19 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	public function save_fields_for_quickedit( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
 		if (
-			// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
-			! isset( $_POST['post_type'] ) // WPCS: input var okay. CSRF okay.
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- baseline
+			! isset( $_POST['post_type'] )
 			|| ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
-			|| ( isset( $_POST['action'] ) && 'inline-save' != $_POST['action'] ) // WPCS: input var okay. CSRF okay.
+			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+			|| ( isset( $_POST['action'] ) && 'inline-save' != $_POST['action'] )
 		) {
 			return;
 		}
 
 		$use_this_post_type = false;
 		foreach ( $this->post_types as $type ) {
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
-			if ( $type == $_POST['post_type'] ) { // WPCS: input var okay. CSRF okay.
+			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+			if ( $type == $_POST['post_type'] ) {
 				$use_this_post_type = true;
 				break;
 			}
@@ -234,8 +234,8 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		}
 
 		// Make sure the current user can save this post.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
-		if ( 'post' == $_POST['post_type'] ) { // WPCS: input var okay. CSRF okay.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+		if ( 'post' == $_POST['post_type'] ) {
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
 				return;

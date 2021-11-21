@@ -52,9 +52,10 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 			$this->save_field( $this->fm, $data );
 		} else {
 			if ( null === $data ) {
-				if ( isset( $_POST[ $this->fm->name ] ) ) { // WPCS: input var okay. CSRF okay. Sanitization okay.
-					// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound, WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
-					$data = $_POST[ $this->fm->name ]; // WPCS: input var okay. CSRF okay. Sanitization okay.
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- baseline
+				if ( isset( $_POST[ $this->fm->name ] ) ) {
+					// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- baseline
+					$data = $_POST[ $this->fm->name ];
 				} elseif ( $this->fm->is_group() ) {
 					$data = array();
 				} else {

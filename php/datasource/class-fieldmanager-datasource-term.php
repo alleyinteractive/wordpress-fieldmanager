@@ -432,6 +432,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$cache_key = 'fm_datasource_term_get_term_' . $term_id;
 			$term      = wp_cache_get( $cache_key );
 			if ( false === $term ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- baseline
 				$term = $wpdb->get_row(
 					$wpdb->prepare(
 						"SELECT t.*, tt.*
@@ -439,7 +440,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 					WHERE tt.term_taxonomy_id = %d LIMIT 1",
 						$term_id
 					)
-				); // WPCS: db call ok.
+				);
 
 				wp_cache_set( $cache_key, $term );
 			}

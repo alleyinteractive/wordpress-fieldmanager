@@ -364,8 +364,8 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 function fm_url_to_post_id( $url ) {
 	global $wp_rewrite;
 
-	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DeprecatedWhitelistCommentFound -- baseline
-	$url = apply_filters( 'url_to_postid', $url ); // See #532. prefix ok.
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound -- baseline
+	$url = apply_filters( 'url_to_postid', $url ); // See #532.
 
 	// First, check to see if there is a 'p=N' or 'page_id=N' to match against.
 	if ( preg_match( '#[?&](p|page_id|attachment_id)=(\d+)#', $url, $values ) ) {
@@ -463,12 +463,14 @@ function fm_url_to_post_id( $url ) {
 			foreach ( $wp->public_query_vars as $wpvar ) {
 				if ( isset( $wp->extra_query_vars[ $wpvar ] ) ) {
 					$query[ $wpvar ] = $wp->extra_query_vars[ $wpvar ];
-				} elseif ( isset( $_POST[ $wpvar ] ) ) { // WPCS: input var okay. CSRF okay.
-					// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound, WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
-					$query[ $wpvar ] = wp_unslash( $_POST[ $wpvar ] ); // WPCS: input var okay. CSRF okay. Sanitization okay.
-				} elseif ( isset( $_GET[ $wpvar ] ) ) {  // WPCS: input var okay. CSRF okay.
-					// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound, WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
-					$query[ $wpvar ] = wp_unslash( $_GET[ $wpvar ] );  // WPCS: input var okay. CSRF okay. Sanitization okay.
+				// phpcs:ignore WordPress.Security.NonceVerification.Missing -- baseline
+				} elseif ( isset( $_POST[ $wpvar ] ) ) {
+					// phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- baseline
+					$query[ $wpvar ] = wp_unslash( $_POST[ $wpvar ] );
+				// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
+				} elseif ( isset( $_GET[ $wpvar ] ) ) {
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- baseline
+					$query[ $wpvar ] = wp_unslash( $_GET[ $wpvar ] );
 				} elseif ( isset( $query_vars[ $wpvar ] ) ) {
 					$query[ $wpvar ] = $query_vars[ $wpvar ];
 				}

@@ -199,8 +199,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		$fm_validation->add_field( $this->fm );
 
 		// Display the field.
-		// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
-		echo $this->term_fields( $html_template, $taxonomy ); // WPCS: XSS okay.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- baseline
+		echo $this->term_fields( $html_template, $taxonomy );
 	}
 
 	/**
@@ -226,8 +226,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		$fm_validation->add_field( $this->fm );
 
 		// Display the field.
-		// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
-		echo $this->term_fields( $html_template, $taxonomy, $term ); // WPCS: XSS okay.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- baseline
+		echo $this->term_fields( $html_template, $taxonomy, $term );
 	}
 
 	/**
