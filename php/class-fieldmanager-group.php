@@ -307,8 +307,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 				$element->data_type = $this->data_type;
 			}
 			if ( $this->data_id ) {
-				 // phpcs:ignore WordPress.WhiteSpace.PrecisionAlignment.Found -- baseline
-				 $element->data_id = $this->data_id;
+				$element->data_id = $this->data_id;
 			}
 
 			$out .= $element->element_markup( $child_value );
