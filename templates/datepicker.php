@@ -10,8 +10,7 @@
 <input
 	class="fm-element fm-datepicker-popup"
 	type="text"
-	// phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode -- baseline
-	data-datepicker-opts="<?php echo esc_attr( json_encode( $this->js_opts ) ); ?>"
+	data-datepicker-opts="<?php echo esc_attr( wp_json_encode( $this->js_opts ) ); ?>"
 	name="<?php echo esc_attr( $this->get_form_name( '[date]' ) ); ?>"
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
 	<?php if ( ! empty( $value ) ) : ?>
