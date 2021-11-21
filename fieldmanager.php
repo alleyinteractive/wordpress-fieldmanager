@@ -84,8 +84,7 @@ function fieldmanager_load_class( $class ) {
 	if ( 0 === strpos( $class, 'Fieldmanager\Libraries' ) ) {
 
 		// Convert namespace to array.
-		// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning -- baseline
-		$classes  = explode( '\\', $class );
+		$classes = explode( '\\', $class );
 
 		// Drop the `Fieldmanager` namespace.
 		array_shift( $classes );
