@@ -509,8 +509,7 @@ add_action( 'init', 'fm_trigger_context_action', 99 );
  * @return array Updated arrays.
  */
 function fm_localize_context( $scripts ) {
-	// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
-	$index = array_search( 'fieldmanager_script', wp_list_pluck( $scripts, 'handle' ) );
+	$index = array_search( 'fieldmanager_script', wp_list_pluck( $scripts, 'handle' ), true );
 
 	if ( false === $index ) {
 		return $scripts;
