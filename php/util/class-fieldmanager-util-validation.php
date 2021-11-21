@@ -226,7 +226,7 @@ class Fieldmanager_Util_Validation {
 			}
 
 			// Fields that should always be ignored.
-			// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- baseline
+			$ignore   = array();
 			$ignore[] = '.fm-autocomplete';
 			$ignore[] = "input[type='button']";
 			$ignore[] = ':hidden';
