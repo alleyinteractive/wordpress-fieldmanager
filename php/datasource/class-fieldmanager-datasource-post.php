@@ -453,9 +453,9 @@ function fm_url_to_post_id( $url ) {
 			}
 
 			// Taken from class-wp.php.
+			$post_type_query_vars = array();
 			foreach ( $GLOBALS['wp_post_types'] as $post_type => $t ) {
 				if ( $t->query_var ) {
-					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- baseline
 					$post_type_query_vars[ $t->query_var ] = $post_type;
 				}
 			}
@@ -485,7 +485,6 @@ function fm_url_to_post_id( $url ) {
 					}
 
 					if ( isset( $post_type_query_vars[ $wpvar ] ) ) {
-						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- baseline
 						$query['post_type'] = $post_type_query_vars[ $wpvar ];
 						$query['name']      = $query[ $wpvar ];
 					}
