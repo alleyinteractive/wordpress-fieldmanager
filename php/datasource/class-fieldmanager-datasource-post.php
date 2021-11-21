@@ -176,8 +176,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		}
 		foreach ( $posts as $p ) {
 			if ( $this->show_date ) {
-				// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- baseline
-				$date_pad = ' (' . date( $this->date_format, strtotime( $p->post_date ) ) . ')';
+				$date_pad = ' (' . gmdate( $this->date_format, strtotime( $p->post_date ) ) . ')';
 			} else {
 				$date_pad = '';
 			}
