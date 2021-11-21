@@ -156,6 +156,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			}
 
 			if ( count( $terms ) > 0 ) {
+				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 				if ( 1 == $field->limit && empty( $field->multiple ) ) {
 					return $terms[0]->term_id;
 				} else {
@@ -374,6 +375,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 		// Walk through each term passed, add it (at current depth) to the data stack.
 		foreach ( $parent_terms as $term ) {
+			// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning -- baseline
 			$prefix        = '';
 
 			// Prefix term based on depth. For $depth = 0, prefix will remain empty.
@@ -390,6 +392,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				$tax_args['search'] = $pattern;
 			}
 			$child_terms = get_terms( $this->get_taxonomies(), $tax_args );
+			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 			if ( 0 == $this->taxonomy_hierarchical_depth || $depth + 1 < $this->taxonomy_hierarchical_depth ) {
 				if ( ! empty( $child_terms ) ) {
 					$stack = $this->build_hierarchical_term_data( $child_terms, $this->taxonomy_args, $depth + 1, $stack );

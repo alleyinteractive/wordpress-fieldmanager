@@ -66,6 +66,7 @@ abstract class Fieldmanager_Context {
 			return false;
 		}
 
+		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
 		if ( ! wp_verify_nonce( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ], 'fieldmanager-save-' . $this->fm->name ) ) { // WPCS: input var okay. Sanitization okay.
 			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
@@ -86,6 +87,7 @@ abstract class Fieldmanager_Context {
 			$fm = $this->fm;
 		}
 		if ( null === $new_value ) {
+			// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound, WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
 			$new_value = isset( $_POST[ $this->fm->name ] ) ? wp_unslash( $_POST[ $this->fm->name ] ) : ''; // WPCS: input var okay. CSRF okay. Sanitization okay.
 		}
 		$new_value = apply_filters( 'fm_context_before_presave_data', $new_value, $old_value, $this, $fm );
@@ -114,6 +116,7 @@ abstract class Fieldmanager_Context {
 		$nonce = wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false );
 		$field = $this->fm->element_markup( $data );
 		if ( $echo ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
 			echo $nonce . $field; // WPCS: XSS okay.
 		} else {
 			return $nonce . $field;

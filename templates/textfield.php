@@ -13,6 +13,7 @@
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
 	value="<?php echo esc_attr( $value ); ?>"
 	<?php
+	// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
 	echo $this->get_element_attributes(); // Escaped internally. WPCS XSS okay.
 	?>
 />

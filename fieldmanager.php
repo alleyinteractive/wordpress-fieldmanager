@@ -84,6 +84,7 @@ function fieldmanager_load_class( $class ) {
 	if ( 0 === strpos( $class, 'Fieldmanager\Libraries' ) ) {
 
 		// Convert namespace to array.
+		// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning -- baseline
 		$classes  = explode( '\\', $class );
 
 		// Drop the `Fieldmanager` namespace.
@@ -118,6 +119,7 @@ function fieldmanager_load_file( $file ) {
 	if ( ! file_exists( $file ) ) {
 		throw new FM_Class_Not_Found_Exception( $file );
 	}
+	// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable -- baseline
 	require_once $file;
 }
 
@@ -292,17 +294,22 @@ function fm_calculate_context() {
 		$script   = substr( $php_self, strrpos( $php_self, '/' ) + 1 );
 
 		$get_post_type = '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 		if ( ! empty( $_GET['post_type'] ) ) {  // WPCS: input var okay.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 			$get_post_type = sanitize_text_field( wp_unslash( $_GET['post_type'] ) ); // WPCS: input var okay.
 		}
 
 		$get_page = '';
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 		if ( ! empty( $_GET['page'] ) ) {  // WPCS: input var okay.
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 			$get_page = sanitize_text_field( wp_unslash( $_GET['page'] ) ); // WPCS: input var okay.
 		}
 
 		$post_action = '';
 		if ( ! empty( $_POST['action'] ) ) {  // WPCS: input var okay. CSRF ok.
+			// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
 			$post_action = sanitize_text_field( wp_unslash( $_POST['action'] ) ); // WPCS: input var okay. CSRF ok.
 		}
 
@@ -339,8 +346,11 @@ function fm_calculate_context() {
 				// Context = "post".
 				case 'post.php':
 					if ( ! empty( $post_action ) && ( 'editpost' === $post_action || 'newpost' === $post_action ) ) {
+						// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- baseline
 						$calculated_context = array( 'post', sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ); // WPCS: input var okay. CSRF ok.
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 					} elseif ( ! empty( $_GET['post'] ) ) { // WPCS: input var okay.
+						// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 						$calculated_context = array( 'post', get_post_type( intval( $_GET['post'] ) ) ); // WPCS: input var okay.
 					}
 					break;
@@ -359,31 +369,44 @@ function fm_calculate_context() {
 				case 'admin-ajax.php':
 					// Passed in via an Ajax form.
 					if ( ! empty( $_POST['fm_context'] ) ) { // WPCS: input var okay. CSRF ok.
+						// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning, WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
 						$subcontext         = ! empty( $_POST['fm_subcontext'] ) ? sanitize_text_field( wp_unslash( $_POST['fm_subcontext'] ) ) : null; // WPCS: input var okay. CSRF ok.
+						// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
 						$calculated_context = array( sanitize_text_field( wp_unslash( $_POST['fm_context'] ) ), $subcontext ); // WPCS: input var okay. CSRF ok.
 					} elseif ( ! empty( $_POST['screen'] ) && ! empty( $post_action ) ) { // WPCS: input var okay. CSRF ok.
 						if ( 'edit-post' === $_POST['screen'] && 'inline-save' === $post_action ) { // WPCS: input var okay. CSRF ok.
+							// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound, WordPress.Security.ValidatedSanitizedInput.InputNotValidated -- baseline
 							$calculated_context = array( 'quickedit', sanitize_text_field( wp_unslash( $_POST['post_type'] ) ) ); // WPCS: input var okay. CSRF ok.
 						} elseif ( 'add-tag' === $post_action && ! empty( $_POST['taxonomy'] ) ) { // WPCS: input var okay. CSRF ok.
 							// Context = "term".
+							// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
 							$calculated_context = array( 'term', sanitize_text_field( wp_unslash( $_POST['taxonomy'] ) ) ); // WPCS: input var okay. CSRF ok.
 						}
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 					} elseif ( ! empty( $_GET['action'] ) && 'fm_quickedit_render' === $_GET['action'] ) { // WPCS: input var okay.
 						// Context = "quickedit".
+						// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 						$calculated_context = array( 'quickedit', sanitize_text_field( wp_unslash( $_GET['post_type'] ) ) ); // WPCS: input var okay.
+					// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
 					} elseif ( isset( $_POST['action'] ) && 'heartbeat' === $_POST['action'] && isset( $_POST['data']['fm_context'] ) ) { // WPCS: CSRF ok.
 						$calculated_context = array(
+							// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
 							sanitize_text_field( wp_unslash( $_POST['data']['fm_context'] ) ), // WPCS: CSRF ok.
+							// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
 							isset( $_POST['data']['fm_subcontext'] ) ? sanitize_text_field( wp_unslash( $_POST['data']['fm_subcontext'] ) ) : null, // WPCS: CSRF ok.
 						);
 					}
 					break;
 				// Context = "term".
 				case 'edit-tags.php':
+				// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar -- baseline
 				case 'term.php': // As of 4.5-alpha; see https://core.trac.wordpress.org/changeset/36308
 					if ( ! empty( $_POST['taxonomy'] ) ) { // WPCS: input var okay. CSRF ok.
+						// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
 						$calculated_context = array( 'term', sanitize_text_field( wp_unslash( $_POST['taxonomy'] ) ) ); // WPCS: input var okay. CSRF ok.
+					// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 					} elseif ( ! empty( $_GET['taxonomy'] ) ) { // WPCS: input var okay.
+						// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 						$calculated_context = array( 'term', sanitize_text_field( wp_unslash( $_GET['taxonomy'] ) ) ); // WPCS: input var okay.
 					}
 					break;
@@ -488,6 +511,7 @@ add_action( 'init', 'fm_trigger_context_action', 99 );
  * @return array Updated arrays.
  */
 function fm_localize_context( $scripts ) {
+	// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 	$index = array_search( 'fieldmanager_script', wp_list_pluck( $scripts, 'handle' ) );
 
 	if ( false === $index ) {

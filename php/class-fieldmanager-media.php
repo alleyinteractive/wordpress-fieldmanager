@@ -139,6 +139,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @return int The sanitized value.
 	 */
 	public function presave( $value, $current_value = array() ) {
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( 0 == $value || ! is_numeric( $value ) ) {
 			return null;
 		}
@@ -155,6 +156,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
 			// Open the preview wrapper.
+			// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning -- baseline
 			$preview = '<div class="media-file-preview">';
 			$file_label = ''; // The uploaded file label - image or file.
 
@@ -174,6 +176,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 				)
 			) . '</a>';
 
+			// phpcs:ignore PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket -- baseline
 			$preview .= sprintf( '<div class="fm-file-detail">%1$s<h4>%2$s</h4><span class="fm-file-type">%3$s</span></div>',
 				esc_html( $file_label ),
 				wp_get_attachment_link( $value, $this->preview_size, true, true, $attachment->post_title ),

@@ -199,6 +199,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		$fm_validation->add_field( $this->fm );
 
 		// Display the field.
+		// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
 		echo $this->term_fields( $html_template, $taxonomy ); // WPCS: XSS okay.
 	}
 
@@ -212,6 +213,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 */
 	public function edit_term_fields( $term, $taxonomy ) {
 		// Check if this term's parent matches the specified term if it is set.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( 0 !== strlen( $this->parent ) && $this->parent != $term->parent ) {
 			return;
 		}
@@ -224,6 +226,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		$fm_validation->add_field( $this->fm );
 
 		// Display the field.
+		// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
 		echo $this->term_fields( $html_template, $taxonomy, $term ); // WPCS: XSS okay.
 	}
 
@@ -239,6 +242,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 */
 	public function term_fields( $html_template, $taxonomy, $term = null ) {
 		// Make sure the user hasn't specified a field name we can't use.
+		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( in_array( $this->fm->name, $this->reserved_fields ) ) {
 			/* translators: %s: field name */
 			$this->fm->_invalid_definition( sprintf( __( 'The field name "%s" is reserved for WordPress on the term form.', 'fieldmanager' ), $this->fm->name ) );
@@ -285,6 +289,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 */
 	public function save_term_fields( $term_id, $tt_id, $taxonomy ) {
 		// Make sure this field is attached to the taxonomy being saved and this is the appropriate action.
+		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( ! in_array( $taxonomy, $this->taxonomies ) ) {
 			return;
 		}

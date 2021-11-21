@@ -99,6 +99,7 @@ class Fieldmanager_Context_MenuItem extends Fieldmanager_Context_Storable {
 	 *
 	 * @param int $item_id Menu item ID.
 	 */
+	// phpcs:ignore Squiz.Commenting.FunctionComment.Missing, WordPressVIPMinimum.Hooks.AlwaysReturnInFilter.MissingReturnStatement -- baseline
 	public function add_fields( $item_id ) {
 		// Set the ID.
 		$this->fm->data_id = $item_id;

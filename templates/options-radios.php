@@ -16,9 +16,11 @@ $fm_cb_id = $this->get_element_id() . '-' . esc_attr( sanitize_text_field( $data
 		name="<?php echo esc_attr( $this->get_form_name() ); ?>"
 		id="<?php echo esc_attr( $fm_cb_id ); ?>"
 		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
 		echo $this->get_element_attributes(); // Escaped interally. xss ok.
 		?>
 		<?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
 		echo $this->option_selected( $data_row['value'], $value, 'checked' ); // Escaped interally. xss ok.
 		?>
 	/>

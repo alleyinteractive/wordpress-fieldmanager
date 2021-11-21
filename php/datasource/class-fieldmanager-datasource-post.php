@@ -130,7 +130,9 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			$post_id    = null;
 			$exact_post = null;
 			if ( preg_match( '/^https?\:/i', $fragment ) ) {
+				// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning -- baseline
 				$url       = esc_url( $fragment );
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.parse_url_parse_url -- baseline
 				$url_parts = parse_url( $url );
 
 				if ( ! empty( $url_parts['query'] ) ) {
@@ -151,11 +153,15 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			if ( $post_id ) {
 				$exact_post = get_post( $post_id );
 				if ( $exact_post && (
+					// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 					'any' == $post_args['post_type'] ||
+					// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 					$post_args['post_type'] == $exact_post->post_type ||
+					// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 					in_array( $exact_post->post_type, $post_args['post_type'] )
 				) ) {
 					if ( $this->show_date ) {
+						// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- baseline
 						$date_pad = ' (' . date( $this->date_format, strtotime( $exact_post->post_date ) ) . ')';
 					} else {
 						$date_pad = '';
@@ -166,12 +172,14 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			$this->_fragment = $fragment;
 			add_filter( 'posts_where', array( $this, 'title_like' ), 10, 2 );
 		}
+		// phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.get_posts_get_posts -- baseline
 		$posts = get_posts( $post_args );
 		if ( $fragment ) {
 			remove_filter( 'posts_where', array( $this, 'title_like' ), 10, 2 );
 		}
 		foreach ( $posts as $p ) {
 			if ( $this->show_date ) {
+				// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- baseline
 				$date_pad = ' (' . date( $this->date_format, strtotime( $p->post_date ) ) . ')';
 			} else {
 				$date_pad = '';
@@ -191,6 +199,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		if ( ! empty( $this->ajax_action ) ) {
 			return $this->ajax_action;
 		}
+		// phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode -- baseline
 		$unique_key  = json_encode( $this->query_args );
 		$unique_key .= (string) $this->query_callback;
 		$unique_key .= get_called_class();
@@ -219,6 +228,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * @param array              $current_values Existing post values.
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( 'post' == $field->data_type && ! empty( $this->reciprocal ) && ! empty( $current_values ) && is_array( $current_values ) ) {
 			foreach ( $current_values as $reciprocal_post_id ) {
 				delete_post_meta( $reciprocal_post_id, $this->reciprocal, $field->data_id );
@@ -257,6 +267,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			}
 		}
 
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( $this->save_to_post_parent && 1 == $field->limit && 'post' == $field->data_type ) {
 			if ( ! wp_is_post_revision( $field->data_id ) ) {
 				Fieldmanager_Context_Post::safe_update_post(
@@ -306,6 +317,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		if ( $this->only_save_to_post_parent ) {
 			$post_parent = wp_get_post_parent_id( $field->data_id );
 			if ( $post_parent ) {
+				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 				return ( 1 == $field->limit && empty( $field->multiple ) ) ? $post_parent : array( $post_parent );
 			}
 		}
@@ -356,6 +368,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 function fm_url_to_post_id( $url ) {
 	global $wp_rewrite;
 
+	// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.DeprecatedWhitelistCommentFound -- baseline
 	$url = apply_filters( 'url_to_postid', $url ); // See #532. prefix ok.
 
 	// First, check to see if there is a 'p=N' or 'page_id=N' to match against.
@@ -419,6 +432,7 @@ function fm_url_to_post_id( $url ) {
 	foreach ( (array) $rewrite as $match => $query ) {
 		// If the requesting file is the anchor of the match, prepend it
 		// to the path info.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( ! empty( $url ) && ( $url != $request ) && ( strpos( $match, $url ) === 0 ) ) {
 			$request_match = $url . '/' . $request;
 		}
@@ -436,6 +450,7 @@ function fm_url_to_post_id( $url ) {
 			parse_str( $query, $query_vars );
 			$query = array();
 			foreach ( (array) $query_vars as $key => $value ) {
+				// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 				if ( in_array( $key, $wp->public_query_vars ) ) {
 					$query[ $key ] = $value;
 				}
@@ -444,6 +459,7 @@ function fm_url_to_post_id( $url ) {
 			// Taken from class-wp.php.
 			foreach ( $GLOBALS['wp_post_types'] as $post_type => $t ) {
 				if ( $t->query_var ) {
+					// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- baseline
 					$post_type_query_vars[ $t->query_var ] = $post_type;
 				}
 			}
@@ -452,8 +468,10 @@ function fm_url_to_post_id( $url ) {
 				if ( isset( $wp->extra_query_vars[ $wpvar ] ) ) {
 					$query[ $wpvar ] = $wp->extra_query_vars[ $wpvar ];
 				} elseif ( isset( $_POST[ $wpvar ] ) ) { // WPCS: input var okay. CSRF okay.
+					// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound, WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
 					$query[ $wpvar ] = wp_unslash( $_POST[ $wpvar ] ); // WPCS: input var okay. CSRF okay. Sanitization okay.
 				} elseif ( isset( $_GET[ $wpvar ] ) ) {  // WPCS: input var okay. CSRF okay.
+					// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound, WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
 					$query[ $wpvar ] = wp_unslash( $_GET[ $wpvar ] );  // WPCS: input var okay. CSRF okay. Sanitization okay.
 				} elseif ( isset( $query_vars[ $wpvar ] ) ) {
 					$query[ $wpvar ] = $query_vars[ $wpvar ];
@@ -471,6 +489,7 @@ function fm_url_to_post_id( $url ) {
 					}
 
 					if ( isset( $post_type_query_vars[ $wpvar ] ) ) {
+						// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- baseline
 						$query['post_type'] = $post_type_query_vars[ $wpvar ];
 						$query['name']      = $query[ $wpvar ];
 					}

@@ -148,6 +148,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 
 		if ( ! isset( $settings['default_editor'] ) ) {
 			$settings['default_editor'] = 'tinymce';
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		} elseif ( 'cookie' == $settings['default_editor'] ) {
 			if ( $proto ) {
 				$settings['default_editor'] = 'tinymce';
@@ -161,6 +162,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 					$cookie_value = get_user_setting( 'editor_' . $setting_key, 'tinymce' );
 				}
 
+				// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 				$settings['default_editor'] = in_array( $cookie_value, array( 'tinymce', 'html' ) ) ? $cookie_value : 'tinymce';
 			}
 
