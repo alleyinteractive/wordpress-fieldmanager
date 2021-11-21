@@ -156,8 +156,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
 			// Open the preview wrapper.
-			// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning -- baseline
-			$preview = '<div class="media-file-preview">';
+			$preview    = '<div class="media-file-preview">';
 			$file_label = ''; // The uploaded file label - image or file.
 
 			// If the preview is an image display the image label, otherwise use the file label.
