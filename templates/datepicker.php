@@ -17,8 +17,8 @@
 		value="<?php echo esc_attr( gmdate( $this->date_format, intval( $value ) ) ); ?>"
 		<?php
 	endif;
-	// Escaped internally.
-	echo $this->get_element_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- baseline
+	echo $this->get_element_attributes(); // Escaped internally.
 	?>
 />
 
