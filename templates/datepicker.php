@@ -17,8 +17,8 @@
 		value="<?php echo esc_attr( gmdate( $this->date_format, intval( $value ) ) ); ?>"
 		<?php
 	endif;
-	// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
-	echo $this->get_element_attributes(); // Escaped interally. xss ok.
+	// Escaped internally.
+	echo $this->get_element_attributes(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	?>
 />
 
