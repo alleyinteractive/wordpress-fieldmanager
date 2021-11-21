@@ -398,8 +398,7 @@ function fm_calculate_context() {
 					break;
 				// Context = "term".
 				case 'edit-tags.php':
-				// phpcs:ignore Squiz.Commenting.InlineComment.InvalidEndChar -- baseline
-				case 'term.php': // As of 4.5-alpha; see https://core.trac.wordpress.org/changeset/36308
+				case 'term.php':
 					if ( ! empty( $_POST['taxonomy'] ) ) { // WPCS: input var okay. CSRF ok.
 						// phpcs:ignore WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound -- baseline
 						$calculated_context = array( 'term', sanitize_text_field( wp_unslash( $_POST['taxonomy'] ) ) ); // WPCS: input var okay. CSRF ok.
