@@ -19,16 +19,12 @@ class Fieldmanager_Content_Markdown extends Fieldmanager_Content {
 	 */
 	public $field_class = 'markdown';
 
-	// phpcs:disable Squiz.Commenting.FunctionComment.ParamNameNoMatch -- baseline
-	// phpcs:ignore Squiz.Commenting.FunctionComment.MissingParamTag -- baseline
 	/**
 	 * Render content as HTML from parsed Markdown.
 	 *
-	 * @param mixed $value Unused value.
+	 * @param string $content Content.
 	 * @return string Rendered content.
 	 */
-	// phpcs:enable Squiz.Commenting.FunctionComment.ParamNameNoMatch -- baseline
-	// phpcs:ignore Squiz.Commenting.FunctionComment.Missing -- baseline
 	public function render_content( $content ) {
 		return wp_kses_post( Parsedown\Parsedown::instance()->text( $content ) );
 	}
