@@ -105,8 +105,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 */
 	public function preload_alter_values( $values ) {
 		if ( $this->datasource ) {
-			 // phpcs:ignore WordPress.WhiteSpace.PrecisionAlignment.Found -- baseline
-			 return $this->datasource->preload_alter_values( $this, $values );
+			return $this->datasource->preload_alter_values( $this, $values );
 		}
 		return $values;
 	}
