@@ -1,26 +1,34 @@
-tests/php/build
-tests/php/wp-unit-test
+# Dependencies
+vendor
+node_modules
+.env
 
-# Silly Macs
+# Log files
+*.log
+
+# Cache files
+.phpcs/*.json
+.phpunit.result.cache
+
+# Ignore temporary OS files
 .DS_Store
+.DS_Store?
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.thumbsdb
 
-# For those using Git in their SVN
-# ignore files in the WPcom plugin directory
-wpcom-helper.php
-VERSION
-tests/php/tests
-todo.txt
+# IDE files
+*.code-workspace
+.idea
+.vscode
 
 # Created by Apigen for logs
-/build
+build/
 
-/docs
+# Built docs
+docs/
 
-/report/
-
-.svn
-
-composer.lock
-/vendor/
-/node_modules
-.idea/
+# Code coverage report
+report/
