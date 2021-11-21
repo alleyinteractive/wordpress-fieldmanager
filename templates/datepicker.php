@@ -14,8 +14,7 @@
 	name="<?php echo esc_attr( $this->get_form_name( '[date]' ) ); ?>"
 	id="<?php echo esc_attr( $this->get_element_id() ); ?>"
 	<?php if ( ! empty( $value ) ) : ?>
-		// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- baseline
-		value="<?php echo esc_attr( date( $this->date_format, intval( $value ) ) ); ?>"
+		value="<?php echo esc_attr( gmdate( $this->date_format, intval( $value ) ) ); ?>"
 		<?php
 	endif;
 	// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
