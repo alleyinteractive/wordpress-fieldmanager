@@ -159,8 +159,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 					in_array( $exact_post->post_type, $post_args['post_type'] )
 				) ) {
 					if ( $this->show_date ) {
-						// phpcs:ignore WordPress.DateTime.RestrictedFunctions.date_date -- baseline
-						$date_pad = ' (' . date( $this->date_format, strtotime( $exact_post->post_date ) ) . ')';
+						$date_pad = ' (' . gmdate( $this->date_format, strtotime( $exact_post->post_date ) ) . ')';
 					} else {
 						$date_pad = '';
 					}
