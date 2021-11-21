@@ -130,8 +130,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			$post_id    = null;
 			$exact_post = null;
 			if ( preg_match( '/^https?\:/i', $fragment ) ) {
-				// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning -- baseline
-				$url       = esc_url( $fragment );
+				$url = esc_url( $fragment );
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.parse_url_parse_url -- baseline
 				$url_parts = parse_url( $url );
 
