@@ -212,8 +212,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		$out               = '';
 		$tab_group         = '';
 		$tab_group_submenu = '';
-		// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning -- baseline
-		$before_desc = '';
+		$before_desc       = '';
 
 		// We do not need the wrapper class for extra padding if no label is set for the group.
 		if ( isset( $this->label ) && ! empty( $this->label ) ) {
