@@ -180,8 +180,8 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 		$column_name = sanitize_text_field( wp_unslash( $_GET['column_name'] ) ); // WPCS: input var okay.
-		// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning, WordPress.Security.NonceVerification.Recommended -- baseline
-		$post_id     = intval( $_GET['post_id'] ); // WPCS: input var okay.
+		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
+		$post_id = intval( $_GET['post_id'] ); // WPCS: input var okay.
 
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( ! $post_id || $column_name != $this->fm->name ) {
