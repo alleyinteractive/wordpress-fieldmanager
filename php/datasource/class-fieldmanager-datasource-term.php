@@ -375,8 +375,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 		// Walk through each term passed, add it (at current depth) to the data stack.
 		foreach ( $parent_terms as $term ) {
-			// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning -- baseline
-			$prefix        = '';
+			$prefix = '';
 
 			// Prefix term based on depth. For $depth = 0, prefix will remain empty.
 			for ( $i = 0; $i < $depth; $i++ ) {
