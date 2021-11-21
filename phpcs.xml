@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<ruleset
+	name="Fieldmanager"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/squizlabs/PHP_CodeSniffer/master/phpcs.xsd"
+>
+	<description>Sniffs for the coding standards of the Fieldmanager plugin</description>
+
+	<!-- Include Alley Rules -->
+	<rule ref="Alley-Interactive">
+		<!-- See #659. -->
+		<exclude name="Generic.Arrays.DisallowLongArraySyntax" />
+
+		<exclude name="Generic.Files.OneObjectStructurePerFile" />
+	</rule>
+
+	<arg value="ps" />
+
+	<!-- Whenever possible, cache the scan results and re-use those for unchanged files on the next scan. -->
+	<arg name="cache" value=".phpcs/cache.json" />
+
+	<!-- Strip the filepaths down to the relevant bit. -->
+	<arg name="basepath" value="./" />
+
+	<!-- Check up to 20 files simultaneously. -->
+	<arg name="parallel" value="20" />
+
+	<!-- Set severity to 1 to see everything that isn't effectively turned off. -->
+	<arg name="severity" value="1" />
+
+	<!-- Exclude the vendor directories. -->
+	<exclude-pattern>php/libraries/</exclude-pattern>
+	<exclude-pattern>vendor/</exclude-pattern>
+
+	<!-- The version set here matches the minimum version tested in .github/workflows/phpunit.yml. -->
+	<config name="minimum_supported_wp_version" value="5.8" />
+
+	<file>fieldmanager.php</file>
+	<file>php/</file>
+	<file>templates/</file>
+
+	<rule ref="WordPress.WP.I18n">
+		<properties>
+			<property name="text_domain" value="fieldmanager" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
+		<properties>
+			<property name="prefixes" type="array" value="fm_,_fm,fieldmanager,_fieldmanager,Fieldmanager" />
+		</properties>
+	</rule>
+
+	<rule ref="WordPress.Files.FileName.InvalidClassFileName">
+		<exclude-pattern>fieldmanager.php</exclude-pattern>
+	</rule>
+
+	<rule ref="Squiz.Commenting.FileComment.SpacingAfterComment">
+		<!-- Allow templates to put closing PHP tags immediately after the file header. -->
+		<exclude-pattern>templates/</exclude-pattern>
+	</rule>
+</ruleset>
