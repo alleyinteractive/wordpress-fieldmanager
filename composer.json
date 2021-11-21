@@ -14,10 +14,12 @@
     "composer/installers": "~1.0"
   },
   "require-dev": {
+    "alleyinteractive/alley-coding-standards": "^0.3.0",
     "phpunit/phpunit": "7.5.*",
     "yoast/phpunit-polyfills": "^1.0"
   },
   "scripts": {
+    "phpcs": "vendor/bin/phpcs",
     "phpunit": "vendor/bin/phpunit"
   }
 }
