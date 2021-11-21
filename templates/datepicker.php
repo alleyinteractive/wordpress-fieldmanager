@@ -19,8 +19,7 @@
 	endif;
 	// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
 	echo $this->get_element_attributes(); // Escaped interally. xss ok.
-// phpcs:ignore Generic.WhiteSpace.ScopeIndent.IncorrectExact -- baseline
-?>
+	?>
 />
 
 <?php if ( $this->use_time ) : ?>
