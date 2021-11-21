@@ -778,8 +778,7 @@ abstract class Fieldmanager_Field {
 	public function wrap_with_multi_tools( $html, $classes = array() ) {
 		$classes[] = 'fmjs-removable';
 		$out       = sprintf( '<div class="%s">', implode( ' ', $classes ) );
-		// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.NotSameWarning -- baseline
-		$handle = '';
+		$handle    = '';
 		if ( $this->sortable ) {
 			if ( ( $this->one_label_per_item || ! empty( $this->label ) ) && ! in_array( 'fmjs-removable-label', $classes, true ) && empty( $this->description ) ) {
 				$classes[] = 'fmjs-removable-sort';
