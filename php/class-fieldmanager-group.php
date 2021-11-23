@@ -245,8 +245,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			if ( $this->tabbed ) {
 
 				// Set default classes to display the first tab content and hide others.
-				// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning -- baseline
-				$tab_classes   = array( 'fm-tab' );
+				$tab_classes = array( 'fm-tab' );
 				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 				$tab_classes[] = ( 0 == $this->child_count ) ? 'wp-tab-active' : 'hide-if-no-js';
 
