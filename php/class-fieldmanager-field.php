@@ -1397,8 +1397,7 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @param string $debug_message The debug message.
 	 */
-	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, Squiz.Commenting.FunctionComment.Missing -- baseline
-	public function _unauthorized_access( $debug_message = '' ) {
+	public function _unauthorized_access( $debug_message = '' ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore -- baseline
 		if ( self::$debug ) {
 			throw new FM_Exception( esc_html( $debug_message ) );
 		} else {
@@ -1413,8 +1412,7 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @param string $debug_message The debug message.
 	 */
-	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, Squiz.Commenting.FunctionComment.Missing -- baseline
-	protected function _failed_validation( $debug_message = '' ) {
+	protected function _failed_validation( $debug_message = '' ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore -- baseline
 		if ( self::$debug ) {
 			throw new FM_Validation_Exception( $debug_message );
 		} else {
@@ -1434,8 +1432,7 @@ abstract class Fieldmanager_Field {
 	 *
 	 * @param string $debug_message The debug message.
 	 */
-	// phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore, Squiz.Commenting.FunctionComment.Missing -- baseline
-	public function _invalid_definition( $debug_message = '' ) {
+	public function _invalid_definition( $debug_message = '' ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore -- baseline
 		if ( self::$debug ) {
 			throw new FM_Exception( esc_html( $debug_message ) );
 		} else {
