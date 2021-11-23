@@ -195,8 +195,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		if ( ! empty( $this->ajax_action ) ) {
 			return $this->ajax_action;
 		}
-		// phpcs:ignore WordPress.WP.AlternativeFunctions.json_encode_json_encode -- baseline
-		$unique_key  = json_encode( $this->query_args );
+		$unique_key  = wp_json_encode( $this->query_args );
 		$unique_key .= (string) $this->query_callback;
 		$unique_key .= get_called_class();
 		return 'fm_datasource_post_' . crc32( $unique_key );
