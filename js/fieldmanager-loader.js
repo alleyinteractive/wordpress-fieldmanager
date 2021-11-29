@@ -6,7 +6,7 @@
  */
  function fmLoadModule( callback ) {
 	// For the Gutenberg editor only, load FM module after metabox initialization.
-	if (wp.data) {
+	if (wp.data && wp.blocks && wp.element) {
 		var metaboxesInitializedUnsubscribe = wp.data.subscribe(() => {
 			if (wp.data.select( 'core/edit-post' ).areMetaBoxesInitialized()) {
 				/**
