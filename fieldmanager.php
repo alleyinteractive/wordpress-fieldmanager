@@ -18,7 +18,7 @@ Author URI: https://www.alley.co/
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.3.1' );
+define( 'FM_VERSION', '1.3.0' );
 
 /**
  * Filesystem path to Fieldmanager.
