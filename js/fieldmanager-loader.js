@@ -12,28 +12,44 @@
 	 */
 	const wrappedCallback = () => {
 		if (document.querySelector('.block-editor-page')) {
-			const metaboxesInitializedUnsubscribe = wp.data.subscribe(() => {
-				if ( wp.data.select( 'core/edit-post' ).areMetaBoxesInitialized() ) {
+			let pollAttempts = 0;
+			let isSubscribed = false;
+
+			wp.data.subscribe(() => {
+				if ( ! isSubscribed && wp.data.select( 'core/edit-post' ).areMetaBoxesInitialized() ) {
+					// Ensure new intervals aren't created on subsequent state updates.
+					isSubscribed = true;
+
 					/**
 					 * `areMetaBoxesInitialized` is called immediately before the
 					 * `MetaBoxesArea` component is rendered, which is where the metabox
 					 * HTML is moved from the hidden div and into the main form element.
 					 *
-					 * This means we need to delay the callback a bit to allow this
-					 * component to render such that the jQuery `:visible` selector
-					 * can work as expected.
+					 * This means we need to set a polling function that checks for the
+					 * existence of the markup in the DOM before we run our callbacks.
 					 *
 					 * @link https://github.com/WordPress/gutenberg/blob/019d0a1b1883a5c3e5c9cdecc60bd5e546b60a1b/packages/edit-post/src/components/meta-boxes/index.js#L38-L45
 					 * @link https://github.com/WordPress/gutenberg/blob/d39949a3b9dc8e12d5f5d33b9091f14b93b37c8a/packages/edit-post/src/components/meta-boxes/meta-boxes-area/index.js#L34-L36
 					 */
-					setTimeout(() => {
-						callback();
-					}, 100);
+					const pollForMetaBoxes = setInterval(() => {
+						let callbackExecuted = false;
 
-					metaboxesInitializedUnsubscribe();
+						// Increment the counter so we can limit the number of tries.
+						pollAttempts++;
+
+						if ( document.querySelector('.edit-post-meta-boxes-area__container') ) {
+							callback();
+							callbackExecuted = true;
+						}
+
+						// Make sure we clear the callback interval.
+						if (callbackExecuted || pollAttempts > 5 ) {
+							clearInterval(pollForMetaBoxes);
+						}
+					}, 100);
 				}
 			});
-		} else{
+		} else {
 			callback();
 		}
 	};
