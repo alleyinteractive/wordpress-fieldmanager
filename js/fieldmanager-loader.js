@@ -4,7 +4,7 @@
  * Ensures that metaboxes have loaded before initializing functionality.
  * @param {function} callback - The callback function to execute when the DOM is ready.
  */
- function fmLoadModule( callback ) {
+function fmLoadModule( callback ) {
 	/**
 	 * Wraps the provided callback to add check for the Gutenberg editor. If this
 	 * is called within the Gutenberg editor, then the callback function will trigger
