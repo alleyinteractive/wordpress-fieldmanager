@@ -24,12 +24,12 @@ function fmLoadModule( callback ) {
 				 * @link https://github.com/WordPress/gutenberg/blob/019d0a1b1883a5c3e5c9cdecc60bd5e546b60a1b/packages/edit-post/src/components/meta-boxes/index.js#L38-L45
 				 * @link https://github.com/WordPress/gutenberg/blob/d39949a3b9dc8e12d5f5d33b9091f14b93b37c8a/packages/edit-post/src/components/meta-boxes/meta-boxes-area/index.js#L34-L36
 				 */
-				if ( wp.data.select( 'core/edit-post' ).areMetaBoxesInitialized() ) {
-
-					if ( document.querySelector('.edit-post-meta-boxes-area__container') ) {
-						callback();
-						unsubscribeListener();
-					}
+				if (
+					wp.data.select( 'core/edit-post' ).areMetaBoxesInitialized()
+					&& document.querySelector('.edit-post-meta-boxes-area__container')
+				) {
+					callback();
+					unsubscribeListener();
 				}
 			});
 		} else {
