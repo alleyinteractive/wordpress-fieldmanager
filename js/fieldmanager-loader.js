@@ -12,7 +12,7 @@
 	 */
 	const wrappedCallback = () => {
 		if (document.querySelector('.block-editor-page')) {
-			let pollAttempts = 0;
+			let pollAttemptsRemaining = 5;
 			let isSubscribed = false;
 
 			wp.data.subscribe(() => {
@@ -34,8 +34,8 @@
 					const pollForMetaBoxes = setInterval(() => {
 						let callbackExecuted = false;
 
-						// Increment the counter so we can limit the number of tries.
-						pollAttempts++;
+						// Decrement the counter so we can limit the number of tries.
+						pollAttemptsRemaining--;
 
 						if ( document.querySelector('.edit-post-meta-boxes-area__container') ) {
 							callback();
@@ -43,7 +43,7 @@
 						}
 
 						// Make sure we clear the callback interval.
-						if (callbackExecuted || pollAttempts > 5 ) {
+						if (callbackExecuted || ! pollAttemptsRemaining ) {
 							clearInterval(pollForMetaBoxes);
 						}
 					}, 100);
