@@ -11,8 +11,8 @@ function fmLoadModule( callback ) {
 	 * after the metaboxes are initialized.
 	 */
 	const wrappedCallback = () => {
-		if (document.querySelector('.block-editor-page')) {
-			const unsubscribeListener = wp.data.subscribe(() => {
+		if ( document.querySelector( '.block-editor-page' ) ) {
+			const unsubscribeListener = wp.data.subscribe( () => {
 				/**
 				 * `areMetaBoxesInitialized` is called immediately before the
 				 * `MetaBoxesArea` component is rendered, which is where the metabox
@@ -26,12 +26,12 @@ function fmLoadModule( callback ) {
 				 */
 				if (
 					wp.data.select( 'core/edit-post' ).areMetaBoxesInitialized()
-					&& document.querySelector('.edit-post-meta-boxes-area__container')
+					&& document.querySelector( '.edit-post-meta-boxes-area__container' )
 				) {
 					callback();
 					unsubscribeListener();
 				}
-			});
+			} );
 		} else {
 			callback();
 		}
