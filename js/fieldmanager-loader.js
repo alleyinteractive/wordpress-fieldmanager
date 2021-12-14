@@ -26,7 +26,7 @@ function fmLoadModule( callback ) {
 				 */
 				if (
 					wp.data.select( 'core/edit-post' ).areMetaBoxesInitialized()
-					&& document.querySelector( '.edit-post-meta-boxes-area__container' )
+					&& document.querySelector( '.edit-post-meta-boxes-area__container .metabox-location-normal' )
 				) {
 					callback();
 					unsubscribeListener();
