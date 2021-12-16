@@ -152,6 +152,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @return string HTML string.
 	 */
 	public function form_element( $value = array() ) {
+		do_action( 'fieldmanager_media_pre_form_element' );
 		if ( is_numeric( $value ) && $value > 0 ) {
 			$attachment = get_post( $value );
 			// Open the preview wrapper.
@@ -200,6 +201,8 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 		} else {
 			$preview = '';
 		}
+
+		do_action( 'fieldmanager_media_post_form_element' );
 		return sprintf(
 			'<input type="button" class="fm-media-button button-secondary fm-incrementable" id="%1$s" value="%3$s" data-choose="%7$s" data-update="%8$s" data-preview-size="%6$s" data-mime-type="%9$s" %10$s />
 			<input type="hidden" name="%2$s" value="%4$s" class="fm-element fm-media-id" />
