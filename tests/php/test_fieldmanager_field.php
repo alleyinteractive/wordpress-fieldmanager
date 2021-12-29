@@ -1215,7 +1215,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	public function data_fields_overriding_presave_alter_values() {
 		return array(
 			array(
-				$this->getMockForAbstractClass( 'Fieldmanager_Options' ),
+				new Fieldmanager_Options_Mock(),
 			),
 			array(
 				new Fieldmanager_Autocomplete( array(
