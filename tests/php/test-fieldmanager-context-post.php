@@ -7,8 +7,8 @@
  * @group post
  */
 class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = array(

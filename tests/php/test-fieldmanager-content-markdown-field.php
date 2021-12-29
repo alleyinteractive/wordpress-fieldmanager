@@ -34,8 +34,8 @@ class Test_Fieldmanager_Content_Markdown_Field extends WP_UnitTestCase {
 	/**
 	 * Setup test.
 	 */
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->plaintext = file_get_contents( __DIR__ . '/data/plaintext.txt' );

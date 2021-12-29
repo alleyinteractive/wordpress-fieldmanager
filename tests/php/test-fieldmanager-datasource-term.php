@@ -13,8 +13,8 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 
 	public $term_2;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = $this->factory->post->create_and_get(

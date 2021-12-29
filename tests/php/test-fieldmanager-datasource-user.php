@@ -8,8 +8,8 @@
  */
 class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->author        = $this->factory->user->create(

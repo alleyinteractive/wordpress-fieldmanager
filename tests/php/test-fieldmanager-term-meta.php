@@ -10,8 +10,8 @@
 class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 	public $current_user;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->current_user = get_current_user_id();
@@ -20,7 +20,7 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 		$this->term = $this->factory->category->create_and_get( array( 'name' => rand_str() ) );
 	}
 
-	public function tearDown(): void {
+	public function tear_down(): void {
 		if ( get_current_user_id() != $this->current_user ) {
 			wp_delete_user( get_current_user_id() );
 		}

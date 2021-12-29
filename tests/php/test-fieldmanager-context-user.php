@@ -7,8 +7,8 @@
  * @group user
  */
 class Test_Fieldmanager_Context_User extends WP_UnitTestCase {
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->user_id = wp_create_user( rand_str(), rand_str(), 'admin@local.dev' );

@@ -7,8 +7,8 @@
  * @group menuitem
  */
 class Test_Fieldmanager_Context_Menuitem extends WP_UnitTestCase {
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = self::factory()->post->create_and_get( array(

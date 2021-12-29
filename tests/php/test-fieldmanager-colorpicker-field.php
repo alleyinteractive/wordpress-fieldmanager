@@ -10,8 +10,8 @@ class Test_Fieldmanager_Colorpicker_Field extends WP_UnitTestCase {
 
 	protected $post;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		// insert a post

@@ -11,8 +11,8 @@ class Test_Fieldmanager_Select_Field extends WP_UnitTestCase {
 	public $post;
 	public $custom_datasource;
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post_id = $this->factory->post->create(

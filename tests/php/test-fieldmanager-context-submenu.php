@@ -10,14 +10,14 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 	private $processed_values = array();
 
-	public function setUp(): void {
-		parent::setUp();
+	public function set_up(): void {
+		parent::set_up();
 		add_filter( 'fm_submenu_presave_data', array( $this, 'presave_alter_number' ), 10, 2 );
 	}
 
-	public function tearDown(): void {
+	public function tear_down(): void {
 		remove_filter( 'fm_submenu_presave_data', array( $this, 'presave_alter_number' ), 10, 2 );
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
