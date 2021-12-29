@@ -69,7 +69,8 @@ jobs:
         with:
           timeout_minutes: 5
           max_attempts: 5
-          command: composer install --ignore-platform-reqs
+          command: composer install
+          new_command_on_retry: composer install --ignore-platform-reqs
 
       - name: Install WordPress and copy project
         shell: bash
