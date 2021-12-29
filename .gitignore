@@ -2,6 +2,7 @@
 vendor
 node_modules
 .env
+composer.lock
 
 # Log files
 *.log
