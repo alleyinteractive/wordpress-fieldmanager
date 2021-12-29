@@ -1,22 +1,25 @@
-<?xml version="1.0"?>
-<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="tests/php/bootstrap.php" backupGlobals="false" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
-  <coverage processUncoveredFiles="true">
-    <include>
-      <directory suffix=".php">php</directory>
-    </include>
-  </coverage>
-  <testsuites>
-    <!-- Default test suite to run all tests -->
-    <testsuite name="Fieldmanager Tests">
-      <directory suffix=".php">tests</directory>
-    </testsuite>
-  </testsuites>
-  <groups>
-    <exclude>
-      <group>ajax</group>
-    </exclude>
-  </groups>
-  <logging>
-    <junit outputFile="build/logs/junit.xml"/>
-  </logging>
+<phpunit
+        bootstrap="tests/php/bootstrap.php"
+        backupGlobals="false"
+        colors="true"
+>
+    <testsuites>
+        <!-- Default test suite to run all tests -->
+        <testsuite name="Fieldmanager Tests">
+            <directory suffix=".php">tests</directory>
+        </testsuite>
+    </testsuites>
+    <groups>
+        <exclude>
+            <group>ajax</group>
+        </exclude>
+    </groups>
+    <logging>
+        <log type="junit" target="build/logs/junit.xml" />
+    </logging>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">php</directory>
+        </whitelist>
+    </filter>
 </phpunit>
