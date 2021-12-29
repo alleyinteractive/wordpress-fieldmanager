@@ -31,7 +31,7 @@ class Test_Fieldmanager_Content_Plaintext_Field extends WP_UnitTestCase {
 	/**
 	 * Setup test.
 	 */
-	public function set_up(): void {
+	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 

@@ -7,7 +7,7 @@
  * @group field
  */
 class Fieldmanager_Field_Test extends WP_UnitTestCase {
-	public function set_up(): void {
+	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
@@ -23,7 +23,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->post = get_post( $this->post_id );
 	}
 
-	public function tear_down(): void {
+	public function tear_down() {
 		$meta = get_post_meta( $this->post_id );
 		foreach ( $meta as $key => $value ) {
 			delete_post_meta( $this->post_id, $key );

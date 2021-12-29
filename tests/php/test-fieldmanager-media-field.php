@@ -10,7 +10,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 
 	protected $post;
 
-	public function set_up(): void {
+	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 

@@ -11,7 +11,7 @@
 class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 	public $current_user;
 
-	public function set_up(): void {
+	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
@@ -27,7 +27,7 @@ class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 		$this->term = get_term( $this->term_id, $this->taxonomy );
 	}
 
-	public function tear_down(): void {
+	public function tear_down() {
 		parent::tear_down();
 
 		$meta = fm_get_term_meta( $this->term_id, $this->taxonomy );

@@ -6,7 +6,7 @@ class Fieldmanager_Assets_Unit_Test_Case extends WP_UnitTestCase {
 
 	protected $screen, $old_wp_scripts;
 
-	public function set_up(): void {
+	public function set_up() {
 		parent::set_up();
 
 		// Spoof is_admin() for fm_add_script().
@@ -25,7 +25,7 @@ class Fieldmanager_Assets_Unit_Test_Case extends WP_UnitTestCase {
 		Fieldmanager_Util_Assets::instance()->hooked = false;
 	}
 
-	public function tear_down(): void {
+	public function tear_down() {
 		// Restore current_screen.
 		$GLOBALS['current_screen'] = $this->screen;
 

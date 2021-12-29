@@ -11,7 +11,7 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 	public $post;
 	public $custom_datasource;
 
-	public function set_up(): void {
+	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 

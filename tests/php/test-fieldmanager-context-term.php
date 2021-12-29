@@ -9,7 +9,7 @@
 class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	public $current_user;
 
-	public function set_up(): void {
+	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
@@ -25,7 +25,7 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$this->term = get_term( $this->term_id, $this->taxonomy );
 	}
 
-	public function tear_down(): void {
+	public function tear_down() {
 		parent::tear_down();
 
 		if ( _fm_phpunit_is_wp_at_least( 4.4 ) ) {

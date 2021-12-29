@@ -6,7 +6,7 @@
  */
 class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Case {
 
-	public function set_up(): void {
+	public function set_up() {
 		parent::set_up();
 
 		// Instantiate field classes that register scripts.

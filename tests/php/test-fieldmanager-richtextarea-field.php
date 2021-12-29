@@ -8,7 +8,7 @@
  */
 class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
-	public function set_up(): void {
+	public function set_up() {
 		parent::set_up();
 		add_filter( 'user_can_richedit', '__return_true' );
 		Fieldmanager_Field::$debug = true;
@@ -24,7 +24,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$this->post    = get_post( $this->post_id );
 	}
 
-	public function tear_down(): void {
+	public function tear_down() {
 		remove_filter( 'user_can_richedit', '__return_true' );
 		parent::tear_down();
 	}
