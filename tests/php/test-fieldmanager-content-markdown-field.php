@@ -34,7 +34,7 @@ class Test_Fieldmanager_Content_Markdown_Field extends WP_UnitTestCase {
 	/**
 	 * Setup test.
 	 */
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 

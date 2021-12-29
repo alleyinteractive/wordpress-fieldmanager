@@ -10,7 +10,7 @@ class Test_Fieldmanager_Colorpicker_Field extends WP_UnitTestCase {
 
 	protected $post;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
@@ -29,7 +29,7 @@ class Test_Fieldmanager_Colorpicker_Field extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test Colorpicker', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( '#<input class="[^"]*fm-colorpicker-popup[^>]+name="test_colorpicker"#', $html );
+		$this->assertMatchesRegularExpression( '#<input class="[^"]*fm-colorpicker-popup[^>]+name="test_colorpicker"#', $html );
 	}
 
 	public function test_basic_save() {
@@ -74,6 +74,6 @@ class Test_Fieldmanager_Colorpicker_Field extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test Colorpicker', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( $regex, $html );
+		$this->assertMatchesRegularExpression( $regex, $html );
 	}
 }

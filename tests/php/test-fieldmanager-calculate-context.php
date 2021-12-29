@@ -7,7 +7,7 @@
 class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
 	protected $screen, $self, $get, $submenus;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 
 		$this->screen   = get_current_screen();
@@ -21,7 +21,7 @@ class Test_Fieldmanager_Calculate_Context extends WP_UnitTestCase {
 		set_current_screen( 'dashboard-user' );
 	}
 
-	public function tearDown( $value = null ) {
+	public function tearDown(): void {
 		$GLOBALS['current_screen'] = $this->screen;
 		$_SERVER['PHP_SELF']       = $this->self;
 		$_GET                      = $this->get;

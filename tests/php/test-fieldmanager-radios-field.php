@@ -11,7 +11,7 @@ class Test_Fieldmanager_Radios_Field extends WP_UnitTestCase {
 	public $post;
 	public $custom_datasource;
 
-	public function setUp() {
+	public function setUp(): void {
 		parent::setUp();
 		Fieldmanager_Field::$debug = true;
 
