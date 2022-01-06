@@ -177,30 +177,36 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	public function save_fields_for_post( $post_id ) {
 		// Make sure this field is attached to the post type being saved.
 		if (
-			empty( $_POST['post_ID'] ) // WPCS: input var okay. CSRF ok.
+			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- baseline
+			empty( $_POST['post_ID'] )
 			|| ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			|| ( isset( $_POST['action'] ) && 'editpost' != $_POST['action'] ) // WPCS: input var okay. CSRF ok.
+			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+			|| ( isset( $_POST['action'] ) && 'editpost' != $_POST['action'] )
 		) {
 			return;
 		}
 
 		// Make sure this hook fired on the post being saved, not a side-effect post for which the $_POST context is invalid.
-		if ( absint( $_POST['post_ID'] ) !== $post_id ) { // WPCS: input var okay. CSRF ok.
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing -- baseline
+		if ( absint( $_POST['post_ID'] ) !== $post_id ) {
 			return;
 		}
 
 		// Prevent saving the same post twice; FM does not yet use revisions.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( get_post_type( $post_id ) == 'revision' ) {
 			return;
 		}
 
 		// Make sure this post type is intended for handling by this FM context.
+		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) {
 			return;
 		}
 
 		// Do not handle quickedit in this context.
-		if ( 'inline-save' == $_POST['action'] ) { // WPCS: input var okay. CSRF ok.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+		if ( 'inline-save' == $_POST['action'] ) {
 			return;
 		}
 
@@ -212,7 +218,8 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		}
 
 		// Make sure the current user is authorized to save this post.
-		if ( isset( $_POST['post_type'] ) && 'post' == $_POST['post_type'] ) { // WPCS: input var okay. CSRF ok.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+		if ( isset( $_POST['post_type'] ) && 'post' == $_POST['post_type'] ) {
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
 				return;
@@ -229,6 +236,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	 * @param int $post_id The post ID.
 	 */
 	public function save_fields_for_cron( $post_id ) {
+		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( ! in_array( get_post_type( $post_id ), $this->post_types ) ) {
 			return;
 		}

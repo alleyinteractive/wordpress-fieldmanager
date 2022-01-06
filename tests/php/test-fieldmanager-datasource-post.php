@@ -8,8 +8,8 @@
  */
 class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->author = $this->factory->user->create(
@@ -274,10 +274,10 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 
 	/**
 	 * Test that a user lacking permission can not publish a child post.
-	 *
-	 * @expectedException WPDieException
 	 */
 	public function test_alter_child_invalid_publish() {
+		$this->expectException( WPDieException::class );
+
 		$test_data = array( $this->child_post_a->ID, $this->child_post_b->ID );
 
 		$children = new Fieldmanager_Autocomplete(
@@ -319,13 +319,13 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 			)
 		);
 		$html      = $this->_get_html_for( $fm, $this->child_post_a );
-		$this->assertContains( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="" />', $html );
+		$this->assertStringContainsString('<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="" />', $html );
 		$html = $this->_get_html_for( $fm, $this->child_post_a, $test_data );
 		// Reload the post
 		$this->child_post_a = get_post( $this->child_post_a->ID );
 		$this->assertEquals( $test_data, $this->child_post_a->post_parent );
 		$this->assertEquals( $test_data, get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
-		$this->assertContains(
+		$this->assertStringContainsString(
 			sprintf( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="%d" />', $test_data ),
 			$html
 		);
@@ -357,13 +357,13 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 			)
 		);
 		$html      = $this->_get_html_for( $fm, $this->child_post_a );
-		$this->assertContains( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent[parent]" value="" />', $html );
+		$this->assertStringContainsString('<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent[parent]" value="" />', $html );
 		$html = $this->_get_html_for( $fm, $this->child_post_a, $test_data );
 		// Reload the post
 		$this->child_post_a = get_post( $this->child_post_a->ID );
 		$this->assertEquals( $this->parent_post->ID, $this->child_post_a->post_parent );
 		$this->assertEquals( '', get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
-		$this->assertContains(
+		$this->assertStringContainsString(
 			sprintf( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent[parent]" value="%d" />', $this->parent_post->ID ),
 			$html
 		);
@@ -388,13 +388,13 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 			)
 		);
 		$html      = $this->_get_html_for( $fm, $this->child_post_a );
-		$this->assertContains( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="" />', $html );
+		$this->assertStringContainsString('<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="" />', $html );
 		$html = $this->_get_html_for( $fm, $this->child_post_a, $test_data );
 		// Reload the post
 		$this->child_post_a = get_post( $this->child_post_a->ID );
 		$this->assertEquals( $test_data, $this->child_post_a->post_parent );
 		$this->assertEquals( '', get_post_meta( $this->child_post_a->ID, 'test_parent', true ) );
-		$this->assertContains(
+		$this->assertStringContainsString(
 			sprintf( '<input class="fm-autocomplete-hidden fm-element" type="hidden" name="test_parent" value="%d" />', $test_data ),
 			$html
 		);
@@ -402,10 +402,10 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 
 	/**
 	 * Test that a user lacking permission can not add meta to a child post.
-	 *
-	 * @expectedException WPDieException
 	 */
 	public function test_alter_child_invalid_reciprocal() {
+		$this->expectException( WPDieException::class );
+
 		$test_data = array( $this->child_post_a->ID, $this->child_post_b->ID );
 
 		$children = new Fieldmanager_Autocomplete(
@@ -446,7 +446,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test Autocomplete', 'post' )->render_meta_box( $this->child_post_a, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( '/<input[^>]+type=[\'"]hidden[\'"][^>]+value=[\'"]{2}/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type=[\'"]hidden[\'"][^>]+value=[\'"]{2}/', $html );
 
 		$this->save_values( $fm, $this->child_post_a, $this->parent_post->ID );
 		$child = get_post( $this->child_post_a->ID );
@@ -456,7 +456,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test Autocomplete', 'post' )->render_meta_box( $this->child_post_a, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( "/<input[^>]+type=['\"]hidden['\"][^>]+value=['\"]{$this->parent_post->ID}['\"]/", $html );
+		$this->assertMatchesRegularExpression( "/<input[^>]+type=['\"]hidden['\"][^>]+value=['\"]{$this->parent_post->ID}['\"]/", $html );
 	}
 
 	public function test_options_post_parent_render() {
@@ -478,7 +478,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test Select', 'post' )->render_meta_box( $this->child_post_a, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			sprintf( '#<option\s*value="%s"\s*>%s</option>#i', $this->parent_post->ID, $this->parent_post->post_title ),
 			$html
 		);
@@ -491,7 +491,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test Select', 'post' )->render_meta_box( $this->child_post_a, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			sprintf( '#<option\s*value="%s"\s*selected(?:\s*=\s*"selected")?\s*>%s</option>#i', $this->parent_post->ID, $this->parent_post->post_title ),
 			$html
 		);

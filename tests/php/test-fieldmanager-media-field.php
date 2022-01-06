@@ -10,8 +10,8 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 
 	protected $post;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		// insert a post
@@ -41,7 +41,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp(
+		$this->assertMatchesRegularExpression(
 			sprintf(
 				'#<input type="button" class="[^"]*fm-media-button[^>]+value="%s" data-choose="%s" data-update="%s" data-preview-size="%s" data-mime-type="all" */>#',
 				$args['button_label'],
@@ -51,8 +51,8 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 			),
 			$html
 		);
-		$this->assertRegExp( '#<input type="hidden" name="test_media" value="" class="fm-element fm-media-id" />#', $html );
-		$this->assertRegExp( '#<div class="media-wrapper"></div>#', $html );
+		$this->assertMatchesRegularExpression( '#<input type="hidden" name="test_media" value="" class="fm-element fm-media-id" />#', $html );
+		$this->assertMatchesRegularExpression( '#<div class="media-wrapper"></div>#', $html );
 
 		// Test $selected_image_label.
 		update_post_meta(
@@ -71,7 +71,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertContains( $args['selected_image_label'], $html );
+		$this->assertStringContainsString($args['selected_image_label'], $html );
 
 		// Test $selected_file_label and $remove_media_label.
 		update_post_meta(
@@ -90,8 +90,8 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		ob_start();
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertContains( $args['selected_file_label'], $html );
-		$this->assertContains( $args['remove_media_label'], $html );
+		$this->assertStringContainsString($args['selected_file_label'], $html );
+		$this->assertStringContainsString($args['remove_media_label'], $html );
 	}
 
 	public function test_basic_save() {
@@ -113,7 +113,7 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test Media', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( '/<input[^>]+type=[\'"]button[\'"][^>]+data-mime-type=[\'"]image[\'"]/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type=[\'"]button[\'"][^>]+data-mime-type=[\'"]image[\'"]/', $html );
 	}
 
 	public function test_attributes() {
@@ -128,6 +128,6 @@ class Test_Fieldmanager_Media_Field extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test Media', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( '/<input[^>]+type=[\'"]button[\'"][^>]+data-test=[\'"]' . $args['attributes']['data-test'] . '[\'"]/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type=[\'"]button[\'"][^>]+data-test=[\'"]' . $args['attributes']['data-test'] . '[\'"]/', $html );
 	}
 }

@@ -8,8 +8,8 @@
  */
 class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = array(
@@ -53,7 +53,7 @@ class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
 		$saved_data    = get_post_meta( $this->post_id, 'test_date_group', true );
 		$input_element = $date_picker->form_element( $saved_data['test_date_field'] );
 
-		$this->assertRegExp( sprintf( '#[^*]value="%s"[^*]#', $test_date ), $input_element );
+		$this->assertMatchesRegularExpression( sprintf( '#[^*]value="%s"[^*]#', $test_date ), $input_element );
 	}
 
 	/**

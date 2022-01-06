@@ -6,8 +6,8 @@
  */
 class Test_Fieldmanager_Script_Loading extends Fieldmanager_Assets_Unit_Test_Case {
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		// Instantiate field classes that register scripts.
 		new Fieldmanager_Autocomplete( 'Test', array( 'datasource' => new Fieldmanager_Datasource_Post() ) );

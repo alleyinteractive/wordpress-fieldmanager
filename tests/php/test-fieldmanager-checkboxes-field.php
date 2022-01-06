@@ -11,8 +11,8 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 	public $post;
 	public $custom_datasource;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post_id = $this->factory->post->create(
@@ -75,9 +75,9 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 
 		$html = $this->_get_html_for( $fm );
 
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'one' ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'two' ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'three' ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', 'one' ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', 'two' ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', 'three' ), $html );
 	}
 
 	public function test_basic_save() {
@@ -90,9 +90,9 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 
 		$html = $this->_get_html_for( $fm, array( 'two' ) );
 
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'one' ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'two', true ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'three' ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', 'one' ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', 'two', true ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', 'three' ), $html );
 	}
 
 	public function test_associative_render() {
@@ -109,15 +109,15 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 
 		$html = $this->_get_html_for( $fm );
 
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', array( 1 => 'one' ) ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', array( 2 => 'two' ) ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', array( 3 => 'three' ) ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', array( 1 => 'one' ) ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', array( 2 => 'two' ) ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', array( 3 => 'three' ) ), $html );
 
 		$html = $this->_get_html_for( $fm, array( 2 ) );
 
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', array( 1 => 'one' ) ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', array( 2 => 'two' ), true ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', array( 3 => 'three' ) ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', array( 1 => 'one' ) ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', array( 2 => 'two' ), true ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', array( 3 => 'three' ) ), $html );
 	}
 
 	public function test_default_value() {
@@ -131,9 +131,9 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 
 		$html = $this->_get_html_for( $fm );
 
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'one' ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'two', true ), $html );
-		$this->assertRegExp( $this->_get_input_field_regex( 'base_field', 'three' ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', 'one' ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', 'two', true ), $html );
+		$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', 'three' ), $html );
 	}
 
 	public function test_datasource() {
@@ -147,7 +147,7 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 		$html = $this->_get_html_for( $fm );
 
 		foreach ( $this->months as $month ) {
-			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month ), $html );
+			$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', $month ), $html );
 		}
 	}
 
@@ -163,7 +163,7 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 		$html = $this->_get_html_for( $fm );
 
 		foreach ( $this->months as $month ) {
-			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month, ( 'February' === $month ) ), $html );
+			$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', $month, ( 'February' === $month ) ), $html );
 		}
 	}
 
@@ -178,7 +178,7 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 		$html = $this->_get_html_for( $fm, array( 'February' ) );
 
 		foreach ( $this->months as $month ) {
-			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month, ( 'February' === $month ) ), $html );
+			$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', $month, ( 'February' === $month ) ), $html );
 		}
 	}
 
@@ -194,7 +194,7 @@ class Test_Fieldmanager_Checkboxes_Field extends WP_UnitTestCase {
 		$html = $this->_get_html_for( $fm );
 
 		foreach ( $this->months as $month ) {
-			$this->assertRegExp( $this->_get_input_field_regex( 'base_field', $month, true ), $html );
+			$this->assertMatchesRegularExpression( $this->_get_input_field_regex( 'base_field', $month, true ), $html );
 		}
 	}
 

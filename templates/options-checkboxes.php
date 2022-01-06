@@ -16,7 +16,8 @@ $fm_cb_id = $this->get_element_id() . '-' . sanitize_text_field( $data_row['valu
 		name="<?php echo esc_attr( $this->get_form_name( '[]' ) ); ?>"
 		id="<?php echo esc_attr( $fm_cb_id ); ?>"
 		<?php
-		echo $this->get_element_attributes(); // Escaped interally. xss ok.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- baseline
+		echo $this->get_element_attributes(); // Escaped internally.
 		echo esc_attr( $this->option_selected( $data_row['value'], $value, 'checked' ) );
 		?>
 	/>

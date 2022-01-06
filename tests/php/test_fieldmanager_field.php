@@ -7,8 +7,8 @@
  * @group field
  */
 class Fieldmanager_Field_Test extends WP_UnitTestCase {
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = array(
@@ -23,7 +23,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->post = get_post( $this->post_id );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$meta = get_post_meta( $this->post_id );
 		foreach ( $meta as $key => $value ) {
 			delete_post_meta( $this->post_id, $key );
@@ -296,9 +296,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * Test that a closure validator works properly
 	 * Specifically verifies that callables of various types work.
 	 *
-	 * @expectedException FM_Validation_Exception
 	 */
 	public function test_invalid_closure() {
+		$this->expectException( FM_Validation_Exception::class );
+
 		$elements                                  = $this->_get_elements();
 		$base                                      = new Fieldmanager_Group(
 			array(
@@ -315,9 +316,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * Test that using is_numeric as a validator works properly
 	 * Verifies that the framework hasn't been refactored to something that expects a result other than true/false
 	 *
-	 * @expectedException FM_Validation_Exception
 	 */
 	public function test_invalid_php_callback() {
+		$this->expectException( FM_Validation_Exception::class );
+
 		$elements                                 = $this->_get_elements();
 		$base                                     = new Fieldmanager_Group(
 			array(
@@ -358,9 +360,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	 * Test that using an option not listed in the base or extended class will
 	 * throw an exception when debug mode is enabled.
 	 *
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_invalid_option_debug() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		Fieldmanager_Field::$debug = true;
 		$base                      = new Fieldmanager_Group(
 			array(
@@ -374,9 +377,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	/**
 	 * Test that submitting a form with an undefined key will throw an exception.
 	 *
-	 * @expectedException FM_Exception
 	 */
 	public function test_invalid_key() {
+		$this->expectException( FM_Exception::class );
+
 		$elements                       = $this->_get_elements();
 		$base                           = new Fieldmanager_Group(
 			array(
@@ -392,9 +396,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	/**
 	 * Test that submitting a multi-dimensional array with $limit = 1 will throw an exception.
 	 *
-	 * @expectedException FM_Exception
 	 */
 	public function test_unexpected_array() {
+		$this->expectException( FM_Exception::class );
+
 		$elements                                  = $this->_get_elements();
 		$base                                      = new Fieldmanager_Group(
 			array(
@@ -410,9 +415,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	/**
 	 * Test that submitting a single value with $limit != 1 will throw an exception.
 	 *
-	 * @expectedException FM_Exception
 	 */
 	public function test_unexpected_not_array() {
+		$this->expectException( FM_Exception::class );
+
 		$elements  = $this->_get_elements();
 		$base      = new Fieldmanager_Group(
 			array(
@@ -428,9 +434,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	/**
 	 * Test that submitting more values than the limit will throw an exception.
 	 *
-	 * @expectedException FM_Exception
 	 */
 	public function test_unexpected_too_many_elements() {
+		$this->expectException( FM_Exception::class );
+
 		$elements                                   = $this->_get_elements();
 		$base                                       = new Fieldmanager_Group(
 			array(
@@ -446,9 +453,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	/**
 	 * Test that submitting a non-numeric key with multiple elements will throw an exception.
 	 *
-	 * @expectedException FM_Exception
 	 */
 	public function test_unexpected_non_numeric_key() {
+		$this->expectException( FM_Exception::class );
+
 		$elements  = $this->_get_elements();
 		$base      = new Fieldmanager_Group(
 			array(
@@ -501,14 +509,14 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$base->add_meta_box( 'test meta box', $this->post )->render_meta_box( $this->post, array() );
 		$str = ob_get_clean();
 		// we can't really care about the structure of the HTML, but we can make sure that all fields are here
-		$this->assertContains( 'name="fieldmanager-base_group-nonce"', $str );
-		$this->assertContains( 'name="base_group[test_textfield]"', $str );
-		$this->assertContains( 'name="base_group[test_numfield]"', $str );
-		$this->assertContains( 'name="base_group[test_pwfield]"', $str );
-		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
-		$this->assertContains( 'type="text"', $str );
-		$this->assertContains( 'type="number"', $str );
-		$this->assertContains( 'type="password"', $str );
+		$this->assertStringContainsString( 'name="fieldmanager-base_group-nonce"', $str );
+		$this->assertStringContainsString( 'name="base_group[test_textfield]"', $str );
+		$this->assertStringContainsString( 'name="base_group[test_numfield]"', $str );
+		$this->assertStringContainsString( 'name="base_group[test_pwfield]"', $str );
+		$this->assertStringContainsString( 'name="base_group[test_extended][0][extext][proto]"', $str );
+		$this->assertStringContainsString( 'type="text"', $str );
+		$this->assertStringContainsString( 'type="number"', $str );
+		$this->assertStringContainsString( 'type="password"', $str );
 	}
 
 	public function test_multi_tools_in_group_without_label() {
@@ -524,48 +532,48 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure that, by default, no multitools are present
 		$html = $this->_get_html_for( $field );
-		$this->assertNotContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fmjs-remove', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
-		$this->assertNotContains( 'fm-add-another', $html );
+		$this->assertStringNotContainsString( 'fmjs-drag', $html );
+		$this->assertStringNotContainsString( 'fmjs-remove', $html );
+		$this->assertStringNotContainsString( 'fm-collapsible', $html );
+		$this->assertStringNotContainsString( 'fm-add-another', $html );
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
 		$html         = $this->_get_html_for( $field );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertNotContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringNotContainsString( 'fmjs-drag', $html );
+		$this->assertStringNotContainsString( 'fm-collapsible', $html );
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
 		$html            = $this->_get_html_for( $field );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
+		$this->assertStringNotContainsString( 'fm-collapsible', $html );
 
 		// Ensure collapsible tools are present, even though this doesn't
 		// work (there's nothing to collapse to)
 		$field->collapsible = true;
 		$html               = $this->_get_html_for( $field );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
-		$this->assertContains( 'fm-collapsible', $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
+		$this->assertStringContainsString( 'fm-collapsible', $html );
 
 		// Ensure everything still works without one_label_per_item
 		$field->one_label_per_item = false;
 		$html                      = $this->_get_html_for( $field );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
-		$this->assertContains( 'fm-collapsible', $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
+		$this->assertStringContainsString( 'fm-collapsible', $html );
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
 		$html                  = $this->_get_html_for( $field );
-		$this->assertContains( $button, $html );
+		$this->assertStringContainsString( $button, $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
 		// minimum count of 5
@@ -589,52 +597,52 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure that, by default, no multitools are present
 		$html = $this->_get_html_for( $field );
-		$this->assertContains( $label, $html );
-		$this->assertNotContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fmjs-remove', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
-		$this->assertNotContains( 'fm-add-another', $html );
+		$this->assertStringContainsString( $label, $html );
+		$this->assertStringNotContainsString( 'fmjs-drag', $html );
+		$this->assertStringNotContainsString( 'fmjs-remove', $html );
+		$this->assertStringNotContainsString( 'fm-collapsible', $html );
+		$this->assertStringNotContainsString( 'fm-add-another', $html );
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
 		$html         = $this->_get_html_for( $field );
-		$this->assertContains( $label, $html );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertNotContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertStringContainsString( $label, $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringNotContainsString( 'fmjs-drag', $html );
+		$this->assertStringNotContainsString( 'fm-collapsible', $html );
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
 		$html            = $this->_get_html_for( $field );
-		$this->assertContains( $label, $html );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertStringContainsString( $label, $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
+		$this->assertStringNotContainsString( 'fm-collapsible', $html );
 
 		// Ensure collapsible tools are present
 		$field->collapsible = true;
 		$html               = $this->_get_html_for( $field );
-		$this->assertContains( $label, $html );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
-		$this->assertContains( 'fm-collapsible', $html );
+		$this->assertStringContainsString( $label, $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
+		$this->assertStringContainsString( 'fm-collapsible', $html );
 
 		// Ensure everything still works without one_label_per_item
 		$field->one_label_per_item = false;
 		$html                      = $this->_get_html_for( $field );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
-		$this->assertContains( 'fm-collapsible', $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
+		$this->assertStringContainsString( 'fm-collapsible', $html );
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
 		$html                  = $this->_get_html_for( $field );
-		$this->assertContains( $label, $html );
-		$this->assertContains( $button, $html );
+		$this->assertStringContainsString( $label, $html );
+		$this->assertStringContainsString( $button, $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
 		// minimum count of 5
@@ -656,35 +664,35 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure that, by default, no multitools are present
 		$html = $this->_get_html_for( $field );
-		$this->assertNotContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fmjs-remove', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertStringNotContainsString( 'fmjs-drag', $html );
+		$this->assertStringNotContainsString( 'fmjs-remove', $html );
+		$this->assertStringNotContainsString( 'fm-collapsible', $html );
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
 		$html         = $this->_get_html_for( $field );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringNotContainsString( 'fmjs-drag', $html );
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
 		$html            = $this->_get_html_for( $field );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
 
 		// Ensure everything still works without one_label_per_item
 		$field->one_label_per_item = false;
 		$html                      = $this->_get_html_for( $field );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
 		$html                  = $this->_get_html_for( $field );
-		$this->assertContains( $button, $html );
+		$this->assertStringContainsString( $button, $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
 		// minimum count of 5
@@ -707,39 +715,39 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		// Ensure that, by default, no multitools are present
 		$html = $this->_get_html_for( $field );
-		$this->assertContains( $label, $html );
-		$this->assertNotContains( 'fmjs-drag', $html );
-		$this->assertNotContains( 'fmjs-remove', $html );
-		$this->assertNotContains( 'fm-collapsible', $html );
+		$this->assertStringContainsString( $label, $html );
+		$this->assertStringNotContainsString( 'fmjs-drag', $html );
+		$this->assertStringNotContainsString( 'fmjs-remove', $html );
+		$this->assertStringNotContainsString( 'fm-collapsible', $html );
 
 		// Ensure limit != 1 tools are present
 		$field->limit = 0;
 		$html         = $this->_get_html_for( $field );
-		$this->assertContains( $label, $html );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertNotContains( 'fmjs-drag', $html );
+		$this->assertStringContainsString( $label, $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringNotContainsString( 'fmjs-drag', $html );
 
 		// Ensure sortable tools are present
 		$field->sortable = true;
 		$html            = $this->_get_html_for( $field );
-		$this->assertContains( $label, $html );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertStringContainsString( $label, $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
 
 		// Ensure customized button label
 		$field->add_more_label = $button;
 		$html                  = $this->_get_html_for( $field );
-		$this->assertContains( $label, $html );
-		$this->assertContains( $button, $html );
+		$this->assertStringContainsString( $label, $html );
+		$this->assertStringContainsString( $button, $html );
 
 		// Ensure everything still works without one_label_per_item
 		$field->one_label_per_item = false;
 		$html                      = $this->_get_html_for( $field );
-		$this->assertContains( 'fmjs-remove', $html );
-		$this->assertContains( 'fm-add-another', $html );
-		$this->assertContains( 'fmjs-drag', $html );
+		$this->assertStringContainsString( 'fmjs-remove', $html );
+		$this->assertStringContainsString( 'fm-add-another', $html );
+		$this->assertStringContainsString( 'fmjs-drag', $html );
 
 		// Ensure we have 6 (5 + proto) of all of our tools, when we have a
 		// minimum count of 5
@@ -790,14 +798,14 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 						$str             = $this->_get_html_for_extra_element_args( $args, $test_data );
 
 						// There should always be a prototype
-						$this->assertContains( 'name="base_group[test_element][proto][text]"', $str, "Attempted to assert that the prototype is present when: {$test_conditions}" );
+						$this->assertStringContainsString( 'name="base_group[test_element][proto][text]"', $str, "Attempted to assert that the prototype is present when: {$test_conditions}" );
 
 						if ( 0 === $extra_elements && 0 === $minimum_count && 0 === $data ) {
 							// We should have no fields beyond the prototype
-							$this->assertNotContains( 'name="base_group[test_element][0][text]"', $str, "Attempted to assert that field 0 is NOT present when: {$test_conditions}" );
+							$this->assertStringNotContainsString( 'name="base_group[test_element][0][text]"', $str, "Attempted to assert that field 0 is NOT present when: {$test_conditions}" );
 						} else {
 							// At the very least, we have 1 field
-							$this->assertContains( 'name="base_group[test_element][0][text]"', $str, "Attempted to assert that field 0 is present when: {$test_conditions}" );
+							$this->assertStringContainsString( 'name="base_group[test_element][0][text]"', $str, "Attempted to assert that field 0 is present when: {$test_conditions}" );
 
 							$ceiling = max( $minimum_count, $data + $extra_elements );
 							if ( 3 == $limit ) {
@@ -806,21 +814,21 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 							if ( $ceiling > 1 ) {
 								// Ensure that the absolute ceiling is present
-								$this->assertContains( 'name="base_group[test_element][' . ( $ceiling - 1 ) . '][text]"', $str, 'Attempted to assert that field ' . ( $ceiling - 1 ) . " is present when: {$test_conditions}" );
+								$this->assertStringContainsString( 'name="base_group[test_element][' . ( $ceiling - 1 ) . '][text]"', $str, 'Attempted to assert that field ' . ( $ceiling - 1 ) . " is present when: {$test_conditions}" );
 							}
 
 							// Ensure that the field after the ceiling is absent
-							$this->assertNotContains( 'name="base_group[test_element][' . $ceiling . '][text]"', $str, "Attempted to assert that field {$ceiling} is NOT present when: {$test_conditions}" );
+							$this->assertStringNotContainsString( 'name="base_group[test_element][' . $ceiling . '][text]"', $str, "Attempted to assert that field {$ceiling} is NOT present when: {$test_conditions}" );
 						}
 
 						if ( 3 == $limit && $minimum_count >= 3 ) {
 							// Ensure that the multi-field tools were removed
-							$this->assertNotContains( 'fmjs-remove', $str, "Attempted to assert that the remove button is NOT present when: {$test_conditions}" );
-							$this->assertNotContains( 'fm-add-another', $str, "Attempted to assert that the add another button is NOT present when: {$test_conditions}" );
+							$this->assertStringNotContainsString( 'fmjs-remove', $str, "Attempted to assert that the remove button is NOT present when: {$test_conditions}" );
+							$this->assertStringNotContainsString( 'fm-add-another', $str, "Attempted to assert that the add another button is NOT present when: {$test_conditions}" );
 						} else {
 							// Ensure that the multi-field tools are present
-							$this->assertContains( 'fmjs-remove', $str, "Attempted to assert that the remove button is present when: {$test_conditions}" );
-							$this->assertContains( 'fm-add-another', $str, "Attempted to assert that the add another button is present when: {$test_conditions}" );
+							$this->assertStringContainsString( 'fmjs-remove', $str, "Attempted to assert that the remove button is present when: {$test_conditions}" );
+							$this->assertStringContainsString( 'fm-add-another', $str, "Attempted to assert that the add another button is present when: {$test_conditions}" );
 						}
 					}
 				}
@@ -830,10 +838,12 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 
 	/**
-	 * @expectedException FM_Exception
-	 * @expectedExceptionMessage submitted 5 values against a limit of 3
 	 */
 	public function test_limit_exceeded_exceptions() {
+		$this->expectException( FM_Exception::class );
+
+		$this->expectExceptionMessage( 'submitted 5 values against a limit of 3' );
+
 		$test_data_too_many = array(
 			'test_element' => array(
 				array( 'text' => 'a' ),
@@ -876,9 +886,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertRegExp( '/\srequired[\/\s]/', $html );
-		$this->assertRegExp( '/\sdata-foo="bar"[\/\s]/', $html );
-		$this->assertRegExp( '/\sdata-upper="lower"[\/\s]/', $html );
+		$this->assertMatchesRegularExpression( '/\srequired[\/\s]/', $html );
+		$this->assertMatchesRegularExpression( '/\sdata-foo="bar"[\/\s]/', $html );
+		$this->assertMatchesRegularExpression( '/\sdata-upper="lower"[\/\s]/', $html );
 	}
 
 	public function test_label_escaping() {
@@ -893,14 +903,14 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// Ensure that, by default, the label is present without the HTML
 		$field = new Fieldmanager_TextField( $args );
 		$html  = $this->_get_html_for( $field );
-		$this->assertContains( $label_raw, $html );
-		$this->assertNotContains( $label_html, $html );
+		$this->assertStringContainsString( $label_raw, $html );
+		$this->assertStringNotContainsString( $label_html, $html );
 
 		// Ensure that the label has HTML when we change the escaping
 		$args['escape'] = array( 'label' => 'wp_kses_post' );
 		$field          = new Fieldmanager_TextField( $args );
 		$html           = $this->_get_html_for( $field );
-		$this->assertContains( $label_html, $html );
+		$this->assertStringContainsString( $label_html, $html );
 	}
 
 	public function test_description_escaping() {
@@ -915,14 +925,14 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		// Ensure that, by default, the description is present without the HTML
 		$field = new Fieldmanager_TextField( $args );
 		$html  = $this->_get_html_for( $field );
-		$this->assertContains( $description_raw, $html );
-		$this->assertNotContains( $description_html, $html );
+		$this->assertStringContainsString( $description_raw, $html );
+		$this->assertStringNotContainsString( $description_html, $html );
 
 		// Ensure that the description has HTML when we change the escaping
 		$args['escape'] = array( 'description' => 'wp_kses_post' );
 		$field          = new Fieldmanager_TextField( $args );
 		$html           = $this->_get_html_for( $field );
-		$this->assertContains( $description_html, $html );
+		$this->assertStringContainsString( $description_html, $html );
 	}
 
 	/**
@@ -936,18 +946,18 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 		$base = new Fieldmanager_TextField( $args );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
-		$this->assertContains( 'name="base_field[proto]"', $html );
-		$this->assertContains( 'name="base_field[0]"', $html );
-		$this->assertNotContains( 'name="base_field[1]"', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
+		$this->assertStringContainsString( 'name="base_field[proto]"', $html );
+		$this->assertStringContainsString( 'name="base_field[0]"', $html );
+		$this->assertStringNotContainsString( 'name="base_field[1]"', $html );
 
 		// Using serialize_data => false shouldn't change anything
 		$base = new Fieldmanager_TextField( array_merge( $args, array( 'serialize_data' => false ) ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
-		$this->assertContains( 'name="base_field[proto]"', $html );
-		$this->assertContains( 'name="base_field[0]"', $html );
-		$this->assertNotContains( 'name="base_field[1]"', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
+		$this->assertStringContainsString( 'name="base_field[proto]"', $html );
+		$this->assertStringContainsString( 'name="base_field[0]"', $html );
+		$this->assertStringNotContainsString( 'name="base_field[1]"', $html );
 	}
 
 	/**
@@ -963,10 +973,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		update_post_meta( $this->post_id, 'base_field', $data );
 		$base = new Fieldmanager_TextField( $args );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
-		$this->assertContains( 'name="base_field[proto]"', $html );
-		$this->assertContains( 'name="base_field[3]"', $html );
-		$this->assertNotContains( 'name="base_field[4]"', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
+		$this->assertStringContainsString( 'name="base_field[proto]"', $html );
+		$this->assertStringContainsString( 'name="base_field[3]"', $html );
+		$this->assertStringNotContainsString( 'name="base_field[4]"', $html );
 
 		// Using serialize_data => false requires a different data storage
 		delete_post_meta( $this->post_id, 'base_field' );
@@ -976,10 +986,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
 		$base = new Fieldmanager_TextField( array_merge( $args, array( 'serialize_data' => false ) ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
-		$this->assertContains( 'name="base_field[proto]"', $html );
-		$this->assertContains( 'name="base_field[3]"', $html );
-		$this->assertNotContains( 'name="base_field[4]"', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_field-nonce"/', $html );
+		$this->assertStringContainsString( 'name="base_field[proto]"', $html );
+		$this->assertStringContainsString( 'name="base_field[3]"', $html );
+		$this->assertStringNotContainsString( 'name="base_field[4]"', $html );
 	}
 
 	/**
@@ -1020,27 +1030,27 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$context->save_to_post_meta( $this->post_id, $data );
 		$html = $this->_get_html_for( $base );
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_1 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_2 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_3 . '"/', $html );
 
 		// Reorder and test as 3, 1, 2
 		$data = array( $item_3, $item_1, $item_2 );
 		$context->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_3 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
 
 		// Reorder and test as 2, 3, 1
 		$data = array( $item_2, $item_3, $item_1 );
 		$context->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_2 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_3 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_1 . '"/', $html );
 	}
 
 	/**
@@ -1061,9 +1071,10 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_unserialize_data_single_field_index() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		new Fieldmanager_TextField(
 			array(
 				'name'           => 'test',
@@ -1107,9 +1118,9 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertNotContains( "value=\"{$to_remove}\"", $html );
-		$this->assertContains( "value=\"{$to_save[1]}\"", $html );
-		$this->assertContains( "value=\"{$to_save[2]}\"", $html );
+		$this->assertStringNotContainsString( "value=\"{$to_remove}\"", $html );
+		$this->assertStringContainsString( "value=\"{$to_save[1]}\"", $html );
+		$this->assertStringContainsString( "value=\"{$to_save[2]}\"", $html );
 	}
 
 	public function test_attachment_detection() {
@@ -1204,7 +1215,7 @@ class Fieldmanager_Field_Test extends WP_UnitTestCase {
 	public function data_fields_overriding_presave_alter_values() {
 		return array(
 			array(
-				$this->getMockForAbstractClass( 'Fieldmanager_Options' ),
+				new Fieldmanager_Options_Mock(),
 			),
 			array(
 				new Fieldmanager_Autocomplete( array(

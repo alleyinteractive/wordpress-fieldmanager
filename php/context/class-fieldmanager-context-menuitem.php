@@ -98,6 +98,7 @@ class Fieldmanager_Context_MenuItem extends Fieldmanager_Context_Storable {
 	 * Add fields to the editor of a nav menu item.
 	 *
 	 * @param int $item_id Menu item ID.
+	 * @return int ID.
 	 */
 	public function add_fields( $item_id ) {
 		// Set the ID.
@@ -108,6 +109,8 @@ class Fieldmanager_Context_MenuItem extends Fieldmanager_Context_Storable {
 
 		// Render the field.
 		$this->render_field();
+
+		return $item_id;
 	}
 
 	/**

@@ -6,8 +6,8 @@ class Fieldmanager_Assets_Unit_Test_Case extends WP_UnitTestCase {
 
 	protected $screen, $old_wp_scripts;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 
 		// Spoof is_admin() for fm_add_script().
 		$this->screen = get_current_screen();
@@ -25,7 +25,7 @@ class Fieldmanager_Assets_Unit_Test_Case extends WP_UnitTestCase {
 		Fieldmanager_Util_Assets::instance()->hooked = false;
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		// Restore current_screen.
 		$GLOBALS['current_screen'] = $this->screen;
 
@@ -33,7 +33,7 @@ class Fieldmanager_Assets_Unit_Test_Case extends WP_UnitTestCase {
 		$GLOBALS['wp_scripts'] = $this->old_wp_scripts;
 		add_action( 'wp_default_scripts', 'wp_default_scripts' );
 
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 }

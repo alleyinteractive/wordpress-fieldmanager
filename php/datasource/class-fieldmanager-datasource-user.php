@@ -93,6 +93,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		parent::__construct( $options );
 
 		// Validate improper usage of store property.
+		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
 			throw new FM_Developer_Exception(
 				sprintf(
@@ -104,11 +105,13 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 			);
 		}
 
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
 			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID.', 'fieldmanager' ) );
 		}
 
 		// Validate improper usage of display property.
+		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
 			throw new FM_Developer_Exception(
 				sprintf(
@@ -205,6 +208,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	 * @return string Sanitized values.
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( 'post' != $field->data_type || ! $this->reciprocal || 'ID' != $this->store_property ) {
 			return $values;
 		}
@@ -261,6 +265,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 				/* translators: %s: user id */
 				wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
 			}
+			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 			if ( $this->reciprocal && 'ID' == $this->store_property ) {
 				call_user_func(
 					/**

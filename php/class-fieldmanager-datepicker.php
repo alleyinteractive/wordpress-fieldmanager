@@ -99,6 +99,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 			$value += get_option( 'gmt_offset' ) * HOUR_IN_SECONDS;
 		}
 		ob_start();
+		// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingCustomFunction -- baseline
 		include fieldmanager_get_template( 'datepicker' );
 
 		// Reset the timestamp.
@@ -148,7 +149,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @return string Value of hour.
 	 */
 	public function get_hour( $value ) {
-		return ! empty( $value ) ? date( $this->use_am_pm ? 'g' : 'G', $value ) : '';
+		return ! empty( $value ) ? gmdate( $this->use_am_pm ? 'g' : 'G', $value ) : '';
 	}
 
 	/**
@@ -158,7 +159,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @return string Value of minute.
 	 */
 	public function get_minute( $value ) {
-		return ! empty( $value ) ? date( 'i', $value ) : '';
+		return ! empty( $value ) ? gmdate( 'i', $value ) : '';
 	}
 
 	/**
@@ -168,7 +169,7 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	 * @return string 'am', 'pm', or ''.
 	 */
 	public function get_am_pm( $value ) {
-		return ! empty( $value ) ? date( 'a', $value ) : '';
+		return ! empty( $value ) ? gmdate( 'a', $value ) : '';
 	}
 
 }

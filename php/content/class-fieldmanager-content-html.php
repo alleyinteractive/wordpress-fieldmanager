@@ -20,7 +20,7 @@ class Fieldmanager_Content_HTML extends Fieldmanager_Content {
 	/**
 	 * Render content using `wp_kses_post()`.
 	 *
-	 * @param mixed $value Unused value.
+	 * @param string $content Content.
 	 * @return string Rendered content.
 	 */
 	public function render_content( $content = '' ) {

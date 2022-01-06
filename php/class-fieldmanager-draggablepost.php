@@ -109,6 +109,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 				if ( ! empty( $ids ) ) {
 					// Return value here should be all numeric post ids, but we'll tolerate non-numerics if they show up.
 					foreach ( $ids as $id ) {
+						// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 						if ( ! is_numeric( $id ) || in_array( $id, $all ) ) {
 							continue;
 						}
@@ -122,11 +123,13 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 					'posts_per_page' => $repo['length'],
 					'orderby'        => $repo['orderby'],
 					'order'          => $repo['order'],
+					// phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_tax_query -- baseline
 					'tax_query'      => array( $repo['taxonomy_args'] ),
 				);
 				$q          = new WP_Query( $query_args );
 				while ( $q->have_posts() ) {
 					$q->the_post();
+					// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 					if ( in_array( get_the_ID(), $all ) ) {
 						continue;
 					}
@@ -145,6 +148,7 @@ class Fieldmanager_DraggablePost extends Fieldmanager_Field {
 					if ( ! $id ) {
 						continue;
 					}
+					// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 					$out .= $this->draggable_item_html( $id, in_array( $id, $value['_image_flags'] ) );
 				}
 			}

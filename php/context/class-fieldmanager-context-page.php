@@ -40,6 +40,7 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 		$this->uniqid           = $uniqid;
 
 		// since this should be set up in init, check for submit now.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.DeprecatedWhitelistCommentFound, WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
 		if ( ! empty( $_POST ) && ! empty( $_POST['fm-page-action'] ) && esc_html( $_POST['fm-page-action'] ) == $uniqid ) { // WPCS: input var okay. CSRF ok. sanitization ok.
 			$this->save_page_form();
 		}
@@ -53,11 +54,14 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 
 		if (
 			isset( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ] ) // WPCS: input var okay.
+			// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
 			&& ! wp_verify_nonce( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ], 'fieldmanager-save-' . $this->fm->name )  // WPCS: input var okay. sanitization ok.
 		) {
 			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
+		// phpcs:ignore VariableAnalysis.CodeAnalysis.VariableAnalysis.UndefinedVariable -- baseline
 		$this->fm->data_id = $user_id;
+		// phpcs:ignore Generic.Formatting.MultipleStatementAlignment.IncorrectWarning, WordPress.Security.ValidatedSanitizedInput.DeprecatedWhitelistCommentFound -- baseline
 		$value             = isset( $_POST[ $this->fm->name ] ) ? $_POST[ $this->fm->name ] : ''; // WPCS: input var okay. sanitization ok.
 		if ( empty( $this->fm->data_type ) ) {
 			$this->fm->data_type = 'page';
@@ -82,8 +86,10 @@ class Fieldmanager_Context_Page extends Fieldmanager_Context {
 		$current = apply_filters( 'fm_' . $this->uniqid . '_load', array(), $this->fm );
 		echo '<form method="POST" id="' . esc_attr( $this->uniqid ) . '">';
 		echo '<div class="fm-page-form-wrapper">';
+		// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
 		printf( '<input type="hidden" name="fm-page-action" value="%s" />', sanitize_title( $this->uniqid ) ); // WPCS: XSS ok.
 		wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce' );
+		// phpcs:ignore WordPress.Security.EscapeOutput.DeprecatedWhitelistCommentFound -- baseline
 		echo $this->fm->element_markup( $current ); // WPCS: XSS ok.
 		echo '</div>';
 		printf( '<input type="submit" name="fm-submit" class="button-primary" value="%s" />', esc_attr( $this->fm->submit_button_label ) ?: esc_attr__( 'Save Options', 'fieldmanager' ) );

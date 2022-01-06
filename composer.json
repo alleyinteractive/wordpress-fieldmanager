@@ -1,22 +1,31 @@
 {
   "name": "alleyinteractive/wordpress-fieldmanager",
+  "description": "A library to build forms and admin screens for WordPress",
   "type": "wordpress-plugin",
   "keywords": ["wordpress", "plugin"],
+  "license": "GPL-2.0-or-later",
   "authors": [
     {
       "name": "Alley Interactive",
-      "email": "noreply@alleyinteractive.com"
+      "email": "noreply@alley.co"
     }
   ],
   "require": {
     "composer/installers": "~1.0"
   },
   "require-dev": {
-    "squizlabs/php_codesniffer": "2.*",
-    "wp-coding-standards/wpcs": "^1"
+    "alleyinteractive/alley-coding-standards": "^0.3.0",
+    "phpunit/phpunit": "^5.7.21 || ^7.5",
+    "yoast/phpunit-polyfills": "^1.0"
   },
   "scripts": {
-    "post-install-cmd": "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs",
-    "post-update-cmd" : "\"vendor/bin/phpcs\" --config-set installed_paths vendor/wp-coding-standards/wpcs"
+    "phpcs": "vendor/bin/phpcs",
+    "phpunit": "vendor/bin/phpunit"
+  },
+  "config": {
+    "allow-plugins": {
+      "dealerdirect/phpcodesniffer-composer-installer": true,
+      "composer/installers": true
+    }
   }
 }

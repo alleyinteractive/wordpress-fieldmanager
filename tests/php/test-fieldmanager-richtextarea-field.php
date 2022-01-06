@@ -8,8 +8,8 @@
  */
 class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		add_filter( 'user_can_richedit', '__return_true' );
 		Fieldmanager_Field::$debug = true;
 
@@ -24,9 +24,9 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$this->post    = get_post( $this->post_id );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'user_can_richedit', '__return_true' );
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -70,14 +70,14 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( '/<textarea class="fm-element fm-richtext wp-editor-area"[^>]+name="test_richtextarea"/', $html );
-		$this->assertNotContains( 'fm-richtext-remember-editor', $html );
+		$this->assertMatchesRegularExpression( '/<textarea class="fm-element fm-richtext wp-editor-area"[^>]+name="test_richtextarea"/', $html );
+		$this->assertStringNotContainsString( 'fm-richtext-remember-editor', $html );
 
 		ob_start();
 		_WP_Editors::editor_js();
 		$js = ob_get_clean();
-		$this->assertContains( $fm->get_element_id(), $js );
-		$this->assertContains( 'wp_skip_init:true', $js );
+		$this->assertStringContainsString($fm->get_element_id(), $js );
+		$this->assertStringContainsString('wp_skip_init:true', $js );
 	}
 
 	public function test_repeatable_render() {
@@ -91,16 +91,16 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		ob_start();
 		$fm->add_meta_box( 'Test RichTextArea', 'post' )->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
-		$this->assertRegExp( '/<textarea class="fm-element fm-richtext wp-editor-area"[^>]+name="test_richtextarea\[0\]"/', $html );
-		$this->assertRegExp( '/<textarea data-proto-id="fm-test_richtextarea-proto" class="fm-element fm-richtext wp-editor-area"[^>]+name="test_richtextarea\[proto\]"/', $html );
+		$this->assertMatchesRegularExpression( '/<textarea class="fm-element fm-richtext wp-editor-area"[^>]+name="test_richtextarea\[0\]"/', $html );
+		$this->assertMatchesRegularExpression( '/<textarea data-proto-id="fm-test_richtextarea-proto" class="fm-element fm-richtext wp-editor-area"[^>]+name="test_richtextarea\[proto\]"/', $html );
 
 		ob_start();
 		_WP_Editors::editor_js();
 		$js = ob_get_clean();
 
-		$this->assertContains( $fm->get_element_id(), $js );
-		$this->assertContains( 'fm-test_richtextarea-proto', $js );
-		$this->assertContains( 'wp_skip_init:true', $js );
+		$this->assertStringContainsString($fm->get_element_id(), $js );
+		$this->assertStringContainsString('fm-test_richtextarea-proto', $js );
+		$this->assertStringContainsString('wp_skip_init:true', $js );
 	}
 
 	public function test_default_value() {
@@ -121,7 +121,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 			add_filter( 'the_editor_content', 'format_for_editor', 10, 2 );
 		}
 
-		$this->assertRegExp( '/<textarea[^>]+>' . preg_quote( apply_filters( 'the_editor_content', $value, 'tinymce' ), '/' ) . '<\/textarea>/', $html );
+		$this->assertMatchesRegularExpression( '/<textarea[^>]+>' . preg_quote( apply_filters( 'the_editor_content', $value, 'tinymce' ), '/' ) . '<\/textarea>/', $html );
 
 		// WordPress 4.5 fixed an issue with multiple editors and this filter.
 		// _WP_Editors::editor() now removes it after use, which is what we'll
@@ -156,10 +156,10 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		} else {
 			$toolbar = 'toolbar';
 		}
-		$this->assertContains( $toolbar . '1:"bold,italic"', $js );
-		$this->assertContains( $toolbar . '2:"bullist,fieldmanager"', $js );
-		$this->assertContains( $toolbar . '3:"numlist"', $js );
-		$this->assertContains( $toolbar . '4:"link,unlink"', $js );
+		$this->assertStringContainsString($toolbar . '1:"bold,italic"', $js );
+		$this->assertStringContainsString($toolbar . '2:"bullist,fieldmanager"', $js );
+		$this->assertStringContainsString($toolbar . '3:"numlist"', $js );
+		$this->assertStringContainsString($toolbar . '4:"link,unlink"', $js );
 	}
 
 	public function test_teeny_custom_buttons() {
@@ -188,10 +188,10 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		} else {
 			$toolbar = 'toolbar';
 		}
-		$this->assertContains( $toolbar . '1:"bold,italic"', $js );
-		$this->assertContains( $toolbar . '2:""', $js );
-		$this->assertContains( $toolbar . '3:""', $js );
-		$this->assertContains( $toolbar . '4:""', $js );
+		$this->assertStringContainsString($toolbar . '1:"bold,italic"', $js );
+		$this->assertStringContainsString($toolbar . '2:""', $js );
+		$this->assertStringContainsString($toolbar . '3:""', $js );
+		$this->assertStringContainsString($toolbar . '4:""', $js );
 	}
 
 	public function test_default_editor_mode() {
@@ -202,8 +202,8 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( 'tmce-active', $html );
-			$this->assertNotContains( 'html-active', $html );
+			$this->assertStringContainsString('tmce-active', $html );
+			$this->assertStringNotContainsString( 'html-active', $html );
 		} else {
 			$this->_skip_tests_because_version( 3.9 );
 		}
@@ -224,8 +224,8 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( 'tmce-active', $html );
-			$this->assertNotContains( 'html-active', $html );
+			$this->assertStringContainsString('tmce-active', $html );
+			$this->assertStringNotContainsString( 'html-active', $html );
 		} else {
 			$this->_skip_tests_because_version( 3.9 );
 		}
@@ -246,8 +246,8 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( 'html-active', $html );
-			$this->assertNotContains( 'tmce-active', $html );
+			$this->assertStringContainsString('html-active', $html );
+			$this->assertStringNotContainsString( 'tmce-active', $html );
 		} else {
 			$this->_skip_tests_because_version( 3.9 );
 		}
@@ -274,9 +274,9 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( 'fm-richtext-remember-editor', $html );
-			$this->assertContains( 'tmce-active', $html );
-			$this->assertNotContains( 'html-active', $html );
+			$this->assertStringContainsString('fm-richtext-remember-editor', $html );
+			$this->assertStringContainsString('tmce-active', $html );
+			$this->assertStringNotContainsString( 'html-active', $html );
 		}
 
 		// Test that it becomes html when we set the user setting to 'html'
@@ -287,9 +287,9 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( 'fm-richtext-remember-editor', $html );
-			$this->assertContains( 'html-active', $html );
-			$this->assertNotContains( 'tmce-active', $html );
+			$this->assertStringContainsString('fm-richtext-remember-editor', $html );
+			$this->assertStringContainsString('html-active', $html );
+			$this->assertStringNotContainsString( 'tmce-active', $html );
 		}
 
 		// Test that it becomes tinymce again when we set the user setting to 'tinymce'
@@ -300,9 +300,9 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( 'fm-richtext-remember-editor', $html );
-			$this->assertContains( 'tmce-active', $html );
-			$this->assertNotContains( 'html-active', $html );
+			$this->assertStringContainsString('fm-richtext-remember-editor', $html );
+			$this->assertStringContainsString('tmce-active', $html );
+			$this->assertStringNotContainsString( 'html-active', $html );
 		}
 
 		wp_set_current_user( $current_user );
@@ -334,9 +334,9 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( 'fm-richtext-remember-editor', $html );
-			$this->assertContains( 'tmce-active', $html );
-			$this->assertNotContains( 'html-active', $html );
+			$this->assertStringContainsString('fm-richtext-remember-editor', $html );
+			$this->assertStringContainsString('tmce-active', $html );
+			$this->assertStringNotContainsString( 'html-active', $html );
 		}
 
 		// Test that it becomes html when we set the user setting to 'html'
@@ -347,11 +347,11 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$html = ob_get_clean();
 
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( 'fm-richtext-remember-editor', $html );
+			$this->assertStringContainsString('fm-richtext-remember-editor', $html );
 			// The one field should contain html-active
-			$this->assertContains( 'html-active', $html );
+			$this->assertStringContainsString('html-active', $html );
 			// The proto should still contain tmce-active
-			$this->assertContains( 'tmce-active', $html );
+			$this->assertStringContainsString('tmce-active', $html );
 		}
 
 		wp_set_current_user( $current_user );
@@ -390,26 +390,26 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$html_3 = ob_get_clean();
 
 		if ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( 'html-active', $html_1 );
-			$this->assertNotContains( 'tmce-active', $html_1 );
+			$this->assertStringContainsString('html-active', $html_1 );
+			$this->assertStringNotContainsString( 'tmce-active', $html_1 );
 
-			$this->assertContains( 'tmce-active', $html_2 );
-			$this->assertNotContains( 'html-active', $html_2 );
+			$this->assertStringContainsString('tmce-active', $html_2 );
+			$this->assertStringNotContainsString( 'html-active', $html_2 );
 
-			$this->assertContains( 'html-active', $html_3 );
-			$this->assertNotContains( 'tmce-active', $html_3 );
+			$this->assertStringContainsString('html-active', $html_3 );
+			$this->assertStringNotContainsString( 'tmce-active', $html_3 );
 		} else {
 			$this->_skip_tests_because_version( 3.9 );
 		}
 
 		if ( _fm_phpunit_is_wp_at_least( 4.3 ) ) {
-			$this->assertContains( format_for_editor( $args['default_value'], 'html' ), $html_1 );
-			$this->assertContains( format_for_editor( $args['default_value'], 'tinymce' ), $html_2 );
-			$this->assertContains( format_for_editor( $args['default_value'], 'html' ), $html_3 );
+			$this->assertStringContainsString( format_for_editor( $args['default_value'], 'html' ), $html_1 );
+			$this->assertStringContainsString( format_for_editor( $args['default_value'], 'tinymce' ), $html_2 );
+			$this->assertStringContainsString( format_for_editor( $args['default_value'], 'html' ), $html_3 );
 		} elseif ( _fm_phpunit_is_wp_at_least( 3.9 ) ) {
-			$this->assertContains( wp_htmledit_pre( $args['default_value'] ), $html_1 );
-			$this->assertContains( wp_richedit_pre( $args['default_value'] ), $html_2 );
-			$this->assertContains( wp_htmledit_pre( $args['default_value'] ), $html_3 );
+			$this->assertStringContainsString( wp_htmledit_pre( $args['default_value'] ), $html_1 );
+			$this->assertStringContainsString( wp_richedit_pre( $args['default_value'] ), $html_2 );
+			$this->assertStringContainsString( wp_htmledit_pre( $args['default_value'] ), $html_3 );
 		} else {
 			$this->_skip_tests_because_version( 3.9 );
 		}
@@ -432,7 +432,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		_WP_Editors::editor_js();
 		$js = ob_get_clean();
 
-		$this->assertContains( $css_url, $js );
+		$this->assertStringContainsString( $css_url, $js );
 	}
 
 	public function test_teeny_css_override() {
@@ -453,7 +453,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		_WP_Editors::editor_js();
 		$js = ob_get_clean();
 
-		$this->assertContains( $css_url, $js );
+		$this->assertStringContainsString( $css_url, $js );
 	}
 
 	public function test_tinymce_overrides() {
@@ -485,7 +485,7 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 			if ( is_numeric( $key ) ) {
 				$key = $i++;
 			}
-			$this->assertContains( sprintf( $format, $key, $value ), $js );
+			$this->assertStringContainsString( sprintf( $format, $key, $value ), $js );
 		}
 	}
 
@@ -516,8 +516,8 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		_WP_Editors::editor_js();
 		$js = ob_get_clean();
 
-		$this->assertContains( 'fm_test:"' . $value . '"', $js );
-		$this->assertContains( $css_url, $js );
+		$this->assertStringContainsString( 'fm_test:"' . $value . '"', $js );
+		$this->assertStringContainsString( $css_url, $js );
 
 		// Now test that `editor_settings` and `stylesheet` take precedence
 		$fm = new Fieldmanager_RichTextArea(
@@ -542,10 +542,10 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		_WP_Editors::editor_js();
 		$js = ob_get_clean();
 
-		$this->assertNotContains( 'fm_test:"' . $value . '"', $js );
-		$this->assertNotContains( $css_url, $js );
-		$this->assertContains( 'fm_test:"' . $value_2 . '"', $js );
-		$this->assertContains( $css_url_2, $js );
+		$this->assertStringNotContainsString( 'fm_test:"' . $value . '"', $js );
+		$this->assertStringNotContainsString( $css_url, $js );
+		$this->assertStringContainsString( 'fm_test:"' . $value_2 . '"', $js );
+		$this->assertStringContainsString( $css_url_2, $js );
 	}
 
 	public function test_basic_save() {

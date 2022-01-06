@@ -59,6 +59,7 @@ class Fieldmanager_Util_Term_Meta {
 	 * Create the custom content type.
 	 */
 	public function create_content_type() {
+		// phpcs:ignore WordPress.NamingConventions.ValidPostTypeSlug.NotStringLiteral -- baseline
 		register_post_type(
 			$this->post_type,
 			array(
@@ -291,6 +292,7 @@ class Fieldmanager_Util_Term_Meta {
 		);
 
 		// Check the result.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( 0 != $result ) {
 			return $result;
 		} else {
@@ -306,6 +308,7 @@ class Fieldmanager_Util_Term_Meta {
 	 * @param string $taxonomy Term taxonomy.
 	 */
 	public function collect_garbage( $term_id, $tt_id, $taxonomy ) {
+		// phpcs:ignore WordPressVIPMinimum.Functions.RestrictedFunctions.get_page_by_path_get_page_by_path -- baseline
 		$post = get_page_by_path( $this->post_slug( $term_id, $taxonomy ), OBJECT, $this->post_type );
 		if ( $post ) {
 			wp_delete_post( $post->ID, true );
@@ -324,6 +327,7 @@ class Fieldmanager_Util_Term_Meta {
 	 */
 	public function split_shared_term( $old_term_id, $new_term_id, $term_taxonomy_id, $taxonomy ) {
 		$post_id = $this->get_term_meta_post_id( $old_term_id, $taxonomy );
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( false != $post_id ) {
 			wp_update_post(
 				array(

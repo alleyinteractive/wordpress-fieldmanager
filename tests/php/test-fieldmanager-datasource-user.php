@@ -8,8 +8,8 @@
  */
 class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->author        = $this->factory->user->create(
@@ -152,10 +152,10 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
 	/**
 	 * Test creating a field with an invalid store property.
-	 *
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_save_invalid_store_property() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		$test_invalid = new Fieldmanager_Autocomplete(
 			array(
 				'name'       => 'test_invalid',
@@ -172,10 +172,10 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
 	/**
 	 * Test creating a field with an invalid display property.
-	 *
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_save_invalid_display_property() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		$test_invalid = new Fieldmanager_Autocomplete(
 			array(
 				'name'       => 'test_invalid',
@@ -192,10 +192,10 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
 	/**
 	 * Test that we fail when trying to use reciprocals with something other than ID as a store property.
-	 *
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_save_invalid_reciprocal() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		$test_invalid = new Fieldmanager_Autocomplete(
 			array(
 				'name'       => 'test_invalid',
@@ -213,10 +213,10 @@ class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
 
 	/**
 	 * Test that this fails when a user doesn't have permission to list users.
-	 *
-	 * @expectedException WPDieException
 	 */
 	public function test_save_permissions() {
+		$this->expectException( WPDieException::class );
+
 		wp_set_current_user( $this->author );
 
 		$test_invalid = new Fieldmanager_Autocomplete(

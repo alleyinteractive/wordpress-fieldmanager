@@ -7,8 +7,8 @@
  * @group quickedit
  */
 class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = array(
@@ -136,13 +136,13 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$str = ob_get_clean();
 
 		// we can't really care about the structure of the HTML, but we can make sure that all fields are here
-		$this->assertContains( 'fm-quickedit', $str );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
-		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_basic\]"/', $str );
-		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_textfield\]"/', $str );
-		$this->assertRegExp( '/<textarea[^>]+name="base_group\[test_htmlfield\]"/', $str );
-		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
-		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
+		$this->assertStringContainsString('fm-quickedit', $str );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="text"[^>]+name="base_group\[test_basic\]"/', $str );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="text"[^>]+name="base_group\[test_textfield\]"/', $str );
+		$this->assertMatchesRegularExpression( '/<textarea[^>]+name="base_group\[test_htmlfield\]"/', $str );
+		$this->assertStringContainsString('name="base_group[test_extended][0][extext][proto]"', $str );
+		$this->assertStringContainsString('name="base_group[test_extended][0][extext][0]"', $str );
 	}
 
 	public function test_title() {
@@ -153,14 +153,14 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$context->add_quickedit_box( 'base_group', 'post' );
 		$str = ob_get_clean();
 
-		$this->assertRegExp( "/<h4[^>]*>{$context->title}<\/h4>/", $str );
+		$this->assertMatchesRegularExpression( "/<h4[^>]*>{$context->title}<\/h4>/", $str );
 
 		$context->title = false;
 		ob_start();
 		$context->add_quickedit_box( 'base_group', 'post' );
 		$str = ob_get_clean();
 
-		$this->assertNotRegExp( '/<\/h4>/', $str );
+		$this->assertDoesNotMatchRegularExpression( '/<\/h4>/', $str );
 	}
 
 	public function test_context_save() {
@@ -202,17 +202,17 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 			)
 		);
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'name="base_field[0]"', $html );
-		$this->assertNotContains( 'name="base_field[3]"', $html );
+		$this->assertStringContainsString('name="base_field[0]"', $html );
+		$this->assertStringNotContainsString( 'name="base_field[3]"', $html );
 
 		$data = array( rand_str(), rand_str(), rand_str() );
 		$html = $this->_get_html_for( $base, $data );
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
-		$this->assertContains( 'name="base_field[3]"', $html );
-		$this->assertContains( 'value="' . $data[0] . '"', $html );
-		$this->assertContains( 'value="' . $data[1] . '"', $html );
-		$this->assertContains( 'value="' . $data[2] . '"', $html );
-		$this->assertNotContains( 'name="base_field[4]"', $html );
+		$this->assertStringContainsString('name="base_field[3]"', $html );
+		$this->assertStringContainsString('value="' . $data[0] . '"', $html );
+		$this->assertStringContainsString('value="' . $data[1] . '"', $html );
+		$this->assertStringContainsString('value="' . $data[2] . '"', $html );
+		$this->assertStringNotContainsString( 'name="base_field[4]"', $html );
 	}
 
 	/**
@@ -234,17 +234,17 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$data = array( $item_1, $item_2, $item_3 );
 		$html = $this->_get_html_for( $base, $data );
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_1 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_2 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_3 . '"/', $html );
 
 		// Reorder and test as 3, 1, 2
 		$data = array( $item_3, $item_1, $item_2 );
 		$html = $this->_get_html_for( $base, $data );
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_field' ) );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_3 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
-		$this->assertRegExp( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[0\][^>]+value="' . $item_3 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[1\][^>]+value="' . $item_1 . '"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
 	}
 
 	/**
@@ -293,10 +293,10 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$html = $this->_get_html_for( $base, $data );
 		$this->assertEquals( $data['tab-1']['test_text'], get_post_meta( $this->post_id, 'test_text', true ) );
 		$this->assertEquals( $data['tab-2']['test_textarea'], get_post_meta( $this->post_id, 'test_textarea', true ) );
-		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
-		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
-		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
-		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
+		$this->assertStringContainsString('name="base_group[tab-1][test_text]"', $html );
+		$this->assertStringContainsString('value="' . $data['tab-1']['test_text'] . '"', $html );
+		$this->assertStringContainsString('name="base_group[tab-2][test_textarea]"', $html );
+		$this->assertStringContainsString('>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
 	}
 
 	/**
@@ -331,9 +331,9 @@ class Test_Fieldmanager_Context_Quickedit extends WP_UnitTestCase {
 		$html = $this->_get_html_for( $base, $data );
 		$this->assertEquals( $data['test_text'], get_post_meta( $this->post_id, 'base_group_test_text', true ) );
 		$this->assertEquals( $data['test_group']['deep_text'], get_post_meta( $this->post_id, 'base_group_test_group_deep_text', true ) );
-		$this->assertContains( 'name="base_group[test_text]"', $html );
-		$this->assertContains( 'value="' . $data['test_text'] . '"', $html );
-		$this->assertContains( 'name="base_group[test_group][deep_text]"', $html );
-		$this->assertContains( '>' . $data['test_group']['deep_text'] . '</textarea>', $html );
+		$this->assertStringContainsString('name="base_group[test_text]"', $html );
+		$this->assertStringContainsString('value="' . $data['test_text'] . '"', $html );
+		$this->assertStringContainsString('name="base_group[test_group][deep_text]"', $html );
+		$this->assertStringContainsString('>' . $data['test_group']['deep_text'] . '</textarea>', $html );
 	}
 }

@@ -7,8 +7,8 @@
  * @group post
  */
 class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = array(
@@ -102,12 +102,12 @@ class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
 		$base->add_meta_box( 'test meta box', 'post' )->render_meta_box( $this->post, array() );
 		$str = ob_get_clean();
 		// we can't really care about the structure of the HTML, but we can make sure that all fields are here
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
-		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_basic\]"/', $str );
-		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="base_group\[test_textfield\]"/', $str );
-		$this->assertRegExp( '/<textarea[^>]+name="base_group\[test_htmlfield\]"/', $str );
-		$this->assertContains( 'name="base_group[test_extended][0][extext][proto]"', $str );
-		$this->assertContains( 'name="base_group[test_extended][0][extext][0]"', $str );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $str );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="text"[^>]+name="base_group\[test_basic\]"/', $str );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="text"[^>]+name="base_group\[test_textfield\]"/', $str );
+		$this->assertMatchesRegularExpression( '/<textarea[^>]+name="base_group\[test_htmlfield\]"/', $str );
+		$this->assertStringContainsString('name="base_group[test_extended][0][extext][proto]"', $str );
+		$this->assertStringContainsString('name="base_group[test_extended][0][extext][0]"', $str );
 	}
 
 	public function test_context_save() {

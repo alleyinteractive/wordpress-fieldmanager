@@ -10,14 +10,14 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 	private $processed_values = array();
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		add_filter( 'fm_submenu_presave_data', array( $this, 'presave_alter_number' ), 10, 2 );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		remove_filter( 'fm_submenu_presave_data', array( $this, 'presave_alter_number' ), 10, 2 );
-		parent::tearDown();
+		parent::tear_down();
 	}
 
 	/**
@@ -29,10 +29,10 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$context = $this->get_context( $name );
 		$html    = $this->get_html( $context, $name );
 
-		$this->assertContains( '<h1>Tools Meta Fields</h1>', $html );
-		$this->assertRegExp( '/<input type="hidden"[^>]+name="fieldmanager-' . $name . '-nonce"/', $html );
-		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[name\]"[^>]+value=""/', $html );
-		$this->assertRegExp( '/<input[^>]+type="text"[^>]+name="' . $name . '\[email\]"[^>]+value=""/', $html );
+		$this->assertStringContainsString('<h1>Tools Meta Fields</h1>', $html );
+		$this->assertMatchesRegularExpression( '/<input type="hidden"[^>]+name="fieldmanager-' . $name . '-nonce"/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="text"[^>]+name="' . $name . '\[name\]"[^>]+value=""/', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="text"[^>]+name="' . $name . '\[email\]"[^>]+value=""/', $html );
 
 		$remember = preg_match( '/<input[^>]+type="checkbox"[^>]+name="' . $name . '\[remember\]"[^>]+value="1"[^>]+>/', $html, $matches );
 		$this->assertEquals( 1, $remember );
@@ -58,7 +58,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 		$remember = preg_match( '/<input[^>]+type="checkbox"[^>]+name="' . $name . '\[remember\]"[^>]+value="1"[^>]+>/', $processed_html, $matches );
 		$this->assertEquals( 1, $remember );
-		$this->assertContains( 'checked', $matches[0] );
+		$this->assertStringContainsString('checked', $matches[0] );
 
 		$banana = preg_match( '/<input[^>]+type="radio"[^>]+value="Banana"[^>]+name="' . $name . '\[group\]\[preferences\]"[^>]+>/', $processed_html, $matches );
 		$this->assertEquals( 1, $banana );
@@ -66,18 +66,18 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 
 		$apple = preg_match( '/<input[^>]+type="radio"[^>]+value="Apple"[^>]+name="' . $name . '\[group\]\[preferences\]"[^>]+>/', $processed_html, $matches );
 		$this->assertEquals( 1, $apple );
-		$this->assertContains( 'checked', $matches[0] );
+		$this->assertStringContainsString('checked', $matches[0] );
 
-		$this->assertContains( '<div class="updated success">', $processed_html );
+		$this->assertStringContainsString('<div class="updated success">', $processed_html );
 
 	}
 
 	/**
 	 * Test nonce failure
-	 *
-	 * @expectedException FM_Exception
 	 */
 	public function test_nonce_failure() {
+		$this->expectException( FM_Exception::class );
+
 		$name = 'edit_meta_fields';
 		fm_register_submenu_page( $name, 'edit.php', 'Edit Meta Fields' );
 		$context = $this->get_context( $name );
@@ -300,7 +300,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		$context->updated_message = $updated_message;
 		$html                     = $this->get_html( $context, $name );
 		$this->build_post( $html, $name );
-		$this->assertContains( "<div class=\"updated success\"><p>{$updated_message}</p></div>", $this->get_html( $context, $name ) );
+		$this->assertStringContainsString("<div class=\"updated success\"><p>{$updated_message}</p></div>", $this->get_html( $context, $name ) );
 	}
 
 }

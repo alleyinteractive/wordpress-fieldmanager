@@ -10,8 +10,8 @@
 class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 	public $current_user;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->current_user = get_current_user_id();
@@ -20,7 +20,7 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 		$this->term = $this->factory->category->create_and_get( array( 'name' => rand_str() ) );
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		if ( get_current_user_id() != $this->current_user ) {
 			wp_delete_user( get_current_user_id() );
 		}
@@ -70,7 +70,7 @@ class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 		$data = fm_get_term_meta( $this->term->term_id, $this->term->taxonomy, 'term_option', true );
 		$this->assertEquals( $text_updated, $data );
 
-		$this->assertInternalType( 'int', Fieldmanager_Util_Term_Meta()->get_term_meta_post_id( $this->term->term_id, $this->term->taxonomy ) );
+		$this->assertIsInt( Fieldmanager_Util_Term_Meta()->get_term_meta_post_id( $this->term->term_id, $this->term->taxonomy ) );
 
 		$cache_key = Fieldmanager_Util_Term_Meta()->get_term_meta_post_id_cache_key( $this->term->term_id, $this->term->taxonomy );
 

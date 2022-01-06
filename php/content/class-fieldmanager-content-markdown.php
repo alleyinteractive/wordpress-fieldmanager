@@ -22,7 +22,7 @@ class Fieldmanager_Content_Markdown extends Fieldmanager_Content {
 	/**
 	 * Render content as HTML from parsed Markdown.
 	 *
-	 * @param mixed $value Unused value.
+	 * @param string $content Content.
 	 * @return string Rendered content.
 	 */
 	public function render_content( $content ) {

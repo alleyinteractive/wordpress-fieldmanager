@@ -156,6 +156,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			}
 
 			if ( count( $terms ) > 0 ) {
+				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 				if ( 1 == $field->limit && empty( $field->multiple ) ) {
 					return $terms[0]->term_id;
 				} else {
@@ -374,7 +375,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 		// Walk through each term passed, add it (at current depth) to the data stack.
 		foreach ( $parent_terms as $term ) {
-			$prefix        = '';
+			$prefix = '';
 
 			// Prefix term based on depth. For $depth = 0, prefix will remain empty.
 			for ( $i = 0; $i < $depth; $i++ ) {
@@ -390,6 +391,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				$tax_args['search'] = $pattern;
 			}
 			$child_terms = get_terms( $this->get_taxonomies(), $tax_args );
+			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 			if ( 0 == $this->taxonomy_hierarchical_depth || $depth + 1 < $this->taxonomy_hierarchical_depth ) {
 				if ( ! empty( $child_terms ) ) {
 					$stack = $this->build_hierarchical_term_data( $child_terms, $this->taxonomy_args, $depth + 1, $stack );
@@ -430,6 +432,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			$cache_key = 'fm_datasource_term_get_term_' . $term_id;
 			$term      = wp_cache_get( $cache_key );
 			if ( false === $term ) {
+				// phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery -- baseline
 				$term = $wpdb->get_row(
 					$wpdb->prepare(
 						"SELECT t.*, tt.*
@@ -437,7 +440,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 					WHERE tt.term_taxonomy_id = %d LIMIT 1",
 						$term_id
 					)
-				); // WPCS: db call ok.
+				);
 
 				wp_cache_set( $cache_key, $term );
 			}

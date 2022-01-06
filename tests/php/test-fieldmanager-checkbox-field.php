@@ -8,8 +8,8 @@
  */
 class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = $this->factory->post->create_and_get(
@@ -56,8 +56,8 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		);
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertContains( 'name="test_checkbox"', $html );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringContainsString('name="test_checkbox"', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 
 		$this->save_values( $checkbox, $this->post, true );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -65,7 +65,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( '1', $saved_value );
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $checkbox, $this->post, false );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -73,7 +73,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( '', $saved_value );
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 	}
 
 	/**
@@ -88,8 +88,8 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		);
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertContains( 'name="test_checkbox"', $html );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('name="test_checkbox"', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $checkbox, $this->post, true );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -97,7 +97,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( '1', $saved_value );
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $checkbox, $this->post, false );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -105,7 +105,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( '', $saved_value );
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 	}
 
 	/**
@@ -154,9 +154,9 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		);
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertContains( 'name="test_checkbox"', $html );
-		$this->assertContains( 'value="' . $checked . '"', $html );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringContainsString('name="test_checkbox"', $html );
+		$this->assertStringContainsString('value="' . $checked . '"', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 
 		$this->save_values( $checkbox, $this->post, $checked );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -164,7 +164,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( $checked, $saved_value );
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $checkbox, $this->post, '' );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -172,7 +172,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( $unchecked, $saved_value );
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 	}
 
 	/**
@@ -191,9 +191,9 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		);
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertContains( 'name="test_checkbox"', $html );
-		$this->assertContains( 'value="' . $checked . '"', $html );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('name="test_checkbox"', $html );
+		$this->assertStringContainsString('value="' . $checked . '"', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $checkbox, $this->post, $checked );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -201,7 +201,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( $checked, $saved_value );
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $checkbox, $this->post, '' );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -209,7 +209,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( $unchecked, $saved_value );
 
 		$html = $this->render( $checkbox, $this->post );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 	}
 
 	/**
@@ -226,7 +226,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		);
 
 		$html = $this->render( $group, $this->post );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 
 		$this->save_values( $group, $this->post, array( 'checkbox' => true ) );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -234,7 +234,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( true, $saved_value['checkbox'] );
 
 		$html = $this->render( $group, $this->post );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $group, $this->post, array( 'checkbox' => false ) );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -242,7 +242,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( false, $saved_value['checkbox'] );
 
 		$html = $this->render( $group, $this->post );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 	}
 
 	/**
@@ -263,7 +263,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		);
 
 		$html = $this->render( $group, $this->post );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $group, $this->post, array( 'checkbox' => true ) );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -271,7 +271,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( true, $saved_value['checkbox'] );
 
 		$html = $this->render( $group, $this->post );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $group, $this->post, array( 'checkbox' => false ) );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -279,7 +279,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( false, $saved_value['checkbox'] );
 
 		$html = $this->render( $group, $this->post );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 	}
 
 	/**
@@ -303,8 +303,8 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		);
 
 		$html = $this->render( $group, $this->post );
-		$this->assertContains( 'value="' . $checked . '"', $html );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringContainsString('value="' . $checked . '"', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 
 		$this->save_values( $group, $this->post, array( 'checkbox' => $checked ) );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -312,7 +312,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( $checked, $saved_value['checkbox'] );
 
 		$html = $this->render( $group, $this->post );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $group, $this->post, array( 'checkbox' => false ) );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -320,7 +320,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( $unchecked, $saved_value['checkbox'] );
 
 		$html = $this->render( $group, $this->post );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 	}
 
 	/**
@@ -345,8 +345,8 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		);
 
 		$html = $this->render( $group, $this->post );
-		$this->assertContains( 'value="' . $checked . '"', $html );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('value="' . $checked . '"', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $group, $this->post, array( 'checkbox' => $checked ) );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -354,7 +354,7 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( $checked, $saved_value['checkbox'] );
 
 		$html = $this->render( $group, $this->post );
-		$this->assertContains( 'checked', $html );
+		$this->assertStringContainsString('checked', $html );
 
 		$this->save_values( $group, $this->post, array( 'checkbox' => false ) );
 		$saved_value = get_post_meta( $this->post->ID, 'test_checkbox', true );
@@ -362,6 +362,6 @@ class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
 		$this->assertSame( $unchecked, $saved_value['checkbox'] );
 
 		$html = $this->render( $group, $this->post );
-		$this->assertNotContains( 'checked', $html );
+		$this->assertStringNotContainsString( 'checked', $html );
 	}
 }

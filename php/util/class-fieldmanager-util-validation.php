@@ -86,6 +86,7 @@ class Fieldmanager_Util_Validation {
 		} else {
 			self::$instance = new Fieldmanager_Util_Validation();
 			self::$instance->setup( $form_id, $context );
+			// phpcs:ignore WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound -- baseline
 			$GLOBALS[ $global_id ] = self::$instance;
 			return self::$instance;
 		}
@@ -106,6 +107,7 @@ class Fieldmanager_Util_Validation {
 
 		// Add the appropriate action hook to finalize and output validation JS.
 		// Also determine where the jQuery validation script needs to be added.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( 'page' == $context ) {
 			// Currently only the page context outputs to the frontend.
 			$action = 'wp_footer';
@@ -161,6 +163,7 @@ class Fieldmanager_Util_Validation {
 		} else {
 			// Verify each rule defined in the array is valid and also check for any messages that were defined for each.
 			foreach ( $fm->validation_rules as $validation_key => $validation_rule ) {
+				// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 				if ( ! in_array( $validation_key, $this->valid_rules ) ) {
 					// This is not a rule available in jQuery validation.
 					/* translators: %s: validation key */
@@ -177,6 +180,7 @@ class Fieldmanager_Util_Validation {
 		// If this is the term context and the field is required, modify the original element to have the required property.
 		// This is necessary because it is the only way validation is supported on the term add form.
 		// Other validation methods won't work and will just fail gracefully.
+		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( 'term' == $this->context && isset( $fm->validation_rules['required'] ) && $fm->validation_rules['required'] ) {
 			$fm->required = true;
 		}
@@ -222,6 +226,7 @@ class Fieldmanager_Util_Validation {
 			}
 
 			// Fields that should always be ignored.
+			$ignore   = array();
 			$ignore[] = '.fm-autocomplete';
 			$ignore[] = "input[type='button']";
 			$ignore[] = ':hidden';
@@ -260,11 +265,13 @@ class Fieldmanager_Util_Validation {
 			);
 
 			// Add the ignore, rules and messages to final validate method with form ID, wrap in script tags and output.
-			echo sprintf( // WPCS: XSS ok.
+			echo sprintf(
 				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm_validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
 				esc_attr( $this->form_id ),
 				esc_js( $ignore_js ),
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- baseline
 				$rules_js, // Escaped in $this->array_to_js().
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- baseline
 				$messages_js // Escaped in $this->array_to_js().
 			);
 		}

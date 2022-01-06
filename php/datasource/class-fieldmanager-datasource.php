@@ -189,8 +189,8 @@ class Fieldmanager_Datasource {
 	public function autocomplete_search() {
 		// Check the nonce before we do anything.
 		check_ajax_referer( 'fm_search_nonce', 'fm_search_nonce' );
-		if ( isset( $_POST['fm_autocomplete_search'] ) ) { // WPCS: input var okay.
-			$items = $this->get_items_for_ajax( sanitize_text_field( wp_unslash( $_POST['fm_autocomplete_search'] ) ) ); // WPCS: input var okay.
+		if ( isset( $_POST['fm_autocomplete_search'] ) ) {
+			$items = $this->get_items_for_ajax( sanitize_text_field( wp_unslash( $_POST['fm_autocomplete_search'] ) ) );
 		}
 
 		// See if any results were returned and return them as an array.

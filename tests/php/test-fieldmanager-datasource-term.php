@@ -13,8 +13,8 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 
 	public $term_2;
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post = $this->factory->post->create_and_get(
@@ -176,7 +176,8 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->assertContains( $new_term, $post_terms );
 
 		// Numeric terms should be prefixed with an '=' from the JS handling.
-		$numeric_term = rand();
+		// Cast to string because it's compared with the term name.
+		$numeric_term = (string) rand();
 
 		$this->save_values( $terms, $this->post, array( "={$numeric_term}" ) );
 
@@ -187,7 +188,8 @@ class Test_Fieldmanager_Datasource_Term extends WP_UnitTestCase {
 		$this->assertCount( 1, $post_terms );
 		$this->assertContains( $numeric_term, $post_terms );
 
-		$numeric_term = $this->term->term_id;
+		// Cast to string because it's compared with the term name.
+		$numeric_term = (string) $this->term->term_id;
 
 		$this->save_values( $terms, $this->post, array( "={$numeric_term}" ) );
 

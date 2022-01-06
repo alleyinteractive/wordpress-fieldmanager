@@ -8,8 +8,8 @@
  */
 class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
-	public function setUp() {
-		parent::setUp();
+	public function set_up() {
+		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
 		$this->post    = $this->factory->post->create_and_get(
@@ -22,7 +22,7 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->post_id = $this->post->ID;
 	}
 
-	public function tearDown() {
+	public function tear_down() {
 		$meta = get_post_meta( $this->post_id );
 		foreach ( $meta as $key => $value ) {
 			delete_post_meta( $this->post_id, $key );
@@ -242,12 +242,12 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_group', true ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'fm-tab-bar', $html );
-		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
-		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
-		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
-		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
-		$this->assertNotContains( 'fm-tabbed-vertical', $html );
+		$this->assertStringContainsString('fm-tab-bar', $html );
+		$this->assertStringContainsString('name="base_group[tab-1][test_text]"', $html );
+		$this->assertStringContainsString('value="' . $data['tab-1']['test_text'] . '"', $html );
+		$this->assertStringContainsString('name="base_group[tab-2][test_textarea]"', $html );
+		$this->assertStringContainsString('>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
+		$this->assertStringNotContainsString( 'fm-tabbed-vertical', $html );
 	}
 
 	public function test_vertical_tabbed_group() {
@@ -287,12 +287,12 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data, get_post_meta( $this->post_id, 'base_group', true ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'fm-tab-bar', $html );
-		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
-		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
-		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
-		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
-		$this->assertContains( 'fm-tabbed-vertical', $html );
+		$this->assertStringContainsString('fm-tab-bar', $html );
+		$this->assertStringContainsString('name="base_group[tab-1][test_text]"', $html );
+		$this->assertStringContainsString('value="' . $data['tab-1']['test_text'] . '"', $html );
+		$this->assertStringContainsString('name="base_group[tab-2][test_textarea]"', $html );
+		$this->assertStringContainsString('>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
+		$this->assertStringContainsString('fm-tabbed-vertical', $html );
 	}
 
 	/**
@@ -313,16 +313,16 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 		$base = new Fieldmanager_Group( $args );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
-		$this->assertContains( 'name="base_group[test_basic]"', $html );
-		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertStringContainsString('name="base_group[test_basic]"', $html );
+		$this->assertStringContainsString('name="base_group[test_htmlfield]"', $html );
 
 		// Using serialize_data => false shouldn't change anything
 		$base = new Fieldmanager_Group( array_merge( $args, array( 'serialize_data' => false ) ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
-		$this->assertContains( 'name="base_group[test_basic]"', $html );
-		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertStringContainsString('name="base_group[test_basic]"', $html );
+		$this->assertStringContainsString('name="base_group[test_htmlfield]"', $html );
 	}
 
 	/**
@@ -348,11 +348,11 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		update_post_meta( $this->post_id, 'base_group', $data );
 		$base = new Fieldmanager_Group( $args );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
-		$this->assertContains( 'name="base_group[test_basic]"', $html );
-		$this->assertContains( 'value="' . $data['test_basic'] . '"', $html );
-		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
-		$this->assertContains( ">{$data['test_htmlfield']}</textarea>", $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertStringContainsString('name="base_group[test_basic]"', $html );
+		$this->assertStringContainsString('value="' . $data['test_basic'] . '"', $html );
+		$this->assertStringContainsString('name="base_group[test_htmlfield]"', $html );
+		$this->assertStringContainsString(">{$data['test_htmlfield']}</textarea>", $html );
 		delete_post_meta( $this->post_id, 'base_group' );
 
 		// Using serialize_data => false requires a different data storage
@@ -361,11 +361,11 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		}
 		$base = new Fieldmanager_Group( array_merge( $args, array( 'serialize_data' => false ) ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
-		$this->assertContains( 'name="base_group[test_basic]"', $html );
-		$this->assertContains( 'value="' . $data['test_basic'] . '"', $html );
-		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
-		$this->assertContains( ">{$data['test_htmlfield']}</textarea>", $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertStringContainsString( 'name="base_group[test_basic]"', $html );
+		$this->assertStringContainsString( 'value="' . $data['test_basic'] . '"', $html );
+		$this->assertStringContainsString( 'name="base_group[test_htmlfield]"', $html );
+		$this->assertStringContainsString( ">{$data['test_htmlfield']}</textarea>", $html );
 		foreach ( $data as $meta_key => $meta_value ) {
 			delete_post_meta( $this->post_id, "base_group_{$meta_key}" );
 		}
@@ -385,10 +385,10 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 			)
 		);
 		$html = $this->_get_html_for( $base );
-		$this->assertRegExp( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
-		$this->assertContains( 'name="base_group[test_basic]"', $html );
-		$this->assertContains( 'value="' . $data['test_basic'] . '"', $html );
-		$this->assertContains( 'name="base_group[test_htmlfield]"', $html );
+		$this->assertMatchesRegularExpression( '/<input[^>]+type="hidden"[^>]+name="fieldmanager-base_group-nonce"/', $html );
+		$this->assertStringContainsString( 'name="base_group[test_basic]"', $html );
+		$this->assertStringContainsString( 'value="' . $data['test_basic'] . '"', $html );
+		$this->assertStringContainsString( 'name="base_group[test_htmlfield]"', $html );
 	}
 
 	/**
@@ -473,8 +473,8 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data['level2']['level3']['level4']['field'], get_post_meta( $this->post_id, 'field', true ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'name="base_group[level2][level3][level4][field]"', $html );
-		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
+		$this->assertStringContainsString( 'name="base_group[level2][level3][level4][field]"', $html );
+		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
 	}
 
 	/**
@@ -541,13 +541,13 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->assertEquals( $data['level2']['level3']['level4']['field_one'], get_post_meta( $this->post_id, 'field_one' ) );
 		$this->assertEquals( $data['level2']['level3']['level4']['field_two'], get_post_meta( $this->post_id, 'field_two' ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'name="base_group[level2][level3][level4][field_one][0]"', $html );
-		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_one'][0] . '"', $html );
-		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_one'][1] . '"', $html );
-		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_one'][2] . '"', $html );
-		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_two'][0] . '"', $html );
-		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_two'][1] . '"', $html );
-		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field_two'][2] . '"', $html );
+		$this->assertStringContainsString( 'name="base_group[level2][level3][level4][field_one][0]"', $html );
+		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field_one'][0] . '"', $html );
+		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field_one'][1] . '"', $html );
+		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field_one'][2] . '"', $html );
+		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field_two'][0] . '"', $html );
+		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field_two'][1] . '"', $html );
+		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field_two'][2] . '"', $html );
 	}
 
 	/**
@@ -598,8 +598,8 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data['level2']['level3']['level4']['field'], get_post_meta( $this->post_id, 'base_group_level2_level4_field', true ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'name="base_group[level2][level3][level4][field]"', $html );
-		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
+		$this->assertStringContainsString( 'name="base_group[level2][level3][level4][field]"', $html );
+		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
 	}
 
 	/**
@@ -647,8 +647,8 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$base->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $data );
 		$this->assertEquals( $data['level2']['level3'], get_post_meta( $this->post_id, 'base_group_level2_level3', true ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'name="base_group[level2][level3][level4][field]"', $html );
-		$this->assertContains( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
+		$this->assertStringContainsString( 'name="base_group[level2][level3][level4][field]"', $html );
+		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
 	}
 
 	/**
@@ -698,10 +698,10 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->assertEquals( $data['tab-1']['test_text'], get_post_meta( $this->post_id, 'test_text', true ) );
 		$this->assertEquals( $data['tab-2']['test_textarea'], get_post_meta( $this->post_id, 'test_textarea', true ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'name="base_group[tab-1][test_text]"', $html );
-		$this->assertContains( 'value="' . $data['tab-1']['test_text'] . '"', $html );
-		$this->assertContains( 'name="base_group[tab-2][test_textarea]"', $html );
-		$this->assertContains( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
+		$this->assertStringContainsString( 'name="base_group[tab-1][test_text]"', $html );
+		$this->assertStringContainsString( 'value="' . $data['tab-1']['test_text'] . '"', $html );
+		$this->assertStringContainsString( 'name="base_group[tab-2][test_textarea]"', $html );
+		$this->assertStringContainsString( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
 	}
 
 	/**
@@ -736,10 +736,10 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->assertEquals( $data['test_text'], get_post_meta( $this->post_id, 'base_group_test_text', true ) );
 		$this->assertEquals( $data['test_group'], get_post_meta( $this->post_id, 'base_group_test_group', true ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'name="base_group[test_text]"', $html );
-		$this->assertContains( 'value="' . $data['test_text'] . '"', $html );
-		$this->assertContains( 'name="base_group[test_group][text]"', $html );
-		$this->assertContains( '>' . $data['test_group']['text'] . '</textarea>', $html );
+		$this->assertStringContainsString( 'name="base_group[test_text]"', $html );
+		$this->assertStringContainsString( 'value="' . $data['test_text'] . '"', $html );
+		$this->assertStringContainsString( 'name="base_group[test_group][text]"', $html );
+		$this->assertStringContainsString( '>' . $data['test_group']['text'] . '</textarea>', $html );
 	}
 
 	/**
@@ -775,17 +775,18 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$this->assertEquals( $data['test_text'], get_post_meta( $this->post_id, 'base_group_test_text', true ) );
 		$this->assertEquals( $data['test_group']['deep_text'], get_post_meta( $this->post_id, 'base_group_test_group_deep_text', true ) );
 		$html = $this->_get_html_for( $base );
-		$this->assertContains( 'name="base_group[test_text]"', $html );
-		$this->assertContains( 'value="' . $data['test_text'] . '"', $html );
-		$this->assertContains( 'name="base_group[test_group][deep_text]"', $html );
-		$this->assertContains( '>' . $data['test_group']['deep_text'] . '</textarea>', $html );
+		$this->assertStringContainsString( 'name="base_group[test_text]"', $html );
+		$this->assertStringContainsString( 'value="' . $data['test_text'] . '"', $html );
+		$this->assertStringContainsString( 'name="base_group[test_group][deep_text]"', $html );
+		$this->assertStringContainsString( '>' . $data['test_group']['deep_text'] . '</textarea>', $html );
 	}
 
 	/**
 	 * @group serialize_data
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_unserialize_data_repeatable_group() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		new Fieldmanager_Group(
 			array(
 				'name'           => 'parent',
@@ -801,9 +802,10 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_unserialize_data_repeatable_parent() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		new Fieldmanager_Group(
 			array(
 				'name'     => 'grandparent',
@@ -825,9 +827,10 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_unserialize_data_repeatable_distant_ancestor() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		new Fieldmanager_Group(
 			array(
 				'name'     => 'gggp',
@@ -861,9 +864,10 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_unserialize_data_indexed_field() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		new Fieldmanager_Group(
 			array(
 				'name'           => 'parent',
@@ -917,9 +921,10 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
 	/**
 	 * @group serialize_data
-	 * @expectedException FM_Developer_Exception
 	 */
 	public function test_unserialize_data_name_conflict() {
+		$this->expectException( FM_Developer_Exception::class );
+
 		$base = new Fieldmanager_Group(
 			array(
 				'name'           => 'base_group',
@@ -1008,12 +1013,12 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertNotContains( "value=\"{$group_data[0]['a']}\"", $html );
-		$this->assertNotContains( "value=\"{$group_data[0]['b']}\"", $html );
-		$this->assertContains( "value=\"{$group_data[1]['a']}\"", $html );
-		$this->assertContains( "value=\"{$group_data[1]['b']}\"", $html );
-		$this->assertContains( "value=\"{$group_data[2]['a']}\"", $html );
-		$this->assertContains( "value=\"{$group_data[2]['b']}\"", $html );
+		$this->assertStringNotContainsString( "value=\"{$group_data[0]['a']}\"", $html );
+		$this->assertStringNotContainsString( "value=\"{$group_data[0]['b']}\"", $html );
+		$this->assertStringContainsString( "value=\"{$group_data[1]['a']}\"", $html );
+		$this->assertStringContainsString( "value=\"{$group_data[1]['b']}\"", $html );
+		$this->assertStringContainsString( "value=\"{$group_data[2]['a']}\"", $html );
+		$this->assertStringContainsString( "value=\"{$group_data[2]['b']}\"", $html );
 	}
 
 	public function test_add_another_box_position() {
@@ -1044,8 +1049,8 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$add_another_occurrence = strpos( $default_html, 'value="Add Another' );
 		$text_field_occurrence  = strpos( $default_html, 'class="fm-wrapper fm-a-wrapper"' );
 
-		$this->assertContains( 'value="Add Another"', $default_html );
-		$this->assertContains( 'data-add-more-position="bottom"', $default_html );
+		$this->assertStringContainsString( 'value="Add Another"', $default_html );
+		$this->assertStringContainsString( 'data-add-more-position="bottom"', $default_html );
 		// indicates add another button is at the bottom (default behavior).
 		$this->assertTrue( $add_another_occurrence > $text_field_occurrence );
 
@@ -1071,8 +1076,8 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$add_another_occurrence = strpos( $html, 'value="Add Another' );
 		$text_field_occurrence  = strpos( $html, 'class="fm-wrapper fm-a-wrapper"' );
 
-		$this->assertContains( 'value="Add Another"', $html );
-		$this->assertContains( 'data-add-more-position="top"', $html );
+		$this->assertStringContainsString( 'value="Add Another"', $html );
+		$this->assertStringContainsString( 'data-add-more-position="top"', $html );
 		// indicates add another button is at the top (add_another_position = top).
 		$this->assertTrue( $add_another_occurrence < $text_field_occurrence );
 
@@ -1100,7 +1105,7 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertContains( 'value="0"', $html );
+		$this->assertStringContainsString( 'value="0"', $html );
 
 		$group_data = array(
 			'a' => '',
@@ -1149,8 +1154,8 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		$context->render_meta_box( $this->post, array() );
 		$html = ob_get_clean();
 
-		$this->assertNotContains( $skip, $html );
-		$this->assertContains( $save, $html );
+		$this->assertStringNotContainsString( $skip, $html );
+		$this->assertStringContainsString( $save, $html );
 	}
 
 	public function test_textfield_zero_input_in_repeating_group() {
@@ -1189,10 +1194,10 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 		);
 
 		$base = new Fieldmanager_Group( $args );
-		$this->assertNotContains( 'fmjs-collapsible-handle closed"', $this->_get_html_for( $base ) );
+		$this->assertStringNotContainsString( 'fmjs-collapsible-handle closed"', $this->_get_html_for( $base ) );
 
 		$args['collapsed'] = true;
 		$base              = new Fieldmanager_Group( $args );
-		$this->assertContains( 'fmjs-collapsible-handle closed"', $this->_get_html_for( $base ) );
+		$this->assertStringContainsString( 'fmjs-collapsible-handle closed"', $this->_get_html_for( $base ) );
 	}
 }
