@@ -7,9 +7,5 @@
     "url": "https://github.com/alleyinteractive/wordpress-fieldmanager"
   },
   "license": "GPL-2.0",
-  "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-connect": "~0.11.0",
-    "grunt-contrib-qunit": "~0.7.0"
-  }
+  "devDependencies": {}
 }
