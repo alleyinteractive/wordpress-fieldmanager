@@ -75,27 +75,29 @@ var fm_renumber = function( $wrappers ) {
 	$wrappers.each( function() {
 		var level_pos = $( this ).data( 'fm-array-position' ) - 0;
 		var order = 0;
+		var modified_elements = [];
 		if ( level_pos > 0 ) {
 			$( this ).find( '> .fm-item' ).each( function() {
 				if ( $( this ).hasClass( 'fmjs-proto' ) ) {
 					return; // continue
 				}
 				$( this ).find( '.fm-element, .fm-incrementable' ).each( function() {
-					var fname = $(this).attr( 'name' );
+					var $element = $( this );
+					var fname = $element.attr( 'name' );
 					if ( fname ) {
-						fname = fname.replace( /\]/g, '' );
-						parts = fname.split( '[' );
+						parts = fname.replace( /\]/g, '' ).split( '[' );
 						if ( parts[ level_pos ] != order ) {
 							parts[ level_pos ] = order;
 							var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
 							// Rename the field and add a temporary prefix to prevent name collisions.
-							$( this ).attr( 'name', 'fmtemp_' + ( ++fmtemp ).toString() + '_' + new_fname );
-							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
-								$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
-								if ( $( this ).parent().hasClass( 'fm-option' ) ) {
-									$( this ).parent().find( 'label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
+							$element.attr( 'name', 'fmtemp_' + ( ++fmtemp ).toString() + '_' + new_fname );
+							modified_elements.push( $element );
+							if ( $element.attr( 'id' ) && $element.attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
+								$element.attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
+								if ( $element.parent().hasClass( 'fm-option' ) ) {
+									$element.parent().find( 'label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
 								} else {
-									var parent = $( this ).closest( '.fm-item' );
+									var parent = $element.closest( '.fm-item' );
 									if ( parent.length && parent.find( '.fm-label label' ).length ) {
 										parent.find( '.fm-label label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
 									}
@@ -105,8 +107,8 @@ var fm_renumber = function( $wrappers ) {
 							}
 						}
 					}
-					if ( $( this ).hasClass( 'fm-incrementable' ) ) {
-						$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
+					if ( $element.hasClass( 'fm-incrementable' ) ) {
+						$element.attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
 						dynamic_seq++;
 					}
 				} );
@@ -118,9 +120,11 @@ var fm_renumber = function( $wrappers ) {
 		} );
 
 		// Remove temporary name prefix in renumbered fields.
-		$( '.fm-element[name^="fmtemp_"], .fm-incrementable[name^="fmtemp_"]' ).each( function() {
-			$( this ).attr( 'name', $( this ).attr( 'name' ).replace( /^fmtemp_\d+_/, '' ) );
-		} );
+		if ( modified_elements.length ) {
+			$.each( modified_elements, function( index, $element ) {
+				$element.attr( 'name', $element.attr( 'name' ).replace( /^fmtemp_\d+_/, '' ) );
+			} );
+		}
 	} );
 }
 
