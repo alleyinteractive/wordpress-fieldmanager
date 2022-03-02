@@ -15,8 +15,7 @@ var init_sortable_container = function( el ) {
 				$( document ).trigger( 'fm_sortable_drag', el );
 			},
 			stop: function( e, ui ) {
-				var $parent = ui.item.parents( '.fm-wrapper' ).first();
-				fm_renumber( $parent );
+				fm_renumber( ui.item.closest( '.fm-wrapper[data-fm-array-position]' ) );
 				$( document ).trigger( 'fm_sortable_drop', el );
 			}
 		} );
@@ -96,7 +95,6 @@ var init_label_macros = function() {
 					return; // continue;
 				}
 
-				// TODO: nested fields get iterated over multiple times, is this avoidable?
 				$( this ).find( '.fm-element, .fm-incrementable' ).each( function() {
 					var $element = $( this );
 					var fname = $element.attr( 'name' );
@@ -142,7 +140,7 @@ var init_label_macros = function() {
 		}
 
 		// Iterate over subgroups.
-		fm_renumber( $( this ).find( '.fm-wrapper' ) );
+		fm_renumber( $( this ).find( '.fm-wrapper[data-fm-array-position]' ) );
 
 		// Remove temporary name prefix in renumbered fields.
 		if ( modified_elements.length ) {
@@ -194,9 +192,12 @@ fm_add_another = function( $element ) {
 	var $new_element = $( '.fmjs-proto.fm-' + el_name, $element.closest( '.fm-wrapper' ) ).first().clone();
 
 	$new_element.removeClass( 'fmjs-proto' );
-	$new_element = add_more_position == "bottom" ? $new_element.insertBefore( $element.parent() ) :
-						$new_element.insertAfter( $element.parent() )	;
-	fm_renumber( $element.parents( '.fm-wrapper' ) );
+	$new_element = add_more_position == "bottom"
+		? $new_element.insertBefore( $element.parent() )
+		: $new_element.insertAfter( $element.parent() );
+
+	fm_renumber( $element.closest( '.fm-wrapper[data-fm-array-position]' ) );
+
 	// Trigger for subclasses to do any post-add event handling for the new element
 	$element.parent().siblings().last().trigger( 'fm_added_element' );
 	init_label_macros();
