@@ -408,4 +408,97 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 		$this->assertStringContainsString('name="base_group[test_group][deep_text]"', $html );
 		$this->assertStringContainsString( '>' . $data['test_group']['deep_text'] . '</textarea>', $html );
 	}
+
+	/**
+	 * @see https://github.com/alleyinteractive/wordpress-fieldmanager/issues/831
+	 */
+	public function test_term_saving_side_effects_on_term_update() {
+		$name  = 'side-effect';
+		$value = 'Fieldmanager was here';
+
+		// Register a Fieldmanager Field and add the term context.
+		$fm = new Fieldmanager_TextField( compact( 'name' ) );
+		$fm->add_term_meta_box( 'Testing Side Effects', [ $this->taxonomy ] );
+
+		// Set the POST data.
+		$_POST = [
+			'tag_ID' => $this->term_id,
+			'taxonomy' => $this->taxonomy,
+			'name' => 'News',
+			'slug' => 'news',
+			'description' => 'General news',
+			"fieldmanager-{$name}-nonce" => wp_create_nonce( "fieldmanager-save-{$name}" ),
+			$name => $value,
+		];
+
+		// Trigger the intended save.
+		do_action(
+			'edited_term',
+			$this->term_id,
+			$this->tt_id,
+			$this->taxonomy
+		);
+
+		// Fake a side effect.
+		$side_effect_term = self::factory()->term->create_and_get(
+			[
+				'taxonomy' => $this->taxonomy,
+			]
+		);
+		do_action(
+			'edited_term',
+			$side_effect_term->term_id,
+			$side_effect_term->term_taxonomy_id,
+			$this->taxonomy
+		);
+
+		$this->assertSame( $value, get_term_meta( $this->term_id, $name, true ) );
+		$this->assertSame( [], get_term_meta( $side_effect_term->term_id, $name ) );
+	}
+
+	/**
+	 * @see https://github.com/alleyinteractive/wordpress-fieldmanager/issues/831
+	 */
+	public function test_term_saving_side_effects_on_term_create() {
+		$name  = 'side-effect';
+		$value = 'Fieldmanager was here';
+
+		// Register a Fieldmanager Field and add the term context.
+		$fm = new Fieldmanager_TextField( compact( 'name' ) );
+		$fm->add_term_meta_box( 'Testing Side Effects', [ $this->taxonomy ] );
+
+		// Set the POST data.
+		$_POST = [
+			'taxonomy' => $this->taxonomy,
+			'tag-name' => $this->term->name,
+			'slug' => $this->term->slug,
+			'description' => $this->term->description,
+			"fieldmanager-{$name}-nonce" => wp_create_nonce( "fieldmanager-save-{$name}" ),
+			$name => $value,
+		];
+
+		// Trigger the intended save.
+		do_action(
+			'created_term',
+			$this->term_id,
+			$this->tt_id,
+			$this->taxonomy
+		);
+
+		// Fake a side effect.
+		$side_effect_term = self::factory()->term->create_and_get(
+			[
+				'taxonomy' => $this->taxonomy,
+			]
+		);
+		do_action(
+			'edited_term',
+			$side_effect_term->term_id,
+			$side_effect_term->term_taxonomy_id,
+			$this->taxonomy
+		);
+
+		$this->assertSame( $value, get_term_meta( $this->term_id, $name, true ) );
+		$this->assertSame( [], get_term_meta( $side_effect_term->term_id, $name ) );
+	}
 }

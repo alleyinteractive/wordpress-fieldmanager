@@ -288,6 +288,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @param string $taxonomy The term taxonomy.
 	 */
 	public function save_term_fields( $term_id, $tt_id, $taxonomy ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
 		// Ensure that the term being created/updated is the term in the request.
 		if ( ! empty( $_POST['tag_ID'] ) && $term_id !== (int) $_POST['tag_ID'] ) {
 			return;
@@ -296,7 +297,6 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			&& ! empty( $_POST['taxonomy'] )
 			&& $taxonomy === $_POST['taxonomy']
 			&& isset( $_POST['tag-name'], $_POST['description'] )
-			&& doing_action( 'created_term' )
 		) {
 			// This scenario is tricker to account for. This needs to confirm that the
 			// term that was created reflects the term in the form. It's not possible to
@@ -306,6 +306,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 				return;
 			}
 		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
 
 		// Make sure this field is attached to the taxonomy being saved and this is the appropriate action.
 		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
