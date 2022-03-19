@@ -422,14 +422,14 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 
 		// Set the POST data.
 		$_POST = [
-			'tag_ID' => $this->term_id,
-			'taxonomy' => $this->taxonomy,
-			'name' => 'News',
-			'slug' => 'news',
-			'description' => 'General news',
-			'parent' => '-1',
+			'tag_ID'                     => $this->term_id,
+			'taxonomy'                   => $this->taxonomy,
+			'name'                       => 'News',
+			'slug'                       => 'news',
+			'description'                => 'General news',
+			'parent'                     => '-1',
 			"fieldmanager-{$name}-nonce" => wp_create_nonce( "fieldmanager-save-{$name}" ),
-			$name => $value,
+			$name                        => $value,
 		];
 
 		// Trigger the intended save.
@@ -461,8 +461,9 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 	 * @see https://github.com/alleyinteractive/wordpress-fieldmanager/issues/831
 	 */
 	public function test_term_saving_side_effects_on_term_create() {
-		$name  = 'side-effect';
-		$value = 'Fieldmanager was here';
+		$name          = 'side-effect';
+		$value         = 'Fieldmanager was here';
+		$new_term_name = 'New Term';
 
 		// Register a Fieldmanager Field and add the term context.
 		$fm = new Fieldmanager_TextField( compact( 'name' ) );
@@ -470,22 +471,17 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 
 		// Set the POST data.
 		$_POST = [
-			'taxonomy' => $this->taxonomy,
-			'tag-name' => $this->term->name,
-			'slug' => $this->term->slug,
-			'description' => $this->term->description,
-			'parent' => '-1',
+			'taxonomy'                   => $this->taxonomy,
+			'tag-name'                   => $new_term_name,
+			'slug'                       => '',
+			'description'                => '',
+			'parent'                     => '-1',
 			"fieldmanager-{$name}-nonce" => wp_create_nonce( "fieldmanager-save-{$name}" ),
-			$name => $value,
+			$name                        => $value,
 		];
 
 		// Trigger the intended save.
-		do_action(
-			'created_term',
-			$this->term_id,
-			$this->tt_id,
-			$this->taxonomy
-		);
+		$new_term = wp_insert_term( $new_term_name, $this->taxonomy );
 
 		// Fake a side effect.
 		$side_effect_term = self::factory()->term->create_and_get(
@@ -500,7 +496,44 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 			$this->taxonomy
 		);
 
-		$this->assertSame( $value, get_term_meta( $this->term_id, $name, true ) );
+		$this->assertSame( $value, get_term_meta( $new_term['term_id'], $name, true ) );
 		$this->assertSame( [], get_term_meta( $side_effect_term->term_id, $name ) );
+	}
+
+	/**
+	 * @see https://github.com/alleyinteractive/wordpress-fieldmanager/issues/831
+	 */
+	public function test_term_meta_saving_on_term_create_when_a_filter_alters_the_term_name() {
+		$name          = 'testing';
+		$value         = 'Fieldmanager was here';
+		$new_term_name = 'New Term';
+
+		// Register a Fieldmanager Field and add the term context.
+		$fm = new Fieldmanager_TextField( compact( 'name' ) );
+		$fm->add_term_meta_box( 'Testing', [ $this->taxonomy ] );
+
+		// Set the POST data.
+		$_POST = [
+			'taxonomy' => $this->taxonomy,
+			'tag-name' => $new_term_name,
+			'slug' => '',
+			'description' => '',
+			'parent' => '-1',
+			"fieldmanager-{$name}-nonce" => wp_create_nonce( "fieldmanager-save-{$name}" ),
+			$name => $value,
+		];
+
+		// Manipualte the term name prior to insert.
+		add_filter(
+			'pre_insert_term',
+			function( $term_name ) {
+				return "Edited: {$term_name}";
+			}
+		);
+
+		// Insert the term.
+		$term = wp_insert_term( $new_term_name, $this->taxonomy );
+
+		$this->assertSame( $value, get_term_meta( $term['term_id'], $name, true ) );
 	}
 }
