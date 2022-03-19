@@ -427,6 +427,7 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 			'name' => 'News',
 			'slug' => 'news',
 			'description' => 'General news',
+			'parent' => '-1',
 			"fieldmanager-{$name}-nonce" => wp_create_nonce( "fieldmanager-save-{$name}" ),
 			$name => $value,
 		];
@@ -473,6 +474,7 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 			'tag-name' => $this->term->name,
 			'slug' => $this->term->slug,
 			'description' => $this->term->description,
+			'parent' => '-1',
 			"fieldmanager-{$name}-nonce" => wp_create_nonce( "fieldmanager-save-{$name}" ),
 			$name => $value,
 		];

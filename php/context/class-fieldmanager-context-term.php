@@ -296,13 +296,17 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			empty( $_POST['tag_ID'] )
 			&& ! empty( $_POST['taxonomy'] )
 			&& $taxonomy === $_POST['taxonomy']
-			&& isset( $_POST['tag-name'], $_POST['description'] )
+			&& isset( $_POST['tag-name'], $_POST['parent'] )
 		) {
-			// This scenario is tricker to account for. This needs to confirm that the
-			// term that was created reflects the term in the form. It's not possible to
-			// absolutely guarantee this, so this mitigates risk as much as possible.
+			// This confirms that the term that was created reflects the term in the form.
+			// Core expects terms to have a unique combination of [taxonomy, name, parent].
 			$term = get_term( $term_id );
-			if ( $term->name !== $_POST['tag-name'] || $term->description !== $_POST['description'] ) {
+			if ( $term->name !== $_POST['tag-name'] ) {
+				return;
+			}
+
+			$posted_parent = max( 0, (int) $_POST['parent'] );
+			if ( $posted_parent !== $term->parent ) {
 				return;
 			}
 		}
