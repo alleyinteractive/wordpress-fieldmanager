@@ -170,8 +170,8 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		foreach ( $this->taxonomies as $taxonomy ) {
 			if ( $this->show_on_add ) {
 				add_action( $taxonomy . '_add_form_fields', array( $this, 'add_term_fields' ), 10, 1 );
+				add_filter( 'wp_insert_term_data', array( $this, 'verify_term_data_on_insert' ), PHP_INT_MAX, 3 );
 				add_action( 'created_term', array( $this, 'save_term_fields' ), 10, 3 );
-				add_filter( 'pre_insert_term', array( $this, 'maybe_hook_into_create_term' ), 0, 2 );
 			}
 
 			if ( $this->show_on_edit ) {
@@ -302,12 +302,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		// Ensure that the term being created/updated is the term in the request.
 		if ( ! empty( $_POST['tag_ID'] ) && $term_id !== (int) $_POST['tag_ID'] ) {
 			return;
-		} elseif (
-			empty( $_POST['tag_ID'] )
-			&& ! empty( $_POST['taxonomy'] )
-			&& $taxonomy === $_POST['taxonomy']
-			&& isset( $_POST['tag-name'], $_POST['parent'] )
-		) {
+		} elseif ( empty( $_POST['tag_ID'] ) ) {
 			// Ensure this was the created_term action.
 			if ( ! doing_action( 'created_term' ) ) {
 				return;
@@ -319,15 +314,17 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			}
 
 			// Core expects terms to have a unique combination of [taxonomy, name, parent].
+			// Therefore, this verifies that data against what was recorded prior to insert.
 			$term = get_term( $term_id );
-			if ( $term->name !== $this->inserting_term_data['name'] ) {
-				return;
-			}
-			if ( $this->inserting_term_data['parent'] !== $term->parent ) {
+			if (
+				$term->name !== $this->inserting_term_data['name']
+				|| $term->parent !== $this->inserting_term_data['parent']
+				|| $taxonomy !== $this->inserting_term_data['taxonomy']
+			) {
 				return;
 			}
 
-			// This term appears to check out.
+			// This term appears to check out. Remove the recorded insert data.
 			unset( $this->inserting_term_data );
 		}
 		// phpcs:enable WordPress.Security.NonceVerification.Missing
@@ -355,69 +352,41 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	}
 
 	/**
-	 * Hook into create_term if the term being created matches the postdata.
+	 * Verify that the term being inserted is the term that Fieldmanager data
+	 * should be added to.
 	 *
-	 * @param string|WP_Error $name     The term name to add, or a WP_Error object if there's an error.
-	 * @param string          $taxonomy Taxonomy slug.
-	 * @return string|WP_Error $name, unmodified.
+	 * This method serves to protect against a plugin or theme creating one or
+	 * more additional terms as a side effect of a term created from the form.
+	 * In order to protect against that, it's necessary to check the inserting
+	 * term's [name, taxonomy, parent], as WordPress requires the combination of
+	 * these fields to be unique. In order to guard against a plugin or theme
+	 * changing this data, it is recorded immediately prior to the term being
+	 * insert, and then checked in `save_term_fields()`.
+	 *
+	 * @param array  $data     {
+	 *     Term data to be inserted.
+	 *
+	 *     @type string $name       Term name.
+	 *     @type string $slug       Term slug.
+	 *     @type int    $term_group Term group.
+	 * }
+	 * @param string $taxonomy Taxonomy slug.
+	 * @param array  $args     Arguments passed to wp_insert_term(), which is
+	 *                         raw $_POST data.
+	 * @return array Unmodified `$data`.
 	 */
-	public function maybe_hook_into_create_term( $name, $taxonomy ) {
-		// phpcs:disable WordPress.Security.NonceVerification.Missing
-		if (
-			! is_wp_error( $name )
-			&& ! empty( $_POST['tag-name'] ) && $_POST['tag-name'] === $name
-			&& ! empty( $_POST['taxonomy'] ) && $_POST['taxonomy'] === $taxonomy
-		) {
-			add_action( 'create_term', array( $this, 'verify_new_term_data_didnt_change' ), 10, 1 );
+	public function verify_term_data_on_insert( $data, $taxonomy, $args ) {
+		// Confirm that this data has the FM nonce for this field.
+		if ( ! empty( $args[ $this->nonce_key() ] ) ) {
 			// Append the data to the queued insert.
 			$this->inserting_term_data = array(
-				'depth'    => 1,
-				'name'     => $name,
+				'name'     => $data['name'],
 				'taxonomy' => $taxonomy,
-				'parent'   => ! empty( $_POST['parent'] ) ? max( (int) $_POST['parent'], 0 ) : 0,
+				'parent'   => ! empty( $args['parent'] ) ? max( (int) $args['parent'], 0 ) : 0,
 			);
-		} elseif ( isset( $this->inserting_term_data['depth'] ) ) {
-			// If a term is being insert between `pre_insert_term` and `create_term`, note it.
-			$this->inserting_term_data['depth']++;
 		}
 
-		return $name;
-		// phpcs:enable WordPress.Security.NonceVerification.Missing
-	}
-
-	/**
-	 * Verify the term data didn't change prior to insert.
-	 *
-	 * @param int $term_id Term ID.
-	 */
-	public function verify_new_term_data_didnt_change( $term_id ) {
-		// Early escape for a situation which shouldn't happen.
-		if ( empty( $this->inserting_term_data ) ) {
-			return;
-		}
-
-		// If depth > 1, it means that this term is being inserted while the target
-		// term is, as a side effect. This will ignore it and reduce the tracked depth.
-		if ( $this->inserting_term_data['depth'] > 1 ) {
-			$this->inserting_term_data['depth']--;
-			return;
-		}
-
-		$term = get_term( $term_id );
-		if (
-			$term->name !== $this->inserting_term_data['name']
-			|| $term->taxonomy !== $this->inserting_term_data['taxonomy']
-			|| $term->parent !== $this->inserting_term_data['parent']
-		) {
-			// The data was manipualted prior to insert.
-			$this->inserting_term_data['name']     = $term->name;
-			$this->inserting_term_data['taxonomy'] = $term->taxonomy;
-			$this->inserting_term_data['parent']   = $term->parent;
-		}
-
-		// Since the term is now confirmed, skip any additional checks.
-		remove_filter( 'pre_insert_term', array( $this, 'maybe_hook_into_create_term' ), 0, 2 );
-		remove_action( 'create_term', array( $this, 'verify_new_term_data_didnt_change' ), 10, 1 );
+		return $data;
 	}
 
 	/**
