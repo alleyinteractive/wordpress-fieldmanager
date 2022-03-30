@@ -3,7 +3,7 @@
  * Fieldmanager Base Plugin File.
  *
  * @package Fieldmanager
- * @version 1.4.1
+ * @version 1.5.0
  */
 
 /*
@@ -11,14 +11,14 @@ Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to WordPress programmatically.
 Author: Alley
-Version: 1.4.1
+Version: 1.5.0
 Author URI: https://www.alley.co/
 */
 
 /**
  * Current version of Fieldmanager.
  */
-define( 'FM_VERSION', '1.4.1' );
+define( 'FM_VERSION', '1.5.0' );
 
 /**
  * Filesystem path to Fieldmanager.
