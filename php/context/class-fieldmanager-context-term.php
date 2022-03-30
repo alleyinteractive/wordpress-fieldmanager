@@ -81,6 +81,15 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	private $current_taxonomy;
 
 	/**
+	 * Store data for inserted terms to ensure, as much as possible, that FM
+	 * only stores data to the term being created and not any other term created
+	 * as a side effect.
+	 *
+	 * @var array|null
+	 */
+	protected $inserting_term_data;
+
+	/**
 	 * Instantiate this context. You can either pass an array of all args
 	 * (preferred), or pass them individually (deprecated).
 	 *
@@ -161,6 +170,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 		foreach ( $this->taxonomies as $taxonomy ) {
 			if ( $this->show_on_add ) {
 				add_action( $taxonomy . '_add_form_fields', array( $this, 'add_term_fields' ), 10, 1 );
+				add_filter( 'wp_insert_term_data', array( $this, 'verify_term_data_on_insert' ), PHP_INT_MAX, 3 );
 				add_action( 'created_term', array( $this, 'save_term_fields' ), 10, 3 );
 			}
 
@@ -288,6 +298,37 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 * @param string $taxonomy The term taxonomy.
 	 */
 	public function save_term_fields( $term_id, $tt_id, $taxonomy ) {
+		// phpcs:disable WordPress.Security.NonceVerification.Missing
+		// Ensure that the term being created/updated is the term in the request.
+		if ( ! empty( $_POST['tag_ID'] ) && $term_id !== (int) $_POST['tag_ID'] ) {
+			return;
+		} elseif ( empty( $_POST['tag_ID'] ) ) {
+			// Ensure this was the created_term action.
+			if ( ! doing_action( 'created_term' ) ) {
+				return;
+			}
+
+			if ( empty( $this->inserting_term_data ) ) {
+				// Something has gone awry, this shouldn't happen, so bail.
+				return;
+			}
+
+			// Core expects terms to have a unique combination of [taxonomy, name, parent].
+			// Therefore, this verifies that data against what was recorded prior to insert.
+			$term = get_term( $term_id );
+			if (
+				$term->name !== $this->inserting_term_data['name']
+				|| $term->parent !== $this->inserting_term_data['parent']
+				|| $taxonomy !== $this->inserting_term_data['taxonomy']
+			) {
+				return;
+			}
+
+			// This term appears to check out. Remove the recorded insert data.
+			unset( $this->inserting_term_data );
+		}
+		// phpcs:enable WordPress.Security.NonceVerification.Missing
+
 		// Make sure this field is attached to the taxonomy being saved and this is the appropriate action.
 		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( ! in_array( $taxonomy, $this->taxonomies ) ) {
@@ -308,6 +349,44 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 
 		// Save the data.
 		$this->save_to_term_meta( $term_id, $taxonomy );
+	}
+
+	/**
+	 * Verify that the term being inserted is the term that Fieldmanager data
+	 * should be added to.
+	 *
+	 * This method serves to protect against a plugin or theme creating one or
+	 * more additional terms as a side effect of a term created from the form.
+	 * In order to protect against that, it's necessary to check the inserting
+	 * term's [name, taxonomy, parent], as WordPress requires the combination of
+	 * these fields to be unique. In order to guard against a plugin or theme
+	 * changing this data, it is recorded immediately prior to the term being
+	 * insert, and then checked in `save_term_fields()`.
+	 *
+	 * @param array  $data     {
+	 *     Term data to be inserted.
+	 *
+	 *     @type string $name       Term name.
+	 *     @type string $slug       Term slug.
+	 *     @type int    $term_group Term group.
+	 * }
+	 * @param string $taxonomy Taxonomy slug.
+	 * @param array  $args     Arguments passed to wp_insert_term(), which is
+	 *                         raw $_POST data.
+	 * @return array Unmodified `$data`.
+	 */
+	public function verify_term_data_on_insert( $data, $taxonomy, $args ) {
+		// Confirm that this data has the FM nonce for this field.
+		if ( ! empty( $args[ $this->nonce_key() ] ) ) {
+			// Append the data to the queued insert.
+			$this->inserting_term_data = array(
+				'name'     => $data['name'],
+				'taxonomy' => $taxonomy,
+				'parent'   => ! empty( $args['parent'] ) ? max( (int) $args['parent'], 0 ) : 0,
+			);
+		}
+
+		return $data;
 	}
 
 	/**

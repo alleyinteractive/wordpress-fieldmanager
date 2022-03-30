@@ -42,6 +42,15 @@ abstract class Fieldmanager_Context {
 	}
 
 	/**
+	 * Get the nonce key for this field.
+	 *
+	 * @return string
+	 */
+	protected function nonce_key() {
+		return 'fieldmanager-' . $this->fm->name . '-nonce';
+	}
+
+	/**
 	 * Include a fresh nonce for this field in a response with refreshed nonces.
 	 *
 	 * @since 1.3.0
@@ -50,7 +59,7 @@ abstract class Fieldmanager_Context {
 	 * @return array Updated response data.
 	 */
 	public function refresh_nonce( $response ) {
-		$response['fieldmanager_refresh_nonces']['replace'][ 'fieldmanager-' . $this->fm->name . '-nonce' ] = wp_create_nonce( 'fieldmanager-save-' . $this->fm->name );
+		$response['fieldmanager_refresh_nonces']['replace'][ $this->nonce_key() ] = wp_create_nonce( 'fieldmanager-save-' . $this->fm->name );
 
 		return $response;
 	}
@@ -62,12 +71,12 @@ abstract class Fieldmanager_Context {
 	 * @return bool
 	 */
 	protected function is_valid_nonce() {
-		if ( empty( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ] ) ) {
+		if ( empty( $_POST[ $this->nonce_key() ] ) ) {
 			return false;
 		}
 
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- baseline
-		if ( ! wp_verify_nonce( $_POST[ 'fieldmanager-' . $this->fm->name . '-nonce' ], 'fieldmanager-save-' . $this->fm->name ) ) {
+		if ( ! wp_verify_nonce( $_POST[ $this->nonce_key() ], 'fieldmanager-save-' . $this->fm->name ) ) {
 			$this->fm->_unauthorized_access( __( 'Nonce validation failed', 'fieldmanager' ) );
 		}
 
@@ -113,7 +122,7 @@ abstract class Fieldmanager_Context {
 		$data = array_key_exists( 'data', $args ) ? $args['data'] : null;
 		$echo = isset( $args['echo'] ) ? $args['echo'] : true;
 
-		$nonce = wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false );
+		$nonce = wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, $this->nonce_key(), true, false );
 		$field = $this->fm->element_markup( $data );
 		if ( $echo ) {
 			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- baseline
@@ -122,5 +131,4 @@ abstract class Fieldmanager_Context {
 			return $nonce . $field;
 		}
 	}
-
 }
