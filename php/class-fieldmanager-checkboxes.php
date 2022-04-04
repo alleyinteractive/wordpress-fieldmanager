@@ -29,6 +29,11 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	 */
 	public $multiple = true;
 
+	/**
+	 * Add "select all" and "select none" buttons to the list of checkboxes.
+	 *
+	 * @var boolean
+	 */
 	public $bulk_selectable = false;
 
 	/**
