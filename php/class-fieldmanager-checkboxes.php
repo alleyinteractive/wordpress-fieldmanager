@@ -29,6 +29,8 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	 */
 	public $multiple = true;
 
+	public $bulk_selectable = false;
+
 	/**
 	 * Render form element.
 	 *
@@ -37,9 +39,28 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	 */
 	public function form_element( $value = array() ) {
 		return sprintf(
-			'<div class="fm-checkbox-group" id="%s">%s</div>',
+			'<div class="fm-checkbox-group" id="%s">%s%s</div>',
 			esc_attr( $this->get_element_id() ),
+			$this->bulk_selectable ? $this->add_bulk_select_options() : '',
 			$this->form_data_elements( $value )
+		);
+	}
+
+	/**
+	 * Get the HTML for "select all" and "select none" buttons.
+	 *
+	 * @return string
+	 */
+	public function add_bulk_select_options()
+	{
+		return sprintf(
+			'<div class="fm-bulk-selectors">
+				<button type="button" class="fm-select-all">%1$s</button>
+				<span class="fm-actions-separator"></span>
+				<button type="button" class="fm-select-none">%2$s</button>
+			</div>' . "\n",
+			esc_html__( 'Select all', 'fieldmanager' ),
+			esc_html__( 'Select none', 'fieldmanager' )
 		);
 	}
 

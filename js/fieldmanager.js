@@ -340,6 +340,18 @@ var fm_init = function () {
 	init_sortable();
 
 	$document.on( 'fm_activate_tab', init_sortable );
+
+	fm.init_bulk_selectables = function() {
+		var $this = $( this );
+		var $checkboxes = $this.parent().find( 'input:checkbox' );
+		$this.find( '.fm-select-all' ).click( function() {
+			$checkboxes.prop( 'checked', true );
+		} );
+		$this.find( '.fm-select-none' ).click( function() {
+			$checkboxes.prop( 'checked', false );
+		} );
+	};
+	$( '.fm-bulk-selectors' ).each( fm.init_bulk_selectables );
 };
 
 fmLoadModule( fm_init );

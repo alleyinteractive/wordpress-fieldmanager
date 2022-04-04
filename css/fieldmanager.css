@@ -680,3 +680,26 @@ a.fm-delete:hover {
 		margin-bottom: 0;
 	}
 }
+
+.fm-bulk-selectors {
+	margin-bottom: 10px;
+}
+
+.fm-bulk-selectors button {
+	background: none;
+	border: none;
+	color: #0073aa;
+	cursor: pointer;
+	font-size: 80%;
+	margin: 0;
+	padding: 0;
+}
+
+.fm-bulk-selectors button:hover {
+	text-decoration: underline;
+}
+
+.fm-actions-separator:before {
+	color: #555;
+	content: " | ";
+}
