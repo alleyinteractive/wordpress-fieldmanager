@@ -56,8 +56,7 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	 *
 	 * @return string
 	 */
-	public function add_bulk_select_options()
-	{
+	public function add_bulk_select_options() {
 		return sprintf(
 			'<div class="fm-bulk-selectors">
 				<button type="button" class="fm-select-all">%1$s</button>
