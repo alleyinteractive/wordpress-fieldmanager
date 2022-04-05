@@ -46,7 +46,7 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 		return sprintf(
 			'<div class="fm-checkbox-group" id="%s">%s%s</div>',
 			esc_attr( $this->get_element_id() ),
-			$this->bulk_selectable ? $this->add_bulk_actions() : '',
+			$this->bulk_actions ? $this->add_bulk_actions() : '',
 			$this->form_data_elements( $value )
 		);
 	}
