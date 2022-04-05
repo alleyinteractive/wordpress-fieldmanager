@@ -30,11 +30,11 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	public $multiple = true;
 
 	/**
-	 * Add "select all" and "select none" buttons to the list of checkboxes.
+	 * Add a "select all" bulk action to the list of checkboxes.
 	 *
 	 * @var boolean
 	 */
-	public $bulk_selectable = false;
+	public $bulk_actions = true;
 
 	/**
 	 * Render form element.
@@ -46,25 +46,26 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 		return sprintf(
 			'<div class="fm-checkbox-group" id="%s">%s%s</div>',
 			esc_attr( $this->get_element_id() ),
-			$this->bulk_selectable ? $this->add_bulk_select_options() : '',
+			$this->bulk_selectable ? $this->add_bulk_actions() : '',
 			$this->form_data_elements( $value )
 		);
 	}
 
 	/**
-	 * Get the HTML for "select all" and "select none" buttons.
+	 * Get the HTML for the bulk actions.
 	 *
 	 * @return string
 	 */
-	public function add_bulk_select_options() {
+	public function add_bulk_actions() {
 		return sprintf(
-			'<div class="fm-bulk-selectors">
-				<button type="button" class="fm-select-all">%1$s</button>
-				<span class="fm-actions-separator"></span>
-				<button type="button" class="fm-select-none">%2$s</button>
+			'<div class="fm-bulk-actions">
+				<label for="%1$s">
+					<input type="checkbox" id="%1$s" class="fm-bulk-action" />
+					%2$s
+				</label>
 			</div>' . "\n",
-			esc_html__( 'Select all', 'fieldmanager' ),
-			esc_html__( 'Select none', 'fieldmanager' )
+			esc_attr( $this->get_element_id() . '-bulk-action' ),
+			esc_html__( 'Select all', 'fieldmanager' )
 		);
 	}
 

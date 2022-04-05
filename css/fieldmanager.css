@@ -681,25 +681,9 @@ a.fm-delete:hover {
 	}
 }
 
-.fm-bulk-selectors {
+.fm-bulk-actions {
+	border-bottom: 1px solid #dfdfdf;
 	margin-bottom: 10px;
-}
-
-.fm-bulk-selectors button {
-	background: none;
-	border: none;
-	color: #0073aa;
-	cursor: pointer;
-	font-size: 80%;
-	margin: 0;
-	padding: 0;
-}
-
-.fm-bulk-selectors button:hover {
-	text-decoration: underline;
-}
-
-.fm-actions-separator:before {
-	color: #555;
-	content: " | ";
+	max-width: 200px;
+	padding-bottom: 10px;
 }
