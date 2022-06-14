@@ -39,6 +39,7 @@ abstract class Fieldmanager_Context {
 	 */
 	public function __construct() {
 		add_filter( 'wp_refresh_nonces', array( $this, 'refresh_nonce' ) );
+		do_action( 'fm_context_construct', $this );
 	}
 
 	/**
