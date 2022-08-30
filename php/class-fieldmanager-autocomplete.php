@@ -131,6 +131,9 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 			$this->attributes['data-options'] = htmlspecialchars( wp_json_encode( $this->datasource->get_items() ) );
 		}
 
+		if ( is_array( $value ) && empty( $value ) ) {
+			$value = '';
+		}
 		$display_value = $this->datasource->get_value( $value );
 		if ( '' === $display_value && ! $this->exact_match && ! isset( $this->datasource->options[ $value ] ) ) {
 			$display_value = $value;
