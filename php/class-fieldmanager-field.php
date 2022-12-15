@@ -395,10 +395,20 @@ abstract class Fieldmanager_Field {
 	 */
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
-		if ( $this->limit != 1 ) {
-			$max = max( $this->minimum_count, count( $values ) + $this->extra_elements );
 
-			// Ensure that we don't display more fields than we can save
+		if ( 1 != $this->limit ) {
+			// count() generates a warning when passed non-countable values in PHP 7.2.
+			if ( is_scalar( $values ) ) {
+				$count_values = 1;
+			} elseif ( ! is_array( $values ) && ! ( $values instanceof \Countable ) ) {
+				$count_values = 0;
+			} else {
+				$count_values = count( $values );
+			}
+
+			$max = max( $this->minimum_count, $count_values + $this->extra_elements );
+
+			// Ensure that we don't display more fields than we can save.
 			if ( $this->limit > 1 && $max > $this->limit ) {
 				$max = $this->limit;
 			}
