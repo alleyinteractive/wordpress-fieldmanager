@@ -789,6 +789,7 @@ abstract class Fieldmanager_Field {
 				if ( is_array( $value ) ) {
 					return ! empty( $value );
 				} else {
+					$value = $value ?? '';
 					return strlen( $value );
 				}
 			} );
