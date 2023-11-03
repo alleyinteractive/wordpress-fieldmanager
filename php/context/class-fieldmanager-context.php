@@ -86,15 +86,15 @@ abstract class Fieldmanager_Context {
 		$echo = isset( $args['echo'] ) ? $args['echo'] : true;
 
 		// handle case where null values are passed down to prevent error in htmlspecialchars() in 8.1
-		if ($data !== null) {
-			array_walk_recursive($data, static function(&$value){
-				if (is_null($value)) {
-					$value = '';
-				}
-			});
-		} else {
+		if ($data === null) {
 			return null;
 		}
+
+		array_walk_recursive($data, static function(&$value) {
+			if (is_null($value)) {
+				$value = '';
+			}
+		});
 
 		$nonce = wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false );
 		$field = $this->fm->element_markup( $data );
