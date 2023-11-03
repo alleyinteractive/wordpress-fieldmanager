@@ -85,8 +85,19 @@ abstract class Fieldmanager_Context {
 		$data = array_key_exists( 'data', $args ) ? $args['data'] : null;
 		$echo = isset( $args['echo'] ) ? $args['echo'] : true;
 
+		// handle case where null values are passed down to prevent error in htmlspecialchars() in 8.1
+		if ($data !== null) {
+			array_walk_recursive($data, static function(&$value){
+				if (is_null($value)) {
+					$value = '';
+				}
+			});
+		} else {
+			return null;
+		}
+
 		$nonce = wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false );
-		$field = $this->fm->element_markup( $data );
+		$field = $this->fm->element_markup( $data ?? []);
 		if ( $echo ) {
 			echo $nonce . $field;
 		} else {
