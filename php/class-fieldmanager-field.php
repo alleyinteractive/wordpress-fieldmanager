@@ -60,11 +60,28 @@ abstract class Fieldmanager_Field {
 	public $extra_elements = 1;
 
 	/**
-	 * Text for add more button.
+	 * Labels associated with the "Add Another" button.
 	 *
-	 * @var string
+	 * Accepted keys for the `add_more_label` array:
+	 *
+	 * - `add_first`, used as the button text when no items have been added.
+	 *   Default is 'Add field' or 'Add group'.
+	 *
+	 * - `add_another`, used as the button text when at least one item has been
+	 *   added. Default is 'Add field' or 'Add group'.
+	 *
+	 * - `limit_reached`, displayed alongside the button when no more items can
+	 *   be added. Default is none for better backwards-compatibility with
+	 *   existing fields that might already specify the limit in the field's
+	 *   label or description.
+	 *
+	 * @since 1.4.0 Converted from a single label to an array of labels.
+	 *
+	 * @see Fieldmanager_Field::add_another().
+	 *
+	 * @var array
 	 */
-	public $add_more_label = '';
+	public $add_more_label = array();
 
 	/**
 	 * The name of the form element, as in 'foo' in `<input name="foo" />`.
@@ -1170,21 +1187,63 @@ abstract class Fieldmanager_Field {
 	 * @return string Button HTML.
 	 */
 	public function add_another() {
-		$classes = array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' );
-		if ( empty( $this->add_more_label ) ) {
-			$this->add_more_label = $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' );
+		$default_labels = array(
+			'add_another' => $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' ),
+			'add_first' => $this->is_group() ? __( 'Add group', 'fieldmanager' ) : __( 'Add field', 'fieldmanager' ),
+			'limit_reached' => '',
+		);
+
+		// Compatibility with passing just the "Add Another" label as a string.
+		if ( $this->add_more_label && is_string( $this->add_more_label ) ) {
+			$this->add_more_label = array(
+				'add_another' => $this->add_more_label,
+				'add_first' => $this->add_more_label,
+			);
 		}
 
-		$out  = '<div class="fm-add-another-wrapper">';
+		if ( is_array( $this->add_more_label ) ) {
+			$this->add_more_label = wp_parse_args( $this->add_more_label, $default_labels );
+		} else {
+			$this->add_more_label = $default_labels;
+		}
+
+		$out = '<div class="fm-add-another-wrapper">';
+
 		$out .= sprintf(
-			'<input type="button" class="%s" value="%s" name="%s" data-related-element="%s" data-add-more-position="%s" data-limit="%d" />',
-			esc_attr( implode( ' ', $classes ) ),
-			esc_attr( $this->add_more_label ),
+			'<input
+				type="button"
+				class="%s"
+				value="%s"
+				name="%s"
+				data-related-element="%s"
+				data-add-more-position="%s"
+				data-limit="%d"
+				data-add-more-label="%s"
+				aria-describedby="%s"
+			/>',
+			esc_attr( implode( ' ', array( 'fm-add-another', 'fm-' . $this->name . '-add-another', 'button-secondary' ) ) ),
+			esc_attr( $this->add_more_label['add_another'] ),
 			esc_attr( 'fm_add_another_' . $this->name ),
 			esc_attr( $this->name ),
 			esc_attr( $this->add_more_position ),
-			intval( $this->limit )
+			intval( $this->limit ),
+			esc_attr( wp_json_encode( $this->add_more_label ) ),
+			esc_attr( 'fm-' . $this->name . '-add-another-limit-reached-label' )
 		);
+
+		/*
+		 * This is displayed alongside the button so it can be in the same place
+		 * whether the button is above or below the fields.
+		 * @see Fieldmanager_Field::add_more_position.
+		 *
+		 * The .wp-ui-text-notification class shows a notification in the user's
+		 * admin color scheme.
+		 */
+		$out .= sprintf(
+			'<span id="%s" class="fm-add-another-limit-reached-label wp-ui-text-notification"></span>',
+			esc_attr( 'fm-' . $this->name . '-add-another-limit-reached-label' )
+		);
+
 		$out .= '</div>';
 		return $out;
 	}
