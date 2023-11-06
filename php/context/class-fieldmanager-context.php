@@ -90,11 +90,13 @@ abstract class Fieldmanager_Context {
 			return null;
 		}
 
-		array_walk_recursive($data, static function(&$value) {
-			if (is_null($value)) {
-				$value = '';
-			}
-		});
+		if (is_array($data)) {
+			array_walk_recursive($data, static function (&$value) {
+				if (is_null($value)) {
+					$value = '';
+				}
+			});
+		}
 
 		$nonce = wp_nonce_field( 'fieldmanager-save-' . $this->fm->name, 'fieldmanager-' . $this->fm->name . '-nonce', true, false );
 		$field = $this->fm->element_markup( $data );
