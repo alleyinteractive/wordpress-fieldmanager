@@ -5,7 +5,7 @@ Plugin Name: Fieldmanager
 Plugin URI: https://github.com/alleyinteractive/wordpress-fieldmanager
 Description: Add fields to content types programatically.
 Author: Austin Smith, Matthew Boynes, Immediate Media Co
-Version: 2023.11.06.2
+Version: 2023.11.08.5
 Author URI: http://www.alleyinteractive.com/
 */
 
