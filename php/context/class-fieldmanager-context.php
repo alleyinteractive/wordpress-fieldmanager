@@ -85,7 +85,6 @@ abstract class Fieldmanager_Context {
 		$data = array_key_exists( 'data', $args ) ? $args['data'] : null;
 		$echo = isset( $args['echo'] ) ? $args['echo'] : true;
 
-		// handle case where null values are passed down to prevent error in htmlspecialchars() in 8.1
 		if (is_array($data)) {
 			array_walk_recursive($data, static function (&$value) {
 				if (is_null($value)) {
