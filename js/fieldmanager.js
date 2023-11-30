@@ -70,32 +70,59 @@ var init_label_macros = function() {
 	} );
 }
 
-var fm_renumber = function( $wrappers ) {
+/**
+ * Renumber all fields within one or more wrappers based on their sequential
+ * position in the DOM.
+ *
+ * When fields/groups are added, removed, or rearranged, impacted fields' names
+ * need to be adjusted. For instance, if a field's name is group[1][field][2]
+ * and that group is moved to the top of the list, the field's name needs to be
+ * adjusted to group[0][field][2] or else the new position will not be saved
+ * when the data is posted to the server.
+ *
+ * @param {jQuery} $wrappers - Wrapping containers of items that need to be
+ *                             renumbered.
+ */
+ var fm_renumber = function( $wrappers ) {
 	var fmtemp = parseInt( Math.random() * 100000, 10 );
 	$wrappers.each( function() {
 		var level_pos = $( this ).data( 'fm-array-position' ) - 0;
 		var order = 0;
+		var modified_elements = [];
 		if ( level_pos > 0 ) {
 			$( this ).find( '> .fm-item' ).each( function() {
+				// Do not manipulate prototypes (templates).
 				if ( $( this ).hasClass( 'fmjs-proto' ) ) {
-					return; // continue
+					return; // continue;
 				}
+
+				// TODO: nested fields get iterated over multiple times, is this avoidable?
 				$( this ).find( '.fm-element, .fm-incrementable' ).each( function() {
-					var fname = $(this).attr( 'name' );
+					var $element = $( this );
+					var fname = $element.attr( 'name' );
+
 					if ( fname ) {
-						fname = fname.replace( /\]/g, '' );
-						parts = fname.split( '[' );
-						if ( parts[ level_pos ] != order ) {
+						parts = fname.replace( /\]/g, '' ).split( '[' );
+						if ( Number.parseInt(parts[ level_pos ], 10) !== order ) {
 							parts[ level_pos ] = order;
 							var new_fname = parts[ 0 ] + '[' + parts.slice( 1 ).join( '][' ) + ']';
+
+							// If the name hasn't updated, skip unnecessary DOM updates.
+							if ( new_fname === fname ) {
+								return; // continue;
+							}
+
 							// Rename the field and add a temporary prefix to prevent name collisions.
-							$( this ).attr( 'name', 'fmtemp_' + ( ++fmtemp ).toString() + '_' + new_fname );
-							if ( $( this ).attr( 'id' ) && $( this ).attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
-								$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
-								if ( $( this ).parent().hasClass( 'fm-option' ) ) {
-									$( this ).parent().find( 'label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
+							$element.attr( 'name', 'fmtemp_' + ( ++fmtemp ).toString() + '_' + new_fname );
+							modified_elements.push( $element );
+
+							// If this field is newly generated from a prototype, update [id]s and [for]s.
+							if ( $element.attr( 'id' ) && $element.attr( 'id' ).match( '-proto' ) && ! new_fname.match( 'proto' ) ) {
+								$element.attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
+								if ( $element.parent().hasClass( 'fm-option' ) ) {
+									$element.parent().find( 'label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
 								} else {
-									var parent = $( this ).closest( '.fm-item' );
+									var parent = $element.closest( '.fm-item' );
 									if ( parent.length && parent.find( '.fm-label label' ).length ) {
 										parent.find( '.fm-label label' ).attr( 'for', 'fm-edit-dynamic-' + dynamic_seq );
 									}
@@ -105,22 +132,24 @@ var fm_renumber = function( $wrappers ) {
 							}
 						}
 					}
-					if ( $( this ).hasClass( 'fm-incrementable' ) ) {
-						$( this ).attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
+					if ( $element.hasClass( 'fm-incrementable' ) ) {
+						$element.attr( 'id', 'fm-edit-dynamic-' + dynamic_seq );
 						dynamic_seq++;
 					}
 				} );
 				order++;
 			} );
 		}
-		$( this ).find( '.fm-wrapper' ).each( function() {
-			fm_renumber( $( this ) );
-		} );
+
+		// Iterate over subgroups.
+		fm_renumber( $( this ).find( '.fm-wrapper' ) );
 
 		// Remove temporary name prefix in renumbered fields.
-		$( '.fm-element[name^="fmtemp_"], .fm-incrementable[name^="fmtemp_"]' ).each( function() {
-			$( this ).attr( 'name', $( this ).attr( 'name' ).replace( /^fmtemp_\d+_/, '' ) );
-		} );
+		if ( modified_elements.length ) {
+			$.each( modified_elements, function( index, $element ) {
+				$element.attr( 'name', $element.attr( 'name' ).replace( /^fmtemp_\d+_/, '' ) );
+			} );
+		}
 	} );
 }
 
