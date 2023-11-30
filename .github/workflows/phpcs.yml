@@ -1,14 +1,12 @@
 name: PHPCS
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-      - develop
-  pull_request:
-  schedule:
-    - cron: '0 0 * * *'
 
 jobs:
   coding-standards:
     uses: alleyinteractive/.github/.github/workflows/php-coding-standards.yml@main
+    with:
+      php: '8.2'
