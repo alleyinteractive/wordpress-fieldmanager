@@ -215,7 +215,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			esc_attr( $this->modal_title ),
 			esc_attr( $this->modal_button_label ),
 			esc_attr( $this->mime_type ),
-			$this->get_element_attributes()
+			$this->get_element_attributes( '', array( 'data-choose', 'data-update', 'data-preview-size', 'data-mime-type' ) )
 		);
 	}
 

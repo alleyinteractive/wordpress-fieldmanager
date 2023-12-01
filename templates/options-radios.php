@@ -10,7 +10,7 @@ $fm_cb_id = $this->get_element_id() . '-' . esc_attr( sanitize_text_field( $data
 
 <div class="fm-option">
 	<input
-		class="fm-element"
+		class="fm-element<?php echo $this->get_element_attributes( 'class' ); /* Escaped internally. WPCS XSS okay. */ ?>"
 		type="radio"
 		value="<?php echo esc_attr( $data_row['value'] ); ?>"
 		name="<?php echo esc_attr( $this->get_form_name() ); ?>"
