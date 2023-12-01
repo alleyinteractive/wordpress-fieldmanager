@@ -11,8 +11,6 @@ Fieldmanager is a powerful library which can make the development of sophisticat
 * WordPress: 5.8+
 * PHP: 7.4+
 
-Fieldmanager is tested down to and works on PHP 5.6, but we don't officially support PHP 5. We strongly encourage using PHP 7.4 or 8.
-
 ## Downloads and Versioning.
 
 You can view [Fieldmanager's official releases here](https://github.com/alleyinteractive/wordpress-fieldmanager/releases).
