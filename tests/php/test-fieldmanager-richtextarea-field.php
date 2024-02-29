@@ -7,21 +7,36 @@
  * @group richtextarea
  */
 class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
+	/**
+	 * The post object.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
+
+	/**
+	 * The post ID.
+	 *
+	 * @var int
+	 */
+	private int $post_id;
 
 	public function set_up() {
 		parent::set_up();
 		add_filter( 'user_can_richedit', '__return_true' );
 		Fieldmanager_Field::$debug = true;
 
-		$this->post = array(
-			'post_status'  => 'publish',
-			'post_content' => rand_str(),
-			'post_title'   => rand_str(),
+		// Create a post and capture it.
+		$this->post = $this->factory->post->create_and_get(
+			[
+				'post_status'  => 'publish',
+				'post_content' => rand_str(),
+				'post_title'   => rand_str(),
+			]
 		);
 
-		// insert a post
-		$this->post_id = wp_insert_post( $this->post );
-		$this->post    = get_post( $this->post_id );
+		// Store the post ID.
+		$this->post_id = $this->post->ID;
 	}
 
 	public function tear_down() {
@@ -564,5 +579,44 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 		$fm    = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
 		$value = rand_str();
 		$this->assertEquals( $value, $fm->customize_buttons( $value ) );
+	}
+
+	/**
+	 * Test to confirm that not defining a default value for a RichTextArea field
+	 * does not cause that field to throw a deprecation warning when a RichTextArea
+	 * is used.
+	 *
+	 * @see https://github.com/alleyinteractive/wordpress-fieldmanager/issues/864
+	 */
+	public function test_default_value_does_not_throw_deprecation() {
+		set_error_handler( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
+			/**
+			 * Convert deprecations to exceptions. This was removed from PHPUnit in
+			 * PHPUnit 10, so doing so manually here for future compatibility.
+			 *
+			 * @see https://github.com/sebastianbergmann/phpunit/issues/5062
+			 */
+			function ( $errno, $errstr ) {
+				throw new Fieldmanager_Deprecation_Exception( $errstr, $errno );
+			},
+			E_DEPRECATED | E_USER_DEPRECATED
+		);
+
+		$this->expectNotToPerformAssertions();
+
+		try {
+			ob_start();
+
+			$fm = new Fieldmanager_RichTextArea([ 'name' => 'example-textarea' ]);
+			$fm->add_meta_box( 'Test TextArea', 'post' )
+				->render_meta_box( $this->post, array() );
+
+			ob_get_clean();
+		} catch ( Fieldmanager_Deprecation_Exception $e ) {
+			$this->fail( $e->getMessage() );
+		}
+
+		// Restore default error handler.
+		restore_error_handler();
 	}
 }
