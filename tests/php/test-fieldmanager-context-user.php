@@ -7,6 +7,20 @@
  * @group user
  */
 class Test_Fieldmanager_Context_User extends WP_UnitTestCase {
+	/**
+	 * The user ID.
+	 *
+	 * @var int
+	 */
+	private int $user_id;
+
+	/**
+	 * The user object.
+	 *
+	 * @var WP_User
+	 */
+	private WP_User $user;
+
 	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;

@@ -7,21 +7,35 @@
  * @group post
  */
 class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
+	/**
+	 * The post ID of the test post.
+	 *
+	 * @var int
+	 */
+	private int $post_id = 0;
+
+	/**
+	 * The post object of the test post.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
+
 	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
-		$this->post = array(
-			'post_status'  => 'publish',
-			'post_content' => rand_str(),
-			'post_title'   => rand_str(),
+		// Create a post and capture it.
+		$this->post = $this->factory->post->create_and_get(
+			[
+				'post_status'  => 'publish',
+				'post_content' => rand_str(),
+				'post_title'   => rand_str(),
+			]
 		);
 
-		// insert a post
-		$this->post_id = wp_insert_post( $this->post );
-
-		// reload as proper object
-		$this->post = get_post( $this->post_id );
+		// Store the post ID.
+		$this->post_id = $this->post->ID;
 	}
 
 	/**

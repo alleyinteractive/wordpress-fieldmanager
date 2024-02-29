@@ -11,6 +11,34 @@
 class Test_Fieldmanager_Context_Term_FM_Term_Meta extends WP_UnitTestCase {
 	public $current_user;
 
+	/**
+	 * Taxonomy name.
+	 *
+	 * @var string
+	 */
+	private string $taxonomy;
+
+	/**
+	 * Term ID
+	 *
+	 * @var int
+	 */
+	private int $term_id;
+
+	/**
+	 * Term Taxonomy ID.
+	 *
+	 * @var int
+	 */
+	private int $tt_id;
+
+	/**
+	 * The term.
+	 *
+	 * @var WP_Term
+	 */
+	private WP_Term $term;
+
 	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
