@@ -403,7 +403,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 					if ( empty( $values[ $element->name ] ) ) {
 						unset( $values[ $element->name ] );
 					}
-				} elseif ( ! strlen( $values[ $element->name ] ) ) {
+				} elseif ( null === $values[ $element->name ] ) {
+					unset( $values[ $element->name ] );
+				} elseif ( !strlen( $values[ $element->name ] ) ) {
 					unset( $values[ $element->name ] );
 				}
 			}
