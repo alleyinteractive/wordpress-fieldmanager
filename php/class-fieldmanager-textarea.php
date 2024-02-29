@@ -18,6 +18,13 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 	public $field_class = 'text';
 
 	/**
+	 * The default value for the field, if unset.
+	 *
+	 * @var mixed Default value
+	 */
+	public $default_value = '';
+
+	/**
 	 * Construct default attributes; 50x10 textarea.
 	 *
 	 * @param string $label   Field label.
