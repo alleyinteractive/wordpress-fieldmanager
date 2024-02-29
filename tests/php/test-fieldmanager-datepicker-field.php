@@ -7,19 +7,35 @@
  * @group datepicker
  */
 class Test_Fieldmanager_Datepicker_Field extends WP_UnitTestCase {
+	/**
+	 * The post object.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
+
+	/**
+	 * The post ID.
+	 *
+	 * @var int
+	 */
+	private int $post_id;
 
 	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
-		$this->post = array(
-			'post_status'  => 'publish',
-			'post_content' => rand_str(),
-			'post_title'   => rand_str(),
+		// Create a post and capture it.
+		$this->post = $this->factory->post->create_and_get(
+			[
+				'post_status'  => 'publish',
+				'post_content' => rand_str(),
+				'post_title'   => rand_str(),
+			]
 		);
 
-		// insert a post
-		$this->post_id = wp_insert_post( $this->post );
+		// Store the post ID.
+		$this->post_id = $this->post->ID;
 	}
 
 	/**
