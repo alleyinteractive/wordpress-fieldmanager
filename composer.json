@@ -19,6 +19,7 @@
   },
   "scripts": {
     "phpcs": "vendor/bin/phpcs",
+    "phpcbf": "vendor/bin/phpcbf",
     "phpunit": "vendor/bin/phpunit"
   },
   "config": {

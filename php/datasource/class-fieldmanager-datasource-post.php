@@ -85,7 +85,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 *
 	 * @var mixed
 	 */
-	private $_fragment;
+	private $_fragment; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
 
 	/**
 	 * Construct the object.
