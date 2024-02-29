@@ -10,6 +10,13 @@
 class Test_Fieldmanager_Term_Meta extends WP_UnitTestCase {
 	public $current_user;
 
+	/**
+	 * The Term Object.
+	 *
+	 * @var WP_Term
+	 */
+	private WP_Term $term;
+
 	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;

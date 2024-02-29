@@ -361,7 +361,8 @@ class Test_Fieldmanager_Field extends WP_UnitTestCase {
 				'test_checkbox2' => 'yes',
 			),
 		);
-		$base->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $test_data['base_group'] );
+		$base->add_meta_box( 'test meta box', $this->post )
+			->save_to_post_meta( $this->post_id, $test_data['base_group'] );
 	}
 
 	/**

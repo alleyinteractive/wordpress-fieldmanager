@@ -1119,7 +1119,7 @@ abstract class Fieldmanager_Field {
 				);
 			}
 		}
-		return call_user_func( $this->sanitize, $value );
+		return (null !== $value) ? call_user_func( $this->sanitize, $value ) : null;
 	}
 
 	/**
