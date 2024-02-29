@@ -133,6 +133,8 @@ class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
 	}
 
 	public function test_programmatic_save_posts() {
+		$this->expectNotToPerformAssertions();
+
 		$base = $this->_get_elements();
 		$base->add_meta_box( 'test meta box', 'post' );
 

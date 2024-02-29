@@ -156,6 +156,7 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 	 * Test building and saving a nested group
 	 */
 	public function test_saving_nested_groups() {
+		$this->expectNotToPerformAssertions();
 
 		$meta_group = new \Fieldmanager_Group(
 			'',

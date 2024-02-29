@@ -7,6 +7,33 @@
  * @group autocomplete
  */
 class Test_Fieldmanager_Autocomplete_Field extends WP_UnitTestCase {
+	/**
+	 * The post ID of the test post.
+	 *
+	 * @var int
+	 */
+	private int $post_id = 0;
+
+	/**
+	 * The post object of the test post.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
+
+	/**
+	 * The data posts array.
+	 *
+	 * @var WP_Post[]
+	 */
+	private array $data_posts;
+
+	/**
+	 * Custom data source.
+	 *
+	 * @var Fieldmanager_Datasource
+	 */
+	private Fieldmanager_Datasource $custom_datasource;
 
 	public function set_up() {
 		parent::set_up();
