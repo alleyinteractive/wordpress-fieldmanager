@@ -8,6 +8,41 @@
  */
 class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 
+	/**
+	 * Author User ID.
+	 *
+	 * @var int
+	 */
+	private int $author;
+
+	/**
+	 * Editor User ID.
+	 *
+	 * @var int
+	 */
+	private int $editor;
+
+	/**
+	 * Parent post.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $parent_post;
+
+	/**
+	 * Child Post A.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $child_post_a;
+
+	/**
+	 * Child Post B.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $child_post_b;
+
 	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;

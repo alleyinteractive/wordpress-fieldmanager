@@ -7,6 +7,33 @@
  * @group user
  */
 class Test_Fieldmanager_Datasource_User extends WP_UnitTestCase {
+	/**
+	 * Author User ID.
+	 *
+	 * @var int
+	 */
+	private int $author;
+
+	/**
+	 * Editor User ID.
+	 *
+	 * @var int
+	 */
+	private int $editor;
+
+	/**
+	 * Administrator User ID.
+	 *
+	 * @var int
+	 */
+	private int $administrator;
+
+	/**
+	 * Post object.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
 
 	public function set_up() {
 		parent::set_up();
