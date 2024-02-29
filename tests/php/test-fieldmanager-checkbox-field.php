@@ -7,6 +7,12 @@
  * @group checkbox
  */
 class Test_Fieldmanager_Checkbox_Field extends WP_UnitTestCase {
+	/**
+	 * The post object of the test post.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
 
 	public function set_up() {
 		parent::set_up();
