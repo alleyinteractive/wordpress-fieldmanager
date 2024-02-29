@@ -35,10 +35,10 @@ class Test_Fieldmanager_TextArea_Field extends WP_UnitTestCase {
 		Fieldmanager_Field::$debug = true;
 
 		$this->post_id = $this->factory->post->create(
-			array(
+			[
 				'post_title' => rand_str(),
 				'post_date'  => '2024-02-29 00:00:00',
-			)
+			]
 		);
 		$this->post    = get_post( $this->post_id );
 	}
