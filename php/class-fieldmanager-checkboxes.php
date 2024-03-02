@@ -30,6 +30,13 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	public $multiple = true;
 
 	/**
+	 * Add a "select all" bulk action to the list of checkboxes.
+	 *
+	 * @var boolean
+	 */
+	public $bulk_actions = true;
+
+	/**
 	 * Render form element.
 	 *
 	 * @param mixed $value The value of the element.
@@ -37,9 +44,28 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	 */
 	public function form_element( $value = array() ) {
 		return sprintf(
-			'<div class="fm-checkbox-group" id="%s">%s</div>',
+			'<div class="fm-checkbox-group" id="%s">%s%s</div>',
 			esc_attr( $this->get_element_id() ),
+			$this->bulk_actions ? $this->add_bulk_actions() : '',
 			$this->form_data_elements( $value )
+		);
+	}
+
+	/**
+	 * Get the HTML for the bulk actions.
+	 *
+	 * @return string
+	 */
+	public function add_bulk_actions() {
+		return sprintf(
+			'<div class="fm-bulk-actions">
+				<label for="%1$s">
+					<input type="checkbox" id="%1$s" class="fm-bulk-action" />
+					%2$s
+				</label>
+			</div>' . "\n",
+			esc_attr( $this->get_element_id() . '-bulk-action' ),
+			esc_html__( 'Select all', 'fieldmanager' )
 		);
 	}
 

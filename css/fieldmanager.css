@@ -680,3 +680,10 @@ a.fm-delete:hover {
 		margin-bottom: 0;
 	}
 }
+
+.fm-bulk-actions {
+	border-bottom: 1px solid #dfdfdf;
+	margin-bottom: 10px;
+	max-width: 200px;
+	padding-bottom: 10px;
+}
