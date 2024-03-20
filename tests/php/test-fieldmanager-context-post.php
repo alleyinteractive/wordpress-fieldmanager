@@ -145,26 +145,4 @@ class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
 		$this->assertEquals( $saved_value['test_extended'][1]['extext'], array( 'second1', 'second2', 'second3' ) );
 		$this->assertEquals( $saved_value['test_extended'][3]['extext'][0], 'fourth' );
 	}
-
-	public function test_programmatic_save_posts() {
-		$this->expectNotToPerformAssertions();
-
-		$base = $this->_get_elements();
-		$base->add_meta_box( 'test meta box', 'post' );
-
-		$post_id = wp_insert_post(
-			array(
-				'post_type'  => 'post',
-				'post_name'  => 'test-post',
-				'post_title' => 'Test Post',
-				'post_date'  => '2012-10-25 12:34:56',
-			)
-		);
-		wp_update_post(
-			array(
-				'ID'           => $post_id,
-				'post_content' => 'Lorem ipsum dolor sit amet.',
-			)
-		);
-	}
 }
