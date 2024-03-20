@@ -21,6 +21,13 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	 */
 	private int $post_id;
 
+	/**
+	 * Deprecation errors logged.
+	 *
+	 * @var int
+	 */
+	private int $errors = 0;
+
 	public function set_up() {
 		parent::set_up();
 		add_filter( 'user_can_richedit', '__return_true' );
@@ -37,10 +44,29 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 
 		// Store the post ID.
 		$this->post_id = $this->post->ID;
+
+		set_error_handler( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
+			/**
+			 * Convert deprecations to exceptions. This was removed from PHPUnit in
+			 * PHPUnit 10, so doing so manually here for future compatibility.
+			 *
+			 * @see https://github.com/sebastianbergmann/phpunit/issues/5062
+			 */
+			function () {
+				$this->errors++;
+				return true;
+			},
+			E_DEPRECATED | E_USER_DEPRECATED
+		);
 	}
 
 	public function tear_down() {
 		remove_filter( 'user_can_richedit', '__return_true' );
+
+		$this->errors = 0;
+		// Restore default error handler.
+		restore_error_handler();
+
 		parent::tear_down();
 	}
 
@@ -589,34 +615,12 @@ class Test_Fieldmanager_RichTextArea_Field extends WP_UnitTestCase {
 	 * @see https://github.com/alleyinteractive/wordpress-fieldmanager/issues/864
 	 */
 	public function test_default_value_does_not_throw_deprecation() {
-		set_error_handler( // phpcs:ignore WordPress.PHP.DevelopmentFunctions.error_log_set_error_handler
-			/**
-			 * Convert deprecations to exceptions. This was removed from PHPUnit in
-			 * PHPUnit 10, so doing so manually here for future compatibility.
-			 *
-			 * @see https://github.com/sebastianbergmann/phpunit/issues/5062
-			 */
-			function ( $errno, $errstr ) {
-				throw new Fieldmanager_Deprecation_Exception( $errstr, $errno );
-			},
-			E_DEPRECATED | E_USER_DEPRECATED
-		);
+		ob_start();
+		$fm = new Fieldmanager_RichTextArea([ 'name' => 'example-textarea' ]);
+		$fm->add_meta_box( 'Test TextArea', 'post' )
+			->render_meta_box( $this->post, array() );
+		ob_get_clean();
 
-		$this->expectNotToPerformAssertions();
-
-		try {
-			ob_start();
-
-			$fm = new Fieldmanager_RichTextArea([ 'name' => 'example-textarea' ]);
-			$fm->add_meta_box( 'Test TextArea', 'post' )
-				->render_meta_box( $this->post, array() );
-
-			ob_get_clean();
-		} catch ( Fieldmanager_Deprecation_Exception $e ) {
-			$this->fail( $e->getMessage() );
-		}
-
-		// Restore default error handler.
-		restore_error_handler();
+		$this->assertSame( 0, $this->errors );
 	}
 }
