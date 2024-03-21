@@ -7,21 +7,35 @@
  * @group post
  */
 class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
+	/**
+	 * The post ID of the test post.
+	 *
+	 * @var int
+	 */
+	private int $post_id = 0;
+
+	/**
+	 * The post object of the test post.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
+
 	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
-		$this->post = array(
-			'post_status'  => 'publish',
-			'post_content' => rand_str(),
-			'post_title'   => rand_str(),
+		// Create a post and capture it.
+		$this->post = $this->factory->post->create_and_get(
+			[
+				'post_status'  => 'publish',
+				'post_content' => rand_str(),
+				'post_title'   => rand_str(),
+			]
 		);
 
-		// insert a post
-		$this->post_id = wp_insert_post( $this->post );
-
-		// reload as proper object
-		$this->post = get_post( $this->post_id );
+		// Store the post ID.
+		$this->post_id = $this->post->ID;
 	}
 
 	/**
@@ -130,25 +144,5 @@ class Test_Fieldmanager_Context_Post extends WP_UnitTestCase {
 		$this->assertEquals( count( $saved_value['test_extended'][3]['extext'] ), 1 );
 		$this->assertEquals( $saved_value['test_extended'][1]['extext'], array( 'second1', 'second2', 'second3' ) );
 		$this->assertEquals( $saved_value['test_extended'][3]['extext'][0], 'fourth' );
-	}
-
-	public function test_programmatic_save_posts() {
-		$base = $this->_get_elements();
-		$base->add_meta_box( 'test meta box', 'post' );
-
-		$post_id = wp_insert_post(
-			array(
-				'post_type'  => 'post',
-				'post_name'  => 'test-post',
-				'post_title' => 'Test Post',
-				'post_date'  => '2012-10-25 12:34:56',
-			)
-		);
-		wp_update_post(
-			array(
-				'ID'           => $post_id,
-				'post_content' => 'Lorem ipsum dolor sit amet.',
-			)
-		);
 	}
 }

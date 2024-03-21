@@ -7,6 +7,13 @@
  * @group menuitem
  */
 class Test_Fieldmanager_Context_Menuitem extends WP_UnitTestCase {
+	/**
+	 * The post object of the test post.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
+
 	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;

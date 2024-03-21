@@ -988,6 +988,8 @@ abstract class Fieldmanager_Field {
 				function( $value ) {
 					if ( is_array( $value ) ) {
 						return ! empty( $value );
+					} elseif ( null === $value ) {
+						return $value;
 					} else {
 						return strlen( $value );
 					}
@@ -1117,7 +1119,7 @@ abstract class Fieldmanager_Field {
 				);
 			}
 		}
-		return call_user_func( $this->sanitize, $value );
+		return ( null !== $value ) ? call_user_func( $this->sanitize, $value ) : null;
 	}
 
 	/**

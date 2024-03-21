@@ -8,17 +8,34 @@
  */
 class Test_Fieldmanager_Group extends WP_UnitTestCase {
 
+	/**
+	 * The post object.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
+
+	/**
+	 * The post ID.
+	 *
+	 * @var int
+	 */
+	private int $post_id;
+
 	public function set_up() {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
-		$this->post    = $this->factory->post->create_and_get(
-			array(
-				'post_status'  => 'draft',
+		// Create a post and capture it.
+		$this->post = $this->factory->post->create_and_get(
+			[
+				'post_status'  => 'publish',
 				'post_content' => rand_str(),
 				'post_title'   => rand_str(),
-			)
+			]
 		);
+
+		// Store the post ID.
 		$this->post_id = $this->post->ID;
 	}
 
@@ -156,6 +173,7 @@ class Test_Fieldmanager_Group extends WP_UnitTestCase {
 	 * Test building and saving a nested group
 	 */
 	public function test_saving_nested_groups() {
+		$this->expectNotToPerformAssertions();
 
 		$meta_group = new \Fieldmanager_Group(
 			'',

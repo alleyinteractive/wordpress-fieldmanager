@@ -81,6 +81,13 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	public $only_save_to_post_parent = false;
 
 	/**
+	 * Used internally.
+	 *
+	 * @var mixed
+	 */
+	private $_fragment; // phpcs:ignore PSR2.Classes.PropertyDeclaration.Underscore
+
+	/**
 	 * Construct the object.
 	 *
 	 * @param array $options The datasource options.

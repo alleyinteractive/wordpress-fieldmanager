@@ -95,6 +95,13 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	protected $edit_config = false;
 
 	/**
+	 * The default value for the field, if unset.
+	 *
+	 * @var mixed Default value
+	 */
+	public $default_value = '';
+
+	/**
 	 * Construct defaults for this field.
 	 *
 	 * @param string $label   Title of form field.

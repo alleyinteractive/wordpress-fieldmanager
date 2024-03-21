@@ -111,7 +111,7 @@ class Test_Fieldmanager_Context_Submenu extends WP_UnitTestCase {
 		// Test with a parent slug
 		$name_4 = rand_str();
 		$parent = rand_str();
-		add_submenu_page( null, 'Test parent', 'Test parent', 'manage_options', $parent );
+		add_submenu_page( 'options.php', 'Test parent', 'Test parent', 'manage_options', $parent );
 		fm_register_submenu_page( $name_4, $parent, 'Testing URLs' );
 		$context_4 = $this->get_context( $name_4 );
 
