@@ -104,8 +104,8 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	/**
 	 * Construct defaults for this field.
 	 *
-	 * @param string $label   Title of form field.
-	 * @param array  $options With keys matching vars of the field in use.
+	 * @param string|array $label   The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.
+	 * @param array        $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->sanitize = array( $this, 'sanitize' );

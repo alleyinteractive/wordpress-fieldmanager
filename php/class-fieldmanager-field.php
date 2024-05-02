@@ -401,8 +401,8 @@ abstract class Fieldmanager_Field {
 	 * Superclass constructor, just populates options and sanity-checks common elements.
 	 * It might also die, but only helpfully, to catch errors in development.
 	 *
-	 * @param string $label   Title of form field.
-	 * @param array  $options With keys matching vars of the field in use.
+	 * @param string|array $label   The field label.
+	 * @param array        $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->set_options( $label, $options );
@@ -429,8 +429,8 @@ abstract class Fieldmanager_Field {
 	 * @throws FM_Developer_Exception If an option is set but not defined in this class or the child class.
 	 * @throws FM_Developer_Exception If an option is set but not public.
 	 *
-	 * @param string $label   Title of form field.
-	 * @param array  $options With keys matching vars of the field in use.
+	 * @param string|array $label   The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.
+	 * @param array        $options The field options.
 	 */
 	public function set_options( $label, $options ) {
 		if ( is_array( $label ) ) {

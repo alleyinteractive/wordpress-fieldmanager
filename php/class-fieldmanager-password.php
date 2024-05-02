@@ -29,8 +29,8 @@ class Fieldmanager_Password extends Fieldmanager_Field {
 	/**
 	 * Override constructor to set default size.
 	 *
-	 * @param string $label   Field label.
-	 * @param array  $options Associative array of class property values. @see Fieldmanager_Field::__construct().
+	 * @param string|array $label   The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.
+	 * @param array        $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->attributes = array(
