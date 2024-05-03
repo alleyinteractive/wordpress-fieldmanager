@@ -46,8 +46,8 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	/**
 	 * Override constructor to add chosen.js maybe.
 	 *
-	 * @param string $label   The form label.
-	 * @param array  $options The form options.
+	 * @param string|array $label   The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.
+	 * @param array        $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 

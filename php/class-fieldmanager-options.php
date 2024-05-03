@@ -64,8 +64,8 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	/**
 	 * Add CSS, construct parent.
 	 *
-	 * @param string $label   The form label.
-	 * @param mixed  $options The form options.
+	 * @param string|array $label   The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.
+	 * @param array        $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->sanitize = array( $this, 'sanitize' );

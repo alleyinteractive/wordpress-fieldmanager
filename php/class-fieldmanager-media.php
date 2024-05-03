@@ -95,8 +95,8 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	/**
 	 * Construct default attributes.
 	 *
-	 * @param string $label   The form label.
-	 * @param array  $options The form options.
+	 * @param string|array $label   The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.
+	 * @param array        $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->button_label         = __( 'Attach a File', 'fieldmanager' );

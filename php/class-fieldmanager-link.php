@@ -13,8 +13,8 @@ class Fieldmanager_Link extends Fieldmanager_Textfield {
 	/**
 	 * Construct default attributes, set link sanitizer.
 	 *
-	 * @param string $label   The form label.
-	 * @param array  $options The form options.
+	 * @param string|array $label   The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.
+	 * @param array        $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		$this->sanitize = 'esc_url_raw';

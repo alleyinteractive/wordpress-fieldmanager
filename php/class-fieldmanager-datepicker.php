@@ -65,8 +65,8 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	/**
 	 * Construct default attributes and enqueue JavaScript.
 	 *
-	 * @param string $label   Field label.
-	 * @param array  $options Associative array of class property values. @see Fieldmanager_Field::__construct().
+	 * @param string|array $label   The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.
+	 * @param array        $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		fm_add_style( 'fm-jquery-ui', 'css/jquery-ui/jquery-ui-1.10.2.custom.min.css' );

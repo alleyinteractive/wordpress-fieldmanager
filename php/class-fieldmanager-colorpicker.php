@@ -32,8 +32,8 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	/**
 	 * Build the colorpicker object and enqueue assets.
 	 *
-	 * @param string $label   The label to use.
-	 * @param array  $options The options.
+	 * @param string|array $label   The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.
+	 * @param array        $options The field options.
 	 */
 	public function __construct( $label = '', $options = array() ) {
 		fm_add_script( 'fm_colorpicker', 'js/fieldmanager-colorpicker.js', array( 'fm_loader', 'jquery', 'wp-color-picker' ), FM_VERSION, true );
