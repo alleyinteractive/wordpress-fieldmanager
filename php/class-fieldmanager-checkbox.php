@@ -71,7 +71,7 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	 * Override presave function to swap in unchecked_value if needed.
 	 *
 	 * @param  mixed $value         The new value.
-	 * @param  mixed $current_value The curent value.
+	 * @param  mixed $current_value The current value.
 	 * @return mixed Proper value.
 	 */
 	public function presave( $value = null, $current_value = array() ) {

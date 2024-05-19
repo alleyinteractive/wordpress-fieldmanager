@@ -551,7 +551,7 @@ class Test_Fieldmanager_Context_Term extends WP_UnitTestCase {
 			$name => $value,
 		];
 
-		// Manipualte the term name prior to insert.
+		// Manipulate the term name prior to insert.
 		add_filter(
 			'pre_insert_term',
 			function( $term_name ) {

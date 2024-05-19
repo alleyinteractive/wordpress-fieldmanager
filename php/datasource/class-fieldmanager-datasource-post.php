@@ -20,7 +20,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 
 	/**
 	 * Arguments to get_posts(), which uses WP's defaults, plus
-	 * suppress_filters = False, which can be overriden by setting
+	 * suppress_filters = False, which can be overridden by setting
 	 * suppress_filters = True here.
 	 *
 	 * @see http://codex.wordpress.org/Template_Tags/get_posts
@@ -213,7 +213,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * when trying to autocomplete a title.
 	 *
 	 * @param string   $where    The where clause.
-	 * @param WP_Query $wp_query The reference to teh query object.
+	 * @param WP_Query $wp_query The reference to the query object.
 	 */
 	public function title_like( $where, $wp_query ) {
 		global $wpdb;

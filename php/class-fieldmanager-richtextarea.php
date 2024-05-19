@@ -197,7 +197,7 @@ class Fieldmanager_RichTextArea extends Fieldmanager_Field {
 	}
 
 	/**
-	 * Before generating the editor, manipualte the settings as needed.
+	 * Before generating the editor, manipulate the settings as needed.
 	 */
 	protected function prep_editor_config() {
 		// Attempt to maintain some backwards compatibility for $init_options.

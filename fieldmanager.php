@@ -633,7 +633,7 @@ class FM_Exception extends Exception { }
 class FM_Class_Not_Found_Exception extends Exception { }
 
 /**
- * Exception class for unitialized submenus.
+ * Exception class for uninitialized submenus.
  *
  * @package Fieldmanager
  */

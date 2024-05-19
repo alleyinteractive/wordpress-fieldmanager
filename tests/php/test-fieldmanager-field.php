@@ -1072,7 +1072,7 @@ class Test_Fieldmanager_Field extends WP_UnitTestCase {
 	}
 
 	/**
-	 * Verify passing false to seralize_data through the save_to_post_meta method on data
+	 * Verify passing false to serialize_data through the save_to_post_meta method on data
 	 * that requires serialization.
 	 *
 	 * @group serialize_data
