@@ -84,13 +84,13 @@ class Fieldmanager_Datasource {
 			} catch ( Exception $e ) {
 				$message = sprintf(
 					/* translators: 1: property name, 2: current class name, 3: option name */
-					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
+					__( 'You attempted to set a property "%1$s" that is nonexistent or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
 					$k,
 					get_class(),
 					! empty( $options['name'] ) ? $options['name'] : 'NULL'
 				);
 				if ( ! Fieldmanager_Field::$debug ) {
-					wp_die( esc_html( $message ), esc_html__( 'Nonexistant or invalid option', 'fieldmanager' ) );
+					wp_die( esc_html( $message ), esc_html__( 'Nonexistent or invalid option', 'fieldmanager' ) );
 				} else {
 					throw new FM_Developer_Exception( esc_html( $message ) );
 				}

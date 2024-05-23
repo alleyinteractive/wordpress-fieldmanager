@@ -448,7 +448,7 @@ abstract class Fieldmanager_Field {
 			} elseif ( self::$debug ) {
 				$message = sprintf(
 					/* translators: 1: option key, 2: field class, 3: field name */
-					__( 'You attempted to set a property "%1$s" that is nonexistant or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
+					__( 'You attempted to set a property "%1$s" that is nonexistent or invalid for an instance of "%2$s" named "%3$s".', 'fieldmanager' ),
 					$key,
 					get_class( $this ),
 					! empty( $options['name'] ) ? $options['name'] : 'NULL'
@@ -1219,7 +1219,7 @@ abstract class Fieldmanager_Field {
 	}
 
 	/**
-	 * Return extra element classes; overriden by some fields.
+	 * Return extra element classes; overridden by some fields.
 	 *
 	 * @return array
 	 */

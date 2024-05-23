@@ -36,7 +36,7 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 			'rows' => '10',
 		);
 
-		// Sanitize the textarea to preserve newlines. Could be overriden.
+		// Sanitize the textarea to preserve newlines. Could be overridden.
 		$this->sanitize = 'fm_sanitize_textarea';
 
 		parent::__construct( $label, $options );
