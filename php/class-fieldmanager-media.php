@@ -141,7 +141,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	public function presave( $value, $current_value = array() ) {
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 		if ( 0 == $value || ! is_numeric( $value ) ) {
-			return null;
+			return 0;
 		}
 		return absint( $value );
 	}
