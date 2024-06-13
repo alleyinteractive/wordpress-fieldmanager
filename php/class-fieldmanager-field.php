@@ -359,13 +359,6 @@ abstract class Fieldmanager_Field {
 	protected $is_tab = false;
 
 	/**
-	 * Have we added this field as a meta box yet?
-	 *
-	 * @var bool
-	 */
-	private $meta_box_actions_added = false;
-
-	/**
 	 * Whether or not this field is present on the attachment edit screen.
 	 *
 	 * @var bool
