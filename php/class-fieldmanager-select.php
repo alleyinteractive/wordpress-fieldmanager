@@ -106,10 +106,6 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 		// Handle type-ahead based fields using the chosen library.
 		if ( $this->type_ahead ) {
 			$select_classes[] = 'chosen-select';
-			if ( ! isset( $GLOBALS['fm_chosen_initialized'] ) ) {
-				add_action( 'admin_footer', array( $this, 'chosen_init' ) );
-				$GLOBALS['fm_chosen_initialized'] = true;
-			}
 
 			if ( $this->grouped ) {
 				$select_classes[] = 'fm-options-grouped';
@@ -176,26 +172,5 @@ class Fieldmanager_Select extends Fieldmanager_Options {
 	 */
 	public function form_data_end_group() {
 		return '</optgroup>';
-	}
-
-	/**
-	 * Init chosen.js.
-	 */
-	public function chosen_init() {
-		?>
-		<script type="text/javascript">
-		jQuery(function($){
-			var chosenOpts = {
-				allow_single_deselect: true,
-				disable_search_threshold: -1,
-				width: '350px'
-			}
-			$('.fm-wrapper').on("fm_added_element fm_collapsible_toggle fm_activate_tab",".fm-item",function(){
-				$(".chosen-select:visible",this).chosen(chosenOpts)
-			});
-			$(".chosen-select:visible").chosen(chosenOpts);
-		});
-		</script>
-		<?php
 	}
 }
