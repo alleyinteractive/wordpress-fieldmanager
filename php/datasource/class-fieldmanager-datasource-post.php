@@ -249,12 +249,16 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * @return string
 	 */
 	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
-		if ( empty( $value ) ) {
+		if ( $this->only_save_to_post_parent ) {
+			$current_value = $this->preload_alter_values( $field, $current_value );
+		}
+
+		if ( empty( $value ) && empty( $current_value ) ) {
 			return;
 		}
 		$value = intval( $value );
 
-		if ( ! empty( $this->publish_with_parent ) || ! empty( $this->reciprocal ) ) {
+		if ( ! empty( $value ) && ( ! empty( $this->publish_with_parent ) || ! empty( $this->reciprocal ) ) ) {
 			// There are no permissions in cron, but no changes are coming from a user either.
 			if ( ! defined( 'DOING_CRON' ) || ! DOING_CRON ) {
 				$post_type_obj = get_post_type_object( get_post_type( $value ) );

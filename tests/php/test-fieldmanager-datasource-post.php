@@ -403,6 +403,7 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 			$html
 		);
 	}
+
 	/**
 	 * Test save_to_post_parent_only logic
 	 */
@@ -590,5 +591,32 @@ class Test_Fieldmanager_Datasource_Post extends WP_UnitTestCase {
 				),
 			)
 		);
+	}
+
+	/**
+	 * Test save_to_post_parent_only logic
+	 */
+	public function test_unsetting_post_parent_only() {
+		$fm = new Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'test_parent',
+				'datasource' => new Fieldmanager_Datasource_Post(
+					array(
+						'only_save_to_post_parent' => true,
+						'query_args'               => array(
+							'post_type' => 'post',
+						),
+					)
+				),
+			)
+		);
+
+		$this->save_values( $fm, $this->child_post_a, $this->parent_post->ID );
+		$child = get_post( $this->child_post_a->ID );
+		$this->assertEquals( $this->parent_post->ID, $child->post_parent );
+
+		$this->save_values( $fm, $this->child_post_a, '' );
+		$child = get_post( $this->child_post_a->ID );
+		$this->assertEquals( null, $child->post_parent );
 	}
 }
