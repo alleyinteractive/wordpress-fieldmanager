@@ -104,6 +104,8 @@ class Fieldmanager_Util_Validation {
 		// Set class variables.
 		$this->form_id = $form_id;
 		$this->context = $context;
+		//Allows other plugins or theme to extend available rules
+		$this->valid_rules = apply_filters( 'fm_valid_rules', $this->valid_rules );
 
 		// Add the appropriate action hook to finalize and output validation JS.
 		// Also determine where the jQuery validation script needs to be added.
