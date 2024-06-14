@@ -58,12 +58,13 @@ class Fieldmanager_Colorpicker extends Fieldmanager_Field {
 	 */
 	public function form_element( $value = '' ) {
 		return sprintf(
-			'<input class="fm-element fm-colorpicker-popup" name="%1$s" id="%2$s" data-default-color="%3$s" value="%4$s" %5$s />',
+			'<input class="fm-element fm-colorpicker-popup%6$s" name="%1$s" id="%2$s" data-default-color="%3$s" value="%4$s" %5$s />',
 			esc_attr( $this->get_form_name() ),
 			esc_attr( $this->get_element_id() ),
 			esc_attr( $this->default_color ),
 			esc_attr( $value ),
-			$this->get_element_attributes()
+			$this->get_element_attributes( '', array( 'data-default-color' ) ),
+			$this->get_element_attributes( 'class' )
 		);
 	}
 }

@@ -1125,12 +1125,26 @@ abstract class Fieldmanager_Field {
 	/**
 	 * Generates an HTML attribute string based on the value of $this->attributes.
 	 *
+	 * @param string $attr          Attribute name.
+	 * @param array  $attr_exclude  Add attributes to black list. Default to ('class',
+	 *                              'type', 'name', 'id', 'value', 'checked').
+	 *
 	 * @see Fieldmanager_Field::$attributes
-	 * @return string attributes ready to insert into an HTML tag.
+	 * @return string Attributes or single attribute value ready to insert into an HTML tag.
 	 */
-	public function get_element_attributes() {
+	public function get_element_attributes( $attr = '', $attr_exclude = array() ) {
+
+		if ( ! empty( $attr ) ) {
+			return array_key_exists( $attr, $this->attributes ) ? ' ' . esc_attr( $this->attributes[ $attr ] ) : '';
+		}
+
+		$attr_exclude = array_merge( is_array( $attr_exclude ) ? $attr_exclude : array(), array( 'class', 'type', 'name', 'id', 'value', 'checked' ) );
+
 		$attr_str = array();
 		foreach ( $this->attributes as $attr => $val ) {
+			if ( in_array( $attr, $attr_exclude ) ) {
+				continue;
+			}
 			if ( true === $val ) {
 				$attr_str[] = sanitize_key( $attr );
 			} else {
