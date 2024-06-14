@@ -172,9 +172,9 @@ var getCompareValues = function( el ) {
 	return values;
 };
 
-var match_value = function( values, match_string ) {
+var match_value = function( values, matchArr ) {
 	for ( var index in values ) {
-		if ( values[index] == match_string ) {
+		if ( matchArr.indexOf( String( values[ index ] ) ) !== -1 ) {
 			return true;
 		}
 	}
@@ -239,7 +239,7 @@ var fm_init = function () {
 
 	// Initializes triggers to conditionally hide or show fields
 	fm.init_display_if = function() {
-		var val;
+		var val = [];
 		var src = $( this ).data( 'display-src' );
 		var values = getCompareValues( this );
 		// Wrapper divs sometimes receive .fm-element, but don't use them as
@@ -247,6 +247,7 @@ var fm_init = function () {
 		// sibling as triggers, because the value is in their sibling fields
 		// (which this still matches).
 		var trigger = $( this ).siblings( '.fm-' + src + '-wrapper' ).find( '.fm-element' ).not( 'div, .fm-autocomplete, .fm-checkbox-hidden' );
+		var $checkboxGroup;
 
 		// Sanity check before calling `val()` or `split()`.
 		if ( 0 === trigger.length ) {
@@ -254,19 +255,28 @@ var fm_init = function () {
 		}
 
 		if ( trigger.is( ':checkbox' ) ) {
-			if ( trigger.is( ':checked' ) ) {
+			$checkboxGroup = trigger.parents( '.fm-checkbox-group' );
+
+			if ( $checkboxGroup.length ) {
+				val = $checkboxGroup
+					.find( '.fm-element[type=checkbox]:checked' )
+					.map(function () {
+						return this.value;
+					})
+					.toArray();
+			} else if ( trigger.is( ':checked' ) ) {
 				// If checked, use the checkbox value.
-				val = trigger.val();
+				val.push( trigger.val() );
 			} else {
 				// Otherwise, use the hidden sibling field with the "unchecked" value.
-				val = trigger.siblings( 'input[type=hidden][name="' + trigger.attr( 'name' ) + '"]' ).val();
+				val.push( trigger.siblings( 'input[type=hidden][name="' + trigger.attr( 'name' ) + '"]' ).val() );
 			}
 		} else if ( trigger.is( ':radio' ) ) {
 			if ( trigger.filter( ':checked' ).length ) {
-				val = trigger.filter( ':checked' ).val();
+				val.push( trigger.filter( ':checked' ).val() );
 			} else {
 				// On load, there might not be any selected radio, in which case call the value blank.
-				val = '';
+				val.push( '' );
 			}
 		} else {
 			val = trigger.val().split( ',' );
@@ -280,17 +290,28 @@ var fm_init = function () {
 
 	// Controls the trigger to show or hide fields
 	fm.trigger_display_if = function() {
-		var val;
+		var val = [];
 		var $this = $( this );
 		var name = $this.attr( 'name' );
+		var $checkboxGroup;
+
 		if ( $this.is( ':checkbox' ) ) {
-			if ( $this.is( ':checked' ) ) {
-				val = $this.val();
+			$checkboxGroup = $this.parents( '.fm-checkbox-group' );
+
+			if ( $checkboxGroup.length ) {
+				val = $checkboxGroup
+					.find( '.fm-element[type=checkbox]:checked' )
+					.map(function () {
+						return this.value;
+					})
+					.toArray();
+			} else if ( $this.is( ':checked' ) ) {
+				val.push( $this.val() );
 			} else {
-				val = $this.siblings( 'input[type=hidden][name="' + name + '"]' ).val();
+				val.push( $this.siblings( 'input[type=hidden][name="' + name + '"]' ).val() );
 			}
 		} else if ( $this.is( ':radio' ) ) {
-			val = $this.filter( ':checked' ).val();
+			val.push( $this.filter( ':checked' ).val() );
 		} else {
 			val = $this.val().split( ',' );
 		}
@@ -302,6 +323,7 @@ var fm_init = function () {
 					} else {
 						$( this ).hide();
 					}
+
 					$( this ).trigger( 'fm_displayif_toggle' );
 				}
 			}
