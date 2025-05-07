@@ -1,5 +1,7 @@
 {
-  "name": "alleyinteractive/wordpress-fieldmanager",
+  "name": "immediate/fieldmanager",
+  "description": "IM Fieldmanager fork",
+  "type": "wordpress-plugin",
   "authors": [
     {
       "name": "Alley Interactive",
