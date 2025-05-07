@@ -11,7 +11,6 @@
  * This class extends {@see Fieldmanager_Options}, which allows you to define
  * options (values) via an array or via a dynamic
  * {@see Fieldmanager_Datasource}, like {@see Fieldmanager_Datasource_Post},
- * {@see Fieldmanager_Datasource_Term}, or {@see Fieldmanager_Datasource_User}.
  */
 class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 
