@@ -23,8 +23,8 @@ Development of Fieldmanager happens on [GitHub](http://github.com/alleyinteracti
 
 ## Generating Documentation
 
-To build Fieldmanager's API documentation, the latest version of which is available at [api.fieldmanager.org](https://api.fieldmanager.org), you need [apigen](https://github.com/ApiGen/ApiGen) installed. Once you've got that, you can generate the entire documentation tree as follows:
+To build Fieldmanager's API documentation, the latest version of which is available at [api.fieldmanager.org](https://api.fieldmanager.org), you can use [Doctum](https://github.com/code-lts/doctum). See the Doctum README for instructions on downloading the phar file, then you can generate the entire documentation tree with:
 
 ```bash
-apigen -c apigen.neon
+doctum.phar update doctum.php
 ```
