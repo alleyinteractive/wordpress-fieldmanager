@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Fieldmanager_Datasource | Fieldmanager API Documentation</title>
+
+            <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="fonts/doctum-font.css">
+        <script src="js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="doctum.js"></script>
+        <script async defer src="js/bootstrap.min.js"></script>
+        <script async defer src="js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:Fieldmanager_Datasource" data-root-path="" data-search-index-url="doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Fieldmanager API Documentation</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="classes.html">Classes</a></li>
+                    <li><a href="namespaces.html">Namespaces</a></li>
+                    <li><a href="interfaces.html">Interfaces</a></li>
+                    <li><a href="traits.html">Traits</a></li>
+                    <li><a href="doc-index.html">Index</a></li>
+                    <li><a href="search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                            <div id="page-content">
+    <div class="page-header">
+        <h1>Fieldmanager_Datasource    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>Fieldmanager_Datasource</strong>        (<a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php">View source</a>)
+</p>
+
+        
+    
+        
+
+            <div class="description">
+            <p><p>Datasource base class to populate autocomplete and option fields.</p></p>            <p><p>This class can be used as an arbitrary data source for static options, or it
+can be extended to provide custom data sources.</p></p>        </div>
+            
+        
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_options">
+                                                                                array
+                                                                                
+                                    </td>
+                <td>$options</td>
+                <td class="last"><p>The datasource options.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_options_callback">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$options_callback</td>
+                <td class="last"><p>Options callback.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_use_ajax">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$use_ajax</td>
+                <td class="last"><p>Whether or not to use Ajax.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_allow_optgroups">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$allow_optgroups</td>
+                <td class="last"><p>Allow option groups.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_ajax_action">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$ajax_action</td>
+                <td class="last"><p>The Ajax action.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_counter">
+                    static                                                            int
+                                                                                
+                                    </td>
+                <td>$counter</td>
+                <td class="last"><p>Counter to create uniquely named Ajax actions.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_grouped">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$grouped</td>
+                <td class="last"><p>If true, group elements.</p></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(array $options = array())
+        
+                                            <p>Constructor.</p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_value">get_value</a>(int $id)
+        
+                                            <p><p>Get the value of an item; most clearly used by Post and Term, which
+take database IDs and return user-friendly titles.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_items">get_items</a>(string $fragment = null)
+        
+                                            <p><p>Get available options, optionally filtering by a fragment (e.g. for Autocomplete).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_ajax_action">get_ajax_action</a>()
+        
+                                            <p><p>Get an action to register by hashing (non cryptographically for speed)
+the options that make this datasource unique.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_items_for_ajax">get_items_for_ajax</a>(string|null $fragment = null)
+        
+                                            <p><p>Format items for use in Ajax.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_autocomplete_search">autocomplete_search</a>()
+        
+                                            <p><p>Ajax callback to find posts.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_presave_alter_values">presave_alter_values</a>(<a href="Fieldmanager_Field.html">Fieldmanager_Field</a> $field, mixed $values, mixed $current_values)
+        
+                                            <p><p>Trigger to handle actions needed before saving data.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_preload_alter_values">preload_alter_values</a>(<a href="Fieldmanager_Field.html">Fieldmanager_Field</a> $field, mixed $values)
+        
+                                            <p><p>Modify values before rendering editor.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_presave">presave</a>(<a href="Fieldmanager_Field.html">Fieldmanager_Field</a> $field, mixed $value, mixed $current_value)
+        
+                                            <p><p>Datasource handles sanitization and validation.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_view_link">get_view_link</a>(mixed $value)
+        
+                                            <p><p>Get view link, not used here but meant for override.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_edit_link">get_edit_link</a>(int|string $value)
+        
+                                            <p><p>Get edit link, not used here but meant for override.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L72">at line 72</a></div>
+        <code>                    
+    <strong>__construct</strong>(array $options = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p>Constructor.</p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td><p>The datasource options.</p></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="FM_Developer_Exception.html">FM_Developer_Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_value">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L131">at line 131</a></div>
+        <code>                    string
+    <strong>get_value</strong>(int $id)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the value of an item; most clearly used by Post and Term, which
+take database IDs and return user-friendly titles.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$id</td>
+                <td><p>The ID of the object.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>The value.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_items">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L141">at line 141</a></div>
+        <code>                    array
+    <strong>get_items</strong>(string $fragment = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get available options, optionally filtering by a fragment (e.g. for Autocomplete).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$fragment</td>
+                <td><p>Optional fragment to filter by.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>The key =&gt; value of available options.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_ajax_action">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L160">at line 160</a></div>
+        <code>                    string
+    <strong>get_ajax_action</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get an action to register by hashing (non cryptographically for speed)
+the options that make this datasource unique.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>Ajax action.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_items_for_ajax">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L172">at line 172</a></div>
+        <code>                    
+    <strong>get_items_for_ajax</strong>(string|null $fragment = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Format items for use in Ajax.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|null</td>
+                <td>$fragment</td>
+                <td><p>Search string.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_autocomplete_search">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L189">at line 189</a></div>
+        <code>                    
+    <strong>autocomplete_search</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Ajax callback to find posts.</p></p>                        
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_presave_alter_values">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L212">at line 212</a></div>
+        <code>                    string
+    <strong>presave_alter_values</strong>(<a href="Fieldmanager_Field.html">Fieldmanager_Field</a> $field, mixed $values, mixed $current_values)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Trigger to handle actions needed before saving data.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="Fieldmanager_Field.html">Fieldmanager_Field</a></td>
+                <td>$field</td>
+                <td><p>Base field.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$values</td>
+                <td><p>New value.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$current_values</td>
+                <td><p>Current value.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>$values Cleaned value.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_preload_alter_values">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L224">at line 224</a></div>
+        <code>                    array
+    <strong>preload_alter_values</strong>(<a href="Fieldmanager_Field.html">Fieldmanager_Field</a> $field, mixed $values)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Modify values before rendering editor.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="Fieldmanager_Field.html">Fieldmanager_Field</a></td>
+                <td>$field</td>
+                <td><p>Base field.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$values</td>
+                <td><p>New values.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>$values Loaded up, if applicable.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_presave">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L236">at line 236</a></div>
+        <code>                    string
+    <strong>presave</strong>(<a href="Fieldmanager_Field.html">Fieldmanager_Field</a> $field, mixed $value, mixed $current_value)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Datasource handles sanitization and validation.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="Fieldmanager_Field.html">Fieldmanager_Field</a></td>
+                <td>$field</td>
+                <td><p>Base field.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td><p>New value.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$current_value</td>
+                <td><p>Current value.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>$values Cleaned value.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_view_link">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L249">at line 249</a></div>
+        <code>                    string
+    <strong>get_view_link</strong>(mixed $value)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get view link, not used here but meant for override.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td><p>The current value.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>HTML string.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_edit_link">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/datasource/class-fieldmanager-datasource.php#L259">at line 259</a></div>
+        <code>                    string
+    <strong>get_edit_link</strong>(int|string $value)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get edit link, not used here but meant for override.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int|string</td>
+                <td>$value</td>
+                <td><p>The current value.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>HTML string.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>

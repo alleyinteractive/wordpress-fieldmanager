@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Fieldmanager_Util_Term_Meta | Fieldmanager API Documentation</title>
+
+            <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="fonts/doctum-font.css">
+        <script src="js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="doctum.js"></script>
+        <script async defer src="js/bootstrap.min.js"></script>
+        <script async defer src="js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:Fieldmanager_Util_Term_Meta" data-root-path="" data-search-index-url="doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Fieldmanager API Documentation</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="classes.html">Classes</a></li>
+                    <li><a href="namespaces.html">Namespaces</a></li>
+                    <li><a href="interfaces.html">Interfaces</a></li>
+                    <li><a href="traits.html">Traits</a></li>
+                    <li><a href="doc-index.html">Index</a></li>
+                    <li><a href="search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                            <div id="page-content">
+    <div class="page-header">
+        <h1>Fieldmanager_Util_Term_Meta    <small><span class="label label-danger">deprecated</span></small>
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>Fieldmanager_Util_Term_Meta</strong>        (<a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php">View source</a>)
+</p>
+
+        
+            <p>
+                <small><span class="label label-danger">deprecated</span></small>
+                            <tr>
+                    <td>1.0.0-beta.3</td>
+                    <td></td>
+                </tr>
+                    </p>
+    
+        
+
+            <div class="description">
+            <p><p>Use Fieldmanager to store meta data for taxonomy terms.</p></p>            <p><p>This is deprecated as of WordPress 4.4, which introduces term meta into core.
+If you were using this feature prior to 4.4, it will continue to operate
+until probably WordPress 4.8, however it is in your best interest to migrate
+your data ASAP, as core's term meta is significantly more efficient.</p></p>        </div>
+            
+        
+    
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;object
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_instance">instance</a>()
+        
+                                            <p><p>Singleton helper</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setup">setup</a>()
+        
+                                            <p><p>Sets up the class.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_create_content_type">create_content_type</a>()
+        
+                                            <p><p>Create the custom content type.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_post_slug">post_slug</a>(int $term_id, string $taxonomy)
+        
+                                            <p><p>Get the slug (post_name and post_title) for the fm_term_meta post.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_term_meta">get_term_meta</a>(int $term_id, string $taxonomy, string $meta_key = &#039;&#039;, bool $single = false)
+        
+                                            <p><p>Get metadata matching the specified key for the given term ID/taxonomy
+pair.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool|int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_term_meta">add_term_meta</a>(int $term_id, string $taxonomy, string $meta_key, mixed $meta_value, bool $unique = false)
+        
+                                            <p><p>Add metadata to a term ID/taxonomy pair.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_update_term_meta">update_term_meta</a>(int $term_id, string $taxonomy, string $meta_key, mixed $meta_value, mixed $meta_prev_value = &#039;&#039;)
+        
+                                            <p><p>Update metadata for a term ID/taxonomy pair.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_delete_term_meta">delete_term_meta</a>(int $term_id, string $taxonomy, string $meta_key, mixed $meta_value = &#039;&#039;)
+        
+                                            <p><p>Remove metadata matching criteria from a term ID/taxonomy pair.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int|bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_term_meta_post_id">get_term_meta_post_id</a>(int $term_id, string $taxonomy)
+        
+                                            <p><p>Handles checking if post exists and returning its ID to store taxonomy term meta data.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_term_meta_post_id_cache_key">get_term_meta_post_id_cache_key</a>(int $term_id, string $taxonomy)
+        
+                                            <p><p>Generates a standardized cache key for the term meta post ID.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_delete_term_meta_post_id_cache">delete_term_meta_post_id_cache</a>(int $term_id, string $taxonomy)
+        
+                                            <p><p>Clears the cache for a term meta post ID.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_term_meta_post">add_term_meta_post</a>(int $term_id, string $taxonomy)
+        
+                                            <p><p>Handles adding a post to store taxonomy term meta data.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_collect_garbage">collect_garbage</a>(int $term_id, int $tt_id, string $taxonomy)
+        
+                                            <p><p>When a term is deleted, delete its ghost post and related meta.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_split_shared_term">split_shared_term</a>(int $old_term_id, int $new_term_id, int $term_taxonomy_id, string $taxonomy)
+        
+                                            <p><p>Update term meta when a shared term gets split (as of WordPress 4.2).</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_instance">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L41">at line 41</a></div>
+        <code>        static            object
+    <strong>instance</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Singleton helper</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>object</td>
+            <td><p>The singleton instance</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setup">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L52">at line 52</a></div>
+        <code>                    
+    <strong>setup</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Sets up the class.</p></p>                        
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_create_content_type">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L61">at line 61</a></div>
+        <code>                    
+    <strong>create_content_type</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Create the custom content type.</p></p>                        
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_post_slug">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L79">at line 79</a></div>
+        <code>            protected        string
+    <strong>post_slug</strong>(int $term_id, string $taxonomy)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the slug (post_name and post_title) for the fm_term_meta post.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Term taxonomy.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>Post slug.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_term_meta">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L93">at line 93</a></div>
+        <code>                    string|array
+    <strong>get_term_meta</strong>(int $term_id, string $taxonomy, string $meta_key = &#039;&#039;, bool $single = false)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get metadata matching the specified key for the given term ID/taxonomy
+pair.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Taxonomy name that $term_id is part of.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$meta_key</td>
+                <td><p>Metadata name.</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$single</td>
+                <td><p>Optional. Get a single result or multiple.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|array</td>
+            <td>get_post_meta().</td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_term_meta">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L123">at line 123</a></div>
+        <code>                    bool|int
+    <strong>add_term_meta</strong>(int $term_id, string $taxonomy, string $meta_key, mixed $meta_value, bool $unique = false)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add metadata to a term ID/taxonomy pair.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Taxonomy name that $term_id is part of.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$meta_key</td>
+                <td><p>Metadata name.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$meta_value</td>
+                <td><p>The value of the custom field which should be
+added. If an array is given, it will be
+serialized into a string.</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$unique</td>
+                <td><p>Optional. Whether or not you want the key to stay
+unique. When set to true, the custom field will
+not be added if the given key already exists among
+custom fields of the specified post.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool|int</td>
+            <td>add_post_meta().</td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_update_term_meta">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L162">at line 162</a></div>
+        <code>                    mixed
+    <strong>update_term_meta</strong>(int $term_id, string $taxonomy, string $meta_key, mixed $meta_value, mixed $meta_prev_value = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Update metadata for a term ID/taxonomy pair.</p></p>                <p><p>Use the $prev_value parameter to differentiate between meta fields with
+the same key and post ID.</p>
+<p>If the meta field for the term does not exist, it will be added.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Taxonomy name that $term_id is part of.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$meta_key</td>
+                <td><p>Metadata name.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$meta_value</td>
+                <td><p>The new value of the custom field. A passed
+array will be serialized into a string.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$meta_prev_value</td>
+                <td><p>Optional. The old value of the custom field
+you wish to change. This is to
+differentiate between several fields with
+the same key. If omitted, and there are
+multiple rows for this post and meta key,
+all meta values will be updated.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td>update_post_meta().</td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_delete_term_meta">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L196">at line 196</a></div>
+        <code>                    bool
+    <strong>delete_term_meta</strong>(int $term_id, string $taxonomy, string $meta_key, mixed $meta_value = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Remove metadata matching criteria from a term ID/taxonomy pair.</p></p>                <p><p>You can match based on the key, or key and value. Removing based on key
+and value, will keep from removing duplicate metadata with the same key.
+It also allows removing all metadata matching key, if needed.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Taxonomy name that $term_id is part of.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$meta_key</td>
+                <td><p>Metadata name.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$meta_value</td>
+                <td><p>Optional. The value of the field you will
+delete. This is used to differentiate between
+several fields with the same key. If left blank,
+all fields with the given key will be deleted.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>False for failure. True for success.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_term_meta_post_id">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L226">at line 226</a></div>
+        <code>                    int|bool
+    <strong>get_term_meta_post_id</strong>(int $term_id, string $taxonomy)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Handles checking if post exists and returning its ID to store taxonomy term meta data.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Term taxonomy.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int|bool</td>
+            <td><p>Post ID or false.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_term_meta_post_id_cache_key">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L260">at line 260</a></div>
+        <code>                    string
+    <strong>get_term_meta_post_id_cache_key</strong>(int $term_id, string $taxonomy)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Generates a standardized cache key for the term meta post ID.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Term taxonomy.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>Cache key.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_delete_term_meta_post_id_cache">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L270">at line 270</a></div>
+        <code>                    
+    <strong>delete_term_meta_post_id_cache</strong>(int $term_id, string $taxonomy)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Clears the cache for a term meta post ID.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Term taxonomy.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_term_meta_post">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L281">at line 281</a></div>
+        <code>                    bool
+    <strong>add_term_meta_post</strong>(int $term_id, string $taxonomy)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Handles adding a post to store taxonomy term meta data.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Term taxonomy.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_collect_garbage">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L310">at line 310</a></div>
+        <code>                    
+    <strong>collect_garbage</strong>(int $term_id, int $tt_id, string $taxonomy)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>When a term is deleted, delete its ghost post and related meta.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$term_id</td>
+                <td><p>Term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$tt_id</td>
+                <td><p>Term taxonomy ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>Term taxonomy.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_split_shared_term">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/util/class-fieldmanager-util-term-meta.php#L328">at line 328</a></div>
+        <code>                    
+    <strong>split_shared_term</strong>(int $old_term_id, int $new_term_id, int $term_taxonomy_id, string $taxonomy)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Update term meta when a shared term gets split (as of WordPress 4.2).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$old_term_id</td>
+                <td><p>The pre-split (previously shared) term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$new_term_id</td>
+                <td><p>The post-split term ID.</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$term_taxonomy_id</td>
+                <td><p>The term_taxonomy_id for this term. Note
+that this doesn't change when a shared term
+is split (since it's already unique).</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$taxonomy</td>
+                <td><p>The taxonomy of the <em>split</em> term.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>

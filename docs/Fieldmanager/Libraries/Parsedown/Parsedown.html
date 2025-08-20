@@ -1,0 +1,3417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Fieldmanager\Libraries\Parsedown\Parsedown | Fieldmanager API Documentation</title>
+
+            <link rel="stylesheet" type="text/css" href="../../../css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="../../../css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="../../../fonts/doctum-font.css">
+        <script src="../../../js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="../../../doctum.js"></script>
+        <script async defer src="../../../js/bootstrap.min.js"></script>
+        <script async defer src="../../../js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:Fieldmanager_Libraries_Parsedown_Parsedown" data-root-path="../../../" data-search-index-url="../../../doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="../../../search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="../../../index.html">Fieldmanager API Documentation</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="../../../classes.html">Classes</a></li>
+                    <li><a href="../../../namespaces.html">Namespaces</a></li>
+                    <li><a href="../../../interfaces.html">Interfaces</a></li>
+                    <li><a href="../../../traits.html">Traits</a></li>
+                    <li><a href="../../../doc-index.html">Index</a></li>
+                    <li><a href="../../../search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                        <div class="namespace-breadcrumbs">
+            <ol class="breadcrumb">
+                <li><span class="label label-default">class</span></li>
+                        <li><a href="../../../Fieldmanager.html">Fieldmanager</a></li><li class="backslash">\</li><li><a href="../../../Fieldmanager/Libraries.html">Libraries</a></li><li class="backslash">\</li><li><a href="../../../Fieldmanager/Libraries/Parsedown.html">Parsedown</a></li><li class="backslash">\</li><li>Parsedown</li>
+            </ol>
+        </div>
+                <div id="page-content">
+    <div class="page-header">
+        <h1>Parsedown    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>Parsedown</strong>        (<a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php">View source</a>)
+</p>
+
+        
+    
+        
+
+            
+        
+            <h2>Constants</h2>    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                                                                                                        version
+                                    </td>
+                <td class="last">
+                    <p><em></em></p>
+                    <p></p>
+                </td>
+            </tr>
+            </table>
+
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_breaksEnabled">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$breaksEnabled</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_markupEscaped">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$markupEscaped</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_urlsLinked">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$urlsLinked</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_safeMode">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$safeMode</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_strictMode">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$strictMode</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_safeLinksWhitelist">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$safeLinksWhitelist</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_BlockTypes">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$BlockTypes</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_unmarkedBlockTypes">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$unmarkedBlockTypes</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_InlineTypes">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$InlineTypes</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_inlineMarkerList">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$inlineMarkerList</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_DefinitionData">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$DefinitionData</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_specialCharacters">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$specialCharacters</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_StrongRegex">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$StrongRegex</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_EmRegex">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$EmRegex</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_regexHtmlAttribute">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$regexHtmlAttribute</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_voidElements">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$voidElements</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_textLevelElements">
+                                        protected                                        
+                                                                                
+                                    </td>
+                <td>$textLevelElements</td>
+                <td class="last"></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_text">text</a>($text)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_textElements">textElements</a>($text)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setBreaksEnabled">setBreaksEnabled</a>($breaksEnabled)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setMarkupEscaped">setMarkupEscaped</a>($markupEscaped)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setUrlsLinked">setUrlsLinked</a>($urlsLinked)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setSafeMode">setSafeMode</a>($safeMode)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_setStrictMode">setStrictMode</a>($strictMode)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_lines">lines</a>(array $lines)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_linesElements">linesElements</a>(array $lines)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_extractElement">extractElement</a>(array $Component)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isBlockContinuable">isBlockContinuable</a>($Type)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_isBlockCompletable">isBlockCompletable</a>($Type)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockCode">blockCode</a>($Line, $Block = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockCodeContinue">blockCodeContinue</a>($Line, $Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockCodeComplete">blockCodeComplete</a>($Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockComment">blockComment</a>($Line)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockCommentContinue">blockCommentContinue</a>($Line, array $Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockFencedCode">blockFencedCode</a>($Line)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockFencedCodeContinue">blockFencedCodeContinue</a>($Line, $Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockFencedCodeComplete">blockFencedCodeComplete</a>($Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockHeader">blockHeader</a>($Line)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockList">blockList</a>($Line, array $CurrentBlock = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockListContinue">blockListContinue</a>($Line, array $Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockListComplete">blockListComplete</a>(array $Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockQuote">blockQuote</a>($Line)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockQuoteContinue">blockQuoteContinue</a>($Line, array $Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockRule">blockRule</a>($Line)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockSetextHeader">blockSetextHeader</a>($Line, array $Block = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockMarkup">blockMarkup</a>($Line)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockMarkupContinue">blockMarkupContinue</a>($Line, array $Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockReference">blockReference</a>($Line)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockTable">blockTable</a>($Line, array $Block = null)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_blockTableContinue">blockTableContinue</a>($Line, array $Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_paragraph">paragraph</a>($Line)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_paragraphContinue">paragraphContinue</a>($Line, array $Block)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_line">line</a>($text, $nonNestables = array())
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_lineElements">lineElements</a>($text, $nonNestables = array())
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineText">inlineText</a>($text)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineCode">inlineCode</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineEmailTag">inlineEmailTag</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineEmphasis">inlineEmphasis</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineEscapeSequence">inlineEscapeSequence</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineImage">inlineImage</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineLink">inlineLink</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineMarkup">inlineMarkup</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineSpecialCharacter">inlineSpecialCharacter</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineStrikethrough">inlineStrikethrough</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineUrl">inlineUrl</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_inlineUrlTag">inlineUrlTag</a>($Excerpt)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_unmarkedText">unmarkedText</a>($text)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_handle">handle</a>(array $Element)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_handleElementRecursive">handleElementRecursive</a>(array $Element)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_handleElementsRecursive">handleElementsRecursive</a>(array $Elements)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_elementApplyRecursive">elementApplyRecursive</a>($closure, array $Element)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_elementApplyRecursiveDepthFirst">elementApplyRecursiveDepthFirst</a>($closure, array $Element)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_elementsApplyRecursive">elementsApplyRecursive</a>($closure, array $Elements)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_elementsApplyRecursiveDepthFirst">elementsApplyRecursiveDepthFirst</a>($closure, array $Elements)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_element">element</a>(array $Element)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_elements">elements</a>(array $Elements)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_li">li</a>($lines)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_pregReplaceElements">pregReplaceElements</a>($regexp, $Elements, $text)
+        
+                                            <p><p>Replace occurrences $regexp with $Elements in $text. Return an array of
+elements representing the replacement.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_parse">parse</a>($text)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_sanitiseElement">sanitiseElement</a>(array $Element)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_filterUnsafeUrlInAttribute">filterUnsafeUrlInAttribute</a>(array $Element, $attribute)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_escape">escape</a>($text, $allowQuotes = false)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_striAtStart">striAtStart</a>($string, $needle)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_instance">instance</a>($name = &#039;default&#039;)
+        
+                                            <p class="no-description">No description</p>
+                                    </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_text">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L33">at line 33</a></div>
+        <code>                    
+    <strong>text</strong>($text)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$text</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_textElements">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L46">at line 46</a></div>
+        <code>            protected        
+    <strong>textElements</strong>($text)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$text</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setBreaksEnabled">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L68">at line 68</a></div>
+        <code>                    
+    <strong>setBreaksEnabled</strong>($breaksEnabled)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$breaksEnabled</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setMarkupEscaped">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L77">at line 77</a></div>
+        <code>                    
+    <strong>setMarkupEscaped</strong>($markupEscaped)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$markupEscaped</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setUrlsLinked">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L86">at line 86</a></div>
+        <code>                    
+    <strong>setUrlsLinked</strong>($urlsLinked)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$urlsLinked</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setSafeMode">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L95">at line 95</a></div>
+        <code>                    
+    <strong>setSafeMode</strong>($safeMode)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$safeMode</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_setStrictMode">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L104">at line 104</a></div>
+        <code>                    
+    <strong>setStrictMode</strong>($strictMode)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$strictMode</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_lines">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L171">at line 171</a></div>
+        <code>            protected        
+    <strong>lines</strong>(array $lines)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$lines</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_linesElements">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L176">at line 176</a></div>
+        <code>            protected        
+    <strong>linesElements</strong>(array $lines)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$lines</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_extractElement">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L328">at line 328</a></div>
+        <code>            protected        
+    <strong>extractElement</strong>(array $Component)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$Component</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isBlockContinuable">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L345">at line 345</a></div>
+        <code>            protected        
+    <strong>isBlockContinuable</strong>($Type)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Type</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_isBlockCompletable">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L350">at line 350</a></div>
+        <code>            protected        
+    <strong>isBlockCompletable</strong>($Type)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Type</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockCode">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L358">at line 358</a></div>
+        <code>            protected        
+    <strong>blockCode</strong>($Line, $Block = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockCodeContinue">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L383">at line 383</a></div>
+        <code>            protected        
+    <strong>blockCodeContinue</strong>($Line, $Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockCodeComplete">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L404">at line 404</a></div>
+        <code>            protected        
+    <strong>blockCodeComplete</strong>($Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockComment">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L412">at line 412</a></div>
+        <code>            protected        
+    <strong>blockComment</strong>($Line)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockCommentContinue">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L437">at line 437</a></div>
+        <code>            protected        
+    <strong>blockCommentContinue</strong>($Line, array $Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockFencedCode">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L457">at line 457</a></div>
+        <code>            protected        
+    <strong>blockFencedCode</strong>($Line)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockFencedCodeContinue">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L511">at line 511</a></div>
+        <code>            protected        
+    <strong>blockFencedCodeContinue</strong>($Line, $Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockFencedCodeComplete">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L540">at line 540</a></div>
+        <code>            protected        
+    <strong>blockFencedCodeComplete</strong>($Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockHeader">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L548">at line 548</a></div>
+        <code>            protected        
+    <strong>blockHeader</strong>($Line)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockList">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L583">at line 583</a></div>
+        <code>            protected        
+    <strong>blockList</strong>($Line, array $CurrentBlock = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$CurrentBlock</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockListContinue">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L652">at line 652</a></div>
+        <code>            protected        
+    <strong>blockListContinue</strong>($Line, array $Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockListComplete">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L738">at line 738</a></div>
+        <code>            protected        
+    <strong>blockListComplete</strong>(array $Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockQuote">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L757">at line 757</a></div>
+        <code>            protected        
+    <strong>blockQuote</strong>($Line)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockQuoteContinue">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L776">at line 776</a></div>
+        <code>            protected        
+    <strong>blockQuoteContinue</strong>($Line, array $Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockRule">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L801">at line 801</a></div>
+        <code>            protected        
+    <strong>blockRule</strong>($Line)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockSetextHeader">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L820">at line 820</a></div>
+        <code>            protected        
+    <strong>blockSetextHeader</strong>($Line, array $Block = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockMarkup">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L838">at line 838</a></div>
+        <code>            protected        
+    <strong>blockMarkup</strong>($Line)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockMarkupContinue">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L866">at line 866</a></div>
+        <code>            protected        
+    <strong>blockMarkupContinue</strong>($Line, array $Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockReference">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L881">at line 881</a></div>
+        <code>            protected        
+    <strong>blockReference</strong>($Line)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockTable">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L906">at line 906</a></div>
+        <code>            protected        
+    <strong>blockTable</strong>($Line, array $Block = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_blockTableContinue">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1029">at line 1029</a></div>
+        <code>            protected        
+    <strong>blockTableContinue</strong>($Line, array $Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_paragraph">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1087">at line 1087</a></div>
+        <code>            protected        
+    <strong>paragraph</strong>($Line)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_paragraphContinue">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1102">at line 1102</a></div>
+        <code>            protected        
+    <strong>paragraphContinue</strong>($Line, array $Block)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Line</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Block</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_line">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1139">at line 1139</a></div>
+        <code>                    
+    <strong>line</strong>($text, $nonNestables = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$text</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$nonNestables</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_lineElements">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1144">at line 1144</a></div>
+        <code>            protected        
+    <strong>lineElements</strong>($text, $nonNestables = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$text</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$nonNestables</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineText">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1248">at line 1248</a></div>
+        <code>            protected        
+    <strong>inlineText</strong>($text)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$text</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineCode">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1267">at line 1267</a></div>
+        <code>            protected        
+    <strong>inlineCode</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineEmailTag">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1286">at line 1286</a></div>
+        <code>            protected        
+    <strong>inlineEmailTag</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineEmphasis">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1316">at line 1316</a></div>
+        <code>            protected        
+    <strong>inlineEmphasis</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineEscapeSequence">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1351">at line 1351</a></div>
+        <code>            protected        
+    <strong>inlineEscapeSequence</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineImage">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1362">at line 1362</a></div>
+        <code>            protected        
+    <strong>inlineImage</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineLink">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1397">at line 1397</a></div>
+        <code>            protected        
+    <strong>inlineLink</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineMarkup">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1472">at line 1472</a></div>
+        <code>            protected        
+    <strong>inlineMarkup</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineSpecialCharacter">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1504">at line 1504</a></div>
+        <code>            protected        
+    <strong>inlineSpecialCharacter</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineStrikethrough">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1518">at line 1518</a></div>
+        <code>            protected        
+    <strong>inlineStrikethrough</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineUrl">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1541">at line 1541</a></div>
+        <code>            protected        
+    <strong>inlineUrl</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_inlineUrlTag">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1569">at line 1569</a></div>
+        <code>            protected        
+    <strong>inlineUrlTag</strong>($Excerpt)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$Excerpt</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_unmarkedText">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1590">at line 1590</a></div>
+        <code>            protected        
+    <strong>unmarkedText</strong>($text)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$text</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_handle">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1600">at line 1600</a></div>
+        <code>            protected        
+    <strong>handle</strong>(array $Element)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$Element</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_handleElementRecursive">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1636">at line 1636</a></div>
+        <code>            protected        
+    <strong>handleElementRecursive</strong>(array $Element)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$Element</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_handleElementsRecursive">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1641">at line 1641</a></div>
+        <code>            protected        
+    <strong>handleElementsRecursive</strong>(array $Elements)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$Elements</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elementApplyRecursive">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1646">at line 1646</a></div>
+        <code>            protected        
+    <strong>elementApplyRecursive</strong>($closure, array $Element)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$closure</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Element</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elementApplyRecursiveDepthFirst">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1662">at line 1662</a></div>
+        <code>            protected        
+    <strong>elementApplyRecursiveDepthFirst</strong>($closure, array $Element)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$closure</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Element</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elementsApplyRecursive">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1678">at line 1678</a></div>
+        <code>            protected        
+    <strong>elementsApplyRecursive</strong>($closure, array $Elements)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$closure</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Elements</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elementsApplyRecursiveDepthFirst">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1688">at line 1688</a></div>
+        <code>            protected        
+    <strong>elementsApplyRecursiveDepthFirst</strong>($closure, array $Elements)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$closure</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$Elements</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_element">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1698">at line 1698</a></div>
+        <code>            protected        
+    <strong>element</strong>(array $Element)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$Element</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_elements">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1782">at line 1782</a></div>
+        <code>            protected        
+    <strong>elements</strong>(array $Elements)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$Elements</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_li">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1812">at line 1812</a></div>
+        <code>            protected        
+    <strong>li</strong>($lines)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$lines</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_pregReplaceElements">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1834">at line 1834</a></div>
+        <code>        static    protected        
+    <strong>pregReplaceElements</strong>($regexp, $Elements, $text)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Replace occurrences $regexp with $Elements in $text. Return an array of
+elements representing the replacement.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$regexp</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$Elements</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$text</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_parse">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1863">at line 1863</a></div>
+        <code>                    
+    <strong>parse</strong>($text)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$text</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sanitiseElement">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1870">at line 1870</a></div>
+        <code>            protected        
+    <strong>sanitiseElement</strong>(array $Element)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$Element</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_filterUnsafeUrlInAttribute">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1909">at line 1909</a></div>
+        <code>            protected        
+    <strong>filterUnsafeUrlInAttribute</strong>(array $Element, $attribute)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$Element</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$attribute</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_escape">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1928">at line 1928</a></div>
+        <code>        static    protected        
+    <strong>escape</strong>($text, $allowQuotes = false)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$text</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$allowQuotes</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_striAtStart">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1933">at line 1933</a></div>
+        <code>        static    protected        
+    <strong>striAtStart</strong>($string, $needle)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$string</td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td></td>
+                <td>$needle</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_instance">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/libraries/parsedown/class-parsedown.php#L1947">at line 1947</a></div>
+        <code>        static            
+    <strong>instance</strong>($name = &#039;default&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p class="no-description">No description</p>
+                    
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td></td>
+                <td>$name</td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>

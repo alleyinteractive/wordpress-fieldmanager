@@ -1,0 +1,1508 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Fieldmanager_Context_QuickEdit | Fieldmanager API Documentation</title>
+
+            <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="fonts/doctum-font.css">
+        <script src="js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="doctum.js"></script>
+        <script async defer src="js/bootstrap.min.js"></script>
+        <script async defer src="js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:Fieldmanager_Context_QuickEdit" data-root-path="" data-search-index-url="doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Fieldmanager API Documentation</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="classes.html">Classes</a></li>
+                    <li><a href="namespaces.html">Namespaces</a></li>
+                    <li><a href="interfaces.html">Interfaces</a></li>
+                    <li><a href="traits.html">Traits</a></li>
+                    <li><a href="doc-index.html">Index</a></li>
+                    <li><a href="search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                            <div id="page-content">
+    <div class="page-header">
+        <h1>Fieldmanager_Context_QuickEdit    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>Fieldmanager_Context_QuickEdit</strong>        extends <a href="Fieldmanager_Context_Storable.html">Fieldmanager_Context_Storable</a>        (<a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php">View source</a>)
+</p>
+
+        
+    
+        
+
+            <div class="description">
+            <p><p>Use fieldmanager to add fields to the &quot;quick edit&quot; (post list inline editing)
+and save data primarily to post meta.</p></p>                    </div>
+            
+        
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_fm">
+                                                                                <a href="Fieldmanager_Field.html">Fieldmanager_Field</a>
+                                                                                
+                                    </td>
+                <td>$fm</td>
+                <td class="last"><p>Base field</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_uniqid">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$uniqid</td>
+                <td class="last"><p>Unique ID of the form. Used for forms that are not built into WordPress.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Context.html#property_uniqid">
+Fieldmanager_Context</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_save_keys">
+                                                                                array
+                                                                                
+                                    </td>
+                <td>$save_keys</td>
+                <td class="last"><p>Store the meta keys this field saves to, to catch naming conflicts.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Context.html#property_save_keys">
+Fieldmanager_Context</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_taxonomies_to_save">
+                                                                                array
+                                                                                
+                                    </td>
+                <td>$taxonomies_to_save</td>
+                <td class="last"><p>Taxonomies to save to.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Context_Storable.html#property_taxonomies_to_save">
+Fieldmanager_Context_Storable</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_title">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$title</td>
+                <td class="last"><p>Title of QuickEdit box; also used for the column title unless $column_title is specified.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_column_title">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$column_title</td>
+                <td class="last"><p>Override $title for the column in the list of posts.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_column_display_callback">
+                                                                                callable
+                                                                                
+                                    </td>
+                <td>$column_display_callback</td>
+                <td class="last"><p>QuickEdit fields are tied to custom columns in the list of posts. This callback should return a value to
+display in a custom column.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_post_types">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$post_types</td>
+                <td class="last"><p>What post types to render this Quickedit form.</p></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(string $title, mixed $post_types, callable $column_display_callback, callable $column_title = &#039;&#039;, <a href="Fieldmanager_Field.html">Fieldmanager_Field</a> $fm = null)
+        
+                                            <p><p>Add a context to a fieldmanager.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_nonce_key">nonce_key</a>()
+        
+                                            <p><p>Get the nonce key for this field.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context.html#method_nonce_key">
+Fieldmanager_Context</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_refresh_nonce">refresh_nonce</a>(array $response)
+        
+                                            <p><p>Include a fresh nonce for this field in a response with refreshed nonces.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context.html#method_refresh_nonce">
+Fieldmanager_Context</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_is_valid_nonce">is_valid_nonce</a>()
+        
+                                            <p><p>Check if the nonce is valid. Returns false if the nonce is missing and
+throws an exception if it's invalid. If all goes well, returns true.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context.html#method_is_valid_nonce">
+Fieldmanager_Context</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_prepare_data">prepare_data</a>(mixed $old_value = null, mixed $new_value = null, object $fm = null)
+        
+                                            <p><p>Prepare the data for saving.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context.html#method_prepare_data">
+Fieldmanager_Context</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_render_field">render_field</a>(array $args = array())
+        
+                                            <p><p>Render the field.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context_Storable.html#method_render_field">
+Fieldmanager_Context_Storable</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_save">save</a>(mixed $data = null)
+        
+                                            <p><p>Handle saving data for any context.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context_Storable.html#method_save">
+Fieldmanager_Context_Storable</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_save_field">save_field</a>(object $field, mixed $data)
+        
+                                            <p><p>Save a single field.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context_Storable.html#method_save_field">
+Fieldmanager_Context_Storable</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_save_walk_children">save_walk_children</a>(object $field, mixed $data)
+        
+                                            <p><p>Walk group children to save when serialize_data =&gt; false.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context_Storable.html#method_save_walk_children">
+Fieldmanager_Context_Storable</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_load">load</a>()
+        
+                                            <p><p>Handle loading data for any context.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context_Storable.html#method_load">
+Fieldmanager_Context_Storable</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_load_field">load_field</a>(object $field)
+        
+                                            <p><p>Load a single field.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context_Storable.html#method_load_field">
+Fieldmanager_Context_Storable</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_load_walk_children">load_walk_children</a>(object $field)
+        
+                                            <p><p>Walk group children to load when serialize_data =&gt; false.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context_Storable.html#method_load_walk_children">
+Fieldmanager_Context_Storable</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    static&nbsp;string|array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_sanitize_scalar_value">sanitize_scalar_value</a>(mixed $value)
+        
+                                            <p><p>Meta and options are always stored as strings, so it's best to ensure
+that scalar values get cast as strings to ensure that <code>update_metadata()</code>
+and <code>update_option()</code> are able to correctly compare the current value
+against the previous value.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Context_Storable.html#method_sanitize_scalar_value">
+Fieldmanager_Context_Storable</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string|array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_data">get_data</a>(int $post_id, string $meta_key, bool $single = false)
+        
+                                            <p><p>Get post meta.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool|int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_data">add_data</a>(int $post_id, string $meta_key, mixed $meta_value, bool $unique = false)
+        
+                                            <p><p>Add post meta.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_update_data">update_data</a>(int $post_id, string $meta_key, mixed $meta_value, mixed $data_prev_value = &#039;&#039;)
+        
+                                            <p><p>Update post meta.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_delete_data">delete_data</a>(int $post_id, string $meta_key, mixed $meta_value = &#039;&#039;)
+        
+                                            <p><p>Delete post meta.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_custom_columns">add_custom_columns</a>(array $columns)
+        
+                                            <p><p>Callback for manage_{$post_type}_posts_columns, as QuickEdit boxes only
+work on custom columns.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_manage_custom_columns">manage_custom_columns</a>(string $column_name, int $post_id)
+        
+                                            <p><p>The manage_posts_custom_column callback.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_quickedit_box">add_quickedit_box</a>(string $column_name, string $post_type, array $values = array())
+        
+                                            <p><p>The quick_edit_custom_box callback. Renders the QuickEdit box.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_render_ajax_form">render_ajax_form</a>()
+        
+                                            <p><p>Callback for wp_ajax_fm_quickedit_render.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_save_fields_for_quickedit">save_fields_for_quickedit</a>(int $post_id)
+        
+                                            <p><p>Takes $_POST data and saves it to, calling save_to_post_meta() once validation is passed
+When using Fieldmanager as an API, do not call this function directly, call save_to_post_meta().</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_save_to_post_meta">save_to_post_meta</a>(int $post_id, array $data = null)
+        
+                                            <p><p>Helper to save an array of data to post meta.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L61">at line 61</a></div>
+        <code>                    
+    <strong>__construct</strong>(string $title, mixed $post_types, callable $column_display_callback, callable $column_title = &#039;&#039;, <a href="Fieldmanager_Field.html">Fieldmanager_Field</a> $fm = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add a context to a fieldmanager.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$title</td>
+                <td><p>Title of the form.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$post_types</td>
+                <td><p>Post types to show form on.</p></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$column_display_callback</td>
+                <td><p>Display callback.</p></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$column_title</td>
+                <td><p>Column title.</p></td>
+            </tr>
+                    <tr>
+                <td><a href="Fieldmanager_Field.html">Fieldmanager_Field</a></td>
+                <td>$fm</td>
+                <td><p>The base field.</p></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="FM_Developer_Exception.html">FM_Developer_Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_nonce_key">
+        <div class="location">in <a href="Fieldmanager_Context.html#method_nonce_key">
+Fieldmanager_Context</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context.php#L50">at line 50</a></div>
+        <code>            protected        string
+    <strong>nonce_key</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the nonce key for this field.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_refresh_nonce">
+        <div class="location">in <a href="Fieldmanager_Context.html#method_refresh_nonce">
+Fieldmanager_Context</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context.php#L62">at line 62</a></div>
+        <code>                    array
+    <strong>refresh_nonce</strong>(array $response)
+        </code>
+    </h3>
+    <div class="details"><i>Since: 1.3.0</i>
+            <br>    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Include a fresh nonce for this field in a response with refreshed nonces.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$response</td>
+                <td><p>Response data.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>Updated response data.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_is_valid_nonce">
+        <div class="location">in <a href="Fieldmanager_Context.html#method_is_valid_nonce">
+Fieldmanager_Context</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context.php#L74">at line 74</a></div>
+        <code>            protected        bool
+    <strong>is_valid_nonce</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Check if the nonce is valid. Returns false if the nonce is missing and
+throws an exception if it's invalid. If all goes well, returns true.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_prepare_data">
+        <div class="location">in <a href="Fieldmanager_Context.html#method_prepare_data">
+Fieldmanager_Context</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context.php#L95">at line 95</a></div>
+        <code>            protected        mixed
+    <strong>prepare_data</strong>(mixed $old_value = null, mixed $new_value = null, object $fm = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Prepare the data for saving.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$old_value</td>
+                <td><p>Optional. The previous value.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$new_value</td>
+                <td><p>Optional. The new value for the field.</p></td>
+            </tr>
+                    <tr>
+                <td>object</td>
+                <td>$fm</td>
+                <td><p>Optional.        The Fieldmanager_Field to prepare.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td><p>The filtered and sanitized value, safe to save.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_render_field">
+        <div class="location">in <a href="Fieldmanager_Context_Storable.html#method_render_field">
+Fieldmanager_Context_Storable</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-storable.php#L33">at line 33</a></div>
+        <code>            protected        string
+    <strong>render_field</strong>(array $args = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Render the field.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$args</td>
+                <td><p>{
+Optional. Arguments to adjust the rendering behavior.</p>
+<pre><code>@type mixed $data The existing data to display with the field. If
+                  absent, data will be loaded using
+                  Fieldmanager_Context::_load().
+@type boolean $echo Output if true, return if false. Default is true.</code></pre>
+<p>}</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>if $args['echo'] == false.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_save">
+        <div class="location">in <a href="Fieldmanager_Context_Storable.html#method_save">
+Fieldmanager_Context_Storable</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-storable.php#L46">at line 46</a></div>
+        <code>            protected        
+    <strong>save</strong>(mixed $data = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Handle saving data for any context.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$data</td>
+                <td><p>Data to save. Should be raw, e.g. POST data.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_save_field">
+        <div class="location">in <a href="Fieldmanager_Context_Storable.html#method_save_field">
+Fieldmanager_Context_Storable</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-storable.php#L109">at line 109</a></div>
+        <code>            protected        
+    <strong>save_field</strong>(object $field, mixed $data)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Save a single field.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>object</td>
+                <td>$field</td>
+                <td><p>Fieldmanager field.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$data</td>
+                <td><p>Data to save.</p></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="FM_Developer_Exception.html">FM_Developer_Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_save_walk_children">
+        <div class="location">in <a href="Fieldmanager_Context_Storable.html#method_save_walk_children">
+Fieldmanager_Context_Storable</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-storable.php#L140">at line 140</a></div>
+        <code>            protected        
+    <strong>save_walk_children</strong>(object $field, mixed $data)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Walk group children to save when serialize_data =&gt; false.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>object</td>
+                <td>$field</td>
+                <td><p>Fieldmanager field.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$data</td>
+                <td><p>Data to save.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_load">
+        <div class="location">in <a href="Fieldmanager_Context_Storable.html#method_load">
+Fieldmanager_Context_Storable</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-storable.php#L158">at line 158</a></div>
+        <code>            protected        mixed
+    <strong>load</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Handle loading data for any context.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td><p>The loaded data.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_load_field">
+        <div class="location">in <a href="Fieldmanager_Context_Storable.html#method_load_field">
+Fieldmanager_Context_Storable</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-storable.php#L172">at line 172</a></div>
+        <code>            protected        mixed
+    <strong>load_field</strong>(object $field)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Load a single field.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>object</td>
+                <td>$field</td>
+                <td><p>The Fieldmanager field for which to load data.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td><p>Data stored for that field in this context.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_load_walk_children">
+        <div class="location">in <a href="Fieldmanager_Context_Storable.html#method_load_walk_children">
+Fieldmanager_Context_Storable</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-storable.php#L188">at line 188</a></div>
+        <code>            protected        mixed
+    <strong>load_walk_children</strong>(object $field)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Walk group children to load when serialize_data =&gt; false.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>object</td>
+                <td>$field</td>
+                <td><p>Fieldmanager field for which to load data.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td><p>Data stored for a singular field with serialized data, or
+array of data for a groups's children.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_sanitize_scalar_value">
+        <div class="location">in <a href="Fieldmanager_Context_Storable.html#method_sanitize_scalar_value">
+Fieldmanager_Context_Storable</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-storable.php#L212">at line 212</a></div>
+        <code>        static            string|array
+    <strong>sanitize_scalar_value</strong>(mixed $value)
+        </code>
+    </h3>
+    <div class="details"><i>Since: 1.2.0</i>
+            <br>    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Meta and options are always stored as strings, so it's best to ensure
+that scalar values get cast as strings to ensure that <code>update_metadata()</code>
+and <code>update_option()</code> are able to correctly compare the current value
+against the previous value.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td><p>Value being stored.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|array</td>
+            <td><p>If $value is scalar, a string is returned. Otherwise,
+$value returns untouched.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_data">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L271">at line 271</a></div>
+        <code>            protected        string|array
+    <strong>get_data</strong>(int $post_id, string $meta_key, bool $single = false)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get post meta.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$post_id</td>
+                <td><p>Post ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$meta_key</td>
+                <td><p>Optional. The meta key to retrieve. By default, returns
+data for all keys. Default empty.</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$single</td>
+                <td><p>Optional. If true, only returns the first value
+found for the given data_key. This won't apply to
+every context. Default is false.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string|array</td>
+            <td><p>The stored data. If no data is found, should return
+an empty string (&quot;&quot;). {\get_post_meta()}.</p></td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            get_post_meta().
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_data">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L286">at line 286</a></div>
+        <code>            protected        bool|int
+    <strong>add_data</strong>(int $post_id, string $meta_key, mixed $meta_value, bool $unique = false)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add post meta.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$post_id</td>
+                <td><p>Post ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$meta_key</td>
+                <td><p>Metadata name.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$meta_value</td>
+                <td><p>Metadata value. Must be serializable if non-scalar.</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$unique</td>
+                <td><p>Optional. If true, data will only be added if the
+object with the given $data_id doesn't already
+contain data for the given $data_key. This may not
+apply to every context. Default is false.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool|int</td>
+            <td><p>On success, should return the ID of the stored data
+(an integer, which will evaluate as true). If the
+$unique argument is set to true and data with the
+given key already exists, this should return false.
+{\add_post_meta()}.</p></td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            add_post_meta().
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_update_data">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L301">at line 301</a></div>
+        <code>            protected        mixed
+    <strong>update_data</strong>(int $post_id, string $meta_key, mixed $meta_value, mixed $data_prev_value = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Update post meta.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$post_id</td>
+                <td><p>Post ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$meta_key</td>
+                <td><p>Metadata key.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$meta_value</td>
+                <td><p>Metadata value. Must be serializable if non-scalar.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$data_prev_value</td>
+                <td><p>Optional. Only update data if the previous
+value matches the data provided. This may
+not apply to every context.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td><p>Should return data id if the data doesn't exist, otherwise
+should return true on success and false on failure. If the
+value passed to this method is the same as the stored
+value, this method should return false.
+{\update_post_meta()}.</p></td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            update_post_meta().
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_delete_data">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L316">at line 316</a></div>
+        <code>            protected        bool
+    <strong>delete_data</strong>(int $post_id, string $meta_key, mixed $meta_value = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Delete post meta.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$post_id</td>
+                <td><p>Post ID.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$meta_key</td>
+                <td><p>Metadata name.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$meta_value</td>
+                <td><p>Optional. Metadata value. Must be serializable if
+non-scalar. Default empty.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>False for failure. True for success.
+{\delete_post_meta()}.</p></td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            delete_post_meta().
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_custom_columns">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L111">at line 111</a></div>
+        <code>                    array
+    <strong>add_custom_columns</strong>(array $columns)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Callback for manage_{$post_type}_posts_columns, as QuickEdit boxes only
+work on custom columns.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$columns</td>
+                <td><p>The custom columns.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>$columns The custom columns.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_manage_custom_columns">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L122">at line 122</a></div>
+        <code>                    
+    <strong>manage_custom_columns</strong>(string $column_name, int $post_id)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>The manage_posts_custom_column callback.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$column_name</td>
+                <td><p>Column name.</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$post_id</td>
+                <td><p>The post ID.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_quickedit_box">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L142">at line 142</a></div>
+        <code>                    
+    <strong>add_quickedit_box</strong>(string $column_name, string $post_type, array $values = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>The quick_edit_custom_box callback. Renders the QuickEdit box.</p></p>                <p><p>Renders with blank values here since QuickEdit boxes cannot access to the WP post_id.
+The values will be populated by an ajax-fetched form later (see $this-&gt;render_ajax_form() ).</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$column_name</td>
+                <td><p>The column name.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$post_type</td>
+                <td><p>The post type to show the column.</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$values</td>
+                <td><p>The current values.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_render_ajax_form">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L170">at line 170</a></div>
+        <code>                    
+    <strong>render_ajax_form</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Callback for wp_ajax_fm_quickedit_render.</p></p>                <p><p>Renders a form with pre-filled values to replace the one generated by $this-&gt;add_quickedit_box().</p></p>        
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_save_fields_for_quickedit">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L207">at line 207</a></div>
+        <code>                    
+    <strong>save_fields_for_quickedit</strong>(int $post_id)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Takes $_POST data and saves it to, calling save_to_post_meta() once validation is passed
+When using Fieldmanager as an API, do not call this function directly, call save_to_post_meta().</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$post_id</td>
+                <td><p>The post ID.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_save_to_post_meta">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/context/class-fieldmanager-context-quickedit.php#L254">at line 254</a></div>
+        <code>                    
+    <strong>save_to_post_meta</strong>(int $post_id, array $data = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Helper to save an array of data to post meta.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>int</td>
+                <td>$post_id</td>
+                <td><p>The post ID.</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$data</td>
+                <td><p>The post data.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>

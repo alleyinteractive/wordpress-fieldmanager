@@ -1,0 +1,2809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="robots" content="index, follow, all" />
+    <title>Fieldmanager_Checkbox | Fieldmanager API Documentation</title>
+
+            <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+        <link rel="stylesheet" type="text/css" href="css/bootstrap-theme.min.css">
+        <link rel="stylesheet" type="text/css" href="css/doctum.css">
+        <link rel="stylesheet" type="text/css" href="fonts/doctum-font.css">
+        <script src="js/jquery-3.5.1.slim.min.js"></script>
+        <script async defer src="doctum.js"></script>
+        <script async defer src="js/bootstrap.min.js"></script>
+        <script async defer src="js/autocomplete.min.js"></script>
+        <meta name="MobileOptimized" content="width">
+        <meta name="HandheldFriendly" content="true">
+        <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+
+    </head>
+
+    <body id="class" data-name="class:Fieldmanager_Checkbox" data-root-path="" data-search-index-url="doctum-search.json">
+            <div id="content">
+        <div id="left-column">
+                <div id="control-panel">
+                <div class="search-bar hidden" id="search-progress-bar-container">
+            <div class="progress">
+                <div class="progress-bar" role="progressbar" id="search-progress-bar"
+                    aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 0%"></div>
+            </div>
+        </div>
+        <form id="search-form" action="search.html">
+            <span class="icon icon-search"></span>
+            <input name="search"
+                   id="doctum-search-auto-complete"
+                   class="typeahead form-control"
+                   type="search"
+                   placeholder="Search"
+                   spellcheck="false"
+                   autocorrect="off"
+                   autocomplete="off"
+                   autocapitalize="off">
+            <div class="auto-complete-results" id="auto-complete-results"></div>
+        </form>
+    </div>
+
+                <div id="api-tree"></div>
+
+        </div>
+        <div id="right-column">
+                <nav id="site-nav" class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-elements">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">Fieldmanager API Documentation</a>
+            </div>
+            <div class="collapse navbar-collapse" id="navbar-elements">
+                <ul class="nav navbar-nav">
+                    <li><a href="classes.html">Classes</a></li>
+                    <li><a href="namespaces.html">Namespaces</a></li>
+                    <li><a href="interfaces.html">Interfaces</a></li>
+                    <li><a href="traits.html">Traits</a></li>
+                    <li><a href="doc-index.html">Index</a></li>
+                    <li><a href="search.html">Search</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+                            <div id="page-content">
+    <div class="page-header">
+        <h1>Fieldmanager_Checkbox    
+            </h1>
+    </div>
+
+    
+    <p>        class
+    <strong>Fieldmanager_Checkbox</strong>        extends <a href="Fieldmanager_Field.html">Fieldmanager_Field</a>        (<a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-checkbox.php">View source</a>)
+</p>
+
+        
+    
+        
+
+            <div class="description">
+            <p><p>Single boolean checkbox.</p></p>                    </div>
+            
+        
+    
+            <h2>Properties</h2>
+
+            <table class="table table-condensed">
+                    <tr>
+                <td class="type" id="property_debug">
+                    static                                                            bool
+                                                                                
+                                    </td>
+                <td>$debug</td>
+                <td class="last"><p>If true, throw exceptions for illegal behavior.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_debug">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_enqueued_base_assets">
+                    static                                                            bool
+                                                                                
+                                    </td>
+                <td>$enqueued_base_assets</td>
+                <td class="last"><p>Indicate that the base FM assets have been enqueued so we only do it once.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_enqueued_base_assets">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_limit">
+                                                                                int
+                                                                                
+                                    </td>
+                <td>$limit</td>
+                <td class="last"><p>How many of these fields to display, 0 for no limit.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_limit">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_starting_count">
+                                                                                int
+                                        <span class="label label-danger">deprecated</span>                                        
+                                    </td>
+                <td>$starting_count</td>
+                <td class="last"><p>This is no longer used.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_starting_count">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_minimum_count">
+                                                                                int
+                                                                                
+                                    </td>
+                <td>$minimum_count</td>
+                <td class="last"><p>How many of these fields to display at a minimum, if $limit != 1. If
+$limit == $minimum_count, the &quot;add another&quot; button and the remove tool
+will be hidden.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_minimum_count">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_extra_elements">
+                                                                                int
+                                                                                
+                                    </td>
+                <td>$extra_elements</td>
+                <td class="last"><p>How many empty fields to display if $limit != 1 when the total fields in
+the loaded data + $extra_elements &gt; $minimum_count.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_extra_elements">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_add_more_label">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$add_more_label</td>
+                <td class="last"><p>Text for add more button.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_add_more_label">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_name">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$name</td>
+                <td class="last"><p>The name of the form element, as in 'foo' in <code>&lt;input name="foo" /&gt;</code>.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_name">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_label">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$label</td>
+                <td class="last"><p>Label to use for form element.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_label">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_inline_label">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$inline_label</td>
+                <td class="last"><p>Override inline_label.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_label_after_element">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$label_after_element</td>
+                <td class="last"><p>Override label_after_element.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_description">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$description</td>
+                <td class="last"><p>Description for the form element.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_description">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_description_after_element">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$description_after_element</td>
+                <td class="last"><p>If true, the description will be displayed after the element.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_description_after_element">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_attributes">
+                                                                                string|bool|array
+                                                                                
+                                    </td>
+                <td>$attributes</td>
+                <td class="last"><p>Extra HTML attributes to apply to the form element. Use boolean true to
+apply a standalone attribute, e.g. 'required' =&gt; true.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_attributes">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_field_class">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$field_class</td>
+                <td class="last"><p>CSS class for form element.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_field_class">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_one_label_per_item">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$one_label_per_item</td>
+                <td class="last"><p>Repeat the label for each element if $limit &gt; 1.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_one_label_per_item">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_sortable">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$sortable</td>
+                <td class="last"><p>Allow draggable sorting if $limit &gt; 1.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_sortable">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_label_element">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$label_element</td>
+                <td class="last"><p>HTML element to use for label.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_label_element">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_sanitize">
+                                                                                callable
+                                                                                
+                                    </td>
+                <td>$sanitize</td>
+                <td class="last"><p>Function to use to sanitize input.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_sanitize">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_validate">
+                                                                                array
+                                                                                
+                                    </td>
+                <td>$validate</td>
+                <td class="last"><p>Functions to use to validate input.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_validate">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_validation_rules">
+                                                                                string|array
+                                                                                
+                                    </td>
+                <td>$validation_rules</td>
+                <td class="last"><p>Validation rule(s) from jQuery used to validate this field, entered as a string or associative array.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_validation_rules">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_validation_messages">
+                                                                                string|array
+                                                                                
+                                    </td>
+                <td>$validation_messages</td>
+                <td class="last"><p>Validation messages from jQuery used by the rule(s) defined for this field, entered as a string or associative array.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_validation_messages">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_required">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$required</td>
+                <td class="last"><p>Makes the field required on WordPress context forms that already have built-in validation.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_required">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_data_type">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$data_type</td>
+                <td class="last"><p>Data type this element is used in, generally set internally.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_data_type">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_data_id">
+                                                                                int
+                                                                                
+                                    </td>
+                <td>$data_id</td>
+                <td class="last"><p>ID for $this-&gt;data_type, eg $post-&gt;ID, generally set internally.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_data_id">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_current_context">
+                                                                                <abbr title="?\Fieldmanager_Context">Fieldmanager_Context</abbr>
+                                                                                
+                                    </td>
+                <td>$current_context</td>
+                <td class="last"><p>Fieldmanager context handling data submitted with this field. Generally set internally.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_current_context">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_save_empty">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$save_empty</td>
+                <td class="last"><p>Override save_empty default for this element type.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_skip_save">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$skip_save</td>
+                <td class="last"><p>Do not save this field (useful for fields which handle saving their own data)</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_skip_save">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_index">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$index</td>
+                <td class="last"><p>Save this field additionally to an index.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_index">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_serialize_data">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$serialize_data</td>
+                <td class="last"><p>Save the fields to their own keys (only works in some contexts). Default
+is true.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_serialize_data">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_datasource">
+                                                                                <a href="Fieldmanager_Datasource.html">Fieldmanager_Datasource</a>
+                                                                                
+                                    </td>
+                <td>$datasource</td>
+                <td class="last"><p>Optionally generate field from datasource. Used by Fieldmanager_Autocomplete
+and Fieldmanager_Options.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_datasource">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_display_if">
+                                                                                array
+                                                                                
+                                    </td>
+                <td>$display_if</td>
+                <td class="last"><p>Field name and value on which to display element. Sample:</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_display_if">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_add_more_position">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$add_more_position</td>
+                <td class="last"><p>Where the new item should to added (top/bottom) of the stack. Used by Add
+Another button &quot;top|bottom&quot;.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_add_more_position">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_remove_default_meta_boxes">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$remove_default_meta_boxes</td>
+                <td class="last"><p>If true, remove any default meta boxes that are overridden by Fieldmanager
+fields.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_remove_default_meta_boxes">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_template">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$template</td>
+                <td class="last"><p>The path to the field template.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_template">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_meta_boxes_to_remove">
+                                                                                array
+                                                                                
+                                    </td>
+                <td>$meta_boxes_to_remove</td>
+                <td class="last"><p>If $remove_default_meta_boxes is true, this array will be populated with
+the list of default meta boxes to remove.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_meta_boxes_to_remove">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_default_value">
+                                                                                mixed
+                                                                                
+                                    </td>
+                <td>$default_value</td>
+                <td class="last"><p>The default value for the field, if unset.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_default_value">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_index_filter">
+                                                                                callable
+                                                                                
+                                    </td>
+                <td>$index_filter</td>
+                <td class="last"><p>Function that parses an index value and returns an optionally modified value.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_index_filter">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_input_type">
+                                                                                string
+                                                                                
+                                    </td>
+                <td>$input_type</td>
+                <td class="last"><p>Input type, mainly to support HTML5 input types.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_input_type">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_escape">
+                                                                                array
+                                                                                
+                                    </td>
+                <td>$escape</td>
+                <td class="last"><p>Custom escaping for labels, descriptions, etc. Associative array of
+$field =&gt; $callable arguments, for example:</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_escape">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_seq">
+                                        protected                                        int
+                                                                                
+                                    </td>
+                <td>$seq</td>
+                <td class="last"><p>If $this-&gt;limit &gt; 1, which element in sequence are we currently rendering?</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_seq">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_is_proto">
+                                        protected                                        bool
+                                                                                
+                                    </td>
+                <td>$is_proto</td>
+                <td class="last"><p>If $is_proto is true, we're rendering the prototype element for a field
+that can have infinite instances.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_is_proto">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_parent">
+                                        protected                                        <a href="Fieldmanager_Field.html">Fieldmanager_Field</a>
+                                                                                
+                                    </td>
+                <td>$parent</td>
+                <td class="last"><p>Parent element, if applicable. Would be a Fieldmanager_Group unless
+third-party plugins support this.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_parent">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_is_tab">
+                                        protected                                        bool
+                                                                                
+                                    </td>
+                <td>$is_tab</td>
+                <td class="last"><p>Render this element in a tab?</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_is_tab">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_is_attachment">
+                                                                                bool
+                                                                                
+                                    </td>
+                <td>$is_attachment</td>
+                <td class="last"><p>Whether or not this field is present on the attachment edit screen.</p></td>
+                <td><small>from&nbsp;<a href="Fieldmanager_Field.html#property_is_attachment">
+Fieldmanager_Field</a></small></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_checked_value">
+                                                                                mixed
+                                                                                
+                                    </td>
+                <td>$checked_value</td>
+                <td class="last"><p>Value when checked.</p></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td class="type" id="property_unchecked_value">
+                                                                                mixed
+                                                                                
+                                    </td>
+                <td>$unchecked_value</td>
+                <td class="last"><p>Value when unchecked.</p></td>
+                <td></td>
+            </tr>
+            </table>
+
+    
+            <h2>Methods</h2>
+
+            <div class="container-fluid underlined">
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_form_element">form_element</a>(mixed $value = null)
+        
+                                            <p><p>Form element implementation for checkboxes.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method___construct">__construct</a>(string|array $label = &#039;&#039;, array $options = array())
+        
+                                            <p><p>Superclass constructor, just populates options and sanity-checks common elements.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method___construct">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_set_options">set_options</a>(string|array $label, array $options)
+        
+                                            <p><p>Build options into properties and throw errors if developers add an unsupported opt.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_set_options">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_element_markup">element_markup</a>(mixed|array|null $values = array())
+        
+                                            <p><p>Generates all markup needed for all form elements in this field.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_element_markup">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_single_element_markup">single_element_markup</a>(mixed|array|null $value = null, bool $is_proto = false)
+        
+                                            <p><p>Generate wrappers and labels for one form element. Is called by
+<code>element_markup()</code>, calls <code>form_element()</code>.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_single_element_markup">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed|array|null
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_preload_alter_values">preload_alter_values</a>(mixed|array|null $values)
+        
+                                            <p><p>Alter values before rendering.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_preload_alter_values">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_wrap_with_multi_tools">wrap_with_multi_tools</a>(string $html, array $classes = array())
+        
+                                            <p><p>Wrap a chunk of HTML with &quot;remove&quot; and &quot;move&quot; buttons if applicable.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_wrap_with_multi_tools">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_form_name">get_form_name</a>(string $multiple = &#039;&#039;)
+        
+                                            <p><p>Get HTML form name (e.g. questions[answer]).</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_form_name">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_form_tree">get_form_tree</a>()
+        
+                                            <p><p>Recursively build path to this element, e.g. [grandparent, parent, this].</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_form_tree">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_element_id">get_element_id</a>()
+        
+                                            <p><p>Get the ID for the form element itself, uses $this-&gt;seq (e.g. which position is this element in).</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_element_id">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_element_key">get_element_key</a>()
+        
+                                            <p><p>Get the storage key for the form element.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_element_key">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_is_repeatable">is_repeatable</a>()
+        
+                                            <p><p>Is this element repeatable or does it have a repeatable ancestor?</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_is_repeatable">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_is_group">is_group</a>()
+        
+                                            <p><p>Is the current field a group?</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_is_group">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_presave_all">presave_all</a>(mixed $values, mixed $current_values)
+        
+                                            <p><p>Presaves all elements in what could be a set of them, dispatches to $this-&gt;presave().</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_presave_all">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_save_index">save_index</a>(array $values, array $current_values)
+        
+                                            <p><p>Optionally save fields to a separate postmeta index for easy lookup with WP_Query
+Handles internal arrays (e.g. for fieldmanager-options).</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_save_index">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    mixed
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_process_index_value">process_index_value</a>(mixed $value)
+        
+                                            <p><p>Hook to alter handling of an individual index value, which may make sense
+to change per field type.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_process_index_value">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_presave_alter_values">presave_alter_values</a>(array $values, array $current_values = array())
+        
+                                            <p><p>Hook to alter or respond to all the values of a particular element.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_presave_alter_values">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_presave">presave</a>(mixed $value = null, array $current_value = array())
+        
+                                            <p><p>Override presave function to swap in unchecked_value if needed.</p></p>                </div>
+                <div class="col-md-2"></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_element_attributes">get_element_attributes</a>()
+        
+                                            <p><p>Generates an HTML attribute string based on the value of $this-&gt;attributes.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_element_attributes">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_element_label">get_element_label</a>(array $classes = array())
+        
+                                            <p><p>Get an HTML label for this element.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_element_label">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_another">add_another</a>()
+        
+                                            <p><p>Generates HTML for the &quot;Add Another&quot; button.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_another">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_sort_handle">get_sort_handle</a>()
+        
+                                            <p><p>Return HTML for the sort handle (multi-tools); a separate function to override.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_sort_handle">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_remove_handle">get_remove_handle</a>()
+        
+                                            <p><p>Return HTML for the remove handle (multi-tools); a separate function to override.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_remove_handle">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_collapse_handle">get_collapse_handle</a>()
+        
+                                            <p><p>Return HTML for the collapse handle (multi-tools); a separate function to override.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_collapse_handle">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    array
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_extra_element_classes">get_extra_element_classes</a>()
+        
+                                            <p><p>Return extra element classes; overridden by some fields.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_extra_element_classes">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_user_form">add_user_form</a>(string $title = &#039;&#039;)
+        
+                                            <p><p>Add a form on user pages.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_user_form">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_page_form">add_page_form</a>(string $uniqid)
+        
+                                            <p><p>Add a form on a frontend page.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_page_form">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_term_form">add_term_form</a>(string $title, string|array $taxonomies, bool $show_on_add = true, bool $show_on_edit = true, int $parent = &#039;&#039;)
+        <small><span class="label label-danger">deprecated</span></small>
+                                            <p><p>Add a form on a term add/edit page</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_term_form">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_term_meta_box">add_term_meta_box</a>(string $title, string|array $taxonomies, bool $show_on_add = true, bool $show_on_edit = true, int $parent = &#039;&#039;)
+        
+                                            <p><p>Add fields to the term add/edit page</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_term_meta_box">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_meta_box">add_meta_box</a>(string $title, string|array $post_types, string $context = &#039;normal&#039;, string $priority = &#039;default&#039;)
+        
+                                            <p><p>Add this field as a metabox to a post type.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_meta_box">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_quickedit_box">add_quickedit_box</a>(string $title, string|array $post_types, callable $column_display_callback, string $column_title = &#039;&#039;)
+        
+                                            <p><p>Add this field to a post type's quick edit box.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_quickedit_box">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_nav_menu_fields">add_nav_menu_fields</a>()
+        
+                                            <p><p>Add this group to an nav menu.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_nav_menu_fields">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_submenu_page">add_submenu_page</a>(string $parent_slug, string $page_title, string $menu_title = null, string $capability = &#039;manage_options&#039;, string $menu_slug = null)
+        
+                                            <p><p>Add this group to an options page.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_submenu_page">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_activate_submenu_page">activate_submenu_page</a>()
+        
+                                            <p><p>Activate this group in an already-added submenu page.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_activate_submenu_page">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method__unauthorized_access">_unauthorized_access</a>(string $debug_message = &#039;&#039;)
+        
+                                            <p><p>Die violently. If self::$debug is true, throw an exception.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method__unauthorized_access">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method__failed_validation">_failed_validation</a>(string $debug_message = &#039;&#039;)
+        
+                                            <p><p>Fail validation. If self::$debug is true, throw an exception.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method__failed_validation">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method__invalid_definition">_invalid_definition</a>(string $debug_message = &#039;&#039;)
+        
+                                            <p><p>Die violently. If self::$debug is true, throw an exception.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method__invalid_definition">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    int
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_get_seq">get_seq</a>()
+        
+                                            <p><p>In a multiple element set, return the index of the current element we're rendering.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_get_seq">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    bool
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_has_proto">has_proto</a>()
+        
+                                            <p><p>Are we in the middle of generating a prototype element for repeatable fields?</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_has_proto">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_add_meta_boxes_to_remove">add_meta_boxes_to_remove</a>(array $meta_boxes_to_remove)
+        
+                                            <p><p>Helper function to add to the list of meta boxes to remove. This will be
+defined in child classes that require this functionality.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_add_meta_boxes_to_remove">
+Fieldmanager_Field</a></small></div>
+            </div>
+                    <div class="row">
+                <div class="col-md-2 type">
+                    string
+                </div>
+                <div class="col-md-8">
+                    <a href="#method_escape">escape</a>(string $field, string $default = &#039;esc_html&#039;)
+        
+                                            <p><p>Escape a field based on the function in the escape argument.</p></p>                </div>
+                <div class="col-md-2"><small>from&nbsp;<a href="Fieldmanager_Field.html#method_escape">
+Fieldmanager_Field</a></small></div>
+            </div>
+            </div>
+
+
+        <h2>Details</h2>
+
+            <div id="method-details">
+                    <div class="method-item">
+                    <h3 id="method_form_element">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-checkbox.php#L54">at line 54</a></div>
+        <code>                    string
+    <strong>form_element</strong>(mixed $value = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Form element implementation for checkboxes.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td><p>The value of the element.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>HTML for the element.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method___construct">
+        <div class="location">in <a href="Fieldmanager_Field.html#method___construct">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L407">at line 407</a></div>
+        <code>                    
+    <strong>__construct</strong>(string|array $label = &#039;&#039;, array $options = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Superclass constructor, just populates options and sanity-checks common elements.</p></p>                <p><p>It might also die, but only helpfully, to catch errors in development.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|array</td>
+                <td>$label</td>
+                <td><p>The field label.</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td><p>The field options.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_set_options">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_set_options">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L435">at line 435</a></div>
+        <code>                    
+    <strong>set_options</strong>(string|array $label, array $options)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Build options into properties and throw errors if developers add an unsupported opt.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string|array</td>
+                <td>$label</td>
+                <td><p>The field label. A provided string sets $options['label'], while an array sets $options, overriding any existing data in $options.</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$options</td>
+                <td><p>The field options.</p></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="FM_Developer_Exception.html">FM_Developer_Exception</a></td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td><a href="FM_Developer_Exception.html">FM_Developer_Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_element_markup">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_element_markup">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L484">at line 484</a></div>
+        <code>                    string
+    <strong>element_markup</strong>(mixed|array|null $values = array())
+        </code>
+    </h3>
+    <div class="details"><i>Since: 1.3.0 Added the &#039;fm-display-if&#039; class for fields using display-if.</i>
+            <br>    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Generates all markup needed for all form elements in this field.</p></p>                <p><p>Could be called directly by a plugin or theme.</p></p>        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed|array|null</td>
+                <td>$values</td>
+                <td><p>The current value or values for this
+element, or an associative array of
+the values of this element's children.
+Can be null if no value exists.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>HTML for all form elements.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_single_element_markup">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_single_element_markup">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L668">at line 668</a></div>
+        <code>                    string
+    <strong>single_element_markup</strong>(mixed|array|null $value = null, bool $is_proto = false)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Generate wrappers and labels for one form element. Is called by
+<code>element_markup()</code>, calls <code>form_element()</code>.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed|array|null</td>
+                <td>$value</td>
+                <td><p>Single element value, if any.</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$is_proto</td>
+                <td><p>True to generate a prototype element
+for Javascript.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>HTML for a single form element.</p></td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="Fieldmanager_Field.html#method_element_markup">
+Fieldmanager_Field::element_markup</a>
+                                    </td>
+                <td></td>
+            </tr>
+                    <tr>
+                <td>
+                                            <a href="Fieldmanager_Field.html#method_form_element">
+Fieldmanager_Field::form_element</a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_preload_alter_values">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_preload_alter_values">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L767">at line 767</a></div>
+        <code>                    mixed|array|null
+    <strong>preload_alter_values</strong>(mixed|array|null $values)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Alter values before rendering.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed|array|null</td>
+                <td>$values</td>
+                <td><p>The current value or values for this element, if any.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed|array|null</td>
+            <td><p>The altered value.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_wrap_with_multi_tools">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_wrap_with_multi_tools">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L778">at line 778</a></div>
+        <code>                    string
+    <strong>wrap_with_multi_tools</strong>(string $html, array $classes = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Wrap a chunk of HTML with &quot;remove&quot; and &quot;move&quot; buttons if applicable.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$html</td>
+                <td><p>HTML to wrap.</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$classes</td>
+                <td><p>An array of classes.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>Wrapped HTML.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_form_name">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_form_name">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L808">at line 808</a></div>
+        <code>                    string
+    <strong>get_form_name</strong>(string $multiple = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get HTML form name (e.g. questions[answer]).</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$multiple</td>
+                <td><p>Multiple fields.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>Form name.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_form_tree">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_form_tree">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L831">at line 831</a></div>
+        <code>                    array
+    <strong>get_form_tree</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Recursively build path to this element, e.g. [grandparent, parent, this].</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>$tree The form tree of parents.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_element_id">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_element_id">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L846">at line 846</a></div>
+        <code>                    string
+    <strong>get_element_id</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the ID for the form element itself, uses $this-&gt;seq (e.g. which position is this element in).</p></p>                <p><p>Relying on the element's ID for anything isn't a great idea since it can be rewritten in JS.</p></p>        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>ID for use in a form element.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_element_key">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_element_key">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L862">at line 862</a></div>
+        <code>                    string
+    <strong>get_element_key</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get the storage key for the form element.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_is_repeatable">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_is_repeatable">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L879">at line 879</a></div>
+        <code>                    bool
+    <strong>is_repeatable</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Is this element repeatable or does it have a repeatable ancestor?</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if yes, false if no.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_is_group">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_is_group">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L894">at line 894</a></div>
+        <code>                    bool
+    <strong>is_group</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Is the current field a group?</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td><p>True if yes, false if no.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_presave_all">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_presave_all">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L907">at line 907</a></div>
+        <code>                    mixed
+    <strong>presave_all</strong>(mixed $values, mixed $current_values)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Presaves all elements in what could be a set of them, dispatches to $this-&gt;presave().</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$values</td>
+                <td><p>The new values.</p></td>
+            </tr>
+                    <tr>
+                <td>mixed</td>
+                <td>$current_values</td>
+                <td><p>The current values.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td><p>Sanitized values.</p></td>
+        </tr>
+    </table>
+
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="FM_Exception.html">FM_Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_save_index">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_save_index">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1019">at line 1019</a></div>
+        <code>            protected        
+    <strong>save_index</strong>(array $values, array $current_values)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Optionally save fields to a separate postmeta index for easy lookup with WP_Query
+Handles internal arrays (e.g. for fieldmanager-options).</p></p>                <p><p>Is called multiple times for multi-fields (e.g. limit =&gt; 0).</p></p>        
+                    <p>
+                        
+                                    <tr>
+                        <td>make</td>
+                        <td>this a context method.</td>
+                        </tr>
+                            </p>
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$values</td>
+                <td><p>The new values.</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$current_values</td>
+                <td><p>The current values.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_process_index_value">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_process_index_value">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1069">at line 1069</a></div>
+        <code>            protected        mixed
+    <strong>process_index_value</strong>(mixed $value)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Hook to alter handling of an individual index value, which may make sense
+to change per field type.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td><p>The current value.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>mixed</td>
+            <td><p>The processed value.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_presave_alter_values">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_presave_alter_values">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1084">at line 1084</a></div>
+        <code>            protected        array
+    <strong>presave_alter_values</strong>(array $values, array $current_values = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Hook to alter or respond to all the values of a particular element.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$values</td>
+                <td><p>The new values.</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$current_values</td>
+                <td><p>The current values.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>The filtered values.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_presave">
+        <div class="location"><a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-checkbox.php#L77">at line 77</a></div>
+        <code>                    array
+    <strong>presave</strong>(mixed $value = null, array $current_value = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Override presave function to swap in unchecked_value if needed.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>mixed</td>
+                <td>$value</td>
+                <td><p>If a single field expects to manage an array,
+it must override presave().</p></td>
+            </tr>
+                    <tr>
+                <td>array</td>
+                <td>$current_value</td>
+                <td><p>The current values.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td><p>The sanitized values.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_element_attributes">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_element_attributes">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1131">at line 1131</a></div>
+        <code>                    string
+    <strong>get_element_attributes</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Generates an HTML attribute string based on the value of $this-&gt;attributes.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>attributes ready to insert into an HTML tag.</p></td>
+        </tr>
+    </table>
+
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            Fieldmanager_Field::$attributes
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_element_label">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_element_label">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1149">at line 1149</a></div>
+        <code>                    string
+    <strong>get_element_label</strong>(array $classes = array())
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Get an HTML label for this element.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$classes</td>
+                <td><p>Extra CSS classes.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>HTML label.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_another">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_another">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1174">at line 1174</a></div>
+        <code>                    string
+    <strong>add_another</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Generates HTML for the &quot;Add Another&quot; button.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>Button HTML.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_sort_handle">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_sort_handle">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1199">at line 1199</a></div>
+        <code>                    string
+    <strong>get_sort_handle</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Return HTML for the sort handle (multi-tools); a separate function to override.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_remove_handle">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_remove_handle">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1208">at line 1208</a></div>
+        <code>                    string
+    <strong>get_remove_handle</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Return HTML for the remove handle (multi-tools); a separate function to override.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_collapse_handle">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_collapse_handle">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1217">at line 1217</a></div>
+        <code>                    string
+    <strong>get_collapse_handle</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Return HTML for the collapse handle (multi-tools); a separate function to override.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_extra_element_classes">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_extra_element_classes">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1226">at line 1226</a></div>
+        <code>                    array
+    <strong>get_extra_element_classes</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Return extra element classes; overridden by some fields.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>array</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_user_form">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_user_form">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1235">at line 1235</a></div>
+        <code>                    
+    <strong>add_user_form</strong>(string $title = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add a form on user pages.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$title</td>
+                <td><p>The form title.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_page_form">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_page_form">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1247">at line 1247</a></div>
+        <code>                    
+    <strong>add_page_form</strong>(string $uniqid)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add a form on a frontend page.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$uniqid</td>
+                <td><p>A unique identifier for this form.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            Fieldmanager_Context_Form
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_term_form">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_term_form">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1267">at line 1267</a></div>
+        <code>                    
+    <strong>add_term_form</strong>(string $title, string|array $taxonomies, bool $show_on_add = true, bool $show_on_edit = true, int $parent = &#039;&#039;)
+        <small><span class="label label-danger">deprecated</span></small></code>
+    </h3>
+    <div class="details">    
+            <p>
+                <small><span class="label label-danger">deprecated</span></small>
+                            <tr>
+                    <td>1.0.0-beta.3</td>
+                    <td>Replaced by {@see \Fieldmanager_Field::add_term_meta_box()}.</td>
+                </tr>
+                    </p>
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add a form on a term add/edit page</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$title</td>
+                <td><p>The title of the form.</p></td>
+            </tr>
+                    <tr>
+                <td>string|array</td>
+                <td>$taxonomies</td>
+                <td><p>The taxonomies on which to display this form.</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$show_on_add</td>
+                <td><p>Whether or not to show the fields on the add term form.</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$show_on_edit</td>
+                <td><p>Whether or not to show the fields on the edit term form.</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$parent</td>
+                <td><p>Only show this field on child terms of this parent term ID.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="Fieldmanager_Context_Term.html">Fieldmanager_Context_Term</a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_term_meta_box">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_term_meta_box">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1294">at line 1294</a></div>
+        <code>                    
+    <strong>add_term_meta_box</strong>(string $title, string|array $taxonomies, bool $show_on_add = true, bool $show_on_edit = true, int $parent = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add fields to the term add/edit page</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$title</td>
+                <td><p>The title of the form.</p></td>
+            </tr>
+                    <tr>
+                <td>string|array</td>
+                <td>$taxonomies</td>
+                <td><p>The taxonomies on which to display this form.</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$show_on_add</td>
+                <td><p>Whether or not to show the fields on the add term form.</p></td>
+            </tr>
+                    <tr>
+                <td>bool</td>
+                <td>$show_on_edit</td>
+                <td><p>Whether or not to show the fields on the edit term form.</p></td>
+            </tr>
+                    <tr>
+                <td>int</td>
+                <td>$parent</td>
+                <td><p>Only show this field on child terms of this parent term ID.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="Fieldmanager_Context_Term.html">Fieldmanager_Context_Term</a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_meta_box">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_meta_box">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1325">at line 1325</a></div>
+        <code>                    
+    <strong>add_meta_box</strong>(string $title, string|array $post_types, string $context = &#039;normal&#039;, string $priority = &#039;default&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add this field as a metabox to a post type.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$title</td>
+                <td><p>The title of the form.</p></td>
+            </tr>
+                    <tr>
+                <td>string|array</td>
+                <td>$post_types</td>
+                <td><p>The post type(s).</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$context</td>
+                <td><p>The context for the meta box.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$priority</td>
+                <td><p>The priority of the meta box.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            <a href="Fieldmanager_Context_Post.html">Fieldmanager_Context_Post</a>
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_quickedit_box">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_quickedit_box">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1346">at line 1346</a></div>
+        <code>                    
+    <strong>add_quickedit_box</strong>(string $title, string|array $post_types, callable $column_display_callback, string $column_title = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add this field to a post type's quick edit box.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$title</td>
+                <td><p>The title of the form.</p></td>
+            </tr>
+                    <tr>
+                <td>string|array</td>
+                <td>$post_types</td>
+                <td><p>The post type(s).</p></td>
+            </tr>
+                    <tr>
+                <td>callable</td>
+                <td>$column_display_callback</td>
+                <td><p>The display callback.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$column_title</td>
+                <td><p>The column title.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+                            <h4>See also</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>
+                                            Fieldmanager_Context_Quickedit
+                                    </td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_nav_menu_fields">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_nav_menu_fields">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1354">at line 1354</a></div>
+        <code>                    
+    <strong>add_nav_menu_fields</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add this group to an nav menu.</p></p>                        
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_submenu_page">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_submenu_page">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1368">at line 1368</a></div>
+        <code>                    
+    <strong>add_submenu_page</strong>(string $parent_slug, string $page_title, string $menu_title = null, string $capability = &#039;manage_options&#039;, string $menu_slug = null)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Add this group to an options page.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$parent_slug</td>
+                <td><p>The parent slug for the menu.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$page_title</td>
+                <td><p>The page title.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$menu_title</td>
+                <td><p>The menu title.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$capability</td>
+                <td><p>The page capability access.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$menu_slug</td>
+                <td><p>The menu slug.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_activate_submenu_page">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_activate_submenu_page">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1376">at line 1376</a></div>
+        <code>                    
+    <strong>activate_submenu_page</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Activate this group in an already-added submenu page.</p></p>                        
+        </div>
+        <div class="tags">
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__unauthorized_access">
+        <div class="location">in <a href="Fieldmanager_Field.html#method__unauthorized_access">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1402">at line 1402</a></div>
+        <code>                    
+    <strong>_unauthorized_access</strong>(string $debug_message = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Die violently. If self::$debug is true, throw an exception.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$debug_message</td>
+                <td><p>The debug message.</p></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="FM_Exception.html">FM_Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__failed_validation">
+        <div class="location">in <a href="Fieldmanager_Field.html#method__failed_validation">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1417">at line 1417</a></div>
+        <code>            protected        
+    <strong>_failed_validation</strong>(string $debug_message = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Fail validation. If self::$debug is true, throw an exception.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$debug_message</td>
+                <td><p>The debug message.</p></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="FM_Validation_Exception.html">FM_Validation_Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method__invalid_definition">
+        <div class="location">in <a href="Fieldmanager_Field.html#method__invalid_definition">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1437">at line 1437</a></div>
+        <code>                    
+    <strong>_invalid_definition</strong>(string $debug_message = &#039;&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Die violently. If self::$debug is true, throw an exception.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$debug_message</td>
+                <td><p>The debug message.</p></td>
+            </tr>
+            </table>
+
+            
+            
+                            <h4>Exceptions</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td><a href="FM_Exception.html">FM_Exception</a></td>
+                <td></td>
+            </tr>
+            </table>
+
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_get_seq">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_get_seq">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1450">at line 1450</a></div>
+        <code>            protected        int
+    <strong>get_seq</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>In a multiple element set, return the index of the current element we're rendering.</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>int</td>
+            <td><p>The Proto or sequence.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_has_proto">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_has_proto">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1459">at line 1459</a></div>
+        <code>            protected        bool
+    <strong>has_proto</strong>()
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Are we in the middle of generating a prototype element for repeatable fields?</p></p>                        
+        </div>
+        <div class="tags">
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>bool</td>
+            <td></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_add_meta_boxes_to_remove">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_add_meta_boxes_to_remove">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1475">at line 1475</a></div>
+        <code>            protected        
+    <strong>add_meta_boxes_to_remove</strong>(array $meta_boxes_to_remove)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Helper function to add to the list of meta boxes to remove. This will be
+defined in child classes that require this functionality.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>array</td>
+                <td>$meta_boxes_to_remove</td>
+                <td><p>Current list of meta boxes to remove.</p></td>
+            </tr>
+            </table>
+
+            
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+                    <div class="method-item">
+                    <h3 id="method_escape">
+        <div class="location">in <a href="Fieldmanager_Field.html#method_escape">
+Fieldmanager_Field</a> <a href="https://github.com/alleyinteractive/wordpress-fieldmanager/blob/main/php/class-fieldmanager-field.php#L1485">at line 1485</a></div>
+        <code>                    string
+    <strong>escape</strong>(string $field, string $default = &#039;esc_html&#039;)
+        </code>
+    </h3>
+    <div class="details">    
+    
+            
+
+        <div class="method-description">
+                            <p><p>Escape a field based on the function in the escape argument.</p></p>                        
+        </div>
+        <div class="tags">
+                            <h4>Parameters</h4>
+
+                    <table class="table table-condensed">
+                    <tr>
+                <td>string</td>
+                <td>$field</td>
+                <td><p>The field to escape.</p></td>
+            </tr>
+                    <tr>
+                <td>string</td>
+                <td>$default</td>
+                <td><p>The default function to use to escape the field.
+Optional. Defaults to <code>esc_html()</code>.</p></td>
+            </tr>
+            </table>
+
+            
+                            <h4>Return Value</h4>
+
+                    <table class="table table-condensed">
+        <tr>
+            <td>string</td>
+            <td><p>The escaped field.</p></td>
+        </tr>
+    </table>
+
+            
+            
+            
+                    </div>
+    </div>
+
+            </div>
+            </div>
+
+    
+</div><div id="footer">
+        Generated by <a href="https://github.com/code-lts/doctum">Doctum, a API Documentation generator and fork of Sami</a>.</div></div>
+    </div>
+    </body>
+
+</html>
