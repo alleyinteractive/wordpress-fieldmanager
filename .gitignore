@@ -25,12 +25,11 @@ Thumbs.db
 *.code-workspace
 .idea
 .vscode
-
-# Created by Apigen for logs
-build/
+.claude
 
 # Built docs
-docs/
+cache/
+doctum.phar
 
 # Code coverage report
 report/
