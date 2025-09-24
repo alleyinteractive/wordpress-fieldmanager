@@ -202,7 +202,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		if ( ! empty( $this->ajax_action ) ) {
 			return $this->ajax_action;
 		}
-		$unique_key  = wp_json_encode( $this->query_args );
+		$unique_key = wp_json_encode( $this->query_args );
 		if ( is_string( $this->query_callback ) ) {
 			$unique_key .= $this->query_callback;
 		} elseif (
