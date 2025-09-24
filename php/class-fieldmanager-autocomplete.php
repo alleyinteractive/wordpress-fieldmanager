@@ -42,7 +42,7 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	 *
 	 * The function signature should be query_callback( $match, $args );
 	 *
-	 * @var callable
+	 * @var callable|null
 	 */
 	public $query_callback = null;
 

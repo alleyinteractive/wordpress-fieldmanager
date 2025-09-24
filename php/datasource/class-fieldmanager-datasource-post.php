@@ -14,7 +14,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 * Supply a function which returns a list of posts; takes one argument,
 	 * a possible fragment.
 	 *
-	 * @var null
+	 * @var callback|null
 	 */
 	public $query_callback = null;
 
@@ -203,7 +203,17 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			return $this->ajax_action;
 		}
 		$unique_key  = wp_json_encode( $this->query_args );
-		$unique_key .= (string) $this->query_callback;
+		if ( is_string( $this->query_callback ) ) {
+			$unique_key .= $this->query_callback;
+		} elseif (
+			is_array( $this->query_callback )
+			&& isset( $this->query_callback[0] )
+			&& is_object( $this->query_callback[0] )
+			&& isset( $this->query_callback[1] )
+			&& is_string( $this->query_callback[1] )
+		) {
+			$unique_key .= $this->query_callback[1];
+		}
 		$unique_key .= get_called_class();
 		return 'fm_datasource_post_' . crc32( $unique_key );
 	}
