@@ -208,7 +208,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		} elseif (
 			is_array( $this->query_callback )
 			&& isset( $this->query_callback[0] )
-			&& is_object( $this->query_callback[0] )
 			&& isset( $this->query_callback[1] )
 			&& is_string( $this->query_callback[1] )
 		) {
