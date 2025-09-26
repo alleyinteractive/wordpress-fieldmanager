@@ -1,0 +1,22 @@
+
+.fm-gallery .gallery-wrapper {
+	margin: 5px 0 15px 15px;
+	padding-left: 10px;
+	border-left: solid 1px #ccc;
+}
+
+.fm-gallery .gallery-wrapper img {
+	max-width: 100%;
+	height: auto;
+}
+
+.fm-gallery .gallery-wrapper .gallery-item {
+	float: left;
+	margin: 10px;
+}
+
+.fm-gallery .gallery-wrapper:after {
+	content: ' ';
+	clear: left;
+	display: block;
+}
