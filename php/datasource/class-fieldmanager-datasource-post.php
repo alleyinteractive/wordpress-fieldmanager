@@ -211,6 +211,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			&& isset( $this->query_callback[1] )
 			&& is_string( $this->query_callback[1] )
 		) {
+			$unique_key .= is_object( $this->query_callback[0] ) ? get_debug_type( $this->query_callback[0] ) : (string) $this->query_callback[0];
 			$unique_key .= $this->query_callback[1];
 		}
 		$unique_key .= get_called_class();
