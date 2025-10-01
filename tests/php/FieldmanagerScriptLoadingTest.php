@@ -71,7 +71,7 @@ class FieldmanagerScriptLoadingTest extends FieldmanagerAssetsUnitTestCase {
 	}
 
 	#[DataProvider('script_data')]
-	function test_script_is_registered( $handle ) {
+	function test_script_is_registered( $handle, $deps ) {
 		global $wp_scripts;
 		$this->assertInstanceOf( '_WP_Dependency', $wp_scripts->query( $handle ) );
 	}

@@ -1,8 +1,12 @@
 <?php
+
+use Mantle\Testing\Concerns\Admin_Screen;
+
 /**
  * Base UnitTestCase for Fieldmanager script and style testing.
  */
 class FieldmanagerAssetsUnitTestCase extends WP_UnitTestCase {
+	use Admin_Screen;
 
 	protected $screen, $old_wp_scripts;
 
@@ -23,6 +27,8 @@ class FieldmanagerAssetsUnitTestCase extends WP_UnitTestCase {
 		Fieldmanager_Field::$enqueued_base_assets    = false;
 		Fieldmanager_Media::$has_registered_media    = false;
 		Fieldmanager_Util_Assets::instance()->hooked = false;
+
+		require_once ABSPATH . '/wp-admin/includes/template.php';
 	}
 
 	public function tear_down() {

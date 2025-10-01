@@ -12,6 +12,9 @@ class FieldmanagerContextSubmenuTest extends WP_UnitTestCase {
 
 	public function set_up() {
 		parent::set_up();
+
+		require_once ABSPATH . '/wp-admin/includes/template.php';
+
 		add_filter( 'fm_submenu_presave_data', array( $this, 'presave_alter_number' ), 10, 2 );
 	}
 
