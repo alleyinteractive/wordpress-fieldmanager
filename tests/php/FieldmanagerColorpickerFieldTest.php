@@ -1,5 +1,7 @@
 <?php
 
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * Tests the Fieldmanager Colorpicker Field
  *
@@ -48,7 +50,7 @@ class FieldmanagerColorpickerFieldTest extends WP_UnitTestCase {
 		$this->assertEquals( '', get_post_meta( $this->post->ID, 'test_colorpicker', true ) );
 	}
 
-	public function default_color_iterations() {
+	public static function default_color_iterations() {
 		return array(
 			array( array( 'default_color' => '#ff0000' ), '/data-default-color="#ff0000" value=""/' ),
 			array( array( 'default_value' => '#abc' ), '/data-default-color="#abc" value="#abc"/' ),
@@ -64,10 +66,10 @@ class FieldmanagerColorpickerFieldTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @dataProvider default_color_iterations
 	 * @param  array  $args Fieldmanager_Colorpicker args
 	 * @param  string $regex Test regex
 	 */
+	#[DataProvider( 'default_color_iterations' )]
 	public function test_default_color( $args, $regex ) {
 		$args['name'] = rand_str();
 		$fm           = new Fieldmanager_Colorpicker( $args );

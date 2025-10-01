@@ -6,6 +6,7 @@
  */
 
 use Mantle\Testing\Mock_Action;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests Fieldmanager_Field, which handles validation and
@@ -1271,9 +1272,8 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 	 * See #523.
 	 *
 	 * @param Fieldmanager_Field $field The fieldmanager field object.
-	 *
-	 * @dataProvider data_fields_overriding_presave_alter_values
 	 */
+	#[DataProvider( 'data_fields_overriding_presave_alter_values' )]
 	public function test_apply_presave_alter_values_filter( $field ) {
 		$filter = '__return_empty_array';
 
@@ -1298,10 +1298,10 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 	 * Returns each field class that was subject to #523 and so should be tested
 	 * to ensure values pass through 'fm_presave_alter_values' by default.
 	 */
-	public function data_fields_overriding_presave_alter_values() {
+	public static function data_fields_overriding_presave_alter_values() {
 		return array(
 			array(
-				new Fieldmanager_Options_Mock(),
+				new FieldmanagerOptionsMock(),
 			),
 			array(
 				new Fieldmanager_Autocomplete(

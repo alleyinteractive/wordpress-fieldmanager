@@ -1,6 +1,7 @@
 <?php
 
 use Mantle\Testing\Mock_Action;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Tests for calculating the Fieldmanager context of a request.
@@ -79,7 +80,7 @@ class FieldmanagerCalculateContextTest extends WP_UnitTestCase {
 	 *
 	 * @return array
 	 */
-	public function submenu_context_args() {
+	public static function submenu_context_args() {
 		return array(
 			// Core WordPress Menus
 			array( 'index.php' ),
@@ -102,9 +103,8 @@ class FieldmanagerCalculateContextTest extends WP_UnitTestCase {
 
 	/**
 	 * Test context calculations for submenus.
-	 *
-	 * @dataProvider submenu_context_args
 	 */
+	#[DataProvider( 'submenu_context_args' )]
 	public function test_submenu_contexts( $parent, $php_self = null ) {
 		$submenu = rand_str();
 		fm_register_submenu_page( $submenu, $parent, 'Submenu Page' );
@@ -135,7 +135,7 @@ class FieldmanagerCalculateContextTest extends WP_UnitTestCase {
 	 *
 	 * @return array
 	 */
-	public function basic_contexts_args() {
+	public static function basic_contexts_args() {
 		return array(
 			array( '/post-new.php', array( 'post_type' => 'page' ), 'post', 'page' ),
 			array( '/profile.php', null, 'user', null ),
@@ -147,9 +147,8 @@ class FieldmanagerCalculateContextTest extends WP_UnitTestCase {
 
 	/**
 	 * Test context calculations for assorted contexts.
-	 *
-	 * @dataProvider basic_contexts_args
 	 */
+	#[DataProvider( 'basic_contexts_args' )]
 	public function test_basic_contexts( $self_override, $get_override, $context, $type ) {
 		$_SERVER['PHP_SELF'] = $self_override;
 		$_GET                = $get_override;

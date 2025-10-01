@@ -1,4 +1,7 @@
 <?php
+
+use PHPUnit\Framework\Attributes\DataProvider;
+
 /**
  * Tests Fieldmanager script-loading.
  *
@@ -30,7 +33,7 @@ class FieldmanagerScriptLoadingTest extends FieldmanagerAssetsUnitTestCase {
 	 *     @type array $deps Other scripts that $handle should depend on.
 	 * }
 	 */
-	public function script_data() {
+	public static function script_data() {
 		return array(
 			'fieldmanager_script' => array(
 				'fieldmanager_script',
@@ -67,17 +70,13 @@ class FieldmanagerScriptLoadingTest extends FieldmanagerAssetsUnitTestCase {
 		);
 	}
 
-	/**
-	 * @dataProvider script_data
-	 */
+	#[DataProvider('script_data')]
 	function test_script_is_registered( $handle ) {
 		global $wp_scripts;
 		$this->assertInstanceOf( '_WP_Dependency', $wp_scripts->query( $handle ) );
 	}
 
-	/**
-	 * @dataProvider script_data
-	 */
+	#[DataProvider('script_data')]
 	function test_script_dependencies( $handle, $deps ) {
 		global $wp_scripts;
 		$this->assertEquals( $deps, $wp_scripts->query( $handle )->deps );
