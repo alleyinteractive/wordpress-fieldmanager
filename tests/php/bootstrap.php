@@ -11,19 +11,27 @@
  * @package Fieldmanager
  */
 
-$_tests_dir = getenv( 'WP_TESTS_DIR' );
-if ( ! $_tests_dir ) {
-	$_tests_dir = '/tmp/wordpress-tests-lib';
-}
+\Mantle\Testing\manager()
+	->loaded( static function () {
+		require_once __DIR__ . '/../../fieldmanager.php';
+		require_once __DIR__ . '/Includes/FieldmanagerAssetsUnitTestCase.php';
+		require_once __DIR__ . '/Includes/FieldmanagerOptionsMock.php';
+	} )
+	->install();
 
-require_once $_tests_dir . '/includes/functions.php';
+// $_tests_dir = getenv( 'WP_TESTS_DIR' );
+// if ( ! $_tests_dir ) {
+// 	$_tests_dir = '/tmp/wordpress-tests-lib';
+// }
 
-function _manually_load_plugin() {
-	require dirname( __FILE__ ) . '/../../fieldmanager.php';
-}
-tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+// require_once $_tests_dir . '/includes/functions.php';
 
-require $_tests_dir . '/includes/bootstrap.php';
+// function _manually_load_plugin() {
+// 	require dirname( __FILE__ ) . '/../../fieldmanager.php';
+// }
+// tests_add_filter( 'muplugins_loaded', '_manually_load_plugin' );
+
+// require $_tests_dir . '/includes/bootstrap.php';
 
 /**
  * Is the current version of WordPress at least ... ?
@@ -36,6 +44,6 @@ function _fm_phpunit_is_wp_at_least( $min_version ) {
 	return floatval( $wp_version ) >= $min_version;
 }
 
-// Load includes.
-require_once __DIR__ . '/includes/class-fieldmanager-assets-unit-test-case.php';
-require_once __DIR__ . '/includes/class-fieldmanager-options-mock.php';
+// // Load includes.
+// require_once __DIR__ . '/includes/class-fieldmanager-assets-unit-test-case.php';
+// require_once __DIR__ . '/includes/class-fieldmanager-options-mock.php';

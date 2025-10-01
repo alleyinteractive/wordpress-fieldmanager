@@ -1,0 +1,174 @@
+<?php
+
+/**
+ * Tests the Fieldmanager Autocomplete Field
+ *
+ * @group field
+ * @group autocomplete
+ */
+class FieldmanagerAutocompleteFieldTest extends WP_UnitTestCase {
+	/**
+	 * The post ID of the test post.
+	 *
+	 * @var int
+	 */
+	private int $post_id = 0;
+
+	/**
+	 * The post object of the test post.
+	 *
+	 * @var WP_Post
+	 */
+	private WP_Post $post;
+
+	/**
+	 * The data posts array.
+	 *
+	 * @var WP_Post[]
+	 */
+	private array $data_posts;
+
+	/**
+	 * Custom data source.
+	 *
+	 * @var Fieldmanager_Datasource
+	 */
+	private Fieldmanager_Datasource $custom_datasource;
+
+	public function set_up() {
+		parent::set_up();
+		Fieldmanager_Field::$debug = true;
+
+		$this->post_id = $this->factory->post->create(
+			array(
+				'post_title' => rand_str(),
+				'post_date'  => '2009-07-01 00:00:00',
+			)
+		);
+		$this->post    = get_post( $this->post_id );
+
+		$this->data_posts = array(
+			$this->factory->post->create_and_get(
+				array(
+					'post_title' => 'test ' . rand_str(),
+					'post_date'  => '2009-07-02 00:00:00',
+				)
+			),
+			$this->factory->post->create_and_get(
+				array(
+					'post_title' => 'test ' . rand_str(),
+					'post_date'  => '2009-07-03 00:00:00',
+				)
+			),
+			$this->factory->post->create_and_get(
+				array(
+					'post_title' => 'test ' . rand_str(),
+					'post_date'  => '2009-07-04 00:00:00',
+				)
+			),
+			$this->factory->post->create_and_get(
+				array(
+					'post_title' => "Arby's" . rand_str(),
+					'post_date'  => '2009-07-04 00:00:00',
+				)
+			),
+		);
+
+		$this->custom_datasource = new Fieldmanager_Datasource(
+			array(
+				'options' => array( 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ),
+			)
+		);
+	}
+
+	public function test_exact_match() {
+		$args = array(
+			'name'          => 'test_autocomplete',
+			'datasource'    => $this->custom_datasource,
+			'default_value' => rand_str(),
+		);
+
+		$fm = new Fieldmanager_Autocomplete( $args );
+		ob_start();
+		$fm->add_meta_box( 'Test Autocomplete', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$this->assertMatchesRegularExpression( '/<input[^>]+type=[\'"]text[\'"][^>]+value=[\'"]{2}/', $html );
+
+		$args['exact_match'] = false;
+		$fm                  = new Fieldmanager_Autocomplete( $args );
+		ob_start();
+		$fm->add_meta_box( 'Test Autocomplete', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$this->assertMatchesRegularExpression( '/<input[^>]+type=[\'"]text[\'"][^>]+value=[\'"]' . $args['default_value'] . '[\'"]/', $html );
+	}
+
+	public function test_ajax() {
+		$datasource = new Fieldmanager_Datasource_Post();
+
+		$fm = new Fieldmanager_Autocomplete(
+			array(
+				'name'       => 'test_autocomplete',
+				'datasource' => $datasource,
+			)
+		);
+
+		$items = $datasource->get_items_for_ajax( 'test' );
+
+		$this->assertSame( 3, count( $items ) );
+
+		// we expect them to be returned in reverse chronological order
+		// could have created the samples in that order but this seems more explicit...
+		$this->assertSame( $this->data_posts[2]->ID, $items[0]['value'] );
+		$this->assertSame( $this->data_posts[1]->ID, $items[1]['value'] );
+		$this->assertSame( $this->data_posts[0]->ID, $items[2]['value'] );
+
+		$items = $datasource->get_items_for_ajax( $this->data_posts[1]->ID );
+		$this->assertSame( $this->data_posts[1]->ID, $items[0]['value'] );
+
+		$items = $datasource->get_items_for_ajax( get_permalink( $this->data_posts[2]->ID ) );
+		$this->assertSame( $this->data_posts[2]->ID, $items[0]['value'] );
+	}
+
+	/**
+	 * Test searching for post with a phrase that contains an apostrophe.
+	 */
+	public function test_search_with_apostrophe() {
+		$datasource = new Fieldmanager_Datasource_Post();
+
+		$fm = new Fieldmanager_Autocomplete( array(
+			'name' => 'test_autocomplete',
+			'datasource' => $datasource,
+		) );
+
+		$items = $datasource->get_items_for_ajax( "Arby's" );
+
+		$this->assertSame( 1, count( $items ) );
+	}
+
+	/**
+	 * Test that an autocomplete field with an extra element is output correctly.
+	 */
+	public function test_exact_match_with_no_default_and_extra_element() {
+		$args = array(
+			'name'          => 'test_autocomplete_with_extra_element',
+			'datasource'                => new Fieldmanager_Datasource_Term(
+				[
+					'taxonomy'              => 'post_tag',
+					'append_taxonomy'       => false,
+					'only_save_to_taxonomy' => true,
+				]
+			),
+			'exact_match'               => true,
+			'remove_default_meta_boxes' => true,
+			'limit'                     => 1,
+			'extra_elements'            => 1,
+			'add_more_label'            => 'Add Tag',
+		);
+
+		$fm = new Fieldmanager_Autocomplete( $args );
+		ob_start();
+		$fm->add_meta_box( 'Test Autocomplete', 'post' )->render_meta_box( $this->post, array() );
+		$html = ob_get_clean();
+		$this->assertStringContainsString( 'fm-test_autocomplete_with_extra_element-0', $html );
+	}
+}

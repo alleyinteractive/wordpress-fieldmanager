@@ -15,7 +15,7 @@
   },
   "require-dev": {
     "alleyinteractive/alley-coding-standards": "^0.3.0",
-    "yoast/phpunit-polyfills": "^1.0"
+    "mantle-framework/testkit": "^1.9"
   },
   "scripts": {
     "phpcs": "vendor/bin/phpcs",
@@ -25,7 +25,8 @@
   "config": {
     "allow-plugins": {
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "composer/installers": true
+      "composer/installers": true,
+      "alleyinteractive/composer-wordpress-autoloader": true
     }
   }
 }
