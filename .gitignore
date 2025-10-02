@@ -1,5 +1,6 @@
 # Dependencies
 vendor
+!tests/js/vendor
 node_modules
 .env
 composer.lock
