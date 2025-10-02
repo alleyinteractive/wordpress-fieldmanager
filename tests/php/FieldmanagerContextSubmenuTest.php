@@ -1,11 +1,12 @@
 <?php
+use PHPUnit\Framework\Attributes\Group;
+
 
 /**
  * Tests submenu forms/pages
- *
- * @group context
- * @group submenu
  */
+#[Group( 'context' )]
+#[Group( 'submenu' )]
 class FieldmanagerContextSubmenuTest extends WP_UnitTestCase {
 
 	private $processed_values = array();

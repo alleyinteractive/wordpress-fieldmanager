@@ -1,12 +1,12 @@
 <?php
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the Storable Context base.
- *
- * @group context
  */
+#[Group( 'context' )]
 class FieldmanagerContextStorableTest extends WP_UnitTestCase {
 	public static function scalar_sanitize_data() {
 		return array(

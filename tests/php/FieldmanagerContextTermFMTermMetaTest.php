@@ -1,13 +1,13 @@
 <?php
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the Term context using the deprecated Fieldmanager Term Meta. This will
  * help ensure backwards compatibility.
- *
- * @group context
- * @group term
- * @group fm_term_meta
  */
+#[Group( 'context' )]
+#[Group( 'term' )]
+#[Group( 'fm_term_meta' )]
 class FieldmanagerContextTermFMTermMetaTest extends WP_UnitTestCase {
 	/**
 	 * Taxonomy name.
@@ -225,12 +225,12 @@ class FieldmanagerContextTermFMTermMetaTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group serialize_data
 	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::add_term_meta is deprecated as of 1.0.0-beta.3
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field() {
 		$base = new Fieldmanager_TextField(
 			array(
@@ -254,12 +254,12 @@ class FieldmanagerContextTermFMTermMetaTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group serialize_data
 	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::delete_term_meta is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::add_term_meta is deprecated as of 1.0.0-beta.3
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field_sorting() {
 		$item_1 = rand_str();
 		$item_2 = rand_str();
@@ -290,11 +290,11 @@ class FieldmanagerContextTermFMTermMetaTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group serialize_data
 	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_tabbed() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -345,11 +345,11 @@ class FieldmanagerContextTermFMTermMetaTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group serialize_data
 	 * Fieldmanager_Field::add_term_form is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::update_term_meta is deprecated as of 1.0.0-beta.3
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_mixed_depth() {
 		$base = new Fieldmanager_Group(
 			array(

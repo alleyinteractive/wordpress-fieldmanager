@@ -3,12 +3,12 @@
 use Mantle\Testing\Concerns\Admin_Screen;
 use Mantle\Testing\Mock_Action;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests for calculating the Fieldmanager context of a request.
- *
- * @group context
  */
+#[Group( 'context' )]
 class FieldmanagerCalculateContextTest extends WP_UnitTestCase {
 	use Admin_Screen;
 

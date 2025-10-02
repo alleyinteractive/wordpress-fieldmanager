@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Checkboxes Field
- *
- * @group field
- * @group checkboxes
  */
+#[Group( 'checkboxes' )]
+#[Group( 'field' )]
 class FieldmanagerCheckboxesFieldTest extends WP_UnitTestCase {
 /**
 	 * The post ID of the test post.

@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Autocomplete Field
- *
- * @group field
- * @group autocomplete
  */
+#[Group( 'autocomplete' )]
+#[Group( 'field' )]
 class FieldmanagerAutocompleteFieldTest extends WP_UnitTestCase {
 	/**
 	 * The post ID of the test post.

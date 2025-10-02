@@ -1,10 +1,11 @@
 <?php
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Content HTML Field.
- *
- * @group field
- * @group content
  */
+#[Group( 'content' )]
+#[Group( 'field' )]
 class FieldmanagerContentHTMLFieldTest extends WP_UnitTestCase {
 
 	/**

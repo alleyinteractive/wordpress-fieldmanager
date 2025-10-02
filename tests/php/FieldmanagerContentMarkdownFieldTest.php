@@ -1,13 +1,12 @@
 <?php
-/**
- * Tests the Fieldmanager Content Markdown Field.
- *
- * @group field
- * @group content
- */
-
+use PHPUnit\Framework\Attributes\Group;
 use Fieldmanager\Libraries\Parsedown;
 
+/**
+ * Tests the Fieldmanager Content Markdown Field.
+ */
+#[Group( 'content' )]
+#[Group( 'field' )]
 class FieldmanagerContentMarkdownFieldTest extends WP_UnitTestCase {
 
 	/**

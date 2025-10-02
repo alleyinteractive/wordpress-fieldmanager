@@ -1,11 +1,12 @@
 <?php
+use PHPUnit\Framework\Attributes\Group;
+
 
 /**
  * Tests the Quickedit context
- *
- * @group context
- * @group quickedit
  */
+#[Group( 'context' )]
+#[Group( 'quickedit' )]
 class FieldmanagerContextQuickeditTest extends WP_UnitTestCase {
 	/**
 	 * The post object.
@@ -204,9 +205,7 @@ class FieldmanagerContextQuickeditTest extends WP_UnitTestCase {
 		return ! empty( $data['text'] ) ? $data['text'] : 'not set';
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field() {
 		$base = new Fieldmanager_TextField(
 			array(
@@ -229,9 +228,7 @@ class FieldmanagerContextQuickeditTest extends WP_UnitTestCase {
 		$this->assertStringNotContainsString( 'name="base_field[4]"', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field_sorting() {
 		$item_1 = rand_str();
 		$item_2 = rand_str();
@@ -261,9 +258,7 @@ class FieldmanagerContextQuickeditTest extends WP_UnitTestCase {
 		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_tabbed() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -313,9 +308,7 @@ class FieldmanagerContextQuickeditTest extends WP_UnitTestCase {
 		$this->assertStringContainsString('>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_mixed_depth() {
 		$base = new Fieldmanager_Group(
 			array(

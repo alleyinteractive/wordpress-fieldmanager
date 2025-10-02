@@ -1,11 +1,12 @@
 <?php
+use PHPUnit\Framework\Attributes\Group;
+
 
 /**
  * Tests the Menu Item context
- *
- * @group context
- * @group menuitem
  */
+#[Group( 'context' )]
+#[Group( 'menuitem' )]
 class FieldmanagerContextMenuitemTest extends WP_UnitTestCase {
 	/**
 	 * The post object of the test post.

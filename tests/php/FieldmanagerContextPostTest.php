@@ -1,11 +1,12 @@
 <?php
+use PHPUnit\Framework\Attributes\Group;
+
 
 /**
  * Tests the Post context
- *
- * @group context
- * @group post
  */
+#[Group( 'context' )]
+#[Group( 'post' )]
 class FieldmanagerContextPostTest extends WP_UnitTestCase {
 	/**
 	 * The post ID of the test post.

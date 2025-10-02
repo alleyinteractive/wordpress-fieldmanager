@@ -1,13 +1,13 @@
 <?php
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the Fieldmanager Colorpicker Field
- *
- * @group field
- * @group colorpicker
  */
+#[Group( 'colorpicker' )]
+#[Group( 'field' )]
 class FieldmanagerColorpickerFieldTest extends WP_UnitTestCase {
 
 	protected $post;
