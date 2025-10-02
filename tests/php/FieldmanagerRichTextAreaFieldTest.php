@@ -295,8 +295,7 @@ class FieldmanagerRichTextAreaFieldTest extends WP_UnitTestCase {
 	}
 
 	public function test_cookie_editor_mode() {
-		$current_user = get_current_user_id();
-		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+		$this->acting_as( 'administrator' );
 
 		$fm          = new Fieldmanager_RichTextArea(
 			array(
@@ -346,16 +345,13 @@ class FieldmanagerRichTextAreaFieldTest extends WP_UnitTestCase {
 			$this->assertStringNotContainsString( 'html-active', $html );
 		}
 
-		wp_set_current_user( $current_user );
-
 		if ( ! _fm_phpunit_is_wp_at_least( 3.9 ) ) {
 			$this->_skip_tests_because_version( 3.9 );
 		}
 	}
 
 	public function test_cookie_editor_mode_with_repeatables() {
-		$current_user = get_current_user_id();
-		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+		$this->acting_as( 'administrator' );
 
 		$fm          = new Fieldmanager_RichTextArea(
 			array(
@@ -394,8 +390,6 @@ class FieldmanagerRichTextAreaFieldTest extends WP_UnitTestCase {
 			// The proto should still contain tmce-active
 			$this->assertStringContainsString('tmce-active', $html );
 		}
-
-		wp_set_current_user( $current_user );
 
 		if ( ! _fm_phpunit_is_wp_at_least( 3.9 ) ) {
 			$this->_skip_tests_because_version( 3.9 );

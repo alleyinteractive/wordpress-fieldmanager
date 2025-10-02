@@ -1,5 +1,6 @@
 <?php
 
+use Mantle\Testing\Concerns\Admin_Screen;
 use Mantle\Testing\Mock_Action;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -9,6 +10,8 @@ use PHPUnit\Framework\Attributes\DataProvider;
  * @group context
  */
 class FieldmanagerCalculateContextTest extends WP_UnitTestCase {
+	use Admin_Screen;
+
 	protected $screen, $self, $get, $submenus;
 
 	public function set_up() {

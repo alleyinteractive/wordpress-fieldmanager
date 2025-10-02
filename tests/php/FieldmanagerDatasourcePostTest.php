@@ -60,7 +60,7 @@ class FieldmanagerDatasourcePostTest extends WP_UnitTestCase {
 			)
 		);
 
-		wp_set_current_user( $this->editor );
+		$this->acting_as( $this->editor );
 
 		$this->parent_post = $this->factory->post->create_and_get(
 			array(

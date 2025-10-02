@@ -8,8 +8,6 @@
  * @group fm_term_meta
  */
 class FieldmanagerTermMetaTest extends WP_UnitTestCase {
-	public $current_user;
-
 	/**
 	 * The Term Object.
 	 *
@@ -21,17 +19,9 @@ class FieldmanagerTermMetaTest extends WP_UnitTestCase {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
-		$this->current_user = get_current_user_id();
-		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+		$this->acting_as( 'administrator' );
 
 		$this->term = $this->factory->category->create_and_get( array( 'name' => rand_str() ) );
-	}
-
-	public function tear_down() {
-		if ( get_current_user_id() != $this->current_user ) {
-			wp_delete_user( get_current_user_id() );
-		}
-		wp_set_current_user( $this->current_user );
 	}
 
 	/**

@@ -7,8 +7,6 @@
  * @group term
  */
 class FieldmanagerContextTermTest extends WP_UnitTestCase {
-	public $current_user;
-
 	/**
 	 * Taxonomy name.
 	 *
@@ -41,8 +39,7 @@ class FieldmanagerContextTermTest extends WP_UnitTestCase {
 		parent::set_up();
 		Fieldmanager_Field::$debug = true;
 
-		$this->current_user = get_current_user_id();
-		wp_set_current_user( $this->factory->user->create( array( 'role' => 'administrator' ) ) );
+		$this->acting_as( 'administrator' );
 
 		$this->taxonomy = 'category';
 		$term           = wp_insert_term( 'test', $this->taxonomy );
@@ -62,11 +59,6 @@ class FieldmanagerContextTermTest extends WP_UnitTestCase {
 				delete_term_meta( $this->term_id, $key );
 			}
 		}
-
-		if ( get_current_user_id() != $this->current_user ) {
-			wp_delete_user( get_current_user_id() );
-		}
-		wp_set_current_user( $this->current_user );
 	}
 
 	/**
