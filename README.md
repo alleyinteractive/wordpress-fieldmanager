@@ -9,7 +9,7 @@ Fieldmanager is a powerful library which can make the development of sophisticat
 ## Requirements
 
 * WordPress: 5.8+
-* PHP: 8.2+
+* PHP: 8.1+
 
 ## Downloads and Versioning.
 
