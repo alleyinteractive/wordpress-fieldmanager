@@ -169,7 +169,7 @@ class FieldmanagerContextSubmenuTest extends WP_UnitTestCase {
 		$context->wp_option_autoload = true;
 		$context->save_submenu_data();
 		$actual = $wpdb->get_row( $wpdb->prepare( "SELECT autoload FROM $wpdb->options WHERE option_name = %s LIMIT 1", $name ) );
-		$this->assertSame( 'yes', $actual->autoload );
+		$this->assertSame( 'on', $actual->autoload );
 
 		// Change the value so update_option() doesn't bail.
 		$_POST[ $name ]['email'] = '123456';
@@ -178,7 +178,7 @@ class FieldmanagerContextSubmenuTest extends WP_UnitTestCase {
 		$context->wp_option_autoload = false;
 		$context->save_submenu_data();
 		$actual = $wpdb->get_row( $wpdb->prepare( "SELECT autoload FROM $wpdb->options WHERE option_name = %s LIMIT 1", $name ) );
-		$this->assertSame( 'no', $actual->autoload );
+		$this->assertSame( 'off', $actual->autoload );
 	}
 
 	/**
