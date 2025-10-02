@@ -1,5 +1,7 @@
 <?php
 
+use Mantle\Testing\Exceptions\WP_Die_Exception;
+
 /**
  * Tests the Fieldmanager Datasource User
  *
@@ -242,7 +244,7 @@ class FieldmanagerDatasourceUserTest extends WP_UnitTestCase {
 	 * Test that this fails when a user doesn't have permission to list users.
 	 */
 	public function test_save_permissions() {
-		$this->expectException( WPDieException::class );
+		$this->expectException( WP_Die_Exception::class );
 
 		wp_set_current_user( $this->author );
 

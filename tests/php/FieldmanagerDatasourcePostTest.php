@@ -1,5 +1,8 @@
 <?php
 
+use Mantle\Testing\Attributes\Expected_Incorrect_Usage;
+use Mantle\Testing\Exceptions\WP_Die_Exception;
+
 /**
  * Tests the Fieldmanager Datasource Post
  *
@@ -311,7 +314,7 @@ class FieldmanagerDatasourcePostTest extends WP_UnitTestCase {
 	 * Test that a user lacking permission can not publish a child post.
 	 */
 	public function test_alter_child_invalid_publish() {
-		$this->expectException( WPDieException::class );
+		$this->expectException( WP_Die_Exception::class );
 
 		$test_data = array( $this->child_post_a->ID, $this->child_post_b->ID );
 
@@ -439,7 +442,7 @@ class FieldmanagerDatasourcePostTest extends WP_UnitTestCase {
 	 * Test that a user lacking permission can not add meta to a child post.
 	 */
 	public function test_alter_child_invalid_reciprocal() {
-		$this->expectException( WPDieException::class );
+		$this->expectException( WP_Die_Exception::class );
 
 		$test_data = array( $this->child_post_a->ID, $this->child_post_b->ID );
 
@@ -532,9 +535,7 @@ class FieldmanagerDatasourcePostTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @expectedIncorrectUsage Fieldmanager_Datasource_Post::$save_to_post_parent
-	 */
+	#[Expected_Incorrect_Usage( 'Fieldmanager_Datasource_Post::$save_to_post_parent' )]
 	public function test_repeatable_post_parent_invalid() {
 		$fm = new Fieldmanager_Autocomplete(
 			array(
@@ -550,9 +551,7 @@ class FieldmanagerDatasourcePostTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @expectedIncorrectUsage Fieldmanager_Datasource_Post::$save_to_post_parent
-	 */
+	#[Expected_Incorrect_Usage( 'Fieldmanager_Datasource_Post::$save_to_post_parent' )]
 	public function test_repeatable_options_post_parent_invalid() {
 		$fm = new Fieldmanager_Select(
 			array(
@@ -568,9 +567,7 @@ class FieldmanagerDatasourcePostTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @expectedIncorrectUsage Fieldmanager_Datasource_Post::$save_to_post_parent
-	 */
+	#[Expected_Incorrect_Usage( 'Fieldmanager_Datasource_Post::$save_to_post_parent' )]
 	public function test_inherited_repeatable_post_parent_invalid() {
 		$fm = new Fieldmanager_Group(
 			array(
