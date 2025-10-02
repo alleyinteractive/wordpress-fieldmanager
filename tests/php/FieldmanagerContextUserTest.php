@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the User context
- *
- * @group context
- * @group user
  */
+#[Group( 'context' )]
+#[Group( 'user' )]
 class FieldmanagerContextUserTest extends WP_UnitTestCase {
 	/**
 	 * The user ID.
@@ -163,9 +164,7 @@ class FieldmanagerContextUserTest extends WP_UnitTestCase {
 		$this->assertEquals( array( 'editor' ), $user->roles );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field() {
 		$base = new Fieldmanager_TextField(
 			array(
@@ -188,9 +187,7 @@ class FieldmanagerContextUserTest extends WP_UnitTestCase {
 		$this->assertStringNotContainsString( 'name="base_field[4]"', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field_sorting() {
 		$item_1 = rand_str();
 		$item_2 = rand_str();
@@ -220,9 +217,7 @@ class FieldmanagerContextUserTest extends WP_UnitTestCase {
 		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_tabbed() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -272,9 +267,7 @@ class FieldmanagerContextUserTest extends WP_UnitTestCase {
 		$this->assertStringContainsString('>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_mixed_depth() {
 		$base = new Fieldmanager_Group(
 			array(

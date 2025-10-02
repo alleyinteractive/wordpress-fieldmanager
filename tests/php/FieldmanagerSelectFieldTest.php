@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Select Field
- *
- * @group field
- * @group select
  */
+#[Group( 'field' )]
+#[Group( 'select' )]
 class FieldmanagerSelectFieldTest extends WP_UnitTestCase {
 	public $post_id;
 	public $post;

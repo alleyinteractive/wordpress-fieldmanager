@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Datasource Term
- *
- * @group datasource
- * @group term
  */
+#[Group( 'datasource' )]
+#[Group( 'term' )]
 class FieldmanagerDatasourceTermTest extends WP_UnitTestCase {
 	public $post;
 
@@ -265,9 +266,8 @@ class FieldmanagerDatasourceTermTest extends WP_UnitTestCase {
 	/**
 	 * Test behavior when only saving to taxonomy within a single repeating
 	 * field set to not use serialized meta.
-	 *
-	 * @group serialize_data
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_datasource_term_save_only_tax_with_unseriaized_data() {
 		$this->assertCount( 0, wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) ) );
 
@@ -325,9 +325,8 @@ class FieldmanagerDatasourceTermTest extends WP_UnitTestCase {
 	/**
 	 * Test behavior when only saving to taxonomy within a group set to not use
 	 * serialized meta.
-	 *
-	 * @group serialize_data
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_group_datasource_term_save_only_tax_with_unseriaized_data() {
 		$this->assertCount( 0, wp_get_post_terms( $this->post->ID, $this->term->taxonomy, array( 'fields' => 'names' ) ) );
 

@@ -5,12 +5,13 @@
  * @package Fieldmanager
  */
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager TextArea Field
- *
- * @group field
- * @group textarea
  */
+#[Group( 'field' )]
+#[Group( 'textarea' )]
 class FieldmanagerTextAreaFieldTest extends WP_UnitTestCase {
 
 	/**

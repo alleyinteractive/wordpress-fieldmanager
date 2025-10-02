@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Media Field
- *
- * @group field
- * @group media
  */
+#[Group( 'field' )]
+#[Group( 'media' )]
 class FieldmanagerMediaFieldTest extends WP_UnitTestCase {
 
 	protected $post;

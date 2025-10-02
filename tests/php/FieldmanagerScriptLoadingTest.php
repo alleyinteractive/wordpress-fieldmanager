@@ -1,12 +1,12 @@
 <?php
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Fieldmanager script-loading.
- *
- * @group scripts
  */
+#[Group( 'scripts' )]
 class FieldmanagerScriptLoadingTest extends FieldmanagerAssetsUnitTestCase {
 
 	public function set_up() {

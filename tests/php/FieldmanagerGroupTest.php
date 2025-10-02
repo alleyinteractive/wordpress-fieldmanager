@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Datasource Post
- *
- * @group field
- * @group group
  */
+#[Group( 'field' )]
+#[Group( 'group' )]
 class FieldmanagerGroupTest extends WP_UnitTestCase {
 
 	/**
@@ -313,9 +314,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString('fm-tabbed-vertical', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_group_render() {
 		$args = array(
 			'name'     => 'base_group',
@@ -343,9 +342,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString('name="base_group[test_htmlfield]"', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_group_render_with_data() {
 		$args = array(
 			'name'     => 'base_group',
@@ -409,9 +406,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'name="base_group[test_htmlfield]"', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_group_save() {
 		$args = array(
 			'name'           => 'base_group',
@@ -440,9 +435,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertEquals( $data['test_htmlfield'], get_post_meta( $this->post_id, 'test_htmlfield', true ) );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_deep_group_no_prefix() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -495,9 +488,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_deep_group_no_prefix_repeatable_field() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -568,9 +559,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field_two'][2] . '"', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_mid_group_prefix() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -620,9 +609,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_mid_group_serialize() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -669,9 +656,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( 'value="' . $data['level2']['level3']['level4']['field'] . '"', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_tabbed() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -722,9 +707,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( '>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_mixed() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -760,9 +743,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( '>' . $data['test_group']['text'] . '</textarea>', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_mixed_depth() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -799,9 +780,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertStringContainsString( '>' . $data['test_group']['deep_text'] . '</textarea>', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_repeatable_group() {
 		$this->expectException( FM_Developer_Exception::class );
 
@@ -818,9 +797,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_repeatable_parent() {
 		$this->expectException( FM_Developer_Exception::class );
 
@@ -843,9 +820,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_repeatable_distant_ancestor() {
 		$this->expectException( FM_Developer_Exception::class );
 
@@ -880,9 +855,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_indexed_field() {
 		$this->expectException( FM_Developer_Exception::class );
 
@@ -902,9 +875,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		);
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_no_name_conflict() {
 		$base = new Fieldmanager_Group(
 			array(
@@ -937,9 +908,7 @@ class FieldmanagerGroupTest extends WP_UnitTestCase {
 		$this->assertEquals( $data['test_group']['test_text'], get_post_meta( $this->post_id, 'test_group_test_text', true ) );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_name_conflict() {
 		$this->expectException( FM_Developer_Exception::class );
 

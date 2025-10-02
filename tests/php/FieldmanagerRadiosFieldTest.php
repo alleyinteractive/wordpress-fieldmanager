@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Radio Field
- *
- * @group field
- * @group radio
  */
+#[Group( 'field' )]
+#[Group( 'radio' )]
 class FieldmanagerRadiosFieldTest extends WP_UnitTestCase {
 	public $post_id;
 	public $post;

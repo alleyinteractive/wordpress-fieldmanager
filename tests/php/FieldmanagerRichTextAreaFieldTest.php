@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager RichTextArea Field
- *
- * @group field
- * @group richtextarea
  */
+#[Group( 'field' )]
+#[Group( 'richtextarea' )]
 class FieldmanagerRichTextAreaFieldTest extends WP_UnitTestCase {
 	/**
 	 * The post object.

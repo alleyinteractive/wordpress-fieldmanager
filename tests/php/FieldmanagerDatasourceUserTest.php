@@ -1,13 +1,13 @@
 <?php
 
 use Mantle\Testing\Exceptions\WP_Die_Exception;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the Fieldmanager Datasource User
- *
- * @group datasource
- * @group user
  */
+#[Group( 'datasource' )]
+#[Group( 'user' )]
 class FieldmanagerDatasourceUserTest extends WP_UnitTestCase {
 	/**
 	 * Author User ID.

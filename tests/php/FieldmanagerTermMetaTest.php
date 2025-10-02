@@ -1,12 +1,13 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Term Meta
- *
- * @group util
- * @group term
- * @group fm_term_meta
  */
+#[Group( 'util' )]
+#[Group( 'term' )]
+#[Group( 'fm_term_meta' )]
 class FieldmanagerTermMetaTest extends WP_UnitTestCase {
 	/**
 	 * The Term Object.
@@ -123,16 +124,11 @@ class FieldmanagerTermMetaTest extends WP_UnitTestCase {
 	}
 
 	/**
-	 * @group term_splitting
 	 * Fieldmanager_Util_Term_Meta::get_term_meta is deprecated as of 1.0.0-beta.3
 	 * Fieldmanager_Util_Term_Meta::add_term_meta is deprecated as of 1.0.0-beta.3
 	 */
+	#[Group( 'term_splitting' )]
 	public function test_term_splitting() {
-		// Ensure that term splitting exists
-		if ( ! function_exists( 'wp_get_split_terms' ) ) {
-			return;
-		}
-
 		global $wpdb;
 
 		// Add our first term. This is the one that will split off.

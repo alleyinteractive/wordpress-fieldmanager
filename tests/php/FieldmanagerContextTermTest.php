@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Term context
- *
- * @group context
- * @group term
  */
+#[Group( 'context' )]
+#[Group( 'term' )]
 class FieldmanagerContextTermTest extends WP_UnitTestCase {
 	/**
 	 * Taxonomy name.
@@ -266,9 +267,7 @@ class FieldmanagerContextTermTest extends WP_UnitTestCase {
 		$this->assertEquals( 'Alley', $updated_term->name );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field() {
 		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
 			return $this->_skip_tests_because_version( 4.4 );
@@ -295,9 +294,7 @@ class FieldmanagerContextTermTest extends WP_UnitTestCase {
 		$this->assertStringNotContainsString( 'name="base_field[4]"', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field_sorting() {
 		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
 			return $this->_skip_tests_because_version( 4.4 );
@@ -331,9 +328,7 @@ class FieldmanagerContextTermTest extends WP_UnitTestCase {
 		$this->assertMatchesRegularExpression( '/<input[^>]+name="base_field\[2\][^>]+value="' . $item_2 . '"/', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_tabbed() {
 		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
 			return $this->_skip_tests_because_version( 4.4 );
@@ -387,9 +382,7 @@ class FieldmanagerContextTermTest extends WP_UnitTestCase {
 		$this->assertStringContainsString('>' . $data['tab-2']['test_textarea'] . '</textarea>', $html );
 	}
 
-	/**
-	 * @group serialize_data
-	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_mixed_depth() {
 		if ( ! _fm_phpunit_is_wp_at_least( 4.4 ) ) {
 			return $this->_skip_tests_because_version( 4.4 );

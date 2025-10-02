@@ -1,9 +1,11 @@
 <?php
+
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests Fieldmanager script and style enqueueing.
- *
- * @group assets
  */
+#[Group( 'assets' )]
 class FieldmanagerUtilAssetsTest extends FieldmanagerAssetsUnitTestCase {
 
 	/**

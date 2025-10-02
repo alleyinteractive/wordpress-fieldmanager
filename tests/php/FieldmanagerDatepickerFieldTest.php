@@ -1,11 +1,12 @@
 <?php
 
+use PHPUnit\Framework\Attributes\Group;
+
 /**
  * Tests the Fieldmanager Datepicker Field
- *
- * @group field
- * @group datepicker
  */
+#[Group( 'field' )]
+#[Group( 'datepicker' )]
 class FieldmanagerDatepickerFieldTest extends WP_UnitTestCase {
 	/**
 	 * The post object.
@@ -74,8 +75,6 @@ class FieldmanagerDatepickerFieldTest extends WP_UnitTestCase {
 
 	/**
 	 * Test behavior when using the time support for datepicker
-	 *
-	 * @group 1111
 	 */
 	public function test_time_feature() {
 

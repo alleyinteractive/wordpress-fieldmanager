@@ -7,13 +7,13 @@
 
 use Mantle\Testing\Mock_Action;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests Fieldmanager_Field, which handles validation and
  * throws most core exceptions
- *
- * @group field
  */
+#[Group( 'field' )]
 class FieldmanagerFieldTest extends WP_UnitTestCase {
 
 	/**
@@ -995,9 +995,8 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 
 	/**
 	 * Verify that passing false to serialize_data does nothing on an unserialized field.
-	 *
-	 * @group serialize_data
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field_render() {
 		$args = array(
 			'name'  => 'base_field',
@@ -1023,9 +1022,8 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 	/**
 	 * Verify that passing false to serialize_data modifies the data storage on a
 	 * field that requires serialization.
-	 *
-	 * @group serialize_data
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field_render_with_data() {
 		$args = array(
 			'name'  => 'base_field',
@@ -1057,9 +1055,8 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 
 	/**
 	 * Verify passing false to serialize_data through the save_to_post_meta method.
-	 *
-	 * @group serialize_data
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field_save() {
 		$base = new Fieldmanager_TextField(
 			array(
@@ -1077,9 +1074,8 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 	/**
 	 * Verify passing false to serialize_data through the save_to_post_meta method on data
 	 * that requires serialization.
-	 *
-	 * @group serialize_data
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field_sorting() {
 		$item_1  = rand_str();
 		$item_2  = rand_str();
@@ -1123,9 +1119,8 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 
 	/**
 	 * Verify the impact of not defining a limit.
-	 *
-	 * @group serialize_data
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_limit_1_no_impact() {
 		$base = new Fieldmanager_TextField(
 			array(
@@ -1141,9 +1136,8 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 
 	/**
 	 * Verify an exception is thrown when passing index true.
-	 *
-	 * @group serialize_data
 	 */
+	#[Group( 'serialize_data' )]
 	public function test_unserialize_data_single_field_index() {
 		$this->expectException( FM_Developer_Exception::class );
 

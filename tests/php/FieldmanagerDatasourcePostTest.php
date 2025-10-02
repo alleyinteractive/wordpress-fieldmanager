@@ -2,13 +2,13 @@
 
 use Mantle\Testing\Attributes\Expected_Incorrect_Usage;
 use Mantle\Testing\Exceptions\WP_Die_Exception;
+use PHPUnit\Framework\Attributes\Group;
 
 /**
  * Tests the Fieldmanager Datasource Post
- *
- * @group datasource
- * @group post
  */
+#[Group( 'datasource' )]
+#[Group( 'post' )]
 class FieldmanagerDatasourcePostTest extends WP_UnitTestCase {
 
 	/**
