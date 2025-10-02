@@ -16,7 +16,7 @@
   },
   "require-dev": {
     "alleyinteractive/alley-coding-standards": "^1.0",
-    "mantle-framework/testkit": "^1.5"
+    "mantle-framework/testkit": "^1.3"
   },
   "scripts": {
     "phpcs": "vendor/bin/phpcs",
