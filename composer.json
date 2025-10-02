@@ -11,16 +11,21 @@
     }
   ],
   "require": {
+    "php": ">=8.1",
     "composer/installers": "^1.0 || ^2.0"
   },
   "require-dev": {
-    "alleyinteractive/alley-coding-standards": "^0.3.0",
-    "mantle-framework/testkit": "^1.9"
+    "alleyinteractive/alley-coding-standards": "^1.0",
+    "mantle-framework/testkit": "^1.5"
   },
   "scripts": {
     "phpcs": "vendor/bin/phpcs",
     "phpcbf": "vendor/bin/phpcbf",
-    "phpunit": "vendor/bin/phpunit"
+    "phpunit": "vendor/bin/phpunit",
+    "test": [
+      "@phpcs",
+      "@phpunit"
+    ]
   },
   "config": {
     "allow-plugins": {
