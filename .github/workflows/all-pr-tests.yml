@@ -1,0 +1,69 @@
+name: "All Pull Request Tests"
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+  pull_request:
+    branches:
+      - develop
+      - main
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  # We use a single job to ensure that all steps run in the same environment and
+  # reduce the number of minutes used.
+  pr-tests:
+    # Don't run on draft PRs
+    if: github.event.pull_request.draft == false
+    # Timeout after 10 minutes
+    timeout-minutes: 10
+    # Define a matrix of PHP/WordPress versions to test against
+    strategy:
+      matrix:
+        php: [8.2, 8.3, 8.4]
+        wordpress: ["latest"]
+        multisite: ['true', 'false']
+    runs-on: ubuntu-latest
+    # Cancel any existing runs of this workflow
+    concurrency:
+      group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}-P${{ matrix.php }}-WP${{ matrix.wordpress }}-MS${{ matrix.multisite }}
+      cancel-in-progress: true
+    # Name the job in the matrix
+    name: "PR Tests PHP ${{ matrix.php }} WordPress ${{ matrix.wordpress }} Multisite ${{ matrix.multisite }}"
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Run General Tests
+        # See https://github.com/alleyinteractive/action-test-general for more options
+        uses: alleyinteractive/action-test-general@develop
+
+      - name: Run PHP Tests
+        # See https://github.com/alleyinteractive/action-test-php for more options
+        uses: alleyinteractive/action-test-php@develop
+        with:
+          php-version: '${{ matrix.php }}'
+          wordpress-version: '${{ matrix.wordpress }}'
+          wordpress-multisite: '${{ matrix.multisite }}'
+          skip-wordpress-install: 'true'
+  # This required job ensures that all PR checks have passed before merging.
+  all-pr-checks-passed:
+    name: All PR checks passed
+    needs:
+      - pr-tests
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Check job statuses
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" ]]; then
+            echo "One or more jobs failed"
+            exit 1
+          elif [[ "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]]; then
+            echo "One or more jobs were cancelled"
+            exit 1
+          else
+            echo "All jobs passed or were skipped"
+            exit 0
+          fi
