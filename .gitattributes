@@ -1,0 +1,29 @@
+#
+# Exclude these files from release archives.
+#
+# This will also make the files unavailable when using Composer with `--prefer-dist`.
+#
+# Via WPCS.
+#
+/.github export-ignore
+/.phpcs export-ignore
+/apigen.neon export-ignore
+/package.json export-ignore
+/phpcs.xml export-ignore
+/phpunit.xml export-ignore
+/rector.php export-ignore
+/tests export-ignore
+
+#
+# Auto detect text files and perform LF normalization.
+#
+# http://davidlaing.com/2012/09/19/customise-your-gitattributes-to-become-a-git-ninja/
+#
+* text=auto
+
+#
+# The above will handle all files not found below.
+#
+*.md text
+*.php text
+*.inc text

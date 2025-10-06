@@ -14,6 +14,11 @@ trim_trailing_whitespace = true
 indent_style = tab
 indent_size = 4
 
-[*.json,*.yml,*.feature]
+[*.{ts,tsx,js,jsx,scss,css,json,yaml,yml,feature,xml}]
+indent_style = space
+indent_size = 2
+
+# Dotfiles
+[.*]
 indent_style = space
 indent_size = 2
