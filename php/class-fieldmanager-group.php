@@ -163,7 +163,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			// if the array key is not an int, and the name attr is set, and they don't match, we got a problem.
 			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
 			if ( $element->name && ! is_int( $name ) && $element->name !== $name ) {
-				throw new FM_Developer_Exception( esc_html( esc_html__( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name ) );
+				throw new FM_Developer_Exception( esc_html( __( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name ) );
 			} elseif ( ! $element->name ) {
 				$element->name = $name;
 			}

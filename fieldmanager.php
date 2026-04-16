@@ -554,7 +554,7 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
 	}
 	if ( isset( $submenus[ $group_name ] ) ) {
 		/* translators: %s: group name */
-		throw new FM_Duplicate_Submenu_Name_Exception( esc_html( sprintf( esc_html__( '%s is already in use as a submenu name', 'fieldmanager' ), $group_name ) ) );
+		throw new FM_Duplicate_Submenu_Name_Exception( esc_html( sprintf( __( '%s is already in use as a submenu name', 'fieldmanager' ), $group_name ) ) );
 	}
 
 	if ( ! $menu_title ) {
