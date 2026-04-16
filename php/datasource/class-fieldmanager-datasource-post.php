@@ -159,9 +159,9 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 				$exact_post = get_post( $post_id );
 				if ( $exact_post && (
 					// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-					'any' == $post_args['post_type'] ||
+					'any' === $post_args['post_type'] ||
 					// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-					$post_args['post_type'] == $exact_post->post_type ||
+					$post_args['post_type'] === $exact_post->post_type ||
 					// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 					in_array( $exact_post->post_type, $post_args['post_type'] )
 				) ) {
@@ -243,7 +243,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 'post' == $field->data_type && ! empty( $this->reciprocal ) && ! empty( $current_values ) && is_array( $current_values ) ) {
+		if ( 'post' === $field->data_type && ! empty( $this->reciprocal ) && ! empty( $current_values ) && is_array( $current_values ) ) {
 			foreach ( $current_values as $reciprocal_post_id ) {
 				delete_post_meta( $reciprocal_post_id, $this->reciprocal, $field->data_id );
 			}
@@ -282,7 +282,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 		}
 
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( $this->save_to_post_parent && 1 == $field->limit && 'post' == $field->data_type ) {
+		if ( $this->save_to_post_parent && 1 === $field->limit && 'post' === $field->data_type ) {
 			if ( ! wp_is_post_revision( $field->data_id ) ) {
 				Fieldmanager_Context_Post::safe_update_post(
 					array(
@@ -332,7 +332,7 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			$post_parent = wp_get_post_parent_id( $field->data_id );
 			if ( $post_parent ) {
 				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-				return ( 1 == $field->limit && empty( $field->multiple ) ) ? $post_parent : array( $post_parent );
+				return ( 1 === $field->limit && empty( $field->multiple ) ) ? $post_parent : array( $post_parent );
 			}
 		}
 		return $values;
@@ -367,7 +367,6 @@ class Fieldmanager_Datasource_Post extends Fieldmanager_Datasource {
 			esc_html__( 'Edit', 'fieldmanager' )
 		);
 	}
-
 }
 
 /**
@@ -447,7 +446,7 @@ function fm_url_to_post_id( $url ) {
 		// If the requesting file is the anchor of the match, prepend it
 		// to the path info.
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( ! empty( $url ) && ( $url != $request ) && ( strpos( $match, $url ) === 0 ) ) {
+		if ( ! empty( $url ) && ( $url !== $request ) && ( strpos( $match, $url ) === 0 ) ) {
 			$request_match = $url . '/' . $request;
 		}
 

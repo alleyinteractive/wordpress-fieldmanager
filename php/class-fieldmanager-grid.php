@@ -49,7 +49,7 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 			'size' => '50',
 		);
 		parent::__construct( $label, $options );
-		$this->sanitize = function( $row, $col, $values ) {
+		$this->sanitize = function ( $row, $col, $values ) {
 			foreach ( $values as $k => $val ) {
 				$values[ $k ] = sanitize_text_field( $val );
 			}
@@ -116,5 +116,4 @@ class Fieldmanager_Grid extends Fieldmanager_Field {
 		}
 		return $rows;
 	}
-
 }

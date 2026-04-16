@@ -140,7 +140,7 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 */
 	public function presave( $value, $current_value = array() ) {
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 0 == $value || ! is_numeric( $value ) ) {
+		if ( 0 === $value || ! is_numeric( $value ) ) {
 			return null;
 		}
 		return absint( $value );
@@ -176,7 +176,8 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			) . '</a>';
 
 			// phpcs:ignore PEAR.Functions.FunctionCallSignature.ContentAfterOpenBracket -- baseline
-			$preview .= sprintf( '<div class="fm-file-detail">%1$s<h4>%2$s</h4><span class="fm-file-type">%3$s</span></div>',
+			$preview .= sprintf(
+				'<div class="fm-file-detail">%1$s<h4>%2$s</h4><span class="fm-file-type">%3$s</span></div>',
 				esc_html( $file_label ),
 				wp_get_attachment_link( $value, $this->preview_size, true, true, $attachment->post_title ),
 				esc_html( $attachment->post_mime_type )
@@ -218,5 +219,4 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 			$this->get_element_attributes()
 		);
 	}
-
 }

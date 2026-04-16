@@ -112,7 +112,7 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 
 		if ( isset( $this->save_keys[ $field->get_element_key() ] ) ) {
 			/* translators: %s: element key for the field */
-			throw new FM_Developer_Exception( sprintf( esc_html__( 'You have two fields in this group saving to the same key: %s', 'fieldmanager' ), $field->get_element_key() ) );
+			throw new FM_Developer_Exception( esc_html( sprintf( esc_html__( 'You have two fields in this group saving to the same key: %s', 'fieldmanager' ), $field->get_element_key() ) ) );
 		} else {
 			$this->save_keys[ $field->get_element_key() ] = true;
 		}
@@ -276,5 +276,4 @@ abstract class Fieldmanager_Context_Storable extends Fieldmanager_Context {
 	 *              {@see delete_post_meta()}.
 	 */
 	abstract protected function delete_data( $data_id, $data_key, $data_value = '' );
-
 }

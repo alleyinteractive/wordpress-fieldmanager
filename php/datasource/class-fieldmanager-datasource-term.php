@@ -157,7 +157,7 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 
 			if ( count( $terms ) > 0 ) {
 				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-				if ( 1 == $field->limit && empty( $field->multiple ) ) {
+				if ( 1 === $field->limit && empty( $field->multiple ) ) {
 					return $terms[0]->term_id;
 				} else {
 					$ret = array();
@@ -390,9 +390,9 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			if ( ! empty( $pattern ) ) {
 				$tax_args['search'] = $pattern;
 			}
-			$child_terms = get_terms( $this->get_taxonomies(), $tax_args );
+			$child_terms = get_terms( array_merge( $tax_args, array( 'taxonomy' => $this->get_taxonomies() ) ) );
 			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-			if ( 0 == $this->taxonomy_hierarchical_depth || $depth + 1 < $this->taxonomy_hierarchical_depth ) {
+			if ( 0 === $this->taxonomy_hierarchical_depth || $depth + 1 < $this->taxonomy_hierarchical_depth ) {
 				if ( ! empty( $child_terms ) ) {
 					$stack = $this->build_hierarchical_term_data( $child_terms, $this->taxonomy_args, $depth + 1, $stack );
 				}
@@ -447,8 +447,8 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			return $term;
 		} else {
 			$terms = get_terms(
-				$this->get_taxonomies(),
 				array(
+					'taxonomy'   => $this->get_taxonomies(),
 					'hide_empty' => false,
 					'include'    => array( $term_id ),
 					'number'     => 1,
@@ -492,5 +492,4 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 			esc_html__( 'Edit', 'fieldmanager' )
 		);
 	}
-
 }

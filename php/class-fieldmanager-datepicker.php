@@ -171,5 +171,4 @@ class Fieldmanager_Datepicker extends Fieldmanager_Field {
 	public function get_am_pm( $value ) {
 		return ! empty( $value ) ? gmdate( 'a', $value ) : '';
 	}
-
 }

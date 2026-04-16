@@ -61,7 +61,7 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 			esc_attr( (string) $this->checked_value ),
 			$this->get_element_attributes(),
 			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-			( $value == $this->checked_value ) ? 'checked="checked"' : '',
+			( $value === $this->checked_value ) ? 'checked="checked"' : '',
 			esc_attr( $this->get_element_id() ),
 			$this->unchecked_value
 		);
@@ -76,7 +76,7 @@ class Fieldmanager_Checkbox extends Fieldmanager_Field {
 	 */
 	public function presave( $value = null, $current_value = array() ) {
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( $value == $this->checked_value || $value === $this->unchecked_value ) {
+		if ( $value === $this->checked_value || $value === $this->unchecked_value ) {
 			return $value;
 		} elseif ( empty( $value ) ) {
 			return $this->unchecked_value;

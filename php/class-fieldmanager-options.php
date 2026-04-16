@@ -155,11 +155,11 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 				// If grouped display is desired, check where to add the start and end points
 				// Note we are assuming the data has come pre-sorted into groups.
 				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-				if ( $this->grouped && ( $current_group != $data_element['group'] ) ) {
+				if ( $this->grouped && ( $current_group !== $data_element['group'] ) ) {
 
 					// Append the end for the previous group unless this is the first group.
 					// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-					if ( '' != $current_group ) {
+					if ( '' !== $current_group ) {
 						$form_data_elements_html .= $this->form_data_end_group();
 					}
 
@@ -181,7 +181,6 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 		}
 
 		return $form_data_elements_html;
-
 	}
 
 	/**
@@ -212,7 +211,7 @@ abstract class Fieldmanager_Options extends Fieldmanager_Field {
 	 */
 	public function option_selected( $current_option, $options, $attribute ) {
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
-		if ( ( null != $options && ! empty( $options ) ) && in_array( $current_option, $options ) ) {
+		if ( ( null !== $options && ! empty( $options ) ) && in_array( $current_option, $options ) ) {
 			return $attribute;
 		}
 

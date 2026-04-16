@@ -23,7 +23,7 @@ define( 'FM_VERSION', '1.6.1' );
 /**
  * Filesystem path to Fieldmanager.
  */
-define( 'FM_BASE_DIR', dirname( __FILE__ ) );
+define( 'FM_BASE_DIR', __DIR__ );
 
 /**
  * Default version number for static assets registered via Fieldmanager.
@@ -116,7 +116,7 @@ if ( function_exists( 'spl_autoload_register' ) ) {
 function fieldmanager_load_file( $file ) {
 	$file = FM_BASE_DIR . '/php/' . $file;
 	if ( ! file_exists( $file ) ) {
-		throw new FM_Class_Not_Found_Exception( $file );
+		throw new FM_Class_Not_Found_Exception( esc_html( $file ) );
 	}
 	// phpcs:ignore WordPressVIPMinimum.Files.IncludingFile.UsingVariable -- baseline
 	require_once $file;
@@ -184,7 +184,7 @@ function fieldmanager_get_template( $tpl_slug ) {
  *                                 Default none.
  * @param bool        $admin       Deprecated.
  */
-function fm_add_script( $handle, $path = false, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) {
+function fm_add_script( $handle, $path = false, $deps = array(), $ver = false, $in_footer = false, $data_object = '', $data = array(), $plugin_dir = '', $admin = true ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- $admin is deprecated; other params used via compact()
 	// Ensure the Fieldmanager loader has been enqueued.
 	Fieldmanager_Util_Assets::instance()->add_script(
 		array(
@@ -212,7 +212,7 @@ function fm_add_script( $handle, $path = false, $deps = array(), $ver = false, $
  * @param string      $media  Optional. Media for this stylesheet. Default 'all'.
  * @param bool        $admin  Deprecated.
  */
-function fm_add_style( $handle, $path = false, $deps = array(), $ver = false, $media = 'all', $admin = true ) {
+function fm_add_style( $handle, $path = false, $deps = array(), $ver = false, $media = 'all', $admin = true ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- $admin is deprecated; other params used via compact()
 	Fieldmanager_Util_Assets::instance()->add_style( compact( 'handle', 'path', 'deps', 'ver', 'media' ) );
 }
 
@@ -554,7 +554,7 @@ function fm_register_submenu_page( $group_name, $parent_slug, $page_title, $menu
 	}
 	if ( isset( $submenus[ $group_name ] ) ) {
 		/* translators: %s: group name */
-		throw new FM_Duplicate_Submenu_Name_Exception( sprintf( esc_html__( '%s is already in use as a submenu name', 'fieldmanager' ), $group_name ) );
+		throw new FM_Duplicate_Submenu_Name_Exception( esc_html( sprintf( esc_html__( '%s is already in use as a submenu name', 'fieldmanager' ), $group_name ) ) );
 	}
 
 	if ( ! $menu_title ) {

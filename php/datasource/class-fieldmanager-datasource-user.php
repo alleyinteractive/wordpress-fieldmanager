@@ -96,29 +96,33 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( ! in_array( $this->store_property, $this->allowed_store_properties ) ) {
 			throw new FM_Developer_Exception(
-				sprintf(
-					/* translators: 1: stored property, 2: allowed store properties */
-					__( 'Store property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
-					$this->store_property,
-					implode( ', ', $this->allowed_store_properties )
+				esc_html(
+					sprintf(
+						/* translators: 1: stored property, 2: allowed store properties */
+						__( 'Store property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
+						$this->store_property,
+						implode( ', ', $this->allowed_store_properties )
+					)
 				)
 			);
 		}
 
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( ! empty( $this->reciprocal ) && 'ID' != $this->store_property ) {
-			throw new FM_Developer_Exception( __( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID.', 'fieldmanager' ) );
+		if ( ! empty( $this->reciprocal ) && 'ID' !== $this->store_property ) {
+			throw new FM_Developer_Exception( esc_html__( 'You cannot use reciprocal relationships with FM_Datasource_User if store_property is not set to ID.', 'fieldmanager' ) );
 		}
 
 		// Validate improper usage of display property.
 		// phpcs:ignore WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( ! in_array( $this->display_property, $this->allowed_display_properties ) ) {
 			throw new FM_Developer_Exception(
-				sprintf(
-					/* translators: 1: display property, 2: allowed display properties */
-					__( 'Display property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
-					$this->display_property,
-					implode( ', ', $this->allowed_display_properties )
+				esc_html(
+					sprintf(
+						/* translators: 1: display property, 2: allowed display properties */
+						__( 'Display property %1$s is invalid. Must be one of %2$s.', 'fieldmanager' ),
+						$this->display_property,
+						implode( ', ', $this->allowed_display_properties )
+					)
 				)
 			);
 		}
@@ -209,7 +213,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 	 */
 	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 'post' != $field->data_type || ! $this->reciprocal || 'ID' != $this->store_property ) {
+		if ( 'post' !== $field->data_type || ! $this->reciprocal || 'ID' !== $this->store_property ) {
 			return $values;
 		}
 
@@ -266,7 +270,7 @@ class Fieldmanager_Datasource_User extends Fieldmanager_Datasource {
 				wp_die( esc_html( sprintf( __( 'Tried to refer to user "%s" which current user cannot edit.', 'fieldmanager' ), $v ) ) );
 			}
 			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-			if ( $this->reciprocal && 'ID' == $this->store_property ) {
+			if ( $this->reciprocal && 'ID' === $this->store_property ) {
 				call_user_func(
 					/**
 					 * Filters function used to add user meta. This improves compatibility with

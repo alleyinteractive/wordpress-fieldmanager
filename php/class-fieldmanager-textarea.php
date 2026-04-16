@@ -57,5 +57,4 @@ class Fieldmanager_TextArea extends Fieldmanager_Field {
 			esc_textarea( $value )
 		);
 	}
-
 }

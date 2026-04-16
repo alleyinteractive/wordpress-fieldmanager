@@ -98,11 +98,10 @@ class Fieldmanager_Datasource {
 		}
 
 		if ( get_class( $this ) === __CLASS__ && empty( $options ) ) {
-			$message = __( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' );
 			if ( Fieldmanager_Field::$debug ) {
-				throw new FM_Developer_Exception( $message );
+				throw new FM_Developer_Exception( esc_html__( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' ) );
 			} else {
-				wp_die( esc_html( $message ), esc_html__( 'Invalid Datasource Options', 'fieldmanager' ) );
+				wp_die( esc_html__( 'Invalid options for Datasource; must use the options parameter to supply an array.', 'fieldmanager' ), esc_html__( 'Invalid Datasource Options', 'fieldmanager' ) );
 			}
 		}
 
@@ -209,7 +208,7 @@ class Fieldmanager_Datasource {
 	 * @param  mixed              $current_values Current value.
 	 * @return string $values Cleaned value.
 	 */
-	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) {
+	public function presave_alter_values( Fieldmanager_Field $field, $values, $current_values ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- $current_values is required by the interface and used by subclasses
 		// nothing here, but some child classes need this method.
 		return $values;
 	}
@@ -233,7 +232,7 @@ class Fieldmanager_Datasource {
 	 * @param  mixed              $current_value Current value.
 	 * @return string $values Cleaned value.
 	 */
-	public function presave( Fieldmanager_Field $field, $value, $current_value ) {
+	public function presave( Fieldmanager_Field $field, $value, $current_value ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- $current_value is required by the interface and used by subclasses
 		if ( is_array( $value ) ) {
 			return array_map( 'sanitize_text_field', $value );
 		}
@@ -246,7 +245,7 @@ class Fieldmanager_Datasource {
 	 * @param mixed $value The current value.
 	 * @return string HTML string.
 	 */
-	public function get_view_link( $value ) {
+	public function get_view_link( $value ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- $value is required by the interface and used by subclasses
 		return '';
 	}
 
@@ -256,8 +255,7 @@ class Fieldmanager_Datasource {
 	 * @param int|string $value The current value.
 	 * @return string HTML string.
 	 */
-	public function get_edit_link( $value ) {
+	public function get_edit_link( $value ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- $value is required by the interface and used by subclasses
 		return '';
 	}
-
 }

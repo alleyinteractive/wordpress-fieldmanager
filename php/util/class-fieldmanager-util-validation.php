@@ -108,7 +108,7 @@ class Fieldmanager_Util_Validation {
 		// Add the appropriate action hook to finalize and output validation JS.
 		// Also determine where the jQuery validation script needs to be added.
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 'page' == $context ) {
+		if ( 'page' === $context ) {
 			// Currently only the page context outputs to the frontend.
 			$action = 'wp_footer';
 			$admin  = false;
@@ -168,11 +168,8 @@ class Fieldmanager_Util_Validation {
 					// This is not a rule available in jQuery validation.
 					/* translators: %s: validation key */
 					$fm->_invalid_definition( sprintf( __( 'The validation rule "%s" does not exist.', 'fieldmanager' ), $validation_key ) );
-				} else {
-					// This rule is valid so check for any messages.
-					if ( isset( $fm->validation_messages[ $validation_key ] ) ) {
-						$messages[ $validation_key ] = $fm->validation_messages[ $validation_key ];
-					}
+				} elseif ( isset( $fm->validation_messages[ $validation_key ] ) ) {
+					$messages[ $validation_key ] = $fm->validation_messages[ $validation_key ];
 				}
 			}
 		}
@@ -181,7 +178,7 @@ class Fieldmanager_Util_Validation {
 		// This is necessary because it is the only way validation is supported on the term add form.
 		// Other validation methods won't work and will just fail gracefully.
 		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 'term' == $this->context && isset( $fm->validation_rules['required'] ) && $fm->validation_rules['required'] ) {
+		if ( 'term' === $this->context && isset( $fm->validation_rules['required'] ) && $fm->validation_rules['required'] ) {
 			$fm->required = true;
 		}
 
@@ -244,12 +241,12 @@ class Fieldmanager_Util_Validation {
 			// Add the Fieldmanager validation script and CSS.
 			// This is not done via the normal enqueue process since there is no way to know at that point if any fields will require validation.
 			// Doing this here avoids loading JS/CSS for validation if not in use.
-			echo sprintf(
+			printf(
 				"<link rel='%s' id='fm-validation-css' href='%scss/fieldmanager-validation.css' />\n",
 				'stylesheet',
 				esc_url( fieldmanager_get_baseurl() )
 			);
-			echo sprintf(
+			printf(
 				"<%s type='%s' src='%sjs/validation/fieldmanager-validation.js?ver=0.3'></script>\n",
 				'script',
 				'text/javascript',
@@ -257,7 +254,7 @@ class Fieldmanager_Util_Validation {
 			);
 
 			// Add the jQuery validation script.
-			echo sprintf(
+			printf(
 				"<%s type='%s' src='%sjs/validation/jquery.validate.min.js'></script>\n",
 				'script',
 				'text/javascript',
@@ -265,7 +262,7 @@ class Fieldmanager_Util_Validation {
 			);
 
 			// Add the ignore, rules and messages to final validate method with form ID, wrap in script tags and output.
-			echo sprintf(
+			printf(
 				"\t<script type='text/javascript'>\n\t\t( function( $ ) {\n\t\t$( document ).ready( function () {\n\t\t\tvar validator = $( '#%s' ).validate( {\n\t\t\t\tinvalidHandler: function( event, validator ) { fm_validation.invalidHandler( event, validator ); },\n\t\t\t\tsubmitHandler: function( form ) { fm_validation.submitHandler( form ); },\n\t\t\t\terrorClass: \"fm-js-error\",\n\t\t\t\tignore: \"%s\",\n%s%s\n\t\t\t} );\n\t\t} );\n\t\t} )( jQuery );\n\t</script>\n",
 				esc_attr( $this->form_id ),
 				esc_js( $ignore_js ),
