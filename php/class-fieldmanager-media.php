@@ -139,8 +139,8 @@ class Fieldmanager_Media extends Fieldmanager_Field {
 	 * @return int The sanitized value.
 	 */
 	public function presave( $value, $current_value = array() ) {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 0 === $value || ! is_numeric( $value ) ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 0 == $value || ! is_numeric( $value ) ) {
 			return null;
 		}
 		return absint( $value );

@@ -111,8 +111,8 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 		?>
 		<div class="wrap">
 			<?php
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Recommended -- baseline
-			if ( ! empty( $_GET['msg'] ) && 'success' === $_GET['msg'] ) :
+			// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.Security.NonceVerification.Recommended -- baseline
+			if ( ! empty( $_GET['msg'] ) && 'success' == $_GET['msg'] ) :
 				?>
 				<div class="updated success"><p><?php echo esc_html( $this->updated_message ); ?></p></div>
 			<?php endif; ?>
@@ -144,8 +144,8 @@ class Fieldmanager_Context_Submenu extends Fieldmanager_Context_Storable {
 	 * Save a submenu page
 	 */
 	public function handle_submenu_save() {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Recommended -- baseline
-		if ( empty( $_GET['page'] ) || $_GET['page'] !== $this->menu_slug ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.Security.NonceVerification.Recommended -- baseline
+		if ( empty( $_GET['page'] ) || $_GET['page'] != $this->menu_slug ) {
 			return;
 		}
 

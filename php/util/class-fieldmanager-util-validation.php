@@ -107,8 +107,8 @@ class Fieldmanager_Util_Validation {
 
 		// Add the appropriate action hook to finalize and output validation JS.
 		// Also determine where the jQuery validation script needs to be added.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 'page' === $context ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 'page' == $context ) {
 			// Currently only the page context outputs to the frontend.
 			$action = 'wp_footer';
 			$admin  = false;
@@ -177,8 +177,8 @@ class Fieldmanager_Util_Validation {
 		// If this is the term context and the field is required, modify the original element to have the required property.
 		// This is necessary because it is the only way validation is supported on the term add form.
 		// Other validation methods won't work and will just fail gracefully.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 'term' === $this->context && isset( $fm->validation_rules['required'] ) && $fm->validation_rules['required'] ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 'term' == $this->context && isset( $fm->validation_rules['required'] ) && $fm->validation_rules['required'] ) {
 			$fm->required = true;
 		}
 

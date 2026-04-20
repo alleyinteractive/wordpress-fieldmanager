@@ -458,8 +458,8 @@ abstract class Fieldmanager_Field {
 		}
 
 		// If this is a single field with a limit of 1, serialize_data has no impact.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( ! $this->serialize_data && ! $this->is_group() && 1 === $this->limit ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( ! $this->serialize_data && ! $this->is_group() && 1 == $this->limit ) {
 			$this->serialize_data = true;
 		}
 
@@ -483,8 +483,8 @@ abstract class Fieldmanager_Field {
 	 */
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 1 !== $this->limit ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 1 != $this->limit ) {
 			// count() generates a warning when passed non-countable values in PHP 7.2.
 			if ( is_scalar( $values ) ) {
 				$count_values = 1;
@@ -527,15 +527,15 @@ abstract class Fieldmanager_Field {
 
 		// Find the array position of the "counter" (e.g. in element[0], [0] is the counter, thus the position is 1).
 		$html_array_position = 0; // default is no counter; i.e. if $this->limit = 0.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 1 !== $this->limit ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 1 != $this->limit ) {
 			$html_array_position = 1; // base situation is formname[0], so the counter is in position 1.
 			if ( $this->parent ) {
 				$parent = $this->parent;
 				while ( $parent ) {
 					$html_array_position++; // one more for having a parent (e.g. parent[this][0]).
-					// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-					if ( 1 !== $parent->limit ) { // and another for the parent having multiple (e.g. parent[0][this][0]).
+					// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+					if ( 1 != $parent->limit ) { // and another for the parent having multiple (e.g. parent[0][this][0]).
 						$html_array_position++;
 					}
 					$parent = $parent->parent; // parent's parent; root element has null parent which breaks while loop.
@@ -594,27 +594,27 @@ abstract class Fieldmanager_Field {
 		 */
 		$out = apply_filters( "fm_element_markup_start_{$this->name}", $out, $this, $values );
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( ( 0 === $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'top' === $this->add_more_position ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'top' == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 1 !== $this->limit ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 1 != $this->limit ) {
 			$out .= $this->single_element_markup( null, true );
 		}
 		for ( $i = 0; $i < $max; $i++ ) {
 			$this->seq = $i;
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-			if ( 1 === $this->limit ) {
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+			if ( 1 == $this->limit ) {
 				$value = $values;
 			} else {
 				$value = isset( $values[ $i ] ) ? $values[ $i ] : null;
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( ( 0 === $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'bottom' === $this->add_more_position ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'bottom' == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
 
@@ -715,8 +715,8 @@ abstract class Fieldmanager_Field {
 		 * the title from the tab label.
 		 */
 		if ( ! empty( $this->label ) && ! $this->is_tab && $this->one_label_per_item ) {
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-			if ( 1 !== $this->limit ) {
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+			if ( 1 != $this->limit ) {
 				$out .= $this->wrap_with_multi_tools( $label, array( 'fmjs-removable-label' ) );
 			} elseif ( ! $this->label_after_element ) {
 				$out .= $label;
@@ -735,8 +735,8 @@ abstract class Fieldmanager_Field {
 
 		$form_element = $this->form_element( $value );
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 1 !== $this->limit && ( ! $this->one_label_per_item || empty( $this->label ) ) ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 1 != $this->limit && ( ! $this->one_label_per_item || empty( $this->label ) ) ) {
 			$out .= $this->wrap_with_multi_tools( $form_element );
 		} else {
 			$out .= $form_element;
@@ -790,8 +790,8 @@ abstract class Fieldmanager_Field {
 		$out .= $html;
 		$out .= '</div>';
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 0 === $this->limit || $this->limit > $this->minimum_count ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 0 == $this->limit || $this->limit > $this->minimum_count ) {
 			$out .= $this->get_remove_handle();
 		}
 
@@ -809,14 +809,14 @@ abstract class Fieldmanager_Field {
 		$tree = $this->get_form_tree();
 		$name = '';
 		foreach ( $tree as $level => $branch ) {
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-			if ( 0 === $level ) {
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+			if ( 0 == $level ) {
 				$name .= $branch->name;
 			} else {
 				$name .= '[' . $branch->name . ']';
 			}
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-			if ( 1 !== $branch->limit ) {
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+			if ( 1 != $branch->limit ) {
 				$name .= '[' . $branch->get_seq() . ']';
 			}
 		}
@@ -877,8 +877,8 @@ abstract class Fieldmanager_Field {
 	 * @return bool True if yes, false if no.
 	 */
 	public function is_repeatable() {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 1 !== $this->limit ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 1 != $this->limit ) {
 			return true;
 		} elseif ( $this->parent ) {
 			return $this->parent->is_repeatable();
@@ -905,8 +905,8 @@ abstract class Fieldmanager_Field {
 	 * @return mixed Sanitized values.
 	 */
 	public function presave_all( $values, $current_values ) {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 1 === $this->limit && empty( $this->multiple ) ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 1 == $this->limit && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
 			if ( ! empty( $values ) ) {
 				$value = $this->presave( $values[0], $current_values );
@@ -920,8 +920,8 @@ abstract class Fieldmanager_Field {
 		}
 
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 1 !== $this->limit && ! is_array( $values ) ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 1 != $this->limit && ! is_array( $values ) ) {
 
 			// EXCEPT maybe this is a request to remove indices.
 			if ( ! empty( $this->index ) && null === $values && ! empty( $current_values ) && is_array( $current_values ) ) {
@@ -1017,8 +1017,8 @@ abstract class Fieldmanager_Field {
 	 * @param  array $current_values The current values.
 	 */
 	protected function save_index( $values, $current_values ) {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
-		if ( 'post' !== $this->data_type || empty( $this->data_id ) ) {
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
+		if ( 'post' != $this->data_type || empty( $this->data_id ) ) {
 			return;
 		}
 		// Must delete current values specifically, then add new ones, to support a scenario where the
