@@ -120,7 +120,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 * @param int    $post_id     The post ID.
 	 */
 	public function manage_custom_columns( $column_name, $post_id ) {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( $column_name != $this->fm->name ) {
 			return;
 		}
@@ -140,7 +140,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	 * @param array  $values      The current values.
 	 */
 	public function add_quickedit_box( $column_name, $post_type, $values = array() ) {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( $column_name != $this->fm->name ) {
 			return;
 		}
@@ -173,7 +173,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 			return;
 		}
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Recommended -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.Security.NonceVerification.Recommended -- baseline
 		if ( 'fm_quickedit_render' != $_GET['action'] ) {
 			return;
 		}
@@ -183,7 +183,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		// phpcs:ignore WordPress.Security.NonceVerification.Recommended -- baseline
 		$post_id = intval( $_GET['post_id'] );
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( ! $post_id || $column_name != $this->fm->name ) {
 			return;
 		}
@@ -210,7 +210,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- baseline
 			! isset( $_POST['post_type'] )
 			|| ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+			// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.Security.NonceVerification.Missing -- baseline
 			|| ( isset( $_POST['action'] ) && 'inline-save' != $_POST['action'] )
 		) {
 			return;
@@ -218,7 +218,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 
 		$use_this_post_type = false;
 		foreach ( $this->post_types as $type ) {
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+			// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.Security.NonceVerification.Missing -- baseline
 			if ( $type == $_POST['post_type'] ) {
 				$use_this_post_type = true;
 				break;
@@ -234,7 +234,7 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 		}
 
 		// Make sure the current user can save this post.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.Security.NonceVerification.Missing -- baseline
 		if ( 'post' == $_POST['post_type'] ) {
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
@@ -316,5 +316,4 @@ class Fieldmanager_Context_QuickEdit extends Fieldmanager_Context_Storable {
 	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
 		return delete_post_meta( $post_id, $meta_key, $meta_value );
 	}
-
 }

@@ -87,11 +87,10 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 		);
 
 		if ( empty( $this->datasource ) ) {
-			$message = esc_html__( 'You must supply a datasource for the autocomplete field', 'fieldmanager' );
 			if ( Fieldmanager_Field::$debug ) {
-				throw new FM_Developer_Exception( $message );
+				throw new FM_Developer_Exception( esc_html__( 'You must supply a datasource for the autocomplete field', 'fieldmanager' ) );
 			} else {
-				wp_die( esc_html( $message ), esc_html__( 'No Datasource', 'fieldmanager' ) );
+				wp_die( esc_html__( 'You must supply a datasource for the autocomplete field', 'fieldmanager' ), esc_html__( 'No Datasource', 'fieldmanager' ) );
 			}
 		}
 		$this->datasource->allow_optgroups = false;

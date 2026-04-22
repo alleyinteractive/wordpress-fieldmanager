@@ -180,7 +180,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 			// phpcs:ignore WordPress.Security.NonceVerification.Missing -- baseline
 			empty( $_POST['post_ID'] )
 			|| ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE )
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+			// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.Security.NonceVerification.Missing -- baseline
 			|| ( isset( $_POST['action'] ) && 'editpost' != $_POST['action'] )
 		) {
 			return;
@@ -193,7 +193,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		}
 
 		// Prevent saving the same post twice; FM does not yet use revisions.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( get_post_type( $post_id ) == 'revision' ) {
 			return;
 		}
@@ -205,7 +205,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		}
 
 		// Do not handle quickedit in this context.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.Security.NonceVerification.Missing -- baseline
 		if ( 'inline-save' == $_POST['action'] ) {
 			return;
 		}
@@ -218,7 +218,7 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 		}
 
 		// Make sure the current user is authorized to save this post.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.Security.NonceVerification.Missing -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.Security.NonceVerification.Missing -- baseline
 		if ( isset( $_POST['post_type'] ) && 'post' == $_POST['post_type'] ) {
 			if ( ! current_user_can( 'edit_post', $post_id ) ) {
 				$this->fm->_unauthorized_access( __( 'User cannot edit this post', 'fieldmanager' ) );
@@ -337,5 +337,4 @@ class Fieldmanager_Context_Post extends Fieldmanager_Context_Storable {
 	protected function delete_data( $post_id, $meta_key, $meta_value = '' ) {
 		return delete_post_meta( $post_id, $meta_key, $meta_value );
 	}
-
 }

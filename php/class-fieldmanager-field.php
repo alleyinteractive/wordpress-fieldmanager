@@ -386,7 +386,7 @@ abstract class Fieldmanager_Field {
 	 * @param mixed $value The value of the element.
 	 * @return string HTML for the element.
 	 */
-	public function form_element( $value ) {
+	public function form_element( $value ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.Found -- $value is used by the included template
 		if ( ! $this->template ) {
 			$tpl_slug       = strtolower( str_replace( 'Fieldmanager_', '', get_class( $this ) ) );
 			$this->template = fieldmanager_get_template( $tpl_slug );
@@ -458,7 +458,7 @@ abstract class Fieldmanager_Field {
 		}
 
 		// If this is a single field with a limit of 1, serialize_data has no impact.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( ! $this->serialize_data && ! $this->is_group() && 1 == $this->limit ) {
 			$this->serialize_data = true;
 		}
@@ -483,7 +483,7 @@ abstract class Fieldmanager_Field {
 	 */
 	public function element_markup( $values = array() ) {
 		$values = $this->preload_alter_values( $values );
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 1 != $this->limit ) {
 			// count() generates a warning when passed non-countable values in PHP 7.2.
 			if ( is_scalar( $values ) ) {
@@ -527,14 +527,14 @@ abstract class Fieldmanager_Field {
 
 		// Find the array position of the "counter" (e.g. in element[0], [0] is the counter, thus the position is 1).
 		$html_array_position = 0; // default is no counter; i.e. if $this->limit = 0.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 1 != $this->limit ) {
 			$html_array_position = 1; // base situation is formname[0], so the counter is in position 1.
 			if ( $this->parent ) {
 				$parent = $this->parent;
 				while ( $parent ) {
 					$html_array_position++; // one more for having a parent (e.g. parent[this][0]).
-					// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+					// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 					if ( 1 != $parent->limit ) { // and another for the parent having multiple (e.g. parent[0][this][0]).
 						$html_array_position++;
 					}
@@ -594,18 +594,18 @@ abstract class Fieldmanager_Field {
 		 */
 		$out = apply_filters( "fm_element_markup_start_{$this->name}", $out, $this, $values );
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'top' == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 1 != $this->limit ) {
 			$out .= $this->single_element_markup( null, true );
 		}
 		for ( $i = 0; $i < $max; $i++ ) {
 			$this->seq = $i;
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 			if ( 1 == $this->limit ) {
 				$value = $values;
 			} else {
@@ -613,7 +613,7 @@ abstract class Fieldmanager_Field {
 			}
 			$out .= $this->single_element_markup( $value );
 		}
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) && 'bottom' == $this->add_more_position ) {
 			$out .= $this->add_another();
 		}
@@ -715,7 +715,7 @@ abstract class Fieldmanager_Field {
 		 * the title from the tab label.
 		 */
 		if ( ! empty( $this->label ) && ! $this->is_tab && $this->one_label_per_item ) {
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 			if ( 1 != $this->limit ) {
 				$out .= $this->wrap_with_multi_tools( $label, array( 'fmjs-removable-label' ) );
 			} elseif ( ! $this->label_after_element ) {
@@ -735,7 +735,7 @@ abstract class Fieldmanager_Field {
 
 		$form_element = $this->form_element( $value );
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 1 != $this->limit && ( ! $this->one_label_per_item || empty( $this->label ) ) ) {
 			$out .= $this->wrap_with_multi_tools( $form_element );
 		} else {
@@ -790,7 +790,7 @@ abstract class Fieldmanager_Field {
 		$out .= $html;
 		$out .= '</div>';
 
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 0 == $this->limit || $this->limit > $this->minimum_count ) {
 			$out .= $this->get_remove_handle();
 		}
@@ -809,13 +809,13 @@ abstract class Fieldmanager_Field {
 		$tree = $this->get_form_tree();
 		$name = '';
 		foreach ( $tree as $level => $branch ) {
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 			if ( 0 == $level ) {
 				$name .= $branch->name;
 			} else {
 				$name .= '[' . $branch->name . ']';
 			}
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 			if ( 1 != $branch->limit ) {
 				$name .= '[' . $branch->get_seq() . ']';
 			}
@@ -862,7 +862,7 @@ abstract class Fieldmanager_Field {
 	public function get_element_key() {
 		$el  = $this;
 		$key = $el->name;
-		// phpcs:ignore WordPress.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- baseline
+		// phpcs:ignore Generic.CodeAnalysis.AssignmentInCondition.FoundInWhileCondition -- baseline
 		while ( $el = $el->parent ) {
 			if ( $el->add_to_prefix ) {
 				$key = "{$el->name}_{$key}";
@@ -877,7 +877,7 @@ abstract class Fieldmanager_Field {
 	 * @return bool True if yes, false if no.
 	 */
 	public function is_repeatable() {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 1 != $this->limit ) {
 			return true;
 		} elseif ( $this->parent ) {
@@ -905,7 +905,7 @@ abstract class Fieldmanager_Field {
 	 * @return mixed Sanitized values.
 	 */
 	public function presave_all( $values, $current_values ) {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 1 == $this->limit && empty( $this->multiple ) ) {
 			$values = $this->presave_alter_values( array( $values ), array( $current_values ) );
 			if ( ! empty( $values ) ) {
@@ -920,7 +920,7 @@ abstract class Fieldmanager_Field {
 		}
 
 		// If $this->limit != 1, and $values is not an array, that'd just be wrong, and possibly an attack, so...
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 1 != $this->limit && ! is_array( $values ) ) {
 
 			// EXCEPT maybe this is a request to remove indices.
@@ -985,7 +985,7 @@ abstract class Fieldmanager_Field {
 			// Remove empty values.
 			$values = array_filter(
 				$values,
-				function( $value ) {
+				function ( $value ) {
 					if ( is_array( $value ) ) {
 						return ! empty( $value );
 					} elseif ( null === $value ) {
@@ -1017,7 +1017,7 @@ abstract class Fieldmanager_Field {
 	 * @param  array $current_values The current values.
 	 */
 	protected function save_index( $values, $current_values ) {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 'post' != $this->data_type || empty( $this->data_id ) ) {
 			return;
 		}
@@ -1100,7 +1100,7 @@ abstract class Fieldmanager_Field {
 	 * @param  array $current_value The current values.
 	 * @return array The sanitized values.
 	 */
-	public function presave( $value, $current_value = array() ) {
+	public function presave( $value, $current_value = array() ) { // phpcs:ignore Generic.CodeAnalysis.UnusedFunctionParameter.FoundAfterLastUsed -- $current_value is required by the interface and used by subclasses
 		// It's possible that some elements (Grid is one) would be arrays at
 		// this point, but those elements must override this function. Let's
 		// make sure we're dealing with one value here.
@@ -1416,7 +1416,7 @@ abstract class Fieldmanager_Field {
 	 */
 	protected function _failed_validation( $debug_message = '' ) { // phpcs:ignore PSR2.Methods.MethodDeclaration.Underscore -- baseline
 		if ( self::$debug ) {
-			throw new FM_Validation_Exception( $debug_message );
+			throw new FM_Validation_Exception( esc_html( $debug_message ) );
 		} else {
 			wp_die(
 				esc_html(

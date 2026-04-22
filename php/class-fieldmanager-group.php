@@ -147,7 +147,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		parent::__construct( $label, $options );
 
 		// Repeatable groups cannot used unserialized data.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		$is_repeatable = ( 1 != $this->limit );
 		if ( ! $this->serialize_data && $is_repeatable ) {
 			throw new FM_Developer_Exception( esc_html__( 'You cannot use `"serialize_data" => false` with repeating groups', 'fieldmanager' ) );
@@ -161,9 +161,9 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		// Convenient naming of child elements via their keys.
 		foreach ( $this->children as $name => $element ) {
 			// if the array key is not an int, and the name attr is set, and they don't match, we got a problem.
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 			if ( $element->name && ! is_int( $name ) && $element->name != $name ) {
-				throw new FM_Developer_Exception( esc_html__( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name );
+				throw new FM_Developer_Exception( esc_html( __( 'Group child name conflict: ', 'fieldmanager' ) . $name . ' / ' . $element->name ) );
 			} elseif ( ! $element->name ) {
 				$element->name = $name;
 			}
@@ -246,11 +246,11 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 
 				// Set default classes to display the first tab content and hide others.
 				$tab_classes = array( 'fm-tab' );
-				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+				// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 				$tab_classes[] = ( 0 == $this->child_count ) ? 'wp-tab-active' : 'hide-if-no-js';
 
 				// Generate output for the tab. Depends on whether or not there is a tab limit in place.
-				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+				// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 				if ( 0 == $this->tab_limit || $this->child_count < $this->tab_limit ) {
 					$tab_group .= sprintf(
 						'<li class="%s"><a href="#%s-tab">%s</a></li>',
@@ -258,13 +258,13 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 						esc_attr( $element->get_element_id() ),
 						$element->escape( 'label' )
 					);
-				// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+				// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 				} elseif ( 0 != $this->tab_limit && $this->child_count >= $this->tab_limit ) {
 					$submenu_item_classes    = array( 'fm-submenu-item' );
 					$submenu_item_link_class = '';
 
 					// Create the More tab when first hitting the tab limit.
-					// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+					// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 					if ( $this->child_count == $this->tab_limit ) {
 						// Create the tab.
 						$tab_group_submenu .= sprintf(
@@ -325,7 +325,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		// If the display output for this group is set to tabs, build the tab group for navigation.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 0 != $this->tab_limit && $this->child_count >= $this->tab_limit ) {
 			$tab_group_submenu .= '</ul></div></div></li>';
 		}
@@ -397,7 +397,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$child_value              = empty( $values[ $element->name ] ) ? null : $values[ $element->name ];
 			$current_child_value      = ! isset( $current_values[ $element->name ] ) ? array() : $current_values[ $element->name ];
 			$values[ $element->name ] = $element->presave_all( $values[ $element->name ], $current_child_value );
-			// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+			// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 			if ( ! $this->save_empty && 1 != $this->limit ) {
 				if ( is_array( $values[ $element->name ] ) ) {
 					if ( empty( $values[ $element->name ] ) ) {
@@ -473,7 +473,7 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 		}
 
 		$remove = '';
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( $this->one_label_per_item && ( 0 == $this->limit || ( $this->limit > 1 && $this->limit > $this->minimum_count ) ) ) {
 			$remove = $this->get_remove_handle();
 		}
@@ -540,5 +540,4 @@ class Fieldmanager_Group extends Fieldmanager_Field {
 			$child->add_meta_boxes_to_remove( $meta_boxes_to_remove );
 		}
 	}
-
 }

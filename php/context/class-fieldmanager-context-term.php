@@ -223,7 +223,7 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 	 */
 	public function edit_term_fields( $term, $taxonomy ) {
 		// Check if this term's parent matches the specified term if it is set.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 0 !== strlen( $this->parent ) && $this->parent != $term->parent ) {
 			return;
 		}
@@ -500,5 +500,4 @@ class Fieldmanager_Context_Term extends Fieldmanager_Context_Storable {
 			return delete_term_meta( $term_id, $meta_key, $meta_value );
 		}
 	}
-
 }

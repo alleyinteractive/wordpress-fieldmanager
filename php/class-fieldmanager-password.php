@@ -38,5 +38,4 @@ class Fieldmanager_Password extends Fieldmanager_Field {
 		);
 		parent::__construct( $label, $options );
 	}
-
 }

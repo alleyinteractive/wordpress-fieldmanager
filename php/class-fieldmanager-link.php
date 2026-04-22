@@ -21,5 +21,4 @@ class Fieldmanager_Link extends Fieldmanager_Textfield {
 		$this->template = fieldmanager_get_template( 'textfield' );
 		parent::__construct( $label, $options );
 	}
-
 }

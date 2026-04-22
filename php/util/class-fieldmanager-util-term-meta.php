@@ -292,7 +292,7 @@ class Fieldmanager_Util_Term_Meta {
 		);
 
 		// Check the result.
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( 0 != $result ) {
 			return $result;
 		} else {
@@ -327,7 +327,7 @@ class Fieldmanager_Util_Term_Meta {
 	 */
 	public function split_shared_term( $old_term_id, $new_term_id, $term_taxonomy_id, $taxonomy ) {
 		$post_id = $this->get_term_meta_post_id( $old_term_id, $taxonomy );
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons -- baseline
 		if ( false != $post_id ) {
 			wp_update_post(
 				array(
@@ -422,4 +422,3 @@ function fm_update_term_meta( $term_id, $taxonomy, $meta_key, $meta_value, $meta
 function fm_delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value = '' ) {
 	return Fieldmanager_Util_Term_Meta()->delete_term_meta( $term_id, $taxonomy, $meta_key, $meta_value );
 }
-

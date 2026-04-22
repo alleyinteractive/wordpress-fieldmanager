@@ -29,5 +29,4 @@ class Fieldmanager_TextField extends Fieldmanager_Field {
 		);
 		parent::__construct( $label, $options );
 	}
-
 }

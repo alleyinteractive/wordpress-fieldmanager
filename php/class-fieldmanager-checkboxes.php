@@ -52,12 +52,11 @@ class Fieldmanager_Checkboxes extends Fieldmanager_Options {
 	 * @return string $attribute on match, empty on failure.
 	 */
 	public function option_selected( $current_option, $options, $attribute ) {
-		// phpcs:ignore WordPress.PHP.StrictComparisons.LooseComparison, WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
+		// phpcs:ignore Universal.Operators.StrictComparisons, WordPress.PHP.StrictInArray.MissingTrueStrict -- baseline
 		if ( ( ( null !== $options && ! empty( $options ) ) && in_array( $current_option, $options ) ) || ( 'checked' == $this->default_value && in_array( $this->default_value, $options ) ) ) {
 			return $attribute;
 		} else {
 			return '';
 		}
 	}
-
 }

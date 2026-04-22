@@ -12,6 +12,26 @@
 		<exclude name="Generic.Arrays.DisallowLongArraySyntax" />
 
 		<exclude name="Generic.Files.OneObjectStructurePerFile" />
+
+		<!--
+			The project uses an established `fm_` prefix convention which is 3 characters,
+			below the 4-character minimum required by PrefixAllGlobals. Short prefix entries
+			are discarded by the sniff regardless of whether ShortPrefixPassed is suppressed,
+			so all fm_* / FM_* globals are flagged as unprefixed. Since renaming would be a
+			breaking API change, suppress the NonPrefixed* sub-rules here.
+		-->
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound" />
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound" />
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedConstantFound" />
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedClassFound" />
+		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedVariableFound" />
+
+		<!--
+			Several files intentionally define helper functions alongside class declarations
+			(e.g. deprecated template-tag wrappers, singleton helpers). Exclude the rule that
+			requires functions and OO declarations to be in separate files.
+		-->
+		<exclude name="Universal.Files.SeparateFunctionsFromOO.Mixed" />
 	</rule>
 
 	<arg value="ps" />
@@ -47,7 +67,13 @@
 
 	<rule ref="WordPress.NamingConventions.PrefixAllGlobals">
 		<properties>
-			<property name="prefixes" type="array" value="fm_,_fm,fieldmanager,_fieldmanager,Fieldmanager" />
+			<property name="prefixes" type="array">
+				<element value="fm_" />
+				<element value="_fm" />
+				<element value="fieldmanager" />
+				<element value="_fieldmanager" />
+				<element value="Fieldmanager" />
+			</property>
 		</properties>
 	</rule>
 

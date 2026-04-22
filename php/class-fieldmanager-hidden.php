@@ -32,5 +32,4 @@ class Fieldmanager_Hidden extends Fieldmanager_Field {
 			$this->get_element_attributes()
 		);
 	}
-
 }
