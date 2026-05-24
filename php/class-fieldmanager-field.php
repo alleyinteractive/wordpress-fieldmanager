@@ -541,6 +541,7 @@ abstract class Fieldmanager_Field {
 					$parent = $parent->parent; // parent's parent; root element has null parent which breaks while loop.
 				}
 			}
+			$fm_wrapper_attrs['data-fm-array-position'] = $html_array_position;
 		}
 
 		// Checks to see if element has display_if data values, and inserts the data attributes if it does.
@@ -558,9 +559,8 @@ abstract class Fieldmanager_Field {
 			$fm_wrapper_attr_string .= sprintf( '%s="%s" ', sanitize_key( $attr ), esc_attr( $val ) );
 		}
 		$out .= sprintf(
-			'<div class="%s" data-fm-array-position="%d" %s>',
+			'<div class="%s" %s>',
 			esc_attr( implode( ' ', $classes ) ),
-			absint( $html_array_position ),
 			$fm_wrapper_attr_string
 		);
 
