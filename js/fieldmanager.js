@@ -296,7 +296,8 @@ var fm_init = function () {
 		}
 		$( this ).closest( '.fm-wrapper' ).siblings().each( function() {
 			if ( $( this ).hasClass( 'fm-display-if' ) ) {
-				if ( name && name.match( $( this ).data( 'display-src' ) ) != null ) {
+				var displaySrc = $( this ).data( 'display-src' );
+				if ( name && ( name === displaySrc || name.indexOf( '[' + displaySrc + ']' ) !== -1 ) ) {
 					if ( match_value( getCompareValues( this ), val ) ) {
 						$( this ).show();
 					} else {
