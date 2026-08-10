@@ -949,7 +949,7 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 	public function test_label_escaping() {
 		$id         = rand_str();
 		$label_raw  = rand_str();
-		$label_html = "<strong id='{$id}'>{$label_raw}</strong>";
+		$label_html = "<strong id=\"{$id}\">{$label_raw}</strong>";
 		$args       = array(
 			'name'  => 'label_escape_testing',
 			'label' => $label_html,
@@ -974,7 +974,7 @@ class FieldmanagerFieldTest extends WP_UnitTestCase {
 	public function test_description_escaping() {
 		$id               = rand_str();
 		$description_raw  = rand_str();
-		$description_html = "<strong id='{$id}'>{$description_raw}</strong>";
+		$description_html = "<strong id=\"{$id}\">{$description_raw}</strong>";
 		$args             = array(
 			'name'        => 'description_escape_testing',
 			'description' => $description_html,
