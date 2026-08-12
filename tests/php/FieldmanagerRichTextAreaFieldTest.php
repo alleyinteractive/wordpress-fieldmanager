@@ -585,7 +585,7 @@ class FieldmanagerRichTextAreaFieldTest extends WP_UnitTestCase {
 	}
 
 	public function test_basic_save() {
-		$test_data = "<h1>Lorem Ipsum</h1>\n<p>Dolor sit <a href='#'>amet</a></p>";
+		$test_data = "<h1>Lorem Ipsum</h1>\n<p>Dolor sit <a href=\"#\">amet</a></p>";
 		$fm        = new Fieldmanager_RichTextArea( array( 'name' => 'test_richtextarea' ) );
 
 		$fm->add_meta_box( 'test meta box', 'post' )->save_to_post_meta( $this->post_id, $test_data );
