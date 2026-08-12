@@ -213,4 +213,50 @@ class FieldmanagerDatepickerFieldTest extends WP_UnitTestCase {
 
 		$this->assertEquals( $gmt_stamp - $local_stamp, -4 * HOUR_IN_SECONDS );
 	}
+
+	/**
+	 * A store_local_time value must survive a re-save across a DST boundary without drifting.
+	 *
+	 * Rendering the stored GMT timestamp back to local time (form_element()) must use a
+	 * DST-aware offset; otherwise it disagrees with presave()'s get_gmt_from_date() and the
+	 * value shifts by an hour on every save. Regression test for #759.
+	 */
+	#[Group( 'dst' )]
+	public function test_local_time_across_dst_change() {
+		update_option( 'timezone_string', 'America/New_York' );
+
+		$field = new Fieldmanager_Datepicker(
+			array(
+				'name'             => 'test_local_time',
+				'use_time'         => true,
+				'store_local_time' => true,
+			)
+		);
+
+		// Noon on the day after the next DST transition, in the site timezone.
+		$tz          = new DateTimeZone( 'America/New_York' );
+		$transitions = $tz->getTransitions( time(), strtotime( '+1 year' ) );
+		$local       = new DateTime( "@{$transitions[1]['ts']}" );
+		$local->setTimezone( $tz );
+		$local->modify( '+1 day' );
+		$local->setTime( 12, 0 );
+
+		$submitted = array(
+			'date'   => $local->format( 'j M Y' ),
+			'hour'   => '12',
+			'minute' => '00',
+			'ampm'   => 'pm',
+		);
+
+		// Saving stores the correct instant.
+		$field->add_meta_box( 'test meta box', $this->post )->save_to_post_meta( $this->post_id, $submitted );
+		$stored = (int) get_post_meta( $this->post_id, 'test_local_time', true );
+		$this->assertSame( $local->getTimestamp(), $stored );
+
+		// Rendering the stored value shows the same local hour it was entered with,
+		// so a no-change re-save will not drift.
+		$markup = $field->form_element( $stored );
+		$this->assertStringContainsString( 'name="test_local_time[hour]"', $markup );
+		$this->assertStringContainsString( 'value="12"', $markup );
+	}
 }
