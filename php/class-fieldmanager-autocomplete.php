@@ -29,6 +29,13 @@ class Fieldmanager_Autocomplete extends Fieldmanager_Field {
 	public $show_edit_link = false;
 
 	/**
+	 * Whether to show a "View" link for the selected item.
+	 *
+	 * @var bool
+	 */
+	public $show_view_link = false;
+
+	/**
 	 * Key for reciprocal relationship; if defined will add an entry to postmeta on the mirrored post.
 	 *
 	 * @var string
