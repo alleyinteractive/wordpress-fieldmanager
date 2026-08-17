@@ -340,6 +340,26 @@ var fm_init = function () {
 	init_sortable();
 
 	$document.on( 'fm_activate_tab', init_sortable );
+
+	fm.init_bulk_checkboxes_actions = function() {
+		var $this = $( this );
+		var $bulk_toggle = $this.find( '.fm-bulk-action' );
+		var $checkboxes = $this.siblings().find( 'input:checkbox' );
+		var all_checked;
+		$bulk_toggle.change( function() {
+			var is_checked = $bulk_toggle.prop( 'checked' );
+			$checkboxes.prop( 'checked', is_checked );
+			all_checked = is_checked;
+		} );
+		$checkboxes.change( function() {
+			var is_checked = $( this ).prop( 'checked' );
+			if ( all_checked && !is_checked ) {
+				all_checked = false;
+				$bulk_toggle.prop( 'checked', false );
+			}
+		} );
+	};
+	$( '.fm-bulk-actions' ).each( fm.init_bulk_checkboxes_actions );
 };
 
 fmLoadModule( fm_init );
