@@ -1294,7 +1294,7 @@ abstract class Fieldmanager_Field {
 	public function add_term_meta_box( $title, $taxonomies, $show_on_add = true, $show_on_edit = true, $parent = '' ) {
 		// Bail if term meta table is not installed.
 		if ( get_option( 'db_version' ) < 34370 ) {
-			_doing_it_wrong( __METHOD__, esc_html__( 'This method requires WordPress 4.4 or above', 'fieldmanager' ), 'Fieldmanager-1.0.0-beta.3' );
+			_doing_it_wrong( __METHOD__, esc_html__( 'This method requires WordPress 4.4 or above', 'fieldmanager' ), '1.0.0' );
 			return false;
 		}
 
