@@ -201,6 +201,11 @@ fm_add_another = function( $element ) {
 	$element.parent().siblings().last().trigger( 'fm_added_element' );
 	init_label_macros();
 	init_sortable();
+	// reload chosen on show
+	var $chosen_select = $( '.chosen-select', $new_element );
+	if ( $chosen_select.length ) {
+		$chosen_select.chosen( 'destroy' ).chosen();
+	}
 }
 
 fm_remove = function( $element ) {
@@ -306,6 +311,11 @@ var fm_init = function () {
 				}
 			}
 		} );
+		// check if chosen not loaded due to being hidden and load if found
+		var $chosen_selects = $( '.chosen-select:not(.chosen-done)' );
+		if ( $chosen_selects.length ) {
+			$chosen_selects.chosen().trigger( 'chosen:updated' );
+		}
 	};
 	$document.on( 'change', '.display-trigger', fm.trigger_display_if );
 
