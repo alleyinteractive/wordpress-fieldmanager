@@ -382,6 +382,11 @@ class Fieldmanager_Datasource_Term extends Fieldmanager_Datasource {
 				$prefix .= '--';
 			}
 
+			// This is to avoid PHP warnings when the term is not a term object.
+			if ( ! $term instanceof \WP_Term || ! $term->term_taxonomy_id || ! $term->term_id || ! $term->name ) {
+				continue;
+			}
+
 			$key           = $this->store_term_taxonomy_id ? $term->term_taxonomy_id : $term->term_id;
 			$stack[ $key ] = $prefix . ' ' . $term->name;
 
