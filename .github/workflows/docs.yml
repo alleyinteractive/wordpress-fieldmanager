@@ -1,0 +1,48 @@
+name: Generate Documentation
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  generate-docs:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout release code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.2'
+          extensions: dom, curl, libxml, mbstring, zip
+
+      - name: Download Doctum
+        run: |
+          wget -q https://doctum.long-term.support/releases/latest/doctum.phar
+          chmod +x doctum.phar
+
+      - name: Switch to api-docs branch
+        run: |
+          git checkout api-docs || git checkout -b api-docs
+          git reset --hard ${{ github.sha }}
+
+      - name: Generate documentation
+        run: |
+          ./doctum.phar update doctum.php -v
+
+      - name: Commit and push documentation
+        run: |
+          git config --local user.email "docs@fieldmanager.org"
+          git config --local user.name "Fieldmanager Docs"
+          git add docs/
+          if git diff --staged --quiet; then
+            echo "No documentation changes to commit"
+          else
+            git commit -m "Update API documentation for ${{ github.event.release.tag_name }}"
+            git push origin api-docs
+          fi
